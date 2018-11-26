@@ -1,0 +1,28 @@
+node_modules/.bin/sequelize model:generate --name venue --attributes name:string,has_parent_category:boolean,active:boolean,has_tablet:boolean,has_touchscren:boolean,number_of_users:integer
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-role-and-permission
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-role-and-user
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-and-user
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-user-and-venue
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-role-and-venue
+
+node_modules/.bin/sequelize seed:generate --name permissions
+
+node_modules/.bin/sequelize seed:generate --name roles
+
+node_modules/.bin/sequelize seed:generate --name roles_permissions
+
+node_modules/.bin/sequelize seed:generate --name venues
+
+node_modules/.bin/sequelize seed:generate --name roles_venues
+
+node_modules/.bin/sequelize seed:generate --name users
+
+
+
+
+

@@ -1,0 +1,31 @@
+.welcome_page_selection_image_container {
+    position: relative;
+}
+
+.welcome_page_selection_image_container_middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%)
+}
+
+.welcome_page_selection_image_container_image {
+    width: 280px;
+    height: 280px;
+    opacity: 1;
+    display: block;
+    transition: .5s linear;
+    backface-visibility: hidden;
+
+}
+
+.welcome_page_selection_image_container:hover .welcome_page_selection_image_container_image {
+    opacity: 0.3;
+}
+
+.welcome_page_selection_image_container:hover .welcome_page_selection_image_container_middle {
+    opacity: 1;
+}

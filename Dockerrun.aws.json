@@ -1,0 +1,47 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "name": "cms",
+            "image": "nealshen/dc-cms",
+            "hostname": "cms",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "server",
+            "image": "nealshen/dc-server",
+            "hostname": "api",
+            "essential": false,
+            "memory": 128
+        }, 
+        {
+            "name": "touchscreen",
+            "image": "nealshen/dc-touchscreen",
+            "hostname": "touchscreen",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "tablet",
+            "image": "nealshen/dc-tablet",
+            "hostname": "tablet",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "nginx",
+            "image": "nealshen/dc-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": ["cms", "server", "tablet", "touchscreen"],
+            "memory": 128
+        }
+    ]
+}

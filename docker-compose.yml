@@ -1,0 +1,37 @@
+version: '3'
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx/
+    ports: 
+      - '3050:80'
+  api:
+    build: 
+      context: ./server/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+  cms:
+    build: 
+      context: ./cms/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./cms:/app
+  tablet:
+    build: 
+      context: ./tablet/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./tablet:/app
+  touchscreen:
+    build: 
+      context: ./touchscreen/
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./touchscreen:/app

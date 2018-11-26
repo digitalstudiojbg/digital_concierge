@@ -1,0 +1,36 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t nealshen/react-test -f ./cms/Dockerfile.dev ./cms
+
+script:
+  - docker run nealshen/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t nealshen/dc-cms ./cms
+  - docker build -t nealshen/dc-nginx ./nginx
+  - docker build -t nealshen/dc-server ./server
+  - docker build -t nealshen/dc-tablet ./tablet
+  - docker build -t nealshen/dc-touchscreen ./touchscreen
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push nealshen/dc-cms
+  - docker push nealshen/dc-nginx
+  - docker push nealshen/dc-server
+  - docker push nealshen/dc-tablet
+  - docker push nealshen/dc-touchscreen
+
+deploy:
+  provider: elasticbeanstalk
+  region: ap-southeast-2
+  app: Digital_Concierge
+  env: DigitalConcierge-env 
+  bucket_name: elasticbeanstalk-ap-southeast-2-626158641982
+  bucket_path: dc-docker
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: 
+    secure: $AWS_SECRET_KEY
