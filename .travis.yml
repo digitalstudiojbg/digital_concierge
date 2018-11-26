@@ -4,23 +4,23 @@ services:
   - docker
 
 before_install:
-  - docker build -t nealshen/react-test -f ./cms/Dockerfile.dev ./cms
+  - docker build -t digitalstudiojbg/react-test -f ./cms/Dockerfile.dev ./cms
 
 script:
-  - docker run nealshen/react-test npm test -- --coverage
+  - docker run digitalstudiojbg/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t nealshen/dc-cms ./cms
-  - docker build -t nealshen/dc-nginx ./nginx
-  - docker build -t nealshen/dc-server ./server
-  - docker build -t nealshen/dc-tablet ./tablet
-  - docker build -t nealshen/dc-touchscreen ./touchscreen
+  - docker build -t digitalstudiojbg/dc-cms ./cms
+  - docker build -t digitalstudiojbg/dc-nginx ./nginx
+  - docker build -t digitalstudiojbg/dc-server ./server
+  - docker build -t digitalstudiojbg/dc-tablet ./tablet
+  - docker build -t digitalstudiojbg/dc-touchscreen ./touchscreen
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push nealshen/dc-cms
-  - docker push nealshen/dc-nginx
-  - docker push nealshen/dc-server
-  - docker push nealshen/dc-tablet
-  - docker push nealshen/dc-touchscreen
+  - docker push digitalstudiojbg/dc-cms
+  - docker push digitalstudiojbg/dc-nginx
+  - docker push digitalstudiojbg/dc-server
+  - docker push digitalstudiojbg/dc-tablet
+  - docker push digitalstudiojbg/dc-touchscreen
 
 deploy:
   provider: elasticbeanstalk
