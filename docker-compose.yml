@@ -1,16 +1,11 @@
 version: '3'
 services:
-  nginx:
-    restart: always
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./nginx/
-    ports: 
-      - '3050:80'
-  api:
+  server:
     build: 
       context: ./server/
       dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
     volumes:
       - /app/node_modules
       - ./server:/app
@@ -18,6 +13,8 @@ services:
     build: 
       context: ./cms/
       dockerfile: Dockerfile.dev
+    ports:
+      - "4000:4000"
     volumes:
       - /app/node_modules
       - ./cms:/app
@@ -25,6 +22,8 @@ services:
     build: 
       context: ./tablet/
       dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
     volumes:
       - /app/node_modules
       - ./tablet:/app
@@ -32,6 +31,47 @@ services:
     build: 
       context: ./touchscreen/
       dockerfile: Dockerfile.dev
+    ports:
+      - "6000:6000"
     volumes:
       - /app/node_modules
       - ./touchscreen:/app
+
+
+# #version: '3'
+# services:
+#   nginx:
+#     restart: always
+#     build:
+#       dockerfile: Dockerfile.dev
+#       context: ./nginx/
+#     ports: 
+#       - '3050:80'
+#   api:
+#     build: 
+#       context: ./server/
+#       dockerfile: Dockerfile.dev
+#     volumes:
+#       - /app/node_modules
+#       - ./server:/app
+#   cms:
+#     build: 
+#       context: ./cms/
+#       dockerfile: Dockerfile.dev
+#     volumes:
+#       - /app/node_modules
+#       - ./cms:/app
+#   tablet:
+#     build: 
+#       context: ./tablet/
+#       dockerfile: Dockerfile.dev
+#     volumes:
+#       - /app/node_modules
+#       - ./tablet:/app
+#   touchscreen:
+#     build: 
+#       context: ./touchscreen/
+#       dockerfile: Dockerfile.dev
+#     volumes:
+#       - /app/node_modules
+#       - ./touchscreen:/app

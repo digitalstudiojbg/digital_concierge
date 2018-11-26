@@ -41,9 +41,17 @@ class App extends Component {
     }
 
     componentDidMount() {
-        /* fetch("http://localhost:3000/")
+        const apiUrl =
+            process.env.NODE_ENV === "production"
+                ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
+                : "http://localhost:3000";
+
+        fetch(`${apiUrl}/test/`)
             .then(response => response.json())
-            .then(data => console.log(data));*/
+            .then(data => console.log(data));
+        fetch(`${apiUrl}/`)
+            .then(response => response.json())
+            .then(data => console.log(data));
     }
 
     render() {

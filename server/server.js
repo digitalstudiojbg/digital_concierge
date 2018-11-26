@@ -43,6 +43,14 @@ app.get("/", (req, res) => {
     res.send(JSON.stringify(data, null, 2));
 });
 
+app.get("/test", (req, res) => {
+    res.set("Content-Type", "application/json");
+    let data = {
+        message: "Hello world, Woooooeeeee!!!! JBG TEST API"
+    };
+    res.send(JSON.stringify(data, null, 2));
+});
+
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
