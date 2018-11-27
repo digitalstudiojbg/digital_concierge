@@ -18,7 +18,7 @@ Digital Concierge Project
 * server: 3000 
 * cms: 4000
 * tablet: 5000
-* touchscreen: 6000
+* touchscreen: 6000(prod) 6001(dev)
 
 ## Project Routes ##
 * localhost:3050/ => cms site 

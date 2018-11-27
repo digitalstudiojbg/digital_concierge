@@ -1,6 +1,3 @@
-// NOTE: this example keeps the access token in LocalStorage just because it's simpler
-// but in a real application you may want to use cookies instead for better security
-
 const accessTokenKey = "accessToken";
 
 export function getAccessToken() {
@@ -8,7 +5,12 @@ export function getAccessToken() {
 }
 
 export async function login(email, password) {
-    const response = await fetch("/api/login", {
+    const apiUrl =
+        process.env.NODE_ENV === "production"
+            ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
+            : "http://localhost:3000";
+
+    const response = await fetch(`${apiUrl}/login`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email, password })
