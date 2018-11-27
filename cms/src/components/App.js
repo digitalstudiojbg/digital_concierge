@@ -41,6 +41,10 @@ class App extends Component {
     }
 
     componentDidMount() {
+
+        console.log('From Jono');
+        
+
         const apiUrl =
             process.env.NODE_ENV === "production"
                 ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
