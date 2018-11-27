@@ -3,6 +3,34 @@ import { COLOR_JBG_PURPLE } from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
+import styled from 'styled-components';
+
+const ContainerDiv = styled.div`
+    width: 100vw;
+    height: 80px;
+    position: fixed;
+    top: 0px;
+    background-color: ${COLOR_JBG_PURPLE};
+    color: white;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    font-size: 1.2em;
+    z-index: 1;
+`;
+
+const WelcomeDiv = styled.div`
+    width: 15vw;
+    margin-left: 1.5vw;
+`;
+
+const WelcomeUserDetailContainerDiv = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+`;
 
 const URL_WELCOME = "/welcome";
 
@@ -14,32 +42,8 @@ class Header extends Component {
         });
 
         return (
-            <div
-                style={{
-                    width: "100vw",
-                    height: "80px",
-                    position: "fixed",
-                    top: 0,
-                    backgroundColor: COLOR_JBG_PURPLE,
-                    color: "white",
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "nowrap",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    alignContent: "center",
-                    fontSize: "1.2em",
-                    zIndex: "1"
-                }}
-            >
-                <div
-                    style={{
-                        width: "15vw",
-                        marginLeft: "1.5vw"
-                    }}
-                >
-                    {match.url === URL_WELCOME && <p style={{}}>Welcome</p>}
-                </div>
+            <ContainerDiv>
+                {match.url === URL_WELCOME && <WelcomeDiv>Welcome</WelcomeDiv>}
                 <div
                     style={{
                         width: "65vw"
@@ -52,16 +56,7 @@ class Header extends Component {
                     }}
                 >
                     {match.url === URL_WELCOME && (
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                flexWrap: "nowrap",
-                                justifyContent: "flex-end",
-                                alignItems: "center",
-                                alignContent: "center"
-                            }}
-                        >
+                        <WelcomeUserDetailContainerDiv>
                             <div
                                 style={{
                                     paddingLeft: "1vw",
@@ -80,10 +75,10 @@ class Header extends Component {
                                     alt={`{user.name}_avatar`}
                                 />
                             </div>
-                        </div>
+                        </WelcomeUserDetailContainerDiv>
                     )}
                 </div>
-            </div>
+            </ContainerDiv>
         );
     }
 }
