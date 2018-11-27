@@ -93,9 +93,11 @@ class Home extends Component {
                                 {routes.map(
                                     (route, index) =>
                                         route.main && (
-                                            <Suspense fallback={<Loading />}>
+                                            <Suspense
+                                                key={index}
+                                                fallback={<Loading />}
+                                            >
                                                 <PrivateRoute
-                                                    key={index}
                                                     path={route.path}
                                                     exact={route.exact}
                                                     component={route.main}
