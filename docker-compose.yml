@@ -23,7 +23,7 @@ services:
       context: ./touchscreen/
       dockerfile: Dockerfile.dev
     ports:
-      - "6001:6000"
+      - "7000:7000"
     volumes:
       - /app/node_modules
       - ./touchscreen:/app
