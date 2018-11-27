@@ -5,8 +5,9 @@ class Sidebar extends Component {
         return (
             <div
                 style={{
-                    width: "200px",
-                    backgroundColor: "yellow"
+                    width: "350px",
+                    backgroundColor: "rgb(70,73,124)",
+                    color: "white"
                 }}
             >
                 <h1>Sidebar</h1>

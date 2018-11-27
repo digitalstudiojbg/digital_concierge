@@ -73,7 +73,6 @@ class Home extends Component {
                             <div
                                 style={{
                                     paddingTop: "80px",
-                                    backgroundColor: "red",
                                     height: "100vh",
                                     width: "100vw",
                                     display: "flex"

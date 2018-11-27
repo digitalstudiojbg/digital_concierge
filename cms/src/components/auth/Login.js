@@ -4,6 +4,48 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { isEmpty } from "lodash";
 import { COLOR_JBG_PURPLE } from "../../utils/Constants";
+import styled from "styled-components";
+
+const CMSTitle = styled.p`
+    margin-left: 0.5vw;
+    color: rgb(124, 126, 162);
+    font-size: 1vw;
+    text-transform: uppercase;
+`;
+
+const WelcomeMessage = styled.p`
+    color: rgb(166, 167, 173);
+    font-size: 1.2vw;
+`;
+
+const ErrorWarningMessage = styled.p`
+    color: rgb(166, 167, 173);
+    font-size: 1.2vw;
+    color: red;
+`;
+
+const LoginBodyLayout = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    width: 100vw;
+    height: 100vh;
+`;
+
+const LoginLeftContainer = styled.div`
+    background-image: url(https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/wallpaper_login_small.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 60vw;
+`;
+
+const LoginRightContainer = styled.div`
+    width: 40vw;
+`;
 
 class Login extends Component {
     constructor(props) {
@@ -47,34 +89,9 @@ class Login extends Component {
     render() {
         const { email, password, error, errorMessage } = this.state;
         return (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "nowrap",
-                    justifyContent: "center",
-                    alignItems: "stretch",
-                    alignContent: "stretch",
-                    width: "100vw",
-                    height: "100vh"
-                }}
-            >
-                <div
-                    style={{
-                        backgroundImage:
-                            "url(https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/wallpaper_login_small.jpg )",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "cover",
-                        width: "60vw"
-                    }}
-                />
-
-                <div
-                    style={{
-                        width: "40vw"
-                    }}
-                >
+            <LoginBodyLayout>
+                <LoginLeftContainer />
+                <LoginRightContainer>
                     <form>
                         <div
                             style={{
@@ -123,16 +140,9 @@ class Login extends Component {
                                                 "2px solid rgb(124,126,162)"
                                         }}
                                     >
-                                        <p
-                                            style={{
-                                                marginLeft: "0.5vw",
-                                                color: "rgb(124,126,162)",
-                                                fontSize: "1vw",
-                                                textTransform: "uppercase"
-                                            }}
-                                        >
+                                        <CMSTitle>
                                             CONTENT MANAGEMENT SYSTEM
-                                        </p>
+                                        </CMSTitle>
                                     </div>
                                 </div>
                                 <div
@@ -142,33 +152,17 @@ class Login extends Component {
                                     }}
                                 >
                                     {error ? (
-                                        <p
-                                            style={{
-                                                color: "red",
-                                                fontSize: "1.1vw",
-                                                textTransform: "uppercase"
-                                            }}
-                                        >
+                                        <ErrorWarningMessage>
                                             {errorMessage}
-                                        </p>
+                                        </ErrorWarningMessage>
                                     ) : (
                                         <React.Fragment>
-                                            <p
-                                                style={{
-                                                    color: "rgb(166,167,173)",
-                                                    fontSize: "1.2vw"
-                                                }}
-                                            >
+                                            <WelcomeMessage>
                                                 Welcome back!
-                                            </p>
-                                            <p
-                                                style={{
-                                                    color: "rgb(166,167,173)",
-                                                    fontSize: "1.2vw"
-                                                }}
-                                            >
+                                            </WelcomeMessage>
+                                            <WelcomeMessage>
                                                 Please login to your account
-                                            </p>
+                                            </WelcomeMessage>
                                         </React.Fragment>
                                     )}
                                 </div>
@@ -214,8 +208,8 @@ class Login extends Component {
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
+                </LoginRightContainer>
+            </LoginBodyLayout>
         );
     }
 }
