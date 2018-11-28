@@ -15,10 +15,10 @@ Digital Concierge Project
 * docker-compose up --build
 
 ## Project Ports ##
-* server: 3000 
-* cms: 4000
-* tablet: 5000
-* touchscreen: 7000
+* server => 3000 
+* cms => 4000
+* tablet => 5000
+* touchscreen => 7000
 
 ## Project Routes (DEV) ##
 * localhost:3000 => server 

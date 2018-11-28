@@ -1,3 +1,5 @@
+import { API_URL } from "../utils/Constants";
+
 const accessTokenKey = "accessToken";
 
 export function getAccessToken() {
@@ -5,12 +7,7 @@ export function getAccessToken() {
 }
 
 export async function login(email, password) {
-    const apiUrl =
-        process.env.NODE_ENV === "production"
-            ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
-            : "http://localhost:3000";
-
-    const response = await fetch(`${apiUrl}/login`, {
+    const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email, password })

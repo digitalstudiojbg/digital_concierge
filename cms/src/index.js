@@ -7,6 +7,7 @@ import { ApolloClient } from "apollo-client";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "apollo-link-context";
 import { getAccessToken, isLoggedIn } from "./auth/auth";
+import { API_URL } from "./utils/Constants";
 
 const authLink = setContext((_, { headers }) => {
     return {
@@ -17,16 +18,11 @@ const authLink = setContext((_, { headers }) => {
     };
 });
 
-const apiUrl =
-    process.env.NODE_ENV === "production"
-        ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
-        : "http://localhost:3000";
-
 const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: authLink.concat(
         createUploadLink({
-            uri: `${apiUrl}/graphql`,
+            uri: `${API_URL}/graphql`,
             cretentials: "include"
         })
     )

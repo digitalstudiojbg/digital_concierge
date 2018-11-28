@@ -5,7 +5,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
-import { WELCOME_URL, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL } from "../utils/Constants";
+import { WELCOME_URL, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL, API_URL } from "../utils/Constants";
 
 const Home = lazy(() => import("./home/Home"));
 
@@ -42,19 +42,10 @@ class App extends Component {
     }
 
     componentDidMount() {
-
-        console.log('From Jono');
-        
-
-        const apiUrl =
-            process.env.NODE_ENV === "production"
-                ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
-                : "http://localhost:3000";
-
-        fetch(`${apiUrl}/test/`)
+        fetch(`${API_URL}/test/`)
             .then(response => response.json())
             .then(data => console.log(data));
-        fetch(`${apiUrl}/`)
+        fetch(`${API_URL}/`)
             .then(response => response.json())
             .then(data => console.log(data));
     }
