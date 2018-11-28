@@ -1,11 +1,28 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-const VIEW_SITE = "VIEW_SITE";
-const DASHBOARD = "DASHBOARD";
-const LANDING_PAGE = "LANDING_PAGE";
-const CONTENT = "CONTENT";
-const SETTINGS = "SETTINGS";
+const SIDEBAR_ITEMS = [
+    {
+        name: "VIEW_SITE",
+        displayName: "View Site"
+    },
+    {
+        name: "DASHBOARD",
+        displayName: "Dashboard"
+    },
+    {
+        name: "LANDING_PAGE",
+        displayName: "Landing Page"
+    },
+    {
+        name: "CONTENT",
+        displayName: "Content"
+    },
+    {
+        name: "SETTINGS",
+        displayName: "Settings"
+    }
+];
 
 const SidebarItem = styled.div`
     height: 70px;
@@ -25,16 +42,9 @@ const SidebarItem = styled.div`
 `;
 
 class Sidebar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedItem: "123"
-        };
-    }
-
-    handleSidebarClick(text) {
-        this.setState({ selectedItem: text });
-    }
+    state = {
+        selectedItem: "123"
+    };
 
     render() {
         const { selectedItem } = this.state;
@@ -53,51 +63,24 @@ class Sidebar extends Component {
                     height: "100vh"
                 }}
             >
-                <SidebarItem
-                    onClick={() => {
-                        this.handleSidebarClick(VIEW_SITE);
-                    }}
-                    selectedItem={selectedItem}
-                    expectedItem={VIEW_SITE}
-                >
-                    <h1>ViewSite</h1>
-                </SidebarItem>
-                <SidebarItem
-                    onClick={() => {
-                        this.handleSidebarClick(DASHBOARD);
-                    }}
-                    selectedItem={selectedItem}
-                    expectedItem={DASHBOARD}
-                >
-                    <h1>Dashboard</h1>
-                </SidebarItem>
-                <SidebarItem
-                    onClick={() => {
-                        this.handleSidebarClick(LANDING_PAGE);
-                    }}
-                    selectedItem={selectedItem}
-                    expectedItem={LANDING_PAGE}
-                >
-                    <h1>Landing Page</h1>
-                </SidebarItem>
-                <SidebarItem
-                    onClick={() => {
-                        this.handleSidebarClick(CONTENT);
-                    }}
-                    selectedItem={selectedItem}
-                    expectedItem={CONTENT}
-                >
-                    <h1>Content</h1>
-                </SidebarItem>
-                <SidebarItem
-                    onClick={() => {
-                        this.handleSidebarClick(SETTINGS);
-                    }}
-                    selectedItem={selectedItem}
-                    expectedItem={SETTINGS}
-                >
-                    <h1>Settings</h1>
-                </SidebarItem>
+                {SIDEBAR_ITEMS.map((items, index) => {
+                    const { name, displayName } = items;
+                    return (
+                        name &&
+                        displayName && (
+                            <SidebarItem
+                                key={index}
+                                onClick={() => {
+                                    this.setState({ selectedItem: name });
+                                }}
+                                selectedItem={selectedItem}
+                                expectedItem={name}
+                            >
+                                <h1>{displayName}</h1>
+                            </SidebarItem>
+                        )
+                    );
+                })}
             </div>
         );
     }
