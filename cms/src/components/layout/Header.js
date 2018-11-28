@@ -8,8 +8,14 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import ArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import { withStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
 import { Link } from "react-router-dom";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import PersonIcon from "@material-ui/icons/Person";
+import PowerIcon from "@material-ui/icons/PowerSettingsNew";
+import { logout } from "../../auth/auth";
 
 const styles = theme => ({
     button: {
@@ -19,6 +25,10 @@ const styles = theme => ({
     avatar: {
         margin: 10,
     },
+    icon: {
+        marginRight: -5
+    },
+
 });
 
 const ContainerDiv = styled.div`
@@ -51,6 +61,24 @@ const WelcomeUserDetailContainerDiv = styled.div`
 const URL_WELCOME = "/welcome";
 
 class Header extends Component {
+    state = {
+        anchorEl: null,
+    }
+
+    handleClick = event => {
+        this.setState({ anchorEl: event.currentTarget });
+    };
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    handleLogout = () => {
+        this.setState({ anchorEl: null });
+        logout();
+        window.location.reload();
+    };
+
     render() {
         const { client, match, classes } = this.props;
         const { getCurrentUser: user } = client.readQuery({
@@ -62,6 +90,9 @@ class Header extends Component {
         const userDivWidth = availableWidth - titleDivWidth;
 
         const { has_tablet = false, has_touchscreen = false, name = "" } = user.venue || {};
+
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
 
         return (
             <ContainerDiv>
@@ -112,10 +143,33 @@ class Header extends Component {
                         >
                             <p style={{}}>{user.name}</p>
                         </div>
-                        <IconButton className={classes.button}>
+                        <IconButton className={classes.button} onClick={this.handleClick}>
                             <ArrowDownIcon />
                         </IconButton>
-                        <Avatar alt="user-avatar" src={user.venue.logo} className={classes.avatar} />
+                        <Menu
+                            id="user-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={this.handleClose}
+                        >
+                            <MenuItem onClick={this.handleClose}>
+                                <ListItemIcon className={classes.icon}><PersonIcon /></ListItemIcon>
+                                <ListItemText inset primary="PROFILE" />
+                            </MenuItem>
+                            <MenuItem onClick={this.handleLogout}>
+                                <ListItemIcon className={classes.icon}><PowerIcon /></ListItemIcon>
+                                <ListItemText inset primary="LOGOUT" />
+                            </MenuItem>
+                        </Menu>
+                        {user.venue && user.venue.logo && 
+                            <img
+                                style={{
+                                    height: "50px"
+                                }}
+                                src={user.venue.logo}
+                                alt={`{user.name}_avatar`}
+                            />
+                        }
                     </WelcomeUserDetailContainerDiv>
                 </div>
             </ContainerDiv>
