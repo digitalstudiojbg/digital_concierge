@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { TABLET_CMS_LIST_URL } from "../../utils/Constants";
 
 class Tablet extends Component {
     render() {
@@ -11,7 +12,7 @@ class Tablet extends Component {
                 }}
             >
                 <h1>Tablet Homepage</h1>
-                <Link to="/tablet_cms/list">List</Link>
+                <Link to={TABLET_CMS_LIST_URL}>List</Link>
             </div>
         );
     }

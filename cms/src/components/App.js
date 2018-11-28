@@ -5,20 +5,21 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
+import { WELCOME_URL, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL } from "../utils/Constants";
 
 const Home = lazy(() => import("./home/Home"));
 
 const routes = [
     {
-        path: "/welcome",
+        path: WELCOME_URL,
         component: Home
     },
     {
-        path: "/tablet_cms",
+        path: TABLET_CMS_INDEX_URL,
         component: Home
     },
     {
-        path: "/touchscreen_cms",
+        path: TOUCHSCREEN_CMS_INDEX_URL,
         component: Home
     }
 ];
@@ -31,13 +32,13 @@ class App extends Component {
 
     handleLogin() {
         this.setState({ loggedIn: true });
-        this.router.history.push("/welcome");
+        this.router.history.push(WELCOME_URL);
     }
 
     handleLogout() {
         logout();
         this.setState({ loggedIn: false });
-        this.router.history.push("/login");
+        this.router.history.push(LOGIN_URL);
     }
 
     componentDidMount() {
@@ -74,7 +75,7 @@ class App extends Component {
                                 )}
                             />
                             <Route
-                                path="/login"
+                                path={LOGIN_URL}
                                 render={() => (
                                     <Login
                                         onLogin={this.handleLogin.bind(this)}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { COLOR_JBG_PURPLE } from "../../utils/Constants";
+import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
 import "./Welcome.css";
 import Button from "@material-ui/core/Button";
 import { isEmpty } from "lodash";
@@ -28,7 +28,7 @@ class Welcome extends Component {
             return (
                 <Redirect
                     to={{
-                        pathname: "/tablet"
+                        pathname: TABLET_CMS_INDEX_URL
                     }}
                 />
             );
@@ -37,7 +37,7 @@ class Welcome extends Component {
             return (
                 <Redirect
                     to={{
-                        pathname: "/touchscreen"
+                        pathname: TOUCHSCREEN_CMS_INDEX_URL
                     }}
                 />
             );
@@ -84,7 +84,7 @@ class Welcome extends Component {
                     >
                         {!isEmpty(user) && has_tablet && (
                             <Link
-                                to="/tablet_cms"
+                                to={TABLET_CMS_INDEX_URL}
                                 style={{
                                     textDecoration: "none",
                                     margin: "10px",
@@ -121,7 +121,7 @@ class Welcome extends Component {
 
                         {!isEmpty(user) && has_touchscreen && (
                             <Link
-                                to="/touchscreen_cms"
+                                to={TOUCHSCREEN_CMS_INDEX_URL}
                                 style={{
                                     textDecoration: "none",
                                     margin: "10px",

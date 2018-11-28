@@ -5,6 +5,7 @@ import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
+import { WELCOME_URL, TABLET_CMS_INDEX_URL, TABLET_CMS_HOME_URL, TABLET_CMS_LIST_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
 
 const Tablet = lazy(() => import("../tablet/Tablet"));
 const TabletList = lazy(() => import("../tablet/TabletList"));
@@ -13,34 +14,34 @@ const Welcome = lazy(() => import("./Welcome.js"));
 
 const routes = [
     {
-        path: "/welcome",
+        path: WELCOME_URL,
         exact: true,
         header: Header,
         main: Welcome
     },
     {
-        path: "/tablet_cms",
+        path: TABLET_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
         main: Tablet
     },
     {
-        path: "/tablet_cms/home",
+        path: TABLET_CMS_HOME_URL,
         exact: false,
         sidebar: Sidebar,
         header: Header,
         main: Tablet
     },
     {
-        path: "/tablet_cms/list",
+        path: TABLET_CMS_LIST_URL,
         exact: false,
         sidebar: Sidebar,
         header: Header,
         main: TabletList
     },
     {
-        path: "/touchscreen_cms",
+        path: TOUCHSCREEN_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,

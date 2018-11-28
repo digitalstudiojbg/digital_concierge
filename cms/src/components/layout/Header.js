@@ -1,9 +1,25 @@
 import React, { Component } from "react";
-import { COLOR_JBG_PURPLE } from "../../utils/Constants";
+import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
 import styled from 'styled-components';
+import IconButton from "@material-ui/core/IconButton";
+import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import ArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
+import { withStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import { Link } from "react-router-dom";
+
+const styles = theme => ({
+    button: {
+      margin: theme.spacing.unit,
+      color: "rgb(154,166,174)"
+    },
+    avatar: {
+        margin: 10,
+    },
+});
 
 const ContainerDiv = styled.div`
     width: 100vw;
@@ -21,7 +37,7 @@ const ContainerDiv = styled.div`
 `;
 
 const WelcomeDiv = styled.div`
-    width: 15vw;
+    width: 350px;
     margin-left: 1.5vw;
 `;
 
@@ -36,51 +52,75 @@ const URL_WELCOME = "/welcome";
 
 class Header extends Component {
     render() {
-        const { client, match } = this.props;
+        const { client, match, classes } = this.props;
         const { getCurrentUser: user } = client.readQuery({
             query
         });
+        //Calculate percentage of the user div and title div after a fixed size sidebar div of 350px
+        const availableWidth = window.innerWidth - 350;
+        const titleDivWidth = availableWidth * 0.65;
+        const userDivWidth = availableWidth - titleDivWidth;
+
+        const { has_tablet = false, has_touchscreen = false, name = "" } = user.venue || {};
 
         return (
             <ContainerDiv>
-                {match.url === URL_WELCOME && <WelcomeDiv>Welcome</WelcomeDiv>}
+                {match.url === URL_WELCOME 
+                ? (
+                    <WelcomeDiv>Welcome</WelcomeDiv> 
+                ) : (
+                    <div style={{ width: 350 }}>
+                        {has_tablet && has_touchscreen && (
+                            <Link to={
+                                match.url.includes(TABLET_CMS_INDEX_URL) ? TOUCHSCREEN_CMS_INDEX_URL : TABLET_CMS_INDEX_URL
+                            } style={{color: "white", textDecoration: "none"}}>
+                                <IconButton className={classes.button}>
+                                    <ArrowLeftIcon />
+                                </IconButton>
+                                SWITCH SITE
+                            </Link>
+                        )}
+                    </div>
+                )}
                 <div
                     style={{
-                        width: "65vw"
+                        width: `${titleDivWidth}px`
                     }}
-                />
+                >
+                    {match.url !== URL_WELCOME && (
+                        <React.Fragment>
+                            <div>{name.toUpperCase()}</div>
+                            <div>
+                                {match.url.includes(TABLET_CMS_INDEX_URL) ? "DIGITAL COMPENDIUM" : "TOUCHSCREEN"}
+                            </div>
+                        </React.Fragment>
+                    )}
+                </div>
                 <div
                     style={{
-                        width: "20vw",
+                        width: `${userDivWidth}px`,
                         marginRight: "1.5vw"
                     }}
                 >
-                    {match.url === URL_WELCOME && (
-                        <WelcomeUserDetailContainerDiv>
-                            <div
-                                style={{
-                                    paddingLeft: "1vw",
-                                    paddingRight: "1vw",
-                                    borderLeft: "2px solid white"
-                                }}
-                            >
-                                <p style={{}}>{user.name}</p>
-                            </div>
-                            <div>
-                                <img
-                                    style={{
-                                        height: "50px"
-                                    }}
-                                    src={user.venue.logo}
-                                    alt={`{user.name}_avatar`}
-                                />
-                            </div>
-                        </WelcomeUserDetailContainerDiv>
-                    )}
+                    <WelcomeUserDetailContainerDiv>
+                        <div
+                            style={{
+                                paddingLeft: "1vw",
+                                // paddingRight: "1vw",
+                                borderLeft: "2px solid white"
+                            }}
+                        >
+                            <p style={{}}>{user.name}</p>
+                        </div>
+                        <IconButton className={classes.button}>
+                            <ArrowDownIcon />
+                        </IconButton>
+                        <Avatar alt="user-avatar" src={user.venue.logo} className={classes.avatar} />
+                    </WelcomeUserDetailContainerDiv>
                 </div>
             </ContainerDiv>
         );
     }
 }
 
-export default withApollo(withRouter(Header));
+export default withApollo(withRouter(withStyles(styles)(Header)));
