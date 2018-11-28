@@ -57,7 +57,7 @@ const SidebarItem = styled.div`
 
 class Sidebar extends Component {
     state = {
-        selectedItem: "123"
+        selectedItem: ""
     };
 
     render() {
