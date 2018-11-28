@@ -20,7 +20,7 @@ export async function login(email, password) {
 }
 
 export function isLoggedIn() {
-    return !!localStorage.getItem(accessTokenKey);
+    return Boolean(localStorage.getItem(accessTokenKey));
 }
 
 export function logout() {
