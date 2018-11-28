@@ -1,26 +1,40 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import {
+    WELCOME_URL,
+    TABLET_CMS_INDEX_URL,
+    TABLET_CMS_HOME_URL,
+    TABLET_CMS_LANDINGPAGE_URL,
+    TOUCHSCREEN_CMS_INDEX_URL,
+    TABLET_CMS_CONTENT_URL,
+    TABLET_CMS_SETTINGS_URL
+} from "../../utils/Constants";
 
 const SIDEBAR_ITEMS = [
     {
         name: "VIEW_SITE",
-        displayName: "View Site"
+        displayName: "View Site",
+        link: TABLET_CMS_INDEX_URL
     },
     {
         name: "DASHBOARD",
-        displayName: "Dashboard"
+        displayName: "Dashboard",
+        link: TABLET_CMS_INDEX_URL
     },
     {
         name: "LANDING_PAGE",
-        displayName: "Landing Page"
+        displayName: "Landing Page",
+        link: TABLET_CMS_LANDINGPAGE_URL
     },
     {
         name: "CONTENT",
-        displayName: "Content"
+        displayName: "Content",
+        link: TABLET_CMS_CONTENT_URL
     },
     {
         name: "SETTINGS",
-        displayName: "Settings"
+        displayName: "Settings",
+        link: TABLET_CMS_SETTINGS_URL
     }
 ];
 
@@ -60,11 +74,11 @@ class Sidebar extends Component {
                     width: "350px",
                     backgroundColor: "rgb(70,73,124)",
                     color: "white",
-                    height: "100vh"
+                    height: "calc(100vh-80px)"
                 }}
             >
                 {SIDEBAR_ITEMS.map((items, index) => {
-                    const { name, displayName } = items;
+                    const { name, displayName, link } = items;
                     return (
                         name &&
                         displayName && (
@@ -72,6 +86,7 @@ class Sidebar extends Component {
                                 key={index}
                                 onClick={() => {
                                     this.setState({ selectedItem: name });
+                                    link && this.props.history.push(link);
                                 }}
                                 selectedItem={selectedItem}
                                 expectedItem={name}

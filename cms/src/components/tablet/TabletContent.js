@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class TabletList extends Component {
+class TabletContent extends Component {
     render() {
         return (
             <div
@@ -9,10 +9,10 @@ class TabletList extends Component {
                     backgroundColor: "green"
                 }}
             >
-                <h1>TabletList</h1>
+                <h1>TabletContent</h1>
             </div>
         );
     }
 }
 
-export default TabletList;
+export default TabletContent;

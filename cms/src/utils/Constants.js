@@ -8,8 +8,10 @@ export const API_URL =
 export const LOGIN_URL = "/login";
 export const WELCOME_URL = "/welcome";
 
-export const TABLET_CMS_INDEX_URL= "/tablet_cms";
+export const TABLET_CMS_INDEX_URL = "/tablet_cms";
 export const TABLET_CMS_HOME_URL = "/tablet_cms/home";
-export const TABLET_CMS_LIST_URL = "/tablet_cms/list";
+export const TABLET_CMS_LANDINGPAGE_URL = "/tablet_cms/landingpage";
+export const TABLET_CMS_CONTENT_URL = "/tablet_cms/content";
+export const TABLET_CMS_SETTINGS_URL = "/tablet_cms/settings";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";

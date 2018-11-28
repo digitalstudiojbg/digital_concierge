@@ -5,11 +5,23 @@ import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
-import { WELCOME_URL, TABLET_CMS_INDEX_URL, TABLET_CMS_HOME_URL, TABLET_CMS_LIST_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
+import {
+    WELCOME_URL,
+    TABLET_CMS_INDEX_URL,
+    TABLET_CMS_HOME_URL,
+    TABLET_CMS_LANDINGPAGE_URL,
+    TOUCHSCREEN_CMS_INDEX_URL,
+    TABLET_CMS_CONTENT_URL,
+    TABLET_CMS_SETTINGS_URL
+} from "../../utils/Constants";
 
-const Tablet = lazy(() => import("../tablet/Tablet"));
-const TabletList = lazy(() => import("../tablet/TabletList"));
+const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
+const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
+const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
+const TabletContent = lazy(() => import("../tablet/TabletContent"));
+
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
+
 const Welcome = lazy(() => import("./Welcome.js"));
 
 const routes = [
@@ -24,21 +36,35 @@ const routes = [
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: Tablet
+        main: TabletDashboard
     },
     {
         path: TABLET_CMS_HOME_URL,
         exact: false,
         sidebar: Sidebar,
         header: Header,
-        main: Tablet
+        main: TabletDashboard
     },
     {
-        path: TABLET_CMS_LIST_URL,
+        path: TABLET_CMS_SETTINGS_URL,
         exact: false,
         sidebar: Sidebar,
         header: Header,
-        main: TabletList
+        main: TabletSetting
+    },
+    {
+        path: TABLET_CMS_CONTENT_URL,
+        exact: false,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletContent
+    },
+    {
+        path: TABLET_CMS_LANDINGPAGE_URL,
+        exact: false,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletLandingPage
     },
     {
         path: TOUCHSCREEN_CMS_INDEX_URL,
