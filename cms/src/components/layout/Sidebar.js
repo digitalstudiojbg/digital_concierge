@@ -13,6 +13,11 @@ const SidebarItem = styled.div`
     padding-left: 30px;
     transition: all 0.3s linear;
 
+    background-color: ${({ selectedItem, expectedItem }) =>
+        selectedItem === expectedItem && "white"};
+    color: ${({ selectedItem, expectedItem }) =>
+        selectedItem === expectedItem && "black"};
+
     &:hover {
         background-color: white;
         color: black;
@@ -23,7 +28,7 @@ class Sidebar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedItem: ""
+            selectedItem: "123"
         };
     }
 
@@ -52,10 +57,8 @@ class Sidebar extends Component {
                     onClick={() => {
                         this.handleSidebarClick(VIEW_SITE);
                     }}
-                    style={{
-                        backgroundColor: selectedItem === VIEW_SITE && "white",
-                        color: selectedItem === VIEW_SITE && "black"
-                    }}
+                    selectedItem={selectedItem}
+                    expectedItem={VIEW_SITE}
                 >
                     <h1>ViewSite</h1>
                 </SidebarItem>
@@ -63,10 +66,8 @@ class Sidebar extends Component {
                     onClick={() => {
                         this.handleSidebarClick(DASHBOARD);
                     }}
-                    style={{
-                        backgroundColor: selectedItem === DASHBOARD && "white",
-                        color: selectedItem === DASHBOARD && "black"
-                    }}
+                    selectedItem={selectedItem}
+                    expectedItem={DASHBOARD}
                 >
                     <h1>Dashboard</h1>
                 </SidebarItem>
@@ -74,11 +75,8 @@ class Sidebar extends Component {
                     onClick={() => {
                         this.handleSidebarClick(LANDING_PAGE);
                     }}
-                    style={{
-                        backgroundColor:
-                            selectedItem === LANDING_PAGE && "white",
-                        color: selectedItem === LANDING_PAGE && "black"
-                    }}
+                    selectedItem={selectedItem}
+                    expectedItem={LANDING_PAGE}
                 >
                     <h1>Landing Page</h1>
                 </SidebarItem>
@@ -86,10 +84,8 @@ class Sidebar extends Component {
                     onClick={() => {
                         this.handleSidebarClick(CONTENT);
                     }}
-                    style={{
-                        backgroundColor: selectedItem === CONTENT && "white",
-                        color: selectedItem === CONTENT && "black"
-                    }}
+                    selectedItem={selectedItem}
+                    expectedItem={CONTENT}
                 >
                     <h1>Content</h1>
                 </SidebarItem>
@@ -97,10 +93,8 @@ class Sidebar extends Component {
                     onClick={() => {
                         this.handleSidebarClick(SETTINGS);
                     }}
-                    style={{
-                        backgroundColor: selectedItem === SETTINGS && "white",
-                        color: selectedItem === SETTINGS && "black"
-                    }}
+                    selectedItem={selectedItem}
+                    expectedItem={SETTINGS}
                 >
                     <h1>Settings</h1>
                 </SidebarItem>
