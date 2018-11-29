@@ -3,6 +3,7 @@ import userSchema from "./user";
 import roleSchema from "./role";
 import permissionSchema from "./permission";
 import venueSchema from "./venue";
+import tb_categorySchema from "./tb_category";
 
 const linkSchema = gql`
     type Query {
@@ -21,5 +22,6 @@ export default [
     userSchema,
     roleSchema,
     permissionSchema,
-    venueSchema
+    venueSchema,
+    tb_categorySchema
 ];
