@@ -10,6 +10,17 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
+            image: {
+                type: DataTypes.STRING
+            },
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
+            },
             has_directory: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,

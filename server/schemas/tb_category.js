@@ -9,6 +9,8 @@ export default gql`
     type TB_Category {
         id: ID!
         name: String
+        image: String
+        active: Boolean
         has_directory: Boolean
         is_parent: Boolean
         child_category: [TB_Category]

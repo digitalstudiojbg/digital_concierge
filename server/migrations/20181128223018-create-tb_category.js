@@ -15,6 +15,9 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            image: {
+                type: Sequelize.STRING
+            },
             has_directory: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
@@ -30,6 +33,14 @@ module.exports = {
                     notEmpty: true
                 },
                 defaultValue: false
+            },
+            active: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
             },
             tbCategoryId: {
                 type: Sequelize.INTEGER,
