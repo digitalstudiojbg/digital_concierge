@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         tb_category(id: ID!): TB_Category
         tb_categories: [TB_Category]
+        td_categories_by_venue(id: ID!): [TB_Category]
     }
 
     type TB_Category {
@@ -14,5 +15,6 @@ export default gql`
         has_directory: Boolean
         is_parent: Boolean
         child_category: [TB_Category]
+        venue: Venue
     }
 `;

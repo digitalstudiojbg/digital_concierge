@@ -19,5 +19,6 @@ export default gql`
         updatedAt: DateTime
         users: [User]
         roles: [Role]
+        td_categories: [TB_Category]
     }
 `;
