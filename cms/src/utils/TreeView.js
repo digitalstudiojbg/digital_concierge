@@ -5,9 +5,18 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from "@material-ui/icons/Remove";
-import PropTypes from 'prop-types';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from "@material-ui/icons/Close";
+import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import { ContainerDiv } from './Constants';
 import styled from "styled-components";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Checkbox from '@material-ui/core/Checkbox';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
     buttonCreate: {
@@ -30,6 +39,19 @@ const styles = theme => ({
    },
    icon: {
        fontSize: "small"
+   },
+   tableHeaderRow: {
+       borderTop: "1px solid rgba(224, 224, 224, 1)",
+       backgroundColor: "rgb(234,235,238)",
+   },
+   headerCol: {
+       color: "rgb(131,134,166)",
+   },
+   tableEntryRow: {
+        backgroundColor: "rgb(246,246,246)"
+   },
+   tableEntryCol: {
+       color: "rgb(38,42,95)",
    }
 });
 
@@ -176,14 +198,14 @@ const sample = {
  const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
     display: flex;
-    align-items: center; 
-    border-bottom: 2px solid rgb(213,213,213);
+    align-items: center;
  `;
 
 class TreeView extends React.Component {
     state = {
         data: null,
-        expanded: []
+        expanded: [],
+        selected: [],
     };
 
     updateData() {
@@ -250,42 +272,98 @@ class TreeView extends React.Component {
         }
     }
 
+    renderCheck(is_active) {
+        return is_active 
+            ? <CheckIcon />
+            : <CloseIcon />;
+    }
+
     renderCategory(category, index, depth = 0) {
         const calculatedPaddingSize = depth * paddingSize;
+        const { classes } = this.props;
         if (category.child_category && category.child_category.length > 0) {
             const { expanded } = this.state;
             const is_expanded = expanded.indexOf(category.id) !== -1;
             return (
-                <React.Fragment key={`${category.id}-${index}`}>
-                    <TreeEntry key={`${category.id}-${index}`} paddingSize={calculatedPaddingSize}>
-                        <div style={{marginRight: 15}}>
-                            {this.renderAddOrRemoveIcon(category.id)}
-                        </div>
-                        {category.name}
-                    </TreeEntry>
+                <React.Fragment>
+                    <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
+                        <TableCell padding="checkbox">
+                            <Checkbox />
+                        </TableCell>
+                        <TableCell className={classes.tableEntryCol}>
+                            <TreeEntry key={`${category.id}-${index}`} paddingSize={calculatedPaddingSize}>
+                                <div style={{marginRight: 15}}>
+                                    {this.renderAddOrRemoveIcon(category.id)}
+                                </div>
+                                {category.name}
+                            </TreeEntry>
+                        </TableCell>
+                        <TableCell>
+                            {this.renderCheck(category.active)}
+                        </TableCell>
+                        <TableCell>
+                            <MoreHorizontalIcon />
+                        </TableCell>
+                    </TableRow>
                     {is_expanded && category.child_category.map((child_category_item, index_category) => {
                         return this.renderCategory(child_category_item, index_category, depth + 1);
                     })}
                 </React.Fragment>
+                
             );
         } else {
             return (
-                <TreeEntry paddingSize={calculatedPaddingSize}>
-                    <div style={{marginLeft: 15, width: `${approximateButtonSize}px`}} />
-                    <div key={`${category.id}-${index}`} style={{}}>
-                        {category.name}
-                    </div>
-                </TreeEntry>
+                <TableRow className={classes.tableEntryRow}>
+                    <TableCell padding="checkbox">
+                        <Checkbox />
+                    </TableCell>
+                    <TableCell className={classes.tableEntryCol}>
+                        <TreeEntry paddingSize={calculatedPaddingSize}>
+                            <div style={{marginLeft: 15, width: `${approximateButtonSize}px`}} />
+                            <div key={`${category.id}-${index}`} style={{}}>
+                                {category.name}
+                            </div>
+                        </TreeEntry>
+                    </TableCell>
+                    <TableCell>
+                        {this.renderCheck(category.active)}
+                    </TableCell>
+                    <TableCell>
+                        <MoreHorizontalIcon />
+                    </TableCell>
+                </TableRow>
             );
         }
     }
 
     renderCategories() {
-        const { data } = this.state;
+        const { data, selected } = this.state;
+        const { classes } = this.props;
+
         if (data && data.length > 0) {
-            return data.map((category, index) => {
-                return this.renderCategory(category, index);
-            });
+            return (
+                <Table>
+                    <TableHead className={classes.tableHeaderRow}>
+                        <TableRow>
+                            <TableCell padding="checkbox">
+                                <Checkbox
+                                    indeterminate={selected.length > 0 && selected.length < 30}
+                                    checked={selected.length === 30}
+                                />
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>TITLE</TableCell>
+                            <TableCell className={classes.headerCol}>VISIBLE</TableCell>
+                            <TableCell className={classes.headerCol}>ACTIONS</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data.map((category, index) => {
+                            return this.renderCategory(category, index);
+                        })}
+                    </TableBody>
+                </Table>
+        
+            );
         } else {
             return <div />
         }
