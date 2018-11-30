@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         "tb_directory_type",
         {
             name: {
-                type: sequelize.STRING,
+                type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
