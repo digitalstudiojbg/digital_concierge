@@ -1,13 +1,14 @@
 import { gql } from "apollo-server-express";
-import userSchema from "./user";
-import roleSchema from "./role";
-import permissionSchema from "./permission";
-import venueSchema from "./venue";
-import tb_categorySchema from "./tb_category";
-import validationSchema from "./validation";
-import tb_directory_typeSchema from "./tb_directory_type";
+import user_schema from "./user";
+import role_schema from "./role";
+import permission_schema from "./permission";
+import venue_schema from "./venue";
+import tb_category_schema from "./tb_category";
+import validation_schema from "./validation";
+import tb_directory_type_schema from "./tb_directory_type";
+import tb_directory_schema from "./tb_directory";
 
-const linkSchema = gql`
+const link_schema = gql`
     type Query {
         _: Boolean
     }
@@ -20,12 +21,13 @@ const linkSchema = gql`
 `;
 
 export default [
-    linkSchema,
-    userSchema,
-    roleSchema,
-    permissionSchema,
-    venueSchema,
-    tb_categorySchema,
-    validationSchema,
-    tb_directory_typeSchema
+    link_schema,
+    user_schema,
+    role_schema,
+    permission_schema,
+    venue_schema,
+    tb_category_schema,
+    validation_schema,
+    tb_directory_type_schema,
+    tb_directory_schema
 ];

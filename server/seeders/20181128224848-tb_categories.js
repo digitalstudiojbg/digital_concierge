@@ -37,7 +37,7 @@ module.exports = {
                     venueId: 1
                 },
                 {
-                    name: "SERVICES",
+                    name: "SERVICES & FACILITIES",
                     has_directory: false,
                     tbCategoryId: 1,
                     is_parent: false,

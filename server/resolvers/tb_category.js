@@ -31,6 +31,16 @@ export default {
         },
         venue: async tb_category => {
             return await db.venue.findById(tb_category.venueId);
+        },
+        tb_directories: async tb_category => {
+            return await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id }
+                    }
+                ]
+            });
         }
     }
 };
