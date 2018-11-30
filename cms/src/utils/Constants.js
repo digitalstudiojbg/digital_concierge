@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
     process.env.NODE_ENV === "production"
@@ -15,3 +17,10 @@ export const TABLET_CMS_CONTENT_URL = "/tablet_cms/content";
 export const TABLET_CMS_SETTINGS_URL = "/tablet_cms/settings";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
+
+export const ContainerDiv = styled.div`
+    width: 100%;
+    background-color: rgb(246,246,246);
+    padding-left: 20px;
+    padding-top: 20px;
+`;
