@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const venue = sequelize.define(
-        "venue",
+    const tb_category = sequelize.define(
+        "tb_category",
         {
             name: {
                 type: DataTypes.STRING,
@@ -10,13 +10,8 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            has_parent_category: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: false
+            image: {
+                type: DataTypes.STRING
             },
             active: {
                 type: DataTypes.BOOLEAN,
@@ -26,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: true
             },
-            has_tablet: {
+            has_directory: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
                 validate: {
@@ -34,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: false
             },
-            has_touchscreen: {
+            is_parent: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
                 validate: {
@@ -42,24 +37,21 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: false
             },
-            number_of_users: {
+            tbCategoryId: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: 5
-            },
-            logo: {
-                type: DataTypes.STRING
+                allowNull: true
             }
         },
         {}
     );
-    venue.associate = function(models) {
-        venue.hasMany(models.user);
-        venue.belongsToMany(models.role, { through: "roles_venues" });
-        venue.hasMany(models.tb_category);
+    tb_category.associate = function(models) {
+        models.tb_category.belongsTo(models.tb_category, {
+            foreignKey: { allowNull: true }
+        });
+        models.tb_category.belongsTo(models.venue);
+        models.tb_category.belongsToMany(models.tb_directory, {
+            through: "tb_directories_tb_categories"
+        });
     };
-    return venue;
+    return tb_category;
 };

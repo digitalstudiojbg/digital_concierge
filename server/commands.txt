@@ -22,7 +22,22 @@ node_modules/.bin/sequelize seed:generate --name roles_venues
 
 node_modules/.bin/sequelize seed:generate --name users
 
+node_modules/.bin/sequelize model:generate --name validation --attributes name:string
 
+node_modules/.bin/sequelize seed:generate --name validation
 
+node_modules/.bin/sequelize model:generate --name tb_directory_type --attributes name:string
 
+node_modules/.bin/sequelize seed:generate --name tb_directory_type
 
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-validation-and-tb_directory_type
+
+node_modules/.bin/sequelize seed:generate --name tb_directory_types_validations
+
+node_modules/.bin/sequelize model:generate --name tb_directory --attributes name:string,body:string,active:boolean,image:string,phone:string,address:string,opening_hours:string
+
+node_modules/.bin/sequelize seed:generate --name tb_directory
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-tb_directory
+
+node_modules/.bin/sequelize seed:generate --name tb_directories_tb_categories

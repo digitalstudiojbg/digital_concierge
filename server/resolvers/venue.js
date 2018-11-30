@@ -7,9 +7,9 @@ export default {
         },
         venues: async (root, input, { user }) => {
             //if user is not logged in
-            if (!user) {
+            /*if (!user) {
                 throw new AuthenticationError("Unauthorized");
-            }
+            }*/
 
             return await db.venue.findAll();
         }
@@ -30,6 +30,14 @@ export default {
                         where: { id: venue.id }
                     }
                 ]
+            });
+        },
+        td_categories: async venue => {
+            return await db.tb_category.findAll({
+                where: {
+                    venueId: venue.id,
+                    is_parent: true
+                }
             });
         }
     }
