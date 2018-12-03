@@ -8,7 +8,6 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from "@material-ui/icons/Close";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
-import { ContainerDiv } from './Constants';
 import styled from "styled-components";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -331,7 +330,10 @@ class TreeView extends React.Component {
     renderCategory(category, index, depth = 0) {
         const calculatedPaddingSize = depth * paddingSize;
         const { classes } = this.props;
-        if (category.child_category && category.child_category.length > 0 || category.tb_directories && category.tb_directories.length > 0) {
+        if (
+            (category.child_category && category.child_category.length > 0) || 
+            (category.tb_directories && category.tb_directories.length > 0)
+        ) {
             const { selected_category, expanded } = this.state;
             const is_expanded = expanded.indexOf(category.id) !== -1;
             const toLoop = category.child_category && category.child_category.length > 0 ? category.child_category : category.tb_directories;
@@ -463,7 +465,7 @@ class TreeView extends React.Component {
         const { classes } = this.props;
         return (
             <React.Fragment>
-                <div style={{marginTop: 30, display: "flex", width: "50%"}}>
+                <div style={{marginTop: 30, marginBottom: 20, display: "flex", width: "50%"}}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -479,13 +481,13 @@ class TreeView extends React.Component {
                         <DeleteIcon />
                     </Button>
                 </div>
-                <ContainerDiv>
-                    {Boolean(sample) && Array.isArray(sample) && sample.length > 0 && (
-                        <React.Fragment>
-                            {this.renderCategories()}
-                        </React.Fragment>
-                    )}
-                </ContainerDiv>
+                
+                {Boolean(sample) && Array.isArray(sample) && sample.length > 0 && (
+                    <React.Fragment>
+                        {this.renderCategories()}
+                    </React.Fragment>
+                )}
+                
             </React.Fragment>
         );
     }

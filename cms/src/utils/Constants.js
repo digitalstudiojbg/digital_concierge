@@ -20,6 +20,8 @@ export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
 export const ContainerDiv = styled.div`
     width: 100%;
+    height: 100%;
+    overflow-y: auto;
     background-color: rgb(246,246,246);
     padding-left: 20px;
     padding-top: 20px;
