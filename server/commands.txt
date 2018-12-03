@@ -1,3 +1,7 @@
+node_modules/.bin/sequelize db:migrate
+
+node_modules/.bin/sequelize db:seed:all
+
 node_modules/.bin/sequelize model:generate --name venue --attributes name:string,has_parent_category:boolean,active:boolean,has_tablet:boolean,has_touchscren:boolean,number_of_users:integer
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-role-and-permission
@@ -41,3 +45,7 @@ node_modules/.bin/sequelize seed:generate --name tb_directory
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-tb_directory
 
 node_modules/.bin/sequelize seed:generate --name tb_directories_tb_categories
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-venue
+
+node_modules/.bin/sequelize seed:generate --name tb_directories_venues

@@ -15,7 +15,7 @@ export default gql`
         has_directory: Boolean
         is_parent: Boolean
         child_category: [TB_Category]
-        venue: Venue
+        venues: [Venue]
         tb_directories: [TB_Directory]
     }
 `;

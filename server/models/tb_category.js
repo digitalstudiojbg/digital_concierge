@@ -48,7 +48,11 @@ module.exports = (sequelize, DataTypes) => {
         models.tb_category.belongsTo(models.tb_category, {
             foreignKey: { allowNull: true }
         });
-        models.tb_category.belongsTo(models.venue);
+        //models.tb_category.belongsTo(models.venue);
+        models.tb_category.belongsToMany(models.venue, {
+            through: "tb_directories_venues"
+        });
+
         models.tb_category.belongsToMany(models.tb_directory, {
             through: "tb_directories_tb_categories"
         });

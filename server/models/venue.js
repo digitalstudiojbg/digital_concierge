@@ -59,7 +59,11 @@ module.exports = (sequelize, DataTypes) => {
     venue.associate = function(models) {
         venue.hasMany(models.user);
         venue.belongsToMany(models.role, { through: "roles_venues" });
-        venue.hasMany(models.tb_category);
+        venue.belongsToMany(models.tb_category, {
+            through: "tb_directories_venues"
+        });
+
+        //venue.hasMany(models.tb_category);
     };
     return venue;
 };
