@@ -13,7 +13,7 @@ export default gql`
         image: String
         active: Boolean
         has_directory: Boolean
-
+        tb_directory_type: TB_Directory_Type
         child_category: [TB_Category]
         venues: [Venue]
         tb_directories: [TB_Directory]

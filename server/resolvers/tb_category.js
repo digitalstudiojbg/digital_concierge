@@ -63,13 +63,11 @@ export default {
                     }
                 ]
             });
+        },
+        tb_directory_type: async tb_category => {
+            return await db.tb_directory_type.findById(
+                tb_category.tbDirectoryTypeId
+            );
         }
-        /*tb_directory_type: async tb_directory_type => {
-            return await db.tb_directory_type.findById({
-                where: {
-                    tbDirectoryTypeId: tb_directory_type.id
-                }
-            });
-        }*/
     }
 };
