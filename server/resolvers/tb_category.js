@@ -8,7 +8,7 @@ export default {
         tb_categories: async (root, input, { user }) => {
             return await db.tb_category.findAll();
         },
-        td_categories_by_venue: async (root, { id }, { user }) => {
+        tb_categories_by_venue: async (root, { id }, { user }) => {
             /*return await db.tb_category.findAll(
                 {
                     where: {
