@@ -54,6 +54,7 @@ const styles = theme => ({
    }
 });
 
+//A few constants settings
 const paddingSize = 30;
 const approximateButtonSize = 40;
 const TreeEntry = styled.div`
@@ -69,6 +70,8 @@ class TreeView extends React.Component {
         selected_directory: [],
     };
 
+    //Get a category and all of its child category or directory entries, as it is usually one or the other
+    //I.E. one category can only have a child categories or directory entries
     getItemAndAllChildItems(category) {
         if (category.child_category && category.child_category.length > 0) {
             let output = [{ id: category.id, is_category: true }];
@@ -87,16 +90,22 @@ class TreeView extends React.Component {
         }
     }
 
+    //Recursive function utilised to recur and calculate the number of child elements in a category
     _totalCategoryLength(category) {
         if (category.child_category && category.child_category.length > 0) {
+            //Category has a child category, recur in its child category
             return 1 + this.totalLength(category.child_category);
         } else if (category.tb_directories && category.tb_directories.length > 0) {
+            //Category has no child category, but have directory entries, recur in the directory entries instead
             return 1 + this.totalLength(category.tb_directories);
         } else {
+            //End of the line, no need to recur any more
             return 1;
         }
     }
 
+    //Calculates the number of elements a category have along with its child categories or directory entries
+    //Utilising recursion in the form of function _totalCategoryLength
     totalLength(categories) {
         let output = 0;
         categories.forEach(category => {
@@ -105,6 +114,7 @@ class TreeView extends React.Component {
         return output;
     }
 
+    //Method gets called when we expand a category
     addToExpanded(category_id) {
         if (this.state.expanded.indexOf(category_id) === -1) {
             this.setState({
@@ -116,6 +126,7 @@ class TreeView extends React.Component {
         }
     }
 
+    ////Method gets called when we minimise a category
     removeFromExpanded(category_id) {
         const index = this.state.expanded.indexOf(category_id);
         if (index !== -1) {
@@ -128,6 +139,7 @@ class TreeView extends React.Component {
         }
     }
 
+    //Adding category and / or directory ids into their relevant state arrays (selected_category or selected_directory)
     addToSelected(category, has_child) {
         const { selected_category, selected_directory } = this.state;
         if (has_child) {
@@ -154,6 +166,7 @@ class TreeView extends React.Component {
         }
     }
 
+    //Removing category and / or directory ids from their relevant state arrays (selected_category or selected_directory)
     removeFromSelected(category, has_child) {
         const { selected_category, selected_directory } = this.state;
         if (has_child) {
@@ -180,6 +193,7 @@ class TreeView extends React.Component {
         }
     }
 
+    //Render expand or minimise icon on a category entry based on whether it is expanded or minimised
     renderAddOrRemoveIcon(category_id) {
         const { expanded } = this.state;
         const { classes } = this.props;
@@ -219,10 +233,15 @@ class TreeView extends React.Component {
             (category.child_category && category.child_category.length > 0) || 
             (category.tb_directories && category.tb_directories.length > 0)
         ) {
-            const { selected_category, expanded } = this.state;
-            const is_expanded = expanded.indexOf(category.id) !== -1;
+            //Rendering a table row for a category that has a child category or a directory inside of it
+            const { selected_category, expanded } = this.state; 
+            const is_expanded = expanded.indexOf(category.id) !== -1; //Check if the category entry is expanded or not
+
+            //Determining which array to recur into based on whether it is a category that has another category or just a category with 
+            //some directories in it
             const toLoop = category.child_category && category.child_category.length > 0 ? category.child_category : category.tb_directories;
             return (
+                /*Rendering the row*/
                 <React.Fragment key={`${category.id}-${index}`} >
                     <TableRow className={classes.tableEntryRow}>
                         <TableCell padding="checkbox">
@@ -253,16 +272,20 @@ class TreeView extends React.Component {
                         </TableCell>
                     </TableRow>
                     {is_expanded && toLoop.map((child_category_item, index_category) => {
+                        //We do recursion here
                         return this.renderCategory(child_category_item, index_category, depth + 1);
                     })}
                 </React.Fragment>
                 
             );
         } else {
+            //Just an empty category with no child category nor a directory. Another possibility is that the entry is a plain old directory
             const { selected_category, selected_directory } = this.state;
+            
             //Differentiating between a category with empty directory or just a normal directory
             const checkedArray = (category.tb_directories && category.tb_directories.length === 0) ? selected_category : selected_directory;
 
+            //No more child, no need to recur any more
             return (
                 <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
                     <TableCell padding="checkbox">
@@ -294,6 +317,9 @@ class TreeView extends React.Component {
         }
     }
 
+    //renders all of the categories in a table using Material UI framework for the Table Component
+    //This method utilises recursion to render each of the categories,  child categories, and directory 
+    //inside of a table row
     renderCategories() {
         const { selected_category, selected_directory } = this.state;
         const { classes, data } = this.props;
