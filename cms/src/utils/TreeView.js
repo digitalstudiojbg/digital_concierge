@@ -16,7 +16,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const styles = theme => ({
     buttonCreate: {
@@ -58,142 +58,138 @@ const styles = theme => ({
 const paddingSize = 30;
 const approximateButtonSize = 40;
 
-const sample = {
-    "data":{
-       "tb_categories":[
-          {
-             "id":"1",
-             "name":"IN-ROOM SERVICES",
-             "has_directory":false,
-             "is_parent":true,
-             "active":true,
-             "image":null,
-             "child_category":[
+let sample = [
+    {
+        "id":"1",
+        "name":"IN-ROOM SERVICES",
+        "has_directory":false,
+        "is_parent":true,
+        "active":true,
+        "image":null,
+        "child_category":[
+        {
+            "id":"5",
+            "name":"IN-ROOM DINING",
+            "has_directory":false,
+            "is_parent":false,
+            "active":true,
+            "image":null,
+            "child_category":[
                 {
-                   "id":"5",
-                   "name":"IN-ROOM DINING",
-                   "has_directory":false,
-                   "is_parent":false,
-                   "active":true,
-                   "image":null,
-                   "child_category":[
-                      {
-                         "id":"10",
-                         "name":"BREAKFAST",
-                         "has_directory":true,
-                         "is_parent":false,
-                         "active":true,
-                         "image":null,
-                         "child_category":[
- 
-                         ]
-                      },
-                      {
-                         "id":"11",
-                         "name":"LUNCH",
-                         "has_directory":true,
-                         "is_parent":false,
-                         "active":true,
-                         "image":null,
-                         "child_category":[
- 
-                         ]
-                      },
-                      {
-                         "id":"12",
-                         "name":"DINNER",
-                         "has_directory":true,
-                         "is_parent":false,
-                         "active":true,
-                         "image":null,
-                         "child_category":[
- 
-                         ]
-                      }
-                   ]
+                    "id":"10",
+                    "name":"BREAKFAST",
+                    "has_directory":true,
+                    "is_parent":false,
+                    "active":true,
+                    "image":null,
+                    "child_category":[
+
+                    ]
                 },
                 {
-                   "id":"6",
-                   "name":"SERVICES",
-                   "has_directory":false,
-                   "is_parent":false,
-                   "active":true,
-                   "image":null,
-                   "child_category":[
- 
-                   ]
+                    "id":"11",
+                    "name":"LUNCH",
+                    "has_directory":true,
+                    "is_parent":false,
+                    "active":true,
+                    "image":null,
+                    "child_category":[
+
+                    ]
                 },
                 {
-                   "id":"7",
-                   "name":"PHONE DIRECTORY",
-                   "has_directory":false,
-                   "is_parent":false,
-                   "active":true,
-                   "image":null,
-                   "child_category":[
- 
-                   ]
-                },
-                {
-                   "id":"8",
-                   "name":"TV GUIDE",
-                   "has_directory":false,
-                   "is_parent":false,
-                   "active":true,
-                   "image":null,
-                   "child_category":[
- 
-                   ]
-                },
-                {
-                   "id":"9",
-                   "name":"HEALTH & SAFETY",
-                   "has_directory":false,
-                   "is_parent":false,
-                   "active":true,
-                   "image":null,
-                   "child_category":[
- 
-                   ]
+                    "id":"12",
+                    "name":"DINNER",
+                    "has_directory":true,
+                    "is_parent":false,
+                    "active":true,
+                    "image":null,
+                    "child_category":[
+
+                    ]
                 }
-             ]
-          },
-          {
-             "id":"2",
-             "name":"HOTEL SERVICES",
-             "has_directory":false,
-             "is_parent":true,
-             "active":true,
-             "image":null,
-             "child_category":[
- 
-             ]
-          },
-          {
-             "id":"3",
-             "name":"DESTINATION VANUATU",
-             "has_directory":false,
-             "is_parent":true,
-             "active":true,
-             "image":null,
-             "child_category":[
- 
-             ]
-          },
-          {
-             "id":"4",
-             "name":"HOLIDAY INN RESORT PHOTO GALLERY",
-             "has_directory":false,
-             "is_parent":true,
-             "active":true,
-             "image":null,
-             "child_category":[
- 
-             ]
-          }
-       ]
+            ]
+        },
+        {
+            "id":"6",
+            "name":"SERVICES",
+            "has_directory":false,
+            "is_parent":false,
+            "active":true,
+            "image":null,
+            "child_category":[
+
+            ]
+        },
+        {
+            "id":"7",
+            "name":"PHONE DIRECTORY",
+            "has_directory":false,
+            "is_parent":false,
+            "active":true,
+            "image":null,
+            "child_category":[
+
+            ]
+        },
+        {
+            "id":"8",
+            "name":"TV GUIDE",
+            "has_directory":false,
+            "is_parent":false,
+            "active":true,
+            "image":null,
+            "child_category":[
+
+            ]
+        },
+        {
+            "id":"9",
+            "name":"HEALTH & SAFETY",
+            "has_directory":false,
+            "is_parent":false,
+            "active":true,
+            "image":null,
+            "child_category":[
+
+            ]
+        }
+        ]
+    },
+    {
+        "id":"2",
+        "name":"HOTEL SERVICES",
+        "has_directory":false,
+        "is_parent":true,
+        "active":true,
+        "image":null,
+        "child_category":[
+
+        ]
+    },
+    {
+        "id":"3",
+        "name":"DESTINATION VANUATU",
+        "has_directory":false,
+        "is_parent":true,
+        "active":true,
+        "image":null,
+        "child_category":[
+
+        ]
+    },
+    {
+        "id":"4",
+        "name":"HOLIDAY INN RESORT PHOTO GALLERY",
+        "has_directory":false,
+        "is_parent":true,
+        "active":true,
+        "image":null,
+        "child_category":[
+
+        ]
     }
- }
+];
 
  const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
@@ -203,24 +199,44 @@ const sample = {
 
 class TreeView extends React.Component {
     state = {
-        data: null,
         expanded: [],
-        selected: [],
+        selected_category: [],
+        selected_directory: [],
     };
 
-    updateData() {
-        // const { data } = this.props;
-        this.setState({ data: sample.data.tb_categories });
-    }
-
-    componentDidMount() {
-        this.updateData();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.data !== this.props.data) {
-            this.updateData();
+    getItemAndAllChildItems(category) {
+        if (category.child_category && category.child_category.length > 0) {
+            let output = [{ id: category.id, is_category: true }];
+            category.child_category.forEach(item => {
+                output = [...output, ...this.getItemAndAllChildItems(item)];
+            });
+            return output;
+        } else if (category.tb_directories && category.tb_directories.length > 0) {
+            let output = [{ id: category.id, is_category: true }];
+            category.tb_directories.forEach(item => {
+                output = [...output, ...this.getItemAndAllChildItems(item)];
+            });
+        } else {
+            return [{ id: category.id, is_category: false }];
         }
+    }
+
+    _totalCategoryLength(category) {
+        if (category.child_category && category.child_category.length > 0) {
+            return 1 + this.totalLength(category.child_category);
+        } else if (category.tb_directories && category.tb_directories.length > 0) {
+            return 1 + this.totalLength(category.tb_directories);
+        } else {
+            return 1;
+        }
+    }
+
+    totalLength(categories) {
+        let output = 0;
+        categories.forEach(category => {
+            output += this._totalCategoryLength(category);;
+        });
+        return output;
     }
 
     addToExpanded(category_id) {
@@ -242,6 +258,40 @@ class TreeView extends React.Component {
                     ...this.state.expanded.slice(0, index),
                     ...this.state.expanded.slice(index + 1)
                 ]
+            });
+        }
+    }
+
+    addToSelected(category, has_child) {
+        const { selected_category, selected_directory } = this.state;
+        if (has_child) {
+            const items = this.getItemAndAllChildItems(category);
+            const categories = items.filter(item => Boolean(item.is_category));
+            const directories = items.filter(item => !item.is_category);
+            this.setState({
+                selected_category: [...selected_category, ...categories.map(category => category.id)],
+                selected_directory: [...selected_directory, ...directories.map(directory => directory.id)],
+            });
+        } else {
+            this.setState({
+                selected_directory: [...selected_directory, category.id],
+            });
+        }
+    }
+
+    removeFromSelected(category, has_child) {
+        const { selected_category, selected_directory } = this.state;
+        if (has_child) {
+            const items = this.getItemAndAllChildItems(category);
+            const categories = items.filter(item => Boolean(item.is_category)).map(category => category.id);
+            const directories = items.filter(item => !item.is_category).map(directory => directory.id);
+            this.setState({
+                selected_category: selected_category.filter(category_id => !categories.includes(category_id)),
+                selected_directory: selected_directory.filter(directory_id => !directories.includes(directory_id)),
+            });
+        } else {
+            this.setState({
+                selected_directory: selected_directory.filter(directory_id => directory_id !== category.id),
             });
         }
     }
@@ -281,17 +331,27 @@ class TreeView extends React.Component {
     renderCategory(category, index, depth = 0) {
         const calculatedPaddingSize = depth * paddingSize;
         const { classes } = this.props;
-        if (category.child_category && category.child_category.length > 0) {
-            const { expanded } = this.state;
+        if (category.child_category && category.child_category.length > 0 || category.tb_directories && category.tb_directories.length > 0) {
+            const { selected_category, expanded } = this.state;
             const is_expanded = expanded.indexOf(category.id) !== -1;
+            const toLoop = category.child_category && category.child_category.length > 0 ? category.child_category : category.tb_directories;
             return (
-                <React.Fragment>
-                    <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
+                <React.Fragment key={`${category.id}-${index}`} >
+                    <TableRow className={classes.tableEntryRow}>
                         <TableCell padding="checkbox">
-                            <Checkbox />
+                            <Checkbox 
+                                onChange={() => { 
+                                    if (selected_category.includes(category.id)) {
+                                        return this.removeFromSelected(category, true);
+                                    } else {
+                                        return this.addToSelected(category, true);
+                                    }
+                                }}
+                                checked={selected_category.includes(category.id)}
+                            />
                         </TableCell>
                         <TableCell className={classes.tableEntryCol}>
-                            <TreeEntry key={`${category.id}-${index}`} paddingSize={calculatedPaddingSize}>
+                            <TreeEntry paddingSize={calculatedPaddingSize}>
                                 <div style={{marginRight: 15}}>
                                     {this.renderAddOrRemoveIcon(category.id)}
                                 </div>
@@ -305,24 +365,32 @@ class TreeView extends React.Component {
                             <MoreHorizontalIcon />
                         </TableCell>
                     </TableRow>
-                    {is_expanded && category.child_category.map((child_category_item, index_category) => {
+                    {is_expanded && toLoop.map((child_category_item, index_category) => {
                         return this.renderCategory(child_category_item, index_category, depth + 1);
                     })}
                 </React.Fragment>
                 
             );
         } else {
+            const { selected_directory } = this.state;
             return (
-                <TableRow className={classes.tableEntryRow}>
+                <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
                     <TableCell padding="checkbox">
-                        <Checkbox />
+                        <Checkbox 
+                            onChange={() => { 
+                                if (selected_directory.includes(category.id)) {
+                                    return this.removeFromSelected(category);
+                                } else {
+                                    return this.addToSelected(category, false);
+                                }
+                            }} 
+                            checked={selected_directory.includes(category.id)}
+                        />
                     </TableCell>
                     <TableCell className={classes.tableEntryCol}>
                         <TreeEntry paddingSize={calculatedPaddingSize}>
                             <div style={{marginLeft: 15, width: `${approximateButtonSize}px`}} />
-                            <div key={`${category.id}-${index}`} style={{}}>
-                                {category.name}
-                            </div>
+                            {category.name}
                         </TreeEntry>
                     </TableCell>
                     <TableCell>
@@ -337,18 +405,40 @@ class TreeView extends React.Component {
     }
 
     renderCategories() {
-        const { data, selected } = this.state;
+        const { selected_category, selected_directory } = this.state;
         const { classes } = this.props;
 
-        if (data && data.length > 0) {
+        if (sample && sample.length > 0) {
+            const allItemsLength = this.totalLength(sample);
             return (
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
                             <TableCell padding="checkbox">
                                 <Checkbox
-                                    indeterminate={selected.length > 0 && selected.length < 30}
-                                    checked={selected.length === 30}
+                                    indeterminate={
+                                        (selected_category.length > 0 || selected_directory > 0) && 
+                                        (selected_category.length + selected_directory.length < allItemsLength)
+                                    }
+                                    checked={selected_category.length + selected_directory.length === allItemsLength}
+                                    onChange={() => {
+                                        if (selected_category.length + selected_directory.length === allItemsLength) {
+                                            //If everything is selected, un check everything
+                                            this.setState({ 
+                                                selected_category: [],
+                                                selected_directory: [],
+                                            });
+                                        } else {
+                                            let items = [];
+                                            sample.forEach(item => {
+                                                items = [...items, ...this.getItemAndAllChildItems(item)];
+                                            });
+                                            this.setState({
+                                                selected_category: items.filter(item => Boolean(item.is_category)).map(item => item.id),
+                                                selected_directory: items.filter(item => !item.is_category).map(item => item.id),
+                                            });
+                                        }
+                                    }}
                                 />
                             </TableCell>
                             <TableCell className={classes.headerCol}>TITLE</TableCell>
@@ -357,7 +447,7 @@ class TreeView extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((category, index) => {
+                        {sample.map((category, index) => {
                             return this.renderCategory(category, index);
                         })}
                     </TableBody>
@@ -371,8 +461,6 @@ class TreeView extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { data } = this.state;
-
         return (
             <React.Fragment>
                 <div style={{marginTop: 30, display: "flex", width: "50%"}}>
@@ -392,13 +480,12 @@ class TreeView extends React.Component {
                     </Button>
                 </div>
                 <ContainerDiv>
-                    {Boolean(data) && Array.isArray(data) && data.length > 0 && (
+                    {Boolean(sample) && Array.isArray(sample) && sample.length > 0 && (
                         <React.Fragment>
                             {this.renderCategories()}
                         </React.Fragment>
                     )}
                 </ContainerDiv>
-                
             </React.Fragment>
         );
     }
@@ -420,4 +507,3 @@ class TreeView extends React.Component {
 
 
 export default withStyles(styles)(TreeView);
-
