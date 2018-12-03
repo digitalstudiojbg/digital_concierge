@@ -52,4 +52,5 @@ node_modules/.bin/sequelize seed:generate --name tb_directories_venues
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_directory-and-tb_directory_type
 
- 
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_directory-and-tb_directory_type
+

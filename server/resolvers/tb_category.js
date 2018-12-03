@@ -13,23 +13,30 @@ export default {
             });
         },
         td_categories_by_venue: async (root, { id }, { user }) => {
-            /*return await db.tb_category.findAll({
-                where: {
-                    is_parent: true,
-                    venueId: id
+            return await db.tb_category.findAll(
+                {
+                    where: {
+                        is_parent: true
+                    }
+                },
+                {
+                    include: [
+                        {
+                            model: db.venue,
+                            where: { id: id }
+                        }
+                    ]
                 }
-            });*/
-            return await db.venue.findAll({
+            );
+            /*return await db.tb_category.findAll({
                 include: [
                     {
-                        model: db.tb_category,
-                        where: {
-                            id: tb_category.id,
-                            is_parent: true
-                        }
+                        model: db.venue,
+                        where: { id: id },
+                        through: { where: { is_parent: true } }
                     }
                 ]
-            });
+            });*/
         }
     },
     TB_Category: {
