@@ -29,14 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: false
             },
-            is_parent: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: false
-            },
+
             tbCategoryId: {
                 type: DataTypes.INTEGER,
                 allowNull: true

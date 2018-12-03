@@ -6,14 +6,10 @@ export default {
             return await db.tb_category.findById(id);
         },
         tb_categories: async (root, input, { user }) => {
-            return await db.tb_category.findAll({
-                where: {
-                    is_parent: true
-                }
-            });
+            return await db.tb_category.findAll();
         },
         td_categories_by_venue: async (root, { id }, { user }) => {
-            return await db.tb_category.findAll(
+            /*return await db.tb_category.findAll(
                 {
                     where: {
                         is_parent: true
@@ -27,8 +23,8 @@ export default {
                         }
                     ]
                 }
-            );
-            /*return await db.tb_category.findAll({
+            );*/
+            return await db.tb_category.findAll({
                 include: [
                     {
                         model: db.venue,
@@ -36,7 +32,7 @@ export default {
                         through: { where: { is_parent: true } }
                     }
                 ]
-            });*/
+            });
         }
     },
     TB_Category: {

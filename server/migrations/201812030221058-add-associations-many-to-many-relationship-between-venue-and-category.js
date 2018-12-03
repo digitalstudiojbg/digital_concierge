@@ -28,6 +28,14 @@ module.exports = {
                     model: "tb_categories",
                     key: "id"
                 }
+            },
+            is_parent: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: false
             }
         });
     },
