@@ -139,9 +139,18 @@ class TreeView extends React.Component {
                 selected_directory: [...selected_directory, ...directories.map(directory => directory.id)],
             });
         } else {
-            this.setState({
-                selected_directory: [...selected_directory, category.id],
-            });
+            //Differentiating between a category with empty directory or just a normal directory
+            if (category.tb_directories && category.tb_directories.length === 0) {
+                //An category with empty child
+                this.setState({
+                   selected_category: [...selected_category, category.id],
+                });
+            } else {
+                this.setState({
+                    selected_directory: [...selected_directory, category.id],
+                });
+            }
+            
         }
     }
 
@@ -156,9 +165,18 @@ class TreeView extends React.Component {
                 selected_directory: selected_directory.filter(directory_id => !directories.includes(directory_id)),
             });
         } else {
-            this.setState({
-                selected_directory: selected_directory.filter(directory_id => directory_id !== category.id),
-            });
+            //Differentiating between a category with empty directory or just a normal directory
+            if (category.tb_directories && category.tb_directories.length === 0) {
+                //An category with empty child
+                this.setState({
+                    selected_category: selected_category.filter(category_id => category_id !== category.id),
+                 })
+            } else {
+                this.setState({
+                    selected_directory: selected_directory.filter(directory_id => directory_id !== category.id),
+                });
+            }
+            
         }
     }
 
@@ -241,7 +259,10 @@ class TreeView extends React.Component {
                 
             );
         } else {
-            const { selected_directory } = this.state;
+            const { selected_category, selected_directory } = this.state;
+            //Differentiating between a category with empty directory or just a normal directory
+            const checkedArray = (category.tb_directories && category.tb_directories.length === 0) ? selected_category : selected_directory;
+
             return (
                 <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
                     <TableCell padding="checkbox">
@@ -253,7 +274,7 @@ class TreeView extends React.Component {
                                     return this.addToSelected(category, false);
                                 }
                             }} 
-                            checked={selected_directory.includes(category.id)}
+                            checked={checkedArray.includes(category.id)}
                         />
                     </TableCell>
                     <TableCell className={classes.tableEntryCol}>
