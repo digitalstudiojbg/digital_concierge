@@ -3,7 +3,7 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "tb_directories_venues",
+            "tb_categories_venues",
             [
                 {
                     venueId: 1,

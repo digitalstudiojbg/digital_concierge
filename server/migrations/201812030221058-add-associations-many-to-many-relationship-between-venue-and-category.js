@@ -2,7 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("tb_directories_venues", {
+        return queryInterface.createTable("tb_categories_venues", {
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -33,6 +33,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("tb_directories_venues");
+        return queryInterface.dropTable("tb_categories_venues");
     }
 };
