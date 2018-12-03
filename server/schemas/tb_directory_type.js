@@ -10,5 +10,6 @@ export default gql`
         id: ID!
         name: String
         validations: [Validation]
+        tb_directories: [TB_Directory]
     }
 `;

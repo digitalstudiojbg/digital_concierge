@@ -28,6 +28,13 @@ export default {
                     }
                 ]
             });
+        },
+        tb_directories: async tb_directory_type => {
+            return await db.tb_directory.findAll({
+                where: {
+                    tbDirectoryTypeId: tb_directory_type.id
+                }
+            });
         }
     }
 };

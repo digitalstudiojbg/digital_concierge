@@ -19,6 +19,11 @@ export default {
                     }
                 ]
             });
+        },
+        tb_directory_type: async tb_directory => {
+            return await db.tb_directory_type.findById(
+                tb_directory.tbDirectoryTypeId
+            );
         }
     }
 };

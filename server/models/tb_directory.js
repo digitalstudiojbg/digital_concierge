@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         models.tb_directory.belongsToMany(models.tb_category, {
             through: "tb_directories_tb_categories"
         });
+        models.tb_directory.belongsTo(models.tb_directory_type, {
+            foreignKey: { allowNull: false }
+        });
     };
     return tb_directory;
 };

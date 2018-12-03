@@ -61,5 +61,12 @@ export default {
                 ]
             });
         }
+        /*tb_directory_type: async tb_directory_type => {
+            return await db.tb_directory_type.findById({
+                where: {
+                    tbDirectoryTypeId: tb_directory_type.id
+                }
+            });
+        }*/
     }
 };

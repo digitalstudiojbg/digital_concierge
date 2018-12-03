@@ -49,3 +49,7 @@ node_modules/.bin/sequelize seed:generate --name tb_directories_tb_categories
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-venue
 
 node_modules/.bin/sequelize seed:generate --name tb_directories_venues
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_directory-and-tb_directory_type
+
+ 
