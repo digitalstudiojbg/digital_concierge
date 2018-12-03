@@ -10,12 +10,15 @@ export const getTabletCategoryByVenue = venueId => {
                 active
                 image
                 tb_directory_type {
+                    id
                     name
                 }
                 venues {
+                    id
                     name
                 }
                 tb_directories {
+                    id
                     name
                 }
                 child_category {
@@ -25,12 +28,15 @@ export const getTabletCategoryByVenue = venueId => {
                     active
                     image
                     tb_directory_type {
+                        id
                         name
                     }
                     venues {
+                        id
                         name
                     }
                     tb_directories {
+                        id
                         name
                     }
                     child_category {
@@ -40,12 +46,15 @@ export const getTabletCategoryByVenue = venueId => {
                         active
                         image
                         tb_directory_type {
+                            id
                             name
                         }
                         venues {
+                            id
                             name
                         }
                         tb_directories {
+                            id
                             name
                         }
                         child_category {
@@ -55,12 +64,15 @@ export const getTabletCategoryByVenue = venueId => {
                             active
                             image
                             tb_directory_type {
+                                id
                                 name
                             }
                             venues {
+                                id
                                 name
                             }
                             tb_directories {
+                                id
                                 name
                             }
                             child_category {
@@ -70,12 +82,15 @@ export const getTabletCategoryByVenue = venueId => {
                                 active
                                 image
                                 tb_directory_type {
+                                    id
                                     name
                                 }
                                 venues {
+                                    id
                                     name
                                 }
                                 tb_directories {
+                                    id
                                     name
                                 }
                                 child_category {
@@ -85,12 +100,15 @@ export const getTabletCategoryByVenue = venueId => {
                                     active
                                     image
                                     tb_directory_type {
+                                        id
                                         name
                                     }
                                     venues {
+                                        id
                                         name
                                     }
                                     tb_directories {
+                                        id
                                         name
                                     }
                                 }
