@@ -62,8 +62,6 @@ module.exports = (sequelize, DataTypes) => {
         venue.belongsToMany(models.tb_category, {
             through: "tb_directories_venues"
         });
-
-        //venue.hasMany(models.tb_category);
     };
     return venue;
 };
