@@ -15,7 +15,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
     buttonCreate: {
@@ -56,141 +56,7 @@ const styles = theme => ({
 
 const paddingSize = 30;
 const approximateButtonSize = 40;
-
-let sample = [
-    {
-        "id":"1",
-        "name":"IN-ROOM SERVICES",
-        "has_directory":false,
-        "is_parent":true,
-        "active":true,
-        "image":null,
-        "child_category":[
-        {
-            "id":"5",
-            "name":"IN-ROOM DINING",
-            "has_directory":false,
-            "is_parent":false,
-            "active":true,
-            "image":null,
-            "child_category":[
-                {
-                    "id":"10",
-                    "name":"BREAKFAST",
-                    "has_directory":true,
-                    "is_parent":false,
-                    "active":true,
-                    "image":null,
-                    "child_category":[
-
-                    ]
-                },
-                {
-                    "id":"11",
-                    "name":"LUNCH",
-                    "has_directory":true,
-                    "is_parent":false,
-                    "active":true,
-                    "image":null,
-                    "child_category":[
-
-                    ]
-                },
-                {
-                    "id":"12",
-                    "name":"DINNER",
-                    "has_directory":true,
-                    "is_parent":false,
-                    "active":true,
-                    "image":null,
-                    "child_category":[
-
-                    ]
-                }
-            ]
-        },
-        {
-            "id":"6",
-            "name":"SERVICES",
-            "has_directory":false,
-            "is_parent":false,
-            "active":true,
-            "image":null,
-            "child_category":[
-
-            ]
-        },
-        {
-            "id":"7",
-            "name":"PHONE DIRECTORY",
-            "has_directory":false,
-            "is_parent":false,
-            "active":true,
-            "image":null,
-            "child_category":[
-
-            ]
-        },
-        {
-            "id":"8",
-            "name":"TV GUIDE",
-            "has_directory":false,
-            "is_parent":false,
-            "active":true,
-            "image":null,
-            "child_category":[
-
-            ]
-        },
-        {
-            "id":"9",
-            "name":"HEALTH & SAFETY",
-            "has_directory":false,
-            "is_parent":false,
-            "active":true,
-            "image":null,
-            "child_category":[
-
-            ]
-        }
-        ]
-    },
-    {
-        "id":"2",
-        "name":"HOTEL SERVICES",
-        "has_directory":false,
-        "is_parent":true,
-        "active":true,
-        "image":null,
-        "child_category":[
-
-        ]
-    },
-    {
-        "id":"3",
-        "name":"DESTINATION VANUATU",
-        "has_directory":false,
-        "is_parent":true,
-        "active":true,
-        "image":null,
-        "child_category":[
-
-        ]
-    },
-    {
-        "id":"4",
-        "name":"HOLIDAY INN RESORT PHOTO GALLERY",
-        "has_directory":false,
-        "is_parent":true,
-        "active":true,
-        "image":null,
-        "child_category":[
-
-        ]
-    }
-];
-
- const TreeEntry = styled.div`
+const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
     display: flex;
     align-items: center;
@@ -215,6 +81,7 @@ class TreeView extends React.Component {
             category.tb_directories.forEach(item => {
                 output = [...output, ...this.getItemAndAllChildItems(item)];
             });
+            return output;
         } else {
             return [{ id: category.id, is_category: false }];
         }
@@ -408,10 +275,10 @@ class TreeView extends React.Component {
 
     renderCategories() {
         const { selected_category, selected_directory } = this.state;
-        const { classes } = this.props;
+        const { classes, data } = this.props;
 
-        if (sample && sample.length > 0) {
-            const allItemsLength = this.totalLength(sample);
+        if (data && data.length > 0) {
+            const allItemsLength = this.totalLength(data);
             return (
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
@@ -432,7 +299,7 @@ class TreeView extends React.Component {
                                             });
                                         } else {
                                             let items = [];
-                                            sample.forEach(item => {
+                                            data.forEach(item => {
                                                 items = [...items, ...this.getItemAndAllChildItems(item)];
                                             });
                                             this.setState({
@@ -449,7 +316,7 @@ class TreeView extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {sample.map((category, index) => {
+                        {data.map((category, index) => {
                             return this.renderCategory(category, index);
                         })}
                     </TableBody>
@@ -462,7 +329,7 @@ class TreeView extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, data } = this.props;
         return (
             <React.Fragment>
                 <div style={{marginTop: 30, marginBottom: 20, display: "flex", width: "50%"}}>
@@ -482,7 +349,7 @@ class TreeView extends React.Component {
                     </Button>
                 </div>
                 
-                {Boolean(sample) && Array.isArray(sample) && sample.length > 0 && (
+                {Boolean(data) && Array.isArray(data) && data.length > 0 && (
                     <React.Fragment>
                         {this.renderCategories()}
                     </React.Fragment>
@@ -493,19 +360,8 @@ class TreeView extends React.Component {
     }
 }
 
-// Treeview.propTypes = {
-//     headerColumnBgColor: PropTypes.string,
-//     textColor: PropTypes.string,
-//     buttonIconBgColor: PropTypes.string,
-//     data: PropTypes.arrayOf(PropTypes.shape({
-//         id: PropTypes.number,
-//         name: PropTypes.string,
-//         active: PropTypes.bool,
-//         tbCategoryId: PropTypes.object,
-//         is_parent: PropTypes.bool,
-//         has_directory: PropTypes.bool
-//     }))
-// };
-
+TreeView.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object)
+};
 
 export default withStyles(styles)(TreeView);
