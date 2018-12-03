@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
+import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL } from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
@@ -76,7 +76,7 @@ class Header extends Component {
     handleLogout = () => {
         this.setState({ anchorEl: null });
         logout();
-        window.location.reload();
+        this.props.history.push(LOGIN_URL);
     };
 
     render() {
@@ -86,8 +86,7 @@ class Header extends Component {
         });
         //Calculate percentage of the user div and title div after a fixed size sidebar div of 350px
         const availableWidth = window.innerWidth - 350;
-        const titleDivWidth = availableWidth * 0.65;
-        const userDivWidth = availableWidth - titleDivWidth;
+        const userDivWidth = availableWidth * 0.35;
 
         const { has_tablet = false, has_touchscreen = false, name = "" } = user.venue || {};
 
@@ -115,7 +114,7 @@ class Header extends Component {
                 )}
                 <div
                     style={{
-                        width: `${titleDivWidth}px`
+                        flex: 1
                     }}
                 >
                     {match.url !== URL_WELCOME && (
