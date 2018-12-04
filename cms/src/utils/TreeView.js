@@ -76,7 +76,7 @@ class TreeView extends React.Component {
         const { data } = this.props;
         let updated = [];
         data.forEach(category => {
-            updated = [...updated, ...this.getItemAndAllChildItems(category, undefined, true)];
+            updated = [...updated, ...this.getItemAndAllChildItems(category, true)];
         });
         this.setState({
             dataTree: [...updated],
@@ -89,7 +89,7 @@ class TreeView extends React.Component {
         if (prevProps.data !== data) {
             let updated = [];
             data.forEach(category => {
-                updated = [...updated, ...this.getItemAndAllChildItems(category, category, undefined, true)];
+                updated = [...updated, ...this.getItemAndAllChildItems(category, true)];
             });
             this.setState({
                 dataTree: [...updated],
@@ -131,27 +131,28 @@ class TreeView extends React.Component {
     //Get a category and all of its child category or directory entries, as it is usually one or the other
     //I.E. one category can only have a child categories or directory entries
     //All attribute argument refer to whether the object should retrieve all of its category attributes, or just the ID
-    getItemAndAllChildItems(category, depth = 0, allAttributes = false) {
+    getItemAndAllChildItems(category, allAttributes = false) {
         if (category.child_category && category.child_category.length > 0) {
             let output = allAttributes 
-                            ? [{ ...category, is_category: true, depth }] 
-                            : [{ id: category.id, is_category: true, depth }];
+                            ? [{ ...category }] 
+                            : [{ id: category.id, is_category: category.is_category, depth: category.depth }];
             category.child_category.forEach(item => {
-                output = [...output, ...this.getItemAndAllChildItems(item, depth + 1, allAttributes)];
+                output = [...output, ...this.getItemAndAllChildItems(item, allAttributes)];
             });
             return output;
         } else if (category.tb_directories && category.tb_directories.length > 0) {
             let output = allAttributes 
-                            ? [{ ...category, is_category: true, depth }] 
-                            : [{ id: category.id, is_category: true, depth }];
+                            ? [{ ...category }] 
+                            : [{ id: category.id, is_category: category.is_category, depth: category.depth }];
             category.tb_directories.forEach(item => {
-                output = [...output, ...this.getItemAndAllChildItems(item, depth + 1, allAttributes)];
+                output = [...output, ...this.getItemAndAllChildItems(item, allAttributes)];
             });
             return output;
         } else {
+            const { is_category, depth, hash_id = "" } = category;
             return allAttributes 
-            ? [{ ...category, is_category: (Boolean(category.tb_directories) && category.tb_directories.length === 0), depth}]
-            : [{ id: category.id, is_category: (Boolean(category.tb_directories) && category.tb_directories.length === 0), depth}];
+            ? [{ ...category }]
+            : [{ id: category.id, is_category, depth, hash_id }];
         }
     }
 
@@ -233,18 +234,18 @@ class TreeView extends React.Component {
             const directories = items.filter(item => !item.is_category);
             this.setState({
                 selected_category: [...selected_category, ...categories.map(category => category.id)],
-                selected_directory: [...selected_directory, ...directories.map(directory => directory.id)],
+                selected_directory: [...selected_directory, ...directories.map(directory => directory.hash_id)],
             });
         } else {
             //Differentiating between a category with empty directory or just a normal directory
-            if (category.tb_directories && category.tb_directories.length === 0) {
+            if (category.is_category) {
                 //An category with empty child
                 this.setState({
                    selected_category: [...selected_category, category.id],
                 });
             } else {
                 this.setState({
-                    selected_directory: [...selected_directory, category.id],
+                    selected_directory: [...selected_directory, category.hash_id],
                 });
             }
             
@@ -257,16 +258,14 @@ class TreeView extends React.Component {
         if (has_child) {
             const items = this.getItemAndAllChildItems(category);
             const categories = items.filter(item => Boolean(item.is_category)).map(category => category.id);
-            const directories = items.filter(item => !item.is_category).map(directory => directory.id);
+            const directories = items.filter(item => !item.is_category).map(directory => directory.hash_id);
             this.setState({
                 selected_category: selected_category.filter(category_id => !categories.includes(category_id)),
                 selected_directory: selected_directory.filter(directory_id => !directories.includes(directory_id)),
             });
         } else {
             //Differentiating between a category with empty directory or just a normal directory
-            const is_category = Boolean(category.tb_directories) 
-                ? category.tb_directories.length === 0 
-                : false;
+            const { is_category } = category;
 
             //Unselecting a child also means unselecting the parent as well
             const parents = this.getParentItem(category.id, is_category);
@@ -280,7 +279,7 @@ class TreeView extends React.Component {
                 //Unselecting parent categories as well
                 this.setState({
                     selected_category: selected_category.filter(category_id => !parents.includes(category_id)),
-                    selected_directory: selected_directory.filter(directory_id => directory_id !== category.id),
+                    selected_directory: selected_directory.filter(directory_id => directory_id !== category.hash_id),
                 });
             }
         }
@@ -366,7 +365,8 @@ class TreeView extends React.Component {
     }
     
 
-    renderCategory(category, index, depth = 0) {
+    renderCategory(category, index) {
+        const { depth } = category;
         const calculatedPaddingSize = depth * paddingSize;
         const { classes } = this.props;
         if (
@@ -415,7 +415,7 @@ class TreeView extends React.Component {
                     </TableRow>
                     {is_expanded && toLoop.map((child_category_item, index_category) => {
                         //We do recursion here
-                        return this.renderCategory(child_category_item, index_category, depth + 1);
+                        return this.renderCategory(child_category_item, index_category);
                     })}
                 </React.Fragment>
                 
@@ -423,23 +423,32 @@ class TreeView extends React.Component {
         } else {
             //Just an empty category with no child category nor a directory. Another possibility is that the entry is a plain old directory
             const { selected_category, selected_directory } = this.state;
-            
-            //Differentiating between a category with empty directory or just a normal directory
-            const checkedArray = (category.tb_directories && category.tb_directories.length === 0) ? selected_category : selected_directory;
-
             //No more child, no need to recur any more
             return (
                 <TableRow key={`${category.id}-${index}`} className={classes.tableEntryRow}>
                     <TableCell padding="checkbox">
                         <Checkbox 
                             onChange={() => { 
-                                if (checkedArray.includes(category.id)) {
-                                    return this.removeFromSelected(category);
+                                //Differentiating between a category with empty directory or just a normal directory
+                                if (category.is_category) {
+                                    if (selected_category.includes(category.id)) {
+                                        return this.removeFromSelected(category);
+                                    } else {
+                                        return this.addToSelected(category, false);
+                                    }
                                 } else {
-                                    return this.addToSelected(category, false);
+                                    if (selected_directory.includes(category.hash_id)) {
+                                        return this.removeFromSelected(category);
+                                    } else {
+                                        return this.addToSelected(category, false);
+                                    }
                                 }
                             }} 
-                            checked={checkedArray.includes(category.id)}
+                            checked={
+                                category.is_category 
+                                ? selected_category.includes(category.id)
+                                : selected_directory.includes(category.hash_id)
+                            }
                         />
                     </TableCell>
                     <TableCell className={classes.tableEntryCol}>
@@ -468,11 +477,10 @@ class TreeView extends React.Component {
         //     id: "6", name: "SERVICES & FACILITIES", has_directory: false, active: true, image: null,
         //     child_category: [], tb_directories: [ {id: "1", name: "CHECK-OUT TIME", __typename: "TB_Directory"}, {id: "2", name: "IRON & IRONING BOARD", __typename: "TB_Directory"}]
         // }, "1"));
-        const { selected_category, selected_directory } = this.state;
+        const { selected_category, selected_directory, dataTree } = this.state;
         const { classes, data } = this.props;
 
         if (data && data.length > 0) {
-            const { dataTree } = this.state;
             // const allItemsLength = this.totalLength(data);
             const allItemsLength = dataTree.length;
 
@@ -488,32 +496,30 @@ class TreeView extends React.Component {
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
                             <TableCell padding="checkbox">
-                                <Checkbox
-                                    indeterminate={
-                                        (selected_category.length > 0 || selected_directory > 0) && 
-                                        (selected_category.length + selected_directory.length < allItemsLength)
-                                    }
-                                    checked={selected_category.length + selected_directory.length === allItemsLength}
-                                    onChange={() => {
-                                        if (selected_category.length + selected_directory.length === allItemsLength) {
-                                            //If everything is selected, un check everything
-                                            this.setState({ 
-                                                selected_category: [],
-                                                selected_directory: [],
-                                            });
-                                        } else {
-                                            let items = [];
-                                            data.forEach(item => {
-                                                items = [...items, ...this.getItemAndAllChildItems(item)];
-                                            });
-                                            this.setState({
-                                                selected_category: items.filter(item => Boolean(item.is_category)).map(item => item.id),
-                                                selected_directory: items.filter(item => !item.is_category).map(item => item.id),
-                                            });
+                                {Boolean(dataTree) && dataTree.length > 0 && (
+                                    <Checkbox
+                                        indeterminate={
+                                            (selected_category.length > 0 || selected_directory > 0) && 
+                                            (selected_category.length + selected_directory.length < allItemsLength)
                                         }
-                                    }}
-                                    disabled={!allExpanded}
-                                />
+                                        checked={selected_category.length + selected_directory.length === allItemsLength}
+                                        onChange={() => {
+                                            if (selected_category.length + selected_directory.length === allItemsLength) {
+                                                //If everything is selected, un check everything
+                                                this.setState({ 
+                                                    selected_category: [],
+                                                    selected_directory: [],
+                                                });
+                                            } else {
+                                                this.setState({
+                                                    selected_category: dataTree.filter(item => item.is_category).map(item => item.id),
+                                                    selected_directory: dataTree.filter(item => !item.is_category).map(item => item.hash_id),
+                                                });
+                                            }
+                                        }}
+                                        disabled={!allExpanded}
+                                    />
+                                )}
                             </TableCell>
                             <TableCell className={classes.headerCol}>TITLE</TableCell>
                             <TableCell className={classes.headerCol}>VISIBLE</TableCell>
