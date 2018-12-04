@@ -8,6 +8,7 @@ import validation_resolver from "./validation";
 import tb_directory_type_resolver from "./tb_directory_type";
 import tb_directory_resolver from "./tb_directory";
 import tb_landing_page_resolver from "./tb_landing_page";
+import global_setting_resolver from "./global_setting";
 
 export default [
     user_resolver,
@@ -19,5 +20,6 @@ export default [
     validation_resolver,
     tb_directory_type_resolver,
     tb_directory_resolver,
-    tb_landing_page_resolver
+    tb_landing_page_resolver,
+    global_setting_resolver
 ];
