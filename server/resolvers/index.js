@@ -7,6 +7,7 @@ import tb_category_resolver from "./tb_category";
 import validation_resolver from "./validation";
 import tb_directory_type_resolver from "./tb_directory_type";
 import tb_directory_resolver from "./tb_directory";
+import tb_landing_page_resolver from "./tb_landing_page";
 
 export default [
     user_resolver,
@@ -17,5 +18,6 @@ export default [
     tb_category_resolver,
     validation_resolver,
     tb_directory_type_resolver,
-    tb_directory_resolver
+    tb_directory_resolver,
+    tb_landing_page_resolver
 ];

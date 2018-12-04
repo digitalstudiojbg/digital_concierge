@@ -10,7 +10,7 @@ export default {
         }
     },
     TB_Directory: {
-        td_categories: async tb_directory => {
+        tb_categories: async tb_directory => {
             return await db.tb_category.findAll({
                 include: [
                     {
@@ -27,7 +27,3 @@ export default {
         }
     }
 };
-
-/*
-
-*/

@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         models.tb_directory_type.hasMany(models.tb_directory);
         models.tb_directory_type.hasMany(models.tb_category);
+        models.tb_directory_type.hasMany(models.tb_landing_page);
     };
     return tb_directory_type;
 };

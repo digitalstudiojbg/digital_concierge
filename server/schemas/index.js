@@ -7,6 +7,7 @@ import tb_category_schema from "./tb_category";
 import validation_schema from "./validation";
 import tb_directory_type_schema from "./tb_directory_type";
 import tb_directory_schema from "./tb_directory";
+import tb_landing_page_schema from "./tb_landing_page";
 
 const link_schema = gql`
     type Query {
@@ -29,5 +30,6 @@ export default [
     tb_category_schema,
     validation_schema,
     tb_directory_type_schema,
-    tb_directory_schema
+    tb_directory_schema,
+    tb_landing_page_schema
 ];

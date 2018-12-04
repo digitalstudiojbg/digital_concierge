@@ -19,6 +19,7 @@ export default gql`
         updatedAt: DateTime
         users: [User]
         roles: [Role]
-        td_categories: [TB_Category]
+        tb_categories: [TB_Category]
+        tb_landing_page: [TB_LANDING_PAGE]
     }
 `;

@@ -54,3 +54,10 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_category-and-tb_directory_type
 
+node_modules/.bin/sequelize model:generate --name tb_landing_page --attributes header_logo:string,header_text:string,body_image:string,button:string,bg_color:string
+
+node_modules/.bin/sequelize seed:generate --name tb_landing_page
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_landing_page-and-tb_directory_type
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-tb_landing_page-and-venue

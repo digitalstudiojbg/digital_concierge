@@ -32,11 +32,21 @@ export default {
                 ]
             });
         },
-        td_categories: async venue => {
+        tb_categories: async venue => {
             return await db.tb_category.findAll({
+                include: [
+                    {
+                        model: db.venue,
+                        where: { id: venue.id },
+                        through: { where: { is_parent: true } }
+                    }
+                ]
+            });
+        },
+        tb_landing_page: async venue => {
+            return await db.tb_landing_page.findAll({
                 where: {
-                    venueId: venue.id,
-                    is_parent: true
+                    venueId: venue.id
                 }
             });
         }

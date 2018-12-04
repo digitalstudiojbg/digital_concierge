@@ -15,7 +15,7 @@ export default gql`
         phone: String
         address: String
         opening_hours: String
-        td_categories: [TB_Category]
+        tb_categories: [TB_Category]
         tb_directory_type: TB_Directory_Type
     }
 `;
