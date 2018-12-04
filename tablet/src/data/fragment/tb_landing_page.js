@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const landingPageDetailFragment = gql`
-    fragment landingPageDetailFragment on TB_LANDING_PAGE {
+    fragment landingPageDetail on TB_LANDING_PAGE {
         id
         header_logo
         header_text

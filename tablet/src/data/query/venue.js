@@ -1,22 +1,26 @@
 import gql from "graphql-tag";
-import { globalSettingFragment, landingPageDetailFragment } from "../fragment";
+import {
+    globalSettingFragment,
+    landingPageDetailFragment,
+    venueDetailFragment
+} from "../fragment";
 
 export const getVenueDetailById = gql`
     query getVenueDetailById {
         venue(id: 1) {
-            id
-            name
+            ...venueDetail
             tb_categories {
                 name
             }
             tb_landing_page {
-                ...landingPageDetailFragment
+                ...landingPageDetail
             }
             global_setting {
                 ...globalSettingDetail
             }
         }
     }
+    ${venueDetailFragment}
     ${landingPageDetailFragment}
     ${globalSettingFragment}
 `;
