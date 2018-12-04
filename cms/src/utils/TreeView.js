@@ -205,7 +205,7 @@ class TreeView extends React.Component {
     }
 
     //A function that ensures the category and all of its child directory are expanded
-    ensureAllIsChecked(category) {
+    ensureAllIsExpanded(category) {
         const { expanded } = this.state;
         //Filter only the items that are categories and have a child category or directory entries inside of it
         const categories = this.getItemAndAllChildItems(category, undefined, true).filter(item => 
@@ -393,7 +393,7 @@ class TreeView extends React.Component {
                                         return this.addToSelected(category, true);
                                     }
                                 }}
-                                disabled={!this.ensureAllIsChecked(category)}
+                                disabled={!this.ensureAllIsExpanded(category)}
                                 checked={selected_category.includes(category.id)}
                                 indeterminate={!selected_category.includes(category.id) && this.checkChildItemsIndeterminate(category)}
                             />
@@ -472,7 +472,17 @@ class TreeView extends React.Component {
         const { classes, data } = this.props;
 
         if (data && data.length > 0) {
-            const allItemsLength = this.totalLength(data);
+            const { dataTree } = this.state;
+            // const allItemsLength = this.totalLength(data);
+            const allItemsLength = dataTree.length;
+
+            let allExpanded = true;
+            for (let tree of dataTree) {
+                if (!this.ensureAllIsExpanded(tree)) {
+                    allExpanded = false;
+                    break;
+                }
+            }
             return (
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
@@ -502,6 +512,7 @@ class TreeView extends React.Component {
                                             });
                                         }
                                     }}
+                                    disabled={!allExpanded}
                                 />
                             </TableCell>
                             <TableCell className={classes.headerCol}>TITLE</TableCell>
