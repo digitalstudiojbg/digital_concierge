@@ -16,6 +16,21 @@ module.exports = {
                 },
                 {
                     name: "HAS_MAP"
+                },
+                {
+                    name: "HAS_LP_HEADER_LOGO"
+                },
+                {
+                    name: "HAS_LP_HEADER_TEXT"
+                },
+                {
+                    name: "HAS_LP_BODY_IMAGE"
+                },
+                {
+                    name: "HAS_LP_BG_COLOR"
+                },
+                {
+                    name: "HAS_LP_BUTTON"
                 }
             ],
             {}

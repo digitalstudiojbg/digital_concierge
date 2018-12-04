@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         tb_landing_page(id: ID!): TB_LANDING_PAGE
         tb_landing_pages: [TB_LANDING_PAGE]
+        tb_landing_pages_by_venue(id: ID!): [TB_LANDING_PAGE]
     }
 
     type TB_LANDING_PAGE {

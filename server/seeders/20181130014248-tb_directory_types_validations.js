@@ -56,6 +56,26 @@ module.exports = {
                 {
                     tbDirectoryTypeId: 4,
                     validationId: 4
+                },
+                {
+                    tbDirectoryTypeId: 5,
+                    validationId: 5
+                },
+                {
+                    tbDirectoryTypeId: 5,
+                    validationId: 6
+                },
+                {
+                    tbDirectoryTypeId: 5,
+                    validationId: 7
+                },
+                {
+                    tbDirectoryTypeId: 5,
+                    validationId: 8
+                },
+                {
+                    tbDirectoryTypeId: 5,
+                    validationId: 9
                 }
             ],
             {}

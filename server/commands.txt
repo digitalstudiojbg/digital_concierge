@@ -61,3 +61,5 @@ node_modules/.bin/sequelize seed:generate --name tb_landing_page
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tb_landing_page-and-tb_directory_type
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-tb_landing_page-and-venue
+
+node_modules/.bin/sequelize model:generate --name global_setting --attributes name:string
