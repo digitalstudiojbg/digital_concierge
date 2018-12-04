@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     user.associate = function(models) {
-        models.user.belongsTo(models.role, {
+        user.belongsTo(models.role, {
             foreignKey: { allowNull: false }
         });
         user.belongsTo(models.venue, {

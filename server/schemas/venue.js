@@ -21,5 +21,6 @@ export default gql`
         roles: [Role]
         tb_categories: [TB_Category]
         tb_landing_page: [TB_LANDING_PAGE]
+        global_setting: [Global_Setting]
     }
 `;

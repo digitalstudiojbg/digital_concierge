@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     tb_landing_page.associate = function(models) {
-        models.tb_landing_page.belongsTo(models.tb_directory_type, {
+        tb_landing_page.belongsTo(models.tb_directory_type, {
             foreignKey: { allowNull: false }
         });
-        models.tb_landing_page.belongsTo(models.venue, {
+        tb_landing_page.belongsTo(models.venue, {
             foreignKey: { allowNull: false }
         });
     };

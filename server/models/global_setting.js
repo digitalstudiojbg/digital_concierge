@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     global_setting.associate = function(models) {
-        models.global_setting.belongsTo(models.venue, {
+        global_setting.belongsTo(models.venue, {
             foreignKey: { allowNull: false }
         });
     };

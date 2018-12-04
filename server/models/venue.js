@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
             through: "tb_categories_venues"
         });
         venue.hasOne(models.tb_landing_page);
-        models.venue.hasOne(models.global_setting);
+        venue.hasOne(models.global_setting);
     };
     return venue;
 };

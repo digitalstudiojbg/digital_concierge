@@ -49,6 +49,13 @@ export default {
                     venueId: venue.id
                 }
             });
+        },
+        global_setting: async venue => {
+            return await db.global_setting.findAll({
+                where: {
+                    venueId: venue.id
+                }
+            });
         }
     }
 };

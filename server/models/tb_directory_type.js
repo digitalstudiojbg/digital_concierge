@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     tb_directory_type.associate = function(models) {
-        models.tb_directory_type.belongsToMany(models.validation, {
+        tb_directory_type.belongsToMany(models.validation, {
             through: "tb_directory_types_validations"
         });
-        models.tb_directory_type.hasMany(models.tb_directory);
-        models.tb_directory_type.hasMany(models.tb_category);
-        models.tb_directory_type.hasMany(models.tb_landing_page);
+        tb_directory_type.hasMany(models.tb_directory);
+        tb_directory_type.hasMany(models.tb_category);
+        tb_directory_type.hasMany(models.tb_landing_page);
     };
     return tb_directory_type;
 };

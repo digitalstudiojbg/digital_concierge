@@ -33,10 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     tb_directory.associate = function(models) {
-        models.tb_directory.belongsToMany(models.tb_category, {
+        tb_directory.belongsToMany(models.tb_category, {
             through: "tb_directories_tb_categories"
         });
-        models.tb_directory.belongsTo(models.tb_directory_type, {
+        tb_directory.belongsTo(models.tb_directory_type, {
             foreignKey: { allowNull: false }
         });
     };
