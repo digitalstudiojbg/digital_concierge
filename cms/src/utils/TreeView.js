@@ -99,7 +99,10 @@ class TreeView extends React.Component {
 
     //helper function to check whether a parent has the child as a direct descendant
     _isParentOf(parent, child_id,) {
-        if (parent.child_category && parent.child_category.length > 0 || parent.tb_directories && parent.tb_directories.length > 0) {
+        if (
+            (parent.child_category && parent.child_category.length > 0) || 
+            (parent.tb_directories && parent.tb_directories.length > 0)
+        ) {
             const which = (parent.child_category && parent.child_category.length > 0) ? parent.child_category : parent.tb_directories;
             return Boolean(which.find(category => category.id === child_id));
         } else {
@@ -152,7 +155,7 @@ class TreeView extends React.Component {
         }
     }
 
-    //Recursive function utilised to recur and calculate the number of child elements in a category
+    //Helper recursive function utilised to recur and calculate the number of child elements in a category
     _totalCategoryLength(category) {
         if (category.child_category && category.child_category.length > 0) {
             //Category has a child category, recur in its child category
@@ -199,6 +202,26 @@ class TreeView extends React.Component {
                 ]
             });
         }
+    }
+
+    //A function that ensures the category and all of its child directory are expanded
+    ensureAllIsChecked(category) {
+        const { expanded } = this.state;
+        //Filter only the items that are categories and have a child category or directory entries inside of it
+        const categories = this.getItemAndAllChildItems(category, undefined, true).filter(item => 
+            Boolean(item.is_category) && (
+                (Boolean(item.child_category) && item.child_category.length > 0) || 
+                (Boolean(item.tb_directories) && item.tb_directories.length > 0)
+            )
+        );
+        let output = true;
+        for (let category of categories) {
+            if (!expanded.includes(category.id)) {
+                output = false;
+                break;
+            }
+        }
+        return output;
     }
 
     //Adding category and / or directory ids into their relevant state arrays (selected_category or selected_directory)
@@ -370,6 +393,7 @@ class TreeView extends React.Component {
                                         return this.addToSelected(category, true);
                                     }
                                 }}
+                                disabled={!this.ensureAllIsChecked(category)}
                                 checked={selected_category.includes(category.id)}
                                 indeterminate={!selected_category.includes(category.id) && this.checkChildItemsIndeterminate(category)}
                             />
