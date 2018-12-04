@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ContainerDiv } from "../../utils/Constants";
+import { ContainerDiv, modifyCategoryDirectoryData } from "../../utils/Constants";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router";
 import TreeView from "../../utils/TreeView";
@@ -15,7 +15,7 @@ class TabletContent extends Component {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
                     console.log(data);
-
+                    const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
                     return (
                         <ContainerDiv>
                             <div
@@ -37,7 +37,7 @@ class TabletContent extends Component {
                                 CATEGORIES AND SUB-CATEGORIES. CLICK ON THE
                                 TITLE TO EDIT.
                             </div>
-                            <TreeView data={data.tb_categories_by_venue} />
+                            <TreeView data={modifiedData} />
                         </ContainerDiv>
                     );
                 }}
