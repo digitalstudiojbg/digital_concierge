@@ -68,25 +68,87 @@ class TreeView extends React.Component {
         expanded: [],
         selected_category: [],
         selected_directory: [],
+        dataTree: null
     };
 
+    componentDidMount() {
+        //mapping data tree for easier querying
+        const { data } = this.props;
+        let updated = [];
+        data.forEach(category => {
+            updated = [...updated, ...this.getItemAndAllChildItems(category, undefined, true)];
+        });
+        this.setState({
+            dataTree: [...updated],
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        //mapping data tree for easier querying
+        const { data } = this.props;
+        if (prevProps.data !== data) {
+            let updated = [];
+            data.forEach(category => {
+                updated = [...updated, ...this.getItemAndAllChildItems(category, category, undefined, true)];
+            });
+            this.setState({
+                dataTree: [...updated],
+            });
+        }
+    }
+
+    //helper function to check whether a parent has the child as a direct descendant
+    _isParentOf(parent, child_id,) {
+        if (parent.child_category && parent.child_category.length > 0 || parent.tb_directories && parent.tb_directories.length > 0) {
+            const which = (parent.child_category && parent.child_category.length > 0) ? parent.child_category : parent.tb_directories;
+            return Boolean(which.find(category => category.id === child_id));
+        } else {
+            return false;
+        }
+    }
+
+    //a function that attempts to retrieve all of the parent category ids of a children (the children could be a child category or a directory entry)
+    //via recursive function method
+    getParentItem(category_id, is_category) {
+        const { dataTree } = this.state;
+        if (Boolean(dataTree && dataTree.length > 0)) {
+            const foundItem = dataTree.find(category => {
+                return category.id === category_id && category.is_category === is_category;
+            });
+            const possibleParents = Boolean(foundItem) 
+            ? dataTree.filter(category => (Boolean(category.is_category) && category.depth === foundItem.depth - 1)) //Only get previous level parent
+            : [];
+            
+            const parentArray = possibleParents.filter(item => this._isParentOf(item, category_id));
+            return parentArray.length > 0 
+                ? [ parentArray[0].id, ...this.getParentItem(parentArray[0].id, true)]
+                : [];
+        }
+    }
     //Get a category and all of its child category or directory entries, as it is usually one or the other
     //I.E. one category can only have a child categories or directory entries
-    getItemAndAllChildItems(category) {
+    //All attribute argument refer to whether the object should retrieve all of its category attributes, or just the ID
+    getItemAndAllChildItems(category, depth = 0, allAttributes = false) {
         if (category.child_category && category.child_category.length > 0) {
-            let output = [{ id: category.id, is_category: true }];
+            let output = allAttributes 
+                            ? [{ ...category, is_category: true, depth }] 
+                            : [{ id: category.id, is_category: true, depth }];
             category.child_category.forEach(item => {
-                output = [...output, ...this.getItemAndAllChildItems(item)];
+                output = [...output, ...this.getItemAndAllChildItems(item, depth + 1, allAttributes)];
             });
             return output;
         } else if (category.tb_directories && category.tb_directories.length > 0) {
-            let output = [{ id: category.id, is_category: true }];
+            let output = allAttributes 
+                            ? [{ ...category, is_category: true, depth }] 
+                            : [{ id: category.id, is_category: true, depth }];
             category.tb_directories.forEach(item => {
-                output = [...output, ...this.getItemAndAllChildItems(item)];
+                output = [...output, ...this.getItemAndAllChildItems(item, depth + 1, allAttributes)];
             });
             return output;
         } else {
-            return [{ id: category.id, is_category: false }];
+            return allAttributes 
+            ? [{ ...category, is_category: (Boolean(category.tb_directories) && category.tb_directories.length === 0), depth}]
+            : [{ id: category.id, is_category: (Boolean(category.tb_directories) && category.tb_directories.length === 0), depth}];
         }
     }
 
@@ -179,18 +241,72 @@ class TreeView extends React.Component {
             });
         } else {
             //Differentiating between a category with empty directory or just a normal directory
-            if (category.tb_directories && category.tb_directories.length === 0) {
+            const is_category = Boolean(category.tb_directories) 
+                ? category.tb_directories.length === 0 
+                : false;
+
+            //Unselecting a child also means unselecting the parent as well
+            const parents = this.getParentItem(category.id, is_category);
+            if (is_category) {
                 //An category with empty child
+                //Unselecting parent categories as well
                 this.setState({
-                    selected_category: selected_category.filter(category_id => category_id !== category.id),
+                    selected_category: selected_category.filter(category_id => category_id !== category.id || !parents.includes(category_id)),
                  })
             } else {
+                //Unselecting parent categories as well
                 this.setState({
+                    selected_category: selected_category.filter(category_id => !parents.includes(category_id)),
                     selected_directory: selected_directory.filter(directory_id => directory_id !== category.id),
                 });
             }
-            
         }
+    }
+
+    // checkChildItemsSelected(category) {
+    //     const { selected_category, selected_directory } = this.state;
+    //     const childItems = this.getItemAndAllChildItems(category).slice(1); //Skipping first entry in the array because it is self
+    //     const categories = childItems.filter(item => Boolean(item.is_category)).map(category => category.id);
+    //     const directories = childItems.filter(item => !item.is_category).map(directory => directory.id);
+
+    //     //Ensure everything is inside the selected state arrays
+    //     let output = true;
+    //     for (let category_id of categories) {
+    //         if (!selected_category.includes(category_id)) {
+    //             output = false;
+    //             break;
+    //         }
+    //     }
+    //     for (let directory_id of directories) {
+    //         if (!selected_directory.includes(directory_id)) {
+    //             output = false;
+    //             break;
+    //         }
+    //     }
+    //     return output;
+    // }
+
+    checkChildItemsIndeterminate(category) {
+        const { selected_category, selected_directory } = this.state;
+        const childItems = this.getItemAndAllChildItems(category).slice(1); //Skipping first entry in the array because it is self
+        const categories = childItems.filter(item => Boolean(item.is_category)).map(category => category.id);
+        const directories = childItems.filter(item => !item.is_category).map(directory => directory.id);
+
+        //Ensure partial element is inside the selected state arrays
+        let output = false;
+        for (let category_id of categories) {
+            if (selected_category.includes(category_id)) {
+                output = true;
+                break;
+            }
+        }
+        for (let directory_id of directories) {
+            if (selected_directory.includes(directory_id)) {
+                output = true;
+                break;
+            }
+        }
+        return output;
     }
 
     //Render expand or minimise icon on a category entry based on whether it is expanded or minimised
@@ -225,6 +341,7 @@ class TreeView extends React.Component {
             ? <CheckIcon />
             : <CloseIcon />;
     }
+    
 
     renderCategory(category, index, depth = 0) {
         const calculatedPaddingSize = depth * paddingSize;
@@ -254,6 +371,7 @@ class TreeView extends React.Component {
                                     }
                                 }}
                                 checked={selected_category.includes(category.id)}
+                                indeterminate={!selected_category.includes(category.id) && this.checkChildItemsIndeterminate(category)}
                             />
                         </TableCell>
                         <TableCell className={classes.tableEntryCol}>
@@ -291,7 +409,7 @@ class TreeView extends React.Component {
                     <TableCell padding="checkbox">
                         <Checkbox 
                             onChange={() => { 
-                                if (selected_directory.includes(category.id)) {
+                                if (checkedArray.includes(category.id)) {
                                     return this.removeFromSelected(category);
                                 } else {
                                     return this.addToSelected(category, false);
@@ -321,6 +439,11 @@ class TreeView extends React.Component {
     //This method utilises recursion to render each of the categories,  child categories, and directory 
     //inside of a table row
     renderCategories() {
+        // console.log(this.getParentItem("1", false));
+        // console.log(this._isParentOf({
+        //     id: "6", name: "SERVICES & FACILITIES", has_directory: false, active: true, image: null,
+        //     child_category: [], tb_directories: [ {id: "1", name: "CHECK-OUT TIME", __typename: "TB_Directory"}, {id: "2", name: "IRON & IRONING BOARD", __typename: "TB_Directory"}]
+        // }, "1"));
         const { selected_category, selected_directory } = this.state;
         const { classes, data } = this.props;
 
@@ -377,6 +500,7 @@ class TreeView extends React.Component {
 
     render() {
         const { classes, data } = this.props;
+        const { dataTree } = this.state;
         return (
             <React.Fragment>
                 <div style={{marginTop: 30, marginBottom: 20, display: "flex", width: "50%"}}>
@@ -396,7 +520,7 @@ class TreeView extends React.Component {
                     </Button>
                 </div>
                 
-                {Boolean(data) && Array.isArray(data) && data.length > 0 && (
+                {Boolean(data) && Array.isArray(data) && data.length > 0 && Boolean(dataTree) && dataTree.length > 0 && (
                     <React.Fragment>
                         {this.renderCategories()}
                     </React.Fragment>
