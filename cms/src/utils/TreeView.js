@@ -274,7 +274,7 @@ class TreeView extends React.Component {
                 //An category with empty child
                 //Unselecting parent categories as well
                 this.setState({
-                    selected_category: selected_category.filter(category_id => category_id !== category.id || !parents.includes(category_id)),
+                    selected_category: selected_category.filter(category_id => category_id !== category.id && !parents.includes(category_id)),
                  })
             } else {
                 //Unselecting parent categories as well
