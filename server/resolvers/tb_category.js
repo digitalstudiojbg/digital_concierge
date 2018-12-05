@@ -55,7 +55,7 @@ export default {
             });
         },
         tb_directories: async tb_category => {
-            return await db.tb_directory.findAll({
+            const data = await db.tb_directory.findAll({
                 include: [
                     {
                         model: db.tb_category,
@@ -63,6 +63,9 @@ export default {
                     }
                 ]
             });
+
+            console.log(data);
+            return data;
         },
         tb_directory_type: async tb_category => {
             return await db.tb_directory_type.findById(

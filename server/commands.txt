@@ -67,3 +67,5 @@ node_modules/.bin/sequelize model:generate --name global_setting --attributes na
 node_modules/.bin/sequelize seed:generate --name global_setting
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-global_setting-and-venue
+
+node_modules/.bin/sequelize model:generate --name tb_directories_tb_categories --attributes active:boolean

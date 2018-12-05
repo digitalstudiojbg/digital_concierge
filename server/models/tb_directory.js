@@ -17,14 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            active: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
+
             image: DataTypes.STRING,
             phone: DataTypes.STRING,
             address: DataTypes.STRING,

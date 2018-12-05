@@ -22,14 +22,7 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            active: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
+
             image: {
                 type: Sequelize.STRING
             },

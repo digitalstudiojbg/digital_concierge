@@ -13,6 +13,14 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal("NOW()")
             },
+            active: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
+            },
             tbDirectoryId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
