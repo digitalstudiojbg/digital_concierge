@@ -55,17 +55,57 @@ export default {
             });
         },
         tb_directories: async tb_category => {
-            const data = await db.tb_directory.findAll({
+            /*return await db.tb_directory.findAll({
                 include: [
                     {
                         model: db.tb_category,
-                        where: { id: tb_category.id }
+                        where: { id: tb_category.id },
+                        through: {
+                            attributes: ["active"]
+                        }
+                    }
+                ]
+            });*/
+            const activeDirectoryList = await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id },
+                        through: { where: { active: true } }
                     }
                 ]
             });
 
-            console.log(data);
-            return data;
+            for (let index = 0; index < activeDirectoryList.length; ++index) {
+                activeDirectoryList[index].active = true;
+            }
+
+            const inactiveDirectoryList = await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id },
+                        through: { where: { active: false } }
+                    }
+                ]
+            });
+
+            for (let index = 0; index < inactiveDirectoryList.length; ++index) {
+                inactiveDirectoryList[index].active = false;
+            }
+
+            return [...activeDirectoryList, ...inactiveDirectoryList];
+        },
+        tb_directories_active: async tb_category => {
+            return await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id },
+                        through: { where: { active: true } }
+                    }
+                ]
+            });
         },
         tb_directory_type: async tb_category => {
             return await db.tb_directory_type.findById(

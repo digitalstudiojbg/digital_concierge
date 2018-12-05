@@ -26,9 +26,23 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     tb_directory.associate = function(models) {
+        /*
         tb_directory.belongsToMany(models.tb_category, {
             through: "tb_directories_tb_categories"
         });
+        */
+        tb_directory.belongsToMany(models.tb_category, {
+            through: models.tb_directories_tb_categories
+        });
+
+        /*
+        tb_directory.belongsToMany(models.tb_category, {
+    through: models.MoviePerson,
+    foreignKey: 'movie_id',
+    as: 'persons'
+});
+        */
+
         tb_directory.belongsTo(models.tb_directory_type, {
             foreignKey: { allowNull: false }
         });

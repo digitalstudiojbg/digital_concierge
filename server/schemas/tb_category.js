@@ -17,5 +17,6 @@ export default gql`
         child_category: [TB_Category]
         venues: [Venue]
         tb_directories: [TB_Directory]
+        tb_directories_active: [TB_Directory]
     }
 `;
