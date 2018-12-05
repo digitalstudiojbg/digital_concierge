@@ -9,6 +9,16 @@ export default {
             return await db.tb_directory.findAll();
         }
     },
+    Mutation: {
+        changeDirectoryStatus: async (root, { status }, { user }) => {
+            console.log(status);
+
+            /**
+             * Dummy return
+             */
+            return await db.tb_directory.findById(1);
+        }
+    },
     TB_Directory: {
         tb_categories: async tb_directory => {
             return await db.tb_category.findAll({

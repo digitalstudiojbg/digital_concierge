@@ -6,6 +6,10 @@ export default gql`
         tb_directories: [TB_Directory]
     }
 
+    extend type Mutation {
+        changeDirectoryStatus(status: Boolean): TB_Directory
+    }
+
     type TB_Directory {
         id: ID!
         name: String

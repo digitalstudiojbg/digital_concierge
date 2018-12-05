@@ -35,6 +35,7 @@ export default {
             });
         }
     },
+
     TB_Category: {
         child_category: async row => {
             return await db.tb_category.findAll({
