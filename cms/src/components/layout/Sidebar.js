@@ -12,29 +12,28 @@ import {
 
 const SIDEBAR_ITEMS = [
     {
-        name: "VIEW_SITE",
-        displayName: "View Site",
-        link: TABLET_CMS_INDEX_URL
+        name:
+            process.env.NODE_ENV === "production"
+                ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/tablet/"
+                : "http://localhost:5000",
+        displayName: "View Site"
+    },
+
+    {
+        name: TABLET_CMS_INDEX_URL,
+        displayName: "Dashboard"
     },
     {
-        name: "DASHBOARD",
-        displayName: "Dashboard",
-        link: TABLET_CMS_INDEX_URL
+        name: TABLET_CMS_LANDINGPAGE_URL,
+        displayName: "Landing Page"
     },
     {
-        name: "LANDING_PAGE",
-        displayName: "Landing Page",
-        link: TABLET_CMS_LANDINGPAGE_URL
+        name: TABLET_CMS_CONTENT_URL,
+        displayName: "Content"
     },
     {
-        name: "CONTENT",
-        displayName: "Content",
-        link: TABLET_CMS_CONTENT_URL
-    },
-    {
-        name: "SETTINGS",
-        displayName: "Settings",
-        link: TABLET_CMS_SETTINGS_URL
+        name: TABLET_CMS_SETTINGS_URL,
+        displayName: "Settings"
     }
 ];
 
@@ -56,9 +55,36 @@ const SidebarItem = styled.div`
 `;
 
 class Sidebar extends Component {
-    state = {
-        selectedItem: ""
-    };
+    constructor(props) {
+        super(props);
+        const { history } = this.props;
+        let urlPath;
+        if (history) {
+            switch (this.props.history.location.pathname) {
+                case TABLET_CMS_INDEX_URL:
+                    urlPath = TABLET_CMS_INDEX_URL;
+                    break;
+                case TABLET_CMS_INDEX_URL:
+                    urlPath = TABLET_CMS_INDEX_URL;
+                    break;
+                case TABLET_CMS_CONTENT_URL:
+                    urlPath = TABLET_CMS_CONTENT_URL;
+                    break;
+                case TABLET_CMS_LANDINGPAGE_URL:
+                    urlPath = TABLET_CMS_LANDINGPAGE_URL;
+                    break;
+                case TABLET_CMS_SETTINGS_URL:
+                    urlPath = TABLET_CMS_SETTINGS_URL;
+                    break;
+                default:
+                    urlPath = TABLET_CMS_INDEX_URL;
+            }
+        }
+
+        this.state = {
+            selectedItem: urlPath
+        };
+    }
 
     render() {
         const { selectedItem } = this.state;
@@ -78,7 +104,7 @@ class Sidebar extends Component {
                 }}
             >
                 {SIDEBAR_ITEMS.map((items, index) => {
-                    const { name, displayName, link } = items;
+                    const { name, displayName, tablet } = items;
                     return (
                         name &&
                         displayName && (
@@ -86,7 +112,9 @@ class Sidebar extends Component {
                                 key={index}
                                 onClick={() => {
                                     this.setState({ selectedItem: name });
-                                    link && this.props.history.push(link);
+                                    displayName === "View Site"
+                                        ? window.open(name, "_blank")
+                                        : name && this.props.history.push(name);
                                 }}
                                 selectedItem={selectedItem}
                                 expectedItem={name}
