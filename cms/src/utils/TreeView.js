@@ -16,6 +16,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
+import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from './Constants';
 
 const styles = theme => ({
     buttonCreate: {
@@ -64,12 +65,17 @@ const TreeEntry = styled.div`
  `;
 
 class TreeView extends React.Component {
-    state = {
-        expanded: [],
-        selected_category: [],
-        selected_directory: [],
-        dataTree: null
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            expanded: [],
+            selected_category: [],
+            selected_directory: [],
+            dataTree: null
+        };
+        this.navigateToCreateContent = this.navigateToCreateContent.bind(this);
+    }
+    
 
     componentDidMount() {
         //mapping data tree for easier querying
@@ -539,6 +545,11 @@ class TreeView extends React.Component {
         }
     }
 
+    navigateToCreateContent() {
+        const { history } = this.props;
+        history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+    }
+
     render() {
         const { classes, data } = this.props;
         const { dataTree } = this.state;
@@ -549,6 +560,7 @@ class TreeView extends React.Component {
                         variant="contained"
                         color="primary"
                         className={classes.buttonCreate}
+                        onClick={this.navigateToCreateContent}
                     >
                         CREATE
                     </Button>

@@ -9,6 +9,7 @@ import Loading from "../loading/Loading";
 
 class TabletContent extends Component {
     render() {
+        const { history } = this.props;
         return (
             <Query query={getTabletCategoryByVenue(1)}>
                 {({ loading, error, data }) => {
@@ -20,7 +21,6 @@ class TabletContent extends Component {
                         <ContainerDiv>
                             <div
                                 style={{
-                                    color: "rgb(113,116,152)",
                                     fontSize: "2.5vw"
                                 }}
                             >
@@ -28,7 +28,6 @@ class TabletContent extends Component {
                             </div>
                             <div
                                 style={{
-                                    color: "rgb(113,116,152)",
                                     fontSize: "1vw"
                                 }}
                             >
@@ -37,7 +36,7 @@ class TabletContent extends Component {
                                 CATEGORIES AND SUB-CATEGORIES. CLICK ON THE
                                 TITLE TO EDIT.
                             </div>
-                            <TreeView data={modifiedData} />
+                            <TreeView data={modifiedData} history={history} />
                         </ContainerDiv>
                     );
                 }}

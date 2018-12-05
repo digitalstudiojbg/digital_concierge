@@ -12,13 +12,21 @@ import {
     TABLET_CMS_LANDINGPAGE_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     TABLET_CMS_CONTENT_URL,
-    TABLET_CMS_SETTINGS_URL
+    TABLET_CMS_SETTINGS_URL,
+    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
 const TabletContent = lazy(() => import("../tablet/TabletContent"));
+const TabletCreateContent = lazy(() => import("../tablet/content/CreateContent"));
+const TabletCreateCategory = lazy(() => import("../tablet/content/CreateCategory"));
+const TabletCreateSubcategory = lazy(() => import("../tablet/content/CreateSubcategory"));
+const TabletCreateDirectory = lazy(() => import("../tablet/content/CreateDirectory"));
 
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
@@ -40,28 +48,56 @@ const routes = [
     },
     {
         path: TABLET_CMS_HOME_URL,
-        exact: false,
+        exact: true,
         sidebar: Sidebar,
         header: Header,
         main: TabletDashboard
     },
     {
         path: TABLET_CMS_SETTINGS_URL,
-        exact: false,
+        exact: true,
         sidebar: Sidebar,
         header: Header,
         main: TabletSetting
     },
     {
         path: TABLET_CMS_CONTENT_URL,
-        exact: false,
+        exact: true,
         sidebar: Sidebar,
         header: Header,
         main: TabletContent
     },
     {
+        path: TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletCreateContent
+    },
+    {
+        path: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletCreateCategory
+    },
+    {
+        path: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletCreateSubcategory
+    },
+    {
+        path: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletCreateDirectory
+    },
+    {
         path: TABLET_CMS_LANDINGPAGE_URL,
-        exact: false,
+        exact: true,
         sidebar: Sidebar,
         header: Header,
         main: TabletLandingPage
