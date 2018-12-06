@@ -26,23 +26,35 @@ class SingleImageUploader extends React.PureComponent {
         this.openFileBrowser = this.openFileBrowser.bind(this);
     }
 
+    componentDidMount() {
+        this.props.onRef(this);
+    }
+
+    componentWillUnmount() {
+        this.props.onRef(undefined);
+    }
+
     openFileBrowser() {
         this.dropzoneRef.current.open();
     }
 
     onDrop(images) {
-        this.setState({images});
+        this.setState({
+              images: images.map(file => Object.assign(file, {preview: URL.createObjectURL(file)}))
+        });
         this.props.updateImageName && this.props.updateImageName(images[0].name);
     }
 
     removeImage() {
-        this.setState({ image: null });
+        this.setState({ images: [] });
+        this.props.updateImageName && this.props.updateImageName("");
     }
 
     
     render() {
         const { classes } = this.props;
-        const { image } = this.state;
+        const { images } = this.state;
+        const image = images.length > 0 ? images[0] : null;
         return (
             <div style={{ width: "90%", border: "1px solid #CACED5", padding: 10}}>
                 {!Boolean(image) && (
@@ -62,7 +74,7 @@ class SingleImageUploader extends React.PureComponent {
                         }} 
                         onDrop={this.onDrop.bind(this)}
                     >
-                        {!Boolean(image) && (
+                        {!Boolean(image) ? (
                             <React.Fragment>
                                 <div style={{padding: 10, border: "1px solid #DDDFE7", borderRadius: 45}} onClick={this.openFileBrowser}>
                                     <div style={{padding: 10, border: "1px solid #DDDFE7", borderRadius: 35, display: "flex", alignItems: "center"}}>
@@ -76,6 +88,8 @@ class SingleImageUploader extends React.PureComponent {
                                     <p style={{color: "#aaaaaa", fontSize: "0.6vw"}}>YOUR FILES OR <span onClick={this.openFileBrowser} style={{color: "#3B86FF", textDecoration: "underline", fontWeight: 700}}>BROWSE</span></p>
                                 </div>
                             </React.Fragment>
+                        ) : (
+                            <img src={image.preview} alt="" style={{height: 320}} />
                         )}
                     </Dropzone>
                 </div>
