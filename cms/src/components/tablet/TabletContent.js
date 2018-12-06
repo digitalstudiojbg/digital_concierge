@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { ContainerDiv, modifyCategoryDirectoryData } from "../../utils/Constants";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router";
@@ -7,7 +7,7 @@ import { getTabletCategoryByVenue } from "../../data/query";
 import { Query } from "react-apollo";
 import Loading from "../loading/Loading";
 
-class TabletContent extends Component {
+class TabletContent extends PureComponent {
     render() {
         const { history } = this.props;
         return (

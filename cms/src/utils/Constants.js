@@ -32,6 +32,18 @@ export const ContainerDiv = styled.div`
     color: rgb(113,116,152);
 `;
 
+export const CreateContentContainerDiv = styled.div`
+    background-color: white;
+    color: rgb(113,116,152);
+    width: 70%;
+    border: 2px solid rgb(186,185,206);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    font-size: 1.7vw;
+    display: flex;
+`;
+
 //Helper recursive function to recursively modify the data received from GraphQL
 //Modification includes:
 //-Adding depth attribute 

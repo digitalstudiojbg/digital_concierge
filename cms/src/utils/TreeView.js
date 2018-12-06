@@ -64,7 +64,7 @@ const TreeEntry = styled.div`
     align-items: center;
  `;
 
-class TreeView extends React.Component {
+class TreeView extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
