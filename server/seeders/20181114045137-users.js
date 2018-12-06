@@ -31,7 +31,7 @@ module.exports = {
                     password: hash,
                     active: true,
                     roleId: 1,
-                    venueId: 2
+                    venueId: 3
                 }
             ],
             {}
