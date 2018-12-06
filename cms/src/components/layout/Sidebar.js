@@ -7,7 +7,11 @@ import {
     TABLET_CMS_LANDINGPAGE_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     TABLET_CMS_CONTENT_URL,
-    TABLET_CMS_SETTINGS_URL
+    TABLET_CMS_SETTINGS_URL,
+    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
 const SIDEBAR_ITEMS = [
@@ -31,6 +35,7 @@ const SIDEBAR_ITEMS = [
         name: TABLET_CMS_CONTENT_URL,
         displayName: "Content"
     },
+    
     {
         name: TABLET_CMS_SETTINGS_URL,
         displayName: "Settings"
@@ -75,6 +80,18 @@ class Sidebar extends Component {
                     break;
                 case TABLET_CMS_SETTINGS_URL:
                     urlPath = TABLET_CMS_SETTINGS_URL;
+                    break;
+                case TABLET_CMS_CREATE_CONTENT_INDEX_URL:
+                    urlPath = TABLET_CMS_CONTENT_URL;
+                    break;
+                case TABLET_CMS_CREATE_CONTENT_CATEGORY_URL:
+                    urlPath = TABLET_CMS_CONTENT_URL;
+                    break;
+                case TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL:
+                    urlPath = TABLET_CMS_CONTENT_URL;
+                    break;
+                case TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL:
+                    urlPath = TABLET_CMS_CONTENT_URL;
                     break;
                 default:
                     urlPath = TABLET_CMS_INDEX_URL;

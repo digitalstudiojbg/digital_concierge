@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { ContainerDiv, modifyCategoryDirectoryData } from "../../utils/Constants";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router";
@@ -7,8 +7,9 @@ import { getTabletCategoryByVenue } from "../../data/query";
 import { Query } from "react-apollo";
 import Loading from "../loading/Loading";
 
-class TabletContent extends Component {
+class TabletContent extends PureComponent {
     render() {
+        const { history } = this.props;
         return (
             <Query query={getTabletCategoryByVenue(1)}>
                 {({ loading, error, data }) => {
@@ -20,7 +21,6 @@ class TabletContent extends Component {
                         <ContainerDiv>
                             <div
                                 style={{
-                                    color: "rgb(113,116,152)",
                                     fontSize: "2.5vw"
                                 }}
                             >
@@ -28,7 +28,6 @@ class TabletContent extends Component {
                             </div>
                             <div
                                 style={{
-                                    color: "rgb(113,116,152)",
                                     fontSize: "1vw"
                                 }}
                             >
@@ -37,7 +36,7 @@ class TabletContent extends Component {
                                 CATEGORIES AND SUB-CATEGORIES. CLICK ON THE
                                 TITLE TO EDIT.
                             </div>
-                            <TreeView data={modifiedData} />
+                            <TreeView data={modifiedData} history={history} />
                         </ContainerDiv>
                     );
                 }}

@@ -15,6 +15,10 @@ export const TABLET_CMS_HOME_URL = "/tablet_cms/home";
 export const TABLET_CMS_LANDINGPAGE_URL = "/tablet_cms/landingpage";
 export const TABLET_CMS_CONTENT_URL = "/tablet_cms/content";
 export const TABLET_CMS_SETTINGS_URL = "/tablet_cms/settings";
+export const TABLET_CMS_CREATE_CONTENT_INDEX_URL = "/tablet_cms/content/create";
+export const TABLET_CMS_CREATE_CONTENT_CATEGORY_URL = "/tablet_cms/content/create/category";
+export const TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL = "/tablet_cms/content/create/subcategory";
+export const TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL = "/tablet_cms/content/create/directory";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
@@ -25,6 +29,19 @@ export const ContainerDiv = styled.div`
     background-color: rgb(246,246,246);
     padding-left: 20px;
     padding-top: 20px;
+    color: rgb(113,116,152);
+`;
+
+export const CreateContentContainerDiv = styled.div`
+    background-color: white;
+    color: rgb(113,116,152);
+    width: 70%;
+    border: 2px solid rgb(186,185,206);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    font-size: 1.7vw;
+    display: flex;
 `;
 
 //Helper recursive function to recursively modify the data received from GraphQL
