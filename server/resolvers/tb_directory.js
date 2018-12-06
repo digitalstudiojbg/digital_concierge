@@ -43,7 +43,6 @@ export default {
                 await select_directory.setTb_categories([select_category], {
                     through: { active: status }
                 });
-                console.log("123");
 
                 return select_directory;
             } catch (error) {
