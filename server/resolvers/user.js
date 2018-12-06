@@ -1,21 +1,17 @@
 import db from "../models";
 import { AuthenticationError } from "apollo-server-express";
+import { checkUserLogin } from "../utils/constant";
 
 export default {
     Query: {
         getCurrentUser: async (root, input, { user }) => {
             //if user is not logged in
-            if (!user) {
-                throw new AuthenticationError("Unauthorized");
-            }
+            await checkUserLogin(user);
 
             return user;
         },
         user: async (root, { id }, { user }) => {
-            //if user is not logged in
-            if (!user) {
-                throw new AuthenticationError("Unauthorized");
-            }
+            await checkUserLogin(user);
 
             //if user does not have "admin" permission
             /*if (user.role !== "admin") {
@@ -25,10 +21,7 @@ export default {
             return await db.user.findById(id);
         },
         users: async (root, input, { user }) => {
-            //if user is not logged in
-            if (!user) {
-                throw new AuthenticationError("Unauthorized");
-            }
+            await checkUserLogin(user);
 
             return await db.user.findAll();
         }

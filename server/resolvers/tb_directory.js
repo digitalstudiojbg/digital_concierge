@@ -1,5 +1,6 @@
 import db from "../models";
 import { UserInputError } from "apollo-server-express";
+import { checkUserVenueByCategory, checkUserLogin } from "../utils/constant";
 
 export default {
     Query: {
@@ -16,9 +17,12 @@ export default {
             { tbCategoryId, tbDirectoryId, status },
             { user }
         ) => {
+            await checkUserLogin(user);
+
             const select_directory = await db.tb_directory.findById(
                 tbDirectoryId
             );
+
             if (!select_directory) {
                 throw new UserInputError(
                     `TB_Directory with id ${tbDirectoryId} not found`
@@ -26,15 +30,21 @@ export default {
             }
 
             const select_category = await db.tb_category.findById(tbCategoryId);
+
             if (!select_category) {
                 throw new UserInputError(
                     `TB_Category with id ${tbCategoryId} not found`
                 );
             }
+
+            await checkUserVenueByCategory(user, select_category);
+
             try {
                 await select_directory.setTb_categories([select_category], {
                     through: { active: status }
                 });
+                console.log("123");
+
                 return select_directory;
             } catch (error) {
                 throw new UserInputError(
