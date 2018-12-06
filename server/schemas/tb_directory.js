@@ -7,7 +7,11 @@ export default gql`
     }
 
     extend type Mutation {
-        changeDirectoryStatus(status: Boolean): TB_Directory
+        changeDirectoryStatus(
+            tbCategoryId: Int
+            tbDirectoryId: Int
+            status: Boolean
+        ): TB_Directory
     }
 
     type TB_Directory {

@@ -1,4 +1,5 @@
 import db from "../models";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -10,13 +11,36 @@ export default {
         }
     },
     Mutation: {
-        changeDirectoryStatus: async (root, { status }, { user }) => {
-            console.log(status);
+        changeDirectoryStatus: async (
+            root,
+            { tbCategoryId, tbDirectoryId, status },
+            { user }
+        ) => {
+            const select_directory = await db.tb_directory.findById(
+                tbDirectoryId
+            );
+            if (!select_directory) {
+                throw new UserInputError(
+                    `TB_Directory with id ${tbDirectoryId} not found`
+                );
+            }
 
-            /**
-             * Dummy return
-             */
-            return await db.tb_directory.findById(1);
+            const select_category = await db.tb_category.findById(tbCategoryId);
+            if (!select_category) {
+                throw new UserInputError(
+                    `TB_Category with id ${tbCategoryId} not found`
+                );
+            }
+            try {
+                await select_directory.setTb_categories([select_category], {
+                    through: { active: status }
+                });
+                return select_directory;
+            } catch (error) {
+                throw new UserInputError(
+                    `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${tbCategoryId} status failed. `
+                );
+            }
         }
     },
     TB_Directory: {

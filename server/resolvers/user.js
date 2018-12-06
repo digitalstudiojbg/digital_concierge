@@ -1,4 +1,5 @@
 import db from "../models";
+import { AuthenticationError } from "apollo-server-express";
 
 export default {
     Query: {
