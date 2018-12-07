@@ -15,6 +15,16 @@ export default {
             return await db.ad_directory_type.findById(
                 ad_directory.adDirectoryTypeId
             );
+        },
+        ad_categories: async ad_directory => {
+            return await db.ad_category.findAll({
+                include: [
+                    {
+                        model: db.ad_directory,
+                        where: { id: ad_directory.id }
+                    }
+                ]
+            });
         }
     }
 };

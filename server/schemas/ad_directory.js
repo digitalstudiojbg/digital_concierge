@@ -11,5 +11,6 @@ export default gql`
         name: String
         active: Boolean
         ad_directory_type: AD_Directory_Type
+        ad_categories: [AD_Category]
     }
 `;

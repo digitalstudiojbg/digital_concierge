@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         ad_directory.belongsTo(models.ad_directory_type, {
             foreignKey: { allowNull: false }
         });
+        ad_directory.belongsToMany(models.ad_category, {
+            through: "ad_directories_ad_categories"
+        });
     };
     return ad_directory;
 };

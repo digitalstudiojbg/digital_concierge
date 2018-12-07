@@ -30,7 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     ad_category.associate = function(models) {
-        // associations can be defined here
+        ad_category.belongsToMany(models.ad_directory, {
+            through: "ad_directories_ad_categories"
+        });
     };
     return ad_category;
 };
