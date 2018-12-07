@@ -22,5 +22,6 @@ export default gql`
         tb_categories: [TB_Category]
         tb_landing_page: [TB_LANDING_PAGE]
         global_setting: [Global_Setting]
+        ad_categories: [AD_Category]
     }
 `;

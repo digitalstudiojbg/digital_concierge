@@ -69,3 +69,27 @@ node_modules/.bin/sequelize seed:generate --name global_setting
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-global_setting-and-venue
 
 node_modules/.bin/sequelize model:generate --name tb_directories_tb_categories --attributes active:boolean
+
+node_modules/.bin/sequelize model:generate --name ad_directory_type --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name ad_directory_type
+
+node_modules/.bin/sequelize model:generate --name ad_directory --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name ad_directory
+
+node_modules/.bin/sequelize model:generate --name ad_category --attributes name:string,is_parent:boolean
+
+node_modules/.bin/sequelize seed:generate --name ad_category
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-ad_directory-and-ad_directory_type
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_directory-and-ad_category
+
+node_modules/.bin/sequelize seed:generate --name ad_directories_ad_categories
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_category-and-venue
+
+node_modules/.bin/sequelize seed:generate --name ad_categories_venues
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_category-and-ad_directory

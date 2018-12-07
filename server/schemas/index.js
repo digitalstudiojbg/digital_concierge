@@ -9,6 +9,9 @@ import tb_directory_type_schema from "./tb_directory_type";
 import tb_directory_schema from "./tb_directory";
 import tb_landing_page_schema from "./tb_landing_page";
 import global_setting_schema from "./global_setting";
+import ad_directory_type_schema from "./ad_directory_type";
+import ad_directory_schema from "./ad_directory";
+import ad_category_schema from "./ad_category";
 
 const link_schema = gql`
     type Query {
@@ -33,5 +36,8 @@ export default [
     tb_directory_type_schema,
     tb_directory_schema,
     tb_landing_page_schema,
-    global_setting_schema
+    global_setting_schema,
+    ad_directory_type_schema,
+    ad_directory_schema,
+    ad_category_schema
 ];
