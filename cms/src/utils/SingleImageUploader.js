@@ -62,6 +62,7 @@ class SingleImageUploader extends React.PureComponent {
                 )}
                 <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <Dropzone ref={this.dropzoneRef} 
+                        disableClick={true}
                         style={{
                             position: "relative",
                             width: "90%",
