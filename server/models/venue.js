@@ -64,6 +64,9 @@ module.exports = (sequelize, DataTypes) => {
         });
         venue.hasOne(models.tb_landing_page);
         venue.hasOne(models.global_setting);
+        venue.belongsToMany(models.ad_category, {
+            through: "ad_categories_venues"
+        });
     };
     return venue;
 };

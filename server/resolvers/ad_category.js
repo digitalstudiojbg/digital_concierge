@@ -20,6 +20,16 @@ export default {
                     }
                 ]
             });
+        },
+        venues: async ad_category => {
+            return await db.venue.findAll({
+                include: [
+                    {
+                        model: db.ad_category,
+                        where: { id: ad_category.id }
+                    }
+                ]
+            });
         }
     }
 };

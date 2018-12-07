@@ -12,5 +12,6 @@ export default gql`
         active: Boolean
         is_parent: Boolean
         ad_directories: [AD_Directory]
+        venues: [Venue]
     }
 `;
