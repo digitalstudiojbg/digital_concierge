@@ -9,18 +9,18 @@ import styled from "styled-components";
 const CMSTitle = styled.p`
     margin-left: 0.5vw;
     color: rgb(124, 126, 162);
-    font-size: 1vw;
+    font-size: 1.2em;
     text-transform: uppercase;
 `;
 
 const WelcomeMessage = styled.p`
     color: rgb(166, 167, 173);
-    font-size: 1.2vw;
+    font-size: 1.2em;
 `;
 
 const ErrorWarningMessage = styled.p`
     color: rgb(166, 167, 173);
-    font-size: 1.2vw;
+    font-size: 1.2em;
     color: red;
 `;
 
@@ -197,7 +197,7 @@ class Login extends Component {
                                         style={{
                                             width: "100%",
                                             color: "white",
-                                            fontSize: "1.1vw",
+                                            fontSize: "1.3em",
                                             backgroundColor: COLOR_JBG_PURPLE
                                         }}
                                         onClick={this.handleClick.bind(this)}

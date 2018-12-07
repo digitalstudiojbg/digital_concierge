@@ -58,7 +58,7 @@ class SingleImageUploader extends React.PureComponent {
         return (
             <div style={{ width: "90%", border: "1px solid #CACED5", padding: 10}}>
                 {!Boolean(image) && (
-                    <p style={{fontSize: "0.6vw", color: "#4D4F5C", marginLeft: "1.2vw"}}>UPLOAD</p>
+                    <p style={{fontSize: "0.5em", color: "#4D4F5C", marginLeft: "1.2vw"}}>UPLOAD</p>
                 )}
                 <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
                     <Dropzone ref={this.dropzoneRef} 
@@ -83,9 +83,9 @@ class SingleImageUploader extends React.PureComponent {
                                         />
                                     </div>
                                 </div>
-                                <div style={{marginTop: 10, textAlign: "center", color: "#43425D", fontSize: "1.2vw"}}>
+                                <div style={{marginTop: 10, textAlign: "center", color: "#43425D", fontSize: "1em"}}>
                                     DRAG {'&'} DROP
-                                    <p style={{color: "#aaaaaa", fontSize: "0.6vw"}}>YOUR FILES OR <span onClick={this.openFileBrowser} style={{color: "#3B86FF", textDecoration: "underline", fontWeight: 700}}>BROWSE</span></p>
+                                    <p style={{color: "#aaaaaa", fontSize: "0.5em"}}>YOUR FILES OR <span onClick={this.openFileBrowser} style={{color: "#3B86FF", textDecoration: "underline", fontWeight: 700}}>BROWSE</span></p>
                                 </div>
                             </React.Fragment>
                         ) : (
