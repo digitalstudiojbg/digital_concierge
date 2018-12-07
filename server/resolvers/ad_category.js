@@ -10,5 +10,16 @@ export default {
         }
     },
 
-    TB_Category: {}
+    AD_Category: {
+        ad_directories: async ad_category => {
+            return await db.ad_directory.findAll({
+                include: [
+                    {
+                        model: db.ad_category,
+                        where: { id: ad_category.id }
+                    }
+                ]
+            });
+        }
+    }
 };

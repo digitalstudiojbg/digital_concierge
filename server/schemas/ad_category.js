@@ -11,5 +11,6 @@ export default gql`
         name: String
         active: Boolean
         is_parent: Boolean
+        ad_directories: [AD_Directory]
     }
 `;
