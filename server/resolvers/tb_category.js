@@ -9,21 +9,6 @@ export default {
             return await db.tb_category.findAll();
         },
         tb_categories_by_venue: async (root, { id }, { user }) => {
-            /*return await db.tb_category.findAll(
-                {
-                    where: {
-                        is_parent: true
-                    }
-                },
-                {
-                    include: [
-                        {
-                            model: db.venue,
-                            where: { id: id }
-                        }
-                    ]
-                }
-            );*/
             return await db.tb_category.findAll({
                 include: [
                     {

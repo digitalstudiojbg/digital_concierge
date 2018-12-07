@@ -7,6 +7,23 @@ export default {
         },
         ad_categories: async (root, input, { user }) => {
             return await db.ad_category.findAll();
+        },
+        ad_categories_by_venue: async (root, { id }, { user }) => {
+            return await db.ad_category.findAll(
+                {
+                    where: {
+                        is_parent: true
+                    }
+                },
+                {
+                    include: [
+                        {
+                            model: db.venue,
+                            where: { id: id }
+                        }
+                    ]
+                }
+            );
         }
     },
 
@@ -29,6 +46,13 @@ export default {
                         where: { id: ad_category.id }
                     }
                 ]
+            });
+        },
+        child_category: async row => {
+            return await db.ad_category.findAll({
+                where: {
+                    adCategoryId: row.id
+                }
             });
         }
     }

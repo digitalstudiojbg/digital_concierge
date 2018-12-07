@@ -91,3 +91,5 @@ node_modules/.bin/sequelize seed:generate --name ad_directories_ad_categories
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_category-and-venue
 
 node_modules/.bin/sequelize seed:generate --name ad_categories_venues
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_category-and-ad_directory
