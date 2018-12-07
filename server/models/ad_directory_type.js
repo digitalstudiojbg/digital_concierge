@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     ad_directory_type.associate = function(models) {
-        // associations can be defined here
+        ad_directory_type.hasMany(models.ad_directory);
     };
     return ad_directory_type;
 };

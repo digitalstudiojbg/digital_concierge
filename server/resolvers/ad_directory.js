@@ -10,5 +10,11 @@ export default {
         }
     },
 
-    AD_Directory: {}
+    AD_Directory: {
+        ad_directory_type: async ad_directory => {
+            return await db.ad_directory_type.findById(
+                ad_directory.adDirectoryTypeId
+            );
+        }
+    }
 };

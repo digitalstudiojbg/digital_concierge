@@ -81,3 +81,5 @@ node_modules/.bin/sequelize seed:generate --name ad_directory
 node_modules/.bin/sequelize model:generate --name ad_category --attributes name:string,is_parent:boolean
 
 node_modules/.bin/sequelize seed:generate --name ad_category
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-ad_directory-and-ad_directory_type

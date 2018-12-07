@@ -22,7 +22,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     ad_directory.associate = function(models) {
-        // associations can be defined here
+        ad_directory.belongsTo(models.ad_directory_type, {
+            foreignKey: { allowNull: false }
+        });
     };
     return ad_directory;
 };

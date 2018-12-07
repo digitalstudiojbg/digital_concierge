@@ -6,10 +6,16 @@ module.exports = {
             "ad_directories",
             [
                 {
-                    name: "ADVERTISEMENT 1"
+                    name: "ADVERTISEMENT 1",
+                    adDirectoryTypeId: 1
                 },
                 {
-                    name: "ADVERTISEMENT 2"
+                    name: "ADVERTISEMENT 2",
+                    adDirectoryTypeId: 1
+                },
+                {
+                    name: "ADVERTISEMENT 3",
+                    adDirectoryTypeId: 2
                 }
             ],
             {}
