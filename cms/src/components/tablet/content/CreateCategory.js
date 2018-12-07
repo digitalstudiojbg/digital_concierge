@@ -8,12 +8,24 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from "@material-ui/icons/Cancel";
 import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 const styles = theme => ({
     saveButton: {
         color: "white",
         background: "#A5A4BF",
     },
+    categoryNameTextField: {
+        width: "100%",
+    },
+    categoryNameFormHelper: {
+        fontSize: "0.7em",
+        marginLeft: "0px",
+    }
+});
+
+const CategorySchema = Yup.object().shape({
+    name: Yup.string().required('Required'),
 });
 
 class CreateCategory extends React.PureComponent {
@@ -42,9 +54,14 @@ class CreateCategory extends React.PureComponent {
             <ContainerDiv>
                 <Formik 
                     initialValues={{ name: '' }}
-                    onSubmit={(values) => alert(values.name)}
+                    onSubmit={(values, { setSubmitting }) => {
+                        //TODO: Add logic to send mutation to DB
+                        alert(values.name);
+                        setSubmitting(false);
+                    }}
+                    validationSchema={CategorySchema}
                 >
-                {({ isSubmitting, errors, values }) => 
+                {({ isSubmitting, errors, values, touched }) => 
                     <Form>
                         <div style={{display: "flex", alignItems: "center", marginBottom: 40}}>
                             <div style={{color: "rgb(35,38,92)", fontSize: "2.7em", width: "62%"}}>ADD CATEGORY</div>
@@ -65,7 +82,33 @@ class CreateCategory extends React.PureComponent {
                             </div>
                             <div style={{width: "50%"}}>
                                 <div style={{padding: "20px 20px 20px 0px"}}>CATEGORY TITLE:</div>
-                                <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} />
+                                {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
+                                <Field 
+                                    name="name"
+                                    validateOnBlur
+                                    validateOnChange
+                                    render={({ field, form }) => (
+                                        <TextField 
+                                            className={classes.categoryNameTextField}
+                                            variant="outlined"
+                                            name={field.name}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            onBlur={field.onBlur}
+                                            error={form.errors[field.name] && form.touched[field.name]}
+                                            helperText={
+                                                form.errors[field.name] &&
+                                                form.touched[field.name] &&
+                                                String(form.errors[field.name])
+                                            }
+                                            FormHelperTextProps={{
+                                                classes: {
+                                                    root: classes.categoryNameFormHelper
+                                                }
+                                            }}
+                                        />
+                                    )}
+                                />
                                 <div style={{width: "60%", marginTop: 40}}>
                                     <div style={{fontSize: "0.8em"}}>IMAGE NAME</div>
                                     <TextField
