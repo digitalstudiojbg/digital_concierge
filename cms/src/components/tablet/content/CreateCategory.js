@@ -47,8 +47,8 @@ class CreateCategory extends React.PureComponent {
                 {({ isSubmitting, errors, values }) => 
                     <Form>
                         <div style={{display: "flex", alignItems: "center", marginBottom: 40}}>
-                            <div style={{color: "rgb(35,38,92)", fontSize: "2.5vw", width: "62%"}}>ADD CATEGORY</div>
-                            <div style={{color: "rgb(35,38,92)", fontSize: "1vw", width: "10%"}}>
+                            <div style={{color: "rgb(35,38,92)", fontSize: "2.7em", width: "62%"}}>ADD CATEGORY</div>
+                            <div style={{color: "rgb(35,38,92)", fontSize: "1.2em", width: "10%"}}>
                                 <Button 
                                     type="submit" 
                                     disabled={ isSubmitting || Boolean(errors.name) || !Boolean(values.name) || values.name.length === 0 } 
@@ -65,9 +65,9 @@ class CreateCategory extends React.PureComponent {
                             </div>
                             <div style={{width: "50%"}}>
                                 <div style={{padding: "20px 20px 20px 0px"}}>CATEGORY TITLE:</div>
-                                <Field name="name" style={{width: "100%", height: "5vh", fontSize: "3vh"}} />
+                                <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} />
                                 <div style={{width: "60%", marginTop: 40}}>
-                                    <div style={{fontSize: "0.6vw"}}>IMAGE NAME</div>
+                                    <div style={{fontSize: "0.8em"}}>IMAGE NAME</div>
                                     <TextField
                                         disabled={true}
                                         value={this.state.imageName}

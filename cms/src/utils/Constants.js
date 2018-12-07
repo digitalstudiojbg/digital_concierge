@@ -40,7 +40,7 @@ export const CreateContentContainerDiv = styled.div`
     padding-left: 20px;
     padding-right: 20px;
     padding-bottom: 20px;
-    font-size: 1.7vw;
+    font-size: 1.9em;
     display: flex;
 `;
 

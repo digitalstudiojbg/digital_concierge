@@ -21,14 +21,14 @@ class TabletContent extends PureComponent {
                         <ContainerDiv>
                             <div
                                 style={{
-                                    fontSize: "2.5vw"
+                                    fontSize: "2.7em"
                                 }}
                             >
                                 CONTENT
                             </div>
                             <div
                                 style={{
-                                    fontSize: "1vw"
+                                    fontSize: "1.2em"
                                 }}
                             >
                                 MANAGE YOUR CONTENT ALL IN ONE PLACE. USE THE
