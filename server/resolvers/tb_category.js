@@ -29,6 +29,7 @@ export default {
                 }
             });
         },
+
         venues: async tb_category => {
             //return await db.venue.findById(tb_category.venueId);
             return await db.venue.findAll({
