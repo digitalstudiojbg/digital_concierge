@@ -28,6 +28,7 @@ export default {
                     `TB_Directory with id ${tbDirectoryId} not found`
                 );
             }
+
             const select_category = await db.tb_category.findById(tbCategoryId);
 
             if (!select_category) {
