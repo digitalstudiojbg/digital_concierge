@@ -27,11 +27,11 @@ class SingleImageUploader extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.props.onRef(this);
+        this.props.onRef && this.props.onRef(this);
     }
 
     componentWillUnmount() {
-        this.props.onRef(undefined);
+        this.props.onRef && this.props.onRef(undefined);
     }
 
     openFileBrowser() {
