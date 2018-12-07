@@ -9,6 +9,9 @@ import tb_directory_type_resolver from "./tb_directory_type";
 import tb_directory_resolver from "./tb_directory";
 import tb_landing_page_resolver from "./tb_landing_page";
 import global_setting_resolver from "./global_setting";
+import ad_directory_type_resolver from "./ad_directory_type";
+import ad_directory_resolver from "./ad_directory";
+import ad_category_resolver from "./ad_category";
 
 export default [
     user_resolver,
@@ -21,5 +24,8 @@ export default [
     tb_directory_type_resolver,
     tb_directory_resolver,
     tb_landing_page_resolver,
-    global_setting_resolver
+    global_setting_resolver,
+    ad_directory_type_resolver,
+    ad_directory_resolver,
+    ad_category_resolver
 ];
