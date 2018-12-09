@@ -93,3 +93,9 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize seed:generate --name ad_categories_venues
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_category-and-ad_directory
+
+node_modules/.bin/sequelize model:generate --name tb_media --attributes path:string,type:string
+
+node_modules/.bin/sequelize seed:generate --name tb_media
+
+ 
