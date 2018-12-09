@@ -6,14 +6,14 @@
             "image": "digitalstudiojbg/dc-server",
             "hostname": "api",
             "essential": false,
-            "memory": 128
+            "memory": 512
         }, 
         {
             "name": "cms",
             "image": "digitalstudiojbg/dc-cms",
             "hostname": "cms",
             "essential": false,
-            "memory": 128
+            "memory": 256
         },
         {
             "name": "tablet",
@@ -41,7 +41,7 @@
                 }
             ],
             "links": ["cms", "server", "tablet", "touchscreen"],
-            "memory": 128
+            "memory": 256
         }
     ]
 }
