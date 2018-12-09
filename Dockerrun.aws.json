@@ -2,13 +2,6 @@
     "AWSEBDockerrunVersion": 2,
     "containerDefinitions": [
         {
-            "name": "cms",
-            "image": "digitalstudiojbg/dc-cms",
-            "hostname": "cms",
-            "essential": false,
-            "memory": 128
-        },
-        {
             "name": "server",
             "image": "digitalstudiojbg/dc-server",
             "hostname": "api",
@@ -16,9 +9,9 @@
             "memory": 128
         }, 
         {
-            "name": "touchscreen",
-            "image": "digitalstudiojbg/dc-touchscreen",
-            "hostname": "touchscreen",
+            "name": "cms",
+            "image": "digitalstudiojbg/dc-cms",
+            "hostname": "cms",
             "essential": false,
             "memory": 128
         },
@@ -26,6 +19,13 @@
             "name": "tablet",
             "image": "digitalstudiojbg/dc-tablet",
             "hostname": "tablet",
+            "essential": false,
+            "memory": 128
+        },
+        {
+            "name": "touchscreen",
+            "image": "digitalstudiojbg/dc-touchscreen",
+            "hostname": "touchscreen",
             "essential": false,
             "memory": 128
         },
