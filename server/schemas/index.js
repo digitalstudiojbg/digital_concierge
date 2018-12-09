@@ -12,6 +12,7 @@ import global_setting_schema from "./global_setting";
 import ad_directory_type_schema from "./ad_directory_type";
 import ad_directory_schema from "./ad_directory";
 import ad_category_schema from "./ad_category";
+import tb_media_schema from "./tb_media";
 
 const link_schema = gql`
     type Query {
@@ -39,5 +40,6 @@ export default [
     global_setting_schema,
     ad_directory_type_schema,
     ad_directory_schema,
-    ad_category_schema
+    ad_category_schema,
+    tb_media_schema
 ];
