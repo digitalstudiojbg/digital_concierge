@@ -10,5 +10,6 @@ export default gql`
         id: ID!
         type: String
         path: String
+        venue: Venue
     }
 `;

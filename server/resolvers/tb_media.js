@@ -10,5 +10,9 @@ export default {
             return await db.tb_media.findAll();
         }
     },
-    TB_MEDIA: {}
+    TB_MEDIA: {
+        venue: async tb_media => {
+            return await db.venue.findById(tb_media.venueId);
+        }
+    }
 };

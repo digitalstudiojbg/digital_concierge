@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     tb_media.associate = function(models) {
-        // associations can be defined here
+        tb_media.belongsTo(models.venue, {
+            foreignKey: { allowNull: false }
+        });
     };
     return tb_media;
 };
