@@ -15,6 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
     saveButton: {
@@ -87,7 +88,8 @@ class CreateCategory extends React.PureComponent {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, is_sub_category } = this.props;
+        const titleText = is_sub_category ? "SUB-CATEGORY TITLE:" : "CATEGORY TITLE:"
 
         return (
             <ContainerDiv>
@@ -131,7 +133,7 @@ class CreateCategory extends React.PureComponent {
                                 <SingleImageUploader onRef={ref => (this.imageUploaderRef = ref)} updateImageName={this.changeImageName} />
                             </div>
                             <div style={{width: "50%"}}>
-                                <div style={{padding: "20px 20px 20px 0px"}}>CATEGORY TITLE:</div>
+                                <div style={{padding: "20px 20px 20px 0px"}}>{titleText}</div>
                                 {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
                                 <Field 
                                     name="name"
@@ -226,6 +228,14 @@ class CreateCategory extends React.PureComponent {
             </ContainerDiv>
         );
     }
+}
+
+CreateCategory.defaultProps = {
+    is_sub_category: false
+};
+
+CreateCategory.propTypes = {
+    is_sub_category: PropTypes.bool
 }
 
 export default withStyles(styles)(CreateCategory);

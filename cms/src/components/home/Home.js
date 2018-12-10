@@ -25,7 +25,6 @@ const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
 const TabletContent = lazy(() => import("../tablet/TabletContent"));
 const TabletCreateContent = lazy(() => import("../tablet/content/CreateContent"));
 const TabletCreateCategory = lazy(() => import("../tablet/content/CreateCategory"));
-const TabletCreateSubcategory = lazy(() => import("../tablet/content/CreateSubcategory"));
 const TabletCreateDirectory = lazy(() => import("../tablet/content/CreateDirectory"));
 
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
@@ -37,77 +36,88 @@ const routes = [
         path: WELCOME_URL,
         exact: true,
         header: Header,
-        main: Welcome
+        main: Welcome,
+        withProps: {}
     },
     {
         path: TABLET_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletDashboard
+        main: TabletDashboard,
+        withProps: {}
     },
     {
         path: TABLET_CMS_HOME_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletDashboard
+        main: TabletDashboard,
+        withProps: {}
     },
     {
         path: TABLET_CMS_SETTINGS_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletSetting
+        main: TabletSetting,
+        withProps: {}
     },
     {
         path: TABLET_CMS_CONTENT_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletContent
+        main: TabletContent,
+        withProps: {}
     },
     {
         path: TABLET_CMS_CREATE_CONTENT_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletCreateContent
+        main: TabletCreateContent,
+        withProps: {}
     },
     {
         path: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletCreateCategory
+        main: TabletCreateCategory,
+        withProps: {}
     },
     {
         path: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletCreateSubcategory
+        main: TabletCreateCategory,
+        withProps: { is_sub_category : true }
     },
     {
         path: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletCreateDirectory
+        main: TabletCreateDirectory,
+        withProps: {}
     },
     {
         path: TABLET_CMS_LANDINGPAGE_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: TabletLandingPage
+        main: TabletLandingPage,
+        withProps: {}
     },
     {
         path: TOUCHSCREEN_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
-        main: Touchscreen
+        main: Touchscreen,
+        withProps: {}
     }
 ];
 
@@ -164,6 +174,7 @@ class Home extends Component {
                                                     path={route.path}
                                                     exact={route.exact}
                                                     component={route.main}
+                                                    withProps={route.withProps}
                                                 />
                                             </Suspense>
                                         )
