@@ -105,3 +105,5 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_landing_page-and-tb_media
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-tb_media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_directories-and-tb_media

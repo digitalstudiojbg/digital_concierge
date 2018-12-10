@@ -14,5 +14,6 @@ export default gql`
         tb_directories: [TB_Directory]
         tb_landing_pages: [TB_LANDING_PAGE]
         tb_categories: [TB_Category]
+        ad_directories: [AD_Directory]
     }
 `;
