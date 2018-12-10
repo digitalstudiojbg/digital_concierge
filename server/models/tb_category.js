@@ -54,6 +54,10 @@ module.exports = (sequelize, DataTypes) => {
         tb_category.belongsTo(models.tb_directory_type, {
             foreignKey: { allowNull: false }
         });
+
+        tb_category.belongsToMany(models.tb_media, {
+            through: "tb_categories_tb_media"
+        });
     };
     return tb_category;
 };

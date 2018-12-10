@@ -98,6 +98,16 @@ export default {
             return await db.tb_directory_type.findById(
                 tb_category.tbDirectoryTypeId
             );
-        }
+        },
+        tb_media: async tb_category => {
+            return await db.tb_media.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id }
+                    }
+                ]
+            });
+        },
     }
 };

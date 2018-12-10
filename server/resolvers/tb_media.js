@@ -34,5 +34,15 @@ export default {
                 ]
             });
         },
+        tb_categories: async tb_media => {
+            return await db.tb_category.findAll({
+                include: [
+                    {
+                        model: db.tb_media,
+                        where: { id: tb_media.id }
+                    }
+                ]
+            });
+        },
     }
 };

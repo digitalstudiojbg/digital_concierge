@@ -13,5 +13,6 @@ export default gql`
         venue: Venue
         tb_directories: [TB_Directory]
         tb_landing_pages: [TB_LANDING_PAGE]
+        tb_categories: [TB_Category]
     }
 `;

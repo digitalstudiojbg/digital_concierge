@@ -103,3 +103,5 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_directory-and-tb_media
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_landing_page-and-tb_media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tb_category-and-tb_media
