@@ -21,7 +21,7 @@ module.exports = {
                     key: "id"
                 }
             },
-            tbMediaId: {
+            tbMediumId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
