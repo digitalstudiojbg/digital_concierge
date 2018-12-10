@@ -17,7 +17,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
-import { withApollo } from "react-apollo";
+import { Mutation } from "react-apollo";
 import { changeDirectoryStatus } from "../data/mutation";
 
 const styles = theme => ({
@@ -441,30 +441,81 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    handleVisibleOrInvisible(row) {
-        console.log(row);
-        console.log("handleVisibleOrInvisible");
-        console.log(this.getItemAndAllChildItems(row));
-        console.log(
+    handleVisibleOrInvisible(row, action) {
+        //const getUpdateList = this.getItemAndAllChildItems(row, true);
+
+        //const selectedRow = getUpdateList[0];
+
+        /**
+         * If selected row is directory
+         */
+        if (!row.is_category) {
+            //console.log(row);
+
+            const parents = row.hash_id.split("-");
+            const lastParentId = parents[parents.length - 2];
+
+            const lastParent = this.state.dataTree.find(element => {
+                return (element.id = lastParentId);
+            });
+
+            //console.log(lastParent);
+            //console.log(row.id);
+
+            console.log(row.hash_id);
+
+            action({
+                variables: {
+                    tbDirectoryId: parseInt(row.id),
+                    tbCategoryId: parseInt(lastParentId),
+                    status: !row.active
+                }
+            });
+        }
+
+        /* 
+        !getUpdateList[0].is_category &&
+            action({
+                variables: { tbDirectoryId: getUpdateList[0].id, tbCategoryId: 10, status: true }
+            });
+        */
+        /*action({
+            variables: { tbDirectoryId: 3, tbCategoryId: 10, status: true }
+        });*/
+        /*console.log(
             this.props.client.mutate({
                 mutation: changeDirectoryStatus()
             })
-        );
+        );*/
     }
 
     renderCheck(row) {
-        return row.active ? (
-            <CheckIcon
-                onClick={() => {
-                    this.handleVisibleOrInvisible(row);
+        return (
+            <Mutation
+                mutation={changeDirectoryStatus()}
+                update={(cache, { data }) => {
+                    console.log(data);
                 }}
-            />
-        ) : (
-            <CloseIcon
-                onClick={() => {
-                    this.handleVisibleOrInvisible(row);
+            >
+                {(action, { loading, error, data }) => {
+                    if (loading) return <p>Loading</p>;
+                    if (error) return `Error! ${error.message}`;
+
+                    return row.active ? (
+                        <CheckIcon
+                            onClick={() => {
+                                this.handleVisibleOrInvisible(row, action);
+                            }}
+                        />
+                    ) : (
+                        <CloseIcon
+                            onClick={() => {
+                                this.handleVisibleOrInvisible(row, action);
+                            }}
+                        />
+                    );
                 }}
-            />
+            </Mutation>
         );
     }
 
@@ -764,4 +815,4 @@ TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default withApollo(withStyles(styles)(TreeView));
+export default withStyles(styles)(TreeView);

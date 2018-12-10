@@ -37,23 +37,20 @@ export default {
                 );
             }
 
-            //await checkUserVenueByCategory(user, select_category);
+            await checkUserVenueByCategory(user, select_category);
 
-            console.log(Object.keys(select_directory.__proto__));
-
-            //try {
-            await select_directory.setTb_categories(select_category, {
-                through: { active: status }
-            });
-
-            return select_directory;
-            // } catch (error) {
-            //     console.log(error);
-
-            //     throw new UserInputError(
-            //         `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${tbCategoryId} status failed. `
-            //     );
-            // }
+            try {
+                await select_directory.addTb_category(select_category, {
+                    through: { active: status }
+                });
+                return select_directory;
+            } catch (error) {
+                throw new UserInputError(
+                    `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${tbCategoryId} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
         }
     },
     TB_Directory: {

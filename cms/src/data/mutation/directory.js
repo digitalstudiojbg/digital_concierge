@@ -2,11 +2,15 @@ import gql from "graphql-tag";
 
 export const changeDirectoryStatus = () => {
     return gql`
-        mutation changeDirectoryStatus {
+        mutation changeDirectoryStatus(
+            $tbDirectoryId: Int!
+            $tbCategoryId: Int!
+            $status: Boolean
+        ) {
             changeDirectoryStatus(
-                tbDirectoryId: 3
-                tbCategoryId: 10
-                status: false
+                tbDirectoryId: $tbDirectoryId
+                tbCategoryId: $tbCategoryId
+                status: $status
             ) {
                 name
             }
