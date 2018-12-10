@@ -16,5 +16,6 @@ export default gql`
         bg_color: String
         tb_directory_type: TB_Directory_Type
         venue: Venue
+        tb_media: [TB_MEDIA]
     }
 `;

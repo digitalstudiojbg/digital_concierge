@@ -23,6 +23,16 @@ export default {
                     }
                 ]
             });
-        }
+        },
+        tb_landing_pages: async tb_media => {
+            return await db.tb_landing_page.findAll({
+                include: [
+                    {
+                        model: db.tb_media,
+                        where: { id: tb_media.id }
+                    }
+                ]
+            });
+        },
     }
 };

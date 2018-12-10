@@ -27,6 +27,16 @@ export default {
         },
         venue: async tb_landing_page => {
             return await db.venue.findById(tb_landing_page.venueId);
+        },
+        tb_media: async tb_landing_page => {
+            return await db.tb_media.findAll({
+                include: [
+                    {
+                        model: db.tb_landing_page,
+                        where: { id: tb_landing_page.id }
+                    }
+                ]
+            });
         }
     }
 };

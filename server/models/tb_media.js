@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         tb_media.belongsToMany(models.tb_directory, {
             through: "tb_directories_tb_media"
         });
+
+        tb_media.belongsToMany(models.tb_landing_page, {
+            through: "tb_landing_pages_tb_media"
+        });
     };
     return tb_media;
 };
