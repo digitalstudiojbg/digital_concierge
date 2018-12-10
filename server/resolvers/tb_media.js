@@ -13,6 +13,16 @@ export default {
     TB_MEDIA: {
         venue: async tb_media => {
             return await db.venue.findById(tb_media.venueId);
+        },
+        tb_directories: async tb_media => {
+            return await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_media,
+                        where: { id: tb_media.id }
+                    }
+                ]
+            });
         }
     }
 };

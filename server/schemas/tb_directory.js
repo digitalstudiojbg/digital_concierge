@@ -25,5 +25,6 @@ export default gql`
         opening_hours: String
         tb_categories: [TB_Category]
         tb_directory_type: TB_Directory_Type
+        tb_media: [TB_MEDIA]
     }
 `;

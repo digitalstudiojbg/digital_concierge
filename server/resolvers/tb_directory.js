@@ -67,6 +67,16 @@ export default {
             return await db.tb_directory_type.findById(
                 tb_directory.tbDirectoryTypeId
             );
+        },
+        tb_media: async tb_directory => {
+            return await db.tb_media.findAll({
+                include: [
+                    {
+                        model: db.tb_directory,
+                        where: { id: tb_directory.id }
+                    }
+                ]
+            });
         }
     }
 };
