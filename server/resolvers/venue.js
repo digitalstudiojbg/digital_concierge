@@ -64,6 +64,13 @@ export default {
                     }
                 ]
             });
+        },
+        tb_media: async venue => {
+            return await db.tb_media.findAll({
+                where: {
+                    venueId: venue.id
+                }
+            });
         }
     }
 };

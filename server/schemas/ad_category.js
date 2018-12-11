@@ -15,5 +15,6 @@ export default gql`
         ad_directories: [AD_Directory]
         venues: [Venue]
         child_category: [AD_Category]
+        tb_media: [TB_MEDIA]
     }
 `;

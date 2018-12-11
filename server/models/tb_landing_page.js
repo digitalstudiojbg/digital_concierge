@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         tb_landing_page.belongsTo(models.venue, {
             foreignKey: { allowNull: false }
         });
+
+        tb_landing_page.belongsToMany(models.tb_media, {
+            through: "tb_landing_pages_tb_media"
+        });
     };
     return tb_landing_page;
 };

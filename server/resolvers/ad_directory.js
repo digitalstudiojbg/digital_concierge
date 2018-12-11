@@ -25,6 +25,16 @@ export default {
                     }
                 ]
             });
-        }
+        },
+        tb_media: async ad_directory => {
+            return await db.tb_media.findAll({
+                include: [
+                    {
+                        model: db.ad_directory,
+                        where: { id: ad_directory.id }
+                    }
+                ]
+            });
+        },
     }
 };

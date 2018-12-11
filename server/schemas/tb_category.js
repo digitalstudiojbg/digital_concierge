@@ -25,5 +25,6 @@ export default gql`
         venues: [Venue]
         tb_directories: [TB_Directory]
         tb_directories_active: [TB_Directory]
+        tb_media: [TB_MEDIA]
     }
 `;

@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         ad_directory.belongsToMany(models.ad_category, {
             through: "ad_directories_ad_categories"
         });
+        ad_directory.belongsToMany(models.tb_media, {
+            through: "ad_directories_tb_media"
+        });
     };
     return ad_directory;
 };
