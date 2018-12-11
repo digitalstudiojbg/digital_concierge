@@ -1,5 +1,5 @@
 import React from 'react'
-import { ContainerDiv, CreateContentContainerDiv, TABLET_CMS_CREATE_CONTENT_INDEX_URL } from '../../../utils/Constants';
+import { ContainerDiv, CreateContentContainerDiv, TABLET_CMS_CREATE_CONTENT_INDEX_URL, modifyCategoryDirectoryData } from '../../../utils/Constants';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,6 +15,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
+import { Query } from "react-apollo";
+import Loading from "../../loading/Loading";
+import { withApollo } from "react-apollo";
+import { getTabletCategoryByVenue } from "../../../data/query";
 import PropTypes from 'prop-types';
 
 const styles = theme => ({
@@ -89,7 +94,8 @@ class CreateCategory extends React.PureComponent {
 
     render() {
         const { classes, is_sub_category } = this.props;
-        const titleText = is_sub_category ? "SUB-CATEGORY TITLE:" : "CATEGORY TITLE:"
+        const titleText = is_sub_category ? "ADD SUB-CATEGORY" : "ADD CATEGORY";
+        const subTitleText = is_sub_category ? "SUB-CATEGORY TITLE:" : "CATEGORY TITLE:";
 
         return (
             <ContainerDiv>
@@ -105,7 +111,7 @@ class CreateCategory extends React.PureComponent {
                 {({ isSubmitting, errors, values, }) => 
                     <Form>
                         <div style={{display: "flex", alignItems: "center", marginBottom: 40}}>
-                            <div style={{color: "rgb(35,38,92)", fontSize: "2.7em", width: "52%"}}>ADD CATEGORY</div>
+                            <div style={{color: "rgb(35,38,92)", fontSize: "2.7em", width: "52%"}}>{titleText}</div>
                             <div style={{width: "10%"}}>
                                 <Button 
                                     className={classes.cancelButton}
@@ -133,7 +139,7 @@ class CreateCategory extends React.PureComponent {
                                 <SingleImageUploader onRef={ref => (this.imageUploaderRef = ref)} updateImageName={this.changeImageName} />
                             </div>
                             <div style={{width: "50%"}}>
-                                <div style={{padding: "20px 20px 20px 0px"}}>{titleText}</div>
+                                <div style={{padding: "20px 20px 20px 0px"}}>{subTitleText}</div>
                                 {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
                                 <Field 
                                     name="name"
@@ -179,6 +185,19 @@ class CreateCategory extends React.PureComponent {
                                         }}
                                     />
                                 </div>
+                                {is_sub_category && (
+                                    <Query query={getTabletCategoryByVenue(1)}>
+                                        {({ loading, error, data }) => {
+                                        if (loading) return <Loading loadingData />;
+                                        if (error) return `Error! ${error.message}`;
+                                        console.log(data);
+                                        const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
+                                        return (
+                                            <TreeviewCheckbox data={modifiedData} />
+                                        );
+                                        }}
+                                    </Query>
+                                )}
                             </div>
                         </CreateContentContainerDiv>
                     </Form>
@@ -238,4 +257,4 @@ CreateCategory.propTypes = {
     is_sub_category: PropTypes.bool
 }
 
-export default withStyles(styles)(CreateCategory);
+export default withApollo(withStyles(styles)(CreateCategory));
