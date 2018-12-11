@@ -62,12 +62,15 @@ class TreeviewCheckbox extends React.PureComponent {
     //Adding category and / or directory ids into their relevant state arrays (selected_category or selected_directory)
     addToSelected(category_id) {
         const { selected_category } = this.state;
+        const { updateSelectedCategory } = this.props;
         if (selected_category.indexOf(category_id) === -1) {
             this.setState({
                 selected_category: [
                     ...selected_category,
                     category_id
                 ]
+            }, () => {
+                updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
             });
         }
     }
@@ -75,6 +78,7 @@ class TreeviewCheckbox extends React.PureComponent {
     //Removing category and / or directory ids from their relevant state arrays (selected_category or selected_directory)
     removeFromSelected(category_id) {
         const { selected_category } = this.state;
+        const { updateSelectedCategory } = this.props;
         const index = selected_category.indexOf(category_id);
         if (index !== -1) {
             this.setState({
@@ -82,6 +86,8 @@ class TreeviewCheckbox extends React.PureComponent {
                     ...selected_category.slice(0, index),
                     ...selected_category.slice(index + 1)
                 ]
+            }, () => {
+                updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
             });
         }
     }
@@ -192,7 +198,8 @@ class TreeviewCheckbox extends React.PureComponent {
 }
 
 TreeviewCheckbox.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object)
+    data: PropTypes.arrayOf(PropTypes.object),
+    updateSelectedCategory: PropTypes.func,
 };
 
 export default withStyles(styles)(TreeviewCheckbox);

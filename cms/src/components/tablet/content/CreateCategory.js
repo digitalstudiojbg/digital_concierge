@@ -56,7 +56,9 @@ class CreateCategory extends React.PureComponent {
             imageName: "",
             openDialog: false,
             whichDialog: "",
+            selected_category: [],
         }
+        this.updateSelectedCategory = this.updateSelectedCategory.bind(this);
         this.changeImageName = this.changeImageName.bind(this);
         this.imageUploaderRef = React.createRef();
         this.removeImage = this.removeImage.bind(this);
@@ -64,6 +66,10 @@ class CreateCategory extends React.PureComponent {
         this.openDialogImage = this.openDialogImage.bind(this);
         this.openDialogCancel = this.openDialogCancel.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
+    }
+
+    updateSelectedCategory(selected_category) {
+        this.setState({ selected_category });
     }
 
     changeImageName(imageName) {
@@ -186,17 +192,19 @@ class CreateCategory extends React.PureComponent {
                                     />
                                 </div>
                                 {is_sub_category && (
-                                    <Query query={getTabletCategoryByVenue(1)}>
-                                        {({ loading, error, data }) => {
-                                        if (loading) return <Loading loadingData />;
-                                        if (error) return `Error! ${error.message}`;
-                                        console.log(data);
-                                        const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
-                                        return (
-                                            <TreeviewCheckbox data={modifiedData} />
-                                        );
-                                        }}
-                                    </Query>
+                                    <React.Fragment>
+                                        <div style={{fontSize: "0.8em", marginTop: 20}}>SELECT PARENT CATEGORY</div>
+                                        <Query query={getTabletCategoryByVenue(1)}>
+                                            {({ loading, error, data }) => {
+                                            if (loading) return <Loading loadingData />;
+                                            if (error) return `Error! ${error.message}`;
+                                            const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
+                                            return (
+                                                <TreeviewCheckbox data={modifiedData} updateSelectedCategory={this.updateSelectedCategory} />
+                                            );
+                                            }}
+                                        </Query>
+                                    </React.Fragment>
                                 )}
                             </div>
                         </CreateContentContainerDiv>
