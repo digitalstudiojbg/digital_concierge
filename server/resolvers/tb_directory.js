@@ -1,6 +1,10 @@
 import db from "../models";
 import { UserInputError } from "apollo-server-express";
-import { checkUserVenueByCategory, checkUserLogin } from "../utils/constant";
+import {
+    checkUserVenueByCategory,
+    checkUserLogin,
+    asyncForEach
+} from "../utils/constant";
 
 export default {
     Query: {
@@ -12,48 +16,70 @@ export default {
         }
     },
     Mutation: {
-        changeDirectoryStatus: async (
+        changeDirectoryAndCategoryStatus: async (
             root,
-            { tbCategoryId, tbDirectoryId, status },
+            { tbCategoryIdList, tbDirectoryIdList, status },
             { user }
         ) => {
             await checkUserLogin(user);
-
-            const select_directory = await db.tb_directory.findById(
-                tbDirectoryId
-            );
-
-            if (!select_directory) {
-                throw new UserInputError(
-                    `TB_Directory with id ${tbDirectoryId} not found`
-                );
+            if (tbDirectoryIdList) {
+                await asyncForEach(tbDirectoryIdList, async each => {
+                    const select_directory = await db.tb_directory.findById(
+                        each.tbDirectoryId
+                    );
+                    if (!select_directory) {
+                        throw new UserInputError(
+                            `TB_Directory with id ${
+                                each.tbDirectoryId
+                            } not found`
+                        );
+                    }
+                    const select_category = await db.tb_category.findById(
+                        each.tbCategoryId
+                    );
+                    if (!select_category) {
+                        throw new UserInputError(
+                            `TB_Category with id ${each.tbCategoryId} not found`
+                        );
+                    }
+                    await checkUserVenueByCategory(user, select_category);
+                    try {
+                        await select_directory.addTb_category(select_category, {
+                            through: { active: status }
+                        });
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Update TB_Directory id ${
+                                each.tbDirectoryId
+                            } for TB_Category id ${
+                                each.tbCategoryId
+                            } status failed.\nError Message: ${error.message}`
+                        );
+                    }
+                });
             }
-
-            const select_category = await db.tb_category.findById(tbCategoryId);
-
-            if (!select_category) {
-                throw new UserInputError(
-                    `TB_Category with id ${tbCategoryId} not found`
-                );
+            if (tbCategoryIdList) {
+                await asyncForEach(tbCategoryIdList, async each => {
+                    const select_category = await db.tb_category.findById(each);
+                    if (!select_category) {
+                        throw new UserInputError(
+                            `TB_Category with id ${each} not found`
+                        );
+                    }
+                    await checkUserVenueByCategory(user, select_category);
+                    select_category.active = status;
+                    try {
+                        await select_category.save();
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Update TB_Category id ${each} status failed.\nError Message: ${
+                                error.message
+                            }`
+                        );
+                    }
+                });
             }
-
-            //await checkUserVenueByCategory(user, select_category);
-
-            console.log(Object.keys(select_directory.__proto__));
-
-            //try {
-            await select_directory.setTb_categories(select_category, {
-                through: { active: status }
-            });
-
-            return select_directory;
-            // } catch (error) {
-            //     console.log(error);
-
-            //     throw new UserInputError(
-            //         `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${tbCategoryId} status failed. `
-            //     );
-            // }
+            return { result: true };
         }
     },
     TB_Directory: {

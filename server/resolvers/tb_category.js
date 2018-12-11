@@ -1,5 +1,9 @@
 import db from "../models";
-
+import {
+    asyncForEach,
+    checkUserLogin,
+    checkUserVenueByCategory
+} from "../utils/constant";
 export default {
     Query: {
         tb_category: async (root, { id }, { user }) => {
@@ -20,7 +24,29 @@ export default {
             });
         }
     },
-
+    Mutation: {
+        changeCategoryStatus: async (
+            root,
+            { tbCategoryIdList, status },
+            { user }
+        ) => {
+            let output = [];
+            await checkUserLogin(user);
+            await asyncForEach(tbCategoryIdList, async each => {
+                const select_category = await db.tb_category.findById(each);
+                if (!select_category) {
+                    throw new UserInputError(
+                        `TB_Category with id ${tbCategoryId} not found`
+                    );
+                }
+                await checkUserVenueByCategory(user, select_category);
+                select_category.active = status;
+                await select_category.save();
+                output.push(select_category);
+            });
+            return output;
+        }
+    },
     TB_Category: {
         child_category: async row => {
             return await db.tb_category.findAll({
@@ -31,7 +57,6 @@ export default {
         },
 
         venues: async tb_category => {
-            //return await db.venue.findById(tb_category.venueId);
             return await db.venue.findAll({
                 include: [
                     {
@@ -81,7 +106,11 @@ export default {
                 inactiveDirectoryList[index].active = false;
             }
 
-            return [...activeDirectoryList, ...inactiveDirectoryList];
+            return [...activeDirectoryList, ...inactiveDirectoryList].sort(
+                (obj1, obj2) => {
+                    return obj1.id - obj2.id;
+                }
+            );
         },
         tb_directories_active: async tb_category => {
             return await db.tb_directory.findAll({

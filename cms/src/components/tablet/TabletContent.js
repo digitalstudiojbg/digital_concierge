@@ -1,5 +1,8 @@
 import React, { PureComponent } from "react";
-import { ContainerDiv, modifyCategoryDirectoryData } from "../../utils/Constants";
+import {
+    ContainerDiv,
+    modifyCategoryDirectoryData
+} from "../../utils/Constants";
 import { withApollo } from "react-apollo";
 import { withRouter } from "react-router";
 import TreeView from "../../utils/TreeView";
@@ -11,12 +14,14 @@ class TabletContent extends PureComponent {
     render() {
         const { history } = this.props;
         return (
-            <Query query={getTabletCategoryByVenue(1)}>
+            <Query query={getTabletCategoryByVenue()}>
                 {({ loading, error, data }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
                     console.log(data);
-                    const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
+                    const modifiedData = modifyCategoryDirectoryData(
+                        data.tb_categories_by_venue
+                    );
                     return (
                         <ContainerDiv>
                             <div

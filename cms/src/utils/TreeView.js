@@ -17,8 +17,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
-import { withApollo } from "react-apollo";
-import { changeDirectoryStatus } from "../data/mutation";
+import { Mutation } from "react-apollo";
+import { changeDirectoryAndCategoryStatus } from "../data/mutation";
+import { getTabletCategoryByVenue } from "../data/query";
+import { ClipLoader } from "react-spinners";
 
 const styles = theme => ({
     buttonCreate: {
@@ -198,10 +200,18 @@ class TreeView extends React.PureComponent {
             });
             return output;
         } else {
-            const { is_category, depth, hash_id = "" } = category;
+            //https://stackoverflow.com/a/40560953
+            const { is_category, depth, hash_id } = category;
             return allAttributes
                 ? [{ ...category }]
-                : [{ id: category.id, is_category, depth, hash_id }];
+                : [
+                      {
+                          id: category.id,
+                          is_category,
+                          depth,
+                          ...(Boolean(hash_id) && { hash_id })
+                      }
+                  ];
         }
     }
 
@@ -441,30 +451,83 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    handleVisibleOrInvisible(row) {
-        console.log(row);
-        console.log("handleVisibleOrInvisible");
-        console.log(this.getItemAndAllChildItems(row));
-        console.log(
-            this.props.client.mutate({
-                mutation: changeDirectoryStatus()
-            })
-        );
+    handleVisibleOrInvisible(row, action) {
+        const toUpdateList = this.getItemAndAllChildItems(row);
+        const toUpdateCategory = toUpdateList.filter(element => {
+            return element.is_category;
+        });
+        const toUpdateDirectory = toUpdateList.filter(element => {
+            return !element.is_category;
+        });
+
+        /**
+         * Prepare tbCategoryIdList list
+         */
+        let toUpdateCategoryIdList = [];
+        toUpdateCategory.forEach(element => {
+            toUpdateCategoryIdList.push(parseInt(element.id));
+        });
+
+        /**
+         * Prepare tbDirectoryIdList list
+         */
+        let toUpdateDirectoryIdList = [];
+
+        toUpdateDirectory.forEach(element => {
+            const parents = element.hash_id.split("-");
+            const lastParentId = parents[parents.length - 2];
+            toUpdateDirectoryIdList.push({
+                tbDirectoryId: parseInt(element.id),
+                tbCategoryId: parseInt(lastParentId)
+            });
+        });
+
+        action({
+            variables: {
+                tbDirectoryIdList: toUpdateDirectoryIdList,
+                tbCategoryIdList: toUpdateCategoryIdList,
+                status: !row.active
+            }
+        });
     }
 
     renderCheck(row) {
-        return row.active ? (
-            <CheckIcon
-                onClick={() => {
-                    this.handleVisibleOrInvisible(row);
+        return (
+            <Mutation
+                mutation={changeDirectoryAndCategoryStatus()}
+                refetchQueries={[
+                    {
+                        query: getTabletCategoryByVenue()
+                    }
+                ]}
+            >
+                {(action, { loading, error }) => {
+                    if (loading)
+                        return (
+                            <ClipLoader
+                                sizeUnit={"px"}
+                                size={24}
+                                color={"rgba(0, 0, 0, 0.87)"}
+                                loading={loading}
+                            />
+                        );
+                    if (error) return `Error! ${error.message}`;
+
+                    return row.active ? (
+                        <CheckIcon
+                            onClick={() => {
+                                this.handleVisibleOrInvisible(row, action);
+                            }}
+                        />
+                    ) : (
+                        <CloseIcon
+                            onClick={() => {
+                                this.handleVisibleOrInvisible(row, action);
+                            }}
+                        />
+                    );
                 }}
-            />
-        ) : (
-            <CloseIcon
-                onClick={() => {
-                    this.handleVisibleOrInvisible(row);
-                }}
-            />
+            </Mutation>
         );
     }
 
@@ -764,4 +827,4 @@ TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default withApollo(withStyles(styles)(TreeView));
+export default withStyles(styles)(TreeView);
