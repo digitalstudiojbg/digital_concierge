@@ -22,7 +22,6 @@ export default {
             { user }
         ) => {
             await checkUserLogin(user);
-
             if (tbDirectoryIdList) {
                 await asyncForEach(tbDirectoryIdList, async each => {
                     const select_directory = await db.tb_directory.findById(
@@ -59,8 +58,7 @@ export default {
                     }
                 });
             }
-
-            if (tbDirectoryIdList) {
+            if (tbCategoryIdList) {
                 await asyncForEach(tbCategoryIdList, async each => {
                     const select_category = await db.tb_category.findById(each);
                     if (!select_category) {
@@ -81,134 +79,7 @@ export default {
                     }
                 });
             }
-
             return { result: true };
-            /*if (tbDirectoryIdList) {
-                await checkUserLogin(user);
-
-                const select_directory = await db.tb_directory.findById(
-                    tbDirectoryId
-                );
-
-                if (!select_directory) {
-                    throw new UserInputError(
-                        `TB_Directory with id ${tbDirectoryId} not found`
-                    );
-                }
-
-                const select_category = await db.tb_category.findById(
-                    tbCategoryIdList[0]
-                );
-
-                if (!select_category) {
-                    throw new UserInputError(
-                        `TB_Category with id ${tbCategoryIdList[0]} not found`
-                    );
-                }
-
-                await checkUserVenueByCategory(user, select_category);
-
-                try {
-                    await select_directory.addTb_category(select_category, {
-                        through: { active: status }
-                    });
-                    return [select_category];
-                } catch (error) {
-                    throw new UserInputError(
-                        `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${
-                            tbCategoryIdList[0]
-                        } status failed.\nError Message: ${error.message}`
-                    );
-                }
-
-                let output = [];
-                await checkUserLogin(user);
-                await asyncForEach(tbDirectoryIdList, async each => {
-                    const select_directory = await db.tb_directory.findById(
-                        each
-                    );
-
-                    if (!select_directory) {
-                        throw new UserInputError(
-                            `TB_Directory with id ${each} not found`
-                        );
-                    }
-
-                    const select_category = await db.tb_category.findById(
-                        tbCategoryIdList[0]
-                    );
-
-                    if (!select_category) {
-                        throw new UserInputError(
-                            `TB_Category with id ${
-                                tbCategoryIdList[0]
-                            } not found`
-                        );
-                    }
-
-                    await checkUserVenueByCategory(user, select_category);
-                    select_category.active = status;
-                    await select_category.save();
-                    output.push(select_category);
-                });
-                return output;
-            } else {
-                let output = [];
-                await checkUserLogin(user);
-                await asyncForEach(tbCategoryIdList, async each => {
-                    const select_category = await db.tb_category.findById(each);
-                    if (!select_category) {
-                        throw new UserInputError(
-                            `TB_Category with id ${tbCategoryId} not found`
-                        );
-                    }
-                    await checkUserVenueByCategory(user, select_category);
-                    select_category.active = status;
-                    await select_category.save();
-                    output.push(select_category);
-                });
-                return output;
-            }
-        },
-        changeDirectoryStatus: async (
-            root,
-            { tbCategoryId, tbDirectoryId, status },
-            { user }
-        ) => {
-            await checkUserLogin(user);
-
-            const select_directory = await db.tb_directory.findById(
-                tbDirectoryId
-            );
-
-            if (!select_directory) {
-                throw new UserInputError(
-                    `TB_Directory with id ${tbDirectoryId} not found`
-                );
-            }
-
-            const select_category = await db.tb_category.findById(tbCategoryId);
-
-            if (!select_category) {
-                throw new UserInputError(
-                    `TB_Category with id ${tbCategoryId} not found`
-                );
-            }
-
-            await checkUserVenueByCategory(user, select_category);
-
-            try {
-                await select_directory.addTb_category(select_category, {
-                    through: { active: status }
-                });
-                return select_directory;
-            } catch (error) {
-                throw new UserInputError(
-                    `Update TB_Directory id ${tbDirectoryId} for TB_Category id ${tbCategoryId} status failed.\nError Message: ${
-                        error.message
-                    }`
-                );
-            }*/
         }
     },
     TB_Directory: {

@@ -18,14 +18,10 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
 import { Mutation } from "react-apollo";
-import {
-    changeDirectoryStatus,
-    changeDirectoryAndCategoryStatus,
-    changeCategoryStatus
-} from "../data/mutation";
+import { changeDirectoryAndCategoryStatus } from "../data/mutation";
 import { getTabletCategoryByVenue } from "../data/query";
 import { ClipLoader } from "react-spinners";
-import has from "lodash/has";
+
 const styles = theme => ({
     buttonCreate: {
         color: "white",
