@@ -11,17 +11,10 @@ import { Query } from "react-apollo";
 import Loading from "../loading/Loading";
 
 class TabletContent extends PureComponent {
-    async componentDidMount() {
-        const { data } = await this.props.client.query({
-            query: getTabletCategoryByVenue()
-        });
-        console.log(data);
-    }
-
     render() {
         const { history } = this.props;
         return (
-            <Query query={getTabletCategoryByVenue()} fetchPolicy="no-cache">
+            <Query query={getTabletCategoryByVenue()}>
                 {({ loading, error, data }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;

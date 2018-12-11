@@ -81,7 +81,11 @@ export default {
                 inactiveDirectoryList[index].active = false;
             }
 
-            return [...activeDirectoryList, ...inactiveDirectoryList];
+            return [...activeDirectoryList, ...inactiveDirectoryList].sort(
+                (obj1, obj2) => {
+                    return obj1.id - obj2.id;
+                }
+            );
         },
         tb_directories_active: async tb_category => {
             return await db.tb_directory.findAll({

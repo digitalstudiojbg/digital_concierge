@@ -17,9 +17,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
-import { Mutation } from "react-apollo";
+import { Mutation, ApolloConsumer } from "react-apollo";
 import { changeDirectoryStatus } from "../data/mutation";
-
+import { getTabletCategoryByVenue } from "../data/query";
+import { modifyCategoryDirectoryData } from "./Constants";
 const styles = theme => ({
     buttonCreate: {
         color: "white",
@@ -462,8 +463,6 @@ class TreeView extends React.PureComponent {
             //console.log(lastParent);
             //console.log(row.id);
 
-            console.log(row.hash_id);
-
             action({
                 variables: {
                     tbDirectoryId: parseInt(row.id),
@@ -493,9 +492,11 @@ class TreeView extends React.PureComponent {
         return (
             <Mutation
                 mutation={changeDirectoryStatus()}
-                update={(cache, { data }) => {
-                    console.log(data);
-                }}
+                refetchQueries={[
+                    {
+                        query: getTabletCategoryByVenue()
+                    }
+                ]}
             >
                 {(action, { loading, error, data }) => {
                     if (loading) return <p>Loading</p>;

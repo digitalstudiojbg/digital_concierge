@@ -12,6 +12,7 @@ export const changeDirectoryStatus = () => {
                 tbCategoryId: $tbCategoryId
                 status: $status
             ) {
+                id
                 name
             }
         }
