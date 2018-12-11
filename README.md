@@ -48,6 +48,7 @@ Digital Concierge Project
 * $ docker-compose ps
 * $ docker-compose up --build
 * $ docker exec -it [CONTAINER_ID] sh
+* $ docker system prune
 
 ## CMS Test Admin Account ##
 * email: admin@admin.com.au
