@@ -11,7 +11,7 @@ export default gql`
             tbCategoryId: Int
             tbDirectoryId: Int
             status: Boolean
-        ): TB_Directory
+        ): [TB_Directory]
     }
 
     type TB_Directory {

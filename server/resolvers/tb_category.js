@@ -1,5 +1,9 @@
 import db from "../models";
-
+import {
+    asyncForEach,
+    checkUserLogin,
+    checkUserVenueByCategory
+} from "../utils/constant";
 export default {
     Query: {
         tb_category: async (root, { id }, { user }) => {
@@ -23,18 +27,24 @@ export default {
     Mutation: {
         changeCategoryStatus: async (
             root,
-            { tbCategoryId, status },
+            { tbCategoryIdList, status },
             { user }
         ) => {
-            const select_category = await db.tb_category.findById(tbCategoryId);
-
-            if (!select_category) {
-                throw new UserInputError(
-                    `TB_Category with id ${tbCategoryId} not found`
-                );
-            }
-
-            console.log(select_category);
+            let output = [];
+            await checkUserLogin(user);
+            await asyncForEach(tbCategoryIdList, async each => {
+                const select_category = await db.tb_category.findById(each);
+                if (!select_category) {
+                    throw new UserInputError(
+                        `TB_Category with id ${tbCategoryId} not found`
+                    );
+                }
+                await checkUserVenueByCategory(user, select_category);
+                select_category.active = status;
+                await select_category.save();
+                output.push(select_category);
+            });
+            return output;
         }
     },
     TB_Category: {
@@ -47,7 +57,6 @@ export default {
         },
 
         venues: async tb_category => {
-            //return await db.venue.findById(tb_category.venueId);
             return await db.venue.findAll({
                 include: [
                     {

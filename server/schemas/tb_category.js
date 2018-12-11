@@ -8,7 +8,10 @@ export default gql`
     }
 
     extend type Mutation {
-        changeCategoryStatus(tbCategoryId: Int, status: Boolean): TB_Category
+        changeCategoryStatus(
+            tbCategoryIdList: [Int]
+            status: Boolean
+        ): [TB_Category]
     }
 
     type TB_Category {
