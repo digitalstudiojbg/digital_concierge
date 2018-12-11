@@ -184,7 +184,7 @@ class TreeviewCheckbox extends React.PureComponent {
     }
 
     render() {
-        const { classes, data } = this.props;
+        const { data } = this.props;
         return(
             <React.Fragment>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
