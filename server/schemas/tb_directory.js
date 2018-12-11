@@ -12,6 +12,12 @@ export default gql`
             tbDirectoryId: Int
             status: Boolean
         ): [TB_Directory]
+
+        changeDirectoryAndCategoryStatus(
+            tbDirectoryIdList: [Directory_Category_Request]
+            tbCategoryIdList: [Int]
+            status: Boolean
+        ): Directory_Category_Response
     }
 
     type TB_Directory {
@@ -25,5 +31,14 @@ export default gql`
         opening_hours: String
         tb_categories: [TB_Category]
         tb_directory_type: TB_Directory_Type
+    }
+
+    type Directory_Category_Response {
+        result: Boolean
+    }
+
+    input Directory_Category_Request {
+        tbDirectoryId: Int
+        tbCategoryId: Int
     }
 `;

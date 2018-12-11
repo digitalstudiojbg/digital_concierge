@@ -18,9 +18,14 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryStatus, changeCategoryStatus } from "../data/mutation";
+import {
+    changeDirectoryStatus,
+    changeDirectoryAndCategoryStatus,
+    changeCategoryStatus
+} from "../data/mutation";
 import { getTabletCategoryByVenue } from "../data/query";
 import { ClipLoader } from "react-spinners";
+import has from "lodash/has";
 const styles = theme => ({
     buttonCreate: {
         color: "white",
@@ -199,10 +204,18 @@ class TreeView extends React.PureComponent {
             });
             return output;
         } else {
-            const { is_category, depth, hash_id = "" } = category;
+            //https://stackoverflow.com/a/40560953
+            const { is_category, depth, hash_id } = category;
             return allAttributes
                 ? [{ ...category }]
-                : [{ id: category.id, is_category, depth, hash_id }];
+                : [
+                      {
+                          id: category.id,
+                          is_category,
+                          depth,
+                          ...(Boolean(hash_id) && { hash_id })
+                      }
+                  ];
         }
     }
 
@@ -443,35 +456,49 @@ class TreeView extends React.PureComponent {
     }
 
     handleVisibleOrInvisible(row, action) {
-        /**
-         * If selected row is directory
-         */
-        if (!row.is_category) {
-            const parents = row.hash_id.split("-");
-            const lastParentId = parents[parents.length - 2];
-            action({
-                variables: {
-                    tbDirectoryId: parseInt(row.id),
-                    tbCategoryId: parseInt(lastParentId),
-                    status: !row.active
-                }
-            });
-        }
+        const toUpdateList = this.getItemAndAllChildItems(row);
+        const toUpdateCategory = toUpdateList.filter(element => {
+            return element.is_category;
+        });
+        const toUpdateDirectory = toUpdateList.filter(element => {
+            return !element.is_category;
+        });
 
         /**
-         * If selected row is category
+         * Prepare tbCategoryIdList list
          */
-        if (row.is_category) {
-            console.log("category");
-            console.log(row);
-            console.log(this.getItemAndAllChildItems(row));
-        }
+        let toUpdateCategoryIdList = [];
+        toUpdateCategory.forEach(element => {
+            toUpdateCategoryIdList.push(parseInt(element.id));
+        });
+
+        /**
+         * Prepare tbDirectoryIdList list
+         */
+        let toUpdateDirectoryIdList = [];
+
+        toUpdateDirectory.forEach(element => {
+            const parents = element.hash_id.split("-");
+            const lastParentId = parents[parents.length - 2];
+            toUpdateDirectoryIdList.push({
+                tbDirectoryId: parseInt(element.id),
+                tbCategoryId: parseInt(lastParentId)
+            });
+        });
+
+        action({
+            variables: {
+                tbDirectoryIdList: toUpdateDirectoryIdList,
+                tbCategoryIdList: toUpdateCategoryIdList,
+                status: !row.active
+            }
+        });
     }
 
     renderCheck(row) {
         return (
             <Mutation
-                mutation={changeDirectoryStatus()}
+                mutation={changeDirectoryAndCategoryStatus()}
                 refetchQueries={[
                     {
                         query: getTabletCategoryByVenue()

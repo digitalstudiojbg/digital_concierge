@@ -18,3 +18,38 @@ export const changeDirectoryStatus = () => {
         }
     `;
 };
+
+export const changeDirectoryAndCategoryStatus = () => {
+    /*return gql`
+        mutation changeDirectoryAndCategoryStatus(
+            $tbDirectoryIdList: [directory_category_request]
+            $tbCategoryIdList: [Int]
+            $status: Boolean
+        ) {
+            changeDirectoryAndCategoryStatus(
+                tbDirectoryIdList: $tbDirectoryIdList
+                tbCategoryIdList: $tbCategoryIdList
+                status: $status
+            ) {
+                id
+                name
+            }
+        }
+    `;*/
+
+    return gql`
+        mutation changeDirectoryAndCategoryStatus(
+            $tbDirectoryIdList: [Directory_Category_Request]
+            $tbCategoryIdList: [Int]
+            $status: Boolean
+        ) {
+            changeDirectoryAndCategoryStatus(
+                tbDirectoryIdList: $tbDirectoryIdList
+                tbCategoryIdList: $tbCategoryIdList
+                status: $status
+            ) {
+                result
+            }
+        }
+    `;
+};
