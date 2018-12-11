@@ -18,7 +18,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryStatus } from "../data/mutation";
+import { changeDirectoryStatus, changeCategoryStatus } from "../data/mutation";
 import { getTabletCategoryByVenue } from "../data/query";
 import { ClipLoader } from "react-spinners";
 const styles = theme => ({

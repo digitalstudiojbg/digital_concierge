@@ -1,3 +1,3 @@
 import { changeDirectoryStatus } from "./directory";
-
-export { changeDirectoryStatus };
+import { changeCategoryStatus } from "./category";
+export { changeDirectoryStatus, changeCategoryStatus };
