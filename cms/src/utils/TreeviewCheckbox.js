@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from "@material-ui/icons/Remove";
 import IconButton from '@material-ui/core/IconButton';
@@ -24,14 +25,16 @@ const paddingSize = 30;
 class TreeviewCheckbox extends React.PureComponent {
     constructor(props) {
         super(props);
+        const selected_category = props.selectAmount === 'single' ? null : [];
         this.state = {
             expanded: [],
-            selected_category: [],
+            selected_category,
         };
         this.addToExpanded = this.addToExpanded.bind(this);
         this.removeFromExpanded = this.removeFromExpanded.bind(this);
         this.addToSelected = this.addToSelected.bind(this);
         this.removeFromSelected = this.removeFromSelected.bind(this);
+        this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
     }
 
     //Method gets called when we expand a category
@@ -92,7 +95,14 @@ class TreeviewCheckbox extends React.PureComponent {
         }
     }
 
-    
+    handleChangeRadioButton(event) {
+        const { updateSelectedCategory } = this.props;
+        this.setState({
+            selected_category: event.target.value
+        }, () => {
+            updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
+        });
+    }
 
     //Render expand or minimise icon on a category entry based on whether it is expanded or minimised
     renderAddOrRemoveIcon(category_id) {
@@ -143,7 +153,7 @@ class TreeviewCheckbox extends React.PureComponent {
         );
     }
 
-    renderCategory(category, index) {
+    renderCategoryCheckboxes(category, index) {
         const { expanded } = this.state; 
         const is_expanded = expanded.indexOf(category.id) !== -1; //Check if the category entry is expanded or not
         const { depth } = category;
@@ -158,29 +168,78 @@ class TreeviewCheckbox extends React.PureComponent {
                     </div>
                     {is_expanded && category.child_category.map((child_category_item, index_category) => {
                         //We do recursion here
-                        return this.renderCategory(child_category_item, index_category);
+                        return this.renderCategoryCheckboxes(child_category_item, index_category);
                     })}
                 </React.Fragment>
             );
         } else {
             return (
-                <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}}>
+                <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}} key={`${category.id}-${index}`}>
                     {this.renderCheckboxAndLabel(category)}
                 </div>
             );
         }
     }
 
-    renderCategories() {
-        const { data } = this.props;
+    renderRadioButtonAndLabel(category) {
+        const { id, name } = category;
         return (
-            <React.Fragment>
-                {data.map((category, index) => {
-                    return this.renderCategory(category, index);
-                })}
-            </React.Fragment>    
+            <FormControlLabel
+                value={id}
+                control={<Radio color="primary" onChange={this.handleChangeRadioButton} checked={this.state.selected_category === id} />}
+                label={name.toUpperCase()}
+                labelPlacement="end"
+            />
         );
-        
+    }
+
+    renderCategoryRadioButton(category, index) {
+        const { expanded } = this.state; 
+        const is_expanded = expanded.indexOf(category.id) !== -1; //Check if the category entry is expanded or not
+        const { depth } = category;
+        const calculatedPaddingSize = (depth * paddingSize);
+
+        if (category.child_category && category.child_category.length > 0) {
+            return (
+                <React.Fragment key={`${category.id}-${index}`}>
+                    <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}}>
+                        {this.renderRadioButtonAndLabel(category)}
+                        {this.renderAddOrRemoveIcon(category.id)}
+                    </div>
+                    {is_expanded && category.child_category.map((child_category_item, index_category) => {
+                        //We do recursion here
+                        return this.renderCategoryRadioButton(child_category_item, index_category);
+                    })}
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <div style={{paddingLeft: `${calculatedPaddingSize}px`}} key={`${category.id}-${index}`}>
+                    {this.renderRadioButtonAndLabel(category)}
+                </div>
+            );
+        }
+    }
+
+    renderCategories() {
+        const { data, selectAmount } = this.props;
+        if (selectAmount === 'multiple') {
+            return (
+                <React.Fragment>
+                    {data.map((category, index) => {
+                        return this.renderCategoryCheckboxes(category, index);
+                    })}
+                </React.Fragment>    
+            );
+        } else if (selectAmount === 'single') {
+            return (
+                <React.Fragment>
+                    {data.map((category, index) => {
+                        return this.renderCategoryRadioButton(category, index);
+                    })}
+                </React.Fragment>
+            );
+        }
     }
 
     render() {
@@ -200,6 +259,7 @@ class TreeviewCheckbox extends React.PureComponent {
 TreeviewCheckbox.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     updateSelectedCategory: PropTypes.func,
+    selectAmount: PropTypes.oneOf(['single', 'multiple']),
 };
 
 export default withStyles(styles)(TreeviewCheckbox);

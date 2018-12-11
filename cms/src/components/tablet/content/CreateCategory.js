@@ -56,7 +56,7 @@ class CreateCategory extends React.PureComponent {
             imageName: "",
             openDialog: false,
             whichDialog: "",
-            selected_category: [],
+            selected_category: null,
         }
         this.updateSelectedCategory = this.updateSelectedCategory.bind(this);
         this.changeImageName = this.changeImageName.bind(this);
@@ -99,6 +99,7 @@ class CreateCategory extends React.PureComponent {
     }
 
     render() {
+        const { selected_category } = this.state;
         const { classes, is_sub_category } = this.props;
         const titleText = is_sub_category ? "ADD SUB-CATEGORY" : "ADD CATEGORY";
         const subTitleText = is_sub_category ? "SUB-CATEGORY TITLE:" : "CATEGORY TITLE:";
@@ -132,7 +133,7 @@ class CreateCategory extends React.PureComponent {
                             <div style={{width: "10%"}}>
                                 <Button 
                                     type="submit" 
-                                    disabled={ isSubmitting || Boolean(errors.name) || !Boolean(values.name) || values.name.length === 0 } 
+                                    disabled={ isSubmitting || Boolean(errors.name) || !Boolean(values.name) || values.name.length === 0 || !Boolean(selected_category) } 
                                     className={classes.saveButton} variant="outlined" size="large"
                                 >
                                         ADD & SAVE
@@ -184,7 +185,7 @@ class CreateCategory extends React.PureComponent {
                                         InputProps={{
                                             endAdornment:               
                                                 <InputAdornment position="end">
-                                                    <IconButton disabled={this.state.imageName.length === 0} onClick={this.openImageDeleteConfirmation}>
+                                                    <IconButton disabled={this.state.imageName.length === 0} onClick={this.openDialogImage}>
                                                         <CancelIcon />
                                                     </IconButton>
                                                 </InputAdornment>,
@@ -200,7 +201,11 @@ class CreateCategory extends React.PureComponent {
                                             if (error) return `Error! ${error.message}`;
                                             const modifiedData = modifyCategoryDirectoryData(data.tb_categories_by_venue);
                                             return (
-                                                <TreeviewCheckbox data={modifiedData} updateSelectedCategory={this.updateSelectedCategory} />
+                                                <TreeviewCheckbox 
+                                                    data={modifiedData} 
+                                                    updateSelectedCategory={this.updateSelectedCategory} 
+                                                    selectAmount="single"
+                                                />
                                             );
                                             }}
                                         </Query>
@@ -216,9 +221,7 @@ class CreateCategory extends React.PureComponent {
                     TransitionComponent={SlideUpTransition}
                     keepMounted
                     onClose={this.closeDialog}
-                    aria-labelledby="alert-dialog-slide-title"
-                    aria-describedby="alert-dialog-slide-description"
-                    >
+                >
                     <DialogTitle id="alert-dialog-slide-title">
                         {this.state.whichDialog === "image" && <p>CONFIRM IMAGE DELETION</p>}
                         {this.state.whichDialog === "cancel" && <p>CONFIRM PAGE NAVIGATION</p>}
