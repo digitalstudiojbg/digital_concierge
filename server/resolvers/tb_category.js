@@ -20,7 +20,23 @@ export default {
             });
         }
     },
+    Mutation: {
+        changeCategoryStatus: async (
+            root,
+            { tbCategoryId, status },
+            { user }
+        ) => {
+            const select_category = await db.tb_category.findById(tbCategoryId);
 
+            if (!select_category) {
+                throw new UserInputError(
+                    `TB_Category with id ${tbCategoryId} not found`
+                );
+            }
+
+            console.log(select_category);
+        }
+    },
     TB_Category: {
         child_category: async row => {
             return await db.tb_category.findAll({

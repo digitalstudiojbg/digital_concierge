@@ -457,6 +457,15 @@ class TreeView extends React.PureComponent {
                 }
             });
         }
+
+        /**
+         * If selected row is category
+         */
+        if (row.is_category) {
+            console.log("category");
+            console.log(row);
+            console.log(this.getItemAndAllChildItems(row));
+        }
     }
 
     renderCheck(row) {
@@ -469,7 +478,7 @@ class TreeView extends React.PureComponent {
                     }
                 ]}
             >
-                {(action, { loading, error, data }) => {
+                {(action, { loading, error }) => {
                     if (loading)
                         return (
                             <ClipLoader

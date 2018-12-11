@@ -7,6 +7,10 @@ export default gql`
         tb_categories_by_venue(id: ID!): [TB_Category]
     }
 
+    extend type Mutation {
+        changeCategoryStatus(tbCategoryId: Int, status: Boolean): TB_Category
+    }
+
     type TB_Category {
         id: ID!
         name: String
