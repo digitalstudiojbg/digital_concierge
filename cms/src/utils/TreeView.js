@@ -17,10 +17,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
-import { Mutation, ApolloConsumer } from "react-apollo";
+import { Mutation } from "react-apollo";
 import { changeDirectoryStatus } from "../data/mutation";
 import { getTabletCategoryByVenue } from "../data/query";
-import { modifyCategoryDirectoryData } from "./Constants";
+import { ClipLoader } from "react-spinners";
 const styles = theme => ({
     buttonCreate: {
         color: "white",
@@ -443,26 +443,12 @@ class TreeView extends React.PureComponent {
     }
 
     handleVisibleOrInvisible(row, action) {
-        //const getUpdateList = this.getItemAndAllChildItems(row, true);
-
-        //const selectedRow = getUpdateList[0];
-
         /**
          * If selected row is directory
          */
         if (!row.is_category) {
-            //console.log(row);
-
             const parents = row.hash_id.split("-");
             const lastParentId = parents[parents.length - 2];
-
-            const lastParent = this.state.dataTree.find(element => {
-                return (element.id = lastParentId);
-            });
-
-            //console.log(lastParent);
-            //console.log(row.id);
-
             action({
                 variables: {
                     tbDirectoryId: parseInt(row.id),
@@ -471,21 +457,6 @@ class TreeView extends React.PureComponent {
                 }
             });
         }
-
-        /* 
-        !getUpdateList[0].is_category &&
-            action({
-                variables: { tbDirectoryId: getUpdateList[0].id, tbCategoryId: 10, status: true }
-            });
-        */
-        /*action({
-            variables: { tbDirectoryId: 3, tbCategoryId: 10, status: true }
-        });*/
-        /*console.log(
-            this.props.client.mutate({
-                mutation: changeDirectoryStatus()
-            })
-        );*/
     }
 
     renderCheck(row) {
@@ -499,7 +470,15 @@ class TreeView extends React.PureComponent {
                 ]}
             >
                 {(action, { loading, error, data }) => {
-                    if (loading) return <p>Loading</p>;
+                    if (loading)
+                        return (
+                            <ClipLoader
+                                sizeUnit={"px"}
+                                size={24}
+                                color={"rgba(0, 0, 0, 0.87)"}
+                                loading={loading}
+                            />
+                        );
                     if (error) return `Error! ${error.message}`;
 
                     return row.active ? (
