@@ -28,6 +28,11 @@ module.exports = {
                     body:
                         "SALAD MENU Garden Salad (V) (DF) (GF) 1,200 VT Roma Tomato, Cucumber, Spanish, Red Onion, Balsamic Vinaigrette Tomato Salad (V) (GF) (DF*) 1,500 VT Roma Tomato, Spanish Red Onion, Capers, Mozzarella, Basil, Red Wine, Vinegar, Extra Virgin Olive Oil Cucumber Ribbon Salad (V) (GF) (DF) 1,500 VT Cucumber, Mint, Walnuts, Red Grape, Toasted Nori, Rice Wine Dressing Caesar Salad (GF*) 1,800 VT Cos Lettuce, Anchovies, Bacon Wafer, Ciabatta, Grana Padano + Add Poached Chicken 600 VT",
                     tbDirectoryTypeId: 3
+                },
+                {
+                    name: "DRINK MENU",
+                    body: "DRINK MENU",
+                    tbDirectoryTypeId: 3
                 }
             ],
             {}

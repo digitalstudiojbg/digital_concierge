@@ -451,8 +451,37 @@ class TreeView extends React.PureComponent {
         }
     }
 
+    /*checkIfShouldUpOneLevelBeUpdate(lastParentObject, currentRow, is_category) {
+        let shouldChangeLastParentStatus = true;
+
+        if (!is_category) {
+            const getSiblingDirectoryList = lastParentObject.tb_directories;
+
+            getSiblingDirectoryList.forEach(sibling => {
+                if (
+                    sibling.active === currentRow.active &&
+                    sibling.id !== currentRow.id
+                ) {
+                    shouldChangeLastParentStatus = false;
+                }
+            });
+
+            if (
+                getSiblingDirectoryList.filter(eachCategory => {
+                    return eachCategory.active === currentRow.active;
+                }).length !== 0 &&
+                currentRow.active === false
+            ) {
+                shouldChangeLastParentStatus = true;
+            }
+        }
+        return shouldChangeLastParentStatus;
+    }*/
+
     handleVisibleOrInvisible(row, action) {
-        const toUpdateList = this.getItemAndAllChildItems(row);
+        const toUpdateList = this.getItemAndAllChildItems(row, true);
+        console.log(toUpdateList);
+
         const toUpdateCategory = toUpdateList.filter(element => {
             return element.is_category;
         });
@@ -480,7 +509,49 @@ class TreeView extends React.PureComponent {
                 tbDirectoryId: parseInt(element.id),
                 tbCategoryId: parseInt(lastParentId)
             });
+            console.log(parents);
+
+            const lastParentObject = this.state.dataTree.find(item => {
+                return (
+                    item.id === lastParentId &&
+                    item.__typename === "TB_Category"
+                );
+            });
+
+            const getSiblingDirectoryList = lastParentObject.tb_directories;
+
+            let shouldChangeLastParentStatus = true;
+
+            getSiblingDirectoryList.forEach(sibling => {
+                if (sibling.active === row.active && sibling.id !== row.id) {
+                    shouldChangeLastParentStatus = false;
+                }
+            });
+
+            if (
+                getSiblingDirectoryList.filter(eachCategory => {
+                    return eachCategory.active === row.active;
+                }).length !== 0 &&
+                row.active === false
+            ) {
+                shouldChangeLastParentStatus = true;
+            }
+
+            console.log(lastParentObject);
+            console.log(getSiblingDirectoryList);
+
+            if (shouldChangeLastParentStatus) {
+                //parents.forEach((each, index) => {
+                //if (index < parents.length - 1) {
+                //console.log(parents[index]);
+                toUpdateCategoryIdList.push(parseInt(lastParentId));
+                //}
+                //});
+            }
         });
+
+        console.log(toUpdateCategoryIdList);
+        console.log(toUpdateDirectoryIdList);
 
         action({
             variables: {

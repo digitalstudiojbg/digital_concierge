@@ -86,6 +86,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("tb_directories_venues", null, {});
+        return queryInterface.bulkDelete("tb_categories_venues", null, {});
     }
 };

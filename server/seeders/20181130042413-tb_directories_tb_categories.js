@@ -21,6 +21,10 @@ module.exports = {
                     {
                         tbDirectoryId: 4,
                         tbCategoryId: 11
+                    },
+                    {
+                        tbDirectoryId: 5,
+                        tbCategoryId: 10
                     }
                 ],
                 {}
