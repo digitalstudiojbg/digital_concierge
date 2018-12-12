@@ -570,33 +570,6 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    /*checkIfShouldUpOneLevelBeUpdate(lastParentObject, currentRow, is_category) {
-        let shouldChangeLastParentStatus = true;
-
-        if (!is_category) {
-            const getSiblingDirectoryList = lastParentObject.tb_directories;
-
-            getSiblingDirectoryList.forEach(sibling => {
-                if (
-                    sibling.active === currentRow.active &&
-                    sibling.id !== currentRow.id
-                ) {
-                    shouldChangeLastParentStatus = false;
-                }
-            });
-
-            if (
-                getSiblingDirectoryList.filter(eachCategory => {
-                    return eachCategory.active === currentRow.active;
-                }).length !== 0 &&
-                currentRow.active === false
-            ) {
-                shouldChangeLastParentStatus = true;
-            }
-        }
-        return shouldChangeLastParentStatus;
-    }*/
-
     handleVisibleOrInvisible(row, action) {
         const toUpdateList = this.getItemAndAllChildItems(row, true);
         console.log(toUpdateList);
@@ -616,6 +589,35 @@ class TreeView extends React.PureComponent {
             toUpdateCategoryIdList.push(parseInt(element.id));
         });
 
+        if (row.is_category) {
+            const parents = this.getParentItem(row.id, true);
+            console.log(parents);
+
+            let output = [];
+            parents.forEach(parent => {
+                /*let shouldUpdateParentCategoryStatus = true;
+
+                const parentObject = this.state.dataTree.find(item => {
+                    return (
+                        item.id === parent && item.__typename === "TB_Category"
+                    );
+                });
+
+                parentObject.child_category.forEach(child => {
+                    if (child.active === row.active && child.id !== row.id) {
+                        shouldUpdateParentCategoryStatus = false;
+                    }
+                });
+
+                shouldUpdateParentCategoryStatus &&
+                    toUpdateCategoryIdList.push(parseInt(parentObject.id));*/
+                if (row.active === false) {
+                    toUpdateCategoryIdList.push(parseInt(parent));
+                }
+            });
+        }
+        console.log(toUpdateCategoryIdList);
+
         /**
          * Prepare tbDirectoryIdList list
          */
@@ -628,7 +630,7 @@ class TreeView extends React.PureComponent {
                 tbDirectoryId: parseInt(element.id),
                 tbCategoryId: parseInt(lastParentId)
             });
-            console.log(parents);
+            //console.log(parents);
 
             const lastParentObject = this.state.dataTree.find(item => {
                 return (
@@ -656,21 +658,10 @@ class TreeView extends React.PureComponent {
                 shouldChangeLastParentStatus = true;
             }
 
-            console.log(lastParentObject);
-            console.log(getSiblingDirectoryList);
-
             if (shouldChangeLastParentStatus) {
-                //parents.forEach((each, index) => {
-                //if (index < parents.length - 1) {
-                //console.log(parents[index]);
                 toUpdateCategoryIdList.push(parseInt(lastParentId));
-                //}
-                //});
             }
         });
-
-        console.log(toUpdateCategoryIdList);
-        console.log(toUpdateDirectoryIdList);
 
         action({
             variables: {
