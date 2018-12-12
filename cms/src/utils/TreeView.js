@@ -16,7 +16,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
-import { TABLET_CMS_CREATE_CONTENT_INDEX_URL } from "./Constants";
+import {
+    getAllUniqueItems,
+    TABLET_CMS_CREATE_CONTENT_INDEX_URL
+} from "./Constants";
 import { Mutation } from "react-apollo";
 import { changeDirectoryAndCategoryStatus } from "../data/mutation";
 import { getTabletCategoryByVenue } from "../data/query";
@@ -572,14 +575,13 @@ class TreeView extends React.PureComponent {
 
     handleVisibleOrInvisible(row, action) {
         const toUpdateList = this.getItemAndAllChildItems(row, true);
-        console.log(toUpdateList);
-
         const toUpdateCategory = toUpdateList.filter(element => {
             return element.is_category;
         });
         const toUpdateDirectory = toUpdateList.filter(element => {
             return !element.is_category;
         });
+        const { dataTree } = this.state;
 
         /**
          * Prepare tbCategoryIdList list
@@ -591,32 +593,29 @@ class TreeView extends React.PureComponent {
 
         if (row.is_category) {
             const parents = this.getParentItem(row.id, true);
-            console.log(parents);
 
             let output = [];
             parents.forEach(parent => {
-                /*let shouldUpdateParentCategoryStatus = true;
+                if (row.active === false) {
+                    toUpdateCategoryIdList.push(parseInt(parent));
+                }
 
-                const parentObject = this.state.dataTree.find(item => {
+                const parentObject = dataTree.find(item => {
                     return (
                         item.id === parent && item.__typename === "TB_Category"
                     );
                 });
-
-                parentObject.child_category.forEach(child => {
-                    if (child.active === row.active && child.id !== row.id) {
-                        shouldUpdateParentCategoryStatus = false;
-                    }
-                });
-
-                shouldUpdateParentCategoryStatus &&
-                    toUpdateCategoryIdList.push(parseInt(parentObject.id));*/
-                if (row.active === false) {
+                const getSiblingCategoryList = parentObject.child_category;
+                if (
+                    row.active === false &&
+                    getSiblingCategoryList.filter(eachCategory => {
+                        return eachCategory.active === row.active;
+                    }).length === 1
+                ) {
                     toUpdateCategoryIdList.push(parseInt(parent));
                 }
             });
         }
-        console.log(toUpdateCategoryIdList);
 
         /**
          * Prepare tbDirectoryIdList list
@@ -630,9 +629,8 @@ class TreeView extends React.PureComponent {
                 tbDirectoryId: parseInt(element.id),
                 tbCategoryId: parseInt(lastParentId)
             });
-            //console.log(parents);
 
-            const lastParentObject = this.state.dataTree.find(item => {
+            const lastParentObject = dataTree.find(item => {
                 return (
                     item.id === lastParentId &&
                     item.__typename === "TB_Category"
@@ -659,14 +657,20 @@ class TreeView extends React.PureComponent {
             }
 
             if (shouldChangeLastParentStatus) {
-                toUpdateCategoryIdList.push(parseInt(lastParentId));
+                parents.forEach((element, index) => {
+                    if (parents.length - 1 > index && row.active === false) {
+                        toUpdateCategoryIdList.push(
+                            parseInt(parseInt(element))
+                        );
+                    }
+                });
             }
         });
 
         action({
             variables: {
                 tbDirectoryIdList: toUpdateDirectoryIdList,
-                tbCategoryIdList: toUpdateCategoryIdList,
+                tbCategoryIdList: getAllUniqueItems(toUpdateCategoryIdList),
                 status: !row.active
             }
         });
