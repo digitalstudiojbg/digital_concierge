@@ -56,6 +56,9 @@ const styles = theme => ({
     },
     tableEntryCol: {
         color: "rgb(38,42,95)"
+    },
+    tableCheckboxCol: {
+        width: 30
     }
 });
 
@@ -75,7 +78,8 @@ class TreeView extends React.PureComponent {
             expanded: [],
             selected_category: [],
             selected_directory: [],
-            dataTree: null
+            dataTree: null,
+            categoryOnlyDataTree: null
         };
         this.navigateToCreateContent = this.navigateToCreateContent.bind(this);
     }
@@ -91,7 +95,10 @@ class TreeView extends React.PureComponent {
             ];
         });
         this.setState({
-            dataTree: [...updated]
+            dataTree: [...updated],
+            categoryOnlyDataTree: [
+                ...updated.filter(item => Boolean(item.is_category))
+            ]
         });
     }
 
@@ -107,7 +114,10 @@ class TreeView extends React.PureComponent {
                 ];
             });
             this.setState({
-                dataTree: [...updated]
+                dataTree: [...updated],
+                categoryOnlyDataTree: [
+                    ...updated.filter(item => Boolean(item.is_category))
+                ]
             });
         }
     }
@@ -128,9 +138,15 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    //a function that attempts to retrieve all of the parent category ids of a children (the children could be a child category or a directory entry)
+    //a function that attempts to retrieve all of the parent category ids of a children
+    //(the children could be a child category or a directory entry)
     //via recursive function method
-    getParentItem(category_id, is_category) {
+    //
+    //UPDATE: THIS FUNCTION IS NOT RELIABLE TO USE FOR DIRECTORY ENTRIES DUE TO
+    //DIRECTORY ENTRY'S MANY TO MANY RELATIONSHIP WITH CATEGORY
+    //WHICH MEANS THAT ONE DIRECTORY ENTRY COULD BE A CHILD OF DIFFERENT CATEGORIES
+    //AND ONE DIRECTORY ENTRY HAS NO GUARANTEE THAT IT HAS A UNIQUE PARENT CATEGORY
+    getParentItem(category_id, is_category = true) {
         const { dataTree } = this.state;
         if (Boolean(dataTree && dataTree.length > 0)) {
             const foundItem = dataTree.find(category => {
@@ -292,30 +308,101 @@ class TreeView extends React.PureComponent {
 
     //Adding category and / or directory ids into their relevant state arrays (selected_category or selected_directory)
     addToSelected(category, has_child) {
-        const { selected_category, selected_directory } = this.state;
+        const {
+            selected_category,
+            selected_directory,
+            categoryOnlyDataTree
+        } = this.state;
         if (has_child) {
             const items = this.getItemAndAllChildItems(category);
-            const categories = items.filter(item => Boolean(item.is_category));
-            const directories = items.filter(item => !item.is_category);
+            const categories = items
+                .filter(item => Boolean(item.is_category))
+                .map(category => category.id);
+            const directories = items
+                .filter(item => !item.is_category)
+                .map(directory => directory.hash_id);
+
+            //If all entries under parent category is checked, we have to select the parent category as well
+            const parents = this.getParentItem(
+                category.id,
+                category.is_category
+            );
+            let to_check_parent = [];
+            parents.forEach(parent_id => {
+                const parent = categoryOnlyDataTree.find(
+                    item => item.id === parent_id
+                );
+                if (
+                    this.checkChildItemsSelected(
+                        parent,
+                        categories,
+                        directories
+                    )
+                ) {
+                    to_check_parent = [...to_check_parent, parent_id];
+                }
+            });
+
             this.setState({
                 selected_category: [
                     ...selected_category,
-                    ...categories.map(category => category.id)
+                    ...to_check_parent,
+                    ...categories
                 ],
-                selected_directory: [
-                    ...selected_directory,
-                    ...directories.map(directory => directory.hash_id)
-                ]
+                selected_directory: [...selected_directory, ...directories]
             });
         } else {
             //Differentiating between a category with empty directory or just a normal directory
             if (category.is_category) {
                 //An category with empty child
+
+                //If all entries under parent category is checked, we have to select the parent category as well
+                const parents = this.getParentItem(
+                    category.id,
+                    category.is_category
+                );
+                let to_check_parent = [];
+                parents.forEach(parent_id => {
+                    const parent = categoryOnlyDataTree.find(
+                        item => item.id === parent_id
+                    );
+                    if (this.checkChildItemsSelected(parent, [category.id])) {
+                        to_check_parent = [...to_check_parent, parent_id];
+                    }
+                });
+
                 this.setState({
-                    selected_category: [...selected_category, category.id]
+                    selected_category: [
+                        ...selected_category,
+                        ...to_check_parent,
+                        category.id
+                    ]
                 });
             } else {
+                //If all directories entries are selected, we have to select the parent category as well
+                const child_and_parents = category.hash_id.split("-");
+                const parents = child_and_parents.slice(
+                    0,
+                    child_and_parents.length - 1
+                );
+                let to_check_parent = [];
+                parents.forEach(parent_id => {
+                    const parent = categoryOnlyDataTree.find(
+                        item => item.id === parent_id
+                    );
+                    if (
+                        this.checkChildItemsSelected(parent, undefined, [
+                            category.hash_id
+                        ])
+                    ) {
+                        to_check_parent = [...to_check_parent, parent_id];
+                    }
+                });
                 this.setState({
+                    selected_category: [
+                        ...selected_category,
+                        ...to_check_parent
+                    ],
                     selected_directory: [
                         ...selected_directory,
                         category.hash_id
@@ -330,9 +417,16 @@ class TreeView extends React.PureComponent {
         const { selected_category, selected_directory } = this.state;
         if (has_child) {
             const items = this.getItemAndAllChildItems(category);
-            const categories = items
-                .filter(item => Boolean(item.is_category))
-                .map(category => category.id);
+            const parents = this.getParentItem(
+                category.id,
+                category.is_category
+            ); //Also un-check the parents as well when
+            const categories = [
+                ...items
+                    .filter(item => Boolean(item.is_category))
+                    .map(category => category.id),
+                ...parents
+            ];
             const directories = items
                 .filter(item => !item.is_category)
                 .map(directory => directory.hash_id);
@@ -349,10 +443,10 @@ class TreeView extends React.PureComponent {
             const { is_category } = category;
 
             //Unselecting a child also means unselecting the parent as well
-            const parents = this.getParentItem(category.id, is_category);
             if (is_category) {
                 //An category with empty child
                 //Unselecting parent categories as well
+                const parents = this.getParentItem(category.id, is_category);
                 this.setState({
                     selected_category: selected_category.filter(
                         category_id =>
@@ -362,6 +456,9 @@ class TreeView extends React.PureComponent {
                 });
             } else {
                 //Unselecting parent categories as well
+                //1 Directory can be a child of multiple parents, so this.getParentItem() method is not reliable
+                //Have to use hash id for getting parent IDs
+                const parents = category.hash_id.split("-");
                 this.setState({
                     selected_category: selected_category.filter(
                         category_id => !parents.includes(category_id)
@@ -374,28 +471,50 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    // checkChildItemsSelected(category) {
-    //     const { selected_category, selected_directory } = this.state;
-    //     const childItems = this.getItemAndAllChildItems(category).slice(1); //Skipping first entry in the array because it is self
-    //     const categories = childItems.filter(item => Boolean(item.is_category)).map(category => category.id);
-    //     const directories = childItems.filter(item => !item.is_category).map(directory => directory.id);
+    //A function to check whether a category has all of its child selected
+    //@args excluded_categories
+    //@args excluded_directories
+    //Both these two (optional) arguments refers to excluded categories and directories to check because
+    //they are not added into the main state component yet, but will eventually be added in the main state component at a
+    //later stage
+    checkChildItemsSelected(
+        category,
+        excluded_categories = [],
+        excluded_directories = []
+    ) {
+        const { selected_category, selected_directory } = this.state;
+        const childItems = this.getItemAndAllChildItems(category).slice(1); //Skipping first entry in the array because it is self
+        const categories = childItems
+            .filter(item => Boolean(item.is_category))
+            .map(category => category.id);
+        const directories = childItems
+            .filter(item => !item.is_category)
+            .map(directory => directory.hash_id);
 
-    //     //Ensure everything is inside the selected state arrays
-    //     let output = true;
-    //     for (let category_id of categories) {
-    //         if (!selected_category.includes(category_id)) {
-    //             output = false;
-    //             break;
-    //         }
-    //     }
-    //     for (let directory_id of directories) {
-    //         if (!selected_directory.includes(directory_id)) {
-    //             output = false;
-    //             break;
-    //         }
-    //     }
-    //     return output;
-    // }
+        //Ensure everything is inside the selected state arrays
+        let output = true;
+        const search_categories = [
+            ...selected_category,
+            ...excluded_categories
+        ];
+        const search_directories = [
+            ...selected_directory,
+            ...excluded_directories
+        ];
+        for (let category_id of categories) {
+            if (!search_categories.includes(category_id)) {
+                output = false;
+                break;
+            }
+        }
+        for (let directory_id of directories) {
+            if (!search_directories.includes(directory_id)) {
+                output = false;
+                break;
+            }
+        }
+        return output;
+    }
 
     checkChildItemsIndeterminate(category) {
         const { selected_category, selected_directory } = this.state;
@@ -624,7 +743,10 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${category.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
-                        <TableCell padding="checkbox">
+                        <TableCell
+                            padding="checkbox"
+                            className={classes.tableCheckboxCol}
+                        >
                             <Checkbox
                                 onChange={() => {
                                     if (
@@ -683,7 +805,10 @@ class TreeView extends React.PureComponent {
                     key={`${category.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
-                    <TableCell padding="checkbox">
+                    <TableCell
+                        padding="checkbox"
+                        className={classes.tableCheckboxCol}
+                    >
                         <Checkbox
                             onChange={() => {
                                 //Differentiating between a category with empty directory or just a normal directory
@@ -773,7 +898,10 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
-                            <TableCell padding="checkbox">
+                            <TableCell
+                                padding="checkbox"
+                                className={classes.tableCheckboxCol}
+                            >
                                 {Boolean(dataTree) && dataTree.length > 0 && (
                                     <Checkbox
                                         indeterminate={
@@ -852,7 +980,7 @@ class TreeView extends React.PureComponent {
 
     render() {
         const { classes, data } = this.props;
-        const { dataTree } = this.state;
+        const { dataTree, categoryOnlyDataTree } = this.state;
         return (
             <React.Fragment>
                 <div
@@ -884,7 +1012,9 @@ class TreeView extends React.PureComponent {
                     Array.isArray(data) &&
                     data.length > 0 &&
                     Boolean(dataTree) &&
-                    dataTree.length > 0 && (
+                    dataTree.length > 0 &&
+                    Boolean(categoryOnlyDataTree) &&
+                    categoryOnlyDataTree.length > 0 && (
                         <React.Fragment>
                             {this.renderCategories()}
                         </React.Fragment>
