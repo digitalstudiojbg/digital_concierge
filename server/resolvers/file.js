@@ -1,4 +1,4 @@
-import { s3, checkUserLogin } from "../utils/constant";
+import { checkUserLogin } from "../utils/constant";
 import uuid from "uuid";
 
 export default {
@@ -7,7 +7,7 @@ export default {
             await checkUserLogin(user);
             const { stream, filename, mimetype, encoding } = await file;
 
-            s3.upload(
+            /*s3.upload(
                 {
                     Key: `${uuid.v4()}-${filename}`,
                     Body: stream,
@@ -30,7 +30,7 @@ export default {
                         }
                     });
                 }
-            );
+            );*/
 
             return { stream, filename, mimetype, encoding };
         }

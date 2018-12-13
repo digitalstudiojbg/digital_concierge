@@ -33,11 +33,11 @@ const graphqlServer = new ApolloServer({
 });
 graphqlServer.applyMiddleware({ app });
 
-AWS.config.update({
+/*AWS.config.update({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     region: "ap-southeast-2"
-});
+});*/
 
 /**
  * REST API TEST
