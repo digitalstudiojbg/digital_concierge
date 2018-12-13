@@ -13,6 +13,7 @@ import ad_directory_type_resolver from "./ad_directory_type";
 import ad_directory_resolver from "./ad_directory";
 import ad_category_resolver from "./ad_category";
 import tb_media_resolver from "./tb_media";
+import file_resolver from "./file";
 
 export default [
     user_resolver,
@@ -29,5 +30,6 @@ export default [
     ad_directory_type_resolver,
     ad_directory_resolver,
     ad_category_resolver,
-    tb_media_resolver
+    tb_media_resolver,
+    file_resolver
 ];

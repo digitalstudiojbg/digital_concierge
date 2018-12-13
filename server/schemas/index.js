@@ -13,6 +13,7 @@ import ad_directory_type_schema from "./ad_directory_type";
 import ad_directory_schema from "./ad_directory";
 import ad_category_schema from "./ad_category";
 import tb_media_schema from "./tb_media";
+import file_schema from "./file";
 
 const link_schema = gql`
     type Query {
@@ -41,5 +42,6 @@ export default [
     ad_directory_type_schema,
     ad_directory_schema,
     ad_category_schema,
-    tb_media_schema
+    tb_media_schema,
+    file_schema
 ];

@@ -22,14 +22,14 @@ Digital Concierge Project
 * tablet => 5000
 * touchscreen => 7000
 
-## Project Routes (DEV) ##
+## Project Routes (dev) ##
 * localhost:3000 => server 
 * localhost:3000/graphql => graphql api 
 * localhost:4000 => cms project 
 * localhost:5000 => tablet project  
 * localhost:7000 => touchscreen project 
 
-## Project Routes (PROD) ##
+## Project Routes (prod) ##
 * WEBSITE_URL/api => server 
 * WEBSITE_URL/api/graphql => graphql api 
 * WEBSITE_URL/ => cms project 
@@ -53,3 +53,6 @@ Digital Concierge Project
 ## CMS Test Admin Account ##
 * email: admin@admin.com.au
 * password: admin
+
+## Tips:
+* If you have trouble for installing new packages via npm or yarn, please try to delete package-lock.json or yarn.lock and then restart docker.
