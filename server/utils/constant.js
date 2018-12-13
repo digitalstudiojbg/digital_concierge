@@ -1,4 +1,6 @@
 import { AuthenticationError } from "apollo-server-express";
+import AWS from "aws-sdk";
+
 export const JBG_EMAIL_SUFFIX = "@johnbatman.com.au";
 /**
  * check whether user is login
@@ -43,3 +45,8 @@ export const asyncForEach = async (array, callback) => {
         await callback(array[index], index, array);
     }
 };
+
+export const s3 = new AWS.S3({
+    apiVersion: "2006-03-01",
+    params: { Bucket: "digitalconcierge" }
+});

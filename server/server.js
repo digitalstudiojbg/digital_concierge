@@ -8,11 +8,12 @@ import resolvers from "./resolvers";
 import schemas from "./schemas";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import AWS from "aws-sdk";
 
 const port = 3000;
-const jwtSecret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
-
+const jwtSecret = Buffer.from(process.env.JWT_SECRET, "base64");
 const app = express();
+
 app.use(
     cors(),
     bodyParser.json(),
@@ -31,6 +32,12 @@ const graphqlServer = new ApolloServer({
         }
 });
 graphqlServer.applyMiddleware({ app });
+
+AWS.config.update({
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    region: "ap-southeast-2"
+});
 
 /**
  * REST API TEST
