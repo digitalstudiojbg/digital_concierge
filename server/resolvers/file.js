@@ -1,13 +1,13 @@
 import { checkUserLogin } from "../utils/constant";
 import uuid from "uuid";
-
+import { s3 } from "../utils/constant";
 export default {
     Mutation: {
         async uploadFile(parent, { file }, { user }) {
             await checkUserLogin(user);
             const { stream, filename, mimetype, encoding } = await file;
 
-            /*s3.upload(
+            s3.upload(
                 {
                     Key: `${uuid.v4()}-${filename}`,
                     Body: stream,
@@ -30,7 +30,7 @@ export default {
                         }
                     });
                 }
-            );*/
+            );
 
             return { stream, filename, mimetype, encoding };
         }
