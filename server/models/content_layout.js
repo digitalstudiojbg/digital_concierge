@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const validation = sequelize.define(
-        "validation",
+    const content_layout = sequelize.define(
+        "content_layout",
         {
             name: {
                 type: DataTypes.STRING,
@@ -13,10 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    validation.associate = function(models) {
-        /* validation.belongsToMany(models.tb_directory_type, {
-            through: "tb_directory_types_validations"
-        });*/
+    content_layout.associate = function(models) {
+        // associations can be defined here
     };
-    return validation;
+    return content_layout;
 };

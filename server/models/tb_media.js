@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
 
-        tb_media.belongsToMany(models.tb_directory, {
+        /*tb_media.belongsToMany(models.tb_directory, {
             through: "tb_directories_tb_media"
         });
 
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 
         tb_media.belongsToMany(models.tb_category, {
             through: "tb_categories_tb_media"
-        });
+        });*/
 
         tb_media.belongsToMany(models.ad_directory, {
             through: "ad_directories_tb_media"

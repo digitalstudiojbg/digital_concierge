@@ -59,10 +59,10 @@ module.exports = (sequelize, DataTypes) => {
     venue.associate = function(models) {
         venue.hasMany(models.user);
         venue.belongsToMany(models.role, { through: "roles_venues" });
-        venue.belongsToMany(models.tb_category, {
+        /*venue.belongsToMany(models.tb_category, {
             through: "tb_categories_venues"
         });
-        venue.hasOne(models.tb_landing_page);
+        venue.hasOne(models.tb_landing_page);*/
         venue.hasOne(models.global_setting);
         venue.belongsToMany(models.ad_category, {
             through: "ad_categories_venues"

@@ -109,3 +109,16 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_directories-and-tb_media
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_categories-and-tb_media
+
+node_modules/.bin/sequelize model:generate --name system --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name landing_page
+
+node_modules/.bin/sequelize model:generate --name content_layout --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name content_layout
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-content_layout-and-validation
+
+node_modules/.bin/sequelize seed:generate --name content_layouts_validations
+

@@ -14,7 +14,7 @@ export default {
         venue: async tb_media => {
             return await db.venue.findById(tb_media.venueId);
         },
-        tb_directories: async tb_media => {
+        /*tb_directories: async tb_media => {
             return await db.tb_directory.findAll({
                 include: [
                     {
@@ -43,7 +43,7 @@ export default {
                     }
                 ]
             });
-        },
+        },*/
         ad_directories: async tb_media => {
             return await db.ad_directory.findAll({
                 include: [
@@ -63,6 +63,6 @@ export default {
                     }
                 ]
             });
-        },
+        }
     }
 };

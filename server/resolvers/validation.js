@@ -19,7 +19,7 @@ export default {
         }
     },
     Validation: {
-        td_directory_types: async validation => {
+        /*td_directory_types: async validation => {
             return await db.tb_directory_type.findAll({
                 include: [
                     {
@@ -28,6 +28,6 @@ export default {
                     }
                 ]
             });
-        }
+        }*/
     }
 };

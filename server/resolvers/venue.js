@@ -30,7 +30,7 @@ export default {
                 ]
             });
         },
-        tb_categories: async venue => {
+        /*tb_categories: async venue => {
             return await db.tb_category.findAll({
                 include: [
                     {
@@ -47,7 +47,7 @@ export default {
                     venueId: venue.id
                 }
             });
-        },
+        },*/
         global_setting: async venue => {
             return await db.global_setting.findAll({
                 where: {

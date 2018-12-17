@@ -19,8 +19,8 @@ export default gql`
         updatedAt: DateTime
         users: [User]
         roles: [Role]
-        tb_categories: [TB_Category]
-        tb_landing_page: [TB_LANDING_PAGE]
+        #tb_categories: [TB_Category]
+        #tb_landing_page: [TB_LANDING_PAGE]
         global_setting: [Global_Setting]
         ad_categories: [AD_Category]
         tb_media: [TB_MEDIA]
