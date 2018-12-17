@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     content_layout.associate = function(models) {
-        // associations can be defined here
+        content_layout.belongsToMany(models.validation, {
+            through: "content_layouts_validations"
+        });
     };
     return content_layout;
 };

@@ -10,6 +10,7 @@ import ad_directory_resolver from "./ad_directory";
 import ad_category_resolver from "./ad_category";
 import tb_media_resolver from "./tb_media";
 import file_resolver from "./file";
+import content_layout from "./content_layout";
 
 export default [
     user_resolver,
@@ -23,5 +24,6 @@ export default [
     ad_directory_resolver,
     ad_category_resolver,
     tb_media_resolver,
-    file_resolver
+    file_resolver,
+    content_layout
 ];
