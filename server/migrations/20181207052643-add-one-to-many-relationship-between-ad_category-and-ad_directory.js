@@ -9,7 +9,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {
-                    model: "tb_categories", // name of Target table
+                    model: "ad_categories", // name of Target table
                     key: "id" // key in Target table that we're referencing
                 },
                 onUpdate: "CASCADE",

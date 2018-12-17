@@ -6,12 +6,10 @@ module.exports = {
             "global_settings",
             [
                 {
-                    name: "JBG Global Settings",
-                    venueId: 1
+                    name: "JBG Global Settings"
                 },
                 {
-                    name: "HI Global Settings",
-                    venueId: 2
+                    name: "HI Global Settings"
                 }
             ],
             {}
