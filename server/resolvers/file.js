@@ -9,7 +9,7 @@ export default {
 
             s3.upload(
                 {
-                    Key: `${uuid.v4()}-${filename}`,
+                    Key: `cms_users/${uuid.v4()}-${filename}`,
                     Body: stream,
                     ACL: "public-read"
                 },
