@@ -24,5 +24,6 @@ export default gql`
         global_setting: [Global_Setting]
         ad_categories: [AD_Category]
         tb_media: [TB_MEDIA]
+        systems: [System]
     }
 `;

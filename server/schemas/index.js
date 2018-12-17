@@ -11,6 +11,7 @@ import ad_category_schema from "./ad_category";
 import tb_media_schema from "./tb_media";
 import file_schema from "./file";
 import content_layout_schema from "./content_layout";
+import system_schema from "./system";
 
 const link_schema = gql`
     type Query {
@@ -37,5 +38,6 @@ export default [
     ad_category_schema,
     tb_media_schema,
     file_schema,
-    content_layout_schema
+    content_layout_schema,
+    system_schema
 ];

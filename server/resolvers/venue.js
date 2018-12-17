@@ -30,6 +30,13 @@ export default {
                 ]
             });
         },
+        systems: async venue => {
+            return await db.system.findAll({
+                where: {
+                    venueId: venue.id
+                }
+            });
+        },
         /*tb_categories: async venue => {
             return await db.tb_category.findAll({
                 include: [

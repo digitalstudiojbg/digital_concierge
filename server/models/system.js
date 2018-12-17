@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     system.associate = function(models) {
-        // associations can be defined here
+        system.belongsTo(models.venue, {
+            foreignKey: { allowNull: false }
+        });
     };
     return system;
 };

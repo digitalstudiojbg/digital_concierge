@@ -122,3 +122,4 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 
 node_modules/.bin/sequelize seed:generate --name content_layouts_validations
 
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-and-system

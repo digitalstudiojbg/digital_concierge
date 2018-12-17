@@ -57,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     venue.associate = function(models) {
+        venue.hasMany(models.system);
         venue.hasMany(models.user);
         venue.belongsToMany(models.role, { through: "roles_venues" });
         /*venue.belongsToMany(models.tb_category, {
