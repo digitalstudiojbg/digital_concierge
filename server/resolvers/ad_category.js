@@ -55,8 +55,8 @@ export default {
                 }
             });
         },
-        tb_media: async ad_category => {
-            return await db.tb_media.findAll({
+        media: async ad_category => {
+            return await db.media.findAll({
                 include: [
                     {
                         model: db.ad_category,
@@ -64,6 +64,6 @@ export default {
                     }
                 ]
             });
-        },
+        }
     }
 };

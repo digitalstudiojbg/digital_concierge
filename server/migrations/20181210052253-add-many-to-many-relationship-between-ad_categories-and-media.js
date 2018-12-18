@@ -2,7 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("ad_directories_tb_media", {
+        return queryInterface.createTable("ad_categories_media", {
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -13,19 +13,19 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal("NOW()")
             },
-            adDirectoryId: {
+            adCategoryId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "ad_directories",
+                    model: "ad_categories",
                     key: "id"
                 }
             },
-            tbMediumId: {
+            mediumId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "tb_media",
+                    model: "media",
                     key: "id"
                 }
             }
@@ -33,6 +33,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("ad_directories_tb_media");
+        return queryInterface.dropTable("ad_categories_media");
     }
 };

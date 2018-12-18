@@ -12,6 +12,6 @@ export default gql`
         active: Boolean
         ad_directory_type: AD_Directory_Type
         ad_categories: [AD_Category]
-        tb_media: [TB_MEDIA]
+        media: [MEDIA]
     }
 `;

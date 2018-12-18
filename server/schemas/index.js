@@ -8,7 +8,7 @@ import global_setting_schema from "./global_setting";
 import ad_directory_type_schema from "./ad_directory_type";
 import ad_directory_schema from "./ad_directory";
 import ad_category_schema from "./ad_category";
-import tb_media_schema from "./tb_media";
+import media_schema from "./media";
 import file_schema from "./file";
 import content_layout_schema from "./content_layout";
 import system_schema from "./system";
@@ -39,7 +39,7 @@ export default [
     ad_directory_type_schema,
     ad_directory_schema,
     ad_category_schema,
-    tb_media_schema,
+    media_schema,
     file_schema,
     content_layout_schema,
     system_schema,
