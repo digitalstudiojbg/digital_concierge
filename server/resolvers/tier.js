@@ -11,17 +11,24 @@ export default {
         },
 
         tiers_by_system: async (root, { id }, { user }) => {
-            return await db.tier.findAll({
-                include: [
-                    {
-                        model: db.system,
-                        where: { id: id },
-                        through: {
-                            where: { is_parent: true }
-                        }
+            return await db.tier.findAll(
+                {
+                    where: {
+                        is_parent: true
                     }
-                ]
-            });
+                },
+                {
+                    include: [
+                        {
+                            model: db.system,
+                            where: { id: id },
+                            through: {
+                                where: { is_parent: true }
+                            }
+                        }
+                    ]
+                }
+            );
         }
     },
     Tier: {
@@ -33,6 +40,20 @@ export default {
                         where: { id: tier.id }
                     }
                 ]
+            });
+        },
+        child_tiers: async row => {
+            return await db.tier.findAll({
+                where: {
+                    tierId: row.id
+                }
+            });
+        },
+        child_category: async row => {
+            return await db.tier.findAll({
+                where: {
+                    tierId: row.id
+                }
             });
         }
     }

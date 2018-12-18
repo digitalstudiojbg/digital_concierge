@@ -36,14 +36,6 @@ module.exports = {
                     notEmpty: true
                 },
                 defaultValue: true
-            },
-            is_parent: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: false
             }
         });
     },

@@ -17,6 +17,14 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 },
                 defaultValue: true
+            },
+            is_parent: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
             }
         },
         {}

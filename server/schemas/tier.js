@@ -4,13 +4,14 @@ export default gql`
     extend type Query {
         tier(id: ID!): Tier
         tiers: [Tier]
-        tiers_by_system: [Tier]
+        tiers_by_system(id: ID!): [Tier]
     }
 
     type Tier {
         id: ID!
         name: String
-        tiers: [Tier]
+        child_tiers: [Tier]
+        child_category: [Tier]
         systems: [System]
     }
 `;
