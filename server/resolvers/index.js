@@ -16,6 +16,9 @@ import guest_resolver from "./guest";
 import tier_resolver from "./tier";
 import room_resolver from "./room";
 import directory_resolver from "./directory";
+import content_list_layout_resolver from "./content_list_layout";
+import landing_page_layout_resolver from "./landing_page_layout";
+import tier_layout_resolver from "./tier_layout";
 
 export default [
     user_resolver,
@@ -35,5 +38,8 @@ export default [
     guest_resolver,
     tier_resolver,
     room_resolver,
-    directory_resolver
+    directory_resolver,
+    content_list_layout_resolver,
+    landing_page_layout_resolver,
+    tier_layout_resolver
 ];

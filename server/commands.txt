@@ -163,3 +163,24 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory-and-category
 
 node_modules/.bin/sequelize seed:generate --name directory-tier
+
+node_modules/.bin/sequelize model:generate --name tier_layout --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name content_list_layout --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name landing_page_layout --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-tier_layout-and-validation
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-content_list_layout-and-validation
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-landing_page_layout-and-validation
+
+node_modules/.bin/sequelize seed:generate --name tier_layout
+
+node_modules/.bin/sequelize seed:generate --name content_list_layout
+
+node_modules/.bin/sequelize seed:generate --name landing_page_layout
+
+node_modules/.bin/sequelize seed:generate --name tier_layouts_validations
+ 

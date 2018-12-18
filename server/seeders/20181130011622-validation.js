@@ -31,6 +31,12 @@ module.exports = {
                 },
                 {
                     name: "HAS_LP_BUTTON"
+                },
+                {
+                    name: "HAS_TIER_IMAGE"
+                },
+                {
+                    name: "HAS_TIER_TITLE"
                 }
             ],
             {}

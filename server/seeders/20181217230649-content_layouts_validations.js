@@ -56,26 +56,6 @@ module.exports = {
                 {
                     contentLayoutId: 4,
                     validationId: 4
-                },
-                {
-                    contentLayoutId: 5,
-                    validationId: 5
-                },
-                {
-                    contentLayoutId: 5,
-                    validationId: 6
-                },
-                {
-                    contentLayoutId: 5,
-                    validationId: 7
-                },
-                {
-                    contentLayoutId: 5,
-                    validationId: 8
-                },
-                {
-                    contentLayoutId: 5,
-                    validationId: 9
                 }
             ],
             {}

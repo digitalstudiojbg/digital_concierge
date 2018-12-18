@@ -16,12 +16,6 @@ module.exports = {
                 },
                 {
                     name: "TABLET_DIRECTORY_TYPE_4"
-                },
-                {
-                    name: "TABLET_LANDING_PAGE_TYPE_1"
-                },
-                {
-                    name: "TABLET_CATEGORY_TYPE_1"
                 }
             ],
             {}
