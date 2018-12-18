@@ -141,3 +141,5 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize model:generate --name room --attributes name:string
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-and-room
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-guest-and-room
