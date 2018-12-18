@@ -51,6 +51,9 @@ module.exports = (sequelize, DataTypes) => {
         tb_directory.belongsToMany(models.tb_media, {
             through: "tb_directories_tb_media"
         });*/
+        directory.belongsToMany(models.media, {
+            through: "directories_media"
+        });
     };
     return directory;
 };

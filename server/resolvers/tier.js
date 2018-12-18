@@ -58,6 +58,16 @@ export default {
         },
         content_layout: async tier => {
             return await db.content_layout.findById(tier.contentLayoutId);
+        },
+        media: async tier => {
+            return await db.media.findAll({
+                include: [
+                    {
+                        model: db.tier,
+                        where: { id: tier.id }
+                    }
+                ]
+            });
         }
     }
 };

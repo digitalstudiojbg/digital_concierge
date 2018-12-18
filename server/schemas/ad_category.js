@@ -15,6 +15,6 @@ export default gql`
         ad_directories: [AD_Directory]
         venues: [Venue]
         child_category: [AD_Category]
-        media: [MEDIA]
+        media: [Media]
     }
 `;

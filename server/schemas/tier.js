@@ -14,5 +14,6 @@ export default gql`
         child_category: [Tier]
         systems: [System]
         content_layout: Content_Layout
+        media: [Media]
     }
 `;

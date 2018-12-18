@@ -10,7 +10,7 @@ export default {
             return await db.media.findAll();
         }
     },
-    MEDIA: {
+    Media: {
         venue: async media => {
             return await db.venue.findById(media.venueId);
         },
@@ -26,6 +26,26 @@ export default {
         },
         ad_categories: async media => {
             return await db.ad_category.findAll({
+                include: [
+                    {
+                        model: db.media,
+                        where: { id: media.id }
+                    }
+                ]
+            });
+        },
+        directories: async media => {
+            return await db.directory.findAll({
+                include: [
+                    {
+                        model: db.media,
+                        where: { id: media.id }
+                    }
+                ]
+            });
+        },
+        tiers: async media => {
+            return await db.tier.findAll({
                 include: [
                     {
                         model: db.media,
