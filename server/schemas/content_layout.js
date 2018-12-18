@@ -11,5 +11,6 @@ export default gql`
         name: String
         validations: [Validation]
         tiers: [Tier]
+        directories: [Directory]
     }
 `;

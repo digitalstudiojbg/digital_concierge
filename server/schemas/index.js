@@ -15,6 +15,7 @@ import system_schema from "./system";
 import guest_schema from "./guest";
 import room_schema from "./room";
 import tier_schema from "./tier";
+import directory_schema from "./directory";
 
 const link_schema = gql`
     type Query {
@@ -45,5 +46,6 @@ export default [
     system_schema,
     guest_schema,
     room_schema,
-    tier_schema
+    tier_schema,
+    directory_schema
 ];

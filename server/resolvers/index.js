@@ -15,6 +15,7 @@ import system_layout_resolver from "./system";
 import guest_resolver from "./guest";
 import tier_resolver from "./tier";
 import room_resolver from "./room";
+import directory_resolver from "./directory";
 
 export default [
     user_resolver,
@@ -33,5 +34,6 @@ export default [
     system_layout_resolver,
     guest_resolver,
     tier_resolver,
-    room_resolver
+    room_resolver,
+    directory_resolver
 ];

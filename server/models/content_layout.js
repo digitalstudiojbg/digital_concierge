@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             through: "content_layouts_validations"
         });
         content_layout.hasMany(models.tier);
+        content_layout.hasMany(models.directory);
     };
     return content_layout;
 };

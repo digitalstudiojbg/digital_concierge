@@ -27,6 +27,13 @@ export default {
                     contentLayoutId: content_layout.id
                 }
             });
+        },
+        directories: async content_layout => {
+            return await db.directory.findAll({
+                where: {
+                    contentLayoutId: content_layout.id
+                }
+            });
         }
     }
 };
