@@ -7,6 +7,13 @@ export default {
         },
         guests: async (_root, _input, { user }) => {
             return await db.guest.findAll();
+        },
+        guests_by_venue: async (_root, { id }, { user }) => {
+            return await db.guest.findAll({
+                where: {
+                    venueId: id
+                }
+            });
         }
     },
     Guest: {

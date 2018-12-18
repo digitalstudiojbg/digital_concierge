@@ -10,9 +10,7 @@ export default gql`
     type Room {
         id: ID!
         name: String
-        lastname: String
-        email: String
         guests: [Guest]
-        venue: [Venue]
+        venue: Venue
     }
 `;

@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         venue.hasMany(models.tb_media);
         venue.hasMany(models.guest);
+        venue.hasMany(models.room);
     };
     return venue;
 };
