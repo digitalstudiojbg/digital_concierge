@@ -3,7 +3,7 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "tb_media",
+            "media",
             [
                 {
                     path:
@@ -24,6 +24,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("tb_media", null, {});
+        return queryInterface.bulkDelete("media", null, {});
     }
 };

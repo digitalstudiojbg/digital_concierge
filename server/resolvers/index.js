@@ -8,7 +8,7 @@ import global_setting_resolver from "./global_setting";
 import ad_directory_type_resolver from "./ad_directory_type";
 import ad_directory_resolver from "./ad_directory";
 import ad_category_resolver from "./ad_category";
-import tb_media_resolver from "./tb_media";
+import media_resolver from "./media";
 import file_resolver from "./file";
 import content_layout_resolver from "./content_layout";
 import system_layout_resolver from "./system";
@@ -27,7 +27,7 @@ export default [
     ad_directory_type_resolver,
     ad_directory_resolver,
     ad_category_resolver,
-    tb_media_resolver,
+    media_resolver,
     file_resolver,
     content_layout_resolver,
     system_layout_resolver,

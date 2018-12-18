@@ -23,7 +23,7 @@ export default gql`
         #tb_landing_page: [TB_LANDING_PAGE]
         global_setting: [Global_Setting]
         ad_categories: [AD_Category]
-        tb_media: [TB_MEDIA]
+        media: [MEDIA]
         systems: [System]
     }
 `;

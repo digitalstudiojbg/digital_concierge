@@ -26,8 +26,8 @@ export default {
                 ]
             });
         },
-        tb_media: async ad_directory => {
-            return await db.tb_media.findAll({
+        media: async ad_directory => {
+            return await db.media.findAll({
                 include: [
                     {
                         model: db.ad_directory,
@@ -35,6 +35,6 @@ export default {
                     }
                 ]
             });
-        },
+        }
     }
 };
