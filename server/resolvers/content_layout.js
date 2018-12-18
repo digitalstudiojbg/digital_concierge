@@ -20,6 +20,13 @@ export default {
                     }
                 ]
             });
+        },
+        tiers: async content_layout => {
+            return await db.tier.findAll({
+                where: {
+                    contentLayoutId: content_layout.id
+                }
+            });
         }
     }
 };

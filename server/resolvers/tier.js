@@ -55,6 +55,9 @@ export default {
                     tierId: row.id
                 }
             });
+        },
+        content_layout: async tier => {
+            return await db.content_layout.findById(tier.contentLayoutId);
         }
     }
 };

@@ -10,5 +10,6 @@ export default gql`
         id: ID!
         name: String
         validations: [Validation]
+        tiers: [Tier]
     }
 `;

@@ -150,3 +150,8 @@ node_modules/.bin/sequelize seed:generate --name system_tier
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-guest-and-room
  
+node_modules/.bin/sequelize model:generate --name directory --attributes name:string,body:string,active:boolean,phone:string,address:string,opening_hours:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-directory-and-content_layout
+
+node_modules/.bin/sequelize seed:generate --name directory

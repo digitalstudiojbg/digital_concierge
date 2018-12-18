@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         tier.belongsToMany(models.system, {
             through: "systems_tiers"
         });
+
+        tier.belongsTo(models.content_layout, {
+            foreignKey: { allowNull: false }
+        });
     };
     return tier;
 };

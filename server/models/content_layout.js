@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         content_layout.belongsToMany(models.validation, {
             through: "content_layouts_validations"
         });
+        content_layout.hasMany(models.tier);
     };
     return content_layout;
 };

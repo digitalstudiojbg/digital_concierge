@@ -19,6 +19,9 @@ module.exports = {
                 },
                 {
                     name: "TABLET_LANDING_PAGE_TYPE_1"
+                },
+                {
+                    name: "TABLET_CATEGORY_TYPE_1"
                 }
             ],
             {}

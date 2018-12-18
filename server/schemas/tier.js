@@ -13,5 +13,6 @@ export default gql`
         child_tiers: [Tier]
         child_category: [Tier]
         systems: [System]
+        content_layout: Content_Layout
     }
 `;
