@@ -28,6 +28,9 @@ module.exports = {
                     model: "media",
                     key: "id"
                 }
+            },
+            description: {
+                type: Sequelize.STRING
             }
         });
     },
