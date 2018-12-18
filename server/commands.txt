@@ -127,3 +127,13 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-guest-and-venue
 
 node_modules/.bin/sequelize seed:generate --name guest
+
+node_modules/.bin/sequelize model:generate --name tier --attributes name:string,active:boolean,has_directory:boolean
+
+node_modules/.bin/sequelize seed:generate --name tier
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tiers-and-tiers
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tiers-and-content_layout
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-system-and-tier

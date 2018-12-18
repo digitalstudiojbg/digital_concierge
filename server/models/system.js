@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         system.belongsTo(models.venue, {
             foreignKey: { allowNull: false }
         });
+        system.belongsToMany(models.tier, {
+            through: "systems_tiers"
+        });
     };
     return system;
 };

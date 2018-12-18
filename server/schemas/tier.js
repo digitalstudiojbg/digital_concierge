@@ -2,14 +2,15 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        system(id: ID!): System
-        systems: [System]
+        tier(id: ID!): Tier
+        tiers: [Tier]
+        tiers_by_system: [Tier]
     }
 
-    type System {
+    type Tier {
         id: ID!
         name: String
-        venue: Venue
         tiers: [Tier]
+        systems: [System]
     }
 `;

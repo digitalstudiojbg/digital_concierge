@@ -13,6 +13,7 @@ import file_resolver from "./file";
 import content_layout from "./content_layout";
 import system_layout from "./system";
 import guest_layout from "./guest";
+import tier_layout from "./tier";
 
 export default [
     user_resolver,
@@ -29,5 +30,6 @@ export default [
     file_resolver,
     content_layout,
     system_layout,
-    guest_layout
+    guest_layout,
+    tier_layout
 ];

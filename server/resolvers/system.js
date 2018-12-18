@@ -12,6 +12,16 @@ export default {
     System: {
         venue: async system => {
             return await db.venue.findById(system.venueId);
+        },
+        tiers: async system => {
+            return await db.tier.findAll({
+                include: [
+                    {
+                        model: db.system,
+                        where: { id: system.id }
+                    }
+                ]
+            });
         }
     }
 };
