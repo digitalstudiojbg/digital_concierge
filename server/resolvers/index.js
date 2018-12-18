@@ -12,6 +12,7 @@ import tb_media_resolver from "./tb_media";
 import file_resolver from "./file";
 import content_layout from "./content_layout";
 import system_layout from "./system";
+import guest_layout from "./guest";
 
 export default [
     user_resolver,
@@ -27,5 +28,6 @@ export default [
     tb_media_resolver,
     file_resolver,
     content_layout,
-    system_layout
+    system_layout,
+    guest_layout
 ];

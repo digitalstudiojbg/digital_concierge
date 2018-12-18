@@ -12,6 +12,8 @@ import tb_media_schema from "./tb_media";
 import file_schema from "./file";
 import content_layout_schema from "./content_layout";
 import system_schema from "./system";
+import guest_schema from "./guest";
+import room_schema from "./room";
 
 const link_schema = gql`
     type Query {
@@ -39,5 +41,7 @@ export default [
     tb_media_schema,
     file_schema,
     content_layout_schema,
-    system_schema
+    system_schema,
+    guest_schema,
+    room_schema
 ];

@@ -69,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
             through: "ad_categories_venues"
         });
         venue.hasMany(models.tb_media);
+        venue.hasMany(models.guest);
     };
     return venue;
 };
