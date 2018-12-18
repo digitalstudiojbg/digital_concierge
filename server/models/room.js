@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
         room.belongsTo(models.venue, {
             foreignKey: { allowNull: false }
         });
+        room.belongsToMany(models.guest, {
+            through: "guests_rooms"
+        });
     };
 
     return room;
