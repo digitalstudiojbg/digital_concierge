@@ -10,5 +10,6 @@ export default gql`
         id: ID!
         name: String
         content_layout: Content_Layout
+        tiers: [Tier]
     }
 `;

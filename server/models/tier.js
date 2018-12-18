@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         tier.belongsTo(models.content_layout, {
             foreignKey: { allowNull: false }
         });
+        tier.belongsToMany(models.directory, {
+            through: "directories_tiers"
+        });
     };
     return tier;
 };
