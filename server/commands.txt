@@ -137,3 +137,7 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-tiers-and-content_layout
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-system-and-tier
+
+node_modules/.bin/sequelize model:generate --name room --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-and-room
