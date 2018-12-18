@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
         directory.belongsTo(models.content_layout, {
             foreignKey: { allowNull: false }
         });
+        directory.belongsToMany(models.tier, {
+            through: "directories_tiers"
+        });
         /*
         tb_directory.belongsToMany(models.tb_category, {
             through: "tb_directories_tb_categories"

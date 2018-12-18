@@ -14,6 +14,8 @@ export default gql`
         child_category: [Tier]
         systems: [System]
         content_layout: Content_Layout
+        directories: [Directory]
+        directories_active: [Directory]
         media: [Media]
     }
 `;

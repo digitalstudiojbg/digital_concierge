@@ -159,3 +159,7 @@ node_modules/.bin/sequelize seed:generate --name directory
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-media-and-tier
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory-and-category
+
+node_modules/.bin/sequelize seed:generate --name directory-tier

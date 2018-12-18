@@ -14,6 +14,16 @@ export default {
         content_layout: async directory => {
             return await db.content_layout.findById(directory.contentLayoutId);
         },
+        tiers: async directory => {
+            return await db.tier.findAll({
+                include: [
+                    {
+                        model: db.directory,
+                        where: { id: directory.id }
+                    }
+                ]
+            });
+        },
         media: async directory => {
             return await db.media.findAll({
                 include: [

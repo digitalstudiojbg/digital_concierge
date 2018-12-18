@@ -59,6 +59,63 @@ export default {
         content_layout: async tier => {
             return await db.content_layout.findById(tier.contentLayoutId);
         },
+        directories: async tier => {
+            /*return await db.tb_directory.findAll({
+                include: [
+                    {
+                        model: db.tb_category,
+                        where: { id: tb_category.id },
+                        through: {
+                            attributes: ["active"]
+                        }
+                    }
+                ]
+            });*/
+            const activeDirectoryList = await db.directory.findAll({
+                include: [
+                    {
+                        model: db.tier,
+                        where: { id: tier.id },
+                        through: { where: { active: true } }
+                    }
+                ]
+            });
+
+            for (let index = 0; index < activeDirectoryList.length; ++index) {
+                activeDirectoryList[index].active = true;
+            }
+
+            const inactiveDirectoryList = await db.directory.findAll({
+                include: [
+                    {
+                        model: db.tier,
+                        where: { id: tier.id },
+                        through: { where: { active: false } }
+                    }
+                ]
+            });
+
+            for (let index = 0; index < inactiveDirectoryList.length; ++index) {
+                inactiveDirectoryList[index].active = false;
+            }
+
+            return [...activeDirectoryList, ...inactiveDirectoryList].sort(
+                (obj1, obj2) => {
+                    return obj1.id - obj2.id;
+                }
+            );
+        },
+        directories_active: async tier => {
+            return await db.directory.findAll({
+                include: [
+                    {
+                        model: db.tier,
+                        where: { id: tier.id },
+                        through: { where: { active: true } }
+                    }
+                ]
+            });
+        },
         media: async tier => {
             return await db.media.findAll({
                 include: [
