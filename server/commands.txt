@@ -109,3 +109,78 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_directories-and-tb_media
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-ad_categories-and-tb_media
+
+--new commands:
+node_modules/.bin/sequelize model:generate --name media --attributes name:string,path:string,type:string
+
+node_modules/.bin/sequelize model:generate --name client --attributes name:string,has_parent_category:boolean,active:boolean,has_tablet:boolean,has_touchscreen:boolean,number_of_users:integer,avatar:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-client
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-user
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-user
+
+node_modules/.bin/sequelize model:generate --name group --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-group
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-group-and-role
+
+node_modules/.bin/sequelize model:generate --name guest --attributes firstname:string,lastname:string,email:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-guest
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-guest
+
+node_modules/.bin/sequelize model:generate --name room --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-room-and-guest
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-room
+
+node_modules/.bin/sequelize model:generate --name system --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name device --attributes number:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-device
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-device-and-room
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-system-and-device
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-system
+
+node_modules/.bin/sequelize model:generate --name layout --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-system-and-layout
+
+node_modules/.bin/sequelize model:generate --name jbg_welcome --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-jbg_welcome
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_welcome-and-media
+
+node_modules/.bin/sequelize model:generate --name just_brilliant_guide --attributes name:string,location:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_welcome-and-just_brilliant_guide
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-just_brilliant_guide-and-system
+
+node_modules/.bin/sequelize model:generate --name jbg_welcome --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name start --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-start
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-start-and-system
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-start-and-media
+
+node_modules/.bin/sequelize model:generate --name home --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-home
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-home-and-system
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-home-and-media

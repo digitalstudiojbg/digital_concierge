@@ -1,14 +1,21 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("users", {
+        return queryInterface.createTable("guests", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            name: {
+            firstname: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            lastname: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
@@ -21,20 +28,6 @@ module.exports = {
                 validate: {
                     notEmpty: true,
                     isEmail: true
-                }
-            },
-            password: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            active: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
                 }
             },
             createdAt: {
@@ -50,6 +43,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("users");
+        return queryInterface.dropTable("guests");
     }
 };

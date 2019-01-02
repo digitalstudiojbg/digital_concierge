@@ -14,24 +14,21 @@ module.exports = {
                     email: "nealshen@johnbatman.com.au",
                     password: hash,
                     active: true,
-                    roleId: 1,
-                    venueId: 2
+                    roleId: 1
                 },
                 {
                     name: "Holiday Inn",
                     email: "admin@holidayinn.com.au",
                     password: hash,
                     active: true,
-                    roleId: 1,
-                    venueId: 1
+                    roleId: 1
                 },
                 {
                     name: "Neal Shen",
                     email: "admin@admin.com.au",
                     password: hash,
                     active: true,
-                    roleId: 1,
-                    venueId: 3
+                    roleId: 1
                 }
             ],
             {}

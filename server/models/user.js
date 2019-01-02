@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         user.belongsTo(models.role, {
             foreignKey: { allowNull: false }
         });
-        user.belongsTo(models.venue, {
+        user.belongsTo(models.client, {
             foreignKey: { allowNull: false }
         });
     };

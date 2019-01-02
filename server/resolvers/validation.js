@@ -19,15 +19,15 @@ export default {
         }
     },
     Validation: {
-        td_directory_types: async validation => {
-            return await db.tb_directory_type.findAll({
-                include: [
-                    {
-                        model: db.validation,
-                        where: { id: validation.id }
-                    }
-                ]
-            });
-        }
+        // td_directory_types: async validation => {
+        //     return await db.tb_directory_type.findAll({
+        //         include: [
+        //             {
+        //                 model: db.validation,
+        //                 where: { id: validation.id }
+        //             }
+        //         ]
+        //     });
+        // }
     }
 };

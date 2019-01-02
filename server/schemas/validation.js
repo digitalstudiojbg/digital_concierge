@@ -9,6 +9,6 @@ export default gql`
     type Validation {
         id: ID!
         name: String
-        td_directory_types: [TB_Directory_Type]
+        # td_directory_types: [TB_Directory_Type]
     }
 `;

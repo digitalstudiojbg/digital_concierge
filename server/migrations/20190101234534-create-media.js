@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("users", {
+        return queryInterface.createTable("media", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -15,23 +15,15 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            email: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true,
-                    isEmail: true
-                }
-            },
-            password: {
+            path: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            active: {
-                type: Sequelize.BOOLEAN,
+            type: {
+                type: Sequelize.ENUM("image", "video"),
                 allowNull: false,
                 validate: {
                     notEmpty: true
@@ -50,6 +42,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("users");
+        return queryInterface.dropTable("media");
     }
 };
