@@ -3,9 +3,29 @@ module.exports = (sequelize, DataTypes) => {
     const directory_list = sequelize.define(
         "directory_list",
         {
-            name: DataTypes.STRING,
-            is_root: DataTypes.BOOLEAN,
-            active: DataTypes.BOOLEAN,
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            is_root: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: false
+            },
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
+            },
             directory_list_id: DataTypes.INTEGER
         },
         {}

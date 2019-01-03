@@ -3,9 +3,15 @@ module.exports = (sequelize, DataTypes) => {
     const directory_entry = sequelize.define(
         "directory_entry",
         {
-            name: DataTypes.STRING,
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             title: DataTypes.STRING,
-            description: DataTypes.TEXT,
+            description: DataTypes.TEXT("long"),
             start_date: DataTypes.DATE,
             end_date: DataTypes.DATE,
             phone: DataTypes.STRING,

@@ -3,13 +3,55 @@ module.exports = (sequelize, DataTypes) => {
     const client = sequelize.define(
         "client",
         {
-            name: DataTypes.STRING,
-            has_parent_category: DataTypes.BOOLEAN,
-            active: DataTypes.BOOLEAN,
-            has_tablet: DataTypes.BOOLEAN,
-            has_touchscreen: DataTypes.BOOLEAN,
-            number_of_users: DataTypes.INTEGER,
-            avatar: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            has_parent_category: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            has_tablet: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            has_touchscreen: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            number_of_users: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            avatar: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

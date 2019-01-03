@@ -3,9 +3,27 @@ module.exports = (sequelize, DataTypes) => {
     const media = sequelize.define(
         "media",
         {
-            name: DataTypes.STRING,
-            path: DataTypes.STRING,
-            type: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            path: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            type: {
+                type: DataTypes.ENUM("image", "video"),
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

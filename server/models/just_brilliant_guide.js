@@ -3,8 +3,20 @@ module.exports = (sequelize, DataTypes) => {
     const just_brilliant_guide = sequelize.define(
         "just_brilliant_guide",
         {
-            name: DataTypes.STRING,
-            location: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            location: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

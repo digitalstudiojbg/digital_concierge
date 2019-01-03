@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     const jbg_map = sequelize.define(
         "jbg_map",
         {
-            name: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

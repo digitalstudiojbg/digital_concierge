@@ -3,9 +3,28 @@ module.exports = (sequelize, DataTypes) => {
     const guest = sequelize.define(
         "guest",
         {
-            firstname: DataTypes.STRING,
-            lastname: DataTypes.STRING,
-            email: DataTypes.STRING
+            firstname: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            lastname: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true,
+                    isEmail: true
+                }
+            }
         },
         {}
     );

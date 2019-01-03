@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     const map = sequelize.define(
         "map",
         {
-            name: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

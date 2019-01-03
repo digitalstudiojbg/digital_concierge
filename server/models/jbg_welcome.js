@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     const jbg_welcome = sequelize.define(
         "jbg_welcome",
         {
-            name: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

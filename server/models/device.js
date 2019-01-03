@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     const device = sequelize.define(
         "device",
         {
-            number: DataTypes.STRING
+            number: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );

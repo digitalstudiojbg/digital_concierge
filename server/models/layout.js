@@ -3,7 +3,13 @@ module.exports = (sequelize, DataTypes) => {
     const layout = sequelize.define(
         "layout",
         {
-            name: DataTypes.STRING
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            }
         },
         {}
     );
