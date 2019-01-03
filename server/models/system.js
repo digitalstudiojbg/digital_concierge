@@ -24,6 +24,15 @@ module.exports = (sequelize, DataTypes) => {
         system.belongsTo(models.home, {
             foreignKey: { allowNull: false }
         });
+        system.belongsToMany(models.gallery, {
+            through: "galleries_systems"
+        });
+        system.belongsToMany(models.map, {
+            through: "maps_systems"
+        });
+        system.belongsToMany(models.directory_list, {
+            through: "directory_lists_systems"
+        });
     };
     return system;
 };

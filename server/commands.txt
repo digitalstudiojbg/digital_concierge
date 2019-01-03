@@ -184,3 +184,63 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-home-and-system
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-home-and-media
+
+node_modules/.bin/sequelize model:generate --name gallery --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-gallery
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-gallery-and-system
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-gallery-and-media
+
+node_modules/.bin/sequelize model:generate --name map --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-map
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-map-and-system
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-map-and-media
+
+node_modules/.bin/sequelize model:generate --name template --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-layout-and-template
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-template-and-validation
+
+node_modules/.bin/sequelize model:generate --name directory_list --attributes name:string,is_root:boolean,active:boolean,directory_list_id:integer
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory_list-and-system
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory_list-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-directory_list
+
+node_modules/.bin/sequelize model:generate --name directory_entry --attributes name:string,title:string,description:text,start_date:date,end_date:date,phone:string,opening_hours:string,address:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-directory_entry
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory_entry-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-directory_entry-and-directory_list
+
+node_modules/.bin/sequelize model:generate --name jbg_map --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-jbg_map
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_map-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_map-and-just_brilliant_guide
+
+node_modules/.bin/sequelize model:generate --name jbg_directory_list --attributes name:string,is_root:boolean,active:boolean,jbg_directory_list_id:integer
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-jbg_directory_list
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_directory_list-and-media
+
+node_modules/.bin/sequelize model:generate --name jbg_directory_entry --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_directory_entry-and-jbg_directory_list
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-jbg_directory_entry
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_directory_entry-and-media

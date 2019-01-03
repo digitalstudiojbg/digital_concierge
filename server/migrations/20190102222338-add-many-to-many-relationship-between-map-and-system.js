@@ -2,7 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("homes_media", {
+        return queryInterface.createTable("maps_systems", {
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -13,19 +13,19 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal("NOW()")
             },
-            homeId: {
+            mapId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "homes",
+                    model: "maps",
                     key: "id"
                 }
             },
-            mediumId: {
+            systemId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "media",
+                    model: "systems",
                     key: "id"
                 }
             }
@@ -33,6 +33,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("homes_media");
+        return queryInterface.dropTable("maps_systems");
     }
 };

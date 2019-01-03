@@ -2,7 +2,7 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("homes_media", {
+        return queryInterface.createTable("jbg_maps_just_brilliant_guides", {
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
@@ -13,19 +13,19 @@ module.exports = {
                 type: Sequelize.DATE,
                 defaultValue: Sequelize.literal("NOW()")
             },
-            homeId: {
+            jbgMapId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "homes",
+                    model: "jbg_maps",
                     key: "id"
                 }
             },
-            mediumId: {
+            justBrilliantGuideId: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 references: {
-                    model: "media",
+                    model: "just_brilliant_guides",
                     key: "id"
                 }
             }
@@ -33,6 +33,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("homes_media");
+        return queryInterface.dropTable("jbg_maps_just_brilliant_guides");
     }
 };

@@ -33,6 +33,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("tb_directories_tb_media");
+        return queryInterface.dropTable("jbg_welcomes_media");
     }
 };

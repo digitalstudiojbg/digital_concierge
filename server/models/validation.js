@@ -14,9 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     validation.associate = function(models) {
-        // validation.belongsToMany(models.tb_directory_type, {
-        //     through: "tb_directory_types_validations"
-        // });
+        validation.belongsToMany(models.template, {
+            through: "templates_validations"
+        });
     };
     return validation;
 };

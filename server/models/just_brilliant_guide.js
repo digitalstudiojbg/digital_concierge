@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         just_brilliant_guide.hasMany(models.system);
+        just_brilliant_guide.belongsToMany(models.jbg_map, {
+            through: "jbg_maps_just_brilliant_guides"
+        });
     };
     return just_brilliant_guide;
 };
