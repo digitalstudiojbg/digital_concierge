@@ -2,14 +2,15 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        validation(id: ID!): Validation
-        validations: [Validation]
+        group(id: ID!): Group
+        groups: [Group]
     }
-
-    type Validation {
+    type Group {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
+        client: Client
+        roles: [Role]
     }
 `;

@@ -2,14 +2,17 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        validation(id: ID!): Validation
-        validations: [Validation]
+        jbgMap(id: ID!): JbgMap
+        jbgMaps: [JbgMap]
     }
 
-    type Validation {
+    type JbgMap {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
+        layout: Layout
+        justBrilliantGuides: [JustBrilliantGuide]
+        media: [Media]
     }
 `;

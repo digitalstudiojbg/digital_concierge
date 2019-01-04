@@ -16,7 +16,7 @@ export default gql`
         password: String
         active: Boolean
         role: Role
-        # venue: Venue
+        client: Client
         avatar: String
         createdAt: DateTime
         updatedAt: DateTime

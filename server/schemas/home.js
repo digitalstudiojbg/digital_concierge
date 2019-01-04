@@ -2,14 +2,17 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        validation(id: ID!): Validation
-        validations: [Validation]
+        home(id: ID!): Home
+        homes: [Home]
     }
 
-    type Validation {
+    type Home {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
+        layout: Layout
+        systems: [System]
+        media: [Media]
     }
 `;

@@ -2,14 +2,16 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        validation(id: ID!): Validation
-        validations: [Validation]
+        template(id: ID!): Template
+        templates: [Template]
     }
 
-    type Validation {
+    type Template {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
+        layouts: [Layout]
+        validations: [Validation]
     }
 `;
