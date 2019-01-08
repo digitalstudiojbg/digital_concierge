@@ -43,6 +43,9 @@ module.exports = (sequelize, DataTypes) => {
         jbg_directory_list.belongsToMany(models.jbg_directory_entry, {
             through: "jbg_directory_entries_jbg_directory_lists"
         });
+        jbg_directory_list.belongsToMany(models.just_brilliant_guide, {
+            through: "jbg_directory_lists_just_brilliant_guides"
+        });
     };
     return jbg_directory_list;
 };

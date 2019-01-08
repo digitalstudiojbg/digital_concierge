@@ -244,3 +244,5 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout-and-jbg_directory_entry
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_directory_entry-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-just_brilliant_guide-and-jbg_directory_list

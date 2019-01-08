@@ -7,7 +7,7 @@ export default {
             if (!user) {
                 throw new AuthenticationError("Unauthorized");
             }
-            return await db.role.findById(id);
+            return await db.role.findByPk(id);
         },
 
         roles: async (root, input, { user }) => {

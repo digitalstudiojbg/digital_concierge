@@ -7,7 +7,7 @@ export default {
             /*if (!user) {
                 throw new AuthenticationError("Unauthorized");
             }*/
-            return await db.validation.findById(id);
+            return await db.validation.findByPk(id);
         },
 
         validations: async (root, input, { user }) => {

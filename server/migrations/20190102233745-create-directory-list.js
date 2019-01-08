@@ -31,7 +31,7 @@ module.exports = {
                 },
                 defaultValue: true
             },
-            directory_list_id: {
+            directoryListId: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {

@@ -28,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         just_brilliant_guide.belongsToMany(models.jbg_map, {
             through: "jbg_maps_just_brilliant_guides"
         });
+        just_brilliant_guide.belongsToMany(models.jbg_directory_list, {
+            through: "jbg_directory_lists_just_brilliant_guides"
+        });
     };
     return just_brilliant_guide;
 };

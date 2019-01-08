@@ -31,7 +31,7 @@ module.exports = {
                 },
                 defaultValue: true
             },
-            jbg_directory_list_id: {
+            jbgDirectoryListId: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
                 references: {

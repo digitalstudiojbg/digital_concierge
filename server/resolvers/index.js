@@ -1,35 +1,51 @@
 import user_resolver from "./user";
-import roler_resolver from "./role";
-// import datetime_resolver from "./datetime";
+import role_resolver from "./role";
 import permission_resolver from "./permission";
-// import venue_resolver from "./venue";
-// import tb_category_resolver from "./tb_category";
 import validation_resolver from "./validation";
-// import tb_directory_type_resolver from "./tb_directory_type";
-// import tb_directory_resolver from "./tb_directory";
-// import tb_landing_page_resolver from "./tb_landing_page";
-// import global_setting_resolver from "./global_setting";
-// import ad_directory_type_resolver from "./ad_directory_type";
-// import ad_directory_resolver from "./ad_directory";
-// import ad_category_resolver from "./ad_category";
-// import tb_media_resolver from "./tb_media";
+import client_resolver from "./client";
+import device_resolver from "./device";
+import directoryEntry_resolver from "./directoryEntry";
+import directoryList_resolver from "./directoryList";
+import gallery_resolver from "./gallery";
+import group_resolver from "./group";
+import guest_resolver from "./guest";
+import home_resolver from "./home";
+import jbgDirectoryEntry_resolver from "./jbgDirectoryEntry";
+import jbgDirectoryList_resolver from "./jbgDirectoryList";
+import jbgMap_resolver from "./jbgMap";
+import jbgWelcome_resolver from "./jbgWelcome";
+import justBrilliantGuide_resolver from "./justBrilliantGuide";
+import layout_resolver from "./layout";
+import map_resolver from "./map";
+import media_resolver from "./media";
+import room_resolver from "./room";
+import start_resolver from "./start";
+import template_resolver from "./template";
 import file_resolver from "./file";
 
 export default [
     user_resolver,
-    roler_resolver,
-    // datetime_resolver,
+    role_resolver,
+    client_resolver,
+    device_resolver,
+    directoryEntry_resolver,
+    directoryList_resolver,
+    gallery_resolver,
+    group_resolver,
+    guest_resolver,
+    home_resolver,
+    jbgDirectoryEntry_resolver,
+    jbgDirectoryList_resolver,
+    jbgMap_resolver,
+    jbgWelcome_resolver,
+    justBrilliantGuide_resolver,
+    layout_resolver,
+    map_resolver,
+    media_resolver,
+    room_resolver,
+    start_resolver,
+    template_resolver,
     permission_resolver,
-    // venue_resolver,
-    // tb_category_resolver,
     validation_resolver,
-    // tb_directory_type_resolver,
-    // tb_directory_resolver,
-    // tb_landing_page_resolver,
-    // global_setting_resolver,
-    // ad_directory_type_resolver,
-    // ad_directory_resolver,
-    // ad_category_resolver,
-    // tb_media_resolver,
     file_resolver
 ];

@@ -1,7 +1,7 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
-    extend type Media {
+    extend type Query {
         medium(id: ID!): Media
         media: [Media]
         mediaByClient(id: ID!): [Media]

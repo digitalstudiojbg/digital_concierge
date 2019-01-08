@@ -12,9 +12,9 @@ export default gql`
         location: String
         createdAt: DateTime
         updatedAt: DateTime
-        jbgWelcome: JbgWelcome
+        jbg_welcome: JbgWelcome
         systems: [System]
-        jbgMaps: [JbgMap]
-        jbgDirectoryLists: [JbgDirectoryList]
+        jbg_maps: [JbgMap]
+        jbg_directory_lists: [JbgDirectoryList]
     }
 `;

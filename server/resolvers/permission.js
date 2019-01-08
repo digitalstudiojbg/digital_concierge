@@ -7,7 +7,7 @@ export default {
             if (!user) {
                 throw new AuthenticationError("Unauthorized");
             }
-            return await db.permission.findById(id);
+            return await db.permission.findByPk(id);
         },
 
         permissions: async (oot, input, { user }) => {

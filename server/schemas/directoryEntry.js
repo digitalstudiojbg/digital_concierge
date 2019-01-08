@@ -9,6 +9,7 @@ export default gql`
     type DirectoryEntry {
         id: ID!
         name: String
+        title: String
         createdAt: DateTime
         updatedAt: DateTime
         directoryLists: [DirectoryList]

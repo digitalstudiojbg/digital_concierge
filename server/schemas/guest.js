@@ -14,6 +14,6 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
-        rooms: Room
+        rooms: [Room]
     }
 `;

@@ -14,12 +14,12 @@ export default gql`
         updatedAt: DateTime
         client: Client
         devices: [Device]
-        justBrilliantGuide: [JustBrilliantGuide]
+        just_brilliant_guide: JustBrilliantGuide
         layouts: [Layout]
         start: Start
         home: Home
         galleries: [Gallery]
         map: [Map]
-        directoryLists: [DirectoryList]
+        directory_lists: [DirectoryList]
     }
 `;

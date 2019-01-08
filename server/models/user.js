@@ -31,10 +31,10 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 },
                 defaultValue: true
-            },
-            avatar: {
-                type: DataTypes.STRING
             }
+            // avatar: {
+            //     type: DataTypes.STRING
+            // }
         },
         {}
     );
