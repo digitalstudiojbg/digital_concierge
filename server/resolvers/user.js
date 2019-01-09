@@ -17,7 +17,7 @@ export default {
                 throw new AuthenticationError("Unauthorized");
             }*/
 
-            return await db.user.findById(id);
+            return await db.user.findByPk(id);
         },
         users: async (root, input, { user }) => {
             await checkUserLogin(user);

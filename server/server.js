@@ -28,7 +28,7 @@ const graphqlServer = new ApolloServer({
     resolvers,
     context: async ({ req }) =>
         req.user && {
-            user: await db.user.findById(req.user.sub)
+            user: await db.user.findByPk(req.user.sub)
         }
 });
 graphqlServer.applyMiddleware({ app });
