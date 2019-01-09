@@ -3,17 +3,15 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "roles",
+            "jbg_welcomes_media",
             [
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 1
+                    jbgWelcomeId: 1,
+                    mediumId: 1
                 },
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 2
+                    jbgWelcomeId: 2,
+                    mediumId: 1
                 }
             ],
             {}
@@ -21,6 +19,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("roles", null, {});
+        return queryInterface.bulkDelete("jbg_welcomes_media", null, {});
     }
 };

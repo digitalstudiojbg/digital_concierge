@@ -28,21 +28,6 @@ module.exports = {
                     model: "systems",
                     key: "id"
                 }
-            },
-            pin: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            active: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
             }
         });
     },

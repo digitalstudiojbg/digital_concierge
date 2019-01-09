@@ -3,17 +3,15 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "roles",
+            "homes_media",
             [
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 1
+                    homeId: 1,
+                    mediumId: 1
                 },
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 2
+                    homeId: 2,
+                    mediumId: 2
                 }
             ],
             {}
@@ -21,6 +19,6 @@ module.exports = {
     },
 
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("roles", null, {});
+        return queryInterface.bulkDelete("homes_media", null, {});
     }
 };

@@ -3,24 +3,22 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "roles",
+            "starts",
             [
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 1
+                    name: "JBG START PAGE",
+                    layoutId: 1
                 },
+
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 2
+                    name: "HOLIDAY INN START PAGE",
+                    layoutId: 1
                 }
             ],
             {}
         );
     },
-
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("roles", null, {});
+        return queryInterface.bulkDelete("starts", null, {});
     }
 };

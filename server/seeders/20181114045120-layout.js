@@ -3,24 +3,23 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "roles",
+            "layouts",
             [
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 1
+                    name: "GENERAL LAYOUT"
+                },
+
+                {
+                    name: "LAYOUT 1"
                 },
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 2
+                    name: "LAYOUT 2"
                 }
             ],
             {}
         );
     },
-
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("roles", null, {});
+        return queryInterface.bulkDelete("layouts", null, {});
     }
 };

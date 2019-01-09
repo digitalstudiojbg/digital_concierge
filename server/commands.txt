@@ -246,3 +246,83 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_directory_entry-and-media
 
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-just_brilliant_guide-and-jbg_directory_list
+
+node_modules/.bin/sequelize seed:generate --name media
+
+node_modules/.bin/sequelize seed:generate --name layout
+
+node_modules/.bin/sequelize seed:generate --name client
+
+node_modules/.bin/sequelize seed:generate --name group
+
+node_modules/.bin/sequelize seed:generate --name start
+
+node_modules/.bin/sequelize seed:generate --name home
+
+node_modules/.bin/sequelize seed:generate --name jbg_welcome
+
+node_modules/.bin/sequelize seed:generate --name just_brilliant_guide
+
+node_modules/.bin/sequelize seed:generate --name system
+
+node_modules/.bin/sequelize seed:generate --name room
+
+node_modules/.bin/sequelize seed:generate --name device
+
+node_modules/.bin/sequelize seed:generate --name guest
+
+node_modules/.bin/sequelize seed:generate --name map
+
+node_modules/.bin/sequelize seed:generate --name maps_systems
+
+node_modules/.bin/sequelize seed:generate --name maps_media
+
+node_modules/.bin/sequelize seed:generate --name gallery
+
+node_modules/.bin/sequelize seed:generate --name galleries_systems
+
+node_modules/.bin/sequelize seed:generate --name galleries_media
+
+node_modules/.bin/sequelize seed:generate --name homes_media
+
+node_modules/.bin/sequelize seed:generate --name media_starts
+
+node_modules/.bin/sequelize seed:generate --name jbg_welcomes_media
+
+node_modules/.bin/sequelize seed:generate --name template
+
+node_modules/.bin/sequelize seed:generate --name templates_validations
+
+node_modules/.bin/sequelize seed:generate --name layouts_templates
+
+node_modules/.bin/sequelize seed:generate --name jbg_map
+
+node_modules/.bin/sequelize seed:generate --name jbg_maps_media
+
+node_modules/.bin/sequelize seed:generate --name jbg_maps_just_brilliant_guides
+
+node_modules/.bin/sequelize seed:generate --name layouts_systems
+
+node_modules/.bin/sequelize seed:generate --name directory_list
+
+node_modules/.bin/sequelize seed:generate --name directory_list_media
+
+node_modules/.bin/sequelize seed:generate --name directory_lists_systems
+
+node_modules/.bin/sequelize seed:generate --name directory_entry
+
+node_modules/.bin/sequelize seed:generate --name directory_entry_media
+
+node_modules/.bin/sequelize seed:generate --name directory_entries_directory_lists
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_list
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_lists_media
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_lists_just_brilliant_guides
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_entry
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_entry_media
+
+node_modules/.bin/sequelize seed:generate --name jbg_directory_entries_jbg_directory_lists
