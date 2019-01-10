@@ -20,6 +20,7 @@ import map_resolver from "./map";
 import media_resolver from "./media";
 import room_resolver from "./room";
 import start_resolver from "./start";
+import system_resolver from "./system";
 import template_resolver from "./template";
 import file_resolver from "./file";
 
@@ -43,6 +44,7 @@ export default [
     map_resolver,
     media_resolver,
     room_resolver,
+    system_resolver,
     start_resolver,
     template_resolver,
     permission_resolver,

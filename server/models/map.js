@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         map.belongsToMany(models.system, {
-            through: "galleries_systems"
+            through: "maps_systems"
         });
         map.belongsToMany(models.media, {
             through: "galleries_media"
