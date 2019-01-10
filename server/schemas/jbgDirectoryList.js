@@ -12,7 +12,7 @@ export default gql`
         name: String
         createdAt: DateTime
         updatedAt: DateTime
-        just_brillant_guides: [JustBrilliantGuide]
+        just_brilliant_guides: [JustBrilliantGuide]
         systems: [System]
         layout: Layout
         child_category: [JbgDirectoryList]

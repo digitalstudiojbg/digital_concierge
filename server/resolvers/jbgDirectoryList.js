@@ -26,7 +26,7 @@ export default {
                 }
             });
         },
-        just_brillant_guides: async jdl => {
+        just_brilliant_guides: async jdl => {
             return await db.just_brilliant_guide.findAll({
                 include: [
                     {

@@ -22,7 +22,7 @@ export default {
                 ]
             }),
         jbg_maps: async jbg =>
-            await db.jbg_maps.findAll({
+            await db.jbg_map.findAll({
                 include: [
                     {
                         model: db.just_brilliant_guide,

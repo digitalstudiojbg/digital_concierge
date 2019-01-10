@@ -9,8 +9,8 @@ export default {
             return await db.jbg_welcome.findAll();
         }
     },
-    JbgMap: {
-        just_brillant_guides: async jw => {
+    JbgWelcome: {
+        just_brilliant_guides: async jw => {
             return await db.just_brilliant_guide.findAll({
                 where: { jbgWelcomeId: jw.id }
             });

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: true
             },
-            jbg_directory_list_id: {
+            jbgDirectoryListId: {
                 type: DataTypes.INTEGER,
                 allowNull: true
             }
@@ -41,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: true }
         });
         jbg_directory_list.belongsToMany(models.media, {
-            through: "jbg_directory_lists_media"
+            through: "jbg_directory_lists_media",
+            as: "mediaJbgDirectoryList"
         });
         jbg_directory_list.belongsToMany(models.jbg_directory_entry, {
             through: "jbg_directory_entries_jbg_directory_lists"

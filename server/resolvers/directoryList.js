@@ -5,7 +5,7 @@ export default {
         directoryList: async (_root, { id }) => {
             return await db.directory_list.findByPk(id);
         },
-        directoryList: async (_root, _input, { user }) => {
+        directoryLists: async (_root, _input, { user }) => {
             return await db.directory_list.findAll();
         },
         directoryLists_by_system: async (_root, { id }) =>

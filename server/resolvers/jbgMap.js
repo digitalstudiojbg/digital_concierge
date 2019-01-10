@@ -10,7 +10,7 @@ export default {
         }
     },
     JbgMap: {
-        just_brillant_guides: async jm => {
+        just_brilliant_guides: async jm => {
             return await db.just_brilliant_guide.findAll({
                 include: [
                     {

@@ -12,7 +12,7 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         layout: Layout
-        just_brillant_guides: [JustBrilliantGuide]
+        just_brilliant_guides: [JustBrilliantGuide]
         media: [Media]
     }
 `;
