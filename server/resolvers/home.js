@@ -10,25 +10,25 @@ export default {
         }
     },
     Home: {
-        layout: async de => {
-            return await db.layout.findByPk(de.layoutId);
+        layout: async home => {
+            return await db.layout.findByPk(home.layoutId);
         },
-        systems: async gallery => {
+        systems: async home => {
             return await db.system.findAll({
                 include: [
                     {
                         model: db.gallery,
-                        where: { id: gallery.id }
+                        where: { id: home.id }
                     }
                 ]
             });
         },
-        media: async gallery => {
+        media: async home => {
             return await db.media.findAll({
                 include: [
                     {
                         model: db.gallery,
-                        where: { id: gallery.id }
+                        where: { id: home.id }
                     }
                 ]
             });

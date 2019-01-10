@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         jbg_map.belongsTo(models.layout, {
             foreignKey: { allowNull: false }
         });
-        jbg_map.belongsToMany(models.system, {
+        jbg_map.belongsToMany(models.media, {
             through: "jbg_maps_media"
         });
         jbg_map.belongsToMany(models.just_brilliant_guide, {

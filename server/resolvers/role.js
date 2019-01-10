@@ -35,6 +35,7 @@ export default {
                     }
                 ]
             });
-        }
+        },
+        group: async role => await db.group.findByPk(role.groupId)
     }
 };

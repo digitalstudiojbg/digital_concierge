@@ -12,5 +12,6 @@ export default gql`
         is_admin: Boolean
         users: [User]
         permissions: [Permission]
+        group: Group
     }
 `;

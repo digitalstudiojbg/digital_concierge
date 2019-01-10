@@ -19,7 +19,7 @@ export default gql`
         start: Start
         home: Home
         galleries: [Gallery]
-        map: [Map]
+        maps: [Map]
         directory_lists: [DirectoryList]
     }
 `;

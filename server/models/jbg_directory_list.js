@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: true
             },
-            jbg_directory_list_id: DataTypes.INTEGER
+            jbg_directory_list_id: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            }
         },
         {}
     );

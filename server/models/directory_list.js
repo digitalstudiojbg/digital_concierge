@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: true
             },
-            directory_list_id: DataTypes.INTEGER
+            directoryListId: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            }
         },
         {}
     );
