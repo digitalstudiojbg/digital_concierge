@@ -92,6 +92,7 @@ export default {
                 include: [
                     {
                         model: db.jbg_directory_list,
+                        as: "jbgDirectoryListMedia",
                         where: { id: jdl.id }
                     }
                 ]
