@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
             through: "jbg_welcomes_media"
         });
         media.belongsToMany(models.start, {
-            through: "media_starts"
+            through: "media_starts",
+            as: "startMedia"
         });
         media.belongsToMany(models.start, {
             through: "homes_media"
@@ -53,9 +54,10 @@ module.exports = (sequelize, DataTypes) => {
             through: "jbg_maps_media"
         });
         media.belongsToMany(models.jbg_directory_list, {
-            through: "jbg_directory_lists_media"
+            through: "jbg_directory_lists_media",
+            as: "jbgDirectoryListMedia"
         });
-        media.belongsToMany(models.jbg_directory_list, {
+        media.belongsToMany(models.jbg_directory_entry, {
             through: "jbg_directory_entries_media"
         });
     };

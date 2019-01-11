@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         });
         start.hasMany(models.system);
         start.belongsToMany(models.media, {
-            through: "media_starts"
+            through: "media_starts",
+            as: "mediaStart"
         });
     };
     return start;

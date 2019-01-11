@@ -25,6 +25,7 @@ export default {
                 include: [
                     {
                         model: db.start,
+                        as: "startMedia",
                         where: { id: start.id }
                     }
                 ]
