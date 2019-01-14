@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL } from "../../utils/Constants";
+import {
+    COLOR_JBG_PURPLE,
+    TABLET_CMS_INDEX_URL,
+    TOUCHSCREEN_CMS_INDEX_URL
+} from "../../utils/Constants";
 import "./Welcome.css";
 import Button from "@material-ui/core/Button";
 import { isEmpty } from "lodash";
@@ -22,7 +26,7 @@ class Welcome extends Component {
         const { getCurrentUser: user } = client.readQuery({
             query
         });
-        const { has_tablet, has_touchscreen } = user.venue;
+        const { has_tablet, has_touchscreen } = user.client;
 
         if (has_tablet && !has_touchscreen)
             return (
