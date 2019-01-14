@@ -21,9 +21,9 @@ export default {
             await db.room.findAll({ where: { clientId: client.id } }),
         systems: async client =>
             await db.system.findAll({ where: { clientId: client.id } }),
-        // media: async client => {
-        //     return await db.media.findAll({ where: { clientId: client.id } });
-        // },
+        media: async client => {
+            return await db.media.findAll({ where: { clientId: client.id } });
+        },
         devices: async client =>
             await db.device.findAll({ where: { clientId: client.id } })
     }

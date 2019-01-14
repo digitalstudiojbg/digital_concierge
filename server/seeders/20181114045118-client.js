@@ -12,8 +12,7 @@ module.exports = {
                     has_tablet: true,
                     has_touchscreen: true,
                     number_of_users: 5,
-                    avatar: "inn.png",
-                    mediaId: 1
+                    avatar: "inn.png"
                 },
 
                 {
@@ -23,8 +22,7 @@ module.exports = {
                     has_tablet: true,
                     has_touchscreen: true,
                     number_of_users: 5,
-                    avatar: "jbg.png",
-                    mediaId: 2
+                    avatar: "jbg.png"
                 }
             ],
             {}

@@ -21,5 +21,6 @@ export default gql`
         galleries: [Gallery]
         maps: [Map]
         directory_lists: [DirectoryList]
+        media: [Media]
     }
 `;

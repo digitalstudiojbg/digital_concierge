@@ -62,9 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         client.hasMany(models.guest);
         client.hasMany(models.device);
         client.hasMany(models.system);
-        // client.belongsTo(models.media, {
-        //     foreignKey: { allowNull: false }
-        // });
+        client.hasMany(models.media);
     };
     return client;
 };

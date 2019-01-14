@@ -60,7 +60,13 @@ module.exports = (sequelize, DataTypes) => {
         media.belongsToMany(models.jbg_directory_entry, {
             through: "jbg_directory_entries_media"
         });
+        media.belongsToMany(models.system, {
+            through: "media_systems"
+        });
         media.hasOne(models.layout);
+        media.belongsTo(models.client, {
+            foreignKey: { allowNull: false }
+        });
     };
     return media;
 };

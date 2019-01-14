@@ -328,3 +328,9 @@ node_modules/.bin/sequelize seed:generate --name jbg_directory_entry_media
 node_modules/.bin/sequelize seed:generate --name jbg_directory_entries_jbg_directory_lists
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-media-and-layout
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-media
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-system-and-media
+
+node_modules/.bin/sequelize seed:generate --name system_media

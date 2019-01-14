@@ -15,5 +15,6 @@ export default gql`
         type: String
         createdAt: DateTime
         updatedAt: DateTime
+        client: Client
     }
 `;

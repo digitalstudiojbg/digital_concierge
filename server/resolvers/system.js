@@ -50,6 +50,15 @@ export default {
                         where: { id: system.id }
                     }
                 ]
+            }),
+        media: async system =>
+            await db.media.findAll({
+                include: [
+                    {
+                        model: db.system,
+                        where: { id: system.id }
+                    }
+                ]
             })
     }
 };

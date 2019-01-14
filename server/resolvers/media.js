@@ -23,5 +23,7 @@ export default {
                 ]
             })
     },
-    Media: {}
+    Media: {
+        client: async media => await db.client.findByPk(media.clientId)
+    }
 };
