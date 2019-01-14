@@ -7,11 +7,16 @@ export function getAccessToken() {
 }
 
 export async function login(email, password) {
-    const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, password })
-    });
+    const response = await fetch(
+        process.env.NODE_ENV === "production"
+            ? `http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/login`
+            : "http://localhost:3000/login",
+        {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ email, password })
+        }
+    );
     if (response.ok) {
         const { token } = await response.json();
         localStorage.setItem(accessTokenKey, token);
