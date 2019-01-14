@@ -12,5 +12,6 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         templates: [Template]
+        media: Media
     }
 `;

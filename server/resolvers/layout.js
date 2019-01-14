@@ -10,15 +10,15 @@ export default {
         }
     },
     Layout: {
-        templates: async layout => {
-            return await db.template.findAll({
+        templates: async layout =>
+            await db.template.findAll({
                 include: [
                     {
                         model: db.layout,
                         where: { id: layout.id }
                     }
                 ]
-            });
-        }
+            }),
+        media: async layout => await db.media.findByPk(layout.mediumId)
     }
 };

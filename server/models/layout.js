@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
         layout.hasMany(models.jbg_map);
         layout.hasMany(models.jbg_directory_list);
         layout.hasMany(models.jbg_directory_entry);
+        layout.belongsTo(models.media, {
+            foreignKey: { allowNull: false }
+        });
     };
     return layout;
 };

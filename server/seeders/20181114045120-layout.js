@@ -6,14 +6,17 @@ module.exports = {
             "layouts",
             [
                 {
-                    name: "GENERAL LAYOUT"
+                    name: "GENERAL LAYOUT",
+                    mediumId: 1
                 },
 
                 {
-                    name: "LAYOUT 1"
+                    name: "LAYOUT 1",
+                    mediumId: 2
                 },
                 {
-                    name: "LAYOUT 2"
+                    name: "LAYOUT 2",
+                    mediumId: 1
                 }
             ],
             {}
