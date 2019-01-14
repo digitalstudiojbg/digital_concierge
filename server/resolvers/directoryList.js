@@ -19,7 +19,7 @@ export default {
             })
     },
     DirectoryList: {
-        child_category: async dl => {
+        child_directory_lists: async dl => {
             return await db.directory_list.findAll({
                 where: {
                     directoryListId: dl.id
@@ -39,7 +39,7 @@ export default {
         layout: async dl => {
             return await db.layout.findByPk(dl.layoutId);
         },
-        tb_directories: async dl => {
+        directory_entries: async dl => {
             const activeDirectoryEntryList = await db.directory_entry.findAll({
                 include: [
                     {

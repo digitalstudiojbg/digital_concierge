@@ -12,10 +12,10 @@ export default gql`
         name: String
         createdAt: DateTime
         updatedAt: DateTime
-        child_category: [DirectoryList]
+        child_directory_lists: [DirectoryList]
         systems: [System]
         layout: Layout
-        tb_directories: [DirectoryEntry]
+        directory_entries: [DirectoryEntry]
         media: [Media]
     }
 `;

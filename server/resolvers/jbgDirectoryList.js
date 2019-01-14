@@ -19,7 +19,7 @@ export default {
             })
     },
     JbgDirectoryList: {
-        child_category: async jdl => {
+        child_jbg_directory_lists: async jdl => {
             return await db.jbg_directory_list.findAll({
                 where: {
                     jbgDirectoryListId: jdl.id
@@ -39,7 +39,7 @@ export default {
         layout: async jdl => {
             return await db.layout.findByPk(jdl.layoutId);
         },
-        tb_directories: async jdl => {
+        jbg_directory_entries: async jdl => {
             const activeJbgDirectoryEntryList = await db.jbg_directory_entry.findAll(
                 {
                     include: [

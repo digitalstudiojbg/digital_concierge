@@ -15,8 +15,8 @@ export default gql`
         just_brilliant_guides: [JustBrilliantGuide]
         systems: [System]
         layout: Layout
-        child_category: [JbgDirectoryList]
-        tb_directories: [JbgDirectoryEntry]
+        child_jbg_directory_lists: [JbgDirectoryList]
+        jbg_directory_entries: [JbgDirectoryEntry]
         media: [Media]
     }
 `;
