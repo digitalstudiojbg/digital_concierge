@@ -6,7 +6,7 @@ class App extends Component {
     componentDidMount() {
         const apiUrl =
             process.env.NODE_ENV === "production"
-                ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/api"
+                ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/api"
                 : "http://localhost:3000";
 
         fetch(`${apiUrl}/test/`)
