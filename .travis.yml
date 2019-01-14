@@ -25,16 +25,20 @@ after_success:
 deploy:
   provider: elasticbeanstalk
   region: ap-southeast-2
-  app: Digital_Concierge
-  env: DigitalConcierge-env 
+  app: Platypus
+  env: Platypus-env
   bucket_name: elasticbeanstalk-ap-southeast-2-626158641982
-  bucket_path: dc-docker
-  on:
-    branch: master
+  bucket_path: Platypus
+  #on:
+  #  branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: 
     secure: $AWS_SECRET_KEY
 
-branches:
-  only:
-  - master
+#branches:
+#  only:
+#  - master
+
+
+
+ 
