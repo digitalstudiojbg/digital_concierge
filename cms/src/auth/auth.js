@@ -9,7 +9,7 @@ export function getAccessToken() {
 export async function login(email, password) {
     const response = await fetch(
         process.env.NODE_ENV === "production"
-            ? `http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/login`
+            ? `http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/api/login`
             : "http://localhost:3000/login",
         {
             method: "POST",
