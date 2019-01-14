@@ -29,8 +29,8 @@ deploy:
   env: Platypus-env
   bucket_name: elasticbeanstalk-ap-southeast-2-626158641982
   bucket_path: Platypus
-  #on:
-  #  branch: master
+  on:
+    branch: third_iteration_auto_deploy
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: 
     secure: $AWS_SECRET_KEY
