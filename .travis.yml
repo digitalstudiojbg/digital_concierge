@@ -30,14 +30,14 @@ deploy:
   bucket_name: elasticbeanstalk-ap-southeast-2-626158641982
   bucket_path: Platypus
   on:
-    branch: third_iteration
+    branch: master
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: 
     secure: $AWS_SECRET_KEY
 
-#branches:
-#  only:
-#  - master
+branches:
+  only:
+  - master
 
 
 
