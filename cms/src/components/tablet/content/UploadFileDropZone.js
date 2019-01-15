@@ -4,7 +4,12 @@ import gql from "graphql-tag";
 import Dropzone from "react-dropzone";
 
 export default class UploadFileDropZone extends Component {
+    state = {
+        image_name: null
+    };
+
     render() {
+        const { image_name } = this.state;
         return (
             <div>
                 <Mutation mutation={UPLOAD_FILES}>
@@ -13,7 +18,12 @@ export default class UploadFileDropZone extends Component {
                             <Dropzone
                                 onDrop={(files, rejectedFiles) => {
                                     console.log(files);
+
                                     uploadFiles({ variables: { files } });
+
+                                    this.setState({
+                                        image_name: files[0].name
+                                    });
                                 }}
                             >
                                 <React.Fragment>
@@ -23,6 +33,7 @@ export default class UploadFileDropZone extends Component {
                                     </div>
                                 </React.Fragment>
                             </Dropzone>
+                            {image_name && <p>{image_name}</p>}
                             {loading && <p>Loading...</p>}
                             {error && <p>Error :( Please try again</p>}
                         </div>
