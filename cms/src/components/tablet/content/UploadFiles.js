@@ -11,6 +11,7 @@ export default class UploadFiles extends Component {
                         <div>
                             <input
                                 type="file"
+                                accept=".png,.jpg"
                                 multiple
                                 required
                                 onChange={({ target: { validity, files } }) => {

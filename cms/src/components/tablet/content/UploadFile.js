@@ -12,6 +12,7 @@ export default class UploadFile extends Component {
                             <input
                                 type="file"
                                 required
+                                accept=".png,.jpg"
                                 onChange={({
                                     target: {
                                         validity,

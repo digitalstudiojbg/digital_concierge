@@ -15,9 +15,10 @@ class TabletDashboard extends Component {
             >
                 <h1>Tablet Homepage</h1>
                 <Link to={TABLET_CMS_LANDINGPAGE_URL}>List</Link>
-                <h3>Single File Upload: </h3>
+                <h3>Single Image Upload: </h3>
                 <UploadFile />
-                <h3>Multiple Files Upload</h3> <UploadFiles />
+                <h3>Multiple Images Upload</h3>
+                <UploadFiles />
             </div>
         );
     }
