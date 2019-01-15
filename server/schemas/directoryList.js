@@ -10,6 +10,8 @@ export default gql`
     type DirectoryList {
         id: ID!
         name: String
+        is_root: Boolean
+        active: Boolean
         createdAt: DateTime
         updatedAt: DateTime
         child_directory_lists: [DirectoryList]

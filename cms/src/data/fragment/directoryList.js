@@ -1,21 +1,22 @@
 import gql from "graphql-tag";
 
-export const categoryDetailFragment = gql`
-    fragment categoryDetail on TB_Category {
+export const directoryListFragment = gql`
+    fragment directoryListDetail on DirectoryList {
         id
         name
-        has_directory
+        is_root
         active
-        image
-        tb_directory_type {
+        layout {
             id
             name
         }
-        venues {
+        media {
             id
             name
+            path
+            type
         }
-        tb_directories {
+        directory_entries {
             id
             name
             active

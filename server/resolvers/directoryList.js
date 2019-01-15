@@ -9,14 +9,21 @@ export default {
             return await db.directory_list.findAll();
         },
         directoryLists_by_system: async (_root, { id }) =>
-            await db.directory_list.findAll({
-                include: [
-                    {
-                        model: db.system,
-                        where: { id }
+            await db.directory_list.findAll(
+                {
+                    where: {
+                        is_root: true
                     }
-                ]
-            })
+                },
+                {
+                    include: [
+                        {
+                            model: db.system,
+                            where: { id }
+                        }
+                    ]
+                }
+            )
     },
     DirectoryList: {
         child_directory_lists: async dl => {

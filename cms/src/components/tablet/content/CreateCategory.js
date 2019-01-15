@@ -3,7 +3,7 @@ import {
     ContainerDiv,
     CreateContentContainerDiv,
     TABLET_CMS_CREATE_CONTENT_INDEX_URL,
-    modifyCategoryDirectoryData
+    modifyDirectoryListData
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -24,7 +24,7 @@ import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
 import { Query } from "react-apollo";
 import Loading from "../../loading/Loading";
 import { withApollo } from "react-apollo";
-import { getTabletCategoryByVenue } from "../../../data/query";
+import { getDirectoryListBySystem } from "../../../data/query";
 import PropTypes from "prop-types";
 import UploadFile from "./UploadFile";
 
@@ -270,7 +270,7 @@ class CreateCategory extends React.PureComponent {
                                                 SELECT PARENT CATEGORY
                                             </div>
                                             <Query
-                                                query={getTabletCategoryByVenue(
+                                                query={getDirectoryListBySystem(
                                                     1
                                                 )}
                                             >
@@ -285,8 +285,8 @@ class CreateCategory extends React.PureComponent {
                                                         return `Error! ${
                                                             error.message
                                                         }`;
-                                                    const modifiedData = modifyCategoryDirectoryData(
-                                                        data.tb_categories_by_venue
+                                                    const modifiedData = modifyDirectoryListData(
+                                                        data.directoryLists_by_system
                                                     );
                                                     return (
                                                         <TreeviewCheckbox

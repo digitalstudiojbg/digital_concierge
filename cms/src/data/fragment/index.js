@@ -1,2 +1,2 @@
-import { categoryDetailFragment } from "./category";
-export { categoryDetailFragment };
+import { directoryListFragment } from "./directoryList";
+export { directoryListFragment };

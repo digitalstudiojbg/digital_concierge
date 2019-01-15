@@ -17,9 +17,9 @@ export const getSelectedUserQuery = gql`
                     name
                 }
             }
-            venue {
+            client {
                 name
-                logo
+                avatar
                 number_of_users
                 has_parent_category
                 has_touchscreen
@@ -47,9 +47,9 @@ export const getCurrentUserQuery = gql`
                     name
                 }
             }
-            venue {
+            client {
                 name
-                logo
+                avatar
                 number_of_users
                 has_parent_category
                 has_touchscreen
