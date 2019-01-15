@@ -10,6 +10,7 @@ export default gql`
         uploads: [File]
     }
     extend type Mutation {
-        uploadFile(file: Upload!): File
+        uploadFile(file: Upload!): File!
+        uploadFiles(files: [Upload!]!): [File!]!
     }
 `;
