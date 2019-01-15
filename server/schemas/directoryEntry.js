@@ -10,6 +10,7 @@ export default gql`
         id: ID!
         name: String
         title: String
+        active: Boolean
         createdAt: DateTime
         updatedAt: DateTime
         directoryLists: [DirectoryList]

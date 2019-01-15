@@ -50,68 +50,75 @@ export const CreateContentContainerDiv = styled.div`
 //Helper recursive function to recursively modify the data received from GraphQL
 //Modification includes:
 //-Adding depth attribute
-//-Adding is_category attribute to differentiate categories and directory
-//-Adding hash_id attribute for directory entries (many to many relationship between directory and category, for better differentiation)
-//The hash_id is a string formatted like this: ${GRANDPARENT_CATEGORY_ID}-${PARENT_CATEGORY_ID}-${CHILD_CATEGORY_ID}-${DIRECTORY_ID}
-function _modifyCategoryOrDirectory(category, depth = 0, key = "") {
+//-Adding is_dir_list attribute to differentiate directory list and directory entries
+//-Adding hash_id attribute for directory entries (many to many relationship between directory entry and directory list, for better differentiation)
+//The hash_id is a string formatted like this: ${GRANDPARENT_DIRECTORY_LIST_ID}-${PARENT_DIRECTORY_LIST_ID}-${CHILD_DIRECTORY_LIST_ID}-${DIRECTORY_ENTRY_ID}
+function _modifyDirectoryListOrEntry(
+    entry,
+    depth = 0,
+    key = "",
+    child_directory_lists_key = "child_directory_lists",
+    directory_entries_key = "directory_entries"
+) {
     if (
-        (Boolean(category.child_category) &&
-            category.child_category.length > 0) ||
-        (Boolean(category.tb_directories) && category.tb_directories.length > 0)
+        (Boolean(entry[child_directory_lists_key]) &&
+            entry[child_directory_lists_key].length > 0) ||
+        (Boolean(entry[directory_entries_key]) &&
+            entry[directory_entries_key].length > 0)
     ) {
         //Recur if item has more child categories or directory entries
-        const has_child_categories =
-            Boolean(category.child_category) &&
-            category.child_category.length > 0;
-        const toLoop = has_child_categories
-            ? category.child_category
-            : category.tb_directories;
+        const has_child_directories =
+            Boolean(entry[child_directory_lists_key]) &&
+            entry[child_directory_lists_key].length > 0;
+        const toLoop = has_child_directories
+            ? entry[child_directory_lists_key]
+            : entry[directory_entries_key];
         let children = [];
         toLoop.forEach(item => {
             children = [
                 ...children,
-                _modifyCategoryOrDirectory(
+                _modifyDirectoryListOrEntry(
                     item,
                     depth + 1,
-                    `${key}${category.id}-`
+                    `${key}${entry.id}-`
                 )
             ];
         });
-        if (has_child_categories) {
+        if (has_child_directories) {
             //Different attribute naming for directory entries and child categories
             return {
-                ...category,
-                is_category: true,
+                ...entry,
+                is_dir_list: true,
                 depth,
-                child_category: [...children]
+                [child_directory_lists_key]: [...children]
             };
         } else {
             return {
-                ...category,
-                is_category: true,
+                ...entry,
+                is_dir_list: true,
                 depth,
-                tb_directories: [...children]
+                [directory_entries_key]: [...children]
             };
         }
     } else {
-        const is_category = Boolean(category.tb_directories);
-        if (is_category) {
-            return { ...category, is_category, depth };
+        const is_dir_list = Boolean(entry[directory_entries_key]);
+        if (is_dir_list) {
+            return { ...entry, is_dir_list, depth };
         } else {
             return {
-                ...category,
-                is_category,
+                ...entry,
+                is_dir_list,
                 depth,
-                hash_id: `${key}${category.id}`
+                hash_id: `${key}${entry.id}`
             };
         }
     }
 }
 
 //Function to modify category and directory entries data
-export const modifyCategoryDirectoryData = data => {
+export const modifyDirectoryListData = data => {
     return data.map(item => {
-        return _modifyCategoryOrDirectory(item);
+        return _modifyDirectoryListOrEntry(item);
     });
 };
 

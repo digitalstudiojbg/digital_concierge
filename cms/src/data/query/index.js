@@ -1,4 +1,4 @@
 import { getCurrentUserQuery } from "./user";
-import { getTabletCategoryByVenue } from "./category";
+import { getDirectoryListBySystem } from "./directoryList";
 
-export { getCurrentUserQuery, getTabletCategoryByVenue };
+export { getCurrentUserQuery, getDirectoryListBySystem };
