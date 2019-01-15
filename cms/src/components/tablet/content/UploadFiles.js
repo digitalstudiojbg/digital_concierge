@@ -2,24 +2,20 @@ import React, { Component } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
-export default class UploadFile extends Component {
+export default class UploadFiles extends Component {
     render() {
         return (
             <div>
-                <Mutation mutation={UPLOAD_FILE}>
-                    {(uploadFile, { loading, error }) => (
+                <Mutation mutation={UPLOAD_FILES}>
+                    {(uploadFiles, { loading, error }) => (
                         <div>
                             <input
                                 type="file"
+                                multiple
                                 required
-                                onChange={({
-                                    target: {
-                                        validity,
-                                        files: [file]
-                                    }
-                                }) => {
-                                    console.log(file);
-                                    uploadFile({ variables: { file } });
+                                onChange={({ target: { validity, files } }) => {
+                                    console.log(files);
+                                    uploadFiles({ variables: { files } });
                                 }}
                             />
                             {loading && <p>Loading...</p>}
@@ -32,9 +28,9 @@ export default class UploadFile extends Component {
     }
 }
 
-const UPLOAD_FILE = gql`
-    mutation uploadFile($file: Upload!) {
-        uploadFile(file: $file) {
+const UPLOAD_FILES = gql`
+    mutation uploadFiles($files: [Upload!]!) {
+        uploadFiles(files: $files) {
             filename
         }
     }
