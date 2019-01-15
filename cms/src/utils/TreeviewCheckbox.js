@@ -1,22 +1,22 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
-import AddIcon from '@material-ui/icons/Add';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Radio from "@material-ui/core/Radio";
+import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import IconButton from '@material-ui/core/IconButton';
-import PropTypes from 'prop-types';
+import IconButton from "@material-ui/core/IconButton";
+import PropTypes from "prop-types";
 
 const styles = theme => ({
-   expansionButton: {
+    expansionButton: {
         margin: theme.spacing.unit,
         color: "white",
-        background: "rgb(155,157,183)",
-   },
-   icon: {
-       fontSize: "small"
-   }
+        background: "rgb(155,157,183)"
+    },
+    icon: {
+        fontSize: "small"
+    }
 });
 
 const paddingSize = 30;
@@ -25,10 +25,10 @@ const paddingSize = 30;
 class TreeviewCheckbox extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selected_category = props.selectAmount === 'single' ? null : [];
+        const selected_dir_list = props.selectAmount === "single" ? null : [];
         this.state = {
             expanded: [],
-            selected_category,
+            selected_dir_list
         };
         this.addToExpanded = this.addToExpanded.bind(this);
         this.removeFromExpanded = this.removeFromExpanded.bind(this);
@@ -37,21 +37,18 @@ class TreeviewCheckbox extends React.PureComponent {
         this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
     }
 
-    //Method gets called when we expand a category
-    addToExpanded(category_id) {
-        if (this.state.expanded.indexOf(category_id) === -1) {
+    //Method gets called when we expand a directory list
+    addToExpanded(dir_list_id) {
+        if (this.state.expanded.indexOf(dir_list_id) === -1) {
             this.setState({
-                expanded: [
-                    ...this.state.expanded,
-                    category_id
-                ]
+                expanded: [...this.state.expanded, dir_list_id]
             });
         }
     }
 
-    //Method gets called when we minimise a category
-    removeFromExpanded(category_id) {
-        const index = this.state.expanded.indexOf(category_id);
+    //Method gets called when we minimise a directory list
+    removeFromExpanded(dir_list_id) {
+        const index = this.state.expanded.indexOf(dir_list_id);
         if (index !== -1) {
             this.setState({
                 expanded: [
@@ -62,58 +59,65 @@ class TreeviewCheckbox extends React.PureComponent {
         }
     }
 
-    //Adding category and / or directory ids into their relevant state arrays (selected_category or selected_directory)
-    addToSelected(category_id) {
-        const { selected_category } = this.state;
-        const { updateSelectedCategory } = this.props;
-        if (selected_category.indexOf(category_id) === -1) {
-            this.setState({
-                selected_category: [
-                    ...selected_category,
-                    category_id
-                ]
-            }, () => {
-                updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
-            });
+    addToSelected(dir_list_id) {
+        const { selected_dir_list } = this.state;
+        const { updateSelectedDirectory } = this.props;
+        if (selected_dir_list.indexOf(dir_list_id) === -1) {
+            this.setState(
+                {
+                    selected_dir_list: [...selected_dir_list, dir_list_id]
+                },
+                () => {
+                    updateSelectedDirectory &&
+                        updateSelectedDirectory(this.state.selected_dir_list);
+                }
+            );
         }
     }
 
-    //Removing category and / or directory ids from their relevant state arrays (selected_category or selected_directory)
-    removeFromSelected(category_id) {
-        const { selected_category } = this.state;
-        const { updateSelectedCategory } = this.props;
-        const index = selected_category.indexOf(category_id);
+    removeFromSelected(dir_list_id) {
+        const { selected_dir_list } = this.state;
+        const { updateSelectedDirectory } = this.props;
+        const index = selected_dir_list.indexOf(dir_list_id);
         if (index !== -1) {
-            this.setState({
-                selected_category: [
-                    ...selected_category.slice(0, index),
-                    ...selected_category.slice(index + 1)
-                ]
-            }, () => {
-                updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
-            });
+            this.setState(
+                {
+                    selected_dir_list: [
+                        ...selected_dir_list.slice(0, index),
+                        ...selected_dir_list.slice(index + 1)
+                    ]
+                },
+                () => {
+                    updateSelectedDirectory &&
+                        updateSelectedDirectory(this.state.selected_dir_list);
+                }
+            );
         }
     }
 
     handleChangeRadioButton(event) {
-        const { updateSelectedCategory } = this.props;
-        this.setState({
-            selected_category: event.target.value
-        }, () => {
-            updateSelectedCategory && updateSelectedCategory(this.state.selected_category);
-        });
+        const { updateSelectedDirectory } = this.props;
+        this.setState(
+            {
+                selected_dir_list: event.target.value
+            },
+            () => {
+                updateSelectedDirectory &&
+                    updateSelectedDirectory(this.state.selected_dir_list);
+            }
+        );
     }
 
-    //Render expand or minimise icon on a category entry based on whether it is expanded or minimised
-    renderAddOrRemoveIcon(category_id) {
+    //Render expand or minimise icon on a directory list based on whether it is expanded or minimised
+    renderAddOrRemoveIcon(dir_list_id) {
         const { expanded } = this.state;
         const { classes } = this.props;
-        if (expanded.indexOf(category_id) !== -1) {
+        if (expanded.indexOf(dir_list_id) !== -1) {
             //Inside expanded array
             return (
                 <IconButton
                     className={classes.expansionButton}
-                    onClick={() => this.removeFromExpanded(category_id)}
+                    onClick={() => this.removeFromExpanded(dir_list_id)}
                 >
                     <RemoveIcon className={classes.icon} />
                 </IconButton>
@@ -123,7 +127,7 @@ class TreeviewCheckbox extends React.PureComponent {
             return (
                 <IconButton
                     className={classes.expansionButton}
-                    onClick={() => this.addToExpanded(category_id)}
+                    onClick={() => this.addToExpanded(dir_list_id)}
                 >
                     <AddIcon className={classes.icon} />
                 </IconButton>
@@ -131,21 +135,21 @@ class TreeviewCheckbox extends React.PureComponent {
         }
     }
 
-    renderCheckboxAndLabel(category) {
-        const { selected_category } = this.state;
-        const { id, name } = category;
+    renderCheckboxAndLabel(directory) {
+        const { selected_dir_list } = this.state;
+        const { id, name } = directory;
         return (
             <FormControlLabel
                 control={
-                    <Checkbox 
-                        onChange={() => { 
-                            if (selected_category.includes(id)) {
+                    <Checkbox
+                        onChange={() => {
+                            if (selected_dir_list.includes(id)) {
                                 return this.removeFromSelected(id, true);
                             } else {
                                 return this.addToSelected(id, true);
                             }
                         }}
-                        checked={selected_category.includes(id)}
+                        checked={selected_dir_list.includes(id)}
                     />
                 }
                 label={name.toUpperCase()}
@@ -153,89 +157,137 @@ class TreeviewCheckbox extends React.PureComponent {
         );
     }
 
-    renderCategoryCheckboxes(category, index) {
-        const { expanded } = this.state; 
-        const is_expanded = expanded.indexOf(category.id) !== -1; //Check if the category entry is expanded or not
-        const { depth } = category;
-        const calculatedPaddingSize = (depth * paddingSize);
+    renderDirectoryCheckboxes(directory, index) {
+        const { expanded } = this.state;
+        const is_expanded = expanded.indexOf(directory.id) !== -1; //Check if the directory list is expanded or not
+        const { depth } = directory;
+        const calculatedPaddingSize = depth * paddingSize;
+        const { child_directory_lists_key } = this.props;
 
-        if (category.child_category && category.child_category.length > 0) {
+        if (
+            directory[child_directory_lists_key] &&
+            directory[child_directory_lists_key].length > 0
+        ) {
             return (
-                <React.Fragment key={`${category.id}-${index}`}>
-                    <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}}>
-                        {this.renderCheckboxAndLabel(category)}
-                        {this.renderAddOrRemoveIcon(category.id)}
+                <React.Fragment key={`${directory.id}-${index}`}>
+                    <div
+                        style={{
+                            display: "flex",
+                            paddingLeft: `${calculatedPaddingSize}px`
+                        }}
+                    >
+                        {this.renderCheckboxAndLabel(directory)}
+                        {this.renderAddOrRemoveIcon(directory.id)}
                     </div>
-                    {is_expanded && category.child_category.map((child_category_item, index_category) => {
-                        //We do recursion here
-                        return this.renderCategoryCheckboxes(child_category_item, index_category);
-                    })}
+                    {is_expanded &&
+                        directory[child_directory_lists_key].map(
+                            (child_directory, index_directory) => {
+                                //We do recursion here
+                                return this.renderDirectoryCheckboxes(
+                                    child_directory,
+                                    index_directory
+                                );
+                            }
+                        )}
                 </React.Fragment>
             );
         } else {
             return (
-                <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}} key={`${category.id}-${index}`}>
-                    {this.renderCheckboxAndLabel(category)}
+                <div
+                    style={{
+                        display: "flex",
+                        paddingLeft: `${calculatedPaddingSize}px`
+                    }}
+                    key={`${directory.id}-${index}`}
+                >
+                    {this.renderCheckboxAndLabel(directory)}
                 </div>
             );
         }
     }
 
-    renderRadioButtonAndLabel(category) {
-        const { id, name } = category;
+    renderRadioButtonAndLabel(directory) {
+        const { id, name } = directory;
         return (
             <FormControlLabel
                 value={id}
-                control={<Radio color="primary" onChange={this.handleChangeRadioButton} checked={this.state.selected_category === id} />}
+                control={
+                    <Radio
+                        color="primary"
+                        onChange={this.handleChangeRadioButton}
+                        checked={this.state.selected_dir_list === id}
+                    />
+                }
                 label={name.toUpperCase()}
                 labelPlacement="end"
             />
         );
     }
 
-    renderCategoryRadioButton(category, index) {
-        const { expanded } = this.state; 
-        const is_expanded = expanded.indexOf(category.id) !== -1; //Check if the category entry is expanded or not
-        const { depth } = category;
-        const calculatedPaddingSize = (depth * paddingSize);
+    renderDirectoryRadioButton(directory, index) {
+        const { expanded } = this.state;
+        const is_expanded = expanded.indexOf(directory.id) !== -1; //Check if the directory list is expanded or not
+        const { depth } = directory;
+        const calculatedPaddingSize = depth * paddingSize;
+        const { child_directory_lists_key } = this.props;
 
-        if (category.child_category && category.child_category.length > 0) {
+        if (
+            directory[child_directory_lists_key] &&
+            directory[child_directory_lists_key].length > 0
+        ) {
             return (
-                <React.Fragment key={`${category.id}-${index}`}>
-                    <div style={{display: "flex", paddingLeft: `${calculatedPaddingSize}px`}}>
-                        {this.renderRadioButtonAndLabel(category)}
-                        {this.renderAddOrRemoveIcon(category.id)}
+                <React.Fragment key={`${directory.id}-${index}`}>
+                    <div
+                        style={{
+                            display: "flex",
+                            paddingLeft: `${calculatedPaddingSize}px`
+                        }}
+                    >
+                        {this.renderRadioButtonAndLabel(directory)}
+                        {this.renderAddOrRemoveIcon(directory.id)}
                     </div>
-                    {is_expanded && category.child_category.map((child_category_item, index_category) => {
-                        //We do recursion here
-                        return this.renderCategoryRadioButton(child_category_item, index_category);
-                    })}
+                    {is_expanded &&
+                        directory[child_directory_lists_key].map(
+                            (child_directory, index_directory) => {
+                                //We do recursion here
+                                return this.renderDirectoryRadioButton(
+                                    child_directory,
+                                    index_directory
+                                );
+                            }
+                        )}
                 </React.Fragment>
             );
         } else {
             return (
-                <div style={{paddingLeft: `${calculatedPaddingSize}px`}} key={`${category.id}-${index}`}>
-                    {this.renderRadioButtonAndLabel(category)}
+                <div
+                    style={{ paddingLeft: `${calculatedPaddingSize}px` }}
+                    key={`${directory.id}-${index}`}
+                >
+                    {this.renderRadioButtonAndLabel(directory)}
                 </div>
             );
         }
     }
 
-    renderCategories() {
+    renderDirectories() {
         const { data, selectAmount } = this.props;
-        if (selectAmount === 'multiple') {
+        if (selectAmount === "multiple") {
             return (
                 <React.Fragment>
-                    {data.map((category, index) => {
-                        return this.renderCategoryCheckboxes(category, index);
+                    {data.map((directory, index) => {
+                        return this.renderDirectoryCheckboxes(directory, index);
                     })}
-                </React.Fragment>    
+                </React.Fragment>
             );
-        } else if (selectAmount === 'single') {
+        } else if (selectAmount === "single") {
             return (
                 <React.Fragment>
-                    {data.map((category, index) => {
-                        return this.renderCategoryRadioButton(category, index);
+                    {data.map((directory, index) => {
+                        return this.renderDirectoryRadioButton(
+                            directory,
+                            index
+                        );
                     })}
                 </React.Fragment>
             );
@@ -244,22 +296,25 @@ class TreeviewCheckbox extends React.PureComponent {
 
     render() {
         const { data } = this.props;
-        return(
+        return (
             <React.Fragment>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
-                    <React.Fragment>
-                        {this.renderCategories()}
-                    </React.Fragment>
+                    <React.Fragment>{this.renderDirectories()}</React.Fragment>
                 )}
             </React.Fragment>
         );
     }
 }
 
+TreeviewCheckbox.defaultProps = {
+    child_directory_lists_key: "child_directory_lists"
+};
+
 TreeviewCheckbox.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
-    updateSelectedCategory: PropTypes.func,
-    selectAmount: PropTypes.oneOf(['single', 'multiple']),
+    updateSelectedDirectory: PropTypes.func,
+    selectAmount: PropTypes.oneOf(["single", "multiple"]),
+    child_directory_lists_key: PropTypes.string
 };
 
 export default withStyles(styles)(TreeviewCheckbox);
