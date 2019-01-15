@@ -1,5 +1,4 @@
 # README #
-[![Build Status](https://travis-ci.org/digitalstudiojbg/digital_concierge.svg?branch=master)](https://travis-ci.org/digitalstudiojbg/digital_concierge)
 
 Digital Concierge Project
 

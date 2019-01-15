@@ -12,15 +12,14 @@ export default class UploadFile extends Component {
                             <input
                                 type="file"
                                 required
+                                accept=".png,.jpg"
                                 onChange={({
                                     target: {
                                         validity,
                                         files: [file]
                                     }
                                 }) => {
-                                    console.log("123");
                                     console.log(file);
-
                                     uploadFile({ variables: { file } });
                                 }}
                             />

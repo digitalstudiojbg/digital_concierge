@@ -29,7 +29,11 @@ const graphqlServer = new ApolloServer({
     context: async ({ req }) =>
         req.user && {
             user: await db.user.findByPk(req.user.sub)
-        }
+        },
+    uploads: {
+        maxFileSize: 10000000, // 10 MB
+        maxFiles: 10
+    }
 });
 graphqlServer.applyMiddleware({ app });
 
