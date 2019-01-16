@@ -2,9 +2,8 @@ import db from "../models";
 
 export default {
     Query: {
-        directoryList: async (_root, { id }) => {
-            return await db.directory_list.findByPk(id);
-        },
+        directoryList: async (_root, { id }) =>
+            await db.directory_list.findByPk(id),
         directoryLists: async (_root, _input, { user }) => {
             return await db.directory_list.findAll();
         },

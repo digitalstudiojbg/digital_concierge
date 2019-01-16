@@ -14,28 +14,50 @@ export const checkUserLogin = async user => {
 /**
  * check whether user's venue belongs to one of the list of venues from category
  */
-export const checkUserVenueByCategory = async (user, select_category) => {
-    const venues = await select_category.getVenues();
-    const userVenue = await user.getVenue();
+export const checkUserClientByDirectoryList = async (user, directory_list) => {
+    const systems = await directory_list.getSystems();
+    const userClient = await user.getClient();
 
-    let checkUserVenue = false;
+    let checkUserClient = false;
 
-    venues.forEach(venue => {
-        if (venue.id === userVenue.id) {
-            checkUserVenue = true;
+    systems.forEach(system => {
+        const tempClient = system.getClient();
+        if (tempClient.id === userClient.id) {
+            checkUserClient = true;
         }
     });
 
     /**
      * JBG_EMAIL_SUFFIX is the super admin privilege
      */
-    if (!checkUserVenue && !user.email.includes(JBG_EMAIL_SUFFIX)) {
+    //TODO: CHECK IF USER have proper admin privileges
+    if (!checkUserClient && !user.email.includes(JBG_EMAIL_SUFFIX)) {
         throw new AuthenticationError(
             `User ${user.name} (user id: ${
                 user.id
-            }) does not have permission to ${select_category.name} (user id : ${
-                select_category.id
+            }) does not have permission to ${directory_list.name} (user id : ${
+                directory_list.id
             }) `
+        );
+    }
+};
+
+/**
+ * check whether user has permission to modify system
+ */
+export const checkUserPermissionModifySystem = async (user, system) => {
+    const systemClient = await system.getClient();
+    const userClient = await user.getClient();
+
+    let allowUserToModify = systemClient.id === userClient.id;
+
+    //TODO: CHECK User level permission
+
+    if (!allowUserToModify) {
+        throw new AuthenticationError(
+            `User ${user.name} (user email: ${
+                user.email
+            }) does not have permission to modify data in ${system.name}!`
         );
     }
 };

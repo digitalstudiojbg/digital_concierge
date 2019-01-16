@@ -7,6 +7,8 @@ import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import DirEntryIcon from "@material-ui/icons/Description";
+import EditIcon from "@material-ui/icons/Edit";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import styled from "styled-components";
 import Table from "@material-ui/core/Table";
@@ -21,7 +23,7 @@ import {
     TABLET_CMS_CREATE_CONTENT_INDEX_URL
 } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryAndCategoryStatus } from "../data/mutation";
+import { changeDirectoryListAndEntryStatus } from "../data/mutation";
 import { getDirectoryListBySystem } from "../data/query";
 import { ClipLoader } from "react-spinners";
 
@@ -52,16 +54,26 @@ const styles = _theme => ({
         backgroundColor: "rgb(234,235,238)"
     },
     headerCol: {
-        color: "rgb(131,134,166)"
+        color: "rgb(131,134,166)",
+        width: "5%"
+    },
+    headerTitleCol: {
+        color: "rgb(131,134,166)",
+        width: "80%"
     },
     tableEntryRow: {
         backgroundColor: "rgb(246,246,246)"
     },
     tableEntryCol: {
-        color: "rgb(38,42,95)"
+        color: "rgb(38,42,95)",
+        width: "5%"
+    },
+    tableEntryTitleCol: {
+        color: "rgb(38,42,95)",
+        width: "80%"
     },
     tableCheckboxCol: {
-        width: 30
+        width: "5%"
     }
 });
 
@@ -591,6 +603,8 @@ class TreeView extends React.PureComponent {
     }
 
     handleVisibleOrInvisible(row, action) {
+        const { system_id: systemId } = this.props;
+
         const toUpdateList = this.getItemAndAllChildItems(row, true);
 
         const toUpdateDirLists = toUpdateList.filter(element => {
@@ -685,20 +699,26 @@ class TreeView extends React.PureComponent {
                 });
             }
         });
-
         action({
             variables: {
                 directoryEntryIdList: toUpdateDirEntryIds,
                 directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
-                status: !row.active
+                status: !row.active,
+                systemId
             }
+        });
+        console.log({
+            directoryEntryIdList: toUpdateDirEntryIds,
+            directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
+            status: !row.active,
+            systemId
         });
     }
 
     renderCheck(row) {
         return (
             <Mutation
-                mutation={changeDirectoryAndCategoryStatus()}
+                mutation={changeDirectoryListAndEntryStatus()}
                 refetchQueries={[
                     {
                         query: getDirectoryListBySystem()
@@ -764,6 +784,21 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
+                        <TableCell className={classes.tableEntryTitleCol}>
+                            <TreeEntry paddingSize={calculatedPaddingSize}>
+                                <div style={{ marginRight: 15 }}>
+                                    {this.renderAddOrRemoveIcon(directory.id)}
+                                </div>
+                                {directory.name}
+                            </TreeEntry>
+                        </TableCell>
+                        <TableCell>
+                            <EditIcon />
+                        </TableCell>
+                        <TableCell>{this.renderCheck(directory)}</TableCell>
+                        <TableCell>
+                            <MoreHorizontalIcon />
+                        </TableCell>
                         <TableCell
                             padding="checkbox"
                             className={classes.tableCheckboxCol}
@@ -798,18 +833,6 @@ class TreeView extends React.PureComponent {
                                 }
                             />
                         </TableCell>
-                        <TableCell className={classes.tableEntryCol}>
-                            <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <div style={{ marginRight: 15 }}>
-                                    {this.renderAddOrRemoveIcon(directory.id)}
-                                </div>
-                                {directory.name}
-                            </TreeEntry>
-                        </TableCell>
-                        <TableCell>{this.renderCheck(directory)}</TableCell>
-                        <TableCell>
-                            <MoreHorizontalIcon />
-                        </TableCell>
                     </TableRow>
                     {is_expanded &&
                         toLoop.map((child_directory_item, index_directory) => {
@@ -830,6 +853,26 @@ class TreeView extends React.PureComponent {
                     key={`${directory.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
+                    <TableCell className={classes.tableEntryTitleCol}>
+                        <TreeEntry paddingSize={calculatedPaddingSize}>
+                            <div
+                                style={{
+                                    marginLeft: 15,
+                                    width: `${approximateButtonSize}px`
+                                }}
+                            >
+                                {!directory.is_dir_list && <DirEntryIcon />}
+                            </div>
+                            {directory.name}
+                        </TreeEntry>
+                    </TableCell>
+                    <TableCell>
+                        <EditIcon />
+                    </TableCell>
+                    <TableCell>{this.renderCheck(directory)}</TableCell>
+                    <TableCell>
+                        <MoreHorizontalIcon />
+                    </TableCell>
                     <TableCell
                         padding="checkbox"
                         className={classes.tableCheckboxCol}
@@ -878,21 +921,6 @@ class TreeView extends React.PureComponent {
                             }
                         />
                     </TableCell>
-                    <TableCell className={classes.tableEntryCol}>
-                        <TreeEntry paddingSize={calculatedPaddingSize}>
-                            <div
-                                style={{
-                                    marginLeft: 15,
-                                    width: `${approximateButtonSize}px`
-                                }}
-                            />
-                            {directory.name}
-                        </TreeEntry>
-                    </TableCell>
-                    <TableCell>{this.renderCheck(directory)}</TableCell>
-                    <TableCell>
-                        <MoreHorizontalIcon />
-                    </TableCell>
                 </TableRow>
             );
         }
@@ -929,6 +957,18 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
+                            <TableCell className={classes.headerTitleCol}>
+                                TITLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                EDIT
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                VISIBLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                ACTIONS
+                            </TableCell>
                             <TableCell
                                 padding="checkbox"
                                 className={classes.tableCheckboxCol}
@@ -980,15 +1020,6 @@ class TreeView extends React.PureComponent {
                                         disabled={!allExpanded}
                                     />
                                 )}
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                TITLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                VISIBLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                ACTIONS
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -1063,7 +1094,9 @@ TreeView.defaultProps = {
 TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     child_directory_lists_key: PropTypes.string,
-    directory_entries_key: PropTypes.string
+    directory_entries_key: PropTypes.string,
+    system_id: PropTypes.number.isRequired,
+    history: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(TreeView);

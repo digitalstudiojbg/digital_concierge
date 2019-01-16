@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: true }
         });
         directory_list.belongsToMany(models.directory_entry, {
-            through: "directory_entries_directory_lists"
+            through: models.directory_entries_directory_lists
         });
     };
     return directory_list;

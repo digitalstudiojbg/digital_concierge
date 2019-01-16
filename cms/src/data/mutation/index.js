@@ -1,10 +1,3 @@
-import {
-    changeDirectoryStatus,
-    changeDirectoryAndCategoryStatus
-} from "./directory";
-import { changeCategoryStatus } from "./category";
-export {
-    changeDirectoryStatus,
-    changeDirectoryAndCategoryStatus,
-    changeCategoryStatus
-};
+import { changeDirectoryListAndEntryStatus } from "./directory";
+// import { changeCategoryStatus } from "./category";
+export { changeDirectoryListAndEntryStatus };

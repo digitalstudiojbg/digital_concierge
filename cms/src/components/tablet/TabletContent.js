@@ -39,7 +39,11 @@ class TabletContent extends PureComponent {
                                 CATEGORIES AND SUB-CATEGORIES. CLICK ON THE
                                 TITLE TO EDIT.
                             </div>
-                            <TreeView data={modifiedData} history={history} />
+                            <TreeView
+                                data={modifiedData}
+                                history={history}
+                                system_id={1}
+                            />
                         </ContainerDiv>
                     );
                 }}
