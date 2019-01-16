@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         guest.belongsToMany(models.room, {
-            through: "guests_rooms"
+            through: models.guests_rooms
         });
     };
     return guest;
