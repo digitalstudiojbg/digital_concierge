@@ -18,14 +18,6 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: false
             },
-            active: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
             directoryListId: {
                 type: DataTypes.INTEGER,
                 allowNull: true
@@ -38,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: true }
         });
         directory_list.belongsToMany(models.system, {
-            through: "directory_lists_systems"
+            through: models.directory_lists_systems
         });
         directory_list.belongsToMany(models.media, {
             through: "directory_lists_media"

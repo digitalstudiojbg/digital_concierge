@@ -23,14 +23,6 @@ module.exports = {
                 },
                 defaultValue: false
             },
-            active: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
             directoryListId: {
                 type: Sequelize.INTEGER,
                 allowNull: true,

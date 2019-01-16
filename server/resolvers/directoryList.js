@@ -7,22 +7,43 @@ export default {
         directoryLists: async (_root, _input, { user }) => {
             return await db.directory_list.findAll();
         },
-        directoryLists_by_system: async (_root, { id }) =>
-            await db.directory_list.findAll(
-                {
-                    where: {
-                        is_root: true
-                    }
-                },
-                {
+        directoryLists_by_system: async (_root, { id }) => {
+            let activeRootDirList = await db.directory_list
+                .findAll({
                     include: [
                         {
                             model: db.system,
-                            where: { id }
+                            where: { id },
+                            through: { where: { active: true } }
                         }
                     ]
+                })
+                .filter(dirList => Boolean(dirList.is_root));
+            activeRootDirList.forEach(activeDirList => {
+                activeDirList.active = true;
+            });
+
+            let inactiveRootDirList = await db.directory_list
+                .findAll({
+                    include: [
+                        {
+                            model: db.system,
+                            where: { id },
+                            through: { where: { active: false } }
+                        }
+                    ]
+                })
+                .filter(dirList => Boolean(dirList.is_root));
+
+            inactiveRootDirList.forEach(inactiveDirList => {
+                inactiveDirList.active = false;
+            });
+            return [...activeRootDirList, ...inactiveRootDirList].sort(
+                (obj1, obj2) => {
+                    return obj1.id - obj2.id;
                 }
-            )
+            );
+        }
     },
     DirectoryList: {
         child_directory_lists: async dl => {

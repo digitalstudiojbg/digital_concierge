@@ -24,6 +24,11 @@ export default {
         ) => {
             await checkUserLogin(user);
             const system = await db.system.findByPk(systemId);
+            if (!Boolean(system)) {
+                throw new UserInputError(
+                    `System with id ${systemId} was not found`
+                );
+            }
             await checkUserPermissionModifySystem(user, system);
             if (
                 Boolean(directoryEntryIdList) &&
@@ -84,9 +89,10 @@ export default {
                         user,
                         select_directory_list
                     );
-                    select_directory_list.active = status;
                     try {
-                        select_directory_list.save();
+                        await select_directory_list.addSystem(system, {
+                            through: { active: status }
+                        });
                     } catch (error) {
                         throw new UserInputError(
                             `Update Directory List id ${each} status failed.\nError Message: ${
