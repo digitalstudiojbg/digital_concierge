@@ -47,7 +47,7 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["cms", "server", "tablet", "touchscreen", "clientcms"],
+            "links": ["cms", "server", "clientcms", "tablet", "touchscreen"],
             "memory": 256
         }
     ]
