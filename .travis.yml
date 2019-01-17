@@ -15,12 +15,14 @@ after_success:
   - docker build -t digitalstudiojbg/dc-server ./server
   - docker build -t digitalstudiojbg/dc-tablet ./tablet
   - docker build -t digitalstudiojbg/dc-touchscreen ./touchscreen
+  - docker build -t digitalstudiojbg/dc-client_cms ./client_cms
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push digitalstudiojbg/dc-cms
   - docker push digitalstudiojbg/dc-nginx
   - docker push digitalstudiojbg/dc-server
   - docker push digitalstudiojbg/dc-tablet
   - docker push digitalstudiojbg/dc-touchscreen
+  - docker push digitalstudiojbg/dc-client_cms
 
 deploy:
   provider: elasticbeanstalk

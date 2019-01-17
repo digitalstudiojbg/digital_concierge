@@ -1,0 +1,131 @@
+import styled from "styled-components";
+
+export const COLOR_JBG_PURPLE = "#272b67";
+export const API_URL =
+    process.env.NODE_ENV === "production"
+        ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/api"
+        : "http://localhost:3000";
+
+//URL Constants
+export const LOGIN_URL = "/login";
+export const WELCOME_URL = "/welcome";
+
+export const TABLET_CMS_INDEX_URL = "/tablet_cms";
+export const TABLET_CMS_HOME_URL = "/tablet_cms/home";
+export const TABLET_CMS_LANDINGPAGE_URL = "/tablet_cms/landingpage";
+export const TABLET_CMS_CONTENT_URL = "/tablet_cms/content";
+export const TABLET_CMS_SETTINGS_URL = "/tablet_cms/settings";
+export const TABLET_CMS_CREATE_CONTENT_INDEX_URL = "/tablet_cms/content/create";
+export const TABLET_CMS_CREATE_CONTENT_CATEGORY_URL =
+    "/tablet_cms/content/create/category";
+export const TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL =
+    "/tablet_cms/content/create/subcategory";
+export const TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL =
+    "/tablet_cms/content/create/directory";
+
+export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
+
+export const ContainerDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgb(246, 246, 246);
+    padding-left: 20px;
+    padding-top: 20px;
+    color: rgb(113, 116, 152);
+`;
+
+export const CreateContentContainerDiv = styled.div`
+    background-color: white;
+    color: rgb(113, 116, 152);
+    width: 70%;
+    border: 2px solid rgb(186, 185, 206);
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    font-size: 1.9em;
+    display: flex;
+`;
+
+//Helper recursive function to recursively modify the data received from GraphQL
+//Modification includes:
+//-Adding depth attribute
+//-Adding is_dir_list attribute to differentiate directory list and directory entries
+//-Adding hash_id attribute for directory entries (many to many relationship between directory entry and directory list, for better differentiation)
+//The hash_id is a string formatted like this: ${GRANDPARENT_DIRECTORY_LIST_ID}-${PARENT_DIRECTORY_LIST_ID}-${CHILD_DIRECTORY_LIST_ID}-${DIRECTORY_ENTRY_ID}
+function _modifyDirectoryListOrEntry(
+    entry,
+    depth = 0,
+    key = "",
+    child_directory_lists_key = "child_directory_lists",
+    directory_entries_key = "directory_entries"
+) {
+    if (
+        (Boolean(entry[child_directory_lists_key]) &&
+            entry[child_directory_lists_key].length > 0) ||
+        (Boolean(entry[directory_entries_key]) &&
+            entry[directory_entries_key].length > 0)
+    ) {
+        //Recur if item has more child categories or directory entries
+        const has_child_directories =
+            Boolean(entry[child_directory_lists_key]) &&
+            entry[child_directory_lists_key].length > 0;
+        const toLoop = has_child_directories
+            ? entry[child_directory_lists_key]
+            : entry[directory_entries_key];
+        let children = [];
+        toLoop.forEach(item => {
+            children = [
+                ...children,
+                _modifyDirectoryListOrEntry(
+                    item,
+                    depth + 1,
+                    `${key}${entry.id}-`
+                )
+            ];
+        });
+        if (has_child_directories) {
+            //Different attribute naming for directory entries and child categories
+            return {
+                ...entry,
+                is_dir_list: true,
+                depth,
+                [child_directory_lists_key]: [...children]
+            };
+        } else {
+            return {
+                ...entry,
+                is_dir_list: true,
+                depth,
+                [directory_entries_key]: [...children]
+            };
+        }
+    } else {
+        const is_dir_list = Boolean(entry[directory_entries_key]);
+        if (is_dir_list) {
+            return { ...entry, is_dir_list, depth };
+        } else {
+            return {
+                ...entry,
+                is_dir_list,
+                depth,
+                hash_id: `${key}${entry.id}`
+            };
+        }
+    }
+}
+
+//Function to modify category and directory entries data
+export const modifyDirectoryListData = data => {
+    return data.map(item => {
+        return _modifyDirectoryListOrEntry(item);
+    });
+};
+
+//https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+export const getAllUniqueItems = itemList => {
+    let seen = {};
+    return itemList.filter(item => {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+};

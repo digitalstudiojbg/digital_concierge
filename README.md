@@ -20,6 +20,7 @@ Digital Concierge Project
 * cms => 4000
 * tablet => 5000
 * touchscreen => 7000
+* client_cms => 9000
 
 ## Project Routes (dev) ##
 * localhost:3000 => server 
@@ -27,11 +28,13 @@ Digital Concierge Project
 * localhost:4000 => cms project 
 * localhost:5000 => tablet project  
 * localhost:7000 => touchscreen project 
+* localhost:9000 => client_cms project 
 
 ## Project Routes (prod) ##
 * WEBSITE_URL/api => server 
 * WEBSITE_URL/api/graphql => graphql api 
-* WEBSITE_URL/ => cms project 
+* WEBSITE_URL/ => cms_client project 
+* WEBSITE_URL/cms => cms project 
 * WEBSITE_URL/tablet => tablet project  
 * WEBSITE_URL/touchscreen => touchscreen project 
   
