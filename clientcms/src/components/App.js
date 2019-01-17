@@ -5,7 +5,13 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
-import { WELCOME_URL, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL, API_URL } from "../utils/Constants";
+import {
+    WELCOME_URL,
+    TABLET_CMS_INDEX_URL,
+    TOUCHSCREEN_CMS_INDEX_URL,
+    LOGIN_URL,
+    API_URL
+} from "../utils/Constants";
 
 const Home = lazy(() => import("./home/Home"));
 
@@ -52,7 +58,7 @@ class App extends Component {
 
     render() {
         return (
-            <Router ref={router => (this.router = router)} /*basename={"cms"}*/>
+            <Router ref={router => (this.router = router)} basename={"cms"}>
                 <div>
                     <section>
                         <div>

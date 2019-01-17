@@ -1,7 +1,8 @@
 {
   "name": "clientcms",
   "version": "0.1.0",
-  "private": true,
+  "private": true,    
+  "homepage": ".",
   "dependencies": {
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
