@@ -21,7 +21,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL
+    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "./Constants";
 import { Mutation } from "react-apollo";
 import { changeDirectoryListAndEntryStatus } from "../data/mutation";
@@ -39,6 +40,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
     buttonCreate: {
@@ -89,6 +91,17 @@ const styles = theme => ({
     },
     tableCheckboxCol: {
         width: "5%"
+    },
+    buttonCreateLeftGrid: {
+        fontSize: "1.3em",
+        paddingRight: 10
+    },
+    buttonCreateRightGrid: {
+        height: "75%",
+        paddingLeft: 5,
+        paddingRight: 0,
+        paddingTop: 5,
+        borderLeft: "2px solid white"
     }
 });
 
@@ -115,11 +128,14 @@ class TreeView extends React.PureComponent {
             dataTree: [],
             dirListOnlyDataTree: [],
             anchorEl: null,
+            anchorElCreate: null,
             deleteModal: false
         };
-        this.navigateToCreateContent = this.navigateToCreateContent.bind(this);
+        this.navigateToDiffPage = this.navigateToDiffPage.bind(this);
         this.handleOpenOptions = this.handleOpenOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
+        this.handleOpenCreate = this.handleOpenCreate.bind(this);
+        this.handleCloseCreate = this.handleCloseCreate.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
     }
@@ -652,7 +668,6 @@ class TreeView extends React.PureComponent {
         if (row.is_dir_list) {
             const parents = this.getParentItem(row.id, true);
 
-            let output = [];
             parents.forEach(parent => {
                 if (row.active === false) {
                     toUpdateDirListIds.push(parseInt(parent));
@@ -905,7 +920,7 @@ class TreeView extends React.PureComponent {
                     <TableCell>{this.renderCheck(directory)}</TableCell>
                     <TableCell>
                         <MoreHorizontalIcon
-                            id={`category-${directory.id}`}
+                            id={`${id_options_header}-${directory.id}`}
                             onClick={this.handleOpenOptions}
                         />
                     </TableCell>
@@ -1071,9 +1086,11 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    navigateToCreateContent() {
+    navigateToDiffPage(url) {
         const { history } = this.props;
-        history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+        this.setState({ anchorElCreate: null }, () => {
+            history.push(url);
+        });
     }
 
     handleOpenOptions(event) {
@@ -1083,6 +1100,14 @@ class TreeView extends React.PureComponent {
 
     handleCloseOptions() {
         this.setState({ anchorEl: null });
+    }
+
+    handleOpenCreate(event) {
+        this.setState({ anchorElCreate: event.currentTarget });
+    }
+
+    handleCloseCreate(event) {
+        this.setState({ anchorElCreate: null });
     }
 
     openDeleteModal() {
@@ -1148,13 +1173,14 @@ class TreeView extends React.PureComponent {
     }
 
     render() {
-        const { classes, data } = this.props;
+        const { classes, data, create_menu_bar } = this.props;
         const {
             dataTree,
             dirListOnlyDataTree,
             selected_dir_entries,
             selected_dir_lists,
             anchorEl,
+            anchorElCreate,
             deleteModal
         } = this.state;
         return (
@@ -1185,10 +1211,58 @@ class TreeView extends React.PureComponent {
                         variant="contained"
                         color="primary"
                         className={classes.buttonCreate}
-                        onClick={this.navigateToCreateContent}
+                        onClick={this.handleOpenCreate}
                     >
-                        CREATE
+                        <Grid
+                            xs={12}
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                        >
+                            <Grid
+                                item
+                                xs={10}
+                                className={classes.buttonCreateLeftGrid}
+                            >
+                                CREATE
+                            </Grid>
+                            <Grid
+                                item
+                                xs={2}
+                                className={classes.buttonCreateRightGrid}
+                            >
+                                <CompressIcon fontSize="small" />
+                            </Grid>
+                        </Grid>
                     </Button>
+                    <Menu
+                        id="simple-menu-create"
+                        anchorEl={anchorElCreate}
+                        open={Boolean(anchorElCreate)}
+                        onClose={this.handleCloseCreate}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right"
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right"
+                        }}
+                    >
+                        {create_menu_bar.map(({ id, name, url }, index) => (
+                            <MenuItem
+                                key={`CREATE_MENU_BAR_${id}-${index}`}
+                                className={classes.menuItemStyle}
+                                onClick={this.navigateToDiffPage.bind(
+                                    this,
+                                    url
+                                )}
+                            >
+                                {name}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </div>
 
                 {Boolean(data) &&
@@ -1292,7 +1366,29 @@ class TreeView extends React.PureComponent {
 
 TreeView.defaultProps = {
     child_directory_lists_key: "child_directory_lists",
-    directory_entries_key: "directory_entries"
+    directory_entries_key: "directory_entries",
+    create_menu_bar: [
+        {
+            id: 1,
+            name: "TIER ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL
+        },
+        {
+            id: 2,
+            name: "DIRECTORY ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        },
+        {
+            id: 3,
+            name: "POPUP WINDOW",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        },
+        {
+            id: 4,
+            name: "GALLERY PAGE",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        }
+    ]
 };
 
 TreeView.propTypes = {
@@ -1300,7 +1396,14 @@ TreeView.propTypes = {
     child_directory_lists_key: PropTypes.string,
     directory_entries_key: PropTypes.string,
     system_id: PropTypes.number.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    create_menu_bar: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            url: PropTypes.string.isRequired
+        })
+    )
 };
 
 export default withStyles(styles)(TreeView);
