@@ -178,17 +178,12 @@ class Home extends Component {
                                 {routes.map(
                                     (route, index) =>
                                         route.main && (
-                                            <Suspense
-                                                key={index}
-                                                fallback={<Loading />}
-                                            >
-                                                <PrivateRoute
-                                                    path={route.path}
-                                                    exact={route.exact}
-                                                    component={route.main}
-                                                    withProps={route.withProps}
-                                                />
-                                            </Suspense>
+                                            <PrivateRoute
+                                                path={route.path}
+                                                exact={route.exact}
+                                                component={route.main}
+                                                withProps={route.withProps}
+                                            />
                                         )
                                 )}
                             </div>
