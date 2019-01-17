@@ -16,9 +16,9 @@
             "memory": 256
         },
         {
-            "name": "client_cms",
-            "image": "digitalstudiojbg/dc-client_cms",
-            "hostname": "client_cms",
+            "name": "clientcms",
+            "image": "digitalstudiojbg/dc-clientcms",
+            "hostname": "clientcms",
             "essential": false,
             "memory": 256
         },
@@ -47,7 +47,7 @@
                     "containerPort": 80
                 }
             ],
-            "links": ["cms", "server", "tablet", "touchscreen", "client_cms"],
+            "links": ["cms", "server", "tablet", "touchscreen", "clientcms"],
             "memory": 256
         }
     ]

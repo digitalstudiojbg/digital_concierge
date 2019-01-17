@@ -36,14 +36,14 @@ services:
     volumes:
       - /app/node_modules
       - ./tablet:/app
-  client_cms:
+  clientcms:
     build: 
-      context: ./client_cms/
+      context: ./clientcms/
       dockerfile: Dockerfile.dev
     ports:
       - "9000:9000"
     volumes:
       - /app/node_modules
-      - ./client_cms:/app
+      - ./clientcms:/app
   
  
