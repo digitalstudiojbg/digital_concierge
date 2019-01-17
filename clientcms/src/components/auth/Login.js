@@ -141,7 +141,7 @@ class Login extends Component {
                                         }}
                                     >
                                         <CMSTitle>
-                                            CONTENT MANAGEMENT SYSTEM
+                                            CONTENT MANAGEMENT SYSTEM (CLIENT)
                                         </CMSTitle>
                                     </div>
                                 </div>

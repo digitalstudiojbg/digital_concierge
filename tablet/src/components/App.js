@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { API_URL } from "../utils/Constants";
 import { Query } from "react-apollo";
 import { getVenueDetailById } from "../data/query";
+import { Link } from "react-router-dom";
 
 class App extends Component {
     componentDidMount() {
@@ -16,8 +17,8 @@ class App extends Component {
     }
 
     render() {
-        return (
-            <Query query={getVenueDetailById} /*fetchPolicy="no-cache"*/>
+        /*return (
+            <Query query={getVenueDetailById}  fetchPolicy="no-cache" >
                 {({ loading, error, data }) => {
                     if (loading) return <p>loading</p>;
                     if (error) return `Error! ${error.message}`;
@@ -52,6 +53,37 @@ class App extends Component {
                     );
                 }}
             </Query>
+        );*/
+
+        return (
+            <Router ref={router => (this.router = router)} basename={"tablet"}>
+                <div>
+                    123
+                    <section>
+                        <div>
+                            <Route
+                                path="/"
+                                exact
+                                render={() => (
+                                    <div>
+                                        <h1>TABLET HOME PAGE 123</h1>
+                                        <Link to="/test">TEST</Link>
+                                    </div>
+                                )}
+                            />
+                            <Route
+                                path="/test"
+                                render={() => (
+                                    <div>
+                                        <h1>TABLET HOME PAGE TEST</h1>
+                                        <Link to="/">BACK</Link>
+                                    </div>
+                                )}
+                            />
+                        </div>
+                    </section>
+                </div>
+            </Router>
         );
     }
 }
