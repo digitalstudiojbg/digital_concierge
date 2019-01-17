@@ -19,7 +19,7 @@ import {
     TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
-const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
+/*const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
 const TabletContent = lazy(() => import("../tablet/TabletContent"));
@@ -29,7 +29,19 @@ const TabletCreateDirectory = lazy(() => import("../tablet/content/CreateDirecto
 
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
-const Welcome = lazy(() => import("./Welcome.js"));
+const Welcome = lazy(() => import("./Welcome.js"));*/
+
+import TabletDashboard from "../tablet/TabletDashboard";
+import TabletLandingPage from "../tablet/TabletLandingPage";
+import TabletSetting from "../tablet/TabletSetting";
+import TabletContent from "../tablet/TabletContent";
+import TabletCreateContent from "../tablet/content/CreateContent";
+import TabletCreateCategory from "../tablet/content/CreateCategory";
+import TabletCreateDirectory from "../tablet/content/CreateDirectory";
+
+import Touchscreen from "../touchscreen/Touchscreen";
+
+import Welcome from "./Welcome.js";
 
 const routes = [
     {
@@ -93,7 +105,7 @@ const routes = [
         sidebar: Sidebar,
         header: Header,
         main: TabletCreateCategory,
-        withProps: { is_sub_category : true }
+        withProps: { is_sub_category: true }
     },
     {
         path: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
