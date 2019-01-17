@@ -22,7 +22,9 @@ import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
     TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+    CMS_MODIFY_DIRECTORY_LIST_URL
 } from "./Constants";
 import { Mutation } from "react-apollo";
 import { changeDirectoryListAndEntryStatus } from "../data/mutation";
@@ -835,7 +837,13 @@ class TreeView extends React.PureComponent {
                             </TreeEntry>
                         </TableCell>
                         <TableCell>
-                            <EditIcon />
+                            <EditIcon
+                                onClick={this.navigateToEditPage.bind(
+                                    this,
+                                    CMS_MODIFY_DIRECTORY_LIST_URL,
+                                    directory
+                                )}
+                            />
                         </TableCell>
                         <TableCell>{this.renderCheck(directory)}</TableCell>
                         <TableCell>
@@ -1093,6 +1101,11 @@ class TreeView extends React.PureComponent {
         });
     }
 
+    navigateToEditPage(pathname, data) {
+        const { history } = this.props;
+        history.push({ pathname, state: { data } });
+    }
+
     handleOpenOptions(event) {
         // console.log(event.currentTarget.id);
         this.setState({ anchorEl: event.currentTarget });
@@ -1214,7 +1227,6 @@ class TreeView extends React.PureComponent {
                         onClick={this.handleOpenCreate}
                     >
                         <Grid
-                            xs={12}
                             container
                             direction="row"
                             justify="flex-start"
@@ -1370,21 +1382,26 @@ TreeView.defaultProps = {
     create_menu_bar: [
         {
             id: 1,
-            name: "TIER ENTRY",
-            url: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL
+            name: "ROOT TIER ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL
         },
         {
             id: 2,
+            name: "SUB TIER ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL
+        },
+        {
+            id: 3,
             name: "DIRECTORY ENTRY",
             url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
         },
         {
-            id: 3,
+            id: 4,
             name: "POPUP WINDOW",
             url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
         },
         {
-            id: 4,
+            id: 5,
             name: "GALLERY PAGE",
             url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
         }
