@@ -58,7 +58,7 @@ class App extends Component {
 
     render() {
         return (
-            <Router ref={router => (this.router = router)} basename={"cms"}>
+            <Router ref={router => (this.router = router)} /*basename={"cms"}*/>
                 <div>
                     <section>
                         <div>
