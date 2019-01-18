@@ -1,4 +1,5 @@
-import React, { Component, lazy, Suspense } from "react";
+// import React, { Component, lazy, Suspense } from "react";
+import React, { Component } from "react";
 import { Query } from "react-apollo";
 import { getCurrentUserQuery } from "../../data/query";
 import Loading from "../loading/Loading";
@@ -16,7 +17,8 @@ import {
     TABLET_CMS_CREATE_CONTENT_INDEX_URL,
     TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
     TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    CMS_MODIFY_DIRECTORY_LIST_URL
 } from "../../utils/Constants";
 
 /*const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -38,6 +40,7 @@ import TabletContent from "../tablet/TabletContent";
 import TabletCreateContent from "../tablet/content/CreateContent";
 import TabletCreateCategory from "../tablet/content/CreateCategory";
 import TabletCreateDirectory from "../tablet/content/CreateDirectory";
+import ModifyDirectoryList from "../tablet/content/ModifyDirectoryList";
 
 import Touchscreen from "../touchscreen/Touchscreen";
 
@@ -130,6 +133,14 @@ const routes = [
         header: Header,
         main: Touchscreen,
         withProps: {}
+    },
+    {
+        path: CMS_MODIFY_DIRECTORY_LIST_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: ModifyDirectoryList,
+        withProps: {}
     }
 ];
 
@@ -148,7 +159,7 @@ class Home extends Component {
                                 (route, index) =>
                                     route.header && (
                                         <PrivateRoute
-                                            key={index}
+                                            key={`Header-${index}`}
                                             path={route.path}
                                             exact={route.exact}
                                             component={route.header}
@@ -167,7 +178,7 @@ class Home extends Component {
                                     (route, index) =>
                                         route.sidebar && (
                                             <PrivateRoute
-                                                key={index}
+                                                key={`Sidebar-${index}`}
                                                 path={route.path}
                                                 exact={route.exact}
                                                 component={route.sidebar}
@@ -179,6 +190,7 @@ class Home extends Component {
                                     (route, index) =>
                                         route.main && (
                                             <PrivateRoute
+                                                key={`Main-${index}`}
                                                 path={route.path}
                                                 exact={route.exact}
                                                 component={route.main}

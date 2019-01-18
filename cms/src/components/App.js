@@ -1,10 +1,11 @@
-import React, { Component, Suspense, lazy } from "react";
+// import React, { Component, Suspense, lazy } from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
 import "./App.css";
-import Loading from "./loading/Loading";
+// import Loading from "./loading/Loading";
 import {
     WELCOME_URL,
     TABLET_CMS_INDEX_URL,
