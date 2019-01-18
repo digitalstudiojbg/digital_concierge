@@ -15,13 +15,13 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            is_admin: {
+            is_standard_role: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 },
-                defaultValue: false
+                defaultValue: true
             },
             createdAt: {
                 allowNull: false,

@@ -7,7 +7,7 @@ import device_resolver from "./device";
 import directoryEntry_resolver from "./directoryEntry";
 import directoryList_resolver from "./directoryList";
 import gallery_resolver from "./gallery";
-import group_resolver from "./group";
+import department_resolver from "./department";
 import guest_resolver from "./guest";
 import home_resolver from "./home";
 import jbgDirectoryEntry_resolver from "./jbgDirectoryEntry";
@@ -32,7 +32,7 @@ export default [
     directoryEntry_resolver,
     directoryList_resolver,
     gallery_resolver,
-    group_resolver,
+    department_resolver,
     guest_resolver,
     home_resolver,
     jbgDirectoryEntry_resolver,

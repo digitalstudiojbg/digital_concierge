@@ -18,7 +18,7 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         users: [User]
-        groups: [Group]
+        departments: [Department]
         guests: [Guest]
         rooms: [Room]
         media: [Media]

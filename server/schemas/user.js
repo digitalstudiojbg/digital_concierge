@@ -15,7 +15,7 @@ export default gql`
         email: String
         password: String
         active: Boolean
-        role: Role
+        roles: [Role]
         client: Client
         avatar: String
         createdAt: DateTime

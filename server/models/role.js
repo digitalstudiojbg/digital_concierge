@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            is_admin: {
+            is_standard_role: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
                 validate: {
@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     );
     role.associate = function(models) {
         role.belongsToMany(models.permission, { through: "roles_permissions" });
-        role.hasMany(models.user);
-        role.belongsTo(models.group, {
+        role.belongsToMany(models.user, { through: "roles_users" });
+        role.belongsTo(models.department, {
             foreignKey: { allowNull: false }
         });
     };

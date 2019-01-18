@@ -19,13 +19,15 @@ export default {
         }
     },
     Role: {
-        users: async role => {
-            return await db.user.findAll({
-                where: {
-                    roleId: role.id
-                }
-            });
-        },
+        users: async role =>
+            await db.user.findAll({
+                include: [
+                    {
+                        model: db.role,
+                        where: { id: role.id }
+                    }
+                ]
+            }),
         permissions: async role => {
             return await db.permission.findAll({
                 include: [
@@ -36,6 +38,7 @@ export default {
                 ]
             });
         },
-        group: async role => await db.group.findByPk(role.groupId)
+        department: async role =>
+            await db.department.findByPk(role.departmentId)
     }
 };

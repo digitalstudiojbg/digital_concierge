@@ -12,9 +12,15 @@ export default {
     Client: {
         users: async client =>
             await db.user.findAll({ where: { clientId: client.id } }),
-        groups: async client =>
-            await db.group.findAll({ where: { clientId: client.id } }),
-
+        departments: async client =>
+            await db.department.findAll({
+                include: [
+                    {
+                        model: db.client,
+                        where: { id: client.id }
+                    }
+                ]
+            }),
         guests: async client =>
             await db.guest.findAll({ where: { clientId: client.id } }),
         rooms: async client =>

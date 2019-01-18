@@ -14,7 +14,6 @@ module.exports = {
                     email: "nealshen@johnbatman.com.au",
                     password: hash,
                     active: true,
-                    roleId: 1,
                     mediumId: 2,
                     clientId: 2
                 },
@@ -23,7 +22,6 @@ module.exports = {
                     email: "admin@holidayinn.com.au",
                     password: hash,
                     active: true,
-                    roleId: 2,
                     mediumId: 1,
                     clientId: 1
                 },
@@ -32,7 +30,6 @@ module.exports = {
                     email: "admin@admin.com.au",
                     password: hash,
                     active: true,
-                    roleId: 1,
                     mediumId: 2,
                     clientId: 2
                 }

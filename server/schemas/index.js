@@ -5,7 +5,7 @@ import permission_schema from "./permission";
 import client_schema from "./client";
 import validation_schema from "./validation";
 import file_schema from "./file";
-import group_schema from "./group";
+import department_schema from "./department";
 import guest_schema from "./guest";
 import room_schema from "./room";
 import media_schema from "./media";
@@ -43,7 +43,7 @@ export default [
     role_schema,
     permission_schema,
     client_schema,
-    group_schema,
+    department_schema,
     validation_schema,
     guest_schema,
     room_schema,

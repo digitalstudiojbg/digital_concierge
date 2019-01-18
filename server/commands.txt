@@ -334,3 +334,5 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-system-and-media
 
 node_modules/.bin/sequelize seed:generate --name system_media
+
+node_modules/.bin/sequelize seed:generate --name user_role

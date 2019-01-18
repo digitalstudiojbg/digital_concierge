@@ -26,9 +26,15 @@ export default {
         }
     },
     User: {
-        role: async user => {
-            return await db.role.findByPk(user.roleId);
-        },
+        roles: async user =>
+            await db.role.findAll({
+                include: [
+                    {
+                        model: db.user,
+                        where: { id: user.id }
+                    }
+                ]
+            }),
         client: async user => {
             return await db.client.findById(user.clientId);
         }
