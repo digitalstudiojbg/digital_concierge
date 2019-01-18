@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         room.belongsToMany(models.guest, {
-            through: "guests_rooms"
+            through: models.guests_rooms
         });
         room.hasOne(models.device);
     };

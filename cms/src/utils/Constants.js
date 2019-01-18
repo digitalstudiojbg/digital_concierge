@@ -22,6 +22,8 @@ export const TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL =
     "/tablet_cms/content/create/subcategory";
 export const TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL =
     "/tablet_cms/content/create/directory";
+export const CMS_MODIFY_DIRECTORY_LIST_URL =
+    "/cms/content/modify/directory_list";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 

@@ -15,7 +15,7 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         child_directory_lists: [DirectoryList]
-        systems: [System]
+        system: System
         layout: Layout
         directory_entries: [DirectoryEntry]
         media: [Media]

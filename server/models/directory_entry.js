@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             through: "directory_entries_media"
         });
         directory_entry.belongsToMany(models.directory_list, {
-            through: "directory_entries_directory_lists"
+            through: models.directory_entries_directory_lists
         });
     };
     return directory_entry;

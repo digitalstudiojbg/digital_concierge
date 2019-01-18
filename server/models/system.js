@@ -36,9 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         system.belongsToMany(models.map, {
             through: "maps_systems"
         });
-        system.belongsToMany(models.directory_list, {
-            through: "directory_lists_systems"
-        });
+        system.hasMany(models.directory_list);
         system.belongsToMany(models.media, {
             through: "media_systems"
         });

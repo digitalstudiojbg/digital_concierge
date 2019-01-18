@@ -2,28 +2,15 @@ import db from "../models";
 
 export default {
     Query: {
-        directoryList: async (_root, { id }) => {
-            return await db.directory_list.findByPk(id);
-        },
+        directoryList: async (_root, { id }) =>
+            await db.directory_list.findByPk(id),
         directoryLists: async (_root, _input, { user }) => {
             return await db.directory_list.findAll();
         },
         directoryLists_by_system: async (_root, { id }) =>
-            await db.directory_list.findAll(
-                {
-                    where: {
-                        is_root: true
-                    }
-                },
-                {
-                    include: [
-                        {
-                            model: db.system,
-                            where: { id }
-                        }
-                    ]
-                }
-            )
+            await db.directory_list.findAll({
+                where: { systemId: id, is_root: true }
+            })
     },
     DirectoryList: {
         child_directory_lists: async dl => {
@@ -33,15 +20,8 @@ export default {
                 }
             });
         },
-        systems: async dl => {
-            return await db.system.findAll({
-                include: [
-                    {
-                        model: db.directory_list,
-                        where: { id: dl.id }
-                    }
-                ]
-            });
+        system: async dl => {
+            return await db.system.findByPk(dl.systemId);
         },
         layout: async dl => {
             return await db.layout.findByPk(dl.layoutId);

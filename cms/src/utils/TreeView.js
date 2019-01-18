@@ -3,10 +3,13 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
+import CancelIcon from "@material-ui/icons/Cancel";
+import ExpandIcon from "@material-ui/icons/ChevronRight";
+import CompressIcon from "@material-ui/icons/ExpandMore";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import DirEntryIcon from "@material-ui/icons/Description";
+import EditIcon from "@material-ui/icons/Edit";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import styled from "styled-components";
 import Table from "@material-ui/core/Table";
@@ -18,14 +21,30 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL
+    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+    CMS_MODIFY_DIRECTORY_LIST_URL
 } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryAndCategoryStatus } from "../data/mutation";
+import { changeDirectoryListAndEntryStatus } from "../data/mutation";
 import { getDirectoryListBySystem } from "../data/query";
 import { ClipLoader } from "react-spinners";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from "@material-ui/core/Typography";
+import Slide from "@material-ui/core/Slide";
+import Grid from "@material-ui/core/Grid";
 
-const styles = _theme => ({
+const styles = theme => ({
     buttonCreate: {
         color: "white",
         backgroundColor: "rgb(35,38,92)",
@@ -37,12 +56,14 @@ const styles = _theme => ({
         color: "white",
         backgroundColor: "rgb(35,38,92)",
         paddingLeft: "1px",
-        paddingRight: "1px"
+        paddingRight: "1px",
+        marginRight: 15
     },
     expansionButton: {
         color: "white",
         background: "rgb(155,157,183)",
-        borderRadius: 25
+        padding: 0,
+        margin: theme.spacing.unit * 0.1
     },
     icon: {
         fontSize: "small"
@@ -52,16 +73,37 @@ const styles = _theme => ({
         backgroundColor: "rgb(234,235,238)"
     },
     headerCol: {
-        color: "rgb(131,134,166)"
+        color: "rgb(131,134,166)",
+        width: "5%"
+    },
+    headerTitleCol: {
+        color: "rgb(131,134,166)",
+        width: "80%"
     },
     tableEntryRow: {
         backgroundColor: "rgb(246,246,246)"
     },
     tableEntryCol: {
-        color: "rgb(38,42,95)"
+        color: "rgb(38,42,95)",
+        width: "5%"
+    },
+    tableEntryTitleCol: {
+        color: "rgb(38,42,95)",
+        width: "80%"
     },
     tableCheckboxCol: {
-        width: 30
+        width: "5%"
+    },
+    buttonCreateLeftGrid: {
+        fontSize: "1.3em",
+        paddingRight: 10
+    },
+    buttonCreateRightGrid: {
+        height: "75%",
+        paddingLeft: 5,
+        paddingRight: 0,
+        paddingTop: 5,
+        borderLeft: "2px solid white"
     }
 });
 
@@ -74,6 +116,10 @@ const TreeEntry = styled.div`
     align-items: center;
 `;
 
+const SlideUpTransition = props => {
+    return <Slide direction="up" {...props} />;
+};
+
 class TreeView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -81,10 +127,19 @@ class TreeView extends React.PureComponent {
             expanded: [],
             selected_dir_lists: [],
             selected_dir_entries: [],
-            dataTree: null,
-            dirListOnlyDataTree: null
+            dataTree: [],
+            dirListOnlyDataTree: [],
+            anchorEl: null,
+            anchorElCreate: null,
+            deleteModal: false
         };
-        this.navigateToCreateContent = this.navigateToCreateContent.bind(this);
+        this.navigateToDiffPage = this.navigateToDiffPage.bind(this);
+        this.handleOpenOptions = this.handleOpenOptions.bind(this);
+        this.handleCloseOptions = this.handleCloseOptions.bind(this);
+        this.handleOpenCreate = this.handleOpenCreate.bind(this);
+        this.handleCloseCreate = this.handleCloseCreate.bind(this);
+        this.openDeleteModal = this.openDeleteModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
     }
 
     componentDidMount() {
@@ -564,7 +619,7 @@ class TreeView extends React.PureComponent {
     }
 
     //Render expand or minimise icon on a directory list based on whether it is expanded or minimised
-    renderAddOrRemoveIcon(dir_list_id) {
+    renderExpandOrCompressIcon(dir_list_id) {
         const { expanded } = this.state;
         const { classes } = this.props;
         if (expanded.indexOf(dir_list_id) !== -1) {
@@ -574,7 +629,7 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.removeFromExpanded(dir_list_id)}
                 >
-                    <RemoveIcon className={classes.icon} />
+                    <CompressIcon fontSize="large" />
                 </IconButton>
             );
         } else {
@@ -584,13 +639,15 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.addToExpanded(dir_list_id)}
                 >
-                    <AddIcon className={classes.icon} />
+                    <ExpandIcon fontSize="large" />
                 </IconButton>
             );
         }
     }
 
     handleVisibleOrInvisible(row, action) {
+        const { system_id: systemId } = this.props;
+
         const toUpdateList = this.getItemAndAllChildItems(row, true);
 
         const toUpdateDirLists = toUpdateList.filter(element => {
@@ -613,7 +670,6 @@ class TreeView extends React.PureComponent {
         if (row.is_dir_list) {
             const parents = this.getParentItem(row.id, true);
 
-            let output = [];
             parents.forEach(parent => {
                 if (row.active === false) {
                     toUpdateDirListIds.push(parseInt(parent));
@@ -685,20 +741,26 @@ class TreeView extends React.PureComponent {
                 });
             }
         });
-
         action({
             variables: {
                 directoryEntryIdList: toUpdateDirEntryIds,
                 directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
-                status: !row.active
+                status: !row.active,
+                systemId
             }
+        });
+        console.log({
+            directoryEntryIdList: toUpdateDirEntryIds,
+            directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
+            status: !row.active,
+            systemId
         });
     }
 
     renderCheck(row) {
         return (
             <Mutation
-                mutation={changeDirectoryAndCategoryStatus()}
+                mutation={changeDirectoryListAndEntryStatus()}
                 refetchQueries={[
                     {
                         query: getDirectoryListBySystem()
@@ -764,6 +826,32 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
+                        <TableCell className={classes.tableEntryTitleCol}>
+                            <TreeEntry paddingSize={calculatedPaddingSize}>
+                                <div style={{ marginRight: 15 }}>
+                                    {this.renderExpandOrCompressIcon(
+                                        directory.id
+                                    )}
+                                </div>
+                                {directory.name}
+                            </TreeEntry>
+                        </TableCell>
+                        <TableCell>
+                            <EditIcon
+                                onClick={this.navigateToEditPage.bind(
+                                    this,
+                                    CMS_MODIFY_DIRECTORY_LIST_URL,
+                                    directory
+                                )}
+                            />
+                        </TableCell>
+                        <TableCell>{this.renderCheck(directory)}</TableCell>
+                        <TableCell>
+                            <MoreHorizontalIcon
+                                id={`dir_list-${directory.id}`}
+                                onClick={this.handleOpenOptions}
+                            />
+                        </TableCell>
                         <TableCell
                             padding="checkbox"
                             className={classes.tableCheckboxCol}
@@ -798,18 +886,6 @@ class TreeView extends React.PureComponent {
                                 }
                             />
                         </TableCell>
-                        <TableCell className={classes.tableEntryCol}>
-                            <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <div style={{ marginRight: 15 }}>
-                                    {this.renderAddOrRemoveIcon(directory.id)}
-                                </div>
-                                {directory.name}
-                            </TreeEntry>
-                        </TableCell>
-                        <TableCell>{this.renderCheck(directory)}</TableCell>
-                        <TableCell>
-                            <MoreHorizontalIcon />
-                        </TableCell>
                     </TableRow>
                     {is_expanded &&
                         toLoop.map((child_directory_item, index_directory) => {
@@ -824,12 +900,38 @@ class TreeView extends React.PureComponent {
         } else {
             //Just an empty parent directory list with no child directory list nor a directory entries. Another possibility is that the entry is a plain old directory entry
             const { selected_dir_lists, selected_dir_entries } = this.state;
+            const id_options_header = directory.is_dir_list
+                ? "dir_list"
+                : "dir_entry";
             //No more child, no need to recur any more
             return (
                 <TableRow
                     key={`${directory.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
+                    <TableCell className={classes.tableEntryTitleCol}>
+                        <TreeEntry paddingSize={calculatedPaddingSize}>
+                            <div
+                                style={{
+                                    marginLeft: 15,
+                                    width: `${approximateButtonSize}px`
+                                }}
+                            >
+                                {!directory.is_dir_list && <DirEntryIcon />}
+                            </div>
+                            {directory.name}
+                        </TreeEntry>
+                    </TableCell>
+                    <TableCell>
+                        <EditIcon />
+                    </TableCell>
+                    <TableCell>{this.renderCheck(directory)}</TableCell>
+                    <TableCell>
+                        <MoreHorizontalIcon
+                            id={`${id_options_header}-${directory.id}`}
+                            onClick={this.handleOpenOptions}
+                        />
+                    </TableCell>
                     <TableCell
                         padding="checkbox"
                         className={classes.tableCheckboxCol}
@@ -878,21 +980,6 @@ class TreeView extends React.PureComponent {
                             }
                         />
                     </TableCell>
-                    <TableCell className={classes.tableEntryCol}>
-                        <TreeEntry paddingSize={calculatedPaddingSize}>
-                            <div
-                                style={{
-                                    marginLeft: 15,
-                                    width: `${approximateButtonSize}px`
-                                }}
-                            />
-                            {directory.name}
-                        </TreeEntry>
-                    </TableCell>
-                    <TableCell>{this.renderCheck(directory)}</TableCell>
-                    <TableCell>
-                        <MoreHorizontalIcon />
-                    </TableCell>
                 </TableRow>
             );
         }
@@ -929,6 +1016,18 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
+                            <TableCell className={classes.headerTitleCol}>
+                                TITLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                EDIT
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                VISIBLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                ACTIONS
+                            </TableCell>
                             <TableCell
                                 padding="checkbox"
                                 className={classes.tableCheckboxCol}
@@ -981,15 +1080,6 @@ class TreeView extends React.PureComponent {
                                     />
                                 )}
                             </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                TITLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                VISIBLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                ACTIONS
-                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -1004,14 +1094,108 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    navigateToCreateContent() {
+    navigateToDiffPage(url) {
         const { history } = this.props;
-        history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+        this.setState({ anchorElCreate: null }, () => {
+            history.push(url);
+        });
+    }
+
+    navigateToEditPage(pathname, data) {
+        const { history } = this.props;
+        history.push({ pathname, state: { data } });
+    }
+
+    handleOpenOptions(event) {
+        // console.log(event.currentTarget.id);
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleCloseOptions() {
+        this.setState({ anchorEl: null });
+    }
+
+    handleOpenCreate(event) {
+        this.setState({ anchorElCreate: event.currentTarget });
+    }
+
+    handleCloseCreate(event) {
+        this.setState({ anchorElCreate: null });
+    }
+
+    openDeleteModal() {
+        this.setState({ deleteModal: true });
+    }
+
+    closeDeleteModal() {
+        this.setState({ deleteModal: false });
+    }
+
+    getAllCheckedItemNames() {
+        const {
+            dataTree,
+            dirListOnlyDataTree,
+            selected_dir_lists,
+            selected_dir_entries
+        } = this.state;
+        let excluded_dir_lists = [];
+        let excluded_dir_entries = [];
+        if (
+            selected_dir_lists.length + selected_dir_entries.length ===
+            dataTree.length
+        ) {
+            return ["ALL CONTENT"];
+        } else {
+            let output = [];
+            for (const dir_list_id of selected_dir_lists) {
+                if (!excluded_dir_lists.includes(dir_list_id)) {
+                    const category = dirListOnlyDataTree.find(
+                        cat => cat.id === dir_list_id
+                    );
+                    if (this.checkChildItemsSelected(category)) {
+                        const items = this.getItemAndAllChildItems(category);
+                        excluded_dir_lists = [
+                            ...excluded_dir_lists,
+                            ...items
+                                .filter(item => Boolean(item.is_category))
+                                .map(item => item.id)
+                        ];
+                        excluded_dir_entries = [
+                            ...excluded_dir_entries,
+                            ...items
+                                .filter(item => !Boolean(item.is_category))
+                                .map(item => item.hash_id)
+                        ];
+                        output = [
+                            ...output,
+                            `${category.name.toUpperCase()} & ALL ENTRIES`
+                        ];
+                    }
+                }
+            }
+            for (const hash_id of selected_dir_entries) {
+                if (!excluded_dir_entries.includes(hash_id)) {
+                    const { name } = dataTree
+                        .filter(item => !Boolean(item.is_category))
+                        .find(item => item.hash_id === hash_id);
+                    output = [...output, name.toUpperCase()];
+                }
+            }
+            return output;
+        }
     }
 
     render() {
-        const { classes, data } = this.props;
-        const { dataTree, dirListOnlyDataTree } = this.state;
+        const { classes, data, create_menu_bar } = this.props;
+        const {
+            dataTree,
+            dirListOnlyDataTree,
+            selected_dir_entries,
+            selected_dir_lists,
+            anchorEl,
+            anchorElCreate,
+            deleteModal
+        } = this.state;
         return (
             <React.Fragment>
                 <div
@@ -1019,24 +1203,78 @@ class TreeView extends React.PureComponent {
                         marginTop: 30,
                         marginBottom: 20,
                         display: "flex",
-                        width: "50%"
+                        flexDirection: "row-reverse",
+                        width: "100%"
                     }}
                 >
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.buttonCreate}
-                        onClick={this.navigateToCreateContent}
+                        className={classes.buttonDelete}
+                        disabled={
+                            selected_dir_entries.length +
+                                selected_dir_lists.length ===
+                            0
+                        }
+                        onClick={this.openDeleteModal}
                     >
-                        CREATE
+                        <DeleteIcon />
                     </Button>
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.buttonDelete}
+                        className={classes.buttonCreate}
+                        onClick={this.handleOpenCreate}
                     >
-                        <DeleteIcon />
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                        >
+                            <Grid
+                                item
+                                xs={10}
+                                className={classes.buttonCreateLeftGrid}
+                            >
+                                CREATE
+                            </Grid>
+                            <Grid
+                                item
+                                xs={2}
+                                className={classes.buttonCreateRightGrid}
+                            >
+                                <CompressIcon fontSize="small" />
+                            </Grid>
+                        </Grid>
                     </Button>
+                    <Menu
+                        id="simple-menu-create"
+                        anchorEl={anchorElCreate}
+                        open={Boolean(anchorElCreate)}
+                        onClose={this.handleCloseCreate}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right"
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right"
+                        }}
+                    >
+                        {create_menu_bar.map(({ id, name, url }, index) => (
+                            <MenuItem
+                                key={`CREATE_MENU_BAR_${id}-${index}`}
+                                className={classes.menuItemStyle}
+                                onClick={this.navigateToDiffPage.bind(
+                                    this,
+                                    url
+                                )}
+                            >
+                                {name}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </div>
 
                 {Boolean(data) &&
@@ -1048,8 +1286,91 @@ class TreeView extends React.PureComponent {
                     dirListOnlyDataTree.length > 0 && (
                         <React.Fragment>
                             {this.renderDirectories()}
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={this.handleCloseOptions}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "left"
+                                }}
+                                transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right"
+                                }}
+                            >
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptions}
+                                >
+                                    PREVIEW
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptions}
+                                >
+                                    EDIT
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptions}
+                                >
+                                    DELETE
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptions}
+                                >
+                                    ADD NEW
+                                </MenuItem>
+                            </Menu>
                         </React.Fragment>
                     )}
+                <Dialog
+                    open={deleteModal}
+                    TransitionComponent={SlideUpTransition}
+                    keepMounted
+                    onClose={this.closeDeleteModal}
+                >
+                    <DialogTitle>
+                        <Typography
+                            classes={{
+                                root: classes.customDialogTitle
+                            }}
+                        >
+                            ARE YOU SURE YOU WANT TO DELETE?
+                        </Typography>
+                    </DialogTitle>
+                    <DialogContent>
+                        <List>
+                            {this.getAllCheckedItemNames().map(
+                                (item, index) => (
+                                    <ListItem key={index}>
+                                        <ListItemIcon>
+                                            <CancelIcon />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={item}
+                                            classes={{
+                                                primary:
+                                                    classes.customDialogText
+                                            }}
+                                        />
+                                    </ListItem>
+                                )
+                            )}
+                        </List>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeDeleteModal} color="primary">
+                            YES
+                        </Button>
+                        <Button onClick={this.closeDeleteModal} color="primary">
+                            NO
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
         );
     }
@@ -1057,13 +1378,49 @@ class TreeView extends React.PureComponent {
 
 TreeView.defaultProps = {
     child_directory_lists_key: "child_directory_lists",
-    directory_entries_key: "directory_entries"
+    directory_entries_key: "directory_entries",
+    create_menu_bar: [
+        {
+            id: 1,
+            name: "ROOT TIER ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL
+        },
+        {
+            id: 2,
+            name: "SUB TIER ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL
+        },
+        {
+            id: 3,
+            name: "DIRECTORY ENTRY",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        },
+        {
+            id: 4,
+            name: "POPUP WINDOW",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        },
+        {
+            id: 5,
+            name: "GALLERY PAGE",
+            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+        }
+    ]
 };
 
 TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     child_directory_lists_key: PropTypes.string,
-    directory_entries_key: PropTypes.string
+    directory_entries_key: PropTypes.string,
+    system_id: PropTypes.number.isRequired,
+    history: PropTypes.object.isRequired,
+    create_menu_bar: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            url: PropTypes.string.isRequired
+        })
+    )
 };
 
 export default withStyles(styles)(TreeView);
