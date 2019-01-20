@@ -23,6 +23,7 @@ import start_resolver from "./start";
 import system_resolver from "./system";
 import template_resolver from "./template";
 import file_resolver from "./file";
+import content_resolver from "./content";
 
 export default [
     user_resolver,
@@ -49,5 +50,6 @@ export default [
     template_resolver,
     permission_resolver,
     validation_resolver,
-    file_resolver
+    file_resolver,
+    content_resolver
 ];
