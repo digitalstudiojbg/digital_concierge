@@ -68,15 +68,31 @@ class App extends Component {
                                     <div>
                                         <h1>TABLET HOME PAGE 123</h1>
                                         <Link to="/test">TEST</Link>
+                                        <br />
+                                        <Link to="/test/sub">
+                                            TEST with Sub Link
+                                        </Link>
+                                    </div>
+                                )}
+                            />
+                            <Route
+                                path="/test/sub"
+                                exact
+                                render={() => (
+                                    <div>
+                                        <h1>TABLET TEST SUB</h1>
+                                        <Link to="/test">TEST</Link>{" "}
+                                        <Link to="/">HOME</Link>
                                     </div>
                                 )}
                             />
                             <Route
                                 path="/test"
+                                exact
                                 render={() => (
                                     <div>
                                         <h1>TABLET HOME PAGE TEST</h1>
-                                        <Link to="/">BACK</Link>
+                                        <Link to="/">HOME</Link>
                                     </div>
                                 )}
                             />
