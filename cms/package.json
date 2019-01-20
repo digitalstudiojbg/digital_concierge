@@ -2,7 +2,7 @@
     "name": "cms",
     "version": "0.1.0",
     "private": true, 
-    "homepage": ".",
+    "homepage": "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/cms",
     "dependencies": {
         "@material-ui/core": "^3.9.0",
         "@material-ui/icons": "^3.0.2",
