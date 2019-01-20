@@ -2,7 +2,7 @@
     "name": "touchscreen",
     "version": "0.1.0",
     "private": true,
-    "homepage": ".",
+    "homepage": "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/touchscreen",
     "dependencies": {
       "apollo-boost": "^0.1.20",
       "apollo-link-context": "^1.0.9",

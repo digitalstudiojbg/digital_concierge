@@ -13,8 +13,8 @@ import {
     API_URL
 } from "../utils/Constants";
 
-//const Home = lazy(() => import("./home/Home"));
-import Home from "./home/Home";
+const Home = lazy(() => import("./home/Home"));
+//import Home from "./home/Home";
 
 const routes = [
     {
@@ -81,13 +81,15 @@ class App extends Component {
                                 )}
                             />
 
-                            {routes.map((route, index) => (
-                                <PrivateRoute
-                                    key={index}
-                                    path={route.path}
-                                    component={route.component}
-                                />
-                            ))}
+                            <Suspense fallback={<Loading />}>
+                                {routes.map((route, index) => (
+                                    <PrivateRoute
+                                        key={index}
+                                        path={route.path}
+                                        component={route.component}
+                                    />
+                                ))}
+                            </Suspense>
                         </div>
                     </section>
                 </div>

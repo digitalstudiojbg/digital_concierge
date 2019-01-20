@@ -19,19 +19,25 @@ import {
     TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
-/*const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
+const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
 const TabletContent = lazy(() => import("../tablet/TabletContent"));
-const TabletCreateContent = lazy(() => import("../tablet/content/CreateContent"));
-const TabletCreateCategory = lazy(() => import("../tablet/content/CreateCategory"));
-const TabletCreateDirectory = lazy(() => import("../tablet/content/CreateDirectory"));
+const TabletCreateContent = lazy(() =>
+    import("../tablet/content/CreateContent")
+);
+const TabletCreateCategory = lazy(() =>
+    import("../tablet/content/CreateCategory")
+);
+const TabletCreateDirectory = lazy(() =>
+    import("../tablet/content/CreateDirectory")
+);
 
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
-const Welcome = lazy(() => import("./Welcome.js"));*/
+const Welcome = lazy(() => import("./Welcome.js"));
 
-import TabletDashboard from "../tablet/TabletDashboard";
+/*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
 import TabletSetting from "../tablet/TabletSetting";
 import TabletContent from "../tablet/TabletContent";
@@ -41,7 +47,7 @@ import TabletCreateDirectory from "../tablet/content/CreateDirectory";
 
 import Touchscreen from "../touchscreen/Touchscreen";
 
-import Welcome from "./Welcome.js";
+import Welcome from "./Welcome.js";*/
 
 const routes = [
     {
@@ -178,12 +184,17 @@ class Home extends Component {
                                 {routes.map(
                                     (route, index) =>
                                         route.main && (
-                                            <PrivateRoute
-                                                path={route.path}
-                                                exact={route.exact}
-                                                component={route.main}
-                                                withProps={route.withProps}
-                                            />
+                                            <Suspense
+                                                key={index}
+                                                fallback={<Loading />}
+                                            >
+                                                <PrivateRoute
+                                                    path={route.path}
+                                                    exact={route.exact}
+                                                    component={route.main}
+                                                    withProps={route.withProps}
+                                                />
+                                            </Suspense>
                                         )
                                 )}
                             </div>
