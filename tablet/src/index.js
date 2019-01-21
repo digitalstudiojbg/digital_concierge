@@ -9,12 +9,26 @@ import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "apollo-link-context";
 import { API_URL } from "./utils/Constants";
 //import * as serviceWorker from "./serviceWorker";
+import { withClientState } from "apollo-link-state";
+import { ApolloLink } from "apollo-link";
+
+const cache = new InMemoryCache({});
+
+const stateLink = withClientState({
+    cache,
+    resolvers: {},
+    defaults: {}
+});
 
 const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: createUploadLink({
-        uri: `${API_URL}/graphql`
-    })
+    link: ApolloLink.from([
+        stateLink,
+
+        createUploadLink({
+            uri: `${API_URL}/graphql`
+        })
+    ])
 });
 ReactDOM.render(
     <ApolloProvider client={client}>

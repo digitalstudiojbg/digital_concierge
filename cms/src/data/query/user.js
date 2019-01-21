@@ -55,6 +55,10 @@ export const getCurrentUserQuery = gql`
                 has_touchscreen
                 has_tablet
                 active
+                systems {
+                    id
+                    name
+                }
             }
         }
     }

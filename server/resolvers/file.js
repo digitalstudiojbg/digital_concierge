@@ -6,7 +6,7 @@ import { UserInputError } from "apollo-server-express";
 const processUpload = async file => {
     const { stream, filename, mimetype, encoding } = await file;
 
-    s3.upload(
+    await s3.upload(
         {
             Key: `cms_users/${uuid.v4()}-${filename}`,
             Body: stream,
@@ -21,6 +21,9 @@ const processUpload = async file => {
                     invalidArgs: filename
                 });
             }
+            console.log("==============");
+            console.log(data.Location);
+            console.log("--------------");
 
             s3.listObjects({ Delimiter: "/" }, (err, data) => {
                 if (err) {
@@ -38,6 +41,9 @@ export default {
         async uploadFile(parent, { file }, { user }) {
             await checkUserLogin(user);
             await processUpload(file);
+            console.log("FROM RESULT : !!!!!");
+            console.log(result);
+
             return file;
         },
         async uploadFiles(parent, { files }, { user }) {
