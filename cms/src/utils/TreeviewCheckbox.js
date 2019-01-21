@@ -25,7 +25,17 @@ const paddingSize = 30;
 class TreeviewCheckbox extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selected_dir_list = props.selectAmount === "single" ? null : [];
+        const selected_dir_list_empty =
+            props.selectAmount === "single" ? null : [];
+        let selected_dir_list = selected_dir_list_empty;
+        if (props.selectAmount === "single" && Boolean(props.selectedValue)) {
+            selected_dir_list = props.selectedValue;
+        } else if (
+            props.selectAmount === "multiple" &&
+            Boolean(props.selectedValues)
+        ) {
+            selected_dir_list = props.selectedValues;
+        }
         this.state = {
             expanded: [],
             selected_dir_list
@@ -314,7 +324,9 @@ TreeviewCheckbox.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     updateSelectedDirectory: PropTypes.func,
     selectAmount: PropTypes.oneOf(["single", "multiple"]),
-    child_directory_lists_key: PropTypes.string
+    child_directory_lists_key: PropTypes.string,
+    selectedValue: PropTypes.string,
+    selectedValues: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default withStyles(styles)(TreeviewCheckbox);

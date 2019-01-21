@@ -2,8 +2,8 @@ import React from "react";
 import {
     ContainerDiv,
     CreateContentContainerDiv,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
-    modifyDirectoryListData
+    modifyDirectoryListData,
+    TABLET_CMS_CONTENT_URL
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -21,14 +21,14 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import Loading from "../../loading/Loading";
 import { withApollo } from "react-apollo";
 import { getDirectoryListBySystem } from "../../../data/query";
-import PropTypes from "prop-types";
-import UploadFile from "./UploadFile";
+// import PropTypes from "prop-types";
+import gql from "graphql-tag";
 
-const styles = theme => ({
+const styles = _theme => ({
     saveButton: {
         color: "white",
         background: "#A5A4BF",
@@ -41,11 +41,22 @@ const styles = theme => ({
     categoryNameTextField: {
         width: "100%"
     },
+    imageNameTextField: {
+        width: "100%"
+    },
     categoryNameFormHelper: {
         fontSize: "0.7em",
         marginLeft: "0px"
     }
 });
+
+const UPLOAD_FILES = gql`
+    mutation uploadFiles($files: [Upload!]!) {
+        uploadFiles(files: $files) {
+            filename
+        }
+    }
+`;
 
 const DirectoryListSchema = Yup.object().shape({
     name: Yup.string().required("Required")
@@ -56,13 +67,30 @@ function SlideUpTransition(props) {
 }
 
 class ModifyDirectoryList extends React.PureComponent {
+    has_data = false;
     constructor(props) {
         super(props);
+        this.has_data =
+            props.location && props.location.state && props.location.state.data;
         this.state = {
-            imageName: "",
+            imageName:
+                props.location &&
+                props.location.state &&
+                props.location.state.data &&
+                props.location.state.data.media &&
+                props.location.state.data.media.length > 0
+                    ? props.location.state.data.media[0].name
+                    : "",
             openDialog: false,
             whichDialog: "",
-            selected_directory: null
+            selected_directory:
+                props.location &&
+                props.location.state &&
+                !props.location.state.data.is_root &&
+                props.location.state.data.is_dir_list
+                    ? props.location.state.data.parent_id
+                    : null,
+            upload: false
         };
         this.updateSelectedDirectory = this.updateSelectedDirectory.bind(this);
         this.changeImageName = this.changeImageName.bind(this);
@@ -90,7 +118,7 @@ class ModifyDirectoryList extends React.PureComponent {
     navigateAway() {
         const { history } = this.props;
         this.setState({ openDialog: false }, () => {
-            history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+            history.push(TABLET_CMS_CONTENT_URL);
         });
     }
 
@@ -105,21 +133,27 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     render() {
-        console.log(this.props);
-        const { selected_directory } = this.state;
+        const { selected_directory, upload } = this.state;
         const { classes, location = {} } = this.props;
         const { data: editData = null } = location.state || {};
         const titleText = Boolean(editData)
             ? "EDIT TIER ENTRY"
             : "ADD TIER ENTRY";
         const subTitleText = "TIER TITLE";
+        const mediaData =
+            editData.media && editData.media.length > 0
+                ? editData.media[0]
+                : null;
 
         return (
             <ContainerDiv>
                 <Formik
-                    initialValues={{ name: "" }}
+                    initialValues={{
+                        name: Boolean(editData) ? editData.name : ""
+                    }}
                     onSubmit={(values, { setSubmitting }) => {
                         //TODO: Add logic to send mutation to DB
+                        this.setState({ upload: true });
                         alert(values.name);
                         setSubmitting(false);
                     }}
@@ -177,12 +211,36 @@ class ModifyDirectoryList extends React.PureComponent {
                                     <div style={{ padding: 20 }}>
                                         HEADER IMAGE:
                                     </div>
-                                    <SingleImageUploader
-                                        onRef={ref =>
-                                            (this.imageUploaderRef = ref)
-                                        }
-                                        updateImageName={this.changeImageName}
-                                    />
+                                    <Mutation
+                                        mutation={UPLOAD_FILES}
+                                        onCompleted={data => {
+                                            //TODO: send mutation after successful image upload
+                                            console.log("After upload: ", data);
+                                        }}
+                                    >
+                                        {(uploadFiles, { loading, error }) => (
+                                            <React.Fragment>
+                                                {loading && <p>Loading...</p>}
+                                                {error && (
+                                                    <p>
+                                                        Error :( Please try
+                                                        again
+                                                    </p>
+                                                )}
+                                                <SingleImageUploader
+                                                    onRef={ref =>
+                                                        (this.imageUploaderRef = ref)
+                                                    }
+                                                    updateImageName={
+                                                        this.changeImageName
+                                                    }
+                                                    upload={upload}
+                                                    data={mediaData}
+                                                    uploadAction={uploadFiles}
+                                                />
+                                            </React.Fragment>
+                                        )}
+                                    </Mutation>
                                 </div>
                                 <div style={{ width: "50%" }}>
                                     <div
@@ -236,7 +294,9 @@ class ModifyDirectoryList extends React.PureComponent {
                                         <TextField
                                             disabled={true}
                                             value={this.state.imageName}
-                                            // className={classes.textField}
+                                            className={
+                                                classes.imageNameTextField
+                                            }
                                             margin="normal"
                                             variant="outlined"
                                             InputProps={{
@@ -268,14 +328,14 @@ class ModifyDirectoryList extends React.PureComponent {
                                         }}
                                     >
                                         SELECT LOCATION
-                                        <span
+                                        <p
                                             style={{
                                                 fontSize: "0.7em"
                                             }}
                                         >
                                             LEAVE BLANK IF CREATING A FIRST TIER
                                             CATEGORY
-                                        </span>
+                                        </p>
                                     </div>
                                     <Query query={getDirectoryListBySystem(1)}>
                                         {({ loading, error, data }) => {
@@ -288,16 +348,32 @@ class ModifyDirectoryList extends React.PureComponent {
                                             const modifiedData = modifyDirectoryListData(
                                                 data.directoryLists_by_system
                                             );
-                                            return (
-                                                <TreeviewCheckbox
-                                                    data={modifiedData}
-                                                    updateSelectedDirectory={
-                                                        this
-                                                            .updateSelectedDirectory
-                                                    }
-                                                    selectAmount="single"
-                                                />
-                                            );
+                                            if (!Boolean(editData)) {
+                                                return (
+                                                    <TreeviewCheckbox
+                                                        data={modifiedData}
+                                                        updateSelectedDirectory={
+                                                            this
+                                                                .updateSelectedDirectory
+                                                        }
+                                                        selectAmount="single"
+                                                    />
+                                                );
+                                            } else {
+                                                return (
+                                                    <TreeviewCheckbox
+                                                        data={modifiedData}
+                                                        updateSelectedDirectory={
+                                                            this
+                                                                .updateSelectedDirectory
+                                                        }
+                                                        selectAmount="single"
+                                                        selectedValue={
+                                                            selected_directory
+                                                        }
+                                                    />
+                                                );
+                                            }
                                         }}
                                     </Query>
                                 </div>
@@ -367,7 +443,6 @@ class ModifyDirectoryList extends React.PureComponent {
                         )}
                     </DialogActions>
                 </Dialog>
-                <UploadFile />
             </ContainerDiv>
         );
     }
