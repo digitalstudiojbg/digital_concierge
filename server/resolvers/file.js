@@ -4,7 +4,7 @@ import { s3 } from "../utils/constant";
 
 const processUpload = async file => {
     const { stream, filename, mimetype, encoding } = await file;
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
         s3.upload(
             {
                 Key: `cms_users/${uuid.v4()}-${filename}`,
@@ -42,16 +42,17 @@ export default {
         },
         async uploadFiles(parent, { files }, { user }) {
             checkUserLogin(user);
-            const s3TotalUpload = new Promise(async function(resolve, reject) {
+            return await new Promise(async (resolve, reject) => {
                 let output = [];
-                await asyncForEach(files, async file => {
-                    await processUpload(file).then(data => {
-                        output.push(data);
+                asyncForEach(files, async file => {
+                    try {
+                        output.push(await processUpload(file));
                         output.length === files.length && resolve(output);
-                    });
+                    } catch (err) {
+                        reject(err);
+                    }
                 });
             });
-            return await s3TotalUpload;
         }
     }
 };
