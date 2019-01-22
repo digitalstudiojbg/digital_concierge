@@ -1,7 +1,7 @@
 import { checkUserLogin, asyncForEach } from "../utils/constant";
 import uuid from "uuid";
 import { s3 } from "../utils/constant";
-
+import { UserInputError } from "apollo-server-express";
 const processUpload = async file => {
     const { stream, filename, mimetype, encoding } = await file;
     return new Promise((resolve, reject) => {
@@ -12,13 +12,12 @@ const processUpload = async file => {
                 ACL: "public-read"
             },
             (err, data) => {
-                if (err) {
+                err &&
                     reject(
                         `There was an error uploading your photo: ${
                             err.message
                         }`
                     );
-                }
 
                 s3.listObjects({ Delimiter: "/" }, (err, data) => {
                     if (err) {
@@ -38,21 +37,29 @@ export default {
     Mutation: {
         async uploadFile(parent, { file }, { user }) {
             checkUserLogin(user);
-            return await processUpload(file);
+            try {
+                return await processUpload(file);
+            } catch (e) {
+                throw new UserInputError(err);
+            }
         },
         async uploadFiles(parent, { files }, { user }) {
             checkUserLogin(user);
-            return await new Promise(async (resolve, reject) => {
-                let output = [];
-                asyncForEach(files, async file => {
-                    try {
-                        output.push(await processUpload(file));
-                        output.length === files.length && resolve(output);
-                    } catch (err) {
-                        reject(err);
-                    }
+            try {
+                return await new Promise(async (resolve, reject) => {
+                    let output = [];
+                    asyncForEach(files, async file => {
+                        try {
+                            output.push(await processUpload(file));
+                            output.length === files.length && resolve(output);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    });
                 });
-            });
+            } catch (e) {
+                throw new UserInputError(err);
+            }
         }
     }
 };
