@@ -6,8 +6,13 @@ export default class UploadFile extends Component {
     render() {
         return (
             <div>
-                <Mutation mutation={UPLOAD_FILE}>
-                    {(uploadFile, { loading, error }) => (
+                <Mutation
+                    mutation={UPLOAD_FILE}
+                    update={(cache, { data }) => {
+                        console.log(data);
+                    }}
+                >
+                    {(uploadFile, { loading, error, data }) => (
                         <div>
                             <input
                                 type="file"
@@ -21,6 +26,7 @@ export default class UploadFile extends Component {
                                 }) => {
                                     console.log(file);
                                     uploadFile({ variables: { file } });
+                                    console.log(data);
                                 }}
                             />
                             {loading && <p>Loading...</p>}
@@ -37,6 +43,7 @@ const UPLOAD_FILE = gql`
     mutation uploadFile($file: Upload!) {
         uploadFile(file: $file) {
             filename
+            location
         }
     }
 `;
