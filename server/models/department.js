@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const group = sequelize.define(
-        "group",
+    const department = sequelize.define(
+        "department",
         {
             name: {
                 type: DataTypes.STRING,
@@ -13,11 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    group.associate = function(models) {
-        group.belongsTo(models.client, {
-            foreignKey: { allowNull: false }
+    department.associate = function(models) {
+        department.belongsToMany(models.client, {
+            through: "clients_departments"
         });
-        group.hasMany(models.role);
+        department.hasMany(models.role);
     };
-    return group;
+    return department;
 };

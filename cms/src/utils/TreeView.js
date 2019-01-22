@@ -21,10 +21,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
     TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
-    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
-    CMS_MODIFY_DIRECTORY_LIST_URL
+    CMS_MODIFY_DIRECTORY_LIST_URL,
+    CMS_MODIFY_DIRECTORY_ENTRY_URL
 } from "./Constants";
 import { Mutation } from "react-apollo";
 import { changeDirectoryListAndEntryStatus } from "../data/mutation";
@@ -129,6 +128,7 @@ class TreeView extends React.PureComponent {
             selected_dir_entries: [],
             dataTree: [],
             dirListOnlyDataTree: [],
+            dirEntryOnlyDataTree: [],
             anchorEl: null,
             anchorElCreate: null,
             deleteModal: false
@@ -156,6 +156,9 @@ class TreeView extends React.PureComponent {
             dataTree: [...updated],
             dirListOnlyDataTree: [
                 ...updated.filter(item => Boolean(item.is_dir_list))
+            ],
+            dirEntryOnlyDataTree: [
+                ...updated.filter(item => Boolean(!item.is_dir_list))
             ]
         });
     }
@@ -175,6 +178,9 @@ class TreeView extends React.PureComponent {
                 dataTree: [...updated],
                 dirListOnlyDataTree: [
                     ...updated.filter(item => Boolean(item.is_dir_list))
+                ],
+                dirEntryOnlyDataTree: [
+                    ...updated.filter(item => Boolean(!item.is_dir_list))
                 ]
             });
         }
@@ -202,7 +208,8 @@ class TreeView extends React.PureComponent {
 
     //a function that attempts to retrieve all of the parent directory_list ids of a children
     //(the children could be a child directory list or a directory entry)
-    //via recursive function method
+    //via recursive function method the order of the array is from the direct parent and goes
+    //on to the grand parents, great-grandparents, etc.
     //
     //UPDATE: THIS FUNCTION IS NOT RELIABLE TO USE FOR DIRECTORY ENTRIES DUE TO
     //DIRECTORY ENTRY'S MANY TO MANY RELATIONSHIP WITH DIRECTORY LIST
@@ -749,12 +756,12 @@ class TreeView extends React.PureComponent {
                 systemId
             }
         });
-        console.log({
-            directoryEntryIdList: toUpdateDirEntryIds,
-            directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
-            status: !row.active,
-            systemId
-        });
+        // console.log({
+        //     directoryEntryIdList: toUpdateDirEntryIds,
+        //     directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
+        //     status: !row.active,
+        //     systemId
+        // });
     }
 
     renderCheck(row) {
@@ -841,7 +848,9 @@ class TreeView extends React.PureComponent {
                                 onClick={this.navigateToEditPage.bind(
                                     this,
                                     CMS_MODIFY_DIRECTORY_LIST_URL,
-                                    directory
+                                    this.modifyDataBeingSendToEditPage(
+                                        directory
+                                    )
                                 )}
                             />
                         </TableCell>
@@ -923,7 +932,15 @@ class TreeView extends React.PureComponent {
                         </TreeEntry>
                     </TableCell>
                     <TableCell>
-                        <EditIcon />
+                        <EditIcon
+                            onClick={this.navigateToEditPage.bind(
+                                this,
+                                directory.is_dir_list
+                                    ? CMS_MODIFY_DIRECTORY_LIST_URL
+                                    : CMS_MODIFY_DIRECTORY_ENTRY_URL,
+                                this.modifyDataBeingSendToEditPage(directory)
+                            )}
+                        />
                     </TableCell>
                     <TableCell>{this.renderCheck(directory)}</TableCell>
                     <TableCell>
@@ -1094,6 +1111,7 @@ class TreeView extends React.PureComponent {
         }
     }
 
+    //Function to navigate to a difference page from create menu
     navigateToDiffPage(url) {
         const { history } = this.props;
         this.setState({ anchorElCreate: null }, () => {
@@ -1101,13 +1119,14 @@ class TreeView extends React.PureComponent {
         });
     }
 
+    //Function to navigate to edit page from edit icon
     navigateToEditPage(pathname, data) {
         const { history } = this.props;
         history.push({ pathname, state: { data } });
     }
 
+    //Function to open options menu
     handleOpenOptions(event) {
-        // console.log(event.currentTarget.id);
         this.setState({ anchorEl: event.currentTarget });
     }
 
@@ -1115,22 +1134,88 @@ class TreeView extends React.PureComponent {
         this.setState({ anchorEl: null });
     }
 
+    //Function to close options menu and navigate to page based on selection
+    handleCloseOptionsAndNavigate(action = "") {
+        const {
+            preview_list_url,
+            preview_entry_url,
+            edit_list_url,
+            edit_entry_url,
+            delete_list_url,
+            delete_entry_url,
+            create_list_url,
+            create_entry_url,
+            history
+        } = this.props;
+        const {
+            anchorEl,
+            dirEntryOnlyDataTree,
+            dirListOnlyDataTree
+        } = this.state;
+        // console.log(anchorEl.id);
+        const anchorElIdArray = anchorEl.id.split("-");
+        const directory =
+            anchorElIdArray[0] === "dir_list"
+                ? dirListOnlyDataTree.find(dir => dir.id === anchorElIdArray[1])
+                : dirEntryOnlyDataTree.find(
+                      dir => dir.id === anchorElIdArray[1]
+                  );
+        let pathname = null;
+        const dataToSend = this.modifyDataBeingSendToEditPage(directory);
+        switch (action) {
+            case "preview":
+                pathname = directory.is_dir_list
+                    ? preview_list_url
+                    : preview_entry_url;
+                break;
+            case "edit":
+                pathname = directory.is_dir_list
+                    ? edit_list_url
+                    : edit_entry_url;
+                break;
+            case "delete":
+                pathname = directory.is_dir_list
+                    ? delete_list_url
+                    : delete_entry_url;
+                break;
+            case "create":
+                pathname = directory.is_dir_list
+                    ? create_list_url
+                    : create_entry_url;
+                break;
+            default:
+                pathname = "";
+                break;
+        }
+
+        this.setState({ anchorEl }, () => {
+            if (pathname.length > 0) {
+                history.push({ pathname, state: { data: dataToSend } });
+            }
+        });
+    }
+
+    //Open menu to show create menu
     handleOpenCreate(event) {
         this.setState({ anchorElCreate: event.currentTarget });
     }
 
+    //Close menu to show create menu
     handleCloseCreate(event) {
         this.setState({ anchorElCreate: null });
     }
 
+    //Open modal to prompt user to confirm deletion
     openDeleteModal() {
         this.setState({ deleteModal: true });
     }
 
+    //Closing delete modal
     closeDeleteModal() {
         this.setState({ deleteModal: false });
     }
 
+    //Get all items that are checked
     getAllCheckedItemNames() {
         const {
             dataTree,
@@ -1185,11 +1270,42 @@ class TreeView extends React.PureComponent {
         }
     }
 
+    //Modify data of the directory to remove unnecessary key values item
+    //For example child_directory & directory_entries
+    modifyDataBeingSendToEditPage(directory) {
+        const { is_dir_list, is_root = false } = directory;
+        if (is_dir_list) {
+            const {
+                child_directory_lists_key,
+                directory_entries_key
+            } = this.props;
+            const {
+                [child_directory_lists_key]: _unused_child_category_value,
+                [directory_entries_key]: _unused_directory_entries_value,
+                ...others
+            } = directory;
+            //If !directory.is_root need to get parent id
+            return is_root
+                ? { ...others }
+                : {
+                      ...others,
+                      parent_id: this.getParentItem(directory.id)[0]
+                  };
+        } else {
+            const { hash_id = "", ...others } = directory;
+            const hash_id_array = hash_id.split("-");
+            const parent_id =
+                hash_id_array.length > 1
+                    ? hash_id_array[hash_id_array.length - 2]
+                    : null;
+            return { ...others, parent_id };
+        }
+    }
+
     render() {
         const { classes, data, create_menu_bar } = this.props;
         const {
             dataTree,
-            dirListOnlyDataTree,
             selected_dir_entries,
             selected_dir_lists,
             anchorEl,
@@ -1281,9 +1397,7 @@ class TreeView extends React.PureComponent {
                     Array.isArray(data) &&
                     data.length > 0 &&
                     Boolean(dataTree) &&
-                    dataTree.length > 0 &&
-                    Boolean(dirListOnlyDataTree) &&
-                    dirListOnlyDataTree.length > 0 && (
+                    dataTree.length > 0 && (
                         <React.Fragment>
                             {this.renderDirectories()}
                             <Menu
@@ -1302,25 +1416,37 @@ class TreeView extends React.PureComponent {
                             >
                                 <MenuItem
                                     className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptions}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "preview"
+                                    )}
                                 >
                                     PREVIEW
                                 </MenuItem>
                                 <MenuItem
                                     className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptions}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "edit"
+                                    )}
                                 >
                                     EDIT
                                 </MenuItem>
                                 <MenuItem
                                     className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptions}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "delete"
+                                    )}
                                 >
                                     DELETE
                                 </MenuItem>
                                 <MenuItem
                                     className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptions}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "create"
+                                    )}
                                 >
                                     ADD NEW
                                 </MenuItem>
@@ -1382,18 +1508,13 @@ TreeView.defaultProps = {
     create_menu_bar: [
         {
             id: 1,
-            name: "ROOT TIER ENTRY",
-            url: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL
-        },
-        {
-            id: 2,
-            name: "SUB TIER ENTRY",
-            url: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL
+            name: "DIRECTORY LIST ENTRY",
+            url: CMS_MODIFY_DIRECTORY_LIST_URL
         },
         {
             id: 3,
             name: "DIRECTORY ENTRY",
-            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+            url: CMS_MODIFY_DIRECTORY_ENTRY_URL
         },
         {
             id: 4,
@@ -1405,7 +1526,15 @@ TreeView.defaultProps = {
             name: "GALLERY PAGE",
             url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
         }
-    ]
+    ],
+    preview_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
+    preview_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
+    edit_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
+    edit_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
+    delete_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
+    delete_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
+    create_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
+    create_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL
 };
 
 TreeView.propTypes = {
@@ -1420,7 +1549,15 @@ TreeView.propTypes = {
             name: PropTypes.string.isRequired,
             url: PropTypes.string.isRequired
         })
-    )
+    ),
+    preview_list_url: PropTypes.string,
+    preview_entry_url: PropTypes.string,
+    edit_list_url: PropTypes.string,
+    edit_entry_url: PropTypes.string,
+    delete_list_url: PropTypes.string,
+    delete_entry_url: PropTypes.string,
+    create_list_url: PropTypes.string,
+    create_entry_url: PropTypes.string
 };
 
 export default withStyles(styles)(TreeView);

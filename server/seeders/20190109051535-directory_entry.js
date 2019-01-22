@@ -38,6 +38,13 @@ module.exports = {
                     title: "DRINK MENU",
                     description: "DRINK MENU",
                     layoutId: 1
+                },
+                {
+                    name: "SECURITY SERVICES",
+                    title: "SECURITY SERVICES",
+                    description:
+                        "24/7 PRIVATE SECURITY GUARD PATROL THE PREMISES. PLEASE REFER TO THEM IN A SECURITY EMERGENCY",
+                    layoutId: 1
                 }
             ],
             {}

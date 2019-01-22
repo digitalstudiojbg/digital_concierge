@@ -9,9 +9,9 @@ export default gql`
     type Role {
         id: ID!
         name: String
-        is_admin: Boolean
+        is_standard_role: Boolean
         users: [User]
         permissions: [Permission]
-        group: Group
+        department: Department
     }
 `;

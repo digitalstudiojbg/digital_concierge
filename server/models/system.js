@@ -25,10 +25,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         system.belongsTo(models.start, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
         });
         system.belongsTo(models.home, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
         });
         system.belongsToMany(models.gallery, {
             through: "galleries_systems"

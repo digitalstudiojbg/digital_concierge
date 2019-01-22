@@ -57,7 +57,9 @@ module.exports = (sequelize, DataTypes) => {
     );
     client.associate = function(models) {
         client.hasMany(models.user);
-        client.hasMany(models.group);
+        client.belongsToMany(models.department, {
+            through: "clients_departments"
+        });
         client.hasMany(models.room);
         client.hasMany(models.guest);
         client.hasMany(models.device);

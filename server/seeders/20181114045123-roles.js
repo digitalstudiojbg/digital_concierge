@@ -7,13 +7,13 @@ module.exports = {
             [
                 {
                     name: "admin",
-                    is_admin: true,
-                    groupId: 1
+                    is_standard_role: true,
+                    departmentId: 1
                 },
                 {
-                    name: "admin",
-                    is_admin: true,
-                    groupId: 2
+                    name: "admin_holiday",
+                    is_standard_role: true,
+                    departmentId: 2
                 }
             ],
             {}

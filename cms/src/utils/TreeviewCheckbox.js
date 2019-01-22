@@ -6,6 +6,7 @@ import Radio from "@material-ui/core/Radio";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 
 const styles = theme => ({
@@ -16,6 +17,11 @@ const styles = theme => ({
     },
     icon: {
         fontSize: "small"
+    },
+    clearSelectionButton: {
+        color: "white",
+        background: "#A5A4BF",
+        marginLeft: 0
     }
 });
 
@@ -25,7 +31,17 @@ const paddingSize = 30;
 class TreeviewCheckbox extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selected_dir_list = props.selectAmount === "single" ? null : [];
+        const selected_dir_list_empty =
+            props.selectAmount === "single" ? null : [];
+        let selected_dir_list = selected_dir_list_empty;
+        if (props.selectAmount === "single" && Boolean(props.selectedValue)) {
+            selected_dir_list = props.selectedValue;
+        } else if (
+            props.selectAmount === "multiple" &&
+            Boolean(props.selectedValues)
+        ) {
+            selected_dir_list = props.selectedValues;
+        }
         this.state = {
             expanded: [],
             selected_dir_list
@@ -35,6 +51,7 @@ class TreeviewCheckbox extends React.PureComponent {
         this.addToSelected = this.addToSelected.bind(this);
         this.removeFromSelected = this.removeFromSelected.bind(this);
         this.handleChangeRadioButton = this.handleChangeRadioButton.bind(this);
+        this.handleClearSelection = this.handleClearSelection.bind(this);
     }
 
     //Method gets called when we expand a directory list
@@ -106,6 +123,14 @@ class TreeviewCheckbox extends React.PureComponent {
                     updateSelectedDirectory(this.state.selected_dir_list);
             }
         );
+    }
+
+    //Handle clearing selection when button clear selection is clicked
+    handleClearSelection() {
+        const { selectAmount } = this.props;
+        this.setState({
+            selected_dir_list: selectAmount === "single" ? null : []
+        });
     }
 
     //Render expand or minimise icon on a directory list based on whether it is expanded or minimised
@@ -294,12 +319,32 @@ class TreeviewCheckbox extends React.PureComponent {
         }
     }
 
+    renderClearSelectionButton() {}
+
     render() {
-        const { data } = this.props;
+        const { data, classes } = this.props;
+        const { selected_dir_list } = this.state;
         return (
             <React.Fragment>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
-                    <React.Fragment>{this.renderDirectories()}</React.Fragment>
+                    <React.Fragment>
+                        <div>
+                            <Button
+                                className={classes.clearSelectionButton}
+                                variant="outlined"
+                                size="large"
+                                disabled={
+                                    !Boolean(selected_dir_list) ||
+                                    (Array.isArray(selected_dir_list) &&
+                                        selected_dir_list.length > 0)
+                                }
+                                onClick={this.handleClearSelection}
+                            >
+                                CLEAR SELECTION
+                            </Button>
+                        </div>
+                        {this.renderDirectories()}
+                    </React.Fragment>
                 )}
             </React.Fragment>
         );
@@ -314,7 +359,9 @@ TreeviewCheckbox.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     updateSelectedDirectory: PropTypes.func,
     selectAmount: PropTypes.oneOf(["single", "multiple"]),
-    child_directory_lists_key: PropTypes.string
+    child_directory_lists_key: PropTypes.string,
+    selectedValue: PropTypes.string,
+    selectedValues: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default withStyles(styles)(TreeviewCheckbox);

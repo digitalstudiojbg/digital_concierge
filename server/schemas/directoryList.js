@@ -7,6 +7,11 @@ export default gql`
         directoryLists_by_system(id: ID!): [DirectoryList]
     }
 
+    extend type Mutation {
+        createDirectoryList(input: DirectoryListInput): DirectoryList
+        editDirectoryList(id: ID!, input: DirectoryListInput): DirectoryList
+    }
+
     type DirectoryList {
         id: ID!
         name: String
@@ -19,5 +24,14 @@ export default gql`
         layout: Layout
         directory_entries: [DirectoryEntry]
         media: [Media]
+    }
+
+    input DirectoryListInput {
+        name: String!
+        is_root: Boolean!
+        parent_id: Int
+        layout_id: Int!
+        system_id: Int!
+        image: Upload
     }
 `;

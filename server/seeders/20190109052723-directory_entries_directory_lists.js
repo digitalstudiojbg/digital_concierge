@@ -32,6 +32,10 @@ module.exports = {
                 {
                     directoryEntryId: 4,
                     directoryListId: 10
+                },
+                {
+                    directoryEntryId: 6,
+                    directoryListId: 2
                 }
             ],
             {}

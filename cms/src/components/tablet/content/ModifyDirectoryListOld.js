@@ -8,6 +8,7 @@ import {
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
+import SingleImageUploader from "../../../utils/SingleImageUploader";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -25,7 +26,6 @@ import Loading from "../../loading/Loading";
 import { withApollo } from "react-apollo";
 import { getDirectoryListBySystem } from "../../../data/query";
 // import PropTypes from "prop-types";
-import Dropzone from "react-dropzone";
 import gql from "graphql-tag";
 
 const styles = _theme => ({
@@ -47,14 +47,6 @@ const styles = _theme => ({
     categoryNameFormHelper: {
         fontSize: "0.7em",
         marginLeft: "0px"
-    },
-    expansionButton: {
-        color: "#F0F2F8",
-        background: "#DDDFE7",
-        borderRadius: 25
-    },
-    icon: {
-        fontSize: "large"
     }
 });
 
@@ -75,48 +67,39 @@ function SlideUpTransition(props) {
 }
 
 class ModifyDirectoryList extends React.PureComponent {
+    has_data = false;
     constructor(props) {
         super(props);
-        const has_data =
+        this.has_data =
             props.location && props.location.state && props.location.state.data;
-        const has_media_data =
-            has_data &&
-            props.location.state.data.media &&
-            props.location.state.data.media.length > 0;
-        const images = has_media_data
-            ? props.location.state.data.media.map(image => ({
-                  ...image,
-                  uploaded: true
-              }))
-            : [];
-
         this.state = {
-            imageName: has_media_data
-                ? props.location.state.data.media[0].name
-                : "",
+            imageName:
+                props.location &&
+                props.location.state &&
+                props.location.state.data &&
+                props.location.state.data.media &&
+                props.location.state.data.media.length > 0
+                    ? props.location.state.data.media[0].name
+                    : "",
             openDialog: false,
             whichDialog: "",
             selected_directory:
-                has_data &&
+                props.location &&
+                props.location.state &&
                 !props.location.state.data.is_root &&
                 props.location.state.data.is_dir_list
                     ? props.location.state.data.parent_id
                     : null,
-            images
+            upload: false
         };
-
-        //Create Referencess
-        this.dropZoneRef = React.createRef();
-
         this.updateSelectedDirectory = this.updateSelectedDirectory.bind(this);
         this.changeImageName = this.changeImageName.bind(this);
+        this.imageUploaderRef = React.createRef();
         this.removeImage = this.removeImage.bind(this);
         this.navigateAway = this.navigateAway.bind(this);
         this.openDialogImage = this.openDialogImage.bind(this);
         this.openDialogCancel = this.openDialogCancel.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
-        this.removeImage = this.removeImage.bind(this);
-        this.openFileBrowser = this.openFileBrowser.bind(this);
     }
 
     updateSelectedDirectory(selected_directory) {
@@ -125,6 +108,11 @@ class ModifyDirectoryList extends React.PureComponent {
 
     changeImageName(imageName) {
         this.setState({ imageName });
+    }
+
+    removeImage() {
+        this.imageUploaderRef.removeImage();
+        this.setState({ openDialog: false, whichDialog: "" });
     }
 
     navigateAway() {
@@ -144,156 +132,18 @@ class ModifyDirectoryList extends React.PureComponent {
         this.setState({ openDialog: false, whichDialog: "" });
     }
 
-    openFileBrowser() {
-        this.dropZoneRef.current.open();
-    }
-
-    onDrop(images) {
-        this.setState({
-            images: images.map(file =>
-                Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                    uploaded: false
-                })
-            ),
-            imageName: images[0].name
-        });
-        this.props.updateImageName &&
-            this.props.updateImageName(images[0].name);
-    }
-
-    removeImage() {
-        this.setState({
-            images: [],
-            imageName: "",
-            openDialog: false,
-            whichDialog: ""
-        });
-    }
-
-    renderImageUploader() {
-        const { classes } = this.props;
-        const { images } = this.state;
-        const image = images.length > 0 ? images[0] : null;
-        return (
-            <div
-                style={{
-                    width: "90%",
-                    border: "1px solid #CACED5",
-                    padding: 10
-                }}
-            >
-                {!Boolean(image) && (
-                    <p
-                        style={{
-                            fontSize: "0.5em",
-                            color: "#4D4F5C",
-                            marginLeft: "1.2vw"
-                        }}
-                    >
-                        UPLOAD
-                    </p>
-                )}
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Dropzone
-                        ref={this.dropZoneRef}
-                        disableClick={true}
-                        style={{
-                            position: "relative",
-                            width: "90%",
-                            backgroundColor: "#F0F2F8",
-                            height: "320px",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center"
-                        }}
-                        onDrop={this.onDrop.bind(this)}
-                    >
-                        {!Boolean(image) ? (
-                            <React.Fragment>
-                                <div
-                                    style={{
-                                        padding: 10,
-                                        border: "1px solid #DDDFE7",
-                                        borderRadius: 45
-                                    }}
-                                    onClick={this.openFileBrowser}
-                                >
-                                    <div
-                                        style={{
-                                            padding: 10,
-                                            border: "1px solid #DDDFE7",
-                                            borderRadius: 35,
-                                            display: "flex",
-                                            alignItems: "center"
-                                        }}
-                                    >
-                                        <IconButton
-                                            className={`fas fa-arrow-circle-up ${
-                                                classes.expansionButton
-                                            }`}
-                                        />
-                                    </div>
-                                </div>
-                                <div
-                                    style={{
-                                        marginTop: 10,
-                                        textAlign: "center",
-                                        color: "#43425D",
-                                        fontSize: "1em"
-                                    }}
-                                >
-                                    DRAG & DROP
-                                    <p
-                                        style={{
-                                            color: "#aaaaaa",
-                                            fontSize: "0.5em"
-                                        }}
-                                    >
-                                        YOUR FILES OR{" "}
-                                        <span
-                                            onClick={this.openFileBrowser}
-                                            style={{
-                                                color: "#3B86FF",
-                                                textDecoration: "underline",
-                                                fontWeight: 700
-                                            }}
-                                        >
-                                            BROWSE
-                                        </span>
-                                    </p>
-                                </div>
-                            </React.Fragment>
-                        ) : (
-                            <img
-                                src={
-                                    image.uploaded ? image.path : image.preview
-                                }
-                                alt=""
-                                style={{ height: 320 }}
-                            />
-                        )}
-                    </Dropzone>
-                </div>
-            </div>
-        );
-    }
-
     render() {
-        const { selected_directory } = this.state;
+        const { selected_directory, upload } = this.state;
         const { classes, location = {} } = this.props;
         const { data: editData = null } = location.state || {};
         const titleText = Boolean(editData)
-            ? "EDIT DIRECTORY LIST ENTRY"
-            : "ADD DIRECTORY LIST ENTRY";
-        const subTitleText = "DIRECTORY LIST TITLE";
+            ? "EDIT TIER ENTRY"
+            : "ADD TIER ENTRY";
+        const subTitleText = "TIER TITLE";
+        const mediaData =
+            editData.media && editData.media.length > 0
+                ? editData.media[0]
+                : null;
 
         return (
             <ContainerDiv>
@@ -303,6 +153,7 @@ class ModifyDirectoryList extends React.PureComponent {
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         //TODO: Add logic to send mutation to DB
+                        this.setState({ upload: true });
                         alert(values.name);
                         setSubmitting(false);
                     }}
@@ -376,7 +227,17 @@ class ModifyDirectoryList extends React.PureComponent {
                                                         again
                                                     </p>
                                                 )}
-                                                {this.renderImageUploader()}
+                                                <SingleImageUploader
+                                                    onRef={ref =>
+                                                        (this.imageUploaderRef = ref)
+                                                    }
+                                                    updateImageName={
+                                                        this.changeImageName
+                                                    }
+                                                    upload={upload}
+                                                    data={mediaData}
+                                                    uploadAction={uploadFiles}
+                                                />
                                             </React.Fragment>
                                         )}
                                     </Mutation>
@@ -472,8 +333,8 @@ class ModifyDirectoryList extends React.PureComponent {
                                                 fontSize: "0.7em"
                                             }}
                                         >
-                                            LEAVE BLANK IF CREATING A FIRST
-                                            DIRECTORY LIST CATEGORY
+                                            LEAVE BLANK IF CREATING A FIRST TIER
+                                            CATEGORY
                                         </p>
                                     </div>
                                     <Query query={getDirectoryListBySystem(1)}>
@@ -538,8 +399,8 @@ class ModifyDirectoryList extends React.PureComponent {
                         <DialogContentText id="alert-dialog-slide-description">
                             {this.state.whichDialog === "image" && (
                                 <p>
-                                    PLEASE CONFIRM IF YOU WANT TO REMOVE
-                                    DIRECTORY LIST IMAGE.
+                                    PLEASE CONFIRM IF YOU WANT TO REMOVE TIER
+                                    IMAGE.
                                 </p>
                             )}
                             {this.state.whichDialog === "cancel" && (

@@ -7,7 +7,7 @@ module.exports = {
             "homeId", // name of the key we're adding
             {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references: {
                     model: "homes", // name of Target table
                     key: "id" // key in Target table that we're referencing

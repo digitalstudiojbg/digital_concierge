@@ -10,7 +10,7 @@ export const getSelectedUserQuery = gql`
             avatar
             createdAt
             updatedAt
-            role {
+            roles {
                 name
                 is_admin
                 permissions {
@@ -40,9 +40,9 @@ export const getCurrentUserQuery = gql`
             avatar
             createdAt
             updatedAt
-            role {
+            roles {
                 name
-                is_admin
+                is_standard_role
                 permissions {
                     name
                 }
