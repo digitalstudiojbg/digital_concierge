@@ -1508,7 +1508,7 @@ TreeView.defaultProps = {
     create_menu_bar: [
         {
             id: 1,
-            name: "TIER ENTRY",
+            name: "DIRECTORY LIST ENTRY",
             url: CMS_MODIFY_DIRECTORY_LIST_URL
         },
         {

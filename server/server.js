@@ -9,6 +9,7 @@ import schemas from "./schemas";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
+const geoip = require("geoip-lite");
 
 const port = 3000;
 const jwtSecret = Buffer.from(process.env.JWT_SECRET, "base64");
@@ -26,10 +27,31 @@ app.use(
 const graphqlServer = new ApolloServer({
     typeDefs: schemas,
     resolvers,
-    context: async ({ req }) =>
-        req.user && {
-            user: await db.user.findByPk(req.user.sub)
-        },
+    context: async ({ req }) => {
+        //Adapted from https://github.com/CITGuru/express-ip/blob/master/index.js
+        const xForwardedFor = (req.headers["x-forwarded-for"] || "").replace(
+            /:\d+$/,
+            ""
+        );
+        let ip = xForwardedFor || req.connection.remoteAddress;
+        if (ip.includes("::ffff:")) {
+            ip = ip.split(":").reverse()[0];
+        }
+        // console.log("ip_address ", ip);
+        const { country = "", region = "", city = "", ll = [null, null] } =
+            geoip.lookup(ip) || {};
+        const user = req.user ? await db.user.findByPk(req.user.sub) : null;
+        return {
+            user,
+            clientIp: {
+                country,
+                region,
+                city,
+                ll,
+                ip_address: ip
+            }
+        };
+    },
     uploads: {
         maxFileSize: 10000000, // 10 MB
         maxFiles: 10

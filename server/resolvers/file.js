@@ -5,10 +5,10 @@ import { UserInputError } from "apollo-server-express";
 
 const processUpload = async file => {
     const { stream, filename, mimetype, encoding } = await file;
-
+    const key = `cms_users/${uuid.v4()}-${filename}`;
     s3.upload(
         {
-            Key: `cms_users/${uuid.v4()}-${filename}`,
+            Key: key,
             Body: stream,
             ACL: "public-read"
         },
@@ -22,10 +22,11 @@ const processUpload = async file => {
                 });
             }
 
-            s3.listObjects({ Delimiter: "/" }, (err, data) => {
+            s3.listObjects({ Delimiter: "/" }, (err, listData) => {
                 if (err) {
                     console.log(err.message);
                 } else {
+                    console.log({ ...listData });
                     console.log(data);
                 }
             });
