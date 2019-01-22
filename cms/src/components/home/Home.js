@@ -37,6 +37,9 @@ const TabletCreateDirectory = lazy(() =>
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
 const Welcome = lazy(() => import("./Welcome.js"));
+const ModifyDirectoryList = lazy(() =>
+    import("../tablet/content/ModifyDirectoryList")
+);
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
