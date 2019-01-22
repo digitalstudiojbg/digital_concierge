@@ -6,11 +6,17 @@ export default gql`
         mimetype: String!
         encoding: String!
     }
+    type FileResult {
+        filename: String!
+        location: String!
+    }
+
     extend type Query {
         uploads: [File]
     }
+
     extend type Mutation {
-        uploadFile(file: Upload!): File!
-        uploadFiles(files: [Upload!]!): [File!]!
+        uploadFile(file: Upload!): FileResult
+        uploadFiles(files: [Upload!]!): [FileResult!]!
     }
 `;
