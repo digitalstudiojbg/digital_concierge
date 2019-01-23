@@ -223,6 +223,10 @@ class TreeView extends React.PureComponent {
                     entry.id === list_id && entry.is_dir_list === is_dir_list
                 );
             });
+            if (is_dir_list && foundItem.is_root) {
+                //Root item certainly do not have parent
+                return [];
+            }
             const possibleParents = Boolean(foundItem)
                 ? dataTree.filter(
                       entry =>

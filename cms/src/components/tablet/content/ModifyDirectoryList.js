@@ -165,6 +165,15 @@ class ModifyDirectoryList extends React.PureComponent {
         this.dropZoneRef.current.open();
     }
 
+    componentWillUnmount() {
+        this.state.images.forEach(image => {
+            if (!Boolean(image.uploaded) && Boolean(image.preview)) {
+                // Make sure to revoke the preview data uris to avoid memory leaks
+                URL.revokeObjectURL(image.preview);
+            }
+        });
+    }
+
     onDrop(images) {
         this.setState({
             images: images.map(file =>
@@ -175,8 +184,6 @@ class ModifyDirectoryList extends React.PureComponent {
             ),
             imageName: images[0].name
         });
-        this.props.updateImageName &&
-            this.props.updateImageName(images[0].name);
     }
 
     removeImage() {
