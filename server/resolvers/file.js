@@ -9,7 +9,7 @@ export default {
             try {
                 return await processUpload(file);
             } catch (e) {
-                throw new UserInputError(err);
+                throw new UserInputError(e);
             }
         },
         async uploadFiles(parent, { files }, { user }) {

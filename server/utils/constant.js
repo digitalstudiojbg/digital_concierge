@@ -1,6 +1,7 @@
 import { AuthenticationError } from "apollo-server-express";
 import AWS from "aws-sdk";
 import uuid from "uuid";
+import { UserInputError } from "apollo-server-express";
 
 export const JBG_EMAIL_SUFFIX = "@johnbatman.com.au";
 /**
@@ -78,12 +79,14 @@ export const processUpload = async file => {
                 ACL: "public-read"
             },
             (err, data) => {
-                err &&
+                if (err) {
                     reject(
-                        `There was an error uploading your photo: ${
+                        `There was an error uploading your photos: ${
                             err.message
                         }`
                     );
+                    return;
+                }
 
                 s3.listObjects({ Delimiter: "/" }, (err, data) => {
                     if (err) {
@@ -93,9 +96,33 @@ export const processUpload = async file => {
                     }
                 });
 
-                console.log(data);
+                resolve({
+                    filename,
+                    location: data.Location,
+                    key: data.key
+                });
+            }
+        );
+    });
+};
 
-                resolve({ filename, location: data.Location, key: data.key });
+export const processDelete = Key => {
+    return new Promise((resolve, reject) => {
+        s3.deleteObject(
+            {
+                Bucket: "digitalconcierge",
+                Key
+            },
+            (err, data) => {
+                if (err) {
+                    reject(
+                        `There was an error deleting your photos: ${
+                            err.message
+                        }`
+                    );
+                    return;
+                }
+                resolve(data);
             }
         );
     });

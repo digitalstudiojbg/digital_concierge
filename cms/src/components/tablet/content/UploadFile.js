@@ -30,7 +30,9 @@ export default class UploadFile extends Component {
                                 }}
                             />
                             {loading && <p>Loading...</p>}
-                            {error && <p>Error :( Please try again</p>}
+                            {error && (
+                                <p>Error :( Please try again {error.message}</p>
+                            )}
                         </div>
                     )}
                 </Mutation>

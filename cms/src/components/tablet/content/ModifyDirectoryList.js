@@ -311,7 +311,7 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     render() {
-        const { selected_directory } = this.state;
+        const { selected_directory, images } = this.state;
         const { classes, location = {} } = this.props;
         const { data: editData = null } = location.state || {};
         const titleText = Boolean(editData)
@@ -325,7 +325,9 @@ class ModifyDirectoryList extends React.PureComponent {
                     {(createDirectoryList, { loading, error }) => (
                         <React.Fragment>
                             {loading && <p>Loading...</p>}
-                            {error && <p>Error :( Please try again</p>}
+                            {error && (
+                                <p>Error :( Please try again {error.message}</p>
+                            )}
                             <Formik
                                 initialValues={{
                                     name: Boolean(editData) ? editData.name : ""
@@ -335,15 +337,30 @@ class ModifyDirectoryList extends React.PureComponent {
                                     alert(values.name);
                                     setSubmitting(false);
 
-                                    createDirectoryList({
-                                        variables: {
-                                            name: values.name,
-                                            is_root: true,
-                                            layout_id: 1,
-                                            system_id: 4,
-                                            image: this.state.images[0]
-                                        }
-                                    });
+                                    if (images && images.length === 1) {
+                                        createDirectoryList({
+                                            variables: {
+                                                name: values.name,
+                                                is_root: selected_directory
+                                                    ? true
+                                                    : false,
+                                                layout_id: 1,
+                                                system_id: 4,
+                                                image: images[0]
+                                            }
+                                        });
+                                    } else {
+                                        createDirectoryList({
+                                            variables: {
+                                                name: values.name,
+                                                is_root: selected_directory
+                                                    ? true
+                                                    : false,
+                                                layout_id: 1,
+                                                system_id: 4
+                                            }
+                                        });
+                                    }
                                 }}
                                 validationSchema={DirectoryListSchema}
                             >

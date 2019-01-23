@@ -4,7 +4,8 @@ import {
     checkUserLogin
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
-import { s3, processUpload } from "../utils/constant";
+import { s3, processUpload, processDelete } from "../utils/constant";
+import { log } from "util";
 
 export default {
     Query: {
@@ -27,10 +28,11 @@ export default {
             { user, clientIp }
         ) => {
             await checkUserLogin(user);
+
             //const system = await db.system.findByPk(system_id);
             //await checkUserPermissionModifySystem(user, system);
 
-            //upload and create image
+            //Upload and Create image
             let created_media;
             if (image) {
                 try {
@@ -44,14 +46,14 @@ export default {
                             key: uploaded_media.key
                         });
                     } catch (e) {
-                        console.log(e);
+                        throw new UserInputError(e);
                     }
                 } catch (e) {
-                    console.log(e);
+                    throw new UserInputError(e);
                 }
             }
 
-            //create directory list
+            //Create directory list
             let created_dir_list = db.directory_list.build({
                 name,
                 is_root,
@@ -62,15 +64,18 @@ export default {
 
             try {
                 await created_dir_list.save();
-            } catch (error) {
-                throw new UserInputError(
-                    `Create Directory List ${name} status failed.\nError Message: ${
-                        error.message
-                    }`
-                );
+            } catch (e) {
+                //Delete image if user input is invalid
+                try {
+                    processDelete(created_media.key);
+                } catch (e) {
+                    throw new UserInputError(e);
+                }
+                throw new UserInputError(e);
             }
 
             try {
+                //Assign media
                 await created_dir_list.addMedia(created_media);
             } catch (error) {
                 throw new UserInputError(
