@@ -1,6 +1,7 @@
-import { AuthenticationError } from "apollo-server-express";
+import { AuthenticationError, ApolloError } from "apollo-server-express";
 import AWS from "aws-sdk";
 import uuid from "uuid";
+import db from "../models";
 
 export const JBG_EMAIL_SUFFIX = "@johnbatman.com.au";
 /**
@@ -99,4 +100,124 @@ export const processUpload = async file => {
             }
         );
     });
+};
+
+export const handleCreateActionActivityLog = async (
+    subject,
+    properties,
+    user,
+    clientIp
+) => {
+    const {
+        ip_address: ip,
+        country,
+        region,
+        city,
+        latitude,
+        longitude
+    } = clientIp;
+    //Get model and table name in sequelize v4: https://stackoverflow.com/a/47918030
+    try {
+        db.activity_log.create({
+            tableName: subject.constructor.getTableName(),
+            modelName: subject.constructor.name,
+            subjectId: subject.id,
+            actionType: "CREATE",
+            properties: JSON.stringify(properties),
+            ip,
+            country,
+            region,
+            city,
+            latitude,
+            longitude,
+            userId: user.id
+        });
+    } catch (error) {
+        throw new new ApolloError(
+            `Fail to create action type log of creating for object ${
+                subject.constructor.name
+            } with ID ${subject.id}.\nError message: ${error.message}`,
+            500
+        )();
+    }
+};
+
+export const handleUpdateActionActivityLog = async (
+    subject,
+    properties,
+    user,
+    clientIp
+) => {
+    const {
+        ip_address: ip,
+        country,
+        region,
+        city,
+        latitude,
+        longitude
+    } = clientIp;
+    //Get model and table name in sequelize v4: https://stackoverflow.com/a/47918030
+    try {
+        db.activity_log.create({
+            tableName: subject.constructor.getTableName(),
+            modelName: subject.constructor.name,
+            subjectId: subject.id,
+            actionType: "UPDATE",
+            properties: JSON.stringify(properties),
+            ip,
+            country,
+            region,
+            city,
+            latitude,
+            longitude,
+            userId: user.id
+        });
+    } catch (error) {
+        throw new new ApolloError(
+            `Fail to create action type log of updating for object ${
+                subject.constructor.name
+            } with ID ${subject.id}.\nError message: ${error.message}`,
+            500
+        )();
+    }
+};
+
+export const handleDeleteActionActivityLog = async (
+    subject,
+    properties,
+    user,
+    clientIp
+) => {
+    const {
+        ip_address: ip,
+        country,
+        region,
+        city,
+        latitude,
+        longitude
+    } = clientIp;
+    //Get model and table name in sequelize v4: https://stackoverflow.com/a/47918030
+    try {
+        db.activity_log.create({
+            tableName: subject.constructor.getTableName(),
+            modelName: subject.constructor.name,
+            subjectId: subject.id,
+            actionType: "DELETE",
+            properties: JSON.stringify(properties),
+            ip,
+            country,
+            region,
+            city,
+            latitude,
+            longitude,
+            userId: user.id
+        });
+    } catch (error) {
+        throw new new ApolloError(
+            `Fail to create action type log of deleting for object ${
+                subject.constructor.name
+            } with ID ${subject.id}.\nError message: ${error.message}`,
+            500
+        )();
+    }
 };

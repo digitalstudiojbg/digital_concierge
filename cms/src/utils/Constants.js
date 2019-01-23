@@ -6,26 +6,30 @@ export const API_URL =
         ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/api"
         : "http://localhost:3000";
 
+export const DECIMAL_RADIX = 10;
+
 //URL Constants
 export const LOGIN_URL = "/login";
 export const WELCOME_URL = "/welcome";
 
-export const TABLET_CMS_INDEX_URL = "/tablet_cms";
-export const TABLET_CMS_HOME_URL = "/tablet_cms/home";
-export const TABLET_CMS_LANDINGPAGE_URL = "/tablet_cms/landingpage";
-export const TABLET_CMS_CONTENT_URL = "/tablet_cms/content";
-export const TABLET_CMS_SETTINGS_URL = "/tablet_cms/settings";
-export const TABLET_CMS_CREATE_CONTENT_INDEX_URL = "/tablet_cms/content/create";
-export const TABLET_CMS_CREATE_CONTENT_CATEGORY_URL =
-    "/tablet_cms/content/create/category";
-export const TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL =
-    "/tablet_cms/content/create/subcategory";
-export const TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL =
-    "/tablet_cms/content/create/directory";
-export const CMS_MODIFY_DIRECTORY_LIST_URL =
-    "/tablet_cms/content/modify_directory_list";
-export const CMS_MODIFY_DIRECTORY_ENTRY_URL =
-    "/tablet_cms/content/modify_directory_entry";
+export const SYSTEM_INDEX_URL = "/system/:system_id";
+export const SYSTEM_CMS_INDEX_URL = SYSTEM_INDEX_URL + "/cms";
+export const SYSTEM_CMS_HOME_URL = SYSTEM_INDEX_URL + "/home";
+export const SYSTEM_CMS_LANDINGPAGE_URL = SYSTEM_INDEX_URL + "/landingpage";
+export const SYSTEM_CMS_CONTENT_URL = SYSTEM_INDEX_URL + "/content";
+export const SYSTEM_CMS_SETTINGS_URL = SYSTEM_INDEX_URL + "/settings";
+export const SYSTEM_CMS_CREATE_CONTENT_INDEX_URL =
+    SYSTEM_INDEX_URL + "/content/create";
+export const SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL =
+    SYSTEM_INDEX_URL + "/content/create/category";
+export const SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL =
+    SYSTEM_INDEX_URL + "/content/create/subcategory";
+export const SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL =
+    SYSTEM_INDEX_URL + "/content/create/directory";
+export const SYSTEM_MODIFY_DIRECTORY_LIST_URL =
+    SYSTEM_INDEX_URL + "/content/modify_directory_list";
+export const SYSTEM_MODIFY_DIRECTORY_ENTRY_URL =
+    SYSTEM_INDEX_URL + "/content/modify_directory_entry";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 

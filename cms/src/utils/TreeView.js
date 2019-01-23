@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -21,9 +22,10 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
-    CMS_MODIFY_DIRECTORY_LIST_URL,
-    CMS_MODIFY_DIRECTORY_ENTRY_URL
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    DECIMAL_RADIX
 } from "./Constants";
 import { Mutation } from "react-apollo";
 import { changeDirectoryListAndEntryStatus } from "../data/mutation";
@@ -657,7 +659,7 @@ class TreeView extends React.PureComponent {
     }
 
     handleVisibleOrInvisible(row, action) {
-        const { system_id: systemId } = this.props;
+        const { system_id } = this.props.match.params;
 
         const toUpdateList = this.getItemAndAllChildItems(row, true);
 
@@ -757,7 +759,7 @@ class TreeView extends React.PureComponent {
                 directoryEntryIdList: toUpdateDirEntryIds,
                 directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
                 status: !row.active,
-                systemId
+                systemId: parseInt(system_id, DECIMAL_RADIX)
             }
         });
         // console.log({
@@ -851,7 +853,7 @@ class TreeView extends React.PureComponent {
                             <EditIcon
                                 onClick={this.navigateToEditPage.bind(
                                     this,
-                                    CMS_MODIFY_DIRECTORY_LIST_URL,
+                                    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
                                     this.modifyDataBeingSendToEditPage(
                                         directory
                                     )
@@ -940,8 +942,8 @@ class TreeView extends React.PureComponent {
                             onClick={this.navigateToEditPage.bind(
                                 this,
                                 directory.is_dir_list
-                                    ? CMS_MODIFY_DIRECTORY_LIST_URL
-                                    : CMS_MODIFY_DIRECTORY_ENTRY_URL,
+                                    ? SYSTEM_MODIFY_DIRECTORY_LIST_URL
+                                    : SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
                                 this.modifyDataBeingSendToEditPage(directory)
                             )}
                         />
@@ -1117,16 +1119,19 @@ class TreeView extends React.PureComponent {
 
     //Function to navigate to a difference page from create menu
     navigateToDiffPage(url) {
-        const { history } = this.props;
+        const { history, match } = this.props;
         this.setState({ anchorElCreate: null }, () => {
-            history.push(url);
+            history.push(url.replace(":system_id", match.params.system_id));
         });
     }
 
     //Function to navigate to edit page from edit icon
     navigateToEditPage(pathname, data) {
-        const { history } = this.props;
-        history.push({ pathname, state: { data } });
+        const { history, match } = this.props;
+        history.push({
+            pathname: pathname.replace(":system_id", match.params.system_id),
+            state: { data }
+        });
     }
 
     //Function to open options menu
@@ -1149,7 +1154,8 @@ class TreeView extends React.PureComponent {
             delete_entry_url,
             create_list_url,
             create_entry_url,
-            history
+            history,
+            match
         } = this.props;
         const {
             anchorEl,
@@ -1191,7 +1197,7 @@ class TreeView extends React.PureComponent {
                 pathname = "";
                 break;
         }
-
+        pathname = pathname.replace(":system_id", match.params.system_id);
         this.setState({ anchorEl }, () => {
             if (pathname.length > 0) {
                 history.push({ pathname, state: { data: dataToSend } });
@@ -1307,7 +1313,9 @@ class TreeView extends React.PureComponent {
     }
 
     render() {
-        const { classes, data, create_menu_bar } = this.props;
+        const { classes, data, create_menu_bar, match } = this.props;
+        const { params = {} } = match;
+        const { system_id } = params;
         const {
             dataTree,
             selected_dir_entries,
@@ -1388,7 +1396,7 @@ class TreeView extends React.PureComponent {
                                 className={classes.menuItemStyle}
                                 onClick={this.navigateToDiffPage.bind(
                                     this,
-                                    url
+                                    url.replace(":system_id", system_id)
                                 )}
                             >
                                 {name}
@@ -1513,40 +1521,38 @@ TreeView.defaultProps = {
         {
             id: 1,
             name: "DIRECTORY LIST ENTRY",
-            url: CMS_MODIFY_DIRECTORY_LIST_URL
+            url: SYSTEM_MODIFY_DIRECTORY_LIST_URL
         },
         {
             id: 3,
             name: "DIRECTORY ENTRY",
-            url: CMS_MODIFY_DIRECTORY_ENTRY_URL
+            url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
         },
         {
             id: 4,
             name: "POPUP WINDOW",
-            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
         },
         {
             id: 5,
             name: "GALLERY PAGE",
-            url: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
         }
     ],
-    preview_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
-    preview_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
-    edit_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
-    edit_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
-    delete_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
-    delete_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL,
-    create_list_url: CMS_MODIFY_DIRECTORY_LIST_URL,
-    create_entry_url: CMS_MODIFY_DIRECTORY_ENTRY_URL
+    preview_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    preview_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    edit_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    edit_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    delete_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    delete_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    create_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    create_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
 };
 
 TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     child_directory_lists_key: PropTypes.string,
     directory_entries_key: PropTypes.string,
-    system_id: PropTypes.number.isRequired,
-    history: PropTypes.object.isRequired,
     create_menu_bar: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
@@ -1564,4 +1570,4 @@ TreeView.propTypes = {
     create_entry_url: PropTypes.string
 };
 
-export default withStyles(styles)(TreeView);
+export default withRouter(withStyles(styles)(TreeView));

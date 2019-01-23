@@ -7,17 +7,18 @@ import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
-    TABLET_CMS_HOME_URL,
-    TABLET_CMS_LANDINGPAGE_URL,
+    SYSTEM_CMS_INDEX_URL,
+    SYSTEM_CMS_HOME_URL,
+    SYSTEM_CMS_LANDINGPAGE_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
-    TABLET_CMS_CONTENT_URL,
-    TABLET_CMS_SETTINGS_URL,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
-    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
-    CMS_MODIFY_DIRECTORY_LIST_URL
+    SYSTEM_CMS_CONTENT_URL,
+    SYSTEM_CMS_SETTINGS_URL,
+    SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
+    SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    SYSTEM_INDEX_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -63,7 +64,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_INDEX_URL,
+        path: SYSTEM_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -71,7 +72,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_HOME_URL,
+        path: SYSTEM_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -79,7 +80,15 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_SETTINGS_URL,
+        path: SYSTEM_CMS_HOME_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletDashboard,
+        withProps: {}
+    },
+    {
+        path: SYSTEM_CMS_SETTINGS_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -87,7 +96,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CONTENT_URL,
+        path: SYSTEM_CMS_CONTENT_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -95,7 +104,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -103,7 +112,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -111,7 +120,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -119,7 +128,7 @@ const routes = [
         withProps: { is_sub_category: true }
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -127,7 +136,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_LANDINGPAGE_URL,
+        path: SYSTEM_CMS_LANDINGPAGE_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -143,7 +152,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: CMS_MODIFY_DIRECTORY_LIST_URL,
+        path: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,

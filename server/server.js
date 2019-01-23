@@ -38,8 +38,12 @@ const graphqlServer = new ApolloServer({
             ip = ip.split(":").reverse()[0];
         }
         // console.log("ip_address ", ip);
-        const { country = "", region = "", city = "", ll = ["", ""] } =
-            geoip.lookup(ip) || {};
+        const {
+            country = "undefined",
+            region = "undefined",
+            city = "undefined",
+            ll = ["undefined", "undefined"]
+        } = geoip.lookup(ip) || {};
         const [latitude, longitude] = ll;
         const user = req.user ? await db.user.findByPk(req.user.sub) : null;
         return {

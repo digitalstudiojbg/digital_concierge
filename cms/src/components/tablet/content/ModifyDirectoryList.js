@@ -3,7 +3,7 @@ import {
     ContainerDiv,
     CreateContentContainerDiv,
     modifyDirectoryListData,
-    TABLET_CMS_CONTENT_URL
+    SYSTEM_CMS_CONTENT_URL
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -147,7 +147,7 @@ class ModifyDirectoryList extends React.PureComponent {
     navigateAway() {
         const { history } = this.props;
         this.setState({ openDialog: false }, () => {
-            history.push(TABLET_CMS_CONTENT_URL);
+            history.push(SYSTEM_CMS_CONTENT_URL);
         });
     }
 

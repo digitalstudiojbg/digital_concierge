@@ -1,34 +1,38 @@
 import React, { Component } from "react";
-import { COLOR_JBG_PURPLE, TABLET_CMS_INDEX_URL, TOUCHSCREEN_CMS_INDEX_URL, LOGIN_URL } from "../../utils/Constants";
+import {
+    COLOR_JBG_PURPLE,
+    SYSTEM_CMS_INDEX_URL,
+    TOUCHSCREEN_CMS_INDEX_URL,
+    LOGIN_URL
+} from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
-import styled from 'styled-components';
+import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import ArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import PersonIcon from "@material-ui/icons/Person";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 import { logout } from "../../auth/auth";
 
 const styles = theme => ({
     button: {
-      margin: theme.spacing.unit,
-      color: "rgb(154,166,174)"
+        margin: theme.spacing.unit,
+        color: "rgb(154,166,174)"
     },
     avatar: {
-        margin: 10,
+        margin: 10
     },
     icon: {
         marginRight: -5
-    },
-
+    }
 });
 
 const ContainerDiv = styled.div`
@@ -62,8 +66,8 @@ const URL_WELCOME = "/welcome";
 
 class Header extends Component {
     state = {
-        anchorEl: null,
-    }
+        anchorEl: null
+    };
 
     handleClick = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -88,22 +92,30 @@ class Header extends Component {
         const availableWidth = window.innerWidth - 350;
         const userDivWidth = availableWidth * 0.35;
 
-        const { has_tablet = false, has_touchscreen = false, name = "" } = user.venue || {};
+        const { has_tablet = false, has_touchscreen = false, name = "" } =
+            user.venue || {};
 
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
         return (
             <ContainerDiv>
-                {match.url === URL_WELCOME 
-                ? (
-                    <WelcomeDiv>Welcome</WelcomeDiv> 
+                {match.url === URL_WELCOME ? (
+                    <WelcomeDiv>Welcome</WelcomeDiv>
                 ) : (
                     <div style={{ width: 350 }}>
                         {has_tablet && has_touchscreen && (
-                            <Link to={
-                                match.url.includes(TABLET_CMS_INDEX_URL) ? TOUCHSCREEN_CMS_INDEX_URL : TABLET_CMS_INDEX_URL
-                            } style={{color: "white", textDecoration: "none"}}>
+                            <Link
+                                to={
+                                    match.url.includes(SYSTEM_CMS_INDEX_URL)
+                                        ? TOUCHSCREEN_CMS_INDEX_URL
+                                        : SYSTEM_CMS_INDEX_URL
+                                }
+                                style={{
+                                    color: "white",
+                                    textDecoration: "none"
+                                }}
+                            >
                                 <IconButton className={classes.button}>
                                     <ArrowLeftIcon />
                                 </IconButton>
@@ -121,7 +133,9 @@ class Header extends Component {
                         <React.Fragment>
                             <div>{name.toUpperCase()}</div>
                             <div>
-                                {match.url.includes(TABLET_CMS_INDEX_URL) ? "DIGITAL COMPENDIUM" : "TOUCHSCREEN"}
+                                {match.url.includes(SYSTEM_CMS_INDEX_URL)
+                                    ? "DIGITAL COMPENDIUM"
+                                    : "TOUCHSCREEN"}
                             </div>
                         </React.Fragment>
                     )}
@@ -142,7 +156,10 @@ class Header extends Component {
                         >
                             <p style={{}}>{user.name}</p>
                         </div>
-                        <IconButton className={classes.button} onClick={this.handleClick}>
+                        <IconButton
+                            className={classes.button}
+                            onClick={this.handleClick}
+                        >
                             <ArrowDownIcon />
                         </IconButton>
                         <Menu
@@ -152,15 +169,19 @@ class Header extends Component {
                             onClose={this.handleClose}
                         >
                             <MenuItem onClick={this.handleClose}>
-                                <ListItemIcon className={classes.icon}><PersonIcon /></ListItemIcon>
+                                <ListItemIcon className={classes.icon}>
+                                    <PersonIcon />
+                                </ListItemIcon>
                                 <ListItemText inset primary="PROFILE" />
                             </MenuItem>
                             <MenuItem onClick={this.handleLogout}>
-                                <ListItemIcon className={classes.icon}><PowerIcon /></ListItemIcon>
+                                <ListItemIcon className={classes.icon}>
+                                    <PowerIcon />
+                                </ListItemIcon>
                                 <ListItemText inset primary="LOGOUT" />
                             </MenuItem>
                         </Menu>
-                        {user.venue && user.venue.logo && 
+                        {user.venue && user.venue.logo && (
                             <img
                                 style={{
                                     height: "50px"
@@ -168,7 +189,7 @@ class Header extends Component {
                                 src={user.venue.logo}
                                 alt={`{user.name}_avatar`}
                             />
-                        }
+                        )}
                     </WelcomeUserDetailContainerDiv>
                 </div>
             </ContainerDiv>

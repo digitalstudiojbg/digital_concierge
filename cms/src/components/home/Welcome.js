@@ -14,7 +14,7 @@ const CURRENT_SYSTEM = gql`
 
 class Welcome extends Component {
     render() {
-        const { client } = this.props;
+        const { client, history } = this.props;
         const { getCurrentUser: user } = client.readQuery({
             query
         });
@@ -37,6 +37,7 @@ class Welcome extends Component {
                                 client.writeData({
                                     data: { currentSystem: system.name }
                                 });
+                                history.push(`/system/${system.id}`);
                             }}
                         >
                             {system.id} {system.name}
