@@ -9,7 +9,6 @@ import Loading from "../loading/Loading";
 
 class TabletContent extends PureComponent {
     render() {
-        const { history } = this.props;
         return (
             <Query query={getDirectoryListBySystem()}>
                 {({ loading, error, data }) => {
@@ -39,11 +38,7 @@ class TabletContent extends PureComponent {
                                 CATEGORIES AND SUB-CATEGORIES. CLICK ON THE
                                 TITLE TO EDIT.
                             </div>
-                            <TreeView
-                                data={modifiedData}
-                                history={history}
-                                system_id={1}
-                            />
+                            <TreeView data={modifiedData} />
                         </ContainerDiv>
                     );
                 }}

@@ -7,10 +7,11 @@ import "./App.css";
 import Loading from "./loading/Loading";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
+    SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
-    API_URL
+    API_URL,
+    SYSTEM_INDEX_URL
 } from "../utils/Constants";
 
 const Home = lazy(() => import("./home/Home"));
@@ -21,11 +22,15 @@ const routes = [
         component: Home
     },
     {
-        path: TABLET_CMS_INDEX_URL,
+        path: SYSTEM_CMS_INDEX_URL,
         component: Home
     },
     {
         path: TOUCHSCREEN_CMS_INDEX_URL,
+        component: Home
+    },
+    {
+        path: SYSTEM_INDEX_URL,
         component: Home
     }
 ];
