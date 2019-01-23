@@ -24,6 +24,7 @@ import jbgMap_schema from "./jbgMap";
 import jbgDirectoryList_schema from "./jbgDirectoryList";
 import jbgDirectoryEntry_schema from "./jbgDirectoryEntry";
 import template_schema from "./template";
+import activityLog_schema from "./activityLog";
 
 const link_schema = gql`
     type Query {
@@ -63,5 +64,6 @@ export default [
     jbgDirectoryList_schema,
     jbgDirectoryEntry_schema,
     template_schema,
+    activityLog_schema,
     file_schema
 ];

@@ -336,3 +336,9 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize seed:generate --name system_media
 
 node_modules/.bin/sequelize seed:generate --name user_role
+
+node_modules/.bin/sequelize model:generate --name activity_log --attributes tableName:string,modelName:string,actionType:string,properties:text,ip:string,country:string,region:string,city:string,latitude:string,longitude:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-user-and-activity_log
+
+node_modules/.bin/sequelize seed:generate --name activity_log

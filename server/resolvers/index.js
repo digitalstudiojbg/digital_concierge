@@ -22,7 +22,9 @@ import room_resolver from "./room";
 import start_resolver from "./start";
 import system_resolver from "./system";
 import template_resolver from "./template";
+import activityLog_resolver from "./activityLog";
 import file_resolver from "./file";
+import json_resolver from "./json_resolver";
 
 export default [
     user_resolver,
@@ -49,5 +51,7 @@ export default [
     template_resolver,
     permission_resolver,
     validation_resolver,
+    activityLog_resolver,
+    json_resolver,
     file_resolver
 ];

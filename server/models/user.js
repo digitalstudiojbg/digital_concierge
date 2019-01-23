@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         user.belongsTo(models.client, {
             foreignKey: { allowNull: false }
         });
+        user.hasMany(models.activity_log);
     };
     return user;
 };
