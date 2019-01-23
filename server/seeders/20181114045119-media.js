@@ -10,7 +10,8 @@ module.exports = {
                     path:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Holiday_Inn_Logo.png",
                     type: "image",
-                    clientId: 1
+                    clientId: 1,
+                    key: "cms_users/Holiday_Inn_Logo.png"
                 },
 
                 {
@@ -18,7 +19,8 @@ module.exports = {
                     path:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/jbg_logo.png",
                     type: "image",
-                    clientId: 2
+                    clientId: 2,
+                    key: "cms_users/jbg_logo.png"
                 }
             ],
             {}

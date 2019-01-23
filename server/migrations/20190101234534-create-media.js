@@ -15,6 +15,9 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            key: {
+                type: Sequelize.STRING
+            },
             path: {
                 type: Sequelize.STRING,
                 allowNull: false,

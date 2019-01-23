@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
+            key: {
+                type: DataTypes.STRING
+            },
             path: {
                 type: DataTypes.STRING,
                 allowNull: false,

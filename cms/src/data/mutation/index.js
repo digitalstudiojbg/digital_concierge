@@ -1,3 +1,5 @@
+import { createDirListTest } from "./directoryList";
 import { changeDirectoryListAndEntryStatus } from "./directory";
+
 // import { changeCategoryStatus } from "./category";
-export { changeDirectoryListAndEntryStatus };
+export { createDirListTest, changeDirectoryListAndEntryStatus };

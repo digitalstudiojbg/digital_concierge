@@ -58,10 +58,27 @@ const styles = _theme => ({
     }
 });
 
-const UPLOAD_FILES = gql`
-    mutation uploadFiles($files: [Upload!]!) {
-        uploadFiles(files: $files) {
-            filename
+const CREATE_DIRECTORY_LIST = gql`
+    mutation createDirListTest(
+        $name: String!
+        $is_root: Boolean!
+        $parent_id: Int
+        $system_id: Int!
+        $layout_id: Int!
+        $image: Upload
+    ) {
+        createDirectoryList(
+            input: {
+                name: $name
+                is_root: $is_root
+                layout_id: $layout_id
+                system_id: $system_id
+                parent_id: $parent_id
+                image: $image
+            }
+        ) {
+            id
+            name
         }
     }
 `;
@@ -297,229 +314,286 @@ class ModifyDirectoryList extends React.PureComponent {
 
         return (
             <ContainerDiv>
-                <Formik
-                    initialValues={{
-                        name: Boolean(editData) ? editData.name : ""
-                    }}
-                    onSubmit={(values, { setSubmitting }) => {
-                        //TODO: Add logic to send mutation to DB
-                        alert(values.name);
-                        setSubmitting(false);
-                    }}
-                    validationSchema={DirectoryListSchema}
-                >
-                    {({ isSubmitting, errors, values }) => (
-                        <Form>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginBottom: 40
+                <Mutation mutation={CREATE_DIRECTORY_LIST}>
+                    {(createDirectoryList, { loading, error }) => (
+                        <React.Fragment>
+                            {loading && <p>Loading...</p>}
+                            {error && <p>Error :( Please try again</p>}
+                            <Formik
+                                initialValues={{
+                                    name: Boolean(editData) ? editData.name : ""
                                 }}
-                            >
-                                <div
-                                    style={{
-                                        color: "rgb(35,38,92)",
-                                        fontSize: "2.7em",
-                                        width: "52%"
-                                    }}
-                                >
-                                    {titleText}
-                                </div>
-                                <div style={{ width: "10%" }}>
-                                    <Button
-                                        className={classes.cancelButton}
-                                        disabled={isSubmitting}
-                                        size="large"
-                                        variant="outlined"
-                                        onClick={this.openDialogCancel}
-                                    >
-                                        CANCEL
-                                    </Button>
-                                </div>
-                                <div style={{ width: "10%" }}>
-                                    <Button
-                                        type="submit"
-                                        disabled={
-                                            isSubmitting ||
-                                            Boolean(errors.name) ||
-                                            !Boolean(values.name) ||
-                                            values.name.length === 0 ||
-                                            !Boolean(selected_directory)
+                                onSubmit={(values, { setSubmitting }) => {
+                                    //TODO: Add logic to send mutation to DB
+                                    alert(values.name);
+                                    setSubmitting(false);
+
+                                    createDirectoryList({
+                                        variables: {
+                                            name: values.name,
+                                            is_root: true,
+                                            layout_id: 1,
+                                            system_id: 4,
+                                            image: this.state.images[0]
                                         }
-                                        className={classes.saveButton}
-                                        variant="outlined"
-                                        size="large"
-                                    >
-                                        ADD & SAVE
-                                    </Button>
-                                </div>
-                            </div>
-                            <CreateContentContainerDiv>
-                                <div style={{ width: "50%" }}>
-                                    <div style={{ padding: 20 }}>
-                                        HEADER IMAGE:
-                                    </div>
-                                    <Mutation
-                                        mutation={UPLOAD_FILES}
-                                        onCompleted={data => {
-                                            //TODO: send mutation after successful image upload
-                                            console.log("After upload: ", data);
-                                        }}
-                                    >
-                                        {(uploadFiles, { loading, error }) => (
-                                            <React.Fragment>
-                                                {loading && <p>Loading...</p>}
-                                                {error && (
-                                                    <p>
-                                                        Error :( Please try
-                                                        again
-                                                    </p>
-                                                )}
-                                                {this.renderImageUploader()}
-                                            </React.Fragment>
-                                        )}
-                                    </Mutation>
-                                </div>
-                                <div style={{ width: "50%" }}>
-                                    <div
-                                        style={{
-                                            padding: "20px 20px 20px 0px"
-                                        }}
-                                    >
-                                        {subTitleText}
-                                    </div>
-                                    {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
-                                    <Field
-                                        name="name"
-                                        validateOnBlur
-                                        validateOnChange
-                                        render={({ field, form }) => (
-                                            <TextField
-                                                className={
-                                                    classes.categoryNameTextField
-                                                }
-                                                variant="outlined"
-                                                name={field.name}
-                                                value={field.value}
-                                                onChange={field.onChange}
-                                                onBlur={field.onBlur}
-                                                error={
-                                                    form.errors[field.name] &&
-                                                    form.touched[field.name]
-                                                }
-                                                helperText={
-                                                    form.errors[field.name] &&
-                                                    form.touched[field.name] &&
-                                                    String(
-                                                        form.errors[field.name]
-                                                    )
-                                                }
-                                                FormHelperTextProps={{
-                                                    classes: {
-                                                        root:
-                                                            classes.categoryNameFormHelper
-                                                    }
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                    <div
-                                        style={{ width: "60%", marginTop: 40 }}
-                                    >
-                                        <div style={{ fontSize: "0.8em" }}>
-                                            IMAGE NAME
-                                        </div>
-                                        <TextField
-                                            disabled={true}
-                                            value={this.state.imageName}
-                                            className={
-                                                classes.imageNameTextField
-                                            }
-                                            margin="normal"
-                                            variant="outlined"
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            disabled={
-                                                                this.state
-                                                                    .imageName
-                                                                    .length ===
-                                                                0
-                                                            }
-                                                            onClick={
-                                                                this
-                                                                    .openDialogImage
-                                                            }
-                                                        >
-                                                            <CancelIcon />
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )
-                                            }}
-                                        />
-                                    </div>
-                                    <div
-                                        style={{
-                                            fontSize: "0.8em",
-                                            marginTop: 20
-                                        }}
-                                    >
-                                        SELECT LOCATION
-                                        <p
+                                    });
+                                }}
+                                validationSchema={DirectoryListSchema}
+                            >
+                                {({ isSubmitting, errors, values }) => (
+                                    <Form>
+                                        <div
                                             style={{
-                                                fontSize: "0.7em"
+                                                display: "flex",
+                                                alignItems: "center",
+                                                marginBottom: 40
                                             }}
                                         >
-                                            LEAVE BLANK IF CREATING A FIRST
-                                            DIRECTORY LIST CATEGORY
-                                        </p>
-                                    </div>
-                                    <Query query={getDirectoryListBySystem(1)}>
-                                        {({ loading, error, data }) => {
-                                            if (loading)
-                                                return <Loading loadingData />;
-                                            if (error)
-                                                return `Error! ${
-                                                    error.message
-                                                }`;
-                                            const modifiedData = modifyDirectoryListData(
-                                                data.directoryLists_by_system
-                                            );
-                                            if (!Boolean(editData)) {
-                                                return (
-                                                    <TreeviewCheckbox
-                                                        data={modifiedData}
-                                                        updateSelectedDirectory={
-                                                            this
-                                                                .updateSelectedDirectory
-                                                        }
-                                                        selectAmount="single"
-                                                    />
-                                                );
-                                            } else {
-                                                return (
-                                                    <TreeviewCheckbox
-                                                        data={modifiedData}
-                                                        updateSelectedDirectory={
-                                                            this
-                                                                .updateSelectedDirectory
-                                                        }
-                                                        selectAmount="single"
-                                                        selectedValue={
+                                            <div
+                                                style={{
+                                                    color: "rgb(35,38,92)",
+                                                    fontSize: "2.7em",
+                                                    width: "52%"
+                                                }}
+                                            >
+                                                {titleText}
+                                            </div>
+                                            <div style={{ width: "10%" }}>
+                                                <Button
+                                                    className={
+                                                        classes.cancelButton
+                                                    }
+                                                    disabled={isSubmitting}
+                                                    size="large"
+                                                    variant="outlined"
+                                                    onClick={
+                                                        this.openDialogCancel
+                                                    }
+                                                >
+                                                    CANCEL
+                                                </Button>
+                                            </div>
+                                            <div style={{ width: "10%" }}>
+                                                <Button
+                                                    type="submit"
+                                                    disabled={
+                                                        isSubmitting ||
+                                                        Boolean(errors.name) ||
+                                                        !Boolean(values.name) ||
+                                                        values.name.length ===
+                                                            0 ||
+                                                        !Boolean(
                                                             selected_directory
+                                                        )
+                                                    }
+                                                    className={
+                                                        classes.saveButton
+                                                    }
+                                                    variant="outlined"
+                                                    size="large"
+                                                >
+                                                    ADD & SAVE
+                                                </Button>
+                                            </div>
+                                        </div>
+                                        <CreateContentContainerDiv>
+                                            <div style={{ width: "50%" }}>
+                                                <div style={{ padding: 20 }}>
+                                                    HEADER IMAGE:
+                                                </div>
+
+                                                {this.renderImageUploader()}
+                                            </div>
+                                            <div style={{ width: "50%" }}>
+                                                <div
+                                                    style={{
+                                                        padding:
+                                                            "20px 20px 20px 0px"
+                                                    }}
+                                                >
+                                                    {subTitleText}
+                                                </div>
+                                                {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
+                                                <Field
+                                                    name="name"
+                                                    validateOnBlur
+                                                    validateOnChange
+                                                    render={({
+                                                        field,
+                                                        form
+                                                    }) => (
+                                                        <TextField
+                                                            className={
+                                                                classes.categoryNameTextField
+                                                            }
+                                                            variant="outlined"
+                                                            name={field.name}
+                                                            value={field.value}
+                                                            onChange={
+                                                                field.onChange
+                                                            }
+                                                            onBlur={
+                                                                field.onBlur
+                                                            }
+                                                            error={
+                                                                form.errors[
+                                                                    field.name
+                                                                ] &&
+                                                                form.touched[
+                                                                    field.name
+                                                                ]
+                                                            }
+                                                            helperText={
+                                                                form.errors[
+                                                                    field.name
+                                                                ] &&
+                                                                form.touched[
+                                                                    field.name
+                                                                ] &&
+                                                                String(
+                                                                    form.errors[
+                                                                        field
+                                                                            .name
+                                                                    ]
+                                                                )
+                                                            }
+                                                            FormHelperTextProps={{
+                                                                classes: {
+                                                                    root:
+                                                                        classes.categoryNameFormHelper
+                                                                }
+                                                            }}
+                                                        />
+                                                    )}
+                                                />
+                                                <div
+                                                    style={{
+                                                        width: "60%",
+                                                        marginTop: 40
+                                                    }}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            fontSize: "0.8em"
+                                                        }}
+                                                    >
+                                                        IMAGE NAME
+                                                    </div>
+                                                    <TextField
+                                                        disabled={true}
+                                                        value={
+                                                            this.state.imageName
                                                         }
+                                                        className={
+                                                            classes.imageNameTextField
+                                                        }
+                                                        margin="normal"
+                                                        variant="outlined"
+                                                        InputProps={{
+                                                            endAdornment: (
+                                                                <InputAdornment position="end">
+                                                                    <IconButton
+                                                                        disabled={
+                                                                            this
+                                                                                .state
+                                                                                .imageName
+                                                                                .length ===
+                                                                            0
+                                                                        }
+                                                                        onClick={
+                                                                            this
+                                                                                .openDialogImage
+                                                                        }
+                                                                    >
+                                                                        <CancelIcon />
+                                                                    </IconButton>
+                                                                </InputAdornment>
+                                                            )
+                                                        }}
                                                     />
-                                                );
-                                            }
-                                        }}
-                                    </Query>
-                                </div>
-                            </CreateContentContainerDiv>
-                        </Form>
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "0.8em",
+                                                        marginTop: 20
+                                                    }}
+                                                >
+                                                    SELECT LOCATION
+                                                    <p
+                                                        style={{
+                                                            fontSize: "0.7em"
+                                                        }}
+                                                    >
+                                                        LEAVE BLANK IF CREATING
+                                                        A FIRST DIRECTORY LIST
+                                                        CATEGORY
+                                                    </p>
+                                                </div>
+                                                <Query
+                                                    query={getDirectoryListBySystem(
+                                                        1
+                                                    )}
+                                                >
+                                                    {({
+                                                        loading,
+                                                        error,
+                                                        data
+                                                    }) => {
+                                                        if (loading)
+                                                            return (
+                                                                <Loading
+                                                                    loadingData
+                                                                />
+                                                            );
+                                                        if (error)
+                                                            return `Error! ${
+                                                                error.message
+                                                            }`;
+                                                        const modifiedData = modifyDirectoryListData(
+                                                            data.directoryLists_by_system
+                                                        );
+                                                        if (
+                                                            !Boolean(editData)
+                                                        ) {
+                                                            return (
+                                                                <TreeviewCheckbox
+                                                                    data={
+                                                                        modifiedData
+                                                                    }
+                                                                    updateSelectedDirectory={
+                                                                        this
+                                                                            .updateSelectedDirectory
+                                                                    }
+                                                                    selectAmount="single"
+                                                                />
+                                                            );
+                                                        } else {
+                                                            return (
+                                                                <TreeviewCheckbox
+                                                                    data={
+                                                                        modifiedData
+                                                                    }
+                                                                    updateSelectedDirectory={
+                                                                        this
+                                                                            .updateSelectedDirectory
+                                                                    }
+                                                                    selectAmount="single"
+                                                                    selectedValue={
+                                                                        selected_directory
+                                                                    }
+                                                                />
+                                                            );
+                                                        }
+                                                    }}
+                                                </Query>
+                                            </div>
+                                        </CreateContentContainerDiv>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </React.Fragment>
                     )}
-                </Formik>
+                </Mutation>
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}

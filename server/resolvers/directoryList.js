@@ -4,6 +4,7 @@ import {
     checkUserLogin
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
+import { s3, processUpload } from "../utils/constant";
 
 export default {
     Query: {
@@ -20,30 +21,37 @@ export default {
     Mutation: {
         createDirectoryList: async (
             _root,
-            // { name, is_root, parent_id, layout_id, system_id },
-            // input,
-            { input: { name, is_root, parent_id, layout_id, system_id } },
-            { user }
+            {
+                input: { name, is_root, parent_id, layout_id, system_id, image }
+            },
+            { user, clientIp }
         ) => {
-            // await checkUserLogin(user);
-            // const system = await db.system.findByPk(system_id);
-            // await checkUserPermissionModifySystem(user, system);
-            // let created_dir_list = null;
-            // try {
-            //     created_dir_list = await db.directory_list.create({
-            //         name,
-            //         is_root,
-            //         parentId: parent_id,
-            //         layoutId: layout_id,
-            //         systemId: system_id
-            //     });
-            // } catch (error) {
-            //     throw new UserInputError(
-            //         `Create Directory List ${name} status failed.\nError Message: ${
-            //             error.message
-            //         }`
-            //     );
-            // }
+            await checkUserLogin(user);
+            //const system = await db.system.findByPk(system_id);
+            //await checkUserPermissionModifySystem(user, system);
+
+            //upload and create image
+            let created_media;
+            if (image) {
+                try {
+                    const uploaded_media = await processUpload(image);
+                    try {
+                        created_media = await db.media.create({
+                            name: uploaded_media.filename,
+                            path: uploaded_media.location,
+                            clientId: user.id,
+                            type: "image",
+                            key: uploaded_media.key
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            //create directory list
             let created_dir_list = db.directory_list.build({
                 name,
                 is_root,
@@ -51,6 +59,7 @@ export default {
                 layoutId: layout_id,
                 systemId: system_id
             });
+
             try {
                 await created_dir_list.save();
             } catch (error) {
@@ -60,8 +69,16 @@ export default {
                     }`
                 );
             }
-            console.log("created dir list: ", created_dir_list);
-            //Assign media
+
+            try {
+                await created_dir_list.addMedia(created_media);
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Directory List ${name} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
 
             return created_dir_list;
         }

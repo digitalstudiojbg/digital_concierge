@@ -1,5 +1,6 @@
 import { AuthenticationError } from "apollo-server-express";
 import AWS from "aws-sdk";
+import uuid from "uuid";
 
 export const JBG_EMAIL_SUFFIX = "@johnbatman.com.au";
 /**
@@ -65,3 +66,37 @@ export const s3 = new AWS.S3({
     apiVersion: "2006-03-01",
     params: { Bucket: "digitalconcierge" }
 });
+
+export const processUpload = async file => {
+    const { stream, filename, mimetype, encoding } = await file;
+
+    return new Promise((resolve, reject) => {
+        s3.upload(
+            {
+                Key: `cms_users/${uuid.v4()}-${filename}`,
+                Body: stream,
+                ACL: "public-read"
+            },
+            (err, data) => {
+                err &&
+                    reject(
+                        `There was an error uploading your photo: ${
+                            err.message
+                        }`
+                    );
+
+                s3.listObjects({ Delimiter: "/" }, (err, data) => {
+                    if (err) {
+                        console.log(err.message);
+                    } else {
+                        console.log(data);
+                    }
+                });
+
+                console.log(data);
+
+                resolve({ filename, location: data.Location, key: data.key });
+            }
+        );
+    });
+};
