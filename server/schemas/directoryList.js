@@ -27,6 +27,7 @@ export default gql`
     }
 
     input DirectoryListInput {
+        id: Int
         name: String!
         is_root: Boolean!
         parent_id: Int

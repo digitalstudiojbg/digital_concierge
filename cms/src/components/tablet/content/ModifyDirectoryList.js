@@ -27,6 +27,7 @@ import { getDirectoryListBySystem } from "../../../data/query";
 // import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import gql from "graphql-tag";
+import { createDirListTest } from "../../../data/mutation";
 
 const styles = _theme => ({
     saveButton: {
@@ -58,7 +59,7 @@ const styles = _theme => ({
     }
 });
 
-const CREATE_DIRECTORY_LIST = gql`
+/*const CREATE_DIRECTORY_LIST = gql`
     mutation createDirListTest(
         $name: String!
         $is_root: Boolean!
@@ -69,6 +70,32 @@ const CREATE_DIRECTORY_LIST = gql`
     ) {
         createDirectoryList(
             input: {
+                name: $name
+                is_root: $is_root
+                layout_id: $layout_id
+                system_id: $system_id
+                parent_id: $parent_id
+                image: $image
+            }
+        ) {
+            id
+            name
+        }
+    }
+`;*/
+
+const EDIT_DIRECTORY_LIST = gql`
+    mutation editDirectoryList(
+        $name: String!
+        $is_root: Boolean!
+        $parent_id: Int
+        $system_id: Int!
+        $layout_id: Int!
+        $image: Upload
+    ) {
+        editDirectoryList(
+            input: {
+                id: $id
                 name: $name
                 is_root: $is_root
                 layout_id: $layout_id
@@ -322,7 +349,7 @@ class ModifyDirectoryList extends React.PureComponent {
         return (
             <ContainerDiv>
                 <Mutation
-                    mutation={CREATE_DIRECTORY_LIST}
+                    mutation={createDirListTest()}
                     refetchQueries={[
                         {
                             query: getDirectoryListBySystem()
