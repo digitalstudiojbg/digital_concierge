@@ -5,7 +5,6 @@ import Loading from "../loading/Loading";
 import { getClientFromUser } from "../../data/query";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -236,9 +235,13 @@ class WelcomeAccount extends React.Component {
                             return this.renderDetailInfo(key, title, value);
                         })}
                         {file.length > 0 && (
-                            <Link to={file} style={{ fontSize: "1.1em" }}>
+                            <a
+                                href={file}
+                                style={{ fontSize: "1.1em" }}
+                                target="_blank"
+                            >
                                 Download Contract File
-                            </Link>
+                            </a>
                         )}
                     </AccountEntryEntryDiv>
                 </AccountEntryContainerDiv>
