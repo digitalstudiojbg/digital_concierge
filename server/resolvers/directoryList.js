@@ -102,26 +102,61 @@ export default {
             let updated_image;
             let updated_directory_list;
 
-            console.log(image);
-
             //Check if image update
-            if (image.updated) {
-                updated_image_entry = await processUploadMedia(
+            if (image) {
+                updated_image = await processUploadMedia(
                     image,
                     user.id,
                     "image"
                 );
             }
-
-            //Update directory list
+            //Update directory list in DB
             try {
                 updated_directory_list = await db.directory_list.update(
                     { name, is_root, parent_id, layout_id, system_id },
                     { where: { id } }
                 );
-            } catch (err) {}
-
-            return { id: 1, name: "test" };
+                try {
+                    console.log(Object.keys(updated_directory_list.__proto__));
+                    //Get update directory list from DB
+                    const to_update = await db.directory_list.findByPk(id);
+                    try {
+                        //Get list of media from update directory list from DB
+                        const to_delete_images = await to_update.getMedia();
+                        let to_delete_images_key = [];
+                        to_delete_images.map(each => {
+                            to_delete_images_key.push(each.key);
+                        });
+                        try {
+                            //Delete previous images on S3
+                            await to_delete_images_key.map(each => {
+                                processDelete(each);
+                            });
+                            try {
+                                //Remove previous image in DB
+                                await to_update.removeMedium(to_delete_images);
+                                try {
+                                    //Add new image into directory in DB
+                                    await to_update.addMedia(updated_image);
+                                } catch (err) {
+                                    throw new UserInputError(err);
+                                }
+                            } catch (err) {
+                                throw new UserInputError(err);
+                            }
+                        } catch (err) {
+                            throw new UserInputError(err);
+                        }
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
+            } catch (err) {
+                throw new UserInputError(err);
+            }
+            return updated_directory_list;
         }
     },
     DirectoryList: {

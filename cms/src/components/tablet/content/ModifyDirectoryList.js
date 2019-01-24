@@ -298,6 +298,12 @@ class ModifyDirectoryList extends React.PureComponent {
             ? "EDIT DIRECTORY LIST ENTRY"
             : "ADD DIRECTORY LIST ENTRY";
         const subTitleText = "DIRECTORY LIST TITLE";
+        /*refetchQueries={[
+                        {
+                            query: getDirectoryListBySystem()
+                        }
+                    ]}*/
+        console.log(this.state.images);
 
         return (
             <ContainerDiv>
@@ -307,11 +313,6 @@ class ModifyDirectoryList extends React.PureComponent {
                             ? CREATE_DIRECTORY_LIST()
                             : EDIT_DIRECTORY_LIST()
                     }
-                    refetchQueries={[
-                        {
-                            query: getDirectoryListBySystem()
-                        }
-                    ]}
                 >
                     {(action, { loading, error }) => (
                         <React.Fragment>
@@ -358,27 +359,49 @@ class ModifyDirectoryList extends React.PureComponent {
                                     ) {
                                         console.log("UPDATE WITH IMAGE");
                                         console.log(images[0]);
-
-                                        action({
-                                            variables: {
-                                                id: parseInt(
-                                                    this.props.location.state
-                                                        .data.id
-                                                ),
-                                                name: values.name,
-                                                is_root: selected_directory
-                                                    ? true
-                                                    : false,
-                                                layout_id: 1,
-                                                system_id: parseInt(
-                                                    match.params.system_id
-                                                ),
-                                                parent_id: parseInt(
-                                                    selected_directory
-                                                ),
-                                                image: images[0]
-                                            }
-                                        });
+                                        //If user upload another image
+                                        if (!images[0].uploaded) {
+                                            action({
+                                                variables: {
+                                                    id: parseInt(
+                                                        this.props.location
+                                                            .state.data.id
+                                                    ),
+                                                    name: values.name,
+                                                    is_root: selected_directory
+                                                        ? true
+                                                        : false,
+                                                    layout_id: 1,
+                                                    system_id: parseInt(
+                                                        match.params.system_id
+                                                    ),
+                                                    parent_id: parseInt(
+                                                        selected_directory
+                                                    ),
+                                                    image: images[0]
+                                                }
+                                            });
+                                        } else {
+                                            action({
+                                                variables: {
+                                                    id: parseInt(
+                                                        this.props.location
+                                                            .state.data.id
+                                                    ),
+                                                    name: values.name,
+                                                    is_root: selected_directory
+                                                        ? true
+                                                        : false,
+                                                    layout_id: 1,
+                                                    system_id: parseInt(
+                                                        match.params.system_id
+                                                    ),
+                                                    parent_id: parseInt(
+                                                        selected_directory
+                                                    )
+                                                }
+                                            });
+                                        }
                                     } else {
                                         action({
                                             variables: {
@@ -397,12 +420,12 @@ class ModifyDirectoryList extends React.PureComponent {
                                         });
                                     }
 
-                                    this.props.history.push(
+                                    /*this.props.history.push(
                                         SYSTEM_CMS_CONTENT_URL.replace(
                                             ":system_id",
                                             parseInt(match.params.system_id)
                                         )
-                                    );
+                                    );*/
                                 }}
                                 validationSchema={DirectoryListSchema}
                             >
