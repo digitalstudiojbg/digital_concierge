@@ -27,7 +27,10 @@ import { getDirectoryListBySystem } from "../../../data/query";
 // import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import gql from "graphql-tag";
-import { createDirListTest } from "../../../data/mutation";
+import {
+    CREATE_DIRECTORY_LIST,
+    EDIT_DIRECTORY_LIST
+} from "../../../data/mutation";
 
 const styles = _theme => ({
     saveButton: {
@@ -58,57 +61,6 @@ const styles = _theme => ({
         fontSize: "large"
     }
 });
-
-/*const CREATE_DIRECTORY_LIST = gql`
-    mutation createDirListTest(
-        $name: String!
-        $is_root: Boolean!
-        $parent_id: Int
-        $system_id: Int!
-        $layout_id: Int!
-        $image: Upload
-    ) {
-        createDirectoryList(
-            input: {
-                name: $name
-                is_root: $is_root
-                layout_id: $layout_id
-                system_id: $system_id
-                parent_id: $parent_id
-                image: $image
-            }
-        ) {
-            id
-            name
-        }
-    }
-`;*/
-
-const EDIT_DIRECTORY_LIST = gql`
-    mutation editDirectoryList(
-        $name: String!
-        $is_root: Boolean!
-        $parent_id: Int
-        $system_id: Int!
-        $layout_id: Int!
-        $image: Upload
-    ) {
-        editDirectoryList(
-            input: {
-                id: $id
-                name: $name
-                is_root: $is_root
-                layout_id: $layout_id
-                system_id: $system_id
-                parent_id: $parent_id
-                image: $image
-            }
-        ) {
-            id
-            name
-        }
-    }
-`;
 
 const DirectoryListSchema = Yup.object().shape({
     name: Yup.string().required("Required")
@@ -146,7 +98,8 @@ class ModifyDirectoryList extends React.PureComponent {
                 props.location.state.data.is_dir_list
                     ? props.location.state.data.parent_id
                     : null,
-            images
+            images,
+            is_create: has_data ? false : true
         };
 
         //Create Referencess
@@ -338,7 +291,7 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     render() {
-        const { selected_directory, images } = this.state;
+        const { selected_directory, images, is_create } = this.state;
         const { classes, location = {}, match } = this.props;
         const { data: editData = null } = location.state || {};
         const titleText = Boolean(editData)
@@ -349,14 +302,18 @@ class ModifyDirectoryList extends React.PureComponent {
         return (
             <ContainerDiv>
                 <Mutation
-                    mutation={createDirListTest()}
+                    mutation={
+                        is_create
+                            ? CREATE_DIRECTORY_LIST()
+                            : EDIT_DIRECTORY_LIST()
+                    }
                     refetchQueries={[
                         {
                             query: getDirectoryListBySystem()
                         }
                     ]}
                 >
-                    {(createDirectoryList, { loading, error }) => (
+                    {(action, { loading, error }) => (
                         <React.Fragment>
                             {loading && <p>Loading...</p>}
                             {error && (
@@ -371,8 +328,14 @@ class ModifyDirectoryList extends React.PureComponent {
                                     alert(values.name);
                                     setSubmitting(false);
 
-                                    if (images && images.length === 1) {
-                                        createDirectoryList({
+                                    if (
+                                        images &&
+                                        images.length === 1 &&
+                                        is_create
+                                    ) {
+                                        console.log("CREATE WITH IMAGE");
+
+                                        action({
                                             variables: {
                                                 name: values.name,
                                                 is_root: selected_directory
@@ -388,8 +351,36 @@ class ModifyDirectoryList extends React.PureComponent {
                                                 image: images[0]
                                             }
                                         });
+                                    } else if (
+                                        images &&
+                                        images.length === 1 &&
+                                        !is_create
+                                    ) {
+                                        console.log("UPDATE WITH IMAGE");
+                                        console.log(images[0]);
+
+                                        action({
+                                            variables: {
+                                                id: parseInt(
+                                                    this.props.location.state
+                                                        .data.id
+                                                ),
+                                                name: values.name,
+                                                is_root: selected_directory
+                                                    ? true
+                                                    : false,
+                                                layout_id: 1,
+                                                system_id: parseInt(
+                                                    match.params.system_id
+                                                ),
+                                                parent_id: parseInt(
+                                                    selected_directory
+                                                ),
+                                                image: images[0]
+                                            }
+                                        });
                                     } else {
-                                        createDirectoryList({
+                                        action({
                                             variables: {
                                                 name: values.name,
                                                 is_root: selected_directory

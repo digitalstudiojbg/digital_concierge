@@ -99,9 +99,13 @@ export default {
             //const system = await db.system.findByPk(system_id);
             //await checkUserPermissionModifySystem(user, system);
 
-            let updated_image_entry;
+            let updated_image;
+            let updated_directory_list;
+
+            console.log(image);
+
             //Check if image update
-            if (image) {
+            if (image.updated) {
                 updated_image_entry = await processUploadMedia(
                     image,
                     user.id,
@@ -111,11 +115,13 @@ export default {
 
             //Update directory list
             try {
-                await db.directory_list.update(
+                updated_directory_list = await db.directory_list.update(
                     { name, is_root, parent_id, layout_id, system_id },
-                    { where: id }
+                    { where: { id } }
                 );
             } catch (err) {}
+
+            return { id: 1, name: "test" };
         }
     },
     DirectoryList: {

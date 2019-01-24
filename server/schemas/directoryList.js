@@ -8,8 +8,8 @@ export default gql`
     }
 
     extend type Mutation {
-        createDirectoryList(input: DirectoryListInput): DirectoryList
-        editDirectoryList(id: ID!, input: DirectoryListInput): DirectoryList
+        createDirectoryList(input: CreateDirectoryListInput): DirectoryList
+        editDirectoryList(input: UpdateDirectoryListInput): DirectoryList
     }
 
     type DirectoryList {
@@ -26,8 +26,17 @@ export default gql`
         media: [Media]
     }
 
-    input DirectoryListInput {
-        id: Int
+    input CreateDirectoryListInput {
+        name: String!
+        is_root: Boolean!
+        parent_id: Int
+        layout_id: Int!
+        system_id: Int!
+        image: Upload
+    }
+
+    input UpdateDirectoryListInput {
+        id: ID!
         name: String!
         is_root: Boolean!
         parent_id: Int
