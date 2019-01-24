@@ -12,7 +12,7 @@ export const getSelectedUserQuery = gql`
             updatedAt
             roles {
                 name
-                is_admin
+                is_standard_role
                 permissions {
                     name
                 }

@@ -36,7 +36,8 @@ export default {
                 ]
             }),
         client: async user => {
-            return await db.client.findById(user.clientId);
-        }
+            return await db.client.findByPk(user.clientId);
+        },
+        avatar: async user => (await db.media.findByPk(user.mediumId)).path
     }
 };

@@ -52,7 +52,15 @@ const ContainerDiv = styled.div`
 
 const WelcomeDiv = styled.div`
     width: 350px;
-    margin-left: 1.5vw;
+    /* margin-left: 1.5vw; */
+    background-color: rgb(191, 191, 191);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: black;
 `;
 
 const WelcomeUserDetailContainerDiv = styled.div`
@@ -101,7 +109,7 @@ class Header extends Component {
         return (
             <ContainerDiv>
                 {match.url === URL_WELCOME ? (
-                    <WelcomeDiv>Welcome</WelcomeDiv>
+                    <WelcomeDiv>PLATYPUS</WelcomeDiv>
                 ) : (
                     <div style={{ width: 350 }}>
                         {has_tablet && has_touchscreen && (
@@ -181,12 +189,12 @@ class Header extends Component {
                                 <ListItemText inset primary="LOGOUT" />
                             </MenuItem>
                         </Menu>
-                        {user.venue && user.venue.logo && (
+                        {user.avatar && (
                             <img
                                 style={{
                                     height: "50px"
                                 }}
-                                src={user.venue.logo}
+                                src={user.avatar}
                                 alt={`{user.name}_avatar`}
                             />
                         )}

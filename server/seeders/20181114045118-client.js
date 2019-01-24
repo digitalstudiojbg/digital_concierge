@@ -12,7 +12,8 @@ module.exports = {
                     has_tablet: true,
                     has_touchscreen: true,
                     number_of_users: 5,
-                    avatar: "inn.png"
+                    avatar:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Holiday_Inn_Logo.png"
                 },
 
                 {
@@ -22,7 +23,8 @@ module.exports = {
                     has_tablet: true,
                     has_touchscreen: true,
                     number_of_users: 5,
-                    avatar: "jbg.png"
+                    avatar:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/jbg_logo.png"
                 }
             ],
             {}

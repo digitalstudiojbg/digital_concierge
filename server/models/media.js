@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
         media.belongsTo(models.client, {
             foreignKey: { allowNull: false }
         });
+        media.hasMany(models.user);
     };
     return media;
 };
