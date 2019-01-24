@@ -10,6 +10,7 @@ export default gql`
     extend type Mutation {
         createDirectoryList(input: CreateDirectoryListInput): DirectoryList
         editDirectoryList(input: UpdateDirectoryListInput): DirectoryList
+        deleteDirectoryList(id: ID!): DirectoryList
     }
 
     type DirectoryList {

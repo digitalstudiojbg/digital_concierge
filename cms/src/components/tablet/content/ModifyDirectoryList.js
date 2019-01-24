@@ -298,11 +298,7 @@ class ModifyDirectoryList extends React.PureComponent {
             ? "EDIT DIRECTORY LIST ENTRY"
             : "ADD DIRECTORY LIST ENTRY";
         const subTitleText = "DIRECTORY LIST TITLE";
-        /*refetchQueries={[
-                        {
-                            query: getDirectoryListBySystem()
-                        }
-                    ]}*/
+
         console.log(this.state.images);
 
         return (
@@ -313,6 +309,11 @@ class ModifyDirectoryList extends React.PureComponent {
                             ? CREATE_DIRECTORY_LIST()
                             : EDIT_DIRECTORY_LIST()
                     }
+                    refetchQueries={[
+                        {
+                            query: getDirectoryListBySystem()
+                        }
+                    ]}
                 >
                     {(action, { loading, error }) => (
                         <React.Fragment>
@@ -420,12 +421,12 @@ class ModifyDirectoryList extends React.PureComponent {
                                         });
                                     }
 
-                                    /*this.props.history.push(
+                                    this.props.history.push(
                                         SYSTEM_CMS_CONTENT_URL.replace(
                                             ":system_id",
                                             parseInt(match.params.system_id)
                                         )
-                                    );*/
+                                    );
                                 }}
                                 validationSchema={DirectoryListSchema}
                             >

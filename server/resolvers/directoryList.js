@@ -95,7 +95,7 @@ export default {
             },
             { user, clientIp }
         ) => {
-            //await checkUserLogin(user);
+            await checkUserLogin(user);
             //const system = await db.system.findByPk(system_id);
             //await checkUserPermissionModifySystem(user, system);
 
@@ -110,6 +110,8 @@ export default {
                     "image"
                 );
             }
+
+            let to_update;
             //Update directory list in DB
             try {
                 updated_directory_list = await db.directory_list.update(
@@ -119,7 +121,7 @@ export default {
                 try {
                     console.log(Object.keys(updated_directory_list.__proto__));
                     //Get update directory list from DB
-                    const to_update = await db.directory_list.findByPk(id);
+                    to_update = await db.directory_list.findByPk(id);
                     try {
                         //Get list of media from update directory list from DB
                         const to_delete_images = await to_update.getMedia();
@@ -127,25 +129,29 @@ export default {
                         to_delete_images.map(each => {
                             to_delete_images_key.push(each.key);
                         });
-                        try {
-                            //Delete previous images on S3
-                            await to_delete_images_key.map(each => {
-                                processDelete(each);
-                            });
+                        if (image) {
                             try {
-                                //Remove previous image in DB
-                                await to_update.removeMedium(to_delete_images);
+                                //Delete previous images on S3
+                                await to_delete_images_key.map(each => {
+                                    processDelete(each);
+                                });
                                 try {
-                                    //Add new image into directory in DB
-                                    await to_update.addMedia(updated_image);
+                                    //Remove previous image in DB
+                                    await to_update.removeMedium(
+                                        to_delete_images
+                                    );
+                                    try {
+                                        //Add new image into directory in DB
+                                        await to_update.addMedia(updated_image);
+                                    } catch (err) {
+                                        throw new UserInputError(err);
+                                    }
                                 } catch (err) {
                                     throw new UserInputError(err);
                                 }
                             } catch (err) {
                                 throw new UserInputError(err);
                             }
-                        } catch (err) {
-                            throw new UserInputError(err);
                         }
                     } catch (err) {
                         throw new UserInputError(err);
@@ -156,7 +162,11 @@ export default {
             } catch (err) {
                 throw new UserInputError(err);
             }
-            return updated_directory_list;
+            return to_update;
+        },
+
+        deleteDirectoryList: async (_root, id, { user, clientIp }) => {
+            const to_delete = await db.directory_list.findByPk(id);
         }
     },
     DirectoryList: {
