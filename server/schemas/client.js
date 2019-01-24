@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         client(id: ID!): Client
         clients: [Client]
+        clientByUser: Client
     }
 
     type Client {

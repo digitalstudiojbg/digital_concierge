@@ -5,7 +5,9 @@ export default {
         system: async (_root, { id }) => await db.system.findByPk(id),
         systems: async (_root, _input, { user }) => await db.system.findAll(),
         systemsByClient: async (_root, { id }) =>
-            await db.system.findAll({ where: { clientId: id } })
+            await db.system.findAll({ where: { clientId: id } }),
+        systemsByUser: async (_root, _input, { user }) =>
+            await db.system.findAll({ where: { clientId: user.clientId } })
     },
     System: {
         client: async system => await db.client.findByPk(system.clientId),

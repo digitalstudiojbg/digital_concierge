@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { getCurrentUserQuery } from "../../data/query";
+import { getSystemsFromUser } from "../../data/query";
 import { Query } from "react-apollo";
 import { withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
@@ -42,52 +42,40 @@ const system_entry_style = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "1.7em"
+    fontSize: "1.7em",
+    padding: 10
 };
 
-class WelcomeSystems extends React.PureComponent {
-    render() {
-        return (
-            <ContainerDiv>
-                <Query query={getCurrentUserQuery}>
-                    {({
-                        loading,
-                        error,
-                        data: {
-                            getCurrentUser: {
-                                client: { systems }
-                            }
-                        }
-                    }) => {
-                        console.log(systems);
-                        if (loading) return <Loading loadingData />;
-                        if (error) return `Error! ${error.message}`;
-                        return (
-                            <React.Fragment>
-                                <SubtitleContainerDiv>
-                                    PLEASE SELECT SYSTEM TO EDIT
-                                </SubtitleContainerDiv>
-                                <InnerContainerDiv>
-                                    {systems.map(system => (
-                                        <Link
-                                            style={system_entry_style}
-                                            key={system.id}
-                                            to={SYSTEM_INDEX_URL.replace(
-                                                ":system_id",
-                                                system.id
-                                            )}
-                                        >
-                                            {system.name}
-                                        </Link>
-                                    ))}
-                                </InnerContainerDiv>
-                            </React.Fragment>
-                        );
-                    }}
-                </Query>
-            </ContainerDiv>
-        );
-    }
-}
+const WelcomeSystems = () => (
+    <ContainerDiv>
+        <Query query={getSystemsFromUser}>
+            {({ loading, error, data: { systemsByUser: systems } }) => {
+                if (loading) return <Loading loadingData />;
+                if (error) return `Error! ${error.message}`;
+                return (
+                    <React.Fragment>
+                        <SubtitleContainerDiv>
+                            PLEASE SELECT SYSTEM TO EDIT
+                        </SubtitleContainerDiv>
+                        <InnerContainerDiv>
+                            {systems.map(system => (
+                                <Link
+                                    style={system_entry_style}
+                                    key={system.id}
+                                    to={SYSTEM_INDEX_URL.replace(
+                                        ":system_id",
+                                        system.id
+                                    )}
+                                >
+                                    {system.name}
+                                </Link>
+                            ))}
+                        </InnerContainerDiv>
+                    </React.Fragment>
+                );
+            }}
+        </Query>
+    </ContainerDiv>
+);
 
 export default withApollo(WelcomeSystems);

@@ -5,6 +5,7 @@ export default gql`
         system(id: ID!): System
         systems: [System]
         systemsByClient(id: ID!): [System]
+        systemsByUser: [System]
     }
 
     type System {

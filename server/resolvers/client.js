@@ -7,7 +7,9 @@ export default {
         },
         clients: async (_root, _input, { user }) => {
             return await db.client.findAll();
-        }
+        },
+        clientByUser: async (_root, _input, { user }) =>
+            await db.client.findByPk(user.clientId)
     },
     Client: {
         users: async client =>
