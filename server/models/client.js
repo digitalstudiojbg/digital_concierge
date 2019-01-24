@@ -10,11 +10,35 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            has_parent_category: {
-                type: DataTypes.BOOLEAN,
+            full_company_name: DataTypes.STRING,
+            nature_of_business: {
+                type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
+                }
+            },
+            address: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            postal_address: DataTypes.STRING,
+            phone: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true,
+                    isEmail: true
                 }
             },
             active: {
@@ -22,21 +46,8 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 validate: {
                     notEmpty: true
-                }
-            },
-            has_tablet: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            has_touchscreen: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
+                },
+                defaultValue: true
             },
             number_of_users: {
                 type: DataTypes.INTEGER,
@@ -65,6 +76,8 @@ module.exports = (sequelize, DataTypes) => {
         client.hasMany(models.device);
         client.hasMany(models.system);
         client.hasMany(models.media);
+        client.hasMany(models.contact);
+        client.hasMany(models.contract);
     };
     return client;
 };

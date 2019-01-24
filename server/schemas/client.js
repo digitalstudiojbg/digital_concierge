@@ -10,10 +10,13 @@ export default gql`
     type Client {
         id: ID!
         name: String
-        has_parent_category: Boolean
+        full_company_name: String
+        nature_of_business: String
+        address: String
+        postal_address: String
+        phone: String
+        email: String
         active: Boolean
-        has_tablet: Boolean
-        has_touchscreen: Boolean
         number_of_users: Int
         avatar: String
         createdAt: DateTime
@@ -25,5 +28,7 @@ export default gql`
         media: [Media]
         systems: [System]
         devices: [Device]
+        contacts: [Contact]
+        contracts: [Contract]
     }
 `;

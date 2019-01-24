@@ -29,10 +29,13 @@ export default {
             await db.room.findAll({ where: { clientId: client.id } }),
         systems: async client =>
             await db.system.findAll({ where: { clientId: client.id } }),
-        media: async client => {
-            return await db.media.findAll({ where: { clientId: client.id } });
-        },
+        media: async client =>
+            await db.media.findAll({ where: { clientId: client.id } }),
         devices: async client =>
-            await db.device.findAll({ where: { clientId: client.id } })
+            await db.device.findAll({ where: { clientId: client.id } }),
+        contacts: async client =>
+            await db.contact.findAll({ where: { clientId: client.id } }),
+        contracts: async client =>
+            await db.contract.findAll({ where: { clientId: client.id } })
     }
 };

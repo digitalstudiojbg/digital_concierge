@@ -25,6 +25,8 @@ import template_resolver from "./template";
 import activityLog_resolver from "./activityLog";
 import file_resolver from "./file";
 import json_resolver from "./json_resolver";
+import contact_resolver from "./contact";
+import contract_resolver from "./contract";
 
 export default [
     user_resolver,
@@ -53,5 +55,7 @@ export default [
     validation_resolver,
     activityLog_resolver,
     json_resolver,
+    contract_resolver,
+    contact_resolver,
     file_resolver
 ];
