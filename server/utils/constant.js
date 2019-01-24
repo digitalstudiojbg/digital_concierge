@@ -251,3 +251,22 @@ export const handleDeleteActionActivityLog = async (
         )();
     }
 };
+
+export const processUploadMedia = async (image, clientId, type) => {
+    try {
+        const uploaded_media = await processUpload(image);
+        try {
+            return await db.media.create({
+                name: uploaded_media.filename,
+                path: uploaded_media.location,
+                clientId,
+                type,
+                key: uploaded_media.key
+            });
+        } catch (e) {
+            throw new UserInputError(e);
+        }
+    } catch (e) {
+        throw new UserInputError(e);
+    }
+};

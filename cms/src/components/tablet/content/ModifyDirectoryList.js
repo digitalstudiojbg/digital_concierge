@@ -312,7 +312,7 @@ class ModifyDirectoryList extends React.PureComponent {
 
     render() {
         const { selected_directory, images } = this.state;
-        const { classes, location = {} } = this.props;
+        const { classes, location = {}, match } = this.props;
         const { data: editData = null } = location.state || {};
         const titleText = Boolean(editData)
             ? "EDIT DIRECTORY LIST ENTRY"
@@ -321,7 +321,14 @@ class ModifyDirectoryList extends React.PureComponent {
 
         return (
             <ContainerDiv>
-                <Mutation mutation={CREATE_DIRECTORY_LIST}>
+                <Mutation
+                    mutation={CREATE_DIRECTORY_LIST}
+                    refetchQueries={[
+                        {
+                            query: getDirectoryListBySystem()
+                        }
+                    ]}
+                >
                     {(createDirectoryList, { loading, error }) => (
                         <React.Fragment>
                             {loading && <p>Loading...</p>}
@@ -345,7 +352,12 @@ class ModifyDirectoryList extends React.PureComponent {
                                                     ? true
                                                     : false,
                                                 layout_id: 1,
-                                                system_id: 4,
+                                                system_id: parseInt(
+                                                    match.params.system_id
+                                                ),
+                                                parent_id: parseInt(
+                                                    selected_directory
+                                                ),
                                                 image: images[0]
                                             }
                                         });
@@ -357,10 +369,22 @@ class ModifyDirectoryList extends React.PureComponent {
                                                     ? true
                                                     : false,
                                                 layout_id: 1,
-                                                system_id: 4
+                                                system_id: parseInt(
+                                                    match.params.system_id
+                                                ),
+                                                parent_id: parseInt(
+                                                    selected_directory
+                                                )
                                             }
                                         });
                                     }
+
+                                    this.props.history.push(
+                                        SYSTEM_CMS_CONTENT_URL.replace(
+                                            ":system_id",
+                                            parseInt(match.params.system_id)
+                                        )
+                                    );
                                 }}
                                 validationSchema={DirectoryListSchema}
                             >

@@ -4,7 +4,11 @@ import {
     checkUserLogin
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
-import { s3, processUpload, processDelete } from "../utils/constant";
+import {
+    processUploadMedia,
+    processUpload,
+    processDelete
+} from "../utils/constant";
 import { log } from "util";
 
 export default {
@@ -35,29 +39,18 @@ export default {
             //Upload and Create image
             let created_media;
             if (image) {
-                try {
-                    const uploaded_media = await processUpload(image);
-                    try {
-                        created_media = await db.media.create({
-                            name: uploaded_media.filename,
-                            path: uploaded_media.location,
-                            clientId: user.id,
-                            type: "image",
-                            key: uploaded_media.key
-                        });
-                    } catch (e) {
-                        throw new UserInputError(e);
-                    }
-                } catch (e) {
-                    throw new UserInputError(e);
-                }
+                created_media = await processUploadMedia(
+                    image,
+                    user.id,
+                    "image"
+                );
             }
 
             //Create directory list
             let created_dir_list = db.directory_list.build({
                 name,
                 is_root,
-                parentId: parent_id,
+                directoryListId: parent_id,
                 layoutId: layout_id,
                 systemId: system_id
             });
@@ -86,6 +79,43 @@ export default {
             }
 
             return created_dir_list;
+        },
+        editDirectoryList: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    is_root,
+                    parent_id,
+                    layout_id,
+                    system_id,
+                    image
+                }
+            },
+            { user, clientIp }
+        ) => {
+            //await checkUserLogin(user);
+            //const system = await db.system.findByPk(system_id);
+            //await checkUserPermissionModifySystem(user, system);
+
+            let updated_image_entry;
+            //Check if image update
+            if (image) {
+                updated_image_entry = await processUploadMedia(
+                    image,
+                    user.id,
+                    "image"
+                );
+            }
+
+            //Update directory list
+            try {
+                await db.directory_list.update(
+                    { name, is_root, parent_id, layout_id, system_id },
+                    { where: id }
+                );
+            } catch (err) {}
         }
     },
     DirectoryList: {
