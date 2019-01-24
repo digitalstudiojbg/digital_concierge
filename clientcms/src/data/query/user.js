@@ -21,9 +21,6 @@ export const getSelectedUserQuery = gql`
                 name
                 avatar
                 number_of_users
-                has_parent_category
-                has_touchscreen
-                has_tablet
                 active
             }
         }
@@ -51,9 +48,6 @@ export const getCurrentUserQuery = gql`
                 name
                 avatar
                 number_of_users
-                has_parent_category
-                has_touchscreen
-                has_tablet
                 active
             }
         }

@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { getSystemsFromUser } from "../../data/query";
-import { Query } from "react-apollo";
-import { withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 import { Link } from "react-router-dom";
 import Loading from "../loading/Loading";
 import { SYSTEM_INDEX_URL } from "../../utils/Constants";

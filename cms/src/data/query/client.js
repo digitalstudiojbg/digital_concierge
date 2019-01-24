@@ -21,6 +21,13 @@ export const getClientFromUser = gql`
                 mobile
                 email
             }
+            active_contract {
+                id
+                number
+                file
+                package
+                active
+            }
             contracts {
                 id
                 number

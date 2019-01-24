@@ -29,6 +29,7 @@ export default gql`
         systems: [System]
         devices: [Device]
         contacts: [Contact]
+        active_contract: Contract
         contracts: [Contract]
     }
 `;

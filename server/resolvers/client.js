@@ -35,6 +35,13 @@ export default {
             await db.device.findAll({ where: { clientId: client.id } }),
         contacts: async client =>
             await db.contact.findAll({ where: { clientId: client.id } }),
+        active_contract: async client => {
+            const contracts = await db.contract.findAll({
+                where: { clientId: client.id, active: true },
+                order: [["createdAt", "DESC"]]
+            });
+            return contracts.length > 0 ? contracts[0] : null;
+        },
         contracts: async client =>
             await db.contract.findAll({ where: { clientId: client.id } })
     }

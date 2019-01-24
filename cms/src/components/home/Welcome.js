@@ -1,13 +1,12 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment, lazy, Suspense } from "react";
 import "./Welcome.css";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
-// import { Query } from "react-apollo";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-// import { gql } from "apollo-boost";
 import { Button } from "@material-ui/core";
-import WelcomeSystems from "./WelcomeSystems";
+// import { Query } from "react-apollo";
+// import { gql } from "apollo-boost";
 
 // const CURRENT_SYSTEM = gql`
 //     {
@@ -52,10 +51,13 @@ const styles = () => ({
     }
 });
 
+const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
+const WelcomeAccount = lazy(() => import("./WelcomeAccount"));
+
 class Welcome extends Component {
     sidebarButtons = [
         { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
-        { id: "account", name: "ACCOUNT", component: WelcomeSystems },
+        { id: "account", name: "ACCOUNT", component: WelcomeAccount },
         { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },
         { id: "users", name: "USERS & ROLES", component: WelcomeSystems },
         { id: "support", name: "SUPPORT", component: WelcomeSystems }
@@ -114,13 +116,15 @@ class Welcome extends Component {
                             alt={`${user.client.name} avatar image`}
                         />
                     )}
-                    <p style={{ fontWeight: "700", fontSize: "1.3em" }}>
+                    <p style={{ fontWeight: "700", fontSize: "2em" }}>
                         ADMIN CONSOLE
                     </p>
                     {this.renderSidebarButtons()}
                 </SidebarDiv>
                 <ContentDiv>
-                    <SelectedComponent />
+                    <Suspense>
+                        <SelectedComponent />
+                    </Suspense>
                     {/* WELCOME PAGE
                     {user.client.systems.map(system => {
                         return (
