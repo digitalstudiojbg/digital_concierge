@@ -15,10 +15,10 @@ export default gql`
         address: String
         postal_address: String
         phone: String
-        email: String
+        email: EmailAddress
         active: Boolean
         number_of_users: Int
-        avatar: String
+        avatar: URL
         createdAt: DateTime
         updatedAt: DateTime
         users: [User]

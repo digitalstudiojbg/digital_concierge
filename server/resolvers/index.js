@@ -27,6 +27,8 @@ import file_resolver from "./file";
 import json_resolver from "./json_resolver";
 import contact_resolver from "./contact";
 import contract_resolver from "./contract";
+import url_resolver from "./url_resolver";
+import email_resolver from "./email_resolver";
 
 export default [
     user_resolver,
@@ -57,5 +59,7 @@ export default [
     json_resolver,
     contract_resolver,
     contact_resolver,
+    url_resolver,
+    email_resolver,
     file_resolver
 ];

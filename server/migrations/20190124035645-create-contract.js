@@ -29,6 +29,25 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            term_month: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "12 Month"
+            },
+            renewal_date: {
+                allowNull: false,
+                type: Sequelize.DATE
+            },
+            annual_fee: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             active: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
@@ -49,7 +68,7 @@ module.exports = {
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.dropTable("contracts");
     }
 };

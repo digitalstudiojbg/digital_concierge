@@ -10,9 +10,14 @@ export default gql`
     type Contract {
         id: ID!
         number: String
-        file: String
+        file: URL
         package: String
+        term_month: String
+        renewal_date: DateTime
+        annual_fee: String
         active: Boolean
+        createdAt: DateTime
+        updatedAt: DateTime
         client: Client
     }
 `;

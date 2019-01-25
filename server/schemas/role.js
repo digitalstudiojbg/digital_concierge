@@ -10,6 +10,8 @@ export default gql`
         id: ID!
         name: String
         is_standard_role: Boolean
+        createdAt: DateTime
+        updatedAt: DateTime
         users: [User]
         permissions: [Permission]
         department: Department

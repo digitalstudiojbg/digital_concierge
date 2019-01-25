@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express";
+import custom_scalar from "./customScalar";
 import user_schema from "./user";
 import role_schema from "./role";
 import permission_schema from "./permission";
@@ -42,6 +43,7 @@ const link_schema = gql`
 
 export default [
     link_schema,
+    custom_scalar,
     user_schema,
     role_schema,
     permission_schema,

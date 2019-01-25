@@ -27,6 +27,9 @@ export const getClientFromUser = gql`
                 file
                 package
                 active
+                term_month
+                renewal_date
+                annual_fee
             }
             contracts {
                 id
@@ -34,6 +37,9 @@ export const getClientFromUser = gql`
                 file
                 package
                 active
+                term_month
+                renewal_date
+                annual_fee
             }
         }
     }

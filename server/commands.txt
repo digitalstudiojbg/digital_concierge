@@ -354,3 +354,5 @@ node_modules/.bin/sequelize model:generate --name contract --attributes number:s
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-contract
 
 node_modules/.bin/sequelize seed:generate --name contract
+
+node_modules/.bin/sequelize migration:generate --name add-attributes-for-contract

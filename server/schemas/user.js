@@ -1,8 +1,6 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
-    scalar DateTime
-
     extend type Query {
         getCurrentUser: User
         user(id: ID!): User
@@ -12,12 +10,12 @@ export default gql`
     type User {
         id: ID!
         name: String
-        email: String
-        password: String
+        email: EmailAddress
+        # password: String
         active: Boolean
         roles: [Role]
         client: Client
-        avatar: String
+        avatar: URL
         createdAt: DateTime
         updatedAt: DateTime
     }

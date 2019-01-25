@@ -11,7 +11,7 @@ export default gql`
     type Media {
         id: ID!
         name: String
-        path: String
+        path: URL
         type: String
         createdAt: DateTime
         updatedAt: DateTime

@@ -106,12 +106,7 @@ const styles = theme => ({
     }
 });
 
-function SlideUpTransition(props) {
-    return <Slide direction="up" {...props} />;
-}
-
-//Lazy importing modal contents here
-// const UpdateInfo = lazy(() => import("./account_modals/UpdateInfo"));
+const SlideUpTransition = props => <Slide direction="up" {...props} />;
 
 class WelcomeAccount extends React.Component {
     state = {
@@ -346,7 +341,7 @@ class WelcomeAccount extends React.Component {
             postal_address = "",
             phone = "",
             email = "",
-            active_contract = null,
+            active_contract = {},
             contracts = []
         } = client;
         switch (key) {
@@ -366,7 +361,11 @@ class WelcomeAccount extends React.Component {
             case "addContact":
                 return { is_edit: false };
             case "contract":
-                return { active_contract, contracts };
+                const { id = "" } = active_contract;
+                const past_contracts = contracts.filter(
+                    contract => contract.id !== id && !contract.active
+                );
+                return { active_contract, past_contracts };
             default:
                 return client;
         }

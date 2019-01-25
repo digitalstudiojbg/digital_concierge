@@ -13,7 +13,9 @@ export default gql`
         title: String
         phone: String
         mobile: String
-        email: String
+        email: EmailAddress
+        createdAt: DateTime
+        updatedAt: DateTime
         client: Client
     }
 `;
