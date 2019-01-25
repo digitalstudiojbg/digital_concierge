@@ -113,7 +113,7 @@ class Welcome extends Component {
                                 width: "50%",
                                 marginBottom: "5vh"
                             }}
-                            alt={`${user.client.name} avatar image`}
+                            alt={`${user.client.name} avatar`}
                         />
                     )}
                     <p style={{ fontWeight: "700", fontSize: "2em" }}>

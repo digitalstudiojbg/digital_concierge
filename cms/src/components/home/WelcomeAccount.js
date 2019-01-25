@@ -5,6 +5,15 @@ import Loading from "../loading/Loading";
 import { getClientFromUser } from "../../data/query";
 import { Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "../../utils/DialogTitleHelper";
+import Slide from "@material-ui/core/Slide";
+import UpdateInfo from "./account_modals/UpdateInfo";
+import UpdateContact from "./account_modals/UpdateContact";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -35,6 +44,7 @@ const AccountEntryContactContainerDiv = styled.div`
 const AccountEntryTitleDiv = styled.div`
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 `;
 
 const AccountEntryTitleTextDiv = styled.div`
@@ -46,6 +56,8 @@ const AccountEntryTitleTextDiv = styled.div`
 
 const AccountEntryTitleButtonDiv = styled.div`
     width: 20%;
+    display: flex;
+    flex-direction: row-reverse;
 `;
 
 const AccountEntryEntryDiv = styled.div`
@@ -69,19 +81,50 @@ const EntryValueDiv = styled.div`
     padding-bottom: 10px;
 `;
 
-const styles = () => ({
+const styles = theme => ({
     updateButton: {
         background: "rgb(82, 82, 82)",
         color: "white",
         fontWeight: 700,
         borderRadius: 5
+    },
+    addButton: {
+        color: "white",
+        background: "rgb(82, 82, 82)",
+        borderRadius: 5,
+        padding: theme.spacing.unit * 0.2
+    },
+    icon: {
+        fontSize: "large",
+        width: 30,
+        height: 30
+    },
+    dialogTitle: {
+        width: "100%",
+        display: "flex",
+        alignItems: "center"
     }
 });
+
+function SlideUpTransition(props) {
+    return <Slide direction="up" {...props} />;
+}
+
+//Lazy importing modal contents here
+// const UpdateInfo = lazy(() => import("./account_modals/UpdateInfo"));
 
 class WelcomeAccount extends React.Component {
     state = {
         showModal: false,
-        selected: ""
+        selected: "",
+        selectedContact: null
+    };
+
+    modal_settings = {
+        info: { title: "Update Company Information", component: UpdateInfo },
+        contact: { title: "Update Contact", component: UpdateContact },
+        addContact: { title: "Add New Contact", component: UpdateContact },
+        contract: { title: "Update Contract", component: UpdateInfo }
     };
 
     renderDetailInfo(key, title, value) {
@@ -95,6 +138,22 @@ class WelcomeAccount extends React.Component {
                 </React.Fragment>
             );
         }
+    }
+
+    openModal(selected) {
+        this.setState({ showModal: true, selected });
+    }
+
+    openModalUpdateContact(selected, selectedContact) {
+        this.setState({ showModal: true, selected, selectedContact });
+    }
+
+    closeModal() {
+        this.setState({
+            showModal: false,
+            selected: "",
+            selectedContact: null
+        });
     }
 
     renderInfoSection(client) {
@@ -124,7 +183,11 @@ class WelcomeAccount extends React.Component {
                         COMPANY INFORMATION
                     </AccountEntryTitleTextDiv>
                     <AccountEntryTitleButtonDiv>
-                        <Button size="medium" className={classes.updateButton}>
+                        <Button
+                            size="medium"
+                            className={classes.updateButton}
+                            onClick={this.openModal.bind(this, "info")}
+                        >
                             UPDATE
                         </Button>
                     </AccountEntryTitleButtonDiv>
@@ -165,7 +228,9 @@ class WelcomeAccount extends React.Component {
                             { title: "Email Address", value: email }
                         ];
                         return (
-                            <AccountEntryContactContainerDiv>
+                            <AccountEntryContactContainerDiv
+                                key={`CONTACT-${id}`}
+                            >
                                 <AccountEntryTitleDiv>
                                     <AccountEntryTitleTextDiv>
                                         CONTACT PERSON #{index + 1}
@@ -174,6 +239,11 @@ class WelcomeAccount extends React.Component {
                                         <Button
                                             size="medium"
                                             className={classes.updateButton}
+                                            onClick={this.openModalUpdateContact.bind(
+                                                this,
+                                                "contact",
+                                                contact
+                                            )}
                                         >
                                             UPDATE
                                         </Button>
@@ -193,6 +263,22 @@ class WelcomeAccount extends React.Component {
                             </AccountEntryContactContainerDiv>
                         );
                     })}
+                    <AccountEntryTitleDiv>
+                        <AccountEntryTitleTextDiv>
+                            CONTACT PERSON #{contacts.length + 1}
+                        </AccountEntryTitleTextDiv>
+                        <AccountEntryTitleButtonDiv>
+                            <IconButton
+                                className={classes.addButton}
+                                onClick={this.openModal.bind(
+                                    this,
+                                    "addContact"
+                                )}
+                            >
+                                <AddIcon className={classes.icon} />
+                            </IconButton>
+                        </AccountEntryTitleButtonDiv>
+                    </AccountEntryTitleDiv>
                 </AccountEntryContactsContainerDiv>
             );
         }
@@ -223,6 +309,7 @@ class WelcomeAccount extends React.Component {
                             <Button
                                 size="medium"
                                 className={classes.updateButton}
+                                onClick={this.openModal.bind(this, "contract")}
                             >
                                 UPDATE
                             </Button>
@@ -239,6 +326,7 @@ class WelcomeAccount extends React.Component {
                                 href={file}
                                 style={{ fontSize: "1.1em" }}
                                 target="_blank"
+                                rel="noopener noreferrer"
                             >
                                 Download Contract File
                             </a>
@@ -249,24 +337,89 @@ class WelcomeAccount extends React.Component {
         }
     }
 
+    getClientDataFromKey(key, client) {
+        const {
+            name = "",
+            full_company_name = "",
+            nature_of_business = "",
+            address = "",
+            postal_address = "",
+            phone = "",
+            email = "",
+            active_contract = null,
+            contracts = []
+        } = client;
+        switch (key) {
+            case "info":
+                return {
+                    name,
+                    full_company_name,
+                    nature_of_business,
+                    address,
+                    postal_address,
+                    phone,
+                    email
+                };
+            case "contact":
+                const { selectedContact } = this.state;
+                return { ...selectedContact, is_edit: true };
+            case "addContact":
+                return { is_edit: false };
+            case "contract":
+                return { active_contract, contracts };
+            default:
+                return client;
+        }
+    }
+
+    renderDialog(client) {
+        const { showModal, selected: key } = this.state;
+        const { title = "", component: ModalContentComponent = null } =
+            this.modal_settings[key] || {};
+        const data = this.getClientDataFromKey(key, client);
+        return (
+            <Dialog
+                open={showModal}
+                TransitionComponent={SlideUpTransition}
+                keepMounted
+                onClose={this.closeModal.bind(this)}
+                fullWidth={true}
+            >
+                <DialogTitle onClose={this.closeModal.bind(this)}>
+                    <div style={{ fontSize: "1.5em", marginBottom: 30 }}>
+                        {title}
+                    </div>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                        {ModalContentComponent && (
+                            <ModalContentComponent data={data} />
+                        )}
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
+        );
+    }
+
     render() {
         return (
-            <ContainerDiv>
-                <Query query={getClientFromUser}>
-                    {({ loading, error, data: { clientByUser: client } }) => {
-                        console.log(client);
-                        if (loading) return <Loading loadingData />;
-                        if (error) return `Error! ${error.message}`;
-                        return (
-                            <React.Fragment>
+            <Query query={getClientFromUser}>
+                {({ loading, error, data: { clientByUser: client } }) => {
+                    console.log(client);
+                    if (loading) return <Loading loadingData />;
+                    if (error) return `Error! ${error.message}`;
+                    return (
+                        <React.Fragment>
+                            <ContainerDiv>
                                 {this.renderInfoSection(client)}
                                 {this.renderContactSection(client)}
                                 {this.renderContractSection(client)}
-                            </React.Fragment>
-                        );
-                    }}
-                </Query>
-            </ContainerDiv>
+                            </ContainerDiv>
+                            {this.renderDialog(client)}
+                        </React.Fragment>
+                    );
+                }}
+            </Query>
         );
     }
 }
