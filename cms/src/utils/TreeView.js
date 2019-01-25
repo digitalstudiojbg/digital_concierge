@@ -1235,12 +1235,8 @@ class TreeView extends React.PureComponent {
         console.log(selected_dir_lists);
         console.log(selected_dir_entries);
 
-        const directoryEntryIdList = [
-            {
-                directoryEntryId: 1,
-                directoryListId: 1
-            }
-        ];
+        //Prepare directory list
+        let directoryEntryIdList = [];
 
         let directoryListIdList = [];
         selected_dir_lists.map(each => {
@@ -1248,6 +1244,21 @@ class TreeView extends React.PureComponent {
         });
 
         console.log(directoryListIdList);
+
+        //Prepare directory entry
+        selected_dir_entries.map(each => {
+            const parents = each.split("-");
+            const lastParentId = parents[parents.length - 2];
+            const entryId = parents[parents.length - 1];
+
+            directoryEntryIdList.push({
+                directoryEntryId: parseInt(entryId),
+                directoryListId: parseInt(lastParentId)
+            });
+        });
+
+        console.log(directoryEntryIdList);
+
         action({
             variables: {
                 directoryListIdList,
@@ -1255,6 +1266,7 @@ class TreeView extends React.PureComponent {
                 systemId: parseInt(this.props.match.params.system_id)
             }
         });
+        this.setState({ deleteModal: false });
     }
 
     //Get all items that are checked

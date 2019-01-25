@@ -1,7 +1,8 @@
 import db from "../models";
 import {
     checkUserPermissionModifySystem,
-    checkUserLogin
+    checkUserLogin,
+    asyncForEach
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
 import {
@@ -176,8 +177,63 @@ export default {
             }
             await checkUserPermissionModifySystem(user, system);*/
 
-            //Delete list
-            directoryListIdList.map(async list_id => {
+            //Delete entries
+            await asyncForEach(directoryEntryIdList, async each => {
+                const { directoryEntryId, directoryListId } = each;
+                console.log("1");
+
+                //Retrieve entry
+                const select_directory_entry = await db.directory_entry.findByPk(
+                    directoryEntryId
+                );
+                console.log("2");
+
+                //Retrieve list
+                const select_directory_list = await db.directory_list.findByPk(
+                    directoryListId
+                );
+                console.log("3");
+
+                //Retrieve media list from entry
+                const media_list = await select_directory_entry.getMedia();
+                console.log("4");
+
+                //Retrieve list of directories from selected entry
+                const select_directory_entry_other_list = await select_directory_entry.getDirectory_lists();
+
+                console.log(select_directory_entry_other_list);
+                console.log("5");
+
+                //Delete entry row if there is no second list has this entry
+                if (select_directory_entry_other_list.length === 1) {
+                    console.log("6");
+
+                    //Delete relationship between selected entry and media
+                    await select_directory_entry.removeMedium(media_list);
+                    console.log("7");
+
+                    //Delete relationship between selected directory list and selected entry
+                    await select_directory_entry.removeDirectory_lists(
+                        select_directory_entry_other_list
+                    );
+                    console.log("8");
+                    //Delete relationship between selected directory entry from selected directory list
+                    await db.directory_entry.destroy({
+                        where: { id: directoryEntryId }
+                    });
+                    console.log("9");
+                } else {
+                    //Delete relationship between selected directory list and selected entry
+                    await select_directory_entry.removeDirectory_list(
+                        select_directory_list
+                    );
+                    console.log("10");
+                }
+                console.log("11");
+            });
+
+            //Delete lists
+            await asyncForEach(directoryListIdList, async list_id => {
                 const id = parseInt(list_id);
 
                 //Retrieve list
