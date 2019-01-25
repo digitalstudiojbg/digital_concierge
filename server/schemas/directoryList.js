@@ -10,7 +10,11 @@ export default gql`
     extend type Mutation {
         createDirectoryList(input: CreateDirectoryListInput): DirectoryList
         editDirectoryList(input: UpdateDirectoryListInput): DirectoryList
-        deleteDirectoryList(id: ID!): DirectoryList
+        deleteDirectoryListEntry(
+            directoryEntryIdList: [Dir_Entry_And_List_Change_Status_Request]
+            directoryListIdList: [Int]
+            systemId: Int
+        ): Dir_Entry_And_List_Delete_Response
     }
 
     type DirectoryList {
@@ -44,5 +48,9 @@ export default gql`
         layout_id: Int!
         system_id: Int!
         image: Upload
+    }
+
+    type Dir_Entry_And_List_Delete_Response {
+        result: Boolean
     }
 `;

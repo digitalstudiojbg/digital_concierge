@@ -55,3 +55,21 @@ export const EDIT_DIRECTORY_LIST = () => {
         }
     `;
 };
+
+export const DELETE_DIR_LIST_ENTRY = () => {
+    return gql`
+        mutation deleteDirectoryListEntry(
+            $directoryEntryIdList: [Dir_Entry_And_List_Change_Status_Request]
+            $directoryListIdList: [Int]
+            $systemId: Int
+        ) {
+            deleteDirectoryListEntry(
+                directoryEntryIdList: $directoryEntryIdList
+                directoryListIdList: $directoryListIdList
+                systemId: $systemId
+            ) {
+                result
+            }
+        }
+    `;
+};

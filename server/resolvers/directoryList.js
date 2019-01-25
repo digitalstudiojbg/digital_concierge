@@ -132,31 +132,17 @@ export default {
                             });
                         });
                         if (image) {
-                            try {
-                                //Delete previous images on S3
-                                await to_delete_images_key.map(each => {
+                            //Delete previous images on S3
+                            /*await to_delete_images_key.map(each => {
                                     processDelete(each.key);
-                                });
+                                });*/
+                            try {
+                                //Remove relationship between list and previous image in DB
+                                await to_update.removeMedium(to_delete_images);
+
                                 try {
-                                    //Remove previous image in DB
-                                    await to_update.removeMedium(
-                                        to_delete_images
-                                    );
-
-                                    /*console.log(to_delete_images_key);
-
-                                    await to_delete_images_key.map(each => {
-                                        db.media.destroy({
-                                            where: { id: each.id }
-                                        });
-                                    });*/
-
-                                    try {
-                                        //Add new image into directory in DB
-                                        await to_update.addMedia(updated_image);
-                                    } catch (err) {
-                                        throw new UserInputError(err);
-                                    }
+                                    //Add new image into directory in DB
+                                    await to_update.addMedia(updated_image);
                                 } catch (err) {
                                     throw new UserInputError(err);
                                 }
@@ -176,35 +162,38 @@ export default {
             return to_update;
         },
 
-        deleteDirectoryList: async (_root, { id }, { user, clientIp }) => {
-            let to_delete;
-            let to_delete_images;
-            console.log(Object.keys(to_delete.__proto__));
-            try {
-                //Get delete directory list object in DB
-                to_delete = await db.directory_list.findByPk(id);
-                try {
-                    //Get delete image list from directory list object in DB
-                    to_delete_images = await to_delete.getMedia();
-                    try {
-                        //Delete images in DB
-                        await to_delete.removeMedium(to_delete_images);
-                        try {
-                            // Delete directory list in DB
-                            db.directory_list.destroy({ where: { id } });
-                        } catch (err) {
-                            throw new UserInputError(err);
-                        }
-                    } catch (err) {
-                        throw new UserInputError(err);
-                    }
-                } catch (err) {
-                    throw new UserInputError(err);
-                }
-            } catch (err) {
-                throw new UserInputError(err);
+        deleteDirectoryListEntry: async (
+            _root,
+            { directoryEntryIdList, directoryListIdList, systemId },
+            { user, clientIp }
+        ) => {
+            //await checkUserLogin(user);
+            /*const system = await db.system.findByPk(systemId);
+            if (!Boolean(system)) {
+                throw new UserInputError(
+                    `System with id ${systemId} was not found`
+                );
             }
-            return to_delete;
+            await checkUserPermissionModifySystem(user, system);*/
+
+            //Delete list
+            directoryListIdList.map(async list_id => {
+                const id = parseInt(list_id);
+
+                //Retrieve list
+                const list = await db.directory_list.findByPk(id);
+
+                //Retrieve media list from list
+                const media_list = await list.getMedia();
+
+                //Remove relationship between list and media from list
+                await list.removeMedium(media_list);
+
+                //Delete list
+                db.directory_list.destroy({ where: { id } });
+            });
+
+            return { result: true };
         }
     },
     DirectoryList: {

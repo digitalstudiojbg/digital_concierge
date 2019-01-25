@@ -28,7 +28,10 @@ import {
     DECIMAL_RADIX
 } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryListAndEntryStatus } from "../data/mutation";
+import {
+    changeDirectoryListAndEntryStatus,
+    DELETE_DIR_LIST_ENTRY
+} from "../data/mutation";
 import { getDirectoryListBySystem } from "../data/query";
 import { ClipLoader } from "react-spinners";
 import Menu from "@material-ui/core/Menu";
@@ -142,6 +145,7 @@ class TreeView extends React.PureComponent {
         this.handleCloseCreate = this.handleCloseCreate.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.deleteListEntryAction = this.deleteListEntryAction.bind(this);
     }
 
     componentDidMount() {
@@ -1225,6 +1229,34 @@ class TreeView extends React.PureComponent {
         this.setState({ deleteModal: false });
     }
 
+    deleteListEntryAction(action) {
+        const { selected_dir_lists, selected_dir_entries } = this.state;
+
+        console.log(selected_dir_lists);
+        console.log(selected_dir_entries);
+
+        const directoryEntryIdList = [
+            {
+                directoryEntryId: 1,
+                directoryListId: 1
+            }
+        ];
+
+        let directoryListIdList = [];
+        selected_dir_lists.map(each => {
+            directoryListIdList.push(parseInt(each));
+        });
+
+        console.log(directoryListIdList);
+        action({
+            variables: {
+                directoryListIdList,
+                directoryEntryIdList,
+                systemId: parseInt(this.props.match.params.system_id)
+            }
+        });
+    }
+
     //Get all items that are checked
     getAllCheckedItemNames() {
         const {
@@ -1501,9 +1533,32 @@ class TreeView extends React.PureComponent {
                         </List>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.closeDeleteModal} color="primary">
-                            YES
-                        </Button>
+                        <Mutation mutation={DELETE_DIR_LIST_ENTRY()}>
+                            {(action, { loading, error }) => {
+                                if (loading)
+                                    return (
+                                        <ClipLoader
+                                            sizeUnit={"px"}
+                                            size={24}
+                                            color={"rgba(0, 0, 0, 0.87)"}
+                                            loading={loading}
+                                        />
+                                    );
+                                if (error) return `Error! ${error.message}`;
+
+                                return (
+                                    <Button
+                                        onClick={() => {
+                                            this.deleteListEntryAction(action);
+                                        }}
+                                        color="primary"
+                                    >
+                                        YES
+                                    </Button>
+                                );
+                            }}
+                        </Mutation>
+
                         <Button onClick={this.closeDeleteModal} color="primary">
                             NO
                         </Button>
