@@ -146,6 +146,9 @@ class TreeView extends React.PureComponent {
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.deleteListEntryAction = this.deleteListEntryAction.bind(this);
+        this.sortDirectoryListBasedOnDepth = this.sortDirectoryListBasedOnDepth.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -1215,7 +1218,7 @@ class TreeView extends React.PureComponent {
     }
 
     //Close menu to show create menu
-    handleCloseCreate(event) {
+    handleCloseCreate() {
         this.setState({ anchorElCreate: null });
     }
 
@@ -1229,6 +1232,23 @@ class TreeView extends React.PureComponent {
         this.setState({ deleteModal: false });
     }
 
+    //Deeper depth goes in first, lower depth goes in later
+    sortDirectoryListBasedOnDepth(directoryListIds) {
+        const { dirListOnlyDataTree } = this.state;
+        return [
+            ...directoryListIds.sort((list_id_1, list_id_2) => {
+                const { depth: depth_1 } = dirListOnlyDataTree.find(
+                    ({ id }) => id === list_id_1
+                );
+                const { depth: depth_2 } = dirListOnlyDataTree.find(
+                    ({ id }) => id === list_id_2
+                );
+
+                return depth_2 - depth_1;
+            })
+        ];
+    }
+
     deleteListEntryAction(action) {
         const { selected_dir_lists, selected_dir_entries } = this.state;
 
@@ -1238,10 +1258,9 @@ class TreeView extends React.PureComponent {
         //Prepare directory list
         let directoryEntryIdList = [];
 
-        let directoryListIdList = [];
-        selected_dir_lists.map(each => {
-            directoryListIdList.push(parseInt(each));
-        });
+        let directoryListIdList = this.sortDirectoryListBasedOnDepth(
+            selected_dir_lists
+        ).map(each => parseInt(each, DECIMAL_RADIX));
 
         console.log(directoryListIdList);
 
