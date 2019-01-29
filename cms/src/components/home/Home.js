@@ -18,7 +18,8 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-    SYSTEM_INDEX_URL
+    SYSTEM_INDEX_URL,
+    CREATE_NEW_CLIENT
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -41,6 +42,7 @@ const Welcome = lazy(() => import("./Welcome.js"));
 const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
 );
+const CreateClient = lazy(() => import("./CreateClient"));
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
@@ -157,6 +159,13 @@ const routes = [
         sidebar: Sidebar,
         header: Header,
         main: ModifyDirectoryList,
+        withProps: {}
+    },
+    {
+        path: CREATE_NEW_CLIENT,
+        exact: true,
+        header: Header,
+        main: CreateClient,
         withProps: {}
     }
 ];
