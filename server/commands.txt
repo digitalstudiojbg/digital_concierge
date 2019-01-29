@@ -356,3 +356,14 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize seed:generate --name contract
 
 node_modules/.bin/sequelize migration:generate --name add-attributes-for-contract
+
+node_modules/.bin/sequelize model:generate --name country --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name state --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-state-and-country
+
+node_modules/.bin/sequelize seed:generate --name country
+
+node_modules/.bin/sequelize seed:generate --name state
+
