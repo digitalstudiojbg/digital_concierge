@@ -7,11 +7,11 @@ module.exports = {
             [
                 {
                     name: "Australian Capital Territory",
-                    countryId: 2
+                    countryId: 1
                 },
                 {
                     name: "New South Wales",
-                    countryId: 2
+                    countryId: 1
                 },
                 {
                     name: "Northern Territory",

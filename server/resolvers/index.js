@@ -30,6 +30,8 @@ import contract_resolver from "./contract";
 import url_resolver from "./url_resolver";
 import email_resolver from "./email_resolver";
 import dateTime_resolver from "./datetime_resolver";
+import country_resolver from "./country";
+import state_resolver from "./state";
 
 export default [
     user_resolver,
@@ -63,5 +65,7 @@ export default [
     url_resolver,
     email_resolver,
     dateTime_resolver,
-    file_resolver
+    file_resolver,
+    country_resolver,
+    state_resolver
 ];
