@@ -14,6 +14,11 @@ import DialogTitle from "../../utils/DialogTitleHelper";
 import Slide from "@material-ui/core/Slide";
 import UpdateInfo from "./account_modals/UpdateInfo";
 import UpdateContact from "./account_modals/UpdateContact";
+import UpdateContract from "./account_modals/UpdateContract";
+import dayjs from "dayjs";
+import AdvancedFormat from "dayjs/plugin/advancedFormat";
+
+const extended_day_js = dayjs.extend(AdvancedFormat);
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -119,7 +124,7 @@ class WelcomeAccount extends React.Component {
         info: { title: "Update Company Information", component: UpdateInfo },
         contact: { title: "Update Contact", component: UpdateContact },
         addContact: { title: "Add New Contact", component: UpdateContact },
-        contract: { title: "Update Contract", component: UpdateInfo }
+        contract: { title: "Update Contract", component: UpdateContract }
     };
 
     renderDetailInfo(key, title, value) {
@@ -288,11 +293,20 @@ class WelcomeAccount extends React.Component {
             const {
                 number = "",
                 file = "",
-                package: packageName = ""
+                package: packageName = "",
+                term_month = "",
+                renewal_date = "",
+                annual_fee = ""
             } = active_contract;
             const toRender = [
                 { title: "Contract Number", value: number },
-                { title: "Package", value: packageName }
+                { title: "Package", value: packageName },
+                { title: "Contract Term", value: term_month },
+                {
+                    title: "Renewal Date",
+                    value: extended_day_js(renewal_date).format("Do MMMM YYYY")
+                },
+                { title: " Annual Fee", value: annual_fee }
             ];
             return (
                 <AccountEntryContainerDiv>
@@ -361,11 +375,23 @@ class WelcomeAccount extends React.Component {
             case "addContact":
                 return { is_edit: false };
             case "contract":
-                const { id = "" } = active_contract;
+                const {
+                    id = "",
+                    package: packageName,
+                    ...others
+                } = active_contract;
                 const past_contracts = contracts.filter(
                     contract => contract.id !== id && !contract.active
                 );
-                return { active_contract, past_contracts };
+                return {
+                    active_contract: { ...others, id, packageName },
+                    past_contracts: past_contracts.map(
+                        ({ package: packageName, ...others }) => ({
+                            ...others,
+                            packageName
+                        })
+                    )
+                };
             default:
                 return client;
         }
