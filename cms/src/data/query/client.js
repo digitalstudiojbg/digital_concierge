@@ -44,3 +44,48 @@ export const getClientFromUser = gql`
         }
     }
 `;
+
+export const getAllClients = gql`
+    query get_all_clients {
+        clients {
+            name
+            full_company_name
+            nature_of_business
+            address
+            postal_address
+            phone
+            email
+            active
+            number_of_users
+            avatar
+            contacts {
+                id
+                name
+                title
+                phone
+                mobile
+                email
+            }
+            active_contract {
+                id
+                number
+                file
+                package
+                active
+                term_month
+                renewal_date
+                annual_fee
+            }
+            contracts {
+                id
+                number
+                file
+                package
+                active
+                term_month
+                renewal_date
+                annual_fee
+            }
+        }
+    }
+`;

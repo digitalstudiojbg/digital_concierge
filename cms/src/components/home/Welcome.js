@@ -53,9 +53,11 @@ const styles = () => ({
 
 const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
 const WelcomeAccount = lazy(() => import("./WelcomeAccount"));
+const WelcomeDashboard = lazy(() => import("./WelcomeDashboard"));
 
 class Welcome extends Component {
     sidebarButtons = [
+        { id: "dashboard", name: "DASHBOARD", component: WelcomeDashboard },
         { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
         { id: "account", name: "ACCOUNT", component: WelcomeAccount },
         { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },

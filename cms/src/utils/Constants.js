@@ -11,6 +11,7 @@ export const DECIMAL_RADIX = 10;
 //URL Constants
 export const LOGIN_URL = "/login";
 export const WELCOME_URL = "/welcome";
+export const CREATE_NEW_CLIENT = "/welcome/new_client";
 
 export const SYSTEM_INDEX_URL = "/system/:system_id";
 export const SYSTEM_CMS_INDEX_URL = SYSTEM_INDEX_URL + "/cms";

@@ -54,7 +54,7 @@ module.exports = {
                     countryId: 2
                 },
                 {
-                    name: "	Malampa",
+                    name: "Malampa",
                     countryId: 3
                 },
                 {
