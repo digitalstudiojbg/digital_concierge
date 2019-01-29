@@ -2,20 +2,20 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        medium(id: ID!): Media
-        media: [Media]
-        mediaByClient(id: ID!): [Media]
-        mediaBySystem(id: ID!): [Media]
+        contact(id: ID!): Contact
+        contacts: [Contact]
+        contactsByUser: [Contact]
     }
 
-    type Media {
+    type Contact {
         id: ID!
         name: String
-        path: URL
-        type: String
+        title: String
+        phone: String
+        mobile: String
+        email: EmailAddress
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
-        key: String
     }
 `;

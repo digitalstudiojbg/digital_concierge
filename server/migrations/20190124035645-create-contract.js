@@ -1,53 +1,51 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("clients", {
+        return queryInterface.createTable("contracts", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            name: {
+            number: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            full_company_name: {
-                type: Sequelize.STRING
-            },
-            nature_of_business: {
+            file: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            address: {
+            package: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            postal_address: {
-                type: Sequelize.STRING
-            },
-            phone: {
+            term_month: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
-                }
+                },
+                defaultValue: "12 Month"
             },
-            email: {
+            renewal_date: {
+                allowNull: false,
+                type: Sequelize.DATE
+            },
+            annual_fee: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
-                    notEmpty: true,
-                    isEmail: true
+                    notEmpty: true
                 }
             },
             active: {
@@ -57,20 +55,6 @@ module.exports = {
                     notEmpty: true
                 },
                 defaultValue: true
-            },
-            number_of_users: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            avatar: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
             },
             createdAt: {
                 allowNull: false,
@@ -84,7 +68,7 @@ module.exports = {
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("clients");
+    down: queryInterface => {
+        return queryInterface.dropTable("contracts");
     }
 };

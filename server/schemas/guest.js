@@ -10,7 +10,7 @@ export default gql`
         id: ID!
         firstname: String
         lastname: String
-        email: String
+        email: EmailAddress
         createdAt: DateTime
         updatedAt: DateTime
         client: Client

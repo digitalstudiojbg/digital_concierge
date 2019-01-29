@@ -10,8 +10,6 @@ export default gql`
         createActivity(input: ActivityLogInput): ActivityLog
     }
 
-    scalar JSON
-
     type ActivityLog {
         id: ID!
         tableName: String
@@ -26,6 +24,8 @@ export default gql`
         city: String
         latitude: String
         longitude: String
+        createdAt: DateTime
+        updatedAt: DateTime
         user: User
     }
 

@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express";
+import custom_scalar from "./customScalar";
 import user_schema from "./user";
 import role_schema from "./role";
 import permission_schema from "./permission";
@@ -25,6 +26,8 @@ import jbgDirectoryList_schema from "./jbgDirectoryList";
 import jbgDirectoryEntry_schema from "./jbgDirectoryEntry";
 import template_schema from "./template";
 import activityLog_schema from "./activityLog";
+import contact_schema from "./contact";
+import contract_schema from "./contract";
 
 const link_schema = gql`
     type Query {
@@ -40,6 +43,7 @@ const link_schema = gql`
 
 export default [
     link_schema,
+    custom_scalar,
     user_schema,
     role_schema,
     permission_schema,
@@ -65,5 +69,7 @@ export default [
     jbgDirectoryEntry_schema,
     template_schema,
     activityLog_schema,
+    contact_schema,
+    contract_schema,
     file_schema
 ];

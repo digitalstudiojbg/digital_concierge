@@ -12,19 +12,22 @@ export const getSelectedUserQuery = gql`
             updatedAt
             roles {
                 name
-                is_admin
+                is_standard_role
                 permissions {
                     name
                 }
             }
             client {
                 name
-                avatar
-                number_of_users
-                has_parent_category
-                has_touchscreen
-                has_tablet
+                full_company_name
+                nature_of_business
+                address
+                postal_address
+                phone
+                email
                 active
+                number_of_users
+                avatar
             }
         }
     }
@@ -49,12 +52,15 @@ export const getCurrentUserQuery = gql`
             }
             client {
                 name
-                avatar
-                number_of_users
-                has_parent_category
-                has_touchscreen
-                has_tablet
+                full_company_name
+                nature_of_business
+                address
+                postal_address
+                phone
+                email
                 active
+                number_of_users
+                avatar
                 systems {
                     id
                     name

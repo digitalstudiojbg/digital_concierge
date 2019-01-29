@@ -1,9 +1,30 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define(
-        "user",
+    const contact = sequelize.define(
+        "contact",
         {
             name: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            phone: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            mobile: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
@@ -14,41 +35,17 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
-                    notEmpty: true
+                    notEmpty: true,
+                    isEmail: true
                 }
-            },
-            password: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            active: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
             }
-            // avatar: {
-            //     type: DataTypes.STRING
-            // }
         },
         {}
     );
-    user.associate = function(models) {
-        user.belongsToMany(models.role, {
-            through: "roles_users"
-        });
-        user.belongsTo(models.client, {
-            foreignKey: { allowNull: false }
-        });
-        user.hasMany(models.activity_log);
-        user.belongsTo(models.media, {
+    contact.associate = function(models) {
+        contact.belongsTo(models.client, {
             foreignKey: { allowNull: false }
         });
     };
-    return user;
+    return contact;
 };

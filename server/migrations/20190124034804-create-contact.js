@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("clients", {
+        return queryInterface.createTable("contacts", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -15,27 +15,21 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            full_company_name: {
-                type: Sequelize.STRING
-            },
-            nature_of_business: {
+            title: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
-            },
-            address: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            postal_address: {
-                type: Sequelize.STRING
             },
             phone: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            mobile: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
@@ -48,28 +42,6 @@ module.exports = {
                 validate: {
                     notEmpty: true,
                     isEmail: true
-                }
-            },
-            active: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
-            number_of_users: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            avatar: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
                 }
             },
             createdAt: {
@@ -85,6 +57,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("clients");
+        return queryInterface.dropTable("contacts");
     }
 };

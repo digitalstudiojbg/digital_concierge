@@ -113,7 +113,7 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 --new commands:
 node_modules/.bin/sequelize model:generate --name media --attributes name:string,path:string,type:string
 
-node_modules/.bin/sequelize model:generate --name client --attributes name:string,has_parent_category:boolean,active:boolean,has_tablet:boolean,has_touchscreen:boolean,number_of_users:integer,avatar:string
+node_modules/.bin/sequelize model:generate --name client --attributes name:string,full_company_name:string,nature_of_business:string,address:string,postal_address:string,phone:string,email:string,active:boolean,number_of_users:integer,avatar:string
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-client
 
@@ -342,3 +342,17 @@ node_modules/.bin/sequelize model:generate --name activity_log --attributes tabl
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-user-and-activity_log
 
 node_modules/.bin/sequelize seed:generate --name activity_log
+
+node_modules/.bin/sequelize model:generate --name contact --attributes name:string,title:string,phone:string,mobile:string,email:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-contact
+
+node_modules/.bin/sequelize seed:generate --name contact
+
+node_modules/.bin/sequelize model:generate --name contract --attributes number:string,file:string,package:string,active:boolean
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-contract
+
+node_modules/.bin/sequelize seed:generate --name contract
+
+node_modules/.bin/sequelize migration:generate --name add-attributes-for-contract

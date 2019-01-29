@@ -4,17 +4,21 @@ export default gql`
     extend type Query {
         client(id: ID!): Client
         clients: [Client]
+        clientByUser: Client
     }
 
     type Client {
         id: ID!
         name: String
-        has_parent_category: Boolean
+        full_company_name: String
+        nature_of_business: String
+        address: String
+        postal_address: String
+        phone: String
+        email: EmailAddress
         active: Boolean
-        has_tablet: Boolean
-        has_touchscreen: Boolean
         number_of_users: Int
-        avatar: String
+        avatar: URL
         createdAt: DateTime
         updatedAt: DateTime
         users: [User]
@@ -24,5 +28,8 @@ export default gql`
         media: [Media]
         systems: [System]
         devices: [Device]
+        contacts: [Contact]
+        active_contract: Contract
+        contracts: [Contract]
     }
 `;
