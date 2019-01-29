@@ -168,7 +168,7 @@ export default {
             { directoryEntryIdList, directoryListIdList, systemId },
             { user, clientIp }
         ) => {
-            //await checkUserLogin(user);
+            await checkUserLogin(user);
             /*const system = await db.system.findByPk(systemId);
             if (!Boolean(system)) {
                 throw new UserInputError(
@@ -180,73 +180,113 @@ export default {
             //Delete entries
             await asyncForEach(directoryEntryIdList, async each => {
                 const { directoryEntryId, directoryListId } = each;
-                console.log("1");
+                let select_directory_entry;
+                let select_directory_list;
+                let media_list;
+                let select_directory_entry_other_list;
 
-                //Retrieve entry
-                const select_directory_entry = await db.directory_entry.findByPk(
-                    directoryEntryId
-                );
-                console.log("2");
+                try {
+                    //Retrieve entry
+                    select_directory_entry = await db.directory_entry.findByPk(
+                        directoryEntryId
+                    );
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Retrieve list
-                const select_directory_list = await db.directory_list.findByPk(
-                    directoryListId
-                );
-                console.log("3");
+                try {
+                    //Retrieve list
+                    select_directory_list = await db.directory_list.findByPk(
+                        directoryListId
+                    );
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Retrieve media list from entry
-                const media_list = await select_directory_entry.getMedia();
-                console.log("4");
+                try {
+                    //Retrieve media list from entry
+                    media_list = await select_directory_entry.getMedia();
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Retrieve list of directories from selected entry
-                const select_directory_entry_other_list = await select_directory_entry.getDirectory_lists();
-
-                console.log(select_directory_entry_other_list);
-                console.log("5");
+                try {
+                    //Retrieve list of directories from selected entry
+                    select_directory_entry_other_list = await select_directory_entry.getDirectory_lists();
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
                 //Delete entry row if there is no second list has this entry
                 if (select_directory_entry_other_list.length === 1) {
-                    console.log("6");
+                    try {
+                        //Delete relationship between selected entry and media
+                        await select_directory_entry.removeMedium(media_list);
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
 
-                    //Delete relationship between selected entry and media
-                    await select_directory_entry.removeMedium(media_list);
-                    console.log("7");
+                    try {
+                        //Delete relationship between selected directory list and selected entry
+                        await select_directory_entry.removeDirectory_lists(
+                            select_directory_entry_other_list
+                        );
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
 
-                    //Delete relationship between selected directory list and selected entry
-                    await select_directory_entry.removeDirectory_lists(
-                        select_directory_entry_other_list
-                    );
-                    console.log("8");
                     //Delete relationship between selected directory entry from selected directory list
-                    await db.directory_entry.destroy({
-                        where: { id: directoryEntryId }
-                    });
-                    console.log("9");
+                    try {
+                        await db.directory_entry.destroy({
+                            where: { id: directoryEntryId }
+                        });
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
                 } else {
-                    //Delete relationship between selected directory list and selected entry
-                    await select_directory_entry.removeDirectory_list(
-                        select_directory_list
-                    );
-                    console.log("10");
+                    try {
+                        //Delete relationship between selected directory list and selected entry
+                        await select_directory_entry.removeDirectory_list(
+                            select_directory_list
+                        );
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
                 }
-                console.log("11");
             });
 
             //Delete lists
             await asyncForEach(directoryListIdList, async list_id => {
                 const id = parseInt(list_id);
+                let list;
+                let media_list;
+                try {
+                    //Retrieve list
+                    list = await db.directory_list.findByPk(id);
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Retrieve list
-                const list = await db.directory_list.findByPk(id);
+                try {
+                    //Retrieve media list from list
+                    media_list = await list.getMedia();
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Retrieve media list from list
-                const media_list = await list.getMedia();
+                try {
+                    //Remove relationship between list and media from list
+                    await list.removeMedium(media_list);
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
 
-                //Remove relationship between list and media from list
-                await list.removeMedium(media_list);
-
-                //Delete list
-                db.directory_list.destroy({ where: { id } });
+                try {
+                    //Delete list
+                    db.directory_list.destroy({ where: { id } });
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
             });
 
             return { result: true };
