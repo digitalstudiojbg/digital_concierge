@@ -10,5 +10,7 @@ export default gql`
         id: ID!
         name: String
         country: Country
+        venue_clients: [Client]
+        postal_clients: [Client]
     }
 `;

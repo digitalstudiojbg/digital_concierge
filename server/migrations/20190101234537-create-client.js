@@ -25,7 +25,21 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            address: {
+            venue_address: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            venue_city: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            venue_zip_code: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
@@ -34,6 +48,20 @@ module.exports = {
             },
             postal_address: {
                 type: Sequelize.STRING
+            },
+            postal_city: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            postal_zip_code: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             },
             phone: {
                 type: Sequelize.STRING,

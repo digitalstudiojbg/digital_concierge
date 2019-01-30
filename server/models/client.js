@@ -18,14 +18,48 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            address: {
+            venue_address: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            postal_address: DataTypes.STRING,
+            venue_city: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            venue_zip_code: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            postal_address: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            postal_city: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            postal_zip_code: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             phone: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -78,6 +112,12 @@ module.exports = (sequelize, DataTypes) => {
         client.hasMany(models.media);
         client.hasMany(models.contact);
         client.hasMany(models.contract);
+        client.belongsTo(models.state, {
+            foreignKey: "venueStateId"
+        });
+        client.belongsTo(models.state, {
+            foreignKey: "postalStateId"
+        });
     };
     return client;
 };
