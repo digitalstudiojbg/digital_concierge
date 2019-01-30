@@ -69,7 +69,6 @@ const renderSelectField = (
     setFieldValue
     // changeState
 ) => {
-    console.log(value);
     return (
         <Field
             name={name}
@@ -80,11 +79,9 @@ const renderSelectField = (
                     <InputLabel htmlFor={`id-${name}`}>{label}</InputLabel>
                     <Select
                         value={value}
-                        onChange={event => {
-                            console.log("Event is: ", event);
-                            setFieldValue(name, event.target.value);
-                            // changeState(name, event.target.value);
-                        }}
+                        onChange={event =>
+                            setFieldValue(name, event.target.value)
+                        }
                         inputProps={{
                             id: `id-${name}`,
                             name,
