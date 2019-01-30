@@ -13,6 +13,9 @@ export default gql`
         email: EmailAddress
         # password: String
         active: Boolean
+        first_phone_number: String
+        second_phone_number: String
+        position: String
         roles: [Role]
         client: Client
         avatar: URL

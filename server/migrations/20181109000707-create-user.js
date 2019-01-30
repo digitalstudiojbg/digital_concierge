@@ -30,6 +30,15 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            first_phone_number: {
+                type: Sequelize.STRING
+            },
+            second_phone_number: {
+                type: Sequelize.STRING
+            },
+            position: {
+                type: Sequelize.STRING
+            },
             active: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,

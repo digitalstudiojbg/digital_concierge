@@ -8,6 +8,9 @@ export const getSelectedUserQuery = gql`
             email
             active
             avatar
+            first_phone_number
+            second_phone_number
+            position
             createdAt
             updatedAt
             roles {
@@ -45,6 +48,9 @@ export const getCurrentUserQuery = gql`
             email
             active
             avatar
+            first_phone_number
+            second_phone_number
+            position
             createdAt
             updatedAt
             roles {

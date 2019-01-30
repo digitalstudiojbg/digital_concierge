@@ -31,6 +31,15 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 },
                 defaultValue: true
+            },
+            first_phone_number: {
+                type: DataTypes.STRING
+            },
+            second_phone_number: {
+                type: DataTypes.STRING
+            },
+            position: {
+                type: DataTypes.STRING
             }
             // avatar: {
             //     type: DataTypes.STRING
