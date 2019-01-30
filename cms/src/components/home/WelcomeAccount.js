@@ -162,7 +162,7 @@ class WelcomeAccount extends React.Component {
             name = "",
             full_company_name = "",
             nature_of_business = "",
-            address = "",
+            venue_address = "",
             postal_address = "",
             phone = "",
             email = ""
@@ -171,7 +171,7 @@ class WelcomeAccount extends React.Component {
             { title: "Business Trading Name", value: name },
             { title: "Full Company Name", value: full_company_name },
             { title: "Nature Of Business", value: nature_of_business },
-            { title: "Business Location Address", value: address },
+            { title: "Business Location Address", value: venue_address },
             { title: "Postal Address", value: postal_address },
             { title: "Phone Number", value: phone },
             { title: "Email Address", value: email }

@@ -6,8 +6,12 @@ export const getClientFromUser = gql`
             name
             full_company_name
             nature_of_business
-            address
+            venue_address
+            venue_city
+            venue_zip_code
             postal_address
+            postal_city
+            postal_zip_code
             phone
             email
             active
@@ -40,6 +44,14 @@ export const getClientFromUser = gql`
                 term_month
                 renewal_date
                 annual_fee
+            }
+            postal_state {
+                id
+                name
+            }
+            venue_state {
+                id
+                name
             }
         }
     }
@@ -51,8 +63,12 @@ export const getAllClients = gql`
             name
             full_company_name
             nature_of_business
-            address
+            venue_address
+            venue_city
+            venue_zip_code
             postal_address
+            postal_city
+            postal_zip_code
             phone
             email
             active
@@ -85,6 +101,14 @@ export const getAllClients = gql`
                 term_month
                 renewal_date
                 annual_fee
+            }
+            postal_state {
+                id
+                name
+            }
+            venue_state {
+                id
+                name
             }
         }
     }

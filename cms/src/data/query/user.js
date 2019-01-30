@@ -21,8 +21,12 @@ export const getSelectedUserQuery = gql`
                 name
                 full_company_name
                 nature_of_business
-                address
+                venue_address
+                venue_city
+                venue_zip_code
                 postal_address
+                postal_city
+                postal_zip_code
                 phone
                 email
                 active
@@ -54,8 +58,12 @@ export const getCurrentUserQuery = gql`
                 name
                 full_company_name
                 nature_of_business
-                address
+                venue_address
+                venue_city
+                venue_zip_code
                 postal_address
+                postal_city
+                postal_zip_code
                 phone
                 email
                 active
