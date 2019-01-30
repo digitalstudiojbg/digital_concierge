@@ -6,10 +6,18 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+const NewClientSetupTitle = styled.p`
+    font-size: 2.5em;
+    padding-top: 15px;
+`;
 
 const styles = theme => ({
     root: {
-        width: "90%"
+        width: "80%",
+        marginLeft: "auto",
+        marginRight: "auto"
     },
     button: {
         marginRight: theme.spacing.unit
@@ -60,12 +68,6 @@ class CreateClient extends Component {
         });
     };
 
-    handleReset = () => {
-        this.setState({
-            activeStep: 0
-        });
-    };
-
     render() {
         const { classes } = this.props;
         const { activeStep } = this.state;
@@ -73,6 +75,7 @@ class CreateClient extends Component {
 
         return (
             <div className={classes.root}>
+                <NewClientSetupTitle>New Client Setup</NewClientSetupTitle>
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {array_components.map(({ title }) => {
                         const props = {};
