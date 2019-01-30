@@ -42,7 +42,7 @@ const Welcome = lazy(() => import("./Welcome.js"));
 const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
 );
-const CreateClient = lazy(() => import("./CreateClient"));
+const CreateClient = lazy(() => import("./create_client"));
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
