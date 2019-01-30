@@ -1,5 +1,5 @@
-import React from "react";
-import WizardCreateClient from "./WizardCreateClient";
+import React, { lazy, Suspense } from "react";
+import styled from "styled-components";
 import WizardCreateClientPageOne from "./WizardCreateClientPageOne";
 import WizardCreateClientPageTwo from "./WizardCreateClientPageTwo";
 
@@ -25,24 +25,55 @@ const initialValues = {
     contact_mobile: ""
 };
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const ContainerDiv = styled.div`
+    padding-left: 350px;
+    width: 100%;
+    height: 100%;
+`;
 
-export const CreateClient = () => (
-    <div>
-        CREATE CLIENT PAGE
-        <WizardCreateClient
-            onSubmit={(values, actions) => {
-                sleep(300).then(() => {
-                    window.alert(JSON.stringify(values, null, 2));
-                    actions.setSubmitting(false);
-                });
-            }}
-            initialValues={{ ...initialValues }}
-        >
-            <WizardCreateClientPageOne />
-            <WizardCreateClientPageTwo />
-        </WizardCreateClient>
-    </div>
-);
+const array_components = [
+    lazy(() => import("./WizardCreateClientPageOne")),
+    lazy(() => import("./WizardCreateClientPageTwo"))
+];
+
+class CreateClient extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            page_index: 0
+        };
+        this.next = this.next.bind(this);
+        this.previous = this.previous.bind(this);
+    }
+
+    next() {
+        const { page_index } = this.state;
+        this.setState({
+            page_index: Math.min(page_index + 1, array_components.length - 1)
+        });
+    }
+
+    previous() {
+        const { page_index } = this.state;
+        this.setState({
+            page_index: Math.max(page_index - 1, 0)
+        });
+    }
+
+    render() {
+        const { page_index } = this.state;
+        const SelectedComponent = array_components[page_index];
+        return (
+            <ContainerDiv>
+                <Suspense>
+                    <SelectedComponent
+                        next={this.next}
+                        previous={this.previous}
+                    />
+                </Suspense>
+            </ContainerDiv>
+        );
+    }
+}
 
 export default CreateClient;
