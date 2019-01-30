@@ -21,7 +21,7 @@ export default gql`
         phone: String!
         email: EmailAddress!
         active: Boolean!
-        number_of_users: Int
+        number_of_users: Int!
         avatar: URL!
         createdAt: DateTime
         updatedAt: DateTime
