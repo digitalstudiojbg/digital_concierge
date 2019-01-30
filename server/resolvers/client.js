@@ -43,6 +43,10 @@ export default {
             return contracts.length > 0 ? contracts[0] : null;
         },
         contracts: async client =>
-            await db.contract.findAll({ where: { clientId: client.id } })
+            await db.contract.findAll({ where: { clientId: client.id } }),
+        venue_state: async client =>
+            await db.state.findByPk(client.venueStateId),
+        postal_state: async client =>
+            await db.state.findByPk(client.postalStateId)
     }
 };

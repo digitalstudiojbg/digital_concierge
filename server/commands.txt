@@ -367,3 +367,6 @@ node_modules/.bin/sequelize seed:generate --name country
 
 node_modules/.bin/sequelize seed:generate --name state
 
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-state-and-client
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-postal-state-and-client

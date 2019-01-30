@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
         state.belongsTo(models.country, {
             foreignKey: { allowNull: false }
         });
+        state.hasMany(models.client, {
+            foreignKey: "venueStateId"
+        });
+        state.hasMany(models.client, {
+            foreignKey: "postalStateId"
+        });
     };
     return state;
 };
