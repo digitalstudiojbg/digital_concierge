@@ -7,6 +7,27 @@ export default gql`
         clientByUser: Client
     }
 
+    extend type Mutation {
+        createClient(input: CreateClientInput): Client
+    }
+
+    input CreateClientInput {
+        full_company_name: String!
+        nature_of_business: String!
+        venue_address: String!
+        venue_city: String!
+        venue_zip_code: String!
+        venue_state_id: Int!
+        postal_address: String!
+        postal_city: String!
+        postal_zip_code: String!
+        postal_state_id: Int!
+        phone: String!
+        email: EmailAddress!
+        number_of_users: Int!
+        #file: Upload!
+    }
+
     type Client {
         id: ID!
         name: String!
