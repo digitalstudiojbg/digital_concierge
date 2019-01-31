@@ -1,18 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { Query, withApollo } from "react-apollo";
+import { Query, withApollo, compose, graphql } from "react-apollo";
 import Loading from "../../loading/Loading";
-import { Formik, Field } from "formik";
+import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import MuiTextField from "@material-ui/core/TextField";
 import { getCountryList } from "../../../data/query";
 
 //FIELDS IMPORTING
 import CLIENT_FIELDS from "./one/ClientFields";
+import CONTACT_FIELDS from "./one/ContactFields";
+import ValidationSchema from "./one/PageOneValidationSchema";
+import { CREATE_CLIENT } from "../../../data/mutation";
+import { DECIMAL_RADIX } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -38,7 +43,19 @@ const ClientFieldDiv = styled.div`
     margin-right: ${props => props.marginRight};
 `;
 
-const renderTextField = (name, label, required) => (
+const FieldContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const FieldDiv = styled.div`
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+`;
+
+const renderTextField = (name, label, required, type) => (
     // <Field
     //     name={name}
     //     validateOnBlur
@@ -66,6 +83,7 @@ const renderTextField = (name, label, required) => (
         name={name}
         label={label}
         required={required}
+        type={type}
         component={TextField}
         variant="outlined"
         fullWidth={true}
@@ -142,14 +160,25 @@ const renderSelectField = (
 const styles = theme => ({
     formControl: {
         margin: theme.spacing.unit
+    },
+    hideFileInput: {
+        display: "none"
+    },
+    uploadButton: {
+        margin: theme.spacing.unit,
+        color: "blue",
+        border: "1px solid blue",
+        width: "100%"
     }
 });
 
 class WizardCreateClientPageOne extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { client_image: null };
+        this.fileInput = React.createRef();
         this.selectRenderMethod = this.selectRenderMethod.bind(this);
+        this.updateClientImage = this.updateClientImage.bind(this);
     }
 
     selectRenderMethod(
@@ -163,7 +192,8 @@ class WizardCreateClientPageOne extends React.Component {
         const { name, label, required, select_id } = field_data;
         switch (type) {
             case "text":
-                return renderTextField(name, label, required);
+            case "password":
+                return renderTextField(name, label, required, type);
             case "select":
                 return renderSelectField(
                     name,
@@ -202,7 +232,16 @@ class WizardCreateClientPageOne extends React.Component {
         }
     }
 
+    updateClientImage() {
+        this.setState({
+            client_image: this.fileInput.current.files[0]
+        });
+    }
+
     render() {
+        const { classes, createClient } = this.props;
+        const { name: client_image_name = "" } = this.state.client_image || {};
+
         return (
             <Query query={getCountryList}>
                 {({ loading, error, data: { countries } }) => {
@@ -210,74 +249,227 @@ class WizardCreateClientPageOne extends React.Component {
                     if (error) return `Error! ${error.message}`;
                     console.log(countries);
                     return (
-                        <Formik>
+                        <Formik
+                            validationSchema={ValidationSchema}
+                            onSubmit={(values, { setSubmitting }) => {
+                                console.log(values);
+                                const { client_image } = this.state;
+                                const {
+                                    name,
+                                    full_company_name,
+                                    nature_of_business,
+                                    phone,
+                                    email,
+                                    venue_address,
+                                    postal_address,
+                                    venue_city,
+                                    venue_zip_code,
+                                    postal_city,
+                                    postal_zip_code,
+                                    // country_id,
+                                    // postal_country_id,
+                                    venueStateId,
+                                    postalStateId
+
+                                    // contact_name,
+                                    // contact_title,
+                                    // contact_email,
+                                    // contact_first_phone_number,
+                                    // contact_second_phone_number,
+                                    // password,
+                                    // confirm_password
+                                } = values;
+                                createClient({
+                                    variables: {
+                                        input: {
+                                            name,
+                                            full_company_name,
+                                            nature_of_business,
+                                            venue_address,
+                                            venue_city,
+                                            venue_zip_code,
+                                            venue_state_id: parseInt(
+                                                venueStateId,
+                                                DECIMAL_RADIX
+                                            ),
+                                            postal_address,
+                                            postal_city,
+                                            postal_zip_code,
+                                            postal_state_id: parseInt(
+                                                postalStateId,
+                                                DECIMAL_RADIX
+                                            ),
+                                            phone,
+                                            email,
+                                            number_of_users: 5,
+                                            file: client_image
+                                        }
+                                    }
+                                });
+                                setSubmitting(false);
+                            }}
+                        >
                             {({
                                 // handleSubmit,
                                 // handleChange,
                                 // handleBlur,
-                                values
+                                values,
+                                errors,
                                 // errors
-                                // setFieldValue
-                            }) => (
-                                <ContainerDiv>
-                                    <SectionDiv width="50%">
-                                        Client Info
-                                        {CLIENT_FIELDS.map(
-                                            (fields_array, index) => {
-                                                return (
-                                                    <ClientFieldContainerDiv
-                                                        key={`FIELD-CONTAINER-${index}`}
-                                                    >
-                                                        {fields_array.map(
-                                                            (
-                                                                {
-                                                                    name,
-                                                                    label,
-                                                                    required,
-                                                                    flexBasis,
-                                                                    marginRight,
-                                                                    select_id,
-                                                                    type
-                                                                },
-                                                                field_index
-                                                            ) => (
-                                                                <ClientFieldDiv
-                                                                    key={`FIELD=${index}-${field_index}`}
-                                                                    flexBasis={
-                                                                        flexBasis
-                                                                    }
-                                                                    marginRight={
-                                                                        marginRight
-                                                                    }
-                                                                >
-                                                                    {this.selectRenderMethod(
-                                                                        type,
+                                // setFieldValue,
+                                isSubmitting
+                            }) => {
+                                return (
+                                    <Form>
+                                        <ContainerDiv>
+                                            <SectionDiv width="50%">
+                                                Client Info
+                                                {CLIENT_FIELDS.map(
+                                                    (fields_array, index) => {
+                                                        return (
+                                                            <ClientFieldContainerDiv
+                                                                key={`FIELD-CONTAINER-${index}`}
+                                                            >
+                                                                {fields_array.map(
+                                                                    (
                                                                         {
                                                                             name,
                                                                             label,
                                                                             required,
-                                                                            select_id
+                                                                            flexBasis,
+                                                                            marginRight,
+                                                                            select_id,
+                                                                            type
                                                                         },
-                                                                        countries,
-                                                                        values
-                                                                        // setFieldValue
-                                                                    )}
-                                                                </ClientFieldDiv>
-                                                            )
-                                                        )}
-                                                    </ClientFieldContainerDiv>
-                                                );
-                                            }
-                                        )}
-                                    </SectionDiv>
-                                    <SectionDiv width="25%">
-                                        Key Contact
-                                    </SectionDiv>
-                                    <SectionDiv width="25%">
-                                        Client Profile Image
-                                    </SectionDiv>
-                                </ContainerDiv>
-                            )}
+                                                                        field_index
+                                                                    ) => (
+                                                                        <ClientFieldDiv
+                                                                            key={`CLIENT-FIELD=${index}-${field_index}`}
+                                                                            flexBasis={
+                                                                                flexBasis
+                                                                            }
+                                                                            marginRight={
+                                                                                marginRight
+                                                                            }
+                                                                        >
+                                                                            {this.selectRenderMethod(
+                                                                                type,
+                                                                                {
+                                                                                    name,
+                                                                                    label,
+                                                                                    required,
+                                                                                    select_id
+                                                                                },
+                                                                                countries,
+                                                                                values
+                                                                                // setFieldValue
+                                                                            )}
+                                                                        </ClientFieldDiv>
+                                                                    )
+                                                                )}
+                                                            </ClientFieldContainerDiv>
+                                                        );
+                                                    }
+                                                )}
+                                            </SectionDiv>
+                                            <SectionDiv width="25%">
+                                                Key Contact
+                                                <FieldContainerDiv>
+                                                    {CONTACT_FIELDS.map(
+                                                        (
+                                                            {
+                                                                name,
+                                                                label,
+                                                                required,
+                                                                type
+                                                            },
+                                                            index
+                                                        ) => (
+                                                            <FieldDiv
+                                                                key={`CONTACT-FIELD-${index}`}
+                                                            >
+                                                                {renderTextField(
+                                                                    name,
+                                                                    label,
+                                                                    required,
+                                                                    type
+                                                                )}
+                                                            </FieldDiv>
+                                                        )
+                                                    )}
+                                                </FieldContainerDiv>
+                                            </SectionDiv>
+                                            <SectionDiv width="25%">
+                                                Client Profile Image
+                                                <FieldContainerDiv>
+                                                    <FieldDiv>
+                                                        <MuiTextField
+                                                            value={
+                                                                client_image_name
+                                                            }
+                                                            disabled={true}
+                                                            fullWidth={true}
+                                                            label="File Name"
+                                                            variant="outlined"
+                                                        />
+                                                    </FieldDiv>
+                                                    <FieldDiv>
+                                                        <input
+                                                            accept="image/*"
+                                                            className={
+                                                                classes.hideFileInput
+                                                            }
+                                                            ref={this.fileInput}
+                                                            onChange={
+                                                                this
+                                                                    .updateClientImage
+                                                            }
+                                                            id="upload-client-image"
+                                                            type="file"
+                                                        />
+                                                        <div
+                                                            style={{
+                                                                width: "100%",
+                                                                display: "flex",
+                                                                flexDirection:
+                                                                    "row-reverse"
+                                                            }}
+                                                        >
+                                                            <label htmlFor="upload-client-image">
+                                                                <Button
+                                                                    variant="outlined"
+                                                                    component="span"
+                                                                    className={
+                                                                        classes.uploadButton
+                                                                    }
+                                                                >
+                                                                    Browse
+                                                                </Button>
+                                                            </label>
+                                                        </div>
+                                                    </FieldDiv>
+                                                </FieldContainerDiv>
+                                                <Button
+                                                    type="submit"
+                                                    variant="contained"
+                                                    color="primary"
+                                                    disabled={
+                                                        isSubmitting ||
+                                                        Object.keys(errors)
+                                                            .length > 0 ||
+                                                        !Boolean(
+                                                            this.state
+                                                                .client_image
+                                                        )
+                                                    }
+                                                >
+                                                    Confirm & Continue
+                                                </Button>
+                                            </SectionDiv>
+                                        </ContainerDiv>
+                                    </Form>
+                                );
+                            }}
                         </Formik>
                     );
                 }}
@@ -286,4 +478,8 @@ class WizardCreateClientPageOne extends React.Component {
     }
 }
 
-export default withApollo(withStyles(styles)(WizardCreateClientPageOne));
+export default compose(
+    withApollo,
+    withStyles(styles),
+    graphql(CREATE_CLIENT(), { name: "createClient" })
+)(WizardCreateClientPageOne);

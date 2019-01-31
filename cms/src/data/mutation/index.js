@@ -6,6 +6,7 @@ import {
 import { changeDirectoryListAndEntryStatus } from "./directory";
 import { CREATE_CLIENT } from "./client";
 import { CREATE_CONTACT } from "./contact";
+import { CREATE_USER } from "./user";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -13,5 +14,6 @@ export {
     changeDirectoryListAndEntryStatus,
     DELETE_DIR_LIST_ENTRY,
     CREATE_CLIENT,
-    CREATE_CONTACT
+    CREATE_CONTACT,
+    CREATE_USER
 };

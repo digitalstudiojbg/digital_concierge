@@ -58,6 +58,7 @@ class MultipleMutationAndQueryExample extends Component {
                         createClient({
                             variables: {
                                 input: {
+                                    name: "Neal's Hotel",
                                     full_company_name: "Jonathan's Hotel",
                                     nature_of_business: "Hotel",
                                     venue_address: "48-50 Charter Street",
