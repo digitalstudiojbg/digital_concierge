@@ -7,6 +7,19 @@ export default gql`
         contactsByUser: [Contact]
     }
 
+    extend type Mutation {
+        createContact(input: CreateContactInput): Contact
+    }
+
+    input CreateContactInput {
+        name: String!
+        title: String!
+        phone: String!
+        mobile: String!
+        email: EmailAddress!
+        clientId: ID!
+    }
+
     type Contact {
         id: ID!
         name: String

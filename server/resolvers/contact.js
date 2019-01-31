@@ -7,6 +7,28 @@ export default {
         contactsByUser: async (_root, _input, { user }) =>
             await db.contact.findAll({ where: { clientId: user.clientId } })
     },
+    Mutation: {
+        createContact: async (
+            _root,
+            { input: { name, title, phone, mobile, email, clientId } },
+            { user, clientIp }
+        ) => {
+            //const client = await db.client.findByPk(clientId);
+
+            let create_contact = db.contact.build({
+                name,
+                title,
+                phone,
+                mobile,
+                email,
+                clientId
+            });
+
+            await create_contact.save();
+
+            return create_contact;
+        }
+    },
     Contact: {
         client: async contact => await db.client.findByPk(contact.clientId)
     }
