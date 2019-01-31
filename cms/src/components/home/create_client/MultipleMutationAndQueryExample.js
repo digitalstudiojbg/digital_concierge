@@ -25,6 +25,8 @@ class MultipleMutationAndQueryExample extends Component {
             .then(data => {
                 console.log(data);
             });
+
+        // this.props.client.mutate({})
     }
 
     render() {
