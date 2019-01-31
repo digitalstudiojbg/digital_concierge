@@ -16,7 +16,7 @@ import { getCountryList } from "../../../data/query";
 import CLIENT_FIELDS from "./one/ClientFields";
 import CONTACT_FIELDS from "./one/ContactFields";
 import ValidationSchema from "./one/PageOneValidationSchema";
-import { CREATE_CLIENT } from "../../../data/mutation";
+import { CREATE_CLIENT, CREATE_USER } from "../../../data/mutation";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
@@ -239,7 +239,7 @@ class WizardCreateClientPageOne extends React.Component {
     }
 
     render() {
-        const { classes, createClient } = this.props;
+        const { classes, createClient, createUser } = this.props;
         const { name: client_image_name = "" } = this.state.client_image || {};
 
         return (
@@ -269,14 +269,14 @@ class WizardCreateClientPageOne extends React.Component {
                                     // country_id,
                                     // postal_country_id,
                                     venueStateId,
-                                    postalStateId
+                                    postalStateId,
 
-                                    // contact_name,
-                                    // contact_title,
-                                    // contact_email,
-                                    // contact_first_phone_number,
-                                    // contact_second_phone_number,
-                                    // password,
+                                    contact_name,
+                                    contact_title,
+                                    contact_email,
+                                    contact_first_phone_number,
+                                    contact_second_phone_number,
+                                    password
                                     // confirm_password
                                 } = values;
                                 createClient({
@@ -305,7 +305,31 @@ class WizardCreateClientPageOne extends React.Component {
                                             file: client_image
                                         }
                                     }
-                                });
+                                }).then(
+                                    ({
+                                        data: {
+                                            createClient: { id: clientId }
+                                        }
+                                    }) => {
+                                        // console.log(data);
+                                        createUser({
+                                            variables: {
+                                                input: {
+                                                    name: contact_name,
+                                                    position: contact_title,
+                                                    email: contact_email,
+                                                    first_phone_number: contact_first_phone_number,
+                                                    second_phone_number: contact_second_phone_number,
+                                                    password,
+                                                    clientId: parseInt(
+                                                        clientId,
+                                                        DECIMAL_RADIX
+                                                    )
+                                                }
+                                            }
+                                        });
+                                    }
+                                );
                                 setSubmitting(false);
                             }}
                         >
@@ -481,5 +505,6 @@ class WizardCreateClientPageOne extends React.Component {
 export default compose(
     withApollo,
     withStyles(styles),
-    graphql(CREATE_CLIENT(), { name: "createClient" })
+    graphql(CREATE_CLIENT(), { name: "createClient" }),
+    graphql(CREATE_USER(), { name: "createUser" })
 )(WizardCreateClientPageOne);
