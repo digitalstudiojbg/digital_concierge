@@ -16,7 +16,8 @@ export default {
             _root,
             {
                 input: {
-                    full_company_name,
+                    name,
+                    full_company_name = "",
                     nature_of_business,
                     venue_address,
                     venue_city,
@@ -28,8 +29,8 @@ export default {
                     postal_state_id,
                     phone,
                     email,
-                    number_of_users
-                    /*file*/
+                    number_of_users,
+                    file
                 }
             },
             { user, clientIp }
@@ -37,39 +38,33 @@ export default {
             /**
              * Dummy avatar link
              */
-            const avatar =
-                "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Holiday_Inn_Logo.png";
+            // const avatar =
+            //     "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Holiday_Inn_Logo.png";
+            // const venue_state = await db.state.findByPk(venue_state_id);
+            // const postal_state = await db.state.findByPk(postal_state_id);
+            // let create_client = db.client.build({
+            //     name: full_company_name,
+            //     full_company_name,
+            //     nature_of_business,
+            //     venue_address,
+            //     venue_city,
+            //     venue_zip_code,
+            //     postal_address,
+            //     postal_city,
+            //     postal_zip_code,
+            //     phone,
+            //     email,
+            //     number_of_users,
+            //     avatar,
+            //     venueStateId: venue_state.id,
+            //     postalStateId: postal_state.id
+            // });
+            // await create_client.save();
+            // return create_client;
 
-            const venue_state = await db.state.findByPk(venue_state_id);
-
-            const postal_state = await db.state.findByPk(postal_state_id);
-
-            let create_client = db.client.build({
-                name: full_company_name,
-                full_company_name,
-                nature_of_business,
-                venue_address,
-                venue_city,
-                venue_zip_code,
-                postal_address,
-                postal_city,
-                postal_zip_code,
-                phone,
-                email,
-                number_of_users,
-                avatar,
-                venueStateId: venue_state.id,
-                postalStateId: postal_state.id
-            });
-
-            await create_client.save();
-
-            return create_client;
-
-            /*For Upload Avatar
-               await processUpload(file).then(async data => {
+            await processUpload(file).then(async data => {
                 let create_client = db.client.build({
-                    name: full_company_name,
+                    name,
                     full_company_name,
                     nature_of_business,
                     venue_address,
@@ -82,14 +77,14 @@ export default {
                     email,
                     number_of_users,
                     avatar: data.location,
-                    venueStateId: venue_state.id,
-                    postalStateId: postal_state.id
+                    venueStateId: venue_state_id,
+                    postalStateId: postal_state_id
                 });
 
                 await create_client.save();
 
                 return create_client;
-            });*/
+            });
         }
     },
     Client: {

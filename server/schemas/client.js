@@ -12,7 +12,8 @@ export default gql`
     }
 
     input CreateClientInput {
-        full_company_name: String!
+        name: String!
+        full_company_name: String
         nature_of_business: String!
         venue_address: String!
         venue_city: String!
@@ -25,7 +26,7 @@ export default gql`
         phone: String!
         email: EmailAddress!
         number_of_users: Int!
-        #file: Upload!
+        file: Upload!
     }
 
     type Client {

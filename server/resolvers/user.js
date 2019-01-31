@@ -25,6 +25,23 @@ export default {
             return await db.user.findAll();
         }
     },
+    Mutation: {
+        createUser: async (
+            _root,
+            {
+                input: {
+                    name,
+                    email,
+                    password,
+                    first_phone_number,
+                    second_phone_number,
+                    position,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {}
+    },
     User: {
         roles: async user =>
             await db.role.findAll({
