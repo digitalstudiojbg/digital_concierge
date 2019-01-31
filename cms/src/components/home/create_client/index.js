@@ -7,6 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
 
 const NewClientSetupTitle = styled.p`
     font-size: 2.5em;
@@ -106,6 +107,7 @@ class CreateClient extends Component {
                         </div>
                     </div>
                 </div>
+                <MultipleMutationAndQueryExample />
             </div>
         );
     }

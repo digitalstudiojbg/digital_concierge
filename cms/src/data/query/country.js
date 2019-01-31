@@ -12,3 +12,16 @@ export const getCountryList = gql`
         }
     }
 `;
+
+export const getSelectedCountry = gql`
+    query getSelectedCountry($id: ID!) {
+        country(id: $id) {
+            id
+            name
+            states {
+                id
+                name
+            }
+        }
+    }
+`;
