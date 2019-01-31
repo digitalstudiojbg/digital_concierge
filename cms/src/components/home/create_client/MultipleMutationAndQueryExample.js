@@ -60,7 +60,7 @@ class MultipleMutationAndQueryExample extends Component {
                         /**
                          * Execute second mutation
                          */
-                        createClient({
+                        /* createClient({
                             variables: {
                                 input: {
                                     name: "Neal's Hotel",
@@ -79,7 +79,7 @@ class MultipleMutationAndQueryExample extends Component {
                                     number_of_users: 5
                                 }
                             }
-                        });
+                        });*/
 
                         /**
                          * Execute third mutation
@@ -96,6 +96,8 @@ class MultipleMutationAndQueryExample extends Component {
                                     clientId: 1
                                 }
                             }
+                        }).then(data => {
+                            console.log(data);
                         });
 
                         //this.runQuery();

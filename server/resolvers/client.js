@@ -62,28 +62,28 @@ export default {
             // await create_client.save();
             // return create_client;
 
-            await processUpload(file).then(async data => {
-                let create_client = db.client.build({
-                    name,
-                    full_company_name,
-                    nature_of_business,
-                    venue_address,
-                    venue_city,
-                    venue_zip_code,
-                    postal_address,
-                    postal_city,
-                    postal_zip_code,
-                    phone,
-                    email,
-                    number_of_users,
-                    avatar: data.location,
-                    venueStateId: venue_state_id,
-                    postalStateId: postal_state_id
+            return new Promise((resolve, reject) => {
+                processUpload(file).then(async data => {
+                    let create_client = db.client.build({
+                        name,
+                        full_company_name,
+                        nature_of_business,
+                        venue_address,
+                        venue_city,
+                        venue_zip_code,
+                        postal_address,
+                        postal_city,
+                        postal_zip_code,
+                        phone,
+                        email,
+                        number_of_users,
+                        avatar: data.location,
+                        venueStateId: venue_state_id,
+                        postalStateId: postal_state_id
+                    });
+
+                    resolve(create_client.save());
                 });
-
-                await create_client.save();
-
-                return create_client;
             });
         }
     },
