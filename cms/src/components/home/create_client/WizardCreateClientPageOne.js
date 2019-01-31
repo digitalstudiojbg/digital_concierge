@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { Query, withApollo } from "react-apollo";
 import Loading from "../../loading/Loading";
 import { Formik, Field } from "formik";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Select } from "formik-material-ui";
+import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { getCountryList } from "../../../data/query";
+
+//FIELDS IMPORTING
+import CLIENT_FIELDS from "./one/ClientFields";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -35,211 +39,111 @@ const ClientFieldDiv = styled.div`
 `;
 
 const renderTextField = (name, label, required) => (
+    // <Field
+    //     name={name}
+    //     validateOnBlur
+    //     validateOnChange
+    //     render={({ field, form }) => (
+    //         <TextField
+    //             label={label}
+    //             fullWidth={true}
+    //             required={required}
+    //             variant="outlined"
+    //             name={field.name}
+    //             value={field.value}
+    //             onChange={field.onChange}
+    //             onBlur={field.onBlur}
+    //             error={form.errors[field.name] && form.touched[field.name]}
+    //             helperText={
+    //                 form.errors[field.name] &&
+    //                 form.touched[field.name] &&
+    //                 String(form.errors[field.name])
+    //             }
+    //         />
+    //     )}
+    // />
     <Field
         name={name}
-        validateOnBlur
-        validateOnChange
-        render={({ field, form }) => (
-            <TextField
-                label={label}
-                fullWidth={true}
-                required={required}
-                variant="outlined"
-                name={field.name}
-                value={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                error={form.errors[field.name] && form.touched[field.name]}
-                helperText={
-                    form.errors[field.name] &&
-                    form.touched[field.name] &&
-                    String(form.errors[field.name])
-                }
-            />
-        )}
+        label={label}
+        required={required}
+        component={TextField}
+        variant="outlined"
+        fullWidth={true}
     />
 );
 
+//Bug in rendering material ui select label once value is selected
 const renderSelectField = (
     name,
+    select_id,
     label,
-    required,
     items,
     value,
-    setFieldValue
+    // setFieldValue
     // changeState
-) => {
-    return (
-        <Field
-            name={name}
-            validateOnBlur={false}
-            validateOnChange
-            render={() => (
-                <React.Fragment>
-                    <InputLabel htmlFor={`id-${name}`}>{label}</InputLabel>
-                    <Select
-                        value={value}
-                        onChange={event =>
-                            setFieldValue(name, event.target.value)
-                        }
-                        inputProps={{
-                            id: `id-${name}`,
-                            name,
-                            required
-                        }}
-                    >
-                        <MenuItem value="null" disabled>
-                            {label}
-                        </MenuItem>
-                        {items.map(({ id, name }, index) => (
-                            <MenuItem
-                                key={`ITEM-${name}-${id}-${index}`}
-                                value={id}
-                            >
-                                {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </React.Fragment>
-            )}
-        />
-    );
-};
+    className = ""
+) => (
+    // <Field
+    //     name={name}
+    //     validateOnBlur={false}
+    //     validateOnChange
+    //     component={Select}
+    //     render={() => (
+    //         <FormControl className={className}>
+    //             <InputLabel htmlFor={`id-${name}`}>{label}</InputLabel>
+    //             <Field
+    //                 name={name}
+    //                 component={Select}
+    //                 inputProps={{
+    //                     name,
+    //                     id: `id-${name}`,
+    //                     required
+    //                 }}
+    //             >
+    //                 <MenuItem value="null" disabled>
+    //                     {label}
+    //                 </MenuItem>
+    // {items.map(({ id, name }, index) => (
+    //     <MenuItem
+    //         key={`ITEM-${name}-${id}-${index}`}
+    //         value={id}
+    //     >
+    //         {name}
+    //     </MenuItem>
+    // ))}
+    //             </Field>
+    //         </FormControl>
+    //     )}
+    // />
 
-const CLIENT_FIELDS = [
-    [
-        {
-            name: "name",
-            label: "Client Name",
-            required: true,
-            flexBasis: "30%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "full_company_name",
-            label: "Full Client Name",
-            required: false,
-            flexBasis: "30%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "nature_of_business",
-            label: "Nature of Business",
-            required: true,
-            flexBasis: "30%",
-            marginRight: "0px",
-            type: "text"
-        }
-    ],
-    [
-        {
-            name: "phone",
-            label: "Venue Phone Number",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "email",
-            label: "Business Email",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "0px",
-            type: "text"
-        }
-    ],
-    [
-        {
-            name: "venue_address",
-            label: "Venue Address",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "postal_address",
-            label: "Postal Address",
-            required: false,
-            flexBasis: "45%",
-            marginRight: "0px",
-            type: "text"
-        }
-    ],
-    [
-        {
-            name: "venue_city",
-            label: "City",
-            required: true,
-            flexBasis: "20%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "venue_zip_code",
-            label: "Zip Code",
-            required: true,
-            flexBasis: "20%",
-            marginRight: "30px",
-            type: "text"
-        },
-        {
-            name: "postal_city",
-            label: "City",
-            required: true,
-            flexBasis: "20%",
-            marginRight: "10px",
-            type: "text"
-        },
-        {
-            name: "postal_zip_code",
-            label: "Zip Code",
-            required: true,
-            flexBasis: "20%",
-            marginRight: "0px",
-            type: "text"
-        }
-    ],
-    [
-        {
-            name: "country_id",
-            label: "Country",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "10px",
-            type: "select"
-        },
-        {
-            name: "postal_country_id",
-            label: "Country",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "0px",
-            type: "select"
-        }
-    ],
-    [
-        {
-            name: "venueStateId",
-            label: "State / Province (If Applicable)",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "10px",
-            type: "select"
-        },
-        {
-            name: "postalStateId",
-            label: "State / Province (If Applicable)",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "0px",
-            type: "select"
-        }
-    ]
-];
+    <FormControl className={className} fullWidth={true}>
+        {/* <InputLabel htmlFor={select_id}>{label}</InputLabel> */}
+        <InputLabel htmlFor={select_id}>
+            {Boolean(value) ? "" : label}
+        </InputLabel>
+        <Field
+            id={select_id}
+            name={name}
+            component={Select}
+            disabled={items.length < 1}
+        >
+            <MenuItem value="null" disabled>
+                {label}
+            </MenuItem>
+            {items.map(({ id, name }, index) => (
+                <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
+                    {name}
+                </MenuItem>
+            ))}
+        </Field>
+    </FormControl>
+);
+
+const styles = theme => ({
+    formControl: {
+        margin: theme.spacing.unit
+    }
+});
 
 class WizardCreateClientPageOne extends React.Component {
     constructor(props) {
@@ -252,21 +156,24 @@ class WizardCreateClientPageOne extends React.Component {
         type,
         field_data,
         items = [],
-        values = {},
-        setFieldValue = null
+        values = {}
+        // setFieldValue = null
     ) {
-        const { name, label, required } = field_data;
+        const { classes } = this.props;
+        const { name, label, required, select_id } = field_data;
         switch (type) {
             case "text":
                 return renderTextField(name, label, required);
             case "select":
                 return renderSelectField(
                     name,
+                    select_id,
                     label,
-                    required,
+                    // required,
                     this.selectItemsForRendering(name, values, items),
                     values[name],
-                    setFieldValue
+                    // setFieldValue
+                    classes.formControl
                 );
             default:
                 return <React.Fragment />;
@@ -308,9 +215,9 @@ class WizardCreateClientPageOne extends React.Component {
                                 // handleSubmit,
                                 // handleChange,
                                 // handleBlur,
-                                values,
+                                values
                                 // errors
-                                setFieldValue
+                                // setFieldValue
                             }) => (
                                 <ContainerDiv>
                                     <SectionDiv width="50%">
@@ -329,6 +236,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                                     required,
                                                                     flexBasis,
                                                                     marginRight,
+                                                                    select_id,
                                                                     type
                                                                 },
                                                                 field_index
@@ -347,11 +255,12 @@ class WizardCreateClientPageOne extends React.Component {
                                                                         {
                                                                             name,
                                                                             label,
-                                                                            required
+                                                                            required,
+                                                                            select_id
                                                                         },
                                                                         countries,
-                                                                        values,
-                                                                        setFieldValue
+                                                                        values
+                                                                        // setFieldValue
                                                                     )}
                                                                 </ClientFieldDiv>
                                                             )
@@ -377,4 +286,4 @@ class WizardCreateClientPageOne extends React.Component {
     }
 }
 
-export default withApollo(WizardCreateClientPageOne);
+export default withApollo(withStyles(styles)(WizardCreateClientPageOne));
