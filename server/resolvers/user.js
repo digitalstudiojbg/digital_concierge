@@ -40,7 +40,27 @@ export default {
                 }
             },
             { user, clientIp }
-        ) => {}
+        ) => {
+            const bcrypt = require("bcrypt");
+            const saltRounds = 10;
+            const hash_password = bcrypt.hashSync(password, saltRounds);
+
+            let create_user = db.user.build({
+                name,
+                email,
+                password: hash_password,
+                first_phone_number,
+                second_phone_number,
+                position,
+                clientId,
+                active: true,
+                mediumId: 1
+            });
+
+            await create_user.save();
+
+            return create_user;
+        }
     },
     User: {
         roles: async user =>

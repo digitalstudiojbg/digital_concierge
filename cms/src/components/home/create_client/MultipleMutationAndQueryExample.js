@@ -1,6 +1,10 @@
 import React, { Component, Fragment, lazy, Suspense } from "react";
 import { compose, withApollo, graphql } from "react-apollo";
-import { CREATE_CLIENT, CREATE_CONTACT } from "../../../data/mutation";
+import {
+    CREATE_CLIENT,
+    CREATE_CONTACT,
+    CREATE_USER
+} from "../../../data/mutation";
 import { getCountryList, getSelectedCountry } from "../../../data/query";
 import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
@@ -27,6 +31,7 @@ class MultipleMutationAndQueryExample extends Component {
         const {
             createContact,
             createClient,
+            createUser,
             getSelectedCountry,
             data,
             classes
@@ -76,11 +81,28 @@ class MultipleMutationAndQueryExample extends Component {
                             }
                         });
 
+                        /**
+                         * Execute third mutation
+                         */
+                        createUser({
+                            variables: {
+                                input: {
+                                    name: "Jonathan Neal 123",
+                                    email: "shenyijie5580@gmail.com",
+                                    password: "Owner & Founder",
+                                    first_phone_number: "0424195945",
+                                    second_phone_number: "0424195945",
+                                    position: "Boss",
+                                    clientId: 1
+                                }
+                            }
+                        });
+
                         //this.runQuery();
                         console.log("clicked");
                     }}
                 >
-                    Click Me For Run Two Mutations Together
+                    Click Me Executing Mutations
                 </h1>
                 <p>
                     Result from getCountryList{" "}
@@ -107,6 +129,7 @@ export default compose(
         }),
         name: "getSelectedCountry"
     }),
+    graphql(CREATE_USER(), { name: "createUser" }),
     graphql(CREATE_CONTACT(), { name: "createContact" }),
     graphql(CREATE_CLIENT(), { name: "createClient" })
 )(MultipleMutationAndQueryExample);
