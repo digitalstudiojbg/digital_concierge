@@ -13,8 +13,6 @@ export default {
             { input: { name, title, phone, mobile, email, clientId } },
             { user, clientIp }
         ) => {
-            //const client = await db.client.findByPk(clientId);
-
             let create_contact = db.contact.build({
                 name,
                 title,
