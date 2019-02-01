@@ -7,7 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
+//import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
 
 const NewClientSetupTitle = styled.p`
     font-size: 2.5em;
@@ -107,7 +107,22 @@ class CreateClient extends Component {
                         </div>
                     </div>
                 </div>
-                <MultipleMutationAndQueryExample />
+                {/*} <MultipleMutationAndQueryExample />*/}
+
+                {activeStep !== 5 && (
+                    <button
+                        style={{
+                            height: "50px",
+                            width: "200px",
+                            marginTop: "15px"
+                        }}
+                        onClick={() => {
+                            this.setState({ activeStep: 5 });
+                        }}
+                    >
+                        <h1>GO TO STEP 6 (MEDIA) </h1>
+                    </button>
+                )}
             </div>
         );
     }

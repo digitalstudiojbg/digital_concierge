@@ -53,6 +53,10 @@ export const getClientFromUser = gql`
                 id
                 name
             }
+            media {
+                id
+                name
+            }
         }
     }
 `;
@@ -109,6 +113,23 @@ export const getAllClients = gql`
             venue_state {
                 id
                 name
+            }
+            media {
+                id
+            }
+        }
+    }
+`;
+
+export const getClientImageById = gql`
+    query getClientImageById($id: ID!) {
+        client(id: $id) {
+            media {
+                id
+                name
+                path
+                type
+                key
             }
         }
     }
