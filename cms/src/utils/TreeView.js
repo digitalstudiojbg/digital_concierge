@@ -783,7 +783,7 @@ class TreeView extends React.PureComponent {
                 mutation={changeDirectoryListAndEntryStatus()}
                 refetchQueries={[
                     {
-                        query: getDirectoryListBySystem()
+                        query: getDirectoryListBySystem
                     }
                 ]}
             >

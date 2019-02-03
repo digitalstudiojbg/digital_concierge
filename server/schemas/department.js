@@ -4,7 +4,13 @@ export default gql`
     extend type Query {
         department(id: ID!): Department
         departments: [Department]
+        departmentsByUser: [Department]
     }
+
+    extend type Mutation {
+        createDepartment(input: CreateDepartmentInput): Department
+    }
+
     type Department {
         id: ID!
         name: String
@@ -12,5 +18,9 @@ export default gql`
         updatedAt: DateTime
         clients: [Client]
         roles: [Role]
+    }
+
+    input CreateDepartmentInput {
+        name: String!
     }
 `;
