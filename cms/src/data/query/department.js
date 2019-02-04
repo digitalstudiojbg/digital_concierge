@@ -8,6 +8,10 @@ export const getDepartmentListByUser = gql`
             roles {
                 id
                 name
+                permissions {
+                    id
+                    name
+                }
             }
         }
     }
