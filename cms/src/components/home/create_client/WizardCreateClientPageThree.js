@@ -78,10 +78,35 @@ class WizardCreateClientPageThree extends React.Component {
             selected_checkboxes: []
         };
         this.handleChangeDepartment = this.handleChangeDepartment.bind(this);
+        this.handleChangePermissionCheckbox = this.handleChangePermissionCheckbox.bind(
+            this
+        );
     }
 
     handleChangeDepartment(event) {
-        this.setState({ department_id: event.target.value });
+        this.setState({
+            department_id: event.target.value,
+            selected_checkboxes: []
+        });
+    }
+
+    handleChangePermissionCheckbox(event) {
+        const { selected_checkboxes } = this.state;
+        if (selected_checkboxes.includes(event.target.id)) {
+            //Remove from selected checkboxes
+            const index = selected_checkboxes.indexOf(event.target.id);
+            this.setState({
+                selected_checkboxes: [
+                    ...selected_checkboxes.slice(0, index),
+                    ...selected_checkboxes.slice(index + 1)
+                ]
+            });
+        } else {
+            //Add to selected checkboxes
+            this.setState({
+                selected_checkboxes: [...selected_checkboxes, event.target.id]
+            });
+        }
     }
 
     renderRolePermissionSection(selected_department) {
@@ -89,6 +114,11 @@ class WizardCreateClientPageThree extends React.Component {
             return <React.Fragment />;
         } else {
             const { roles = [] } = selected_department;
+            const { selected_checkboxes } = this.state;
+            let allPermissionsLength = 0;
+            roles.forEach(role => {
+                allPermissionsLength += role.permissions.length;
+            });
             return (
                 <React.Fragment>
                     {roles.length > 0 ? (
@@ -109,7 +139,48 @@ class WizardCreateClientPageThree extends React.Component {
                                     }}
                                 >
                                     <FormControlLabel
-                                        control={<Checkbox />}
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    selected_checkboxes.length ===
+                                                    allPermissionsLength
+                                                }
+                                                onChange={() => {
+                                                    //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
+                                                    if (
+                                                        selected_checkboxes.length ===
+                                                        allPermissionsLength
+                                                    ) {
+                                                        this.setState({
+                                                            selected_checkboxes: []
+                                                        });
+                                                    } else {
+                                                        const permissions = [].concat.apply(
+                                                            [],
+                                                            selected_department.roles.map(
+                                                                role => {
+                                                                    let output = [];
+                                                                    role.permissions.forEach(
+                                                                        ({
+                                                                            id
+                                                                        }) => {
+                                                                            output = [
+                                                                                ...output,
+                                                                                id
+                                                                            ];
+                                                                        }
+                                                                    );
+                                                                    return output;
+                                                                }
+                                                            )
+                                                        );
+                                                        this.setState({
+                                                            selected_checkboxes: permissions.slice()
+                                                        });
+                                                    }
+                                                }}
+                                            />
+                                        }
                                         label="All Permissions"
                                     />
                                 </div>
@@ -136,7 +207,20 @@ class WizardCreateClientPageThree extends React.Component {
                                                 ) => (
                                                     <FormControlLabel
                                                         key={`PERMISSION-${permissionId}-${permissionIndex}`}
-                                                        control={<Checkbox />}
+                                                        control={
+                                                            <Checkbox
+                                                                id={
+                                                                    permissionId
+                                                                }
+                                                                checked={selected_checkboxes.includes(
+                                                                    permissionId
+                                                                )}
+                                                                onChange={
+                                                                    this
+                                                                        .handleChangePermissionCheckbox
+                                                                }
+                                                            />
+                                                        }
                                                         label={permissionName}
                                                     />
                                                 )
@@ -165,19 +249,6 @@ class WizardCreateClientPageThree extends React.Component {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
                     console.log(departments);
-
-                    //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
-                    const roles = [].concat.apply(
-                        [],
-                        departments.map(department => {
-                            let output = [];
-                            department.roles.forEach(role => {
-                                output = [...output, { ...role }];
-                            });
-                            return output;
-                        })
-                    );
-                    console.log("Roles ", roles);
                     return (
                         <ContainerDiv>
                             <SectionDivContainer>
@@ -344,18 +415,18 @@ class WizardCreateClientPageThree extends React.Component {
                                                     values,
                                                     isSubmitting
                                                 }) => {
+                                                    const {
+                                                        department_id
+                                                    } = this.state;
                                                     const selected_department =
                                                         Boolean(
-                                                            this.state
-                                                                .department_id
+                                                            department_id
                                                         ) &&
-                                                        this.state.department_id
-                                                            .length > 0
+                                                        department_id.length > 0
                                                             ? departments.find(
                                                                   ({ id }) =>
                                                                       id ===
-                                                                      this.state
-                                                                          .department_id
+                                                                      department_id
                                                               )
                                                             : null;
                                                     return (
@@ -380,9 +451,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     >
                                                                         <InputLabel htmlFor="simple-department-picker">
                                                                             {Boolean(
-                                                                                this
-                                                                                    .state
-                                                                                    .department_id
+                                                                                department_id
                                                                             )
                                                                                 ? ""
                                                                                 : "Department"}
@@ -390,9 +459,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         <Select
                                                                             id="simple-department-picker"
                                                                             value={
-                                                                                this
-                                                                                    .state
-                                                                                    .department_id
+                                                                                department_id
                                                                             }
                                                                             onChange={
                                                                                 this
