@@ -4,7 +4,7 @@ export default gql`
     extend type Query {
         medium(id: ID!): Media
         media: [Media]
-        mediaByClient(id: ID!): [Media]
+        mediaByClient(id: ID!, limit: Int, offset: Int, cursor: String): [Media]
         mediaBySystem(id: ID!): [Media]
     }
 
