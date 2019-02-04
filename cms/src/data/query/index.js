@@ -4,6 +4,7 @@ import { getSystemsFromUser } from "./system";
 import { getClientFromUser, getAllClients, getClientImageById } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import { getDepartmentListByUser } from "./department";
+import { getLayoutList } from "./layout";
 
 export {
     getCurrentUserQuery,
@@ -14,5 +15,6 @@ export {
     getCountryList,
     getSelectedCountry,
     getClientImageById,
-    getDepartmentListByUser
+    getDepartmentListByUser,
+    getLayoutList
 };

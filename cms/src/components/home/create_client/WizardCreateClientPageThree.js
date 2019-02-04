@@ -456,6 +456,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                                                 ? ""
                                                                                 : "Department"}
                                                                         </InputLabel>
+                                                                        {/* <InputLabel htmlFor="simple-department-picker">
+                                                                            Department
+                                                                        </InputLabel> */}
                                                                         <Select
                                                                             id="simple-department-picker"
                                                                             value={

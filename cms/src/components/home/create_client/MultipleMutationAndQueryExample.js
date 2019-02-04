@@ -5,7 +5,12 @@ import {
     CREATE_CONTACT,
     CREATE_USER
 } from "../../../data/mutation";
-import { getCountryList, getSelectedCountry } from "../../../data/query";
+import {
+    getCountryList,
+    getSelectedCountry,
+    getLayoutList,
+    getSystemsFromUser
+} from "../../../data/query";
 import { withStyles } from "@material-ui/core/styles";
 const styles = theme => ({
     text: {
@@ -118,6 +123,14 @@ class MultipleMutationAndQueryExample extends Component {
                         ? getSelectedCountry.country.name
                         : "No Data"}
                 </p>
+                <ul>
+                    {data &&
+                        data.layouts &&
+                        Array.isArray(data.layouts) &&
+                        data.layouts.map(({ id, name }, index) => (
+                            <li key={`layout-${id}-${index}`}>{name}</li>
+                        ))}
+                </ul>
             </React.Fragment>
         );
     }
@@ -126,6 +139,7 @@ class MultipleMutationAndQueryExample extends Component {
 export default compose(
     withApollo,
     withStyles(styles),
+    graphql(getSystemsFromUser, { name: "getSystemsFromUser" }),
     graphql(getCountryList),
     graphql(getSelectedCountry, {
         options: ownProps => ({
@@ -135,5 +149,6 @@ export default compose(
     }),
     graphql(CREATE_USER(), { name: "createUser" }),
     graphql(CREATE_CONTACT(), { name: "createContact" }),
-    graphql(CREATE_CLIENT(), { name: "createClient" })
+    graphql(CREATE_CLIENT(), { name: "createClient" }),
+    graphql(getLayoutList)
 )(MultipleMutationAndQueryExample);
