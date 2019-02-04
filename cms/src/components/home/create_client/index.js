@@ -1,4 +1,4 @@
-import React, { Component, Fragment, lazy, Suspense } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import { withApollo } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
@@ -7,7 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-//import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
+// import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
 
 const NewClientSetupTitle = styled.p`
     font-size: 2.5em;
@@ -69,6 +69,14 @@ class CreateClient extends Component {
         });
     };
 
+    handlePrev = () => {
+        const { activeStep } = this.state;
+
+        this.setState({
+            activeStep: Math.max(activeStep - 1, 0)
+        });
+    };
+
     render() {
         const { classes } = this.props;
         const { activeStep } = this.state;
@@ -93,6 +101,17 @@ class CreateClient extends Component {
                         <Suspense>
                             <SelectedComponent next={this.handleNext} />
                         </Suspense>
+                        <div style={{ paddingBottom: 10 }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={this.handlePrev}
+                                className={classes.button}
+                                disabled={activeStep === 0}
+                            >
+                                Back
+                            </Button>
+                        </div>
                         <div>
                             <Button
                                 variant="contained"
@@ -107,8 +126,6 @@ class CreateClient extends Component {
                         </div>
                     </div>
                 </div>
-                {/*} <MultipleMutationAndQueryExample />*/}
-
                 {activeStep !== 5 && (
                     <button
                         style={{
@@ -123,6 +140,7 @@ class CreateClient extends Component {
                         <h1>GO TO STEP 6 (MEDIA) </h1>
                     </button>
                 )}
+                {/* <MultipleMutationAndQueryExample /> */}
             </div>
         );
     }
