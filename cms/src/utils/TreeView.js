@@ -1256,24 +1256,22 @@ class TreeView extends React.PureComponent {
         console.log(selected_dir_entries);
 
         //Prepare directory list
-        let directoryEntryIdList = [];
-
-        let directoryListIdList = this.sortDirectoryListBasedOnDepth(
+        const directoryListIdList = this.sortDirectoryListBasedOnDepth(
             selected_dir_lists
         ).map(each => parseInt(each, DECIMAL_RADIX));
 
         console.log(directoryListIdList);
 
         //Prepare directory entry
-        selected_dir_entries.map(each => {
+        const directoryEntryIdList = selected_dir_entries.map(each => {
             const parents = each.split("-");
             const lastParentId = parents[parents.length - 2];
             const entryId = parents[parents.length - 1];
 
-            directoryEntryIdList.push({
+            return {
                 directoryEntryId: parseInt(entryId),
                 directoryListId: parseInt(lastParentId)
-            });
+            };
         });
 
         console.log(directoryEntryIdList);
