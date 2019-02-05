@@ -11,10 +11,15 @@ import styled from "styled-components";
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
-
+    cursor: pointer;
     &:hover {
         background-color: lightgrey;
     }
+`;
+
+const PaginationSectionDot = styled.li`
+    display: inline;
+    padding: 10px;
 `;
 
 class MediaLibrary extends React.Component {
@@ -64,15 +69,23 @@ class MediaLibrary extends React.Component {
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-between",
+                                        alignItems: "center",
                                         height: "3vh"
                                     }}
                                 >
                                     <div>
-                                        Images {offset + 1} -{" "}
-                                        {offset + limit > totalImages
-                                            ? totalImages
-                                            : offset + limit}{" "}
-                                        of {totalImages} Images Shown Below
+                                        <p
+                                            style={{
+                                                fontWeight: "bold",
+                                                fontSize: "1.3em"
+                                            }}
+                                        >
+                                            Images {offset + 1} -{" "}
+                                            {offset + limit > totalImages
+                                                ? totalImages
+                                                : offset + limit}{" "}
+                                            of {totalImages} Images Shown Below
+                                        </p>
                                     </div>
                                     <div>
                                         <Select
@@ -107,9 +120,10 @@ class MediaLibrary extends React.Component {
                                 <div
                                     style={{
                                         display: "flex",
-                                        flexWrap: "wrap",
                                         overflowY: "scroll",
-                                        height: "60vh"
+                                        height: "60vh",
+                                        flexWrap: "wrap",
+                                        alignItems: "center"
                                     }}
                                 >
                                     {images.length > 0 &&
@@ -146,7 +160,8 @@ class MediaLibrary extends React.Component {
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-between",
-                                        height: "5vh"
+                                        height: "5vh",
+                                        alignItems: "center"
                                     }}
                                 >
                                     {images.length > 0 ? (
@@ -165,9 +180,9 @@ class MediaLibrary extends React.Component {
                                                     </a>
                                                 )}
                                                 {currentPage >= 4 && (
-                                                    <PaginationSection>
+                                                    <PaginationSectionDot>
                                                         <span>...</span>
-                                                    </PaginationSection>
+                                                    </PaginationSectionDot>
                                                 )}
                                                 {times(pages, index => {
                                                     if (
@@ -207,9 +222,9 @@ class MediaLibrary extends React.Component {
                                                     }
                                                 })}
                                                 {currentPage <= pages - 5 && (
-                                                    <PaginationSection>
+                                                    <PaginationSectionDot>
                                                         <span>...</span>
-                                                    </PaginationSection>
+                                                    </PaginationSectionDot>
                                                 )}
                                                 {pages > 0 && (
                                                     <a
