@@ -4,7 +4,12 @@ export default gql`
     extend type Query {
         medium(id: ID!): Media
         media: [Media]
-        mediaByClient(id: ID!, limit: Int, offset: Int, cursor: String): [Media]
+        mediaByClient(
+            id: ID!
+            limit: Int
+            offset: Int
+            cursor: String
+        ): [MediaPagination]
         mediaBySystem(id: ID!): [Media]
     }
 
@@ -17,5 +22,17 @@ export default gql`
         updatedAt: DateTime
         client: Client
         key: String
+    }
+
+    type MediaPagination {
+        id: ID!
+        name: String
+        path: URL
+        type: String
+        createdAt: DateTime
+        updatedAt: DateTime
+        client: Client
+        key: String
+        totalImages: Int
     }
 `;

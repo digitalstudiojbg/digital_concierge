@@ -127,6 +127,7 @@ export const getClientImageById = gql`
             id
             name
             path
+            totalImages
             createdAt
         }
     }

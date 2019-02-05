@@ -9,14 +9,14 @@ export default {
             { id, limit, cursor, offset },
             { user }
         ) => {
+            let output_data;
+            const totalImages = await db.media.findAll({
+                where: { clientId: id }
+            });
+
             if (cursor) {
-                return await db.media.findAll({
-                    include: [
-                        {
-                            model: db.client,
-                            where: { id }
-                        }
-                    ],
+                output_data = await db.media.findAll({
+                    where: { clientId: id },
                     limit,
                     where: {
                         createdAt: {
@@ -26,29 +26,25 @@ export default {
                     order: [["createdAt", "DESC"]]
                 });
             } else if (offset) {
-                return await db.media.findAll({
-                    include: [
-                        {
-                            model: db.client,
-                            where: { id }
-                        }
-                    ],
+                output_data = await db.media.findAll({
+                    where: { clientId: id },
                     limit,
                     offset,
                     order: [["createdAt", "DESC"]]
                 });
             } else {
-                return await db.media.findAll({
-                    include: [
-                        {
-                            model: db.client,
-                            where: { id }
-                        }
-                    ],
+                output_data = await db.media.findAll({
+                    where: { clientId: id },
                     limit,
                     order: [["createdAt", "DESC"]]
                 });
             }
+
+            output_data.map(each => {
+                each["totalImages"] = totalImages.length;
+            });
+
+            return output_data;
         },
         mediaBySystem: async (_root, { id }, { user }) =>
             await db.media.findAll({

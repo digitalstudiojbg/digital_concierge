@@ -101,28 +101,30 @@ class CreateClient extends Component {
                         <Suspense>
                             <SelectedComponent next={this.handleNext} />
                         </Suspense>
-                        <div style={{ paddingBottom: 10 }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={this.handlePrev}
-                                className={classes.button}
-                                disabled={activeStep === 0}
-                            >
-                                Back
-                            </Button>
-                        </div>
-                        <div>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={this.handleNext}
-                                className={classes.button}
-                            >
-                                {activeStep === array_components.length - 1
-                                    ? "Finish"
-                                    : "Next"}
-                            </Button>
+                        <div style={{ display: "flex" }}>
+                            <div style={{ paddingBottom: 10 }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={this.handlePrev}
+                                    className={classes.button}
+                                    disabled={activeStep === 0}
+                                >
+                                    Back
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={this.handleNext}
+                                    className={classes.button}
+                                >
+                                    {activeStep === array_components.length - 1
+                                        ? "Finish"
+                                        : "Next"}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

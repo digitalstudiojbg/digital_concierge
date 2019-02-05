@@ -5,9 +5,25 @@ import PropTypes from "prop-types";
 import Loading from "../../../loading/Loading";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { times } from "lodash";
+import styled from "styled-components";
+
+const PaginationSection = styled.li`
+    display: inline;
+    padding: 10px;
+    background-color: yellow;
+`;
 
 class MediaLibrary extends React.Component {
     state = { limit: 5, offset: 0 };
+
+    handlePagination(id) {
+        console.log(id);
+
+        this.setState({
+            offset: id * this.state.limit
+        });
+    }
 
     render() {
         const { clientId: id } = this.props;
@@ -27,6 +43,13 @@ class MediaLibrary extends React.Component {
                         if (loading) return <Loading loadingData />;
                         if (error) return `Error! ${error.message}`;
                         console.log(images);
+                        let totalImages;
+                        let pages;
+                        if (images.length > 0) {
+                            totalImages = images[0].totalImages;
+                            pages =
+                                (totalImages - (totalImages % limit)) / limit;
+                        }
 
                         return (
                             <div>
@@ -51,7 +74,7 @@ class MediaLibrary extends React.Component {
                                                         }}
                                                     >
                                                         {image.name}
-                                                    </p>{" "}
+                                                    </p>
                                                     <p
                                                         style={{
                                                             width: "300px",
@@ -68,7 +91,55 @@ class MediaLibrary extends React.Component {
                                             );
                                         })}
                                 </div>
+
                                 <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        height: "5vh"
+                                    }}
+                                >
+                                    {images.length > 0 ? (
+                                        <div>
+                                            <ul>
+                                                {times(pages, index => {
+                                                    if (index < 4) {
+                                                        return (
+                                                            <a
+                                                                onClick={this.handlePagination.bind(
+                                                                    this,
+                                                                    index + 1
+                                                                )}
+                                                            >
+                                                                <PaginationSection>
+                                                                    <span>
+                                                                        {index +
+                                                                            1}
+                                                                    </span>
+                                                                </PaginationSection>
+                                                            </a>
+                                                        );
+                                                    }
+                                                })}
+                                                {pages >= 6 && (
+                                                    <PaginationSection>
+                                                        <span>...</span>
+                                                    </PaginationSection>
+                                                )}
+                                                {pages > 0 && (
+                                                    <PaginationSection>
+                                                        <span>{pages}</span>
+                                                    </PaginationSection>
+                                                )}
+                                            </ul>
+                                        </div>
+                                    ) : (
+                                        <div>Number 1</div>
+                                    )}
+
+                                    <div>Page</div>
+                                </div>
+                                {/*<div
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-around"
@@ -96,6 +167,12 @@ class MediaLibrary extends React.Component {
                                         </Select>
                                     </div>
                                     <div>
+                                        <p>
+                                            {images.length > 0 &&
+                                                images[0].totalImages}
+                                        </p>
+                                    </div>
+                                    <div>
                                         <p>Page</p>
                                         <Select
                                             value={this.state.offset}
@@ -120,7 +197,7 @@ class MediaLibrary extends React.Component {
                                             </MenuItem>
                                         </Select>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
                         );
                     }}
