@@ -22,6 +22,13 @@ const PaginationSectionDot = styled.li`
     padding: 10px;
 `;
 
+const ImageLinkText = styled.a`
+    cursor: pointer;
+    &:hover {
+        color: blue;
+    }
+`;
+
 class MediaLibrary extends React.Component {
     state = { limit: 10, offset: 0 };
 
@@ -130,28 +137,56 @@ class MediaLibrary extends React.Component {
                                         images.map(image => {
                                             return (
                                                 <div
-                                                    style={{ padding: "10px" }}
+                                                    style={{
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        padding: "10px"
+                                                    }}
                                                 >
                                                     <p
                                                         style={{
                                                             width: "300px",
-                                                            textAlign: "center"
+                                                            textAlign: "center",
+                                                            fontWeight: "bold",
+                                                            fontSize: "1.1em"
                                                         }}
                                                     >
                                                         {image.name}
                                                     </p>
-                                                    <p
-                                                        style={{
-                                                            width: "300px",
-                                                            textAlign: "center"
+                                                    <a
+                                                        onClick={() => {
+                                                            window.open(
+                                                                image.path
+                                                            );
                                                         }}
                                                     >
-                                                        {image.createdAt}
-                                                    </p>
-                                                    <img
-                                                        src={image.path}
-                                                        width={300}
-                                                    />
+                                                        <img
+                                                            src={image.path}
+                                                            width={300}
+                                                        />
+                                                    </a>
+                                                    <div>
+                                                        <ImageLinkText
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    image.path
+                                                                );
+                                                            }}
+                                                        >
+                                                            View Full Size
+                                                        </ImageLinkText>
+                                                    </div>
+                                                    <div>
+                                                        <ImageLinkText
+                                                            onClick={() => {
+                                                                window.open(
+                                                                    image.path
+                                                                );
+                                                            }}
+                                                        >
+                                                            Download
+                                                        </ImageLinkText>
+                                                    </div>
                                                 </div>
                                             );
                                         })}
