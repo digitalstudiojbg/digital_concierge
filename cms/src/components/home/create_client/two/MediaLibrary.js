@@ -11,15 +11,16 @@ import styled from "styled-components";
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
-    background-color: yellow;
+
+    &:hover {
+        background-color: lightgrey;
+    }
 `;
 
 class MediaLibrary extends React.Component {
-    state = { limit: 5, offset: 0 };
+    state = { limit: 10, offset: 0 };
 
     handlePagination(id) {
-        console.log(id);
-
         this.setState({
             offset: id * this.state.limit
         });
@@ -45,14 +46,64 @@ class MediaLibrary extends React.Component {
                         console.log(images);
                         let totalImages;
                         let pages;
+                        let currentPage = 1;
+                        let hasLastPage =
+                            totalImages % limit > 0 ? true : false;
                         if (images.length > 0) {
                             totalImages = images[0].totalImages;
                             pages =
                                 (totalImages - (totalImages % limit)) / limit;
+                            currentPage =
+                                offset / limit > 0 ? offset / limit : 1;
                         }
+                        console.log(pages);
 
                         return (
                             <div>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        height: "3vh"
+                                    }}
+                                >
+                                    <div>
+                                        Images {offset + 1} -{" "}
+                                        {offset + limit > totalImages
+                                            ? totalImages
+                                            : offset + limit}{" "}
+                                        of {totalImages} Images Shown Below
+                                    </div>
+                                    <div>
+                                        <Select
+                                            value={this.state.limit}
+                                            onChange={event => {
+                                                this.setState({
+                                                    limit: event.target.value
+                                                });
+                                            }}
+                                        >
+                                            <MenuItem value={5}>
+                                                Show 5 Images Per Page
+                                            </MenuItem>
+                                            <MenuItem value={10}>
+                                                Show 10 Images Per Page
+                                            </MenuItem>
+                                            <MenuItem value={20}>
+                                                Show 20 Images Per Page
+                                            </MenuItem>
+                                            <MenuItem value={30}>
+                                                Show 30 Images Per Page
+                                            </MenuItem>
+                                            <MenuItem value={50}>
+                                                Show 50 Images Per Page
+                                            </MenuItem>
+                                            <MenuItem value={100}>
+                                                Show 100 Images Per Page
+                                            </MenuItem>
+                                        </Select>
+                                    </div>
+                                </div>
                                 <div
                                     style={{
                                         display: "flex",
@@ -91,7 +142,6 @@ class MediaLibrary extends React.Component {
                                             );
                                         })}
                                 </div>
-
                                 <div
                                     style={{
                                         display: "flex",
@@ -102,102 +152,95 @@ class MediaLibrary extends React.Component {
                                     {images.length > 0 ? (
                                         <div>
                                             <ul>
+                                                {pages > 0 && (
+                                                    <a
+                                                        onClick={this.handlePagination.bind(
+                                                            this,
+                                                            0
+                                                        )}
+                                                    >
+                                                        <PaginationSection>
+                                                            <span>1</span>
+                                                        </PaginationSection>
+                                                    </a>
+                                                )}
+                                                {currentPage >= 4 && (
+                                                    <PaginationSection>
+                                                        <span>...</span>
+                                                    </PaginationSection>
+                                                )}
                                                 {times(pages, index => {
-                                                    if (index < 4) {
-                                                        return (
-                                                            <a
-                                                                onClick={this.handlePagination.bind(
-                                                                    this,
-                                                                    index + 1
-                                                                )}
-                                                            >
-                                                                <PaginationSection>
-                                                                    <span>
-                                                                        {index +
-                                                                            1}
-                                                                    </span>
-                                                                </PaginationSection>
-                                                            </a>
+                                                    if (
+                                                        index < pages - 1 &&
+                                                        index > 0
+                                                    ) {
+                                                        console.log(
+                                                            `current page${currentPage}`
                                                         );
+                                                        console.log(
+                                                            `index${index}`
+                                                        );
+
+                                                        if (
+                                                            currentPage <
+                                                                index + 3 &&
+                                                            currentPage >
+                                                                index - 3
+                                                        ) {
+                                                            return (
+                                                                <a
+                                                                    onClick={this.handlePagination.bind(
+                                                                        this,
+                                                                        index +
+                                                                            1
+                                                                    )}
+                                                                >
+                                                                    <PaginationSection>
+                                                                        <span>
+                                                                            {index +
+                                                                                1}
+                                                                        </span>
+                                                                    </PaginationSection>
+                                                                </a>
+                                                            );
+                                                        }
                                                     }
                                                 })}
-                                                {pages >= 6 && (
+                                                {currentPage <= pages - 5 && (
                                                     <PaginationSection>
                                                         <span>...</span>
                                                     </PaginationSection>
                                                 )}
                                                 {pages > 0 && (
-                                                    <PaginationSection>
-                                                        <span>{pages}</span>
-                                                    </PaginationSection>
+                                                    <a
+                                                        onClick={this.handlePagination.bind(
+                                                            this,
+                                                            pages
+                                                        )}
+                                                    >
+                                                        <PaginationSection>
+                                                            <span>
+                                                                {totalImages %
+                                                                    limit >
+                                                                    0 &&
+                                                                pages < 3
+                                                                    ? pages + 1
+                                                                    : pages}
+                                                            </span>
+                                                        </PaginationSection>
+                                                    </a>
                                                 )}
                                             </ul>
                                         </div>
                                     ) : (
-                                        <div>Number 1</div>
+                                        <PaginationSection>
+                                            <span>1</span>
+                                        </PaginationSection>
                                     )}
-
-                                    <div>Page</div>
+                                    <div>
+                                        Page {currentPage} of {pages - 1}
+                                    </div>
                                 </div>
-                                {/*<div
-                                    style={{
-                                        display: "flex",
-                                        justifyContent: "space-around"
-                                    }}
-                                >
-                                    <div>
-                                        <p>Show images per page</p>
-                                        <Select
-                                            value={this.state.limit}
-                                            onChange={event => {
-                                                this.setState({
-                                                    limit: event.target.value
-                                                });
-                                            }}
-                                        >
-                                            <MenuItem value={5}>Five</MenuItem>
-
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>
-                                                Twenty
-                                            </MenuItem>
-                                            <MenuItem value={30}>
-                                                Thirty
-                                            </MenuItem>
-                                        </Select>
-                                    </div>
-                                    <div>
-                                        <p>
-                                            {images.length > 0 &&
-                                                images[0].totalImages}
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <p>Page</p>
-                                        <Select
-                                            value={this.state.offset}
-                                            onChange={event => {
-                                                this.setState({
-                                                    offset: event.target.value
-                                                });
-                                            }}
-                                        >
-                                            <MenuItem value={0}>1</MenuItem>
-                                            <MenuItem value={limit * 1}>
-                                                2
-                                            </MenuItem>
-                                            <MenuItem value={limit * 2}>
-                                                3
-                                            </MenuItem>
-                                            <MenuItem value={limit * 3}>
-                                                4
-                                            </MenuItem>
-                                            <MenuItem value={limit * 4}>
-                                                5
-                                            </MenuItem>
-                                        </Select>
-                                    </div>
-                                </div>*/}
                             </div>
                         );
                     }}
