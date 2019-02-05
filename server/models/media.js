@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
             key: {
                 type: DataTypes.STRING
             },
+            size: {
+                type: DataTypes.DECIMAL,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             path: {
                 type: DataTypes.STRING,
                 allowNull: false,

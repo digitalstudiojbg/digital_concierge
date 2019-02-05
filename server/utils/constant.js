@@ -100,11 +100,16 @@ export const processUpload = async file => {
                     }
                 });
 
-                resolve({
-                    filename,
-                    location: data.Location,
-                    key: data.key
-                });
+                s3.headObject({ Key: data.key })
+                    .promise()
+                    .then(res =>
+                        resolve({
+                            filename,
+                            location: data.Location,
+                            key: data.key,
+                            size: res.ContentLength
+                        })
+                    );
             }
         );
     });
@@ -256,12 +261,16 @@ export const processUploadMedia = async (image, clientId, type) => {
     try {
         const uploaded_media = await processUpload(image);
         try {
+            console.log("-------------------");
+            console.log(uploaded_media.size);
+
             return await db.media.create({
                 name: uploaded_media.filename,
                 path: uploaded_media.location,
                 clientId,
                 type,
-                key: uploaded_media.key
+                key: uploaded_media.key,
+                size: uploaded_media.size
             });
         } catch (e) {
             throw new UserInputError(e);

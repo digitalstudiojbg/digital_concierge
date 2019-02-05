@@ -7,11 +7,13 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
+import { formatBytes } from "../../../../utils/Constants";
 
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
     cursor: pointer;
+
     &:hover {
         background-color: lightgrey;
     }
@@ -24,8 +26,9 @@ const PaginationSectionDot = styled.li`
 
 const ImageLinkText = styled.a`
     cursor: pointer;
+    color: blue;
     &:hover {
-        color: blue;
+        font-weight: bold;
     }
 `;
 
@@ -165,27 +168,77 @@ class MediaLibrary extends React.Component {
                                                             width={300}
                                                         />
                                                     </a>
-                                                    <div>
-                                                        <ImageLinkText
-                                                            onClick={() => {
-                                                                window.open(
-                                                                    image.path
-                                                                );
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center"
+                                                        }}
+                                                    >
+                                                        <div>
+                                                            <ImageLinkText
+                                                                onClick={() => {
+                                                                    window.open(
+                                                                        image.path
+                                                                    );
+                                                                }}
+                                                            >
+                                                                View Full Size
+                                                            </ImageLinkText>
+                                                        </div>
+                                                        <div
+                                                            style={{
+                                                                marginLeft:
+                                                                    "5px",
+                                                                paddingLeft:
+                                                                    "5px",
+                                                                borderLeft:
+                                                                    "1px solid black",
+
+                                                                marginRight:
+                                                                    "5px",
+                                                                paddingRight:
+                                                                    "5px",
+                                                                borderRight:
+                                                                    "1px solid black"
                                                             }}
                                                         >
-                                                            View Full Size
-                                                        </ImageLinkText>
+                                                            <ImageLinkText
+                                                                onClick={() => {
+                                                                    window.open(
+                                                                        image.path
+                                                                    );
+                                                                }}
+                                                            >
+                                                                Download
+                                                            </ImageLinkText>
+                                                        </div>
+                                                        <div>
+                                                            <ImageLinkText
+                                                                onClick={() => {
+                                                                    console.log(
+                                                                        "OnClick"
+                                                                    );
+                                                                }}
+                                                            >
+                                                                Edit
+                                                            </ImageLinkText>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <ImageLinkText
-                                                            onClick={() => {
-                                                                window.open(
-                                                                    image.path
-                                                                );
-                                                            }}
-                                                        >
-                                                            Download
-                                                        </ImageLinkText>
+
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center"
+                                                        }}
+                                                    >
+                                                        <p>
+                                                            Size:
+                                                            {formatBytes(
+                                                                image.size
+                                                            )}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             );

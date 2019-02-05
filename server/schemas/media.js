@@ -22,6 +22,7 @@ export default gql`
         updatedAt: DateTime
         client: Client
         key: String
+        size: Int
     }
 
     type MediaPagination {
@@ -34,5 +35,6 @@ export default gql`
         client: Client
         key: String
         totalImages: Int
+        size: Int
     }
 `;

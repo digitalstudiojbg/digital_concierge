@@ -129,6 +129,7 @@ export const getClientImageById = gql`
             path
             totalImages
             createdAt
+            size
         }
     }
 `;

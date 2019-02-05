@@ -15,6 +15,13 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            size: {
+                type: Sequelize.DECIMAL,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             key: {
                 type: Sequelize.STRING
             },
