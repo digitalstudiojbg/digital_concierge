@@ -8,9 +8,22 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
 import { formatBytes } from "../../../../utils/Constants";
-import { UPLOAD_FILES_WITH_CLIENT_ID } from "../../../../data/mutation";
+import {
+    UPLOAD_FILES_WITH_CLIENT_ID,
+    DELETE_FILES
+} from "../../../../data/mutation";
 import Checkbox from "@material-ui/core/Checkbox";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Button from "@material-ui/core/Button";
+import Slide from "@material-ui/core/Slide";
 
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
@@ -47,7 +60,7 @@ const UploadDeleteButton = styled.label`
 `;
 
 class MediaLibrary extends React.Component {
-    state = { limit: 10, offset: 0, selected: [] };
+    state = { limit: 10, offset: 0, selected: [], deleteAlertOpen: false };
 
     handlePagination(id) {
         this.setState({
@@ -55,28 +68,28 @@ class MediaLibrary extends React.Component {
         });
     }
 
-    handleCheckbox(id) {
-        const num_id = parseInt(id);
+    handleCheckbox(image) {
         const { selected } = this.state;
-        if (selected.includes(num_id)) {
-            this.setState({
-                selected: selected.filter(each => {
-                    return each != id;
-                })
-            });
-        } else {
-            this.setState({
-                selected: [...selected, num_id]
-            });
-        }
+        this.setState({
+            selected: selected.includes(image)
+                ? selected.filter(each => {
+                      return each != image;
+                  })
+                : [...selected, image]
+        });
     }
 
-    render() {
-        console.log("----------------------");
-        console.log(this.state.selected);
+    handleClickOpen = () => {
+        this.setState({ deleteAlertOpen: true });
+    };
 
+    handleClose = () => {
+        this.setState({ deleteAlertOpen: false });
+    };
+
+    render() {
         const { clientId: id } = this.props;
-        const { limit, offset } = this.state;
+        const { limit, offset, selected } = this.state;
         return (
             <div>
                 <div
@@ -93,10 +106,6 @@ class MediaLibrary extends React.Component {
                                 variables: { id, limit, offset }
                             }
                         ]}
-                        update={(cache, data) => {
-                            console.log(data);
-                            this.setState({ files: null });
-                        }}
                     >
                         {(uploadFilesWithClientId, { loading, error }) => (
                             <div>
@@ -123,6 +132,95 @@ class MediaLibrary extends React.Component {
 
                                 {loading && <p>Loading...</p>}
                                 {error && <p>Error :( Please try again</p>}
+                            </div>
+                        )}
+                    </Mutation>
+                    <Mutation
+                        mutation={DELETE_FILES}
+                        refetchQueries={[
+                            {
+                                query: getClientImageById,
+                                variables: { id, limit, offset }
+                            }
+                        ]}
+                    >
+                        {(deleteFiles, { loading, error }) => (
+                            <div style={{ paddingLeft: "25px" }}>
+                                <UploadDeleteButton
+                                    onClick={() => {
+                                        selected.length > 0 &&
+                                            this.handleClickOpen();
+                                    }}
+                                >
+                                    DELETE SELECTED
+                                </UploadDeleteButton>
+                                {loading && <p>Loading...</p>}
+                                {error && <p>Error :( Please try again</p>}
+
+                                <Dialog
+                                    open={this.state.deleteAlertOpen}
+                                    TransitionComponent={Transition}
+                                    onClose={this.handleClose}
+                                >
+                                    <DialogTitle id="alert-dialog-title">
+                                        <h3>
+                                            Are you sure you want to delete?
+                                        </h3>
+                                    </DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-description">
+                                            <ul
+                                                style={{ paddingRight: "20px" }}
+                                            >
+                                                {selected.map(each => {
+                                                    return (
+                                                        <li
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.2em"
+                                                            }}
+                                                        >
+                                                            {each.name}
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button
+                                            onClick={this.handleClose}
+                                            color="primary"
+                                        >
+                                            No
+                                        </Button>
+                                        <Button
+                                            onClick={() => {
+                                                let toDelete = [];
+                                                selected.map(each => {
+                                                    toDelete.push({
+                                                        id: parseInt(each.id),
+                                                        key: each.key
+                                                    });
+                                                });
+                                                selected.length > 0
+                                                    ? deleteFiles({
+                                                          variables: {
+                                                              media: toDelete
+                                                          }
+                                                      })
+                                                    : alert(
+                                                          "Please select one image"
+                                                      );
+                                                this.handleClose();
+                                            }}
+                                            color="primary"
+                                            autoFocus
+                                        >
+                                            Yes
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
                             </div>
                         )}
                     </Mutation>
@@ -239,13 +337,11 @@ class MediaLibrary extends React.Component {
                                                     >
                                                         <Checkbox
                                                             checked={this.state.selected.includes(
-                                                                parseInt(
-                                                                    image.id
-                                                                )
+                                                                image
                                                             )}
                                                             onChange={this.handleCheckbox.bind(
                                                                 this,
-                                                                image.id
+                                                                image
                                                             )}
                                                             value="checkedB"
                                                             color="primary"
@@ -303,7 +399,6 @@ class MediaLibrary extends React.Component {
                                                                         "5px",
                                                                     borderLeft:
                                                                         "1px solid black",
-
                                                                     marginRight:
                                                                         "5px",
                                                                     paddingRight:

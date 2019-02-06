@@ -130,6 +130,7 @@ export const getClientImageById = gql`
             totalImages
             createdAt
             size
+            key
         }
     }
 `;

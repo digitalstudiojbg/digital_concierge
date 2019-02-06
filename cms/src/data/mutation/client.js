@@ -19,3 +19,11 @@ export const UPLOAD_FILES_WITH_CLIENT_ID = gql`
         }
     }
 `;
+
+export const DELETE_FILES = gql`
+    mutation deleteFiles($media: [DeleteFilesInput]) {
+        deleteFiles(media: $media) {
+            result
+        }
+    }
+`;

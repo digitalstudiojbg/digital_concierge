@@ -137,6 +137,38 @@ export const processDelete = Key => {
     });
 };
 
+export const processDeleteMedia = async (key, imageId) => {
+    try {
+        const uploaded_media = await processDelete(key);
+        try {
+            const select_media = await db.media.findByPk(imageId);
+
+            /**
+             * Remove relationship between media and directory list
+             */
+
+            new Promise(async (resolve, reject) => {
+                const select_media_fk_directory_list = await select_media.getDirectory_lists();
+                select_media
+                    .removeDirectory_lists(select_media_fk_directory_list)
+                    .then(async () => {
+                        await db.media.destroy({
+                            where: { id: imageId }
+                        });
+                        resolve();
+                    })
+                    .catch(() => {
+                        reject();
+                    });
+            });
+        } catch (e) {
+            throw new UserInputError(e);
+        }
+    } catch (e) {
+        throw new UserInputError(e);
+    }
+};
+
 export const handleCreateActionActivityLog = async (
     subject,
     properties,

@@ -3,7 +3,8 @@ import {
     processUpload,
     asyncForEach,
     processUploadMedia,
-    checkUserLogin
+    checkUserLogin,
+    processDeleteMedia
 } from "../utils/constant";
 export default {
     Query: {
@@ -43,6 +44,35 @@ export default {
                 throw new UserInputError(e);
             }
         },
+
+        async deleteFiles(parent, { media }, { user }) {
+            checkUserLogin(user);
+            console.log(media);
+
+            try {
+                return await new Promise(async (resolve, reject) => {
+                    let output = [];
+                    asyncForEach(media, async each => {
+                        try {
+                            output.push(
+                                await processDeleteMedia(each.key, each.id)
+                            );
+                            output.length === media.length && resolve(output);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    });
+                }).then(data => {
+                    return data && { result: true };
+                });
+            } catch (e) {
+                throw new UserInputError(e);
+            }
+
+            console.log(data);
+            return { result: true };
+        },
+
         createClient: async (
             _root,
             {
