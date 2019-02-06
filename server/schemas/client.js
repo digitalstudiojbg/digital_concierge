@@ -9,6 +9,11 @@ export default gql`
 
     extend type Mutation {
         createClient(input: CreateClientInput): Client
+        uploadFilesWithClientId(files: [Upload!]!, clientId: ID!): [Media!]!
+    }
+
+    type UploadFilesWithClientIdResult {
+        result: Boolean
     }
 
     input CreateClientInput {

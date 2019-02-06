@@ -8,6 +8,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
 import { formatBytes } from "../../../../utils/Constants";
+import { Mutation } from "react-apollo";
+
+import { UPLOAD_FILES_WITH_CLIENT_ID } from "../../../../data/mutation";
 
 const PaginationSection = styled.li`
     display: inline;
@@ -46,6 +49,31 @@ class MediaLibrary extends React.Component {
         const { limit, offset } = this.state;
         return (
             <div>
+                <Mutation
+                    mutation={UPLOAD_FILES_WITH_CLIENT_ID}
+                    update={(cache, data) => {
+                        console.log(data);
+                    }}
+                >
+                    {(uploadFilesWithClientId, { loading, error }) => (
+                        <div>
+                            <input
+                                type="file"
+                                accept=".png,.jpg"
+                                multiple
+                                required
+                                onChange={({ target: { validity, files } }) => {
+                                    console.log(files);
+                                    uploadFilesWithClientId({
+                                        variables: { files, clientId: id }
+                                    });
+                                }}
+                            />
+                            {loading && <p>Loading...</p>}
+                            {error && <p>Error :( Please try again</p>}
+                        </div>
+                    )}
+                </Mutation>
                 <Query
                     query={getClientImageById}
                     variables={{ id, limit, offset }}

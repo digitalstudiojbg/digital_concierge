@@ -1,5 +1,10 @@
 import db from "../models";
-import { processUpload } from "../utils/constant";
+import {
+    processUpload,
+    asyncForEach,
+    processUploadMedia,
+    checkUserLogin
+} from "../utils/constant";
 export default {
     Query: {
         client: async (_root, { id }) => {
@@ -12,6 +17,32 @@ export default {
             await db.client.findByPk(user.clientId)
     },
     Mutation: {
+        async uploadFilesWithClientId(parent, { files, clientId }, { user }) {
+            checkUserLogin(user);
+            try {
+                return await new Promise(async (resolve, reject) => {
+                    let output = [];
+                    asyncForEach(files, async file => {
+                        try {
+                            output.push(
+                                await processUploadMedia(
+                                    file,
+                                    clientId,
+                                    "image"
+                                )
+                            );
+                            output.length === files.length && resolve(output);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    });
+                }).then(data => {
+                    return data;
+                });
+            } catch (e) {
+                throw new UserInputError(e);
+            }
+        },
         createClient: async (
             _root,
             {
