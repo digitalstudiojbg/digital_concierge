@@ -1,5 +1,5 @@
 import React from "react";
-import { Query, withApollo, compose, graphql } from "react-apollo";
+import { Query, Mutation, withApollo, compose, graphql } from "react-apollo";
 import { getClientImageById } from "../../../../data/query";
 import PropTypes from "prop-types";
 import Loading from "../../../loading/Loading";
@@ -8,9 +8,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
 import { formatBytes } from "../../../../utils/Constants";
-import { Mutation } from "react-apollo";
-
 import { UPLOAD_FILES_WITH_CLIENT_ID } from "../../../../data/mutation";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const PaginationSection = styled.li`
     display: inline;
@@ -35,10 +34,6 @@ const ImageLinkText = styled.a`
 `;
 
 const UploadDeleteButton = styled.label`
-    &:hover {
-        background-color: lightgrey;
-    }
-
     border: 3px solid rgb(64, 84, 178);
     display: inline-block;
     padding: 5px 50px;
@@ -46,10 +41,13 @@ const UploadDeleteButton = styled.label`
     font-size: 1.3em;
     color: rgb(64, 84, 178);
     border-radius: 5px;
+    &:hover {
+        background-color: lightgrey;
+    }
 `;
 
 class MediaLibrary extends React.Component {
-    state = { limit: 10, offset: 0, files: null };
+    state = { limit: 10, offset: 0, selected: [] };
 
     handlePagination(id) {
         this.setState({
@@ -57,7 +55,26 @@ class MediaLibrary extends React.Component {
         });
     }
 
+    handleCheckbox(id) {
+        const num_id = parseInt(id);
+        const { selected } = this.state;
+        if (selected.includes(num_id)) {
+            this.setState({
+                selected: selected.filter(each => {
+                    return each != id;
+                })
+            });
+        } else {
+            this.setState({
+                selected: [...selected, num_id]
+            });
+        }
+    }
+
     render() {
+        console.log("----------------------");
+        console.log(this.state.selected);
+
         const { clientId: id } = this.props;
         const { limit, offset } = this.state;
         return (
@@ -93,7 +110,6 @@ class MediaLibrary extends React.Component {
                                         onChange={({
                                             target: { validity, files }
                                         }) => {
-                                            console.log(files);
                                             uploadFilesWithClientId({
                                                 variables: {
                                                     files,
@@ -207,7 +223,10 @@ class MediaLibrary extends React.Component {
                                                     style={{
                                                         display: "flex",
                                                         flexDirection: "column",
-                                                        padding: "10px"
+                                                        padding: "10px",
+                                                        height: "300px",
+                                                        justifyContent:
+                                                            "space-between"
                                                     }}
                                                 >
                                                     <p
@@ -218,6 +237,19 @@ class MediaLibrary extends React.Component {
                                                             fontSize: "1.1em"
                                                         }}
                                                     >
+                                                        <Checkbox
+                                                            checked={this.state.selected.includes(
+                                                                parseInt(
+                                                                    image.id
+                                                                )
+                                                            )}
+                                                            onChange={this.handleCheckbox.bind(
+                                                                this,
+                                                                image.id
+                                                            )}
+                                                            value="checkedB"
+                                                            color="primary"
+                                                        />
                                                         {image.name}
                                                     </p>
                                                     <a
@@ -236,6 +268,7 @@ class MediaLibrary extends React.Component {
                                                             src={image.path}
                                                         />
                                                     </a>
+
                                                     <div
                                                         style={{
                                                             display: "flex",
@@ -243,70 +276,61 @@ class MediaLibrary extends React.Component {
                                                                 "center"
                                                         }}
                                                     >
-                                                        <div>
-                                                            <ImageLinkText
-                                                                onClick={() => {
-                                                                    window.open(
-                                                                        image.path
-                                                                    );
-                                                                }}
-                                                            >
-                                                                View Full Size
-                                                            </ImageLinkText>
-                                                        </div>
                                                         <div
                                                             style={{
-                                                                marginLeft:
-                                                                    "5px",
-                                                                paddingLeft:
-                                                                    "5px",
-                                                                borderLeft:
-                                                                    "1px solid black",
-
-                                                                marginRight:
-                                                                    "5px",
-                                                                paddingRight:
-                                                                    "5px",
-                                                                borderRight:
-                                                                    "1px solid black"
+                                                                display: "flex",
+                                                                justifyContent:
+                                                                    "center"
                                                             }}
                                                         >
-                                                            <ImageLinkText
-                                                                onClick={() => {
-                                                                    window.open(
-                                                                        image.path
-                                                                    );
-                                                                }}
-                                                            >
-                                                                Download
-                                                            </ImageLinkText>
-                                                        </div>
-                                                        <div>
-                                                            <ImageLinkText
-                                                                onClick={() => {
-                                                                    console.log(
-                                                                        "OnClick"
-                                                                    );
-                                                                }}
-                                                            >
-                                                                Edit
-                                                            </ImageLinkText>
-                                                        </div>
-                                                    </div>
+                                                            <div>
+                                                                <ImageLinkText
+                                                                    onClick={() => {
+                                                                        window.open(
+                                                                            image.path
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    View Full
+                                                                    Size
+                                                                </ImageLinkText>
+                                                            </div>
+                                                            <div
+                                                                style={{
+                                                                    marginLeft:
+                                                                        "5px",
+                                                                    paddingLeft:
+                                                                        "5px",
+                                                                    borderLeft:
+                                                                        "1px solid black",
 
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            justifyContent:
-                                                                "center"
-                                                        }}
-                                                    >
-                                                        <p>
-                                                            Size:
-                                                            {formatBytes(
-                                                                image.size
-                                                            )}
-                                                        </p>
+                                                                    marginRight:
+                                                                        "5px",
+                                                                    paddingRight:
+                                                                        "5px",
+                                                                    borderRight:
+                                                                        "1px solid black"
+                                                                }}
+                                                            >
+                                                                <ImageLinkText
+                                                                    onClick={() => {
+                                                                        window.open(
+                                                                            image.path
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    Download
+                                                                </ImageLinkText>
+                                                            </div>
+                                                            <div>
+                                                                <p>
+                                                                    Size:
+                                                                    {formatBytes(
+                                                                        image.size
+                                                                    )}
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             );
@@ -345,13 +369,6 @@ class MediaLibrary extends React.Component {
                                                         index < pages - 1 &&
                                                         index > 0
                                                     ) {
-                                                        console.log(
-                                                            `current page${currentPage}`
-                                                        );
-                                                        console.log(
-                                                            `index${index}`
-                                                        );
-
                                                         if (
                                                             currentPage <
                                                                 index + 3 &&
@@ -409,7 +426,7 @@ class MediaLibrary extends React.Component {
                                         </PaginationSection>
                                     )}
                                     <div>
-                                        Page {currentPage} of {pages - 1}
+                                        Page {currentPage} of {pages}
                                     </div>
                                 </div>
                             </div>
