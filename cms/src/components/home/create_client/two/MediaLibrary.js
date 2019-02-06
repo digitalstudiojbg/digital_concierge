@@ -16,7 +16,6 @@ const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
     cursor: pointer;
-
     &:hover {
         background-color: lightgrey;
     }
@@ -35,8 +34,22 @@ const ImageLinkText = styled.a`
     }
 `;
 
+const UploadDeleteButton = styled.label`
+    &:hover {
+        background-color: lightgrey;
+    }
+
+    border: 3px solid rgb(64, 84, 178);
+    display: inline-block;
+    padding: 5px 50px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: rgb(64, 84, 178);
+    border-radius: 5px;
+`;
+
 class MediaLibrary extends React.Component {
-    state = { limit: 10, offset: 0 };
+    state = { limit: 10, offset: 0, files: null };
 
     handlePagination(id) {
         this.setState({
@@ -49,31 +62,49 @@ class MediaLibrary extends React.Component {
         const { limit, offset } = this.state;
         return (
             <div>
-                <Mutation
-                    mutation={UPLOAD_FILES_WITH_CLIENT_ID}
-                    update={(cache, data) => {
-                        console.log(data);
+                <div
+                    style={{
+                        display: "flex",
+                        paddingBottom: "20px"
                     }}
                 >
-                    {(uploadFilesWithClientId, { loading, error }) => (
-                        <div>
-                            <input
-                                type="file"
-                                accept=".png,.jpg"
-                                multiple
-                                required
-                                onChange={({ target: { validity, files } }) => {
-                                    console.log(files);
-                                    uploadFilesWithClientId({
-                                        variables: { files, clientId: id }
-                                    });
-                                }}
-                            />
-                            {loading && <p>Loading...</p>}
-                            {error && <p>Error :( Please try again</p>}
-                        </div>
-                    )}
-                </Mutation>
+                    <Mutation
+                        mutation={UPLOAD_FILES_WITH_CLIENT_ID}
+                        update={(cache, data) => {
+                            console.log(data);
+                        }}
+                    >
+                        {(uploadFilesWithClientId, { loading, error }) => (
+                            <div>
+                                <UploadDeleteButton>
+                                    <input
+                                        style={{ display: "none" }}
+                                        type="file"
+                                        accept=".png,.jpg"
+                                        multiple
+                                        required
+                                        onChange={({
+                                            target: { validity, files }
+                                        }) => {
+                                            console.log(files);
+                                            uploadFilesWithClientId({
+                                                variables: {
+                                                    files,
+                                                    clientId: id
+                                                }
+                                            });
+                                        }}
+                                    />
+                                    UPLOAD FILE
+                                </UploadDeleteButton>
+
+                                {loading && <p>Loading...</p>}
+                                {error && <p>Error :( Please try again</p>}
+                            </div>
+                        )}
+                    </Mutation>
+                </div>
+
                 <Query
                     query={getClientImageById}
                     variables={{ id, limit, offset }}
