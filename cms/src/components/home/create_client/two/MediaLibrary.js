@@ -43,7 +43,7 @@ const UploadDeleteButton = styled.label`
     display: inline-block;
     padding: 5px 50px;
     cursor: pointer;
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: rgb(64, 84, 178);
     border-radius: 5px;
 `;
