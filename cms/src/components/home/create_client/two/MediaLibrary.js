@@ -70,8 +70,15 @@ class MediaLibrary extends React.Component {
                 >
                     <Mutation
                         mutation={UPLOAD_FILES_WITH_CLIENT_ID}
+                        refetchQueries={[
+                            {
+                                query: getClientImageById,
+                                variables: { id, limit, offset }
+                            }
+                        ]}
                         update={(cache, data) => {
                             console.log(data);
+                            this.setState({ files: null });
                         }}
                     >
                         {(uploadFilesWithClientId, { loading, error }) => (
