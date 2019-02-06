@@ -62,8 +62,7 @@ class MediaLibrary extends React.Component {
                         let totalImages;
                         let pages;
                         let currentPage = 1;
-                        let hasLastPage =
-                            totalImages % limit > 0 ? true : false;
+
                         if (images.length > 0) {
                             totalImages = images[0].totalImages;
                             pages =
@@ -71,7 +70,6 @@ class MediaLibrary extends React.Component {
                             currentPage =
                                 offset / limit > 0 ? offset / limit : 1;
                         }
-                        console.log(pages);
 
                         return (
                             <div>
@@ -164,8 +162,12 @@ class MediaLibrary extends React.Component {
                                                         }}
                                                     >
                                                         <img
+                                                            style={{
+                                                                width: "300px",
+                                                                maxHeight:
+                                                                    "200px"
+                                                            }}
                                                             src={image.path}
-                                                            width={300}
                                                         />
                                                     </a>
                                                     <div
