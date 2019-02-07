@@ -122,8 +122,13 @@ export const getAllClients = gql`
 `;
 
 export const getClientImageById = gql`
-    query getClientImageById($id: ID!, $limit: Int, $offset: Int) {
-        mediaByClient(id: $id, limit: $limit, offset: $offset) {
+    query getClientImageById(
+        $id: ID!
+        $limit: Int!
+        $offset: Int
+        $sort: Int!
+    ) {
+        mediaByClient(id: $id, limit: $limit, offset: $offset, sort: $sort) {
             id
             name
             path

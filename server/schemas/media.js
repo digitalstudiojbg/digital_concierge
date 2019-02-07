@@ -6,8 +6,9 @@ export default gql`
         media: [Media]
         mediaByClient(
             id: ID!
-            limit: Int
+            limit: Int!
             offset: Int
+            sort: Int!
             cursor: String
         ): [MediaPagination]
         mediaBySystem(id: ID!): [Media]

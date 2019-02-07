@@ -20,10 +20,18 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
+import { withStyles } from "@material-ui/core/styles";
 
-function Transition(props) {
+const Transition = props => {
     return <Slide direction="up" {...props} />;
-}
+};
+
+const styles = theme => ({
+    select: {
+        width: "300px"
+    }
+});
+
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
@@ -49,18 +57,26 @@ const ImageLinkText = styled.a`
 const UploadDeleteButton = styled.label`
     border: 3px solid rgb(64, 84, 178);
     display: inline-block;
-    padding: 5px 50px;
+    width: 200px;
+    text-align: center;
     cursor: pointer;
+    padding: 5px;
     font-size: 1.3em;
     color: rgb(64, 84, 178);
     border-radius: 5px;
     &:hover {
-        background-color: lightgrey;
+        font-weight: bold;
     }
 `;
 
 class MediaLibrary extends React.Component {
-    state = { limit: 10, offset: 0, selected: [], deleteAlertOpen: false };
+    state = {
+        limit: 10,
+        offset: 0,
+        selected: [],
+        deleteAlertOpen: false,
+        sort: 1
+    };
 
     handlePagination(id) {
         this.setState({
@@ -88,8 +104,8 @@ class MediaLibrary extends React.Component {
     };
 
     render() {
-        const { clientId: id } = this.props;
-        const { limit, offset, selected } = this.state;
+        const { clientId: id, classes } = this.props;
+        const { limit, offset, selected, sort } = this.state;
         return (
             <div>
                 <div
@@ -103,7 +119,7 @@ class MediaLibrary extends React.Component {
                         refetchQueries={[
                             {
                                 query: getClientImageById,
-                                variables: { id, limit, offset }
+                                variables: { id, limit, offset, sort }
                             }
                         ]}
                     >
@@ -140,7 +156,7 @@ class MediaLibrary extends React.Component {
                         refetchQueries={[
                             {
                                 query: getClientImageById,
-                                variables: { id, limit, offset }
+                                variables: { id, limit, offset, sort }
                             }
                         ]}
                     >
@@ -213,6 +229,7 @@ class MediaLibrary extends React.Component {
                                                           "Please select one image"
                                                       );
                                                 this.handleClose();
+                                                this.setState({ selected: [] });
                                             }}
                                             color="primary"
                                             autoFocus
@@ -228,7 +245,8 @@ class MediaLibrary extends React.Component {
 
                 <Query
                     query={getClientImageById}
-                    variables={{ id, limit, offset }}
+                    variables={{ id, limit, offset, sort }}
+                    fetchPolicy="no-cache"
                 >
                     {({
                         loading,
@@ -238,7 +256,7 @@ class MediaLibrary extends React.Component {
                     }) => {
                         if (loading) return <Loading loadingData />;
                         if (error) return `Error! ${error.message}`;
-                        console.log(images);
+
                         let totalImages;
                         let pages;
                         let currentPage = 1;
@@ -275,34 +293,77 @@ class MediaLibrary extends React.Component {
                                             of {totalImages} Images Shown Below
                                         </p>
                                     </div>
-                                    <div>
-                                        <Select
-                                            value={this.state.limit}
-                                            onChange={event => {
-                                                this.setState({
-                                                    limit: event.target.value
-                                                });
-                                            }}
-                                        >
-                                            <MenuItem value={5}>
-                                                Show 5 Images Per Page
-                                            </MenuItem>
-                                            <MenuItem value={10}>
-                                                Show 10 Images Per Page
-                                            </MenuItem>
-                                            <MenuItem value={20}>
-                                                Show 20 Images Per Page
-                                            </MenuItem>
-                                            <MenuItem value={30}>
-                                                Show 30 Images Per Page
-                                            </MenuItem>
-                                            <MenuItem value={50}>
-                                                Show 50 Images Per Page
-                                            </MenuItem>
-                                            <MenuItem value={100}>
-                                                Show 100 Images Per Page
-                                            </MenuItem>
-                                        </Select>
+                                    <div
+                                        style={{
+                                            display: "flex"
+                                        }}
+                                    >
+                                        <div style={{ paddingRight: "20px" }}>
+                                            <Select
+                                                className={classes.select}
+                                                value={limit}
+                                                onChange={event => {
+                                                    this.setState({
+                                                        limit:
+                                                            event.target.value
+                                                    });
+                                                }}
+                                            >
+                                                <MenuItem value={5}>
+                                                    Show 5 Images Per Page
+                                                </MenuItem>
+                                                <MenuItem value={10}>
+                                                    Show 10 Images Per Page
+                                                </MenuItem>
+                                                <MenuItem value={20}>
+                                                    Show 20 Images Per Page
+                                                </MenuItem>
+                                                <MenuItem value={30}>
+                                                    Show 30 Images Per Page
+                                                </MenuItem>
+                                                <MenuItem value={50}>
+                                                    Show 50 Images Per Page
+                                                </MenuItem>
+                                                <MenuItem value={100}>
+                                                    Show 100 Images Per Page
+                                                </MenuItem>
+                                            </Select>
+                                        </div>
+
+                                        <div style={{ paddingLeft: "20px" }}>
+                                            <Select
+                                                className={classes.select}
+                                                value={sort}
+                                                onChange={event => {
+                                                    this.setState({
+                                                        sort: event.target.value
+                                                    });
+                                                }}
+                                            >
+                                                <MenuItem value={1}>
+                                                    Sort by name (A-Z)
+                                                </MenuItem>
+                                                <MenuItem value={2}>
+                                                    Sort by name (Z-A)
+                                                </MenuItem>
+                                                <MenuItem value={3}>
+                                                    Sort by date modified
+                                                    (Newest first)
+                                                </MenuItem>
+                                                <MenuItem value={4}>
+                                                    Sort by date modified
+                                                    (Newest oldest)
+                                                </MenuItem>
+                                                <MenuItem value={5}>
+                                                    Sort by file size (Smallest
+                                                    first)
+                                                </MenuItem>
+                                                <MenuItem value={6}>
+                                                    Sort by file size (Largest
+                                                    first)
+                                                </MenuItem>
+                                            </Select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div
@@ -537,7 +598,7 @@ MediaLibrary.propTypes = {
     clientId: PropTypes.number.isRequired
 };
 
-export default withApollo(MediaLibrary);
+export default withStyles(styles)(withApollo(MediaLibrary));
 /*export default compose(
     withApollo,
     graphql(getClientImageById, {
