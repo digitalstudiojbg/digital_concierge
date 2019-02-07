@@ -185,9 +185,7 @@ class MediaLibrary extends React.Component {
                                     </DialogTitle>
                                     <DialogContent>
                                         <DialogContentText id="alert-dialog-description">
-                                            <ul
-                                                style={{ paddingRight: "20px" }}
-                                            >
+                                            <ul>
                                                 {selected.map(each => {
                                                     return (
                                                         <li
@@ -599,14 +597,3 @@ MediaLibrary.propTypes = {
 };
 
 export default withStyles(styles)(withApollo(MediaLibrary));
-/*export default compose(
-    withApollo,
-    graphql(getClientImageById, {
-        options: ownProps => ({
-            variables: {
-                id: ownProps.clientId
-            }
-        }),
-        name: "getClientImageById"
-    })
-)(MediaLibrary);*/

@@ -58,9 +58,6 @@ export default {
                     break;
             }
 
-            console.log(sort);
-            console.log(sortObject);
-
             let output_data;
             const totalImages = await db.media.findAll({
                 where: { clientId: id }
@@ -76,9 +73,8 @@ export default {
                             [db.op.ls]: cursor
                         }
                     },
-                    order: [["size", "DESC"]]
+                    order: [[name, by]]
                 });
-                console.log("---------------1");
             } else if (offset) {
                 output_data = await db.media.findAll({
                     where: { clientId: id },
@@ -86,16 +82,13 @@ export default {
                     offset,
                     order: [[name, by]]
                 });
-                console.log("---------------2");
             } else {
                 output_data = await db.media.findAll({
                     where: { clientId: id },
                     limit,
                     order: [[name, by]]
                 });
-                console.log("---------------3");
             }
-            // console.log(output_data);
 
             output_data.map(each => {
                 each["totalImages"] = totalImages.length;
