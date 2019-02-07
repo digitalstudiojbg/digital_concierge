@@ -6,6 +6,9 @@ import Tab from "@material-ui/core/Tab";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
+import { Dropdown } from "semantic-ui-react";
+import { Map, List } from "immutable";
+import FONT_OPTIONS from "./FontOptions";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -25,7 +28,8 @@ const EntryThemeContainerDiv = styled.div`
 `;
 
 const EntryThemeDiv = styled.div`
-    width: 50%;
+    width: 45%;
+    padding-right: 10px;
 `;
 
 const LayoutContainerDiv = styled.div`
@@ -33,7 +37,7 @@ const LayoutContainerDiv = styled.div`
     height: 100%;
 `;
 
-const initialSystemTheme = {
+const initialSystemTheme = new Map({
     companyLogo: null,
     headerFont: null,
     subHeaderFont: null,
@@ -43,7 +47,7 @@ const initialSystemTheme = {
     defaultHomeLayout: null,
     defaultDirListLayout: null,
     defaultDirEntryLayout: null
-};
+});
 
 const styles = theme => ({
     formControl: {
@@ -62,16 +66,31 @@ const styles = theme => ({
 
 class SetupClientThemeAndLayout extends React.Component {
     fileInput = React.createRef();
-
-    state = {
-        systemIndex: 0,
-        updatedSystems: [{ ...initialSystemTheme }]
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            systemIndex: 0,
+            systemThemes: null
+        };
+        this.handleTabChange = this.handleTabChange.bind(this);
+        this.updateCompanyLogo = this.updateCompanyLogo.bind(this);
+        this.updateSystemTheme = this.updateSystemTheme.bind(this);
+        this.updateHeaderFont = this.updateHeaderFont.bind(this);
+        this.updateSubHeaderFont = this.updateSubHeaderFont.bind(this);
+        this.updateBodyCopyFont = this.updateBodyCopyFont.bind(this);
+        this.updateCaptionCopyFont = this.updateCaptionCopyFont.bind(this);
+    }
 
     componentDidMount() {
         const { systems } = this.props;
+
+        let systemThemes = List();
+        systems.forEach(_ => {
+            systemThemes = systemThemes.push(initialSystemTheme);
+        });
+
         this.setState({
-            updatedSystems: systems.map(_ => ({ ...initialSystemTheme }))
+            systemThemes
         });
     }
 
@@ -80,24 +99,50 @@ class SetupClientThemeAndLayout extends React.Component {
     };
 
     updateCompanyLogo = () => {
-        const { updatedSystems, systemIndex } = this.state;
-        const updatedSystem = updatedSystems[systemIndex];
+        this.updateSystemTheme("companyLogo", this.fileInput.current.files[0]);
+        // const { systemThemes, systemIndex } = this.state;
+        // const toUpdate = systemThemes.get(systemIndex);
+        // this.setState({
+        //     systemThemes: systemThemes.set(
+        //         systemIndex,
+        //         toUpdate.set("companyLogo", this.fileInput.current.files[0])
+        //     )
+        // });
+    };
+
+    updateSystemTheme = (key, value) => {
+        const { systemIndex, systemThemes } = this.state;
+        const updatedSystemTheme = systemThemes
+            .get(systemIndex)
+            .set(key, value);
+        console.log(updatedSystemTheme);
         this.setState({
-            updatedSystems: [
-                ...updatedSystems.slice(0, systemIndex),
-                {
-                    ...updatedSystem,
-                    companyLogo: this.fileInput.current.files[0]
-                },
-                ...updatedSystems.slice(systemIndex + 1)
-            ]
+            systemThemes: systemThemes.set(systemIndex, updatedSystemTheme)
         });
     };
 
+    updateHeaderFont(_event, data) {
+        this.updateSystemTheme("headerFont", data.value);
+    }
+
+    updateSubHeaderFont(_event, data) {
+        this.updateSystemTheme("subHeaderFont", data.value);
+    }
+
+    updateBodyCopyFont(_event, data) {
+        this.updateSystemTheme("bodyFont", data.value);
+    }
+
+    updateCaptionCopyFont(_event, data) {
+        this.updateSystemTheme("captionFont", data.value);
+    }
+
     render() {
-        const { systemIndex, updatedSystems } = this.state;
+        const { systemIndex, systemThemes } = this.state;
         const { systems, classes } = this.props;
-        const values = updatedSystems[systemIndex];
+        const values = Boolean(systemThemes)
+            ? systemThemes.get(systemIndex)
+            : Map();
         return (
             <ContainerDiv>
                 <ThemeContainerDiv>
@@ -122,9 +167,9 @@ class SetupClientThemeAndLayout extends React.Component {
                         <EntryThemeDiv>
                             <TextField
                                 value={
-                                    Boolean(values.companyLogo) &&
-                                    Boolean(values.companyLogo.name)
-                                        ? values.companyLogo.name
+                                    Boolean(values.get("companyLogo")) &&
+                                    Boolean(values.get("companyLogo").name)
+                                        ? values.get("companyLogo").name
                                         : ""
                                 }
                                 disabled={true}
@@ -151,6 +196,55 @@ class SetupClientThemeAndLayout extends React.Component {
                                     Browse
                                 </Button>
                             </label>
+                        </EntryThemeDiv>
+                    </EntryThemeContainerDiv>
+                    <EntryThemeContainerDiv>
+                        <EntryThemeDiv>
+                            Header Font
+                            <Dropdown
+                                id="headerDropdown"
+                                placeholder="Header Font"
+                                fluid
+                                selection
+                                options={FONT_OPTIONS}
+                                onChange={this.updateHeaderFont}
+                                value={values.get("headerFont")}
+                            />
+                        </EntryThemeDiv>
+                        <EntryThemeDiv>
+                            Subheader Font
+                            <Dropdown
+                                placeholder="Subheader Font"
+                                fluid
+                                selection
+                                options={FONT_OPTIONS}
+                                onChange={this.updateSubHeaderFont}
+                                value={values.get("subHeaderFont")}
+                            />
+                        </EntryThemeDiv>
+                    </EntryThemeContainerDiv>
+                    <EntryThemeContainerDiv>
+                        <EntryThemeDiv>
+                            Body Copy Font
+                            <Dropdown
+                                placeholder="Body Copy Font"
+                                fluid
+                                selection
+                                options={FONT_OPTIONS}
+                                onChange={this.updateBodyCopyFont}
+                                value={values.get("bodyFont")}
+                            />
+                        </EntryThemeDiv>
+                        <EntryThemeDiv>
+                            Caption Copy Font
+                            <Dropdown
+                                placeholder="Caption Copy Font"
+                                fluid
+                                selection
+                                options={FONT_OPTIONS}
+                                onChange={this.updateCaptionCopyFont}
+                                value={values.get("captionFont")}
+                            />
                         </EntryThemeDiv>
                     </EntryThemeContainerDiv>
                 </ThemeContainerDiv>
