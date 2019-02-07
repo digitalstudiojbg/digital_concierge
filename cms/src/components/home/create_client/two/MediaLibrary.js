@@ -29,6 +29,9 @@ const Transition = props => {
 const styles = theme => ({
     select: {
         width: "300px"
+    },
+    buttonFont: {
+        fontSize: "1.2em"
     }
 });
 
@@ -79,9 +82,14 @@ class MediaLibrary extends React.Component {
     };
 
     handlePagination(id) {
-        this.setState({
-            offset: id * this.state.limit
-        });
+        this.setState(
+            {
+                offset: id * this.state.limit
+            },
+            () => {
+                this.resetSelected();
+            }
+        );
     }
 
     handleCheckbox(image) {
@@ -103,6 +111,10 @@ class MediaLibrary extends React.Component {
         this.setState({ deleteAlertOpen: false });
     };
 
+    resetSelected = () => {
+        this.setState({ selected: [] });
+    };
+
     render() {
         const { clientId: id, classes } = this.props;
         const { limit, offset, selected, sort } = this.state;
@@ -122,6 +134,9 @@ class MediaLibrary extends React.Component {
                                 variables: { id, limit, offset, sort }
                             }
                         ]}
+                        update={(cache, data) => {
+                            this.resetSelected();
+                        }}
                     >
                         {(uploadFilesWithClientId, { loading, error }) => (
                             <div>
@@ -141,6 +156,7 @@ class MediaLibrary extends React.Component {
                                                     clientId: id
                                                 }
                                             });
+                                            this.resetSelected();
                                         }}
                                     />
                                     UPLOAD FILE
@@ -159,13 +175,15 @@ class MediaLibrary extends React.Component {
                                 variables: { id, limit, offset, sort }
                             }
                         ]}
+                        update={(cache, data) => {
+                            this.resetSelected();
+                        }}
                     >
                         {(deleteFiles, { loading, error }) => (
                             <div style={{ paddingLeft: "25px" }}>
                                 <UploadDeleteButton
                                     onClick={() => {
-                                        selected.length > 0 &&
-                                            this.handleClickOpen();
+                                        this.handleClickOpen();
                                     }}
                                 >
                                     DELETE SELECTED
@@ -179,61 +197,107 @@ class MediaLibrary extends React.Component {
                                     onClose={this.handleClose}
                                 >
                                     <DialogTitle id="alert-dialog-title">
-                                        <h3>
-                                            Are you sure you want to delete?
-                                        </h3>
+                                        <h2>Confirmation</h2>
                                     </DialogTitle>
                                     <DialogContent>
                                         <DialogContentText id="alert-dialog-description">
-                                            <ul>
-                                                {selected.map(each => {
-                                                    return (
-                                                        <li
-                                                            style={{
-                                                                fontSize:
-                                                                    "1.2em"
-                                                            }}
-                                                        >
-                                                            {each.name}
-                                                        </li>
-                                                    );
-                                                })}
-                                            </ul>
+                                            {selected.length > 0 ? (
+                                                <React.Fragment>
+                                                    <p
+                                                        style={{
+                                                            fontSize: "1.3em"
+                                                        }}
+                                                    >
+                                                        Are you sure you want to
+                                                        delete the selected
+                                                        images? Click OK to
+                                                        confirm.
+                                                    </p>
+                                                    <ul
+                                                        style={{
+                                                            paddingLeft: "30px",
+                                                            paddingRight: "30px"
+                                                        }}
+                                                    >
+                                                        {selected.map(each => {
+                                                            return (
+                                                                <li
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "1.2em"
+                                                                    }}
+                                                                >
+                                                                    {each.name}
+                                                                </li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                </React.Fragment>
+                                            ) : (
+                                                <p
+                                                    style={{
+                                                        fontSize: "1.3em"
+                                                    }}
+                                                >
+                                                    Please choose at least one
+                                                    image to delete first.
+                                                </p>
+                                            )}
                                         </DialogContentText>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button
-                                            onClick={this.handleClose}
-                                            color="primary"
-                                        >
-                                            No
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                let toDelete = [];
-                                                selected.map(each => {
-                                                    toDelete.push({
-                                                        id: parseInt(each.id),
-                                                        key: each.key
-                                                    });
-                                                });
-                                                selected.length > 0
-                                                    ? deleteFiles({
-                                                          variables: {
-                                                              media: toDelete
-                                                          }
-                                                      })
-                                                    : alert(
-                                                          "Please select one image"
-                                                      );
-                                                this.handleClose();
-                                                this.setState({ selected: [] });
-                                            }}
-                                            color="primary"
-                                            autoFocus
-                                        >
-                                            Yes
-                                        </Button>
+                                        {selected.length > 0 ? (
+                                            <React.Fragment>
+                                                <Button
+                                                    onClick={this.handleClose}
+                                                    color="secondary"
+                                                    className={
+                                                        classes.buttonFont
+                                                    }
+                                                >
+                                                    Cancel
+                                                </Button>
+                                                <Button
+                                                    onClick={() => {
+                                                        let toDelete = [];
+                                                        selected.map(each => {
+                                                            toDelete.push({
+                                                                id: parseInt(
+                                                                    each.id
+                                                                ),
+                                                                key: each.key
+                                                            });
+                                                        });
+                                                        selected.length > 0
+                                                            ? deleteFiles({
+                                                                  variables: {
+                                                                      media: toDelete
+                                                                  }
+                                                              })
+                                                            : alert(
+                                                                  "Please select one image"
+                                                              );
+                                                        this.handleClose();
+                                                        this.resetSelected();
+                                                    }}
+                                                    color="primary"
+                                                    autoFocus
+                                                    className={
+                                                        classes.buttonFont
+                                                    }
+                                                >
+                                                    Ok
+                                                </Button>
+                                            </React.Fragment>
+                                        ) : (
+                                            <Button
+                                                onClick={this.handleClose}
+                                                color="primary"
+                                                className={classes.buttonFont}
+                                            >
+                                                Ok
+                                            </Button>
+                                        )}
                                     </DialogActions>
                                 </Dialog>
                             </div>
@@ -303,7 +367,8 @@ class MediaLibrary extends React.Component {
                                                 onChange={event => {
                                                     this.setState({
                                                         limit:
-                                                            event.target.value
+                                                            event.target.value,
+                                                        selected: []
                                                     });
                                                 }}
                                             >
@@ -334,7 +399,9 @@ class MediaLibrary extends React.Component {
                                                 value={sort}
                                                 onChange={event => {
                                                     this.setState({
-                                                        sort: event.target.value
+                                                        sort:
+                                                            event.target.value,
+                                                        selected: []
                                                     });
                                                 }}
                                             >
