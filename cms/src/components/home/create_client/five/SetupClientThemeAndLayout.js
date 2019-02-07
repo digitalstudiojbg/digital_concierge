@@ -7,7 +7,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
-import { Map, List } from "immutable";
+import { Map, List, Repeat } from "immutable";
+import ColorPicker from "rc-color-picker";
 import FONT_OPTIONS from "./FontOptions";
 
 const ContainerDiv = styled.div`
@@ -25,6 +26,7 @@ const ThemeContainerDiv = styled.div`
 const EntryThemeContainerDiv = styled.div`
     width: 50%;
     display: flex;
+    padding-bottom: 10px;
 `;
 
 const EntryThemeDiv = styled.div`
@@ -37,16 +39,63 @@ const LayoutContainerDiv = styled.div`
     height: 100%;
 `;
 
-const initialSystemTheme = new Map({
+const LayoutEntryContainerDiv = styled.div`
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+`;
+
+const LayoutEntryDropdownDiv = styled.div`
+    width: 70%;
+    margin-right: 10px;
+`;
+
+const LayoutEntryPreviewDiv = styled.div`
+    flex: 1;
+    border: 1px solid black;
+    margin: 5;
+`;
+
+const LayoutEntryPreviewImage = styled.img`
+    width: 100%;
+`;
+
+const ColourEntryContainerDiv = styled.div`
+    flex: 1;
+    height: 100px;
+    border: 1px solid black;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ColourEntryDiv = styled.div`
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    /* background-color: ${props =>
+        Boolean(props.color) ? props.colour : "white"}; */
+`;
+
+const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
+
+const initialSystemTheme = Map({
     companyLogo: null,
     headerFont: null,
     subHeaderFont: null,
     bodyFont: null,
     captionFont: null,
-    defaultStartLayout: null,
-    defaultHomeLayout: null,
-    defaultDirListLayout: null,
-    defaultDirEntryLayout: null
+    defaultStartLayout: Map(),
+    defaultHomeLayout: Map(),
+    defaultDirListLayout: Map(),
+    defaultDirEntryLayout: Map(),
+    coloursLength: NUMBER_OF_COLOURS_PER_SYSTEM,
+    colours: Repeat(
+        Map({ hex: "#ffffff", alpha: 100 }),
+        NUMBER_OF_COLOURS_PER_SYSTEM
+    ).toList()
 });
 
 const styles = theme => ({
@@ -79,6 +128,19 @@ class SetupClientThemeAndLayout extends React.Component {
         this.updateSubHeaderFont = this.updateSubHeaderFont.bind(this);
         this.updateBodyCopyFont = this.updateBodyCopyFont.bind(this);
         this.updateCaptionCopyFont = this.updateCaptionCopyFont.bind(this);
+        this.handleUpdateColourPicker = this.handleUpdateColourPicker.bind(
+            this
+        );
+        this.updateDefaultStartLayout = this.updateDefaultStartLayout.bind(
+            this
+        );
+        this.updateDefaultHomeLayout = this.updateDefaultHomeLayout.bind(this);
+        this.updateDefaultDirListLayout = this.updateDefaultDirListLayout.bind(
+            this
+        );
+        this.updateDefaultDirEntryLayout = this.updateDefaultDirEntryLayout.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -95,19 +157,9 @@ class SetupClientThemeAndLayout extends React.Component {
     }
 
     handleTabChange = (_event, value) => {
-        this.setState({ systemIndex: value });
-    };
-
-    updateCompanyLogo = () => {
-        this.updateSystemTheme("companyLogo", this.fileInput.current.files[0]);
-        // const { systemThemes, systemIndex } = this.state;
-        // const toUpdate = systemThemes.get(systemIndex);
-        // this.setState({
-        //     systemThemes: systemThemes.set(
-        //         systemIndex,
-        //         toUpdate.set("companyLogo", this.fileInput.current.files[0])
-        //     )
-        // });
+        this.setState({
+            systemIndex: value
+        });
     };
 
     updateSystemTheme = (key, value) => {
@@ -119,6 +171,10 @@ class SetupClientThemeAndLayout extends React.Component {
         this.setState({
             systemThemes: systemThemes.set(systemIndex, updatedSystemTheme)
         });
+    };
+
+    updateCompanyLogo = () => {
+        this.updateSystemTheme("companyLogo", this.fileInput.current.files[0]);
     };
 
     updateHeaderFont(_event, data) {
@@ -137,12 +193,87 @@ class SetupClientThemeAndLayout extends React.Component {
         this.updateSystemTheme("captionFont", data.value);
     }
 
+    updateDefaultStartLayout(_event, data) {
+        const layout = this.getLayoutItem(data.value);
+        this.updateSystemTheme(
+            "defaultStartLayout",
+            Map({ ...layout, media: Map(layout.media) })
+        );
+    }
+
+    updateDefaultHomeLayout(_event, data) {
+        const layout = this.getLayoutItem(data.value);
+        this.updateSystemTheme(
+            "defaultHomeLayout",
+            Map({ ...layout, media: Map(layout.media) })
+        );
+    }
+
+    updateDefaultDirListLayout(_event, data) {
+        const layout = this.getLayoutItem(data.value);
+        this.updateSystemTheme(
+            "defaultDirListLayout",
+            Map({ ...layout, media: Map(layout.media) })
+        );
+    }
+
+    updateDefaultDirEntryLayout(_event, data) {
+        const layout = this.getLayoutItem(data.value);
+        this.updateSystemTheme(
+            "defaultDirEntryLayout",
+            Map({ ...layout, media: Map(layout.media) })
+        );
+    }
+
+    handleUpdateColourPicker(index, colourData) {
+        const { color, alpha } = colourData;
+        const { systemIndex, systemThemes } = this.state;
+        const colourEntry = systemThemes
+            .get(systemIndex)
+            .get("colours")
+            .get(index)
+            .merge(Map({ hex: color, alpha }));
+        const updatedColours = systemThemes
+            .get(systemIndex)
+            .get("colours")
+            .set(index, colourEntry);
+        const updatedSystemTheme = systemThemes
+            .get(systemIndex)
+            .set("colours", updatedColours);
+
+        console.log(updatedSystemTheme);
+        this.setState({
+            systemThemes: systemThemes.set(systemIndex, updatedSystemTheme)
+        });
+    }
+
+    getLayoutOptions = () => {
+        const { layouts = [] } = this.props;
+        return layouts.map(item => ({ text: item.name, value: item.id }));
+    };
+
+    getLayoutItem = layoutId => {
+        const { layouts = [] } = this.props;
+        return layouts.find(({ id }) => id === layoutId) || {};
+    };
+
     render() {
         const { systemIndex, systemThemes } = this.state;
         const { systems, classes } = this.props;
         const values = Boolean(systemThemes)
             ? systemThemes.get(systemIndex)
             : Map();
+        const colours = values.get("colours");
+        const { id: systemId } = systems[systemIndex] || {};
+        const LAYOUT_OPTIONS = this.getLayoutOptions();
+        const currentDefaultStartLayout =
+            values.get("defaultStartLayout") || Map();
+        const currentDefaultHomeLayout =
+            values.get("defaultHomeLayout") || Map();
+        const currentDefaultDirListLayout =
+            values.get("defaultDirListLayout") || Map();
+        const currentDefaultDirEntryLayout =
+            values.get("defaultDirEntryLayout") || Map();
         return (
             <ContainerDiv>
                 <ThemeContainerDiv>
@@ -200,19 +331,19 @@ class SetupClientThemeAndLayout extends React.Component {
                     </EntryThemeContainerDiv>
                     <EntryThemeContainerDiv>
                         <EntryThemeDiv>
-                            Header Font
+                            HEADER FONT
                             <Dropdown
                                 id="headerDropdown"
                                 placeholder="Header Font"
                                 fluid
                                 selection
-                                options={FONT_OPTIONS}
+                                options={LAYOUT_OPTIONS}
                                 onChange={this.updateHeaderFont}
                                 value={values.get("headerFont")}
                             />
                         </EntryThemeDiv>
                         <EntryThemeDiv>
-                            Subheader Font
+                            SUBHEADER FONT
                             <Dropdown
                                 placeholder="Subheader Font"
                                 fluid
@@ -225,7 +356,7 @@ class SetupClientThemeAndLayout extends React.Component {
                     </EntryThemeContainerDiv>
                     <EntryThemeContainerDiv>
                         <EntryThemeDiv>
-                            Body Copy Font
+                            BODY COPY FONT
                             <Dropdown
                                 placeholder="Body Copy Font"
                                 fluid
@@ -236,7 +367,7 @@ class SetupClientThemeAndLayout extends React.Component {
                             />
                         </EntryThemeDiv>
                         <EntryThemeDiv>
-                            Caption Copy Font
+                            CAPTION COPY FONT
                             <Dropdown
                                 placeholder="Caption Copy Font"
                                 fluid
@@ -247,7 +378,150 @@ class SetupClientThemeAndLayout extends React.Component {
                             />
                         </EntryThemeDiv>
                     </EntryThemeContainerDiv>
+                    COLOUR THEME
+                    <EntryThemeContainerDiv>
+                        {Boolean(colours) &&
+                            colours.map((colour, colourIndex) => (
+                                <ColourEntryContainerDiv
+                                    key={`COLOUR-${systemId}-${colourIndex}`}
+                                >
+                                    <ColorPicker
+                                        onChange={colour =>
+                                            this.handleUpdateColourPicker(
+                                                colourIndex,
+                                                colour
+                                            )
+                                        }
+                                        color={colour.get("hex")}
+                                        alpha={colour.get("alpha")}
+                                        placement="topLeft"
+                                    >
+                                        <ColourEntryDiv />
+                                    </ColorPicker>
+                                    <div>COLOUR #{colourIndex + 1}</div>
+                                    <div>
+                                        {colour.get("hex")}{" "}
+                                        {colour.get("alpha")}%
+                                    </div>
+                                </ColourEntryContainerDiv>
+                            ))}
+                    </EntryThemeContainerDiv>
                 </ThemeContainerDiv>
+                <LayoutContainerDiv>
+                    DEFAULT LAYOUT
+                    <LayoutEntryContainerDiv>
+                        <LayoutEntryDropdownDiv>
+                            DEFAULT START LAYOUT
+                            <Dropdown
+                                placeholder="Default Start Layout"
+                                fluid
+                                selection
+                                options={LAYOUT_OPTIONS}
+                                onChange={this.updateDefaultStartLayout}
+                                value={currentDefaultStartLayout.get("id")}
+                            />
+                        </LayoutEntryDropdownDiv>
+                        {Boolean(currentDefaultStartLayout.get("media")) &&
+                            Boolean(
+                                currentDefaultStartLayout
+                                    .get("media")
+                                    .get("path")
+                            ) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={currentDefaultStartLayout
+                                            .get("media")
+                                            .get("path")}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                    </LayoutEntryContainerDiv>
+                    <LayoutEntryContainerDiv>
+                        <LayoutEntryDropdownDiv>
+                            DEFAULT HOME LAYOUT
+                            <Dropdown
+                                placeholder="Default Home Layout"
+                                fluid
+                                selection
+                                options={LAYOUT_OPTIONS}
+                                onChange={this.updateDefaultHomeLayout}
+                                value={currentDefaultHomeLayout.get("id")}
+                            />
+                        </LayoutEntryDropdownDiv>
+                        {Boolean(currentDefaultHomeLayout.get("media")) &&
+                            Boolean(
+                                currentDefaultHomeLayout
+                                    .get("media")
+                                    .get("path")
+                            ) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={currentDefaultHomeLayout
+                                            .get("media")
+                                            .get("path")}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                    </LayoutEntryContainerDiv>
+                    <LayoutEntryContainerDiv>
+                        <LayoutEntryDropdownDiv>
+                            DEFAULT DIRECTORY LIST LAYOUT
+                            <Dropdown
+                                placeholder="Default Directory List Layout"
+                                fluid
+                                selection
+                                options={LAYOUT_OPTIONS}
+                                onChange={this.updateDefaultDirListLayout}
+                                value={currentDefaultDirListLayout.get("id")}
+                            />
+                        </LayoutEntryDropdownDiv>
+                        {Boolean(currentDefaultDirListLayout.get("media")) &&
+                            Boolean(
+                                currentDefaultDirListLayout
+                                    .get("media")
+                                    .get("path")
+                            ) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={currentDefaultDirListLayout
+                                            .get("media")
+                                            .get("path")}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                    </LayoutEntryContainerDiv>
+                    <LayoutEntryContainerDiv>
+                        <LayoutEntryDropdownDiv>
+                            DEFAULT DIRECTORY ENTRY LAYOUT
+                            <Dropdown
+                                placeholder="Default Directory Entry Layout"
+                                fluid
+                                selection
+                                options={LAYOUT_OPTIONS}
+                                onChange={this.updateDefaultDirEntryLayout}
+                                value={currentDefaultDirEntryLayout.get("id")}
+                            />
+                        </LayoutEntryDropdownDiv>
+                        {Boolean(currentDefaultDirEntryLayout.get("media")) &&
+                            Boolean(
+                                currentDefaultDirEntryLayout
+                                    .get("media")
+                                    .get("path")
+                            ) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={currentDefaultDirEntryLayout
+                                            .get("media")
+                                            .get("path")}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                    </LayoutEntryContainerDiv>
+                </LayoutContainerDiv>
             </ContainerDiv>
         );
     }
