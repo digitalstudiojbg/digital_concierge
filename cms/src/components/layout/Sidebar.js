@@ -11,7 +11,8 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
     SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_CMS_LIBRARY
 } from "../../utils/Constants";
 
 const SIDEBAR_ITEMS = [
@@ -39,6 +40,10 @@ const SIDEBAR_ITEMS = [
     {
         name: SYSTEM_CMS_SETTINGS_URL,
         displayName: "Settings"
+    },
+    {
+        name: SYSTEM_CMS_LIBRARY,
+        displayName: "Library"
     }
 ];
 

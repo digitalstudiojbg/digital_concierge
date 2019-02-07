@@ -19,9 +19,10 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
-    CREATE_NEW_CLIENT
+    CREATE_NEW_CLIENT,
+    SYSTEM_CMS_LIBRARY
 } from "../../utils/Constants";
-
+import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
@@ -166,6 +167,14 @@ const routes = [
         exact: true,
         header: Header,
         main: CreateClient,
+        withProps: {}
+    },
+    {
+        path: SYSTEM_CMS_LIBRARY,
+        exact: true,
+        header: Header,
+        sidebar: Sidebar,
+        main: Library,
         withProps: {}
     }
 ];
