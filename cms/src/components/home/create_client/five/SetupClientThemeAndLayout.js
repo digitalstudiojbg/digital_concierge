@@ -418,7 +418,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultStartLayout}
-                                value={currentDefaultStartLayout.get("id")}
+                                value={
+                                    currentDefaultStartLayout.size > 0
+                                        ? currentDefaultStartLayout.get("id")
+                                        : null
+                                }
                             />
                         </LayoutEntryDropdownDiv>
                         {Boolean(currentDefaultStartLayout.get("media")) &&
@@ -446,7 +450,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultHomeLayout}
-                                value={currentDefaultHomeLayout.get("id")}
+                                value={
+                                    currentDefaultHomeLayout.size > 0
+                                        ? currentDefaultHomeLayout.get("id")
+                                        : null
+                                }
                             />
                         </LayoutEntryDropdownDiv>
                         {Boolean(currentDefaultHomeLayout.get("media")) &&
@@ -474,7 +482,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultDirListLayout}
-                                value={currentDefaultDirListLayout.get("id")}
+                                value={
+                                    currentDefaultDirListLayout.size > 0
+                                        ? currentDefaultDirListLayout.get("id")
+                                        : null
+                                }
                             />
                         </LayoutEntryDropdownDiv>
                         {Boolean(currentDefaultDirListLayout.get("media")) &&
@@ -502,7 +514,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultDirEntryLayout}
-                                value={currentDefaultDirEntryLayout.get("id")}
+                                value={
+                                    currentDefaultDirEntryLayout.size > 0
+                                        ? currentDefaultDirEntryLayout.get("id")
+                                        : null
+                                }
                             />
                         </LayoutEntryDropdownDiv>
                         {Boolean(currentDefaultDirEntryLayout.get("media")) &&
