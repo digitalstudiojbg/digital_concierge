@@ -419,7 +419,8 @@ class MediaLibrary extends React.Component {
                                                     this.setState({
                                                         limit:
                                                             event.target.value,
-                                                        selected: []
+                                                        selected: [],
+                                                        offset: 0
                                                     });
                                                 }}
                                             >
@@ -452,7 +453,8 @@ class MediaLibrary extends React.Component {
                                                     this.setState({
                                                         sort:
                                                             event.target.value,
-                                                        selected: []
+                                                        selected: [],
+                                                        offset: 0
                                                     });
                                                 }}
                                             >
@@ -464,11 +466,11 @@ class MediaLibrary extends React.Component {
                                                 </MenuItem>
                                                 <MenuItem value={3}>
                                                     Sort by date modified
-                                                    (Newest first)
+                                                    (Oldest first)
                                                 </MenuItem>
                                                 <MenuItem value={4}>
                                                     Sort by date modified
-                                                    (Newest oldest)
+                                                    (Newest first)
                                                 </MenuItem>
                                                 <MenuItem value={5}>
                                                     Sort by file size (Smallest
