@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepButton from "@material-ui/core/StepButton";
+import StepLabel from "@material-ui/core/StepLabel";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
@@ -21,12 +22,21 @@ const ThemeContainerDiv = styled.div`
     width: 70%;
     height: 100%;
     padding-bottom: 20px;
+    border-right: 1px solid black;
 `;
 
 const EntryThemeContainerDiv = styled.div`
     width: 50%;
     display: flex;
     padding-bottom: 10px;
+`;
+
+const ColourThemeContainerDiv = styled.div`
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid black;
 `;
 
 const EntryThemeDiv = styled.div`
@@ -37,6 +47,7 @@ const EntryThemeDiv = styled.div`
 const LayoutContainerDiv = styled.div`
     width: 30%;
     height: 100%;
+    padding-left: 10px;
 `;
 
 const LayoutEntryContainerDiv = styled.div`
@@ -61,8 +72,10 @@ const LayoutEntryPreviewImage = styled.img`
 `;
 
 const ColourEntryContainerDiv = styled.div`
-    flex: 1;
-    height: 100px;
+    width: 150px;
+    height: 150px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border: 1px solid black;
     margin-right: 10px;
     display: flex;
@@ -72,11 +85,18 @@ const ColourEntryContainerDiv = styled.div`
 `;
 
 const ColourEntryDiv = styled.div`
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
     border: 2px solid black;
+    margin-bottom: 10px;
     /* background-color: ${props =>
         Boolean(props.color) ? props.colour : "white"}; */
+`;
+
+const ColourTitleDiv = styled.div`
+    width: 90%;
+    border-bottom: 2px solid black;
+    font-weight: 700;
 `;
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
@@ -121,7 +141,7 @@ class SetupClientThemeAndLayout extends React.Component {
             systemIndex: 0,
             systemThemes: null
         };
-        this.handleTabChange = this.handleTabChange.bind(this);
+        // this.handleTabChange = this.handleTabChange.bind(this);
         this.updateCompanyLogo = this.updateCompanyLogo.bind(this);
         this.updateSystemTheme = this.updateSystemTheme.bind(this);
         this.updateHeaderFont = this.updateHeaderFont.bind(this);
@@ -156,9 +176,15 @@ class SetupClientThemeAndLayout extends React.Component {
         });
     }
 
-    handleTabChange = (_event, value) => {
+    // handleTabChange = (_event, value) => {
+    //     this.setState({
+    //         systemIndex: value
+    //     });
+    // };
+
+    handleStep = step => () => {
         this.setState({
-            systemIndex: value
+            systemIndex: step
         });
     };
 
@@ -278,20 +304,22 @@ class SetupClientThemeAndLayout extends React.Component {
             <ContainerDiv>
                 <ThemeContainerDiv>
                     SYSTEMS
-                    <div style={{ width: "75%", padding: 10 }}>
-                        <AppBar position="static">
-                            <Tabs
-                                value={systemIndex}
-                                onChange={this.handleTabChange}
-                            >
-                                {systems.map(({ id, name }, index) => (
-                                    <Tab
-                                        label={name}
-                                        key={`TAB-${id}-${index}`}
-                                    />
-                                ))}
-                            </Tabs>
-                        </AppBar>
+                    <div style={{ width: "100%" }}>
+                        <Stepper
+                            nonLinear
+                            activeStep={systemIndex}
+                            alternativeLabel
+                        >
+                            {systems.map(({ id, name }, index) => (
+                                <Step key={`STEP-${id}-${index}`}>
+                                    <StepButton
+                                        onClick={this.handleStep(index)}
+                                    >
+                                        <StepLabel>{name}</StepLabel>
+                                    </StepButton>
+                                </Step>
+                            ))}
+                        </Stepper>
                     </div>
                     BRAND ASSETS
                     <EntryThemeContainerDiv>
@@ -337,7 +365,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                 placeholder="Header Font"
                                 fluid
                                 selection
-                                options={LAYOUT_OPTIONS}
+                                options={FONT_OPTIONS}
                                 onChange={this.updateHeaderFont}
                                 value={values.get("headerFont")}
                             />
@@ -379,7 +407,7 @@ class SetupClientThemeAndLayout extends React.Component {
                         </EntryThemeDiv>
                     </EntryThemeContainerDiv>
                     COLOUR THEME
-                    <EntryThemeContainerDiv>
+                    <ColourThemeContainerDiv>
                         {Boolean(colours) &&
                             colours.map((colour, colourIndex) => (
                                 <ColourEntryContainerDiv
@@ -398,14 +426,28 @@ class SetupClientThemeAndLayout extends React.Component {
                                     >
                                         <ColourEntryDiv />
                                     </ColorPicker>
-                                    <div>COLOUR #{colourIndex + 1}</div>
-                                    <div>
-                                        {colour.get("hex")}{" "}
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            paddingLeft: 10
+                                        }}
+                                    >
+                                        <ColourTitleDiv>
+                                            COLOUR #{colourIndex + 1}
+                                        </ColourTitleDiv>
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            paddingLeft: 10
+                                        }}
+                                    >
+                                        {colour.get("hex").toUpperCase()}{" "}
                                         {colour.get("alpha")}%
                                     </div>
                                 </ColourEntryContainerDiv>
                             ))}
-                    </EntryThemeContainerDiv>
+                    </ColourThemeContainerDiv>
                 </ThemeContainerDiv>
                 <LayoutContainerDiv>
                     DEFAULT LAYOUT
