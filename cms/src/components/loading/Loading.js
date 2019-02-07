@@ -11,6 +11,16 @@ class loading extends React.Component {
         };
     }
     render() {
+        if (this.props.button) {
+            return (
+                <ClipLoader
+                    sizeUnit={"px"}
+                    size={16}
+                    color={"rgb(38,56,140)"}
+                    loading={this.state.loading}
+                />
+            );
+        }
         return (
             <div>
                 <div className="loading_container">
