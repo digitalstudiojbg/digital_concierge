@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
-import { formatBytes } from "../../../../utils/Constants";
+import { formatBytes, downloadFile } from "../../../../utils/Constants";
 import {
     UPLOAD_FILES_WITH_CLIENT_ID,
     DELETE_FILES
@@ -586,8 +586,9 @@ class MediaLibrary extends React.Component {
                                                             >
                                                                 <ImageLinkText
                                                                     onClick={() => {
-                                                                        window.open(
-                                                                            image.path
+                                                                        downloadFile(
+                                                                            image.path,
+                                                                            image.name
                                                                         );
                                                                     }}
                                                                 >

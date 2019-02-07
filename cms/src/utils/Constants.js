@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import FileSaver from "file-saver";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -146,4 +147,14 @@ export const formatBytes = (a, b) => {
         e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
         f = Math.floor(Math.log(a) / Math.log(c));
     return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f];
+};
+
+export const downloadFile = (link, fileName) => {
+    /*  fetch(link, {
+        mode: "no-cors"
+    })
+        .then(res => res.blob())
+        .then(blob => FileSaver.saveAs(blob, fileName));*/
+
+    FileSaver.saveAs(link, fileName);
 };

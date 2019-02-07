@@ -10,6 +10,7 @@
         "apollo-link-context": "^1.0.9",
         "apollo-upload-client": "^10.0.0",
         "dayjs": "^1.8.0",
+        "file-saver": "^2.0.0",
         "formik": "^1.4.2",
         "formik-material-ui": "0.0.16",
         "graphql": "^14.0.2",
