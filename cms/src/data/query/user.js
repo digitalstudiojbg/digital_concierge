@@ -21,6 +21,7 @@ export const getSelectedUserQuery = gql`
                 }
             }
             client {
+                id
                 name
                 full_company_name
                 nature_of_business
@@ -61,6 +62,7 @@ export const getCurrentUserQuery = gql`
                 }
             }
             client {
+                id
                 name
                 full_company_name
                 nature_of_business
