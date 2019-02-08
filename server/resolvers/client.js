@@ -6,6 +6,8 @@ import {
     checkUserLogin,
     processDeleteMedia
 } from "../utils/constant";
+import { UserInputError } from "apollo-server-express";
+
 export default {
     Query: {
         client: async (_root, { id }) => {

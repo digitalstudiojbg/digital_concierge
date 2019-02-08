@@ -59,8 +59,8 @@ const graphqlServer = new ApolloServer({
         };
     },
     uploads: {
-        maxFileSize: 10000000, // 10 MB
-        maxFiles: 10
+        maxFileSize: 100000000, // 100 MB
+        maxFiles: 100
     }
 });
 graphqlServer.applyMiddleware({ app });

@@ -100,13 +100,13 @@ export const processUpload = async file => {
                     }
                 });
 
-                s3.headObject({ Key: data.key })
+                s3.headObject({ Key: data.key ? data.key : data.Key })
                     .promise()
                     .then(res =>
                         resolve({
                             filename,
                             location: data.Location,
-                            key: data.key,
+                            key: data.key ? data.key : data.Key,
                             size: res.ContentLength
                         })
                     );
