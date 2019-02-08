@@ -32,13 +32,30 @@ const styles = theme => ({
     },
     buttonFont: {
         fontSize: "1.2em"
+    },
+    checkbox: {
+        paddingTop: "0px",
+        paddingBottom: "0px"
     }
 });
 
+const EachMediaSection = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0 10px 0;
+    padding: 10px;
+    height: 280px;
+    justify-content: space-between;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+        background-color: #fff0f5;
+    }
+`;
 const PaginationSection = styled.li`
     display: inline;
     padding: 10px;
     cursor: pointer;
+    transition: all 0.3s ease-in-out;
     &:hover {
         background-color: lightgrey;
     }
@@ -496,22 +513,19 @@ class MediaLibrary extends React.Component {
                                     {images.length > 0 &&
                                         images.map(image => {
                                             return (
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        padding: "10px",
-                                                        height: "300px",
-                                                        justifyContent:
-                                                            "space-between"
-                                                    }}
-                                                >
+                                                <EachMediaSection>
                                                     <p
                                                         style={{
                                                             width: "300px",
+                                                            overflow: "hidden",
+                                                            whiteSpace:
+                                                                "nowrap",
+                                                            textOverflow:
+                                                                "ellipsis",
                                                             textAlign: "center",
                                                             fontWeight: "bold",
-                                                            fontSize: "1.1em"
+                                                            fontSize: "1.1em",
+                                                            marginBottom: "0px"
                                                         }}
                                                     >
                                                         <Checkbox
@@ -522,6 +536,9 @@ class MediaLibrary extends React.Component {
                                                                 this,
                                                                 image
                                                             )}
+                                                            className={
+                                                                classes.checkbox
+                                                            }
                                                             value="checkedB"
                                                             color="primary"
                                                         />
@@ -588,9 +605,12 @@ class MediaLibrary extends React.Component {
                                                             >
                                                                 <ImageLinkText
                                                                     onClick={() => {
-                                                                        downloadFile(
+                                                                        /*downloadFile(
                                                                             image.path,
                                                                             image.name
+                                                                        );*/
+                                                                        window.open(
+                                                                            image.path
                                                                         );
                                                                     }}
                                                                 >
@@ -607,7 +627,7 @@ class MediaLibrary extends React.Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </EachMediaSection>
                                             );
                                         })}
                                 </div>
