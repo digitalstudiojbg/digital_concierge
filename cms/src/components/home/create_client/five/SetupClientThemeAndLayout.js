@@ -111,7 +111,6 @@ const initialSystemTheme = Map({
     defaultHomeLayout: Map(),
     defaultDirListLayout: Map(),
     defaultDirEntryLayout: Map(),
-    coloursLength: NUMBER_OF_COLOURS_PER_SYSTEM,
     colours: Repeat(
         Map({ hex: "#ffffff", alpha: 100 }),
         NUMBER_OF_COLOURS_PER_SYSTEM

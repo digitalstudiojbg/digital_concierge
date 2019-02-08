@@ -61,6 +61,8 @@ export default {
                         where: { id: system.id }
                     }
                 ]
-            })
+            }),
+        theme: async system =>
+            await db.theme.findOne({ where: { systemId: system.id } })
     }
 };

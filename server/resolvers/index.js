@@ -32,6 +32,7 @@ import email_resolver from "./email_resolver";
 import dateTime_resolver from "./datetime_resolver";
 import country_resolver from "./country";
 import state_resolver from "./state";
+import theme_resolver from "./theme";
 
 export default [
     user_resolver,
@@ -67,5 +68,6 @@ export default [
     dateTime_resolver,
     file_resolver,
     country_resolver,
-    state_resolver
+    state_resolver,
+    theme_resolver
 ];

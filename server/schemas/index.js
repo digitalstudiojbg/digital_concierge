@@ -30,6 +30,7 @@ import contact_schema from "./contact";
 import contract_schema from "./contract";
 import country_schema from "./country";
 import state_schema from "./state";
+import theme_schema from "./theme";
 
 const link_schema = gql`
     type Query {
@@ -75,5 +76,6 @@ export default [
     contract_schema,
     file_schema,
     country_schema,
-    state_schema
+    state_schema,
+    theme_schema
 ];

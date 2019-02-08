@@ -370,3 +370,9 @@ node_modules/.bin/sequelize seed:generate --name state
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-venue-state-and-client
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-postal-state-and-client
+
+node_modules/.bin/sequelize model:generate --name theme --attributes companyLogo:string,headerFont:string,subHeaderFont:string,bodyFont:string,captionFont:string,colour1Hex:string,colour1Alpha:integer,colour2Hex:string,colour2Alpha:integer,colour3Hex:string,colour3Alpha:integer,colour4Hex:string,colour4Alpha:integer,colour5Hex:string,colour5Alpha:integer,defaultStartLayoutId:integer,defaultHomeLayoutId:integer,defaultDirListLayoutId:integer,defaultDirEntryLayoutId:integer
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-system-and-theme
+
+node_modules/.bin/sequelize seed:generate --name theme
