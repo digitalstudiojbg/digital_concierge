@@ -9,7 +9,12 @@ class WizardCreateClientPageSix extends React.Component {
 
         return (
             <div>
-                {user.client && <MediaLibrary clientId={user.client.id} />}
+                {user.client && (
+                    <MediaLibrary
+                        clientId={parseInt(user.client.id)}
+                        height={"60vh"}
+                    />
+                )}
             </div>
         );
     }

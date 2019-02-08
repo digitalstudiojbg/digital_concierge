@@ -10,7 +10,12 @@ class Library extends React.Component {
         return (
             <div style={{ width: "100%", padding: "25px" }}>
                 <h1>Library</h1>
-                {user.client && <MediaLibrary clientId={user.client.id} />}
+                {user.client && (
+                    <MediaLibrary
+                        clientId={parseInt(user.client.id)}
+                        height={"70vh"}
+                    />
+                )}
             </div>
         );
     }

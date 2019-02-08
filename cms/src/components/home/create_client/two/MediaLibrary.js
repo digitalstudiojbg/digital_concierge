@@ -505,15 +505,15 @@ class MediaLibrary extends React.Component {
                                     style={{
                                         display: "flex",
                                         overflowY: "scroll",
-                                        height: "60vh",
+                                        height: this.props.height,
                                         flexWrap: "wrap",
                                         alignItems: "center"
                                     }}
                                 >
                                     {images.length > 0 &&
-                                        images.map(image => {
+                                        images.map((image, index) => {
                                             return (
-                                                <EachMediaSection>
+                                                <EachMediaSection key={index}>
                                                     <p
                                                         style={{
                                                             width: "300px",
@@ -672,6 +672,7 @@ class MediaLibrary extends React.Component {
                                                         ) {
                                                             return (
                                                                 <a
+                                                                    key={index}
                                                                     onClick={this.handlePagination.bind(
                                                                         this,
                                                                         index +
@@ -734,7 +735,8 @@ class MediaLibrary extends React.Component {
 }
 
 MediaLibrary.propTypes = {
-    clientId: PropTypes.number.isRequired
+    clientId: PropTypes.number.isRequired,
+    height: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(withApollo(MediaLibrary));
