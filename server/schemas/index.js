@@ -31,6 +31,8 @@ import contract_schema from "./contract";
 import country_schema from "./country";
 import state_schema from "./state";
 import theme_schema from "./theme";
+import deviceType_schema from "./deviceType";
+import systemType_schema from "./systemType";
 
 const link_schema = gql`
     type Query {
@@ -77,5 +79,7 @@ export default [
     file_schema,
     country_schema,
     state_schema,
-    theme_schema
+    theme_schema,
+    deviceType_schema,
+    systemType_schema
 ];

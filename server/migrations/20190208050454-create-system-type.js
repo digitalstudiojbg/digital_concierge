@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("systems", {
+        return queryInterface.createTable("system_types", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -10,21 +10,6 @@ module.exports = {
             },
             name: {
                 type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            aif: {
-                type: Sequelize.BOOLEAN,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: true
-            },
-            numberOfDevices: {
-                type: Sequelize.INTEGER,
                 allowNull: false,
                 validate: {
                     notEmpty: true
@@ -43,6 +28,6 @@ module.exports = {
         });
     },
     down: queryInterface => {
-        return queryInterface.dropTable("systems");
+        return queryInterface.dropTable("system_types");
     }
 };

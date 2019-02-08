@@ -63,6 +63,10 @@ export default {
                 ]
             }),
         theme: async system =>
-            await db.theme.findOne({ where: { systemId: system.id } })
+            await db.theme.findOne({ where: { systemId: system.id } }),
+        device_type: async system =>
+            await db.device_type.findByPk(system.deviceTypeId),
+        system_type: async system =>
+            await db.system_type.findByPk(system.systemTypeId)
     }
 };

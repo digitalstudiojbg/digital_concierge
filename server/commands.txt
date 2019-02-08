@@ -376,3 +376,15 @@ node_modules/.bin/sequelize model:generate --name theme --attributes companyLogo
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-system-and-theme
 
 node_modules/.bin/sequelize seed:generate --name theme
+
+node_modules/.bin/sequelize model:generate --name device_type --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-device_type-and-system
+
+node_modules/.bin/sequelize seed:generate --name device_type
+
+node_modules/.bin/sequelize model:generate --name system_type --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-system_type-and-system
+
+node_modules/.bin/sequelize seed:generate --name system_type
