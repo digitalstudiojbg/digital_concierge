@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const country = sequelize.define(
-        "country",
+    const currency = sequelize.define(
+        "currency",
         {
             name: {
                 type: DataTypes.STRING,
@@ -13,11 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    country.associate = function(models) {
-        country.hasMany(models.state);
-        country.belongsToMany(models.currency, {
+    currency.associate = function(models) {
+        currency.belongsToMany(models.country, {
             through: "countries_currencies"
         });
     };
-    return country;
+    return currency;
 };

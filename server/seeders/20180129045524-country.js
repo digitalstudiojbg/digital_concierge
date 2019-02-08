@@ -19,6 +19,6 @@ module.exports = {
         );
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("maps", null, {});
+        return queryInterface.bulkDelete("countries", null, {});
     }
 };

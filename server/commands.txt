@@ -376,3 +376,11 @@ node_modules/.bin/sequelize model:generate --name theme --attributes companyLogo
 node_modules/.bin/sequelize migration:generate --name add-one-to-one-relationship-between-system-and-theme
 
 node_modules/.bin/sequelize seed:generate --name theme
+
+node_modules/.bin/sequelize model:generate --name currency --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name currency
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-currency-and-country
+
+node_modules/.bin/sequelize seed:generate --name country_currency

@@ -7,6 +7,16 @@ export default {
     },
     Country: {
         states: async country =>
-            await db.state.findAll({ where: { countryId: country.id } })
+            await db.state.findAll({ where: { countryId: country.id } }),
+
+        currencies: async currency =>
+            await db.country.findAll({
+                include: [
+                    {
+                        model: db.currency,
+                        where: { id: currency.id }
+                    }
+                ]
+            })
     }
 };
