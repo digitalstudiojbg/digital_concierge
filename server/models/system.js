@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         system.belongsToMany(models.media, {
             through: "media_systems"
         });
+        system.hasOne(models.theme);
     };
     return system;
 };

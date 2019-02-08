@@ -23,5 +23,6 @@ export default gql`
         maps: [Map]
         directory_lists: [DirectoryList]
         media: [Media]
+        theme: Theme
     }
 `;

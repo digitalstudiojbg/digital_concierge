@@ -13,6 +13,7 @@ import {
     API_URL,
     SYSTEM_INDEX_URL
 } from "../utils/Constants";
+import "rc-color-picker/assets/index.css";
 
 const Home = lazy(() => import("./home/Home"));
 

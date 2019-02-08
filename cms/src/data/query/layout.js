@@ -5,6 +5,11 @@ export const getLayoutList = gql`
         layouts {
             id
             name
+            media {
+                id
+                path
+                type
+            }
         }
     }
 `;
