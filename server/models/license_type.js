@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     license_type.associate = function(models) {
-        // associations can be defined here
+        license_type.hasMany(models.license);
     };
     return license_type;
 };

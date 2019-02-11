@@ -119,6 +119,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: "postalStateId"
         });
         client.hasMany(models.payment);
+        client.hasMany(models.license);
     };
     return client;
 };

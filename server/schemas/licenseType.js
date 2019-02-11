@@ -9,5 +9,6 @@ export default gql`
     type LicenseType {
         id: ID!
         name: String
+        licenses: [License]
     }
 `;

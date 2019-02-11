@@ -6,5 +6,10 @@ export default {
             await db.license_type.findByPk(id),
         licenseTypes: async () => await db.license_type.findAll()
     },
-    State: {}
+    LicenseType: {
+        licenses: async licenseType =>
+            await db.license.findAll({
+                where: { licenseTypeId: licenseType.id }
+            })
+    }
 };

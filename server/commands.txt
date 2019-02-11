@@ -396,3 +396,11 @@ node_modules/.bin/sequelize seed:generate --name payment
 node_modules/.bin/sequelize model:generate --name license_type --attributes name:string
 
 node_modules/.bin/sequelize seed:generate --name license_type
+
+node_modules/.bin/sequelize model:generate --name license --attributes key:string,commence_date:date,expire_date:date,auto_renewal:boolean
+
+node_modules/.bin/sequelize seed:generate --name license
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-license-type-and-license
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-license

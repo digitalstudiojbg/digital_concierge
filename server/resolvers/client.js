@@ -186,6 +186,10 @@ export default {
         venue_state: async client =>
             await db.state.findByPk(client.venueStateId),
         postal_state: async client =>
-            await db.state.findByPk(client.postalStateId)
+            await db.state.findByPk(client.postalStateId),
+        payments: async client =>
+            await db.payment.findAll({ where: { clientId: client.id } }),
+        licenses: async client =>
+            await db.license.findAll({ where: { clientId: client.id } })
     }
 };

@@ -10,5 +10,6 @@ export default gql`
         id: ID!
         name: String
         countries: [Country]
+        payments: [Payment]
     }
 `;

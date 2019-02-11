@@ -14,6 +14,11 @@ export default {
                         where: { id: country.id }
                     }
                 ]
+            }),
+
+        payments: async currency =>
+            await db.payment.findAll({
+                where: { currencyId: currency.id }
             })
     }
 };

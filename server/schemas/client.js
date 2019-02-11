@@ -70,5 +70,7 @@ export default gql`
         contracts: [Contract]
         postal_state: State
         venue_state: State
+        payments: [Payment]
+        licenses: [License]
     }
 `;
