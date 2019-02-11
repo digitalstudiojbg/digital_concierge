@@ -22,27 +22,15 @@ module.exports = {
                     notEmpty: true
                 }
             },
-            package: {
-                type: Sequelize.STRING,
+            agreement_date: {
+                type: Sequelize.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            term_month: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                },
-                defaultValue: "12 Month"
-            },
             renewal_date: {
-                allowNull: false,
-                type: Sequelize.DATE
-            },
-            annual_fee: {
-                type: Sequelize.STRING,
+                type: Sequelize.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true

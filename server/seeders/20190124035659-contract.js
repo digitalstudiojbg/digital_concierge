@@ -2,9 +2,10 @@
 
 module.exports = {
     up: queryInterface => {
-        const currentYear = new Date().getFullYear();
+        const current = new Date();
         let nextYear = new Date();
-        nextYear.setFullYear(currentYear + 1);
+        nextYear.setDate(current.getDate() + 365);
+
         return queryInterface.bulkInsert(
             "contracts",
             [
@@ -12,8 +13,7 @@ module.exports = {
                     number: "11282-31220-JD",
                     file:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/CONTRACT_AS4000-1997.pdf",
-                    package: "Hotel",
-                    annual_fee: "3600VT",
+                    agreement_date: current,
                     renewal_date: nextYear,
                     clientid: 1
                 },
@@ -21,8 +21,7 @@ module.exports = {
                     number: "48789-20114-AJ",
                     file:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/CONTRACT_AS4000-1997.pdf",
-                    package: "Company",
-                    annual_fee: "3000AUD",
+                    agreement_date: current,
                     renewal_date: nextYear,
                     clientid: 2
                 }

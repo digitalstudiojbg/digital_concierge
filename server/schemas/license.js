@@ -12,6 +12,7 @@ export default gql`
         commence_date: DateTime
         expire_date: DateTime
         auto_renewal: Boolean
+        active: Boolean
         licenseType: LicenseType
         client: Client
     }

@@ -17,15 +17,8 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            package: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            term_month: {
-                type: DataTypes.STRING,
+            agreement_date: {
+                type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
@@ -33,13 +26,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             renewal_date: {
                 type: DataTypes.DATE,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            annual_fee: {
-                type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true

@@ -36,6 +36,14 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            active: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
