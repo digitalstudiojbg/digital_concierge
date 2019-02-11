@@ -62,6 +62,9 @@ module.exports = (sequelize, DataTypes) => {
         system.belongsTo(models.system_type, {
             foreignKey: { allowNull: false }
         });
+        system.belongsToMany(models.feature, {
+            through: "features_systems"
+        });
     };
     return system;
 };

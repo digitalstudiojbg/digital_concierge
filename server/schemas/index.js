@@ -34,6 +34,8 @@ import theme_schema from "./theme";
 import deviceType_schema from "./deviceType";
 import systemType_schema from "./systemType";
 import permissionCategory_schema from "./permissionCategory";
+import featureCategory_schema from "./featureCategory";
+import feature_schema from "./feature";
 
 const link_schema = gql`
     type Query {
@@ -83,5 +85,7 @@ export default [
     theme_schema,
     deviceType_schema,
     systemType_schema,
-    permissionCategory_schema
+    permissionCategory_schema,
+    featureCategory_schema,
+    feature_schema
 ];

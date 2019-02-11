@@ -67,6 +67,15 @@ export default {
         device_type: async system =>
             await db.device_type.findByPk(system.deviceTypeId),
         system_type: async system =>
-            await db.system_type.findByPk(system.systemTypeId)
+            await db.system_type.findByPk(system.systemTypeId),
+        features: async system =>
+            await db.feature.findAll({
+                include: [
+                    {
+                        model: db.system,
+                        where: { id: system.id }
+                    }
+                ]
+            })
     }
 };

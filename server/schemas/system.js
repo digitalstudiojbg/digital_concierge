@@ -28,5 +28,6 @@ export default gql`
         theme: Theme
         device_type: DeviceType
         system_type: SystemType
+        features: [Feature]
     }
 `;

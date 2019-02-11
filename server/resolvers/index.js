@@ -36,6 +36,8 @@ import theme_resolver from "./theme";
 import deviceType_resolver from "./deviceType";
 import systemType_resolver from "./systemType";
 import permissionCategory_resolver from "./permissionCategory";
+import featureCategory_resolver from "./featureCategory";
+import feature_resolver from "./feature";
 
 export default [
     user_resolver,
@@ -75,5 +77,7 @@ export default [
     theme_resolver,
     deviceType_resolver,
     systemType_resolver,
-    permissionCategory_resolver
+    permissionCategory_resolver,
+    featureCategory_resolver,
+    feature_resolver
 ];
