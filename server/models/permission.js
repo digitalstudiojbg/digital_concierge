@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     );
     permission.associate = function(models) {
         permission.belongsToMany(models.role, { through: "roles_permissions" });
+        permission.belongsTo(models.permission_category, {
+            foreignKey: { allowNull: false }
+        });
     };
     return permission;
 };

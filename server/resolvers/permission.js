@@ -20,15 +20,18 @@ export default {
         }
     },
     Permission: {
-        roles: async permission => {
-            return await db.role.findAll({
+        roles: async permission =>
+            await db.role.findAll({
                 include: [
                     {
                         model: db.permission,
                         where: { id: permission.id }
                     }
                 ]
-            });
-        }
+            }),
+        permission_category: async permission =>
+            await db.permission_category.findByPk(
+                permission.permissionCategoryId
+            )
     }
 };

@@ -388,3 +388,9 @@ node_modules/.bin/sequelize model:generate --name system_type --attributes name:
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-system_type-and-system
 
 node_modules/.bin/sequelize seed:generate --name system_type
+
+node_modules/.bin/sequelize model:generate --name permission_category --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-permission_category-and-permission
+
+node_modules/.bin/sequelize seed:generate --name permission_category
