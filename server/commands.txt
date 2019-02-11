@@ -392,3 +392,7 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-payment
 
 node_modules/.bin/sequelize seed:generate --name payment
+
+node_modules/.bin/sequelize model:generate --name license_type --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name license_type

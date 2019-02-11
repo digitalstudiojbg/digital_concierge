@@ -33,6 +33,7 @@ import state_schema from "./state";
 import theme_schema from "./theme";
 import currency_schema from "./currency";
 import payment_schema from "./payment";
+import licenseType_schema from "./licenseType";
 
 const link_schema = gql`
     type Query {
@@ -81,5 +82,6 @@ export default [
     state_schema,
     theme_schema,
     currency_schema,
-    payment_schema
+    payment_schema,
+    licenseType_schema
 ];
