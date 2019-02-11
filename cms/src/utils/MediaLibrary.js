@@ -1,17 +1,14 @@
 import React from "react";
 import { Query, Mutation, withApollo, compose, graphql } from "react-apollo";
-import { getClientImageById } from "../../../../data/query";
+import { getClientImageById } from "../data/query";
 import PropTypes from "prop-types";
-import Loading from "../../../loading/Loading";
+import Loading from "../components/loading/Loading";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
-import { formatBytes, downloadFile } from "../../../../utils/Constants";
-import {
-    UPLOAD_FILES_WITH_CLIENT_ID,
-    DELETE_FILES
-} from "../../../../data/mutation";
+import { formatBytes, downloadFile } from "./Constants";
+import { UPLOAD_FILES_WITH_CLIENT_ID, DELETE_FILES } from "../data/mutation";
 import Checkbox from "@material-ui/core/Checkbox";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";

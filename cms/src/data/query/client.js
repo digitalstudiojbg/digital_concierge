@@ -90,21 +90,17 @@ export const getAllClients = gql`
                 id
                 number
                 file
-                package
+                agreement_date
                 active
-                term_month
                 renewal_date
-                annual_fee
             }
             contracts {
                 id
                 number
                 file
-                package
+                agreement_date
                 active
-                term_month
                 renewal_date
-                annual_fee
             }
             postal_state {
                 id

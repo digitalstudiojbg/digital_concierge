@@ -13,7 +13,6 @@ export default gql`
         file: URL
         agreement_date: DateTime
         renewal_date: DateTime
-        annual_fee: String
         active: Boolean
         createdAt: DateTime
         updatedAt: DateTime

@@ -1,5 +1,5 @@
 import React from "react";
-import MediaLibrary from "./two/MediaLibrary";
+import MediaLibrary from "../../../utils/MediaLibrary";
 import { getCurrentUserQuery as query } from "../../../data/query";
 import { withApollo } from "react-apollo";
 
