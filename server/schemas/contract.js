@@ -11,8 +11,7 @@ export default gql`
         id: ID!
         number: String
         file: URL
-        package: String
-        term_month: String
+        agreement_date: DateTime
         renewal_date: DateTime
         annual_fee: String
         active: Boolean

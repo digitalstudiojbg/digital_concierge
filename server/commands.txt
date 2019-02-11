@@ -384,7 +384,7 @@ node_modules/.bin/sequelize seed:generate --name currency
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-currency-and-country
 
 node_modules/.bin/sequelize seed:generate --name country_currency
-
+ 
 node_modules/.bin/sequelize model:generate --name device_type --attributes name:string
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-device_type-and-system
@@ -420,3 +420,24 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize seed:generate --name features_systems
 
 node_modules/.bin/sequelize db:seed --seed 20190211013724-features_systems
+ 
+node_modules/.bin/sequelize model:generate --name payment --attributes invoice_number:string,invoice_date:date,invoice_amount:decimal,payable_date:date
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-currency-and-payment
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-payment
+
+node_modules/.bin/sequelize seed:generate --name payment
+
+node_modules/.bin/sequelize model:generate --name license_type --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name license_type
+
+node_modules/.bin/sequelize model:generate --name license --attributes key:string,commence_date:date,expire_date:date,auto_renewal:boolean
+
+node_modules/.bin/sequelize seed:generate --name license
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-license-type-and-license
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-license
+ 

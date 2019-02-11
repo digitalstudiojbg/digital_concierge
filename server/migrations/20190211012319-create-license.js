@@ -1,36 +1,36 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("contracts", {
+        return queryInterface.createTable("licenses", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            number: {
+            key: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            file: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            agreement_date: {
+            commence_date: {
                 type: Sequelize.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            renewal_date: {
+            expire_date: {
                 type: Sequelize.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            auto_renewal: {
+                type: Sequelize.BOOLEAN,
                 allowNull: false,
                 validate: {
                     notEmpty: true
@@ -56,7 +56,7 @@ module.exports = {
             }
         });
     },
-    down: queryInterface => {
-        return queryInterface.dropTable("contracts");
+    down: (queryInterface, Sequelize) => {
+        return queryInterface.dropTable("licenses");
     }
 };

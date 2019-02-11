@@ -39,6 +39,9 @@ import systemType_resolver from "./systemType";
 import permissionCategory_resolver from "./permissionCategory";
 import featureCategory_resolver from "./featureCategory";
 import feature_resolver from "./feature";
+import payment_resolver from "./payment";
+import licenseType_resolver from "./licenseType";
+import license_resolver from "./license";
 
 export default [
     user_resolver,
@@ -81,5 +84,8 @@ export default [
     systemType_resolver,
     permissionCategory_resolver,
     featureCategory_resolver,
-    feature_resolver
+    feature_resolver,
+    payment_resolver,
+    licenseType_resolver,
+    license_resolver
 ];

@@ -37,6 +37,9 @@ import systemType_schema from "./systemType";
 import permissionCategory_schema from "./permissionCategory";
 import featureCategory_schema from "./featureCategory";
 import feature_schema from "./feature";
+import payment_schema from "./payment";
+import licenseType_schema from "./licenseType";
+import license_schema from "./license";
 
 const link_schema = gql`
     type Query {
@@ -89,5 +92,8 @@ export default [
     systemType_schema,
     permissionCategory_schema,
     featureCategory_schema,
-    feature_schema
+    feature_schema,
+    payment_schema,
+    licenseType_schema,
+    license_schema
 ];

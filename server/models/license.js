@@ -1,31 +1,31 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const contract = sequelize.define(
-        "contract",
+    const license = sequelize.define(
+        "license",
         {
-            number: {
+            key: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            file: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            agreement_date: {
+            commence_date: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            renewal_date: {
+            expire_date: {
                 type: DataTypes.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            auto_renewal: {
+                type: DataTypes.BOOLEAN,
                 allowNull: false,
                 validate: {
                     notEmpty: true
@@ -42,10 +42,13 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    contract.associate = function(models) {
-        contract.belongsTo(models.client, {
+    license.associate = function(models) {
+        license.belongsTo(models.client, {
+            foreignKey: { allowNull: false }
+        });
+        license.belongsTo(models.license_type, {
             foreignKey: { allowNull: false }
         });
     };
-    return contract;
+    return license;
 };

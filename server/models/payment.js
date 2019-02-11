@@ -1,51 +1,46 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const contract = sequelize.define(
-        "contract",
+    const payment = sequelize.define(
+        "payment",
         {
-            number: {
+            invoice_number: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            file: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
-            agreement_date: {
+            invoice_date: {
                 type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            renewal_date: {
-                type: DataTypes.DATE,
+            invoice_amount: {
+                type: DataTypes.DECIMAL(10, 2),
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            active: {
-                type: DataTypes.BOOLEAN,
+            payable_date: {
+                type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
                     notEmpty: true
-                },
-                defaultValue: true
+                }
             }
         },
         {}
     );
-    contract.associate = function(models) {
-        contract.belongsTo(models.client, {
+    payment.associate = function(models) {
+        payment.belongsTo(models.client, {
+            foreignKey: { allowNull: false }
+        });
+        payment.belongsTo(models.currency, {
             foreignKey: { allowNull: false }
         });
     };
-    return contract;
+    return payment;
 };
