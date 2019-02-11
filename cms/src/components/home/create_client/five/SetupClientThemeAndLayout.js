@@ -11,6 +11,8 @@ import { Dropdown } from "semantic-ui-react";
 import { Map, List, Repeat } from "immutable";
 import ColorPicker from "rc-color-picker";
 import FONT_OPTIONS from "./FontOptions";
+import systemThemeSchemaCreator from "./SystemThemeSchema";
+import { DECIMAL_RADIX } from "../../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -107,10 +109,10 @@ const initialSystemTheme = Map({
     subHeaderFont: null,
     bodyFont: null,
     captionFont: null,
-    defaultStartLayout: Map(),
-    defaultHomeLayout: Map(),
-    defaultDirListLayout: Map(),
-    defaultDirEntryLayout: Map(),
+    defaultStartLayout: null,
+    defaultHomeLayout: null,
+    defaultDirListLayout: null,
+    defaultDirEntryLayout: null,
     colours: Repeat(
         Map({ hex: "#ffffff", alpha: 100 }),
         NUMBER_OF_COLOURS_PER_SYSTEM
@@ -138,7 +140,8 @@ class SetupClientThemeAndLayout extends React.Component {
         super(props);
         this.state = {
             systemIndex: 0,
-            systemThemes: null
+            systemThemes: null,
+            error: Map()
         };
         // this.handleTabChange = this.handleTabChange.bind(this);
         this.updateCompanyLogo = this.updateCompanyLogo.bind(this);
@@ -160,6 +163,7 @@ class SetupClientThemeAndLayout extends React.Component {
         this.updateDefaultDirEntryLayout = this.updateDefaultDirEntryLayout.bind(
             this
         );
+        this.validateData = this.validateData.bind(this);
     }
 
     componentDidMount() {
@@ -219,35 +223,39 @@ class SetupClientThemeAndLayout extends React.Component {
     }
 
     updateDefaultStartLayout(_event, data) {
-        const layout = this.getLayoutItem(data.value);
-        this.updateSystemTheme(
-            "defaultStartLayout",
-            Map({ ...layout, media: Map(layout.media) })
-        );
+        // const layout = this.getLayoutItem(data.value);
+        // this.updateSystemTheme(
+        //     "defaultStartLayout",
+        //     Map({ ...layout, media: Map(layout.media) })
+        // );
+        this.updateSystemTheme("defaultStartLayout", data.value);
     }
 
     updateDefaultHomeLayout(_event, data) {
-        const layout = this.getLayoutItem(data.value);
-        this.updateSystemTheme(
-            "defaultHomeLayout",
-            Map({ ...layout, media: Map(layout.media) })
-        );
+        // const layout = this.getLayoutItem(data.value);
+        // this.updateSystemTheme(
+        //     "defaultHomeLayout",
+        //     Map({ ...layout, media: Map(layout.media) })
+        // );
+        this.updateSystemTheme("defaultHomeLayout", data.value);
     }
 
     updateDefaultDirListLayout(_event, data) {
-        const layout = this.getLayoutItem(data.value);
-        this.updateSystemTheme(
-            "defaultDirListLayout",
-            Map({ ...layout, media: Map(layout.media) })
-        );
+        // const layout = this.getLayoutItem(data.value);
+        // this.updateSystemTheme(
+        //     "defaultDirListLayout",
+        //     Map({ ...layout, media: Map(layout.media) })
+        // );
+        this.updateSystemTheme("defaultDirListLayout", data.value);
     }
 
     updateDefaultDirEntryLayout(_event, data) {
-        const layout = this.getLayoutItem(data.value);
-        this.updateSystemTheme(
-            "defaultDirEntryLayout",
-            Map({ ...layout, media: Map(layout.media) })
-        );
+        // const layout = this.getLayoutItem(data.value);
+        // this.updateSystemTheme(
+        //     "defaultDirEntryLayout",
+        //     Map({ ...layout, media: Map(layout.media) })
+        // );
+        this.updateSystemTheme("defaultDirEntryLayout", data.value);
     }
 
     handleUpdateColourPicker(index, colourData) {
@@ -282,8 +290,53 @@ class SetupClientThemeAndLayout extends React.Component {
         return layouts.find(({ id }) => id === layoutId) || {};
     };
 
+    getLayoutMedia = layoutId => {
+        const { layouts = [] } = this.props;
+        const { media } = layouts.find(({ id }) => id === layoutId) || {};
+        const { path = "" } = media || {};
+        return path;
+    };
+
+    validateData = () => {
+        const { systemThemes: immutableSystemThemes, error } = this.state;
+        const { layouts = [] } = this.props || {};
+        const systemThemes = immutableSystemThemes.toJS();
+        const SYSTEM_THEMES_SCHEMA = systemThemeSchemaCreator(
+            layouts.map(({ id }) => id)
+        );
+        SYSTEM_THEMES_SCHEMA.validate(systemThemes)
+            .catch(err => {
+                console.log("Err ", err);
+                const { params = {}, message = "" } = err;
+                const { path = "" } = params;
+                if (path.length > 0) {
+                    //There is error, need to update error state attribute
+                    const errorArray = path.split(".");
+                    const errorIndex =
+                        errorArray.length > 1
+                            ? parseInt(
+                                  errorArray[0].substring(1, 2),
+                                  DECIMAL_RADIX
+                              )
+                            : -1;
+                    const errorAttribute =
+                        errorArray.length > 1 ? errorArray[1] : "";
+                    this.setState({
+                        error: error.merge({
+                            index: errorIndex,
+                            which: errorAttribute,
+                            message
+                        })
+                    });
+                }
+            })
+            .then(value => {
+                console.log("Value ", value);
+            });
+    };
+
     render() {
-        const { systemIndex, systemThemes } = this.state;
+        const { systemIndex, systemThemes, error } = this.state;
         const { systems, classes } = this.props;
         const values = Boolean(systemThemes)
             ? systemThemes.get(systemIndex)
@@ -291,14 +344,26 @@ class SetupClientThemeAndLayout extends React.Component {
         const colours = values.get("colours");
         const { id: systemId } = systems[systemIndex] || {};
         const LAYOUT_OPTIONS = this.getLayoutOptions();
-        const currentDefaultStartLayout =
-            values.get("defaultStartLayout") || Map();
-        const currentDefaultHomeLayout =
-            values.get("defaultHomeLayout") || Map();
-        const currentDefaultDirListLayout =
-            values.get("defaultDirListLayout") || Map();
-        const currentDefaultDirEntryLayout =
-            values.get("defaultDirEntryLayout") || Map();
+        // const currentDefaultStartLayout =
+        //     values.get("defaultStartLayout") || Map();
+        // const currentDefaultHomeLayout =
+        //     values.get("defaultHomeLayout") || Map();
+        // const currentDefaultDirListLayout =
+        //     values.get("defaultDirListLayout") || Map();
+        // const currentDefaultDirEntryLayout =
+        //     values.get("defaultDirEntryLayout") || Map();
+        const currentStepError =
+            Number.isInteger(error.get("index")) &&
+            error.get("index") === systemIndex;
+        const currentAttributeError = currentStepError
+            ? error.get("which")
+            : "";
+        const currentErrorMessage = currentStepError
+            ? error.get("message")
+            : "";
+        // console.log("Current error object: ", error);
+        // console.log("Current Step Error: ", currentStepError);
+        // console.log("Current Attribute Error: ", currentAttributeError);
         return (
             <ContainerDiv>
                 <ThemeContainerDiv>
@@ -314,7 +379,16 @@ class SetupClientThemeAndLayout extends React.Component {
                                     <StepButton
                                         onClick={this.handleStep(index)}
                                     >
-                                        <StepLabel>{name}</StepLabel>
+                                        <StepLabel
+                                            error={
+                                                Number.isInteger(
+                                                    error.get("index")
+                                                ) &&
+                                                error.get("index") === index
+                                            }
+                                        >
+                                            {name}
+                                        </StepLabel>
                                     </StepButton>
                                 </Step>
                             ))}
@@ -334,6 +408,12 @@ class SetupClientThemeAndLayout extends React.Component {
                                 fullWidth={true}
                                 label="Company Logo"
                                 variant="outlined"
+                                error={currentAttributeError === "companyLogo"}
+                                helperText={
+                                    currentAttributeError === "companyLogo"
+                                        ? currentErrorMessage
+                                        : ""
+                                }
                             />
                         </EntryThemeDiv>
                         <EntryThemeDiv>
@@ -367,6 +447,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                 options={FONT_OPTIONS}
                                 onChange={this.updateHeaderFont}
                                 value={values.get("headerFont")}
+                                error={currentAttributeError === "headerFont"}
                             />
                         </EntryThemeDiv>
                         <EntryThemeDiv>
@@ -378,6 +459,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                 options={FONT_OPTIONS}
                                 onChange={this.updateSubHeaderFont}
                                 value={values.get("subHeaderFont")}
+                                error={
+                                    currentAttributeError === "subHeaderFont"
+                                }
                             />
                         </EntryThemeDiv>
                     </EntryThemeContainerDiv>
@@ -391,6 +475,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                 options={FONT_OPTIONS}
                                 onChange={this.updateBodyCopyFont}
                                 value={values.get("bodyFont")}
+                                error={currentAttributeError === "bodyFont"}
                             />
                         </EntryThemeDiv>
                         <EntryThemeDiv>
@@ -402,6 +487,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                 options={FONT_OPTIONS}
                                 onChange={this.updateCaptionCopyFont}
                                 value={values.get("captionFont")}
+                                error={currentAttributeError === "captionFont"}
                             />
                         </EntryThemeDiv>
                     </EntryThemeContainerDiv>
@@ -459,28 +545,36 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultStartLayout}
-                                value={
-                                    currentDefaultStartLayout.size > 0
-                                        ? currentDefaultStartLayout.get("id")
-                                        : null
+                                // value={
+                                //     currentDefaultStartLayout.size > 0
+                                //         ? currentDefaultStartLayout.get("id")
+                                //         : null
+                                // }
+                                value={values.get("defaultStartLayout")}
+                                error={
+                                    currentAttributeError ===
+                                    "defaultStartLayout"
                                 }
                             />
                         </LayoutEntryDropdownDiv>
-                        {Boolean(currentDefaultStartLayout.get("media")) &&
-                            Boolean(
-                                currentDefaultStartLayout
-                                    .get("media")
-                                    .get("path")
-                            ) && (
-                                <LayoutEntryPreviewDiv>
-                                    <LayoutEntryPreviewImage
-                                        src={currentDefaultStartLayout
-                                            .get("media")
-                                            .get("path")}
-                                        alt="layout preview"
-                                    />
-                                </LayoutEntryPreviewDiv>
-                            )}
+                        {Boolean(
+                            // currentDefaultStartLayout
+                            //     .get("media")
+                            //     .get("path")
+                            Boolean(values.get("defaultStartLayout"))
+                        ) && (
+                            <LayoutEntryPreviewDiv>
+                                <LayoutEntryPreviewImage
+                                    // src={currentDefaultStartLayout
+                                    //     .get("media")
+                                    //     .get("path")}
+                                    src={this.getLayoutMedia(
+                                        values.get("defaultStartLayout")
+                                    )}
+                                    alt="layout preview"
+                                />
+                            </LayoutEntryPreviewDiv>
+                        )}
                     </LayoutEntryContainerDiv>
                     <LayoutEntryContainerDiv>
                         <LayoutEntryDropdownDiv>
@@ -491,28 +585,36 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultHomeLayout}
-                                value={
-                                    currentDefaultHomeLayout.size > 0
-                                        ? currentDefaultHomeLayout.get("id")
-                                        : null
+                                // value={
+                                //     currentDefaultHomeLayout.size > 0
+                                //         ? currentDefaultHomeLayout.get("id")
+                                //         : null
+                                // }
+                                value={values.get("defaultHomeLayout")}
+                                error={
+                                    currentAttributeError ===
+                                    "defaultHomeLayout"
                                 }
                             />
                         </LayoutEntryDropdownDiv>
-                        {Boolean(currentDefaultHomeLayout.get("media")) &&
-                            Boolean(
-                                currentDefaultHomeLayout
-                                    .get("media")
-                                    .get("path")
-                            ) && (
-                                <LayoutEntryPreviewDiv>
-                                    <LayoutEntryPreviewImage
-                                        src={currentDefaultHomeLayout
-                                            .get("media")
-                                            .get("path")}
-                                        alt="layout preview"
-                                    />
-                                </LayoutEntryPreviewDiv>
-                            )}
+                        {Boolean(
+                            // currentDefaultHomeLayout
+                            //     .get("media")
+                            //     .get("path")
+                            values.get("defaultHomeLayout")
+                        ) && (
+                            <LayoutEntryPreviewDiv>
+                                <LayoutEntryPreviewImage
+                                    // src={currentDefaultHomeLayout
+                                    //     .get("media")
+                                    //     .get("path")}
+                                    src={this.getLayoutMedia(
+                                        values.get("defaultHomeLayout")
+                                    )}
+                                    alt="layout preview"
+                                />
+                            </LayoutEntryPreviewDiv>
+                        )}
                     </LayoutEntryContainerDiv>
                     <LayoutEntryContainerDiv>
                         <LayoutEntryDropdownDiv>
@@ -523,28 +625,36 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultDirListLayout}
-                                value={
-                                    currentDefaultDirListLayout.size > 0
-                                        ? currentDefaultDirListLayout.get("id")
-                                        : null
+                                // value={
+                                //     currentDefaultDirListLayout.size > 0
+                                //         ? currentDefaultDirListLayout.get("id")
+                                //         : null
+                                // }
+                                value={values.get("defaultDirListLayout")}
+                                error={
+                                    currentAttributeError ===
+                                    "defaultDirListLayout"
                                 }
                             />
                         </LayoutEntryDropdownDiv>
-                        {Boolean(currentDefaultDirListLayout.get("media")) &&
-                            Boolean(
-                                currentDefaultDirListLayout
-                                    .get("media")
-                                    .get("path")
-                            ) && (
-                                <LayoutEntryPreviewDiv>
-                                    <LayoutEntryPreviewImage
-                                        src={currentDefaultDirListLayout
-                                            .get("media")
-                                            .get("path")}
-                                        alt="layout preview"
-                                    />
-                                </LayoutEntryPreviewDiv>
-                            )}
+                        {Boolean(
+                            // currentDefaultDirListLayout
+                            //     .get("media")
+                            //     .get("path")
+                            values.get("defaultDirListLayout")
+                        ) && (
+                            <LayoutEntryPreviewDiv>
+                                <LayoutEntryPreviewImage
+                                    // src={currentDefaultDirListLayout
+                                    //     .get("media")
+                                    //     .get("path")}
+                                    src={this.getLayoutMedia(
+                                        values.get("defaultDirListLayout")
+                                    )}
+                                    alt="layout preview"
+                                />
+                            </LayoutEntryPreviewDiv>
+                        )}
                     </LayoutEntryContainerDiv>
                     <LayoutEntryContainerDiv>
                         <LayoutEntryDropdownDiv>
@@ -555,29 +665,38 @@ class SetupClientThemeAndLayout extends React.Component {
                                 selection
                                 options={LAYOUT_OPTIONS}
                                 onChange={this.updateDefaultDirEntryLayout}
-                                value={
-                                    currentDefaultDirEntryLayout.size > 0
-                                        ? currentDefaultDirEntryLayout.get("id")
-                                        : null
+                                // value={
+                                //     currentDefaultDirEntryLayout.size > 0
+                                //         ? currentDefaultDirEntryLayout.get("id")
+                                //         : null
+                                // }
+                                value={values.get("defaultDirEntryLayout")}
+                                error={
+                                    currentAttributeError ===
+                                    "defaultDirEntryLayout"
                                 }
                             />
                         </LayoutEntryDropdownDiv>
-                        {Boolean(currentDefaultDirEntryLayout.get("media")) &&
-                            Boolean(
-                                currentDefaultDirEntryLayout
-                                    .get("media")
-                                    .get("path")
-                            ) && (
-                                <LayoutEntryPreviewDiv>
-                                    <LayoutEntryPreviewImage
-                                        src={currentDefaultDirEntryLayout
-                                            .get("media")
-                                            .get("path")}
-                                        alt="layout preview"
-                                    />
-                                </LayoutEntryPreviewDiv>
-                            )}
+                        {Boolean(
+                            // currentDefaultDirEntryLayout
+                            //     .get("media")
+                            //     .get("path")
+                            values.get("defaultDirEntryLayout")
+                        ) && (
+                            <LayoutEntryPreviewDiv>
+                                <LayoutEntryPreviewImage
+                                    // src={currentDefaultDirEntryLayout
+                                    //     .get("media")
+                                    //     .get("path")}
+                                    src={this.getLayoutMedia(
+                                        values.get("defaultDirEntryLayout")
+                                    )}
+                                    alt="layout preview"
+                                />
+                            </LayoutEntryPreviewDiv>
+                        )}
                     </LayoutEntryContainerDiv>
+                    <button onClick={this.validateData}>VALIDATE</button>
                 </LayoutContainerDiv>
             </ContainerDiv>
         );

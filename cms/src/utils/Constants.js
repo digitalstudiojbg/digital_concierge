@@ -159,3 +159,6 @@ export const downloadFile = (link, fileName) => {
 
     FileSaver.saveAs(link, fileName);
 };
+
+//https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation/8027444
+export const HEX_COLOUR_REGEX = /^#[0-9A-F]{6}$/i;
