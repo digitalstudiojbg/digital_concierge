@@ -2,16 +2,15 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        permission(id: ID!): Permission
-        permissions: [Permission]
+        deviceType(id: ID!): DeviceType
+        deviceTypes: [DeviceType]
     }
 
-    type Permission {
+    type DeviceType {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
-        roles: [Role]
-        permission_category: PermissionCategory
+        systems: [System]
     }
 `;

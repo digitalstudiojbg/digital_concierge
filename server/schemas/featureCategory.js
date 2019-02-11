@@ -2,16 +2,15 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        permission(id: ID!): Permission
-        permissions: [Permission]
+        featureCategory(id: ID!): FeatureCategory
+        featureCategories: [FeatureCategory]
     }
 
-    type Permission {
+    type FeatureCategory {
         id: ID!
         name: String
         createdAt: DateTime
         updatedAt: DateTime
-        roles: [Role]
-        permission_category: PermissionCategory
+        features: [Feature]
     }
 `;

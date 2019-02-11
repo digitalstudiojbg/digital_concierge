@@ -11,6 +11,8 @@ export default gql`
     type System {
         id: ID!
         name: String
+        aif: Boolean
+        numberOfDevices: Int
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
@@ -24,5 +26,8 @@ export default gql`
         directory_lists: [DirectoryList]
         media: [Media]
         theme: Theme
+        device_type: DeviceType
+        system_type: SystemType
+        features: [Feature]
     }
 `;

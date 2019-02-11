@@ -9,6 +9,21 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            aif: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
+            },
+            numberOfDevices: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             }
         },
         {}
@@ -41,6 +56,15 @@ module.exports = (sequelize, DataTypes) => {
             through: "media_systems"
         });
         system.hasOne(models.theme);
+        system.belongsTo(models.device_type, {
+            foreignKey: { allowNull: false }
+        });
+        system.belongsTo(models.system_type, {
+            foreignKey: { allowNull: false }
+        });
+        system.belongsToMany(models.feature, {
+            through: "features_systems"
+        });
     };
     return system;
 };

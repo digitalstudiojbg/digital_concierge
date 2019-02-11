@@ -384,3 +384,39 @@ node_modules/.bin/sequelize seed:generate --name currency
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-currency-and-country
 
 node_modules/.bin/sequelize seed:generate --name country_currency
+
+node_modules/.bin/sequelize model:generate --name device_type --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-device_type-and-system
+
+node_modules/.bin/sequelize seed:generate --name device_type
+
+node_modules/.bin/sequelize model:generate --name system_type --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-system_type-and-system
+
+node_modules/.bin/sequelize seed:generate --name system_type
+
+node_modules/.bin/sequelize model:generate --name permission_category --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-permission_category-and-permission
+
+node_modules/.bin/sequelize seed:generate --name permission_category
+
+node_modules/.bin/sequelize model:generate --name feature_category --attributes name:string
+
+node_modules/.bin/sequelize seed:generate --name feature_category
+
+node_modules/.bin/sequelize model:generate --name feature --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-feature_category-and-feature
+
+node_modules/.bin/sequelize seed:generate --name feature
+
+node_modules/.bin/sequelize db:seed --seed 20190211005817-feature
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-feature-and-system
+
+node_modules/.bin/sequelize seed:generate --name features_systems
+
+node_modules/.bin/sequelize db:seed --seed 20190211013724-features_systems

@@ -1,7 +1,7 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-    const permission = sequelize.define(
-        "permission",
+    const feature = sequelize.define(
+        "feature",
         {
             name: {
                 type: DataTypes.STRING,
@@ -13,11 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         },
         {}
     );
-    permission.associate = function(models) {
-        permission.belongsToMany(models.role, { through: "roles_permissions" });
-        permission.belongsTo(models.permission_category, {
+    feature.associate = function(models) {
+        feature.belongsTo(models.feature_category, {
             foreignKey: { allowNull: false }
         });
+        feature.belongsToMany(models.system, {
+            through: "features_systems"
+        });
     };
-    return permission;
+    return feature;
 };

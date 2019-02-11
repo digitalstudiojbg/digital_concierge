@@ -32,6 +32,11 @@ import country_schema from "./country";
 import state_schema from "./state";
 import theme_schema from "./theme";
 import currency_schema from "./currency";
+import deviceType_schema from "./deviceType";
+import systemType_schema from "./systemType";
+import permissionCategory_schema from "./permissionCategory";
+import featureCategory_schema from "./featureCategory";
+import feature_schema from "./feature";
 
 const link_schema = gql`
     type Query {
@@ -79,5 +84,10 @@ export default [
     country_schema,
     state_schema,
     theme_schema,
-    currency_schema
+    currency_schema,
+    deviceType_schema,
+    systemType_schema,
+    permissionCategory_schema,
+    featureCategory_schema,
+    feature_schema
 ];
