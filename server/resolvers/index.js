@@ -34,6 +34,7 @@ import country_resolver from "./country";
 import state_resolver from "./state";
 import theme_resolver from "./theme";
 import currency_resolver from "./currency";
+import payment_resolver from "./payment";
 
 export default [
     user_resolver,
@@ -71,5 +72,6 @@ export default [
     country_resolver,
     state_resolver,
     theme_resolver,
-    currency_resolver
+    currency_resolver,
+    payment_resolver
 ];

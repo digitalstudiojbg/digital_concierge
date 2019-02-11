@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         currency.belongsToMany(models.country, {
             through: "countries_currencies"
         });
+        currency.hasMany(models.payment);
     };
     return currency;
 };

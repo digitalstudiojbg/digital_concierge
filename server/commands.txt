@@ -384,3 +384,11 @@ node_modules/.bin/sequelize seed:generate --name currency
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-currency-and-country
 
 node_modules/.bin/sequelize seed:generate --name country_currency
+
+node_modules/.bin/sequelize model:generate --name payment --attributes invoice_number:string,invoice_date:date,invoice_amount:decimal,payable_date:date
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-currency-and-payment
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-payment
+
+node_modules/.bin/sequelize seed:generate --name payment

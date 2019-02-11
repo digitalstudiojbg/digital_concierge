@@ -32,6 +32,7 @@ import country_schema from "./country";
 import state_schema from "./state";
 import theme_schema from "./theme";
 import currency_schema from "./currency";
+import payment_schema from "./payment";
 
 const link_schema = gql`
     type Query {
@@ -79,5 +80,6 @@ export default [
     country_schema,
     state_schema,
     theme_schema,
-    currency_schema
+    currency_schema,
+    payment_schema
 ];

@@ -118,6 +118,7 @@ module.exports = (sequelize, DataTypes) => {
         client.belongsTo(models.state, {
             foreignKey: "postalStateId"
         });
+        client.hasMany(models.payment);
     };
     return client;
 };
