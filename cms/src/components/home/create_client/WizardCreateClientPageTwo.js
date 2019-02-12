@@ -112,11 +112,11 @@ class WizardCreateClientPageTwo extends React.Component {
         }
     }
 
-    renderLicenseForm(errors, values, isSubmitting) {
+    renderLicenseForm() {
         const { data: { licenseTypes = {} } = {} } = this.props;
 
         return (
-            <div style={{ width: "33%", padding: "20px" }}>
+            <div style={{ width: "33%", padding: "20px 20px 20px 0" }}>
                 <h1>License</h1>
                 <div
                     style={{
@@ -163,11 +163,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         </div>
                     )
                 )}
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
+                <div>
                     <FormControlLabel
                         control={
                             <Field
@@ -184,18 +180,22 @@ class WizardCreateClientPageTwo extends React.Component {
                         label="AUTOMATIC RENEWAL"
                     />
                 </div>
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    disabled={
-                        isSubmitting ||
-                        Object.keys(errors).length > 0 ||
-                        !values.license_type
-                    }
-                >
-                    BUTTON
-                </Button>
+            </div>
+        );
+    }
+
+    renderAgreementForm() {
+        return (
+            <div style={{ width: "33%", padding: "20px" }}>
+                <h1>Agreement</h1>
+            </div>
+        );
+    }
+
+    renderPaymentForm() {
+        return (
+            <div style={{ width: "33%", padding: "20px 0px 20px 20px" }}>
+                <h1>Payment</h1>
             </div>
         );
     }
@@ -251,17 +251,29 @@ class WizardCreateClientPageTwo extends React.Component {
                                     justifyContent: "space-between"
                                 }}
                             >
-                                {this.renderLicenseForm(
-                                    errors,
-                                    values,
-                                    isSubmitting
-                                )}
-                                <div style={{ width: "33%", padding: "20px" }}>
-                                    <h1>Agreement</h1>
-                                </div>
-                                <div style={{ width: "33%", padding: "20px" }}>
-                                    <h1>Payment</h1>
-                                </div>
+                                {this.renderLicenseForm()}
+
+                                {this.renderAgreementForm()}
+
+                                {this.renderPaymentForm()}
+                            </div>
+                            <div
+                                style={{
+                                    paddingBottom: "20px"
+                                }}
+                            >
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={
+                                        isSubmitting ||
+                                        Object.keys(errors).length > 0 ||
+                                        !values.license_type
+                                    }
+                                >
+                                    SUBMIT
+                                </Button>
                             </div>
                         </Form>
                     );
