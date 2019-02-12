@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
+import { CREATE_LICENSE } from "../../../data/mutation";
 
 const LicenseKeyTextField = props => (
     <MuiTextField
@@ -42,6 +43,8 @@ const LicenseKeyTextField = props => (
 
 class WizardCreateClientPageTwo extends React.Component {
     render() {
+        console.log(this.props);
+
         const { data: { licenseTypes = {} } = {} } = this.props;
 
         if (licenseTypes.length < 0) return <Loading />;
@@ -55,9 +58,33 @@ class WizardCreateClientPageTwo extends React.Component {
                         .format("YYYY-MM-DD"),
                     auto_renewal: true
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                    console.log(values);
-
+                onSubmit={(
+                    {
+                        license_key: key,
+                        license_type,
+                        auto_renewal,
+                        commence_date,
+                        expire_date
+                    },
+                    { setSubmitting }
+                ) => {
+                    this.props
+                        .createLicense({
+                            variables: {
+                                input: {
+                                    key,
+                                    license_type_id: parseInt(license_type),
+                                    auto_renewal,
+                                    commence_date: commence_date,
+                                    expire_date: expire_date,
+                                    clientId: 1
+                                }
+                            }
+                        })
+                        .then(data => {
+                            console.log("CREATE LICENSE SUCCEED");
+                            console.log(data);
+                        });
                     setSubmitting(false);
                 }}
                 render={({ errors, values, isSubmitting, setFieldValue }) => {
@@ -215,5 +242,6 @@ class WizardCreateClientPageTwo extends React.Component {
 
 export default compose(
     withApollo,
-    graphql(getLicenseTypes)
+    graphql(getLicenseTypes),
+    graphql(CREATE_LICENSE(), { name: "createLicense" })
 )(WizardCreateClientPageTwo);
