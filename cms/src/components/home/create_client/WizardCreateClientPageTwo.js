@@ -17,8 +17,24 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
 import { CREATE_LICENSE } from "../../../data/mutation";
+import styled from "styled-components";
 
-const CREATE_LICENSE_DATE_FIELD = [
+const UploadDeleteButton = styled.label`
+    border: 3px solid rgb(64, 84, 178);
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.3em;
+    color: rgb(64, 84, 178);
+    border-radius: 5px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+const LICENSE_DATE_FIELD = [
     {
         name: "commence_date",
         label: "LICENSE COMMENCE DATE",
@@ -28,6 +44,21 @@ const CREATE_LICENSE_DATE_FIELD = [
     {
         name: "expire_date",
         label: "LICENSE EXPIRE DATE",
+        required: true,
+        type: "date"
+    }
+];
+
+const AGREEMENT_DATE_FIELD = [
+    {
+        name: "agreement_date",
+        label: "AGREEMENT DATE",
+        required: true,
+        type: "date"
+    },
+    {
+        name: "agreement_renewal_date",
+        label: "AGREEMENT RENEWAL DATE",
         required: true,
         type: "date"
     }
@@ -95,6 +126,12 @@ const renderDateField = ({ name, label, required, type }) => (
 );
 
 class WizardCreateClientPageTwo extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { client_image: null };
+        this.fileInput = React.createRef();
+    }
+
     selectRenderMethod({ name, label, required, type, optionList = {} }) {
         switch (type) {
             case "date":
@@ -147,22 +184,20 @@ class WizardCreateClientPageTwo extends React.Component {
                             optionList: licenseTypes
                         })}
                 </div>
-                {CREATE_LICENSE_DATE_FIELD.map(
-                    ({ name, label, required, type }) => (
-                        <div
-                            style={{
-                                paddingBottom: "20px"
-                            }}
-                        >
-                            {this.selectRenderMethod({
-                                name,
-                                label,
-                                required,
-                                type
-                            })}
-                        </div>
-                    )
-                )}
+                {LICENSE_DATE_FIELD.map(({ name, label, required, type }) => (
+                    <div
+                        style={{
+                            paddingBottom: "20px"
+                        }}
+                    >
+                        {this.selectRenderMethod({
+                            name,
+                            label,
+                            required,
+                            type
+                        })}
+                    </div>
+                ))}
                 <div>
                     <FormControlLabel
                         control={
@@ -188,6 +223,72 @@ class WizardCreateClientPageTwo extends React.Component {
         return (
             <div style={{ width: "33%", padding: "20px" }}>
                 <h1>Agreement</h1>
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    {this.selectRenderMethod({
+                        name: "agreement_number",
+                        label: "AGREEMENT NUMBER",
+                        required: true,
+                        type: "text"
+                    })}
+                </div>
+                {AGREEMENT_DATE_FIELD.map(({ name, label, required, type }) => (
+                    <div
+                        style={{
+                            paddingBottom: "20px"
+                        }}
+                    >
+                        {this.selectRenderMethod({
+                            name,
+                            label,
+                            required,
+                            type
+                        })}
+                    </div>
+                ))}
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    <MuiTextField
+                        value={
+                            this.state.client_image
+                                ? this.state.client_image.name
+                                : ""
+                        }
+                        disabled={true}
+                        fullWidth={true}
+                        label="File Name"
+                        variant="outlined"
+                    />
+                </div>
+
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    <UploadDeleteButton>
+                        <input
+                            accept="image/*"
+                            style={{ display: "none" }}
+                            ref={this.fileInput}
+                            onChange={() => {
+                                this.setState({
+                                    client_image: this.fileInput.current
+                                        .files[0]
+                                });
+                            }}
+                            id="upload-client-image"
+                            type="file"
+                        />
+                        BROWSE
+                    </UploadDeleteButton>
+                </div>
             </div>
         );
     }
@@ -202,6 +303,10 @@ class WizardCreateClientPageTwo extends React.Component {
 
     render() {
         const { data: { licenseTypes = {} } = {}, createLicense } = this.props;
+        const currentDate = dayjs().format("YYYY-MM-DD");
+        const nextDate = dayjs()
+            .add(1, "year")
+            .format("YYYY-MM-DD");
 
         if (licenseTypes.length < 0) return <Loading />;
         return (
@@ -212,7 +317,9 @@ class WizardCreateClientPageTwo extends React.Component {
                     expire_date: dayjs()
                         .add(1, "year")
                         .format("YYYY-MM-DD"),
-                    auto_renewal: true
+                    auto_renewal: true,
+                    agreement_date: currentDate,
+                    agreement_renewal_date: nextDate
                 }}
                 onSubmit={(
                     {
