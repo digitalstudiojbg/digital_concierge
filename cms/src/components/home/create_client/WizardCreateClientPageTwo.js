@@ -19,7 +19,7 @@ import validationSchema from "./two/PageTwoValidationSchema";
 import { CREATE_LICENSE } from "../../../data/mutation";
 import styled from "styled-components";
 
-const UploadDeleteButton = styled.label`
+const BrowseButton = styled.label`
     border: 3px solid rgb(64, 84, 178);
     display: inline-block;
     width: 100%;
@@ -32,6 +32,10 @@ const UploadDeleteButton = styled.label`
     &:hover {
         font-weight: bold;
     }
+`;
+
+const FiledContainer = styled.div`
+    padding-bottom: 20px;
 `;
 
 const LICENSE_DATE_FIELD = [
@@ -155,11 +159,7 @@ class WizardCreateClientPageTwo extends React.Component {
         return (
             <div style={{ width: "33%", padding: "20px 20px 20px 0" }}>
                 <h1>License</h1>
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
+                <FiledContainer>
                     <Field
                         name="license_key"
                         label="LICENSE KEY"
@@ -169,12 +169,8 @@ class WizardCreateClientPageTwo extends React.Component {
                         variant="outlined"
                         fullWidth={true}
                     />
-                </div>
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
+                </FiledContainer>
+                <FiledContainer>
                     {licenseTypes.length > 0 &&
                         this.selectRenderMethod({
                             name: "license_type",
@@ -183,20 +179,16 @@ class WizardCreateClientPageTwo extends React.Component {
                             type: "select",
                             optionList: licenseTypes
                         })}
-                </div>
+                </FiledContainer>
                 {LICENSE_DATE_FIELD.map(({ name, label, required, type }) => (
-                    <div
-                        style={{
-                            paddingBottom: "20px"
-                        }}
-                    >
+                    <FiledContainer>
                         {this.selectRenderMethod({
                             name,
                             label,
                             required,
                             type
                         })}
-                    </div>
+                    </FiledContainer>
                 ))}
                 <div>
                     <FormControlLabel
@@ -223,37 +215,25 @@ class WizardCreateClientPageTwo extends React.Component {
         return (
             <div style={{ width: "33%", padding: "20px" }}>
                 <h1>Agreement</h1>
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
+                <FiledContainer>
                     {this.selectRenderMethod({
                         name: "agreement_number",
                         label: "AGREEMENT NUMBER",
                         required: true,
                         type: "text"
                     })}
-                </div>
+                </FiledContainer>
                 {AGREEMENT_DATE_FIELD.map(({ name, label, required, type }) => (
-                    <div
-                        style={{
-                            paddingBottom: "20px"
-                        }}
-                    >
+                    <FiledContainer>
                         {this.selectRenderMethod({
                             name,
                             label,
                             required,
                             type
                         })}
-                    </div>
+                    </FiledContainer>
                 ))}
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
+                <FiledContainer>
                     <MuiTextField
                         value={
                             this.state.client_image
@@ -265,14 +245,9 @@ class WizardCreateClientPageTwo extends React.Component {
                         label="File Name"
                         variant="outlined"
                     />
-                </div>
-
-                <div
-                    style={{
-                        paddingBottom: "20px"
-                    }}
-                >
-                    <UploadDeleteButton>
+                </FiledContainer>
+                <FiledContainer>
+                    <BrowseButton>
                         <input
                             accept="image/*"
                             style={{ display: "none" }}
@@ -287,8 +262,8 @@ class WizardCreateClientPageTwo extends React.Component {
                             type="file"
                         />
                         BROWSE
-                    </UploadDeleteButton>
-                </div>
+                    </BrowseButton>
+                </FiledContainer>
             </div>
         );
     }
