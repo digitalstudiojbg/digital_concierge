@@ -36,6 +36,8 @@ export const SYSTEM_CMS_LIBRARY = SYSTEM_INDEX_URL + "/library";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
+export const MAX_FILE_SIZE = 104857600; //100MB in bytes
+
 export const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
@@ -142,7 +144,7 @@ export const getAllUniqueItems = itemList => {
 };
 
 export const formatBytes = (a, b) => {
-    if (0 == a) return "0 Bytes";
+    if (0 === a) return "0 Bytes";
     var c = 1024,
         d = b || 2,
         e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
@@ -159,3 +161,8 @@ export const downloadFile = (link, fileName) => {
 
     FileSaver.saveAs(link, fileName);
 };
+
+export const bytesToKb = size => size / 1024;
+
+//https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation/8027444
+export const HEX_COLOUR_REGEX = /^#[0-9A-F]{6}$/i;

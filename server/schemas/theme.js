@@ -50,6 +50,7 @@ export default gql`
         defaultHomeLayoutId: Int!
         defaultDirListLayoutId: Int!
         defaultDirEntryLayoutId: Int!
+        systemId: Int!
     }
 
     input ColourThemeInput {
