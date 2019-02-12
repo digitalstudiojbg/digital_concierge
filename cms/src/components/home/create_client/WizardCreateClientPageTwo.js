@@ -1,12 +1,19 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import Button from "@material-ui/core/Button";
-import { TextField, fieldToTextField, Select } from "formik-material-ui";
+import {
+    TextField,
+    fieldToTextField,
+    Select,
+    Checkbox
+} from "formik-material-ui";
 import MuiTextField from "@material-ui/core/TextField";
 import { Query, withApollo, compose, graphql } from "react-apollo";
 import { getLicenseTypes } from "../../../data/query";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import dayjs from "dayjs";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const LicenseKeyTextField = props => (
     <MuiTextField
@@ -33,10 +40,17 @@ class WizardCreateClientPageTwo extends React.Component {
 
         return (
             <Formik
+                initialValues={{
+                    commence_date: dayjs().format("YYYY-MM-DD"),
+                    expire_date: dayjs()
+                        .add(1, "year")
+                        .format("YYYY-MM-DD"),
+                    auto_renewal: true
+                }}
                 onSubmit={(values, { setSubmitting }) => {
                     console.log(values);
 
-                    //setSubmitting(false);
+                    setSubmitting(false);
                 }}
                 render={({ errors, values, isSubmitting, setFieldValue }) => (
                     <Form>
@@ -56,7 +70,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                 >
                                     <Field
                                         name="license_key"
-                                        label="license key"
+                                        label="LICENSE KEY"
                                         required={true}
                                         type="text"
                                         component={LicenseKeyTextField}
@@ -73,7 +87,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                     {licenseTypes.length > 0 && (
                                         <React.Fragment>
                                             <InputLabel>
-                                                License Type
+                                                LICENSE TYPE
                                             </InputLabel>
                                             <Field
                                                 name="license_type"
@@ -84,7 +98,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                                 fullWidth={true}
                                             >
                                                 <MenuItem value="null" disabled>
-                                                    License Type
+                                                    LICENSE TYPE
                                                 </MenuItem>
                                                 {licenseTypes.map(
                                                     ({ id, name }, index) => (
@@ -99,6 +113,60 @@ class WizardCreateClientPageTwo extends React.Component {
                                             </Field>
                                         </React.Fragment>
                                     )}
+                                </div>
+
+                                <div
+                                    style={{
+                                        paddingBottom: "20px"
+                                    }}
+                                >
+                                    <Field
+                                        id="commence_date"
+                                        name="commence_date"
+                                        label="LICENSE COMMENCE DATE"
+                                        required={true}
+                                        type="date"
+                                        component={TextField}
+                                        variant="outlined"
+                                        fullWidth={true}
+                                    />
+                                </div>
+                                <div
+                                    style={{
+                                        paddingBottom: "20px"
+                                    }}
+                                >
+                                    <Field
+                                        id="expire_date"
+                                        name="expire_date"
+                                        label="LICENSE EXPIRE DATE"
+                                        required={true}
+                                        type="date"
+                                        component={TextField}
+                                        variant="outlined"
+                                        fullWidth={true}
+                                    />
+                                </div>
+                                <div
+                                    style={{
+                                        paddingBottom: "20px"
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        control={
+                                            <Field
+                                                id="auto_renewal"
+                                                name="auto_renewal"
+                                                label="Automatic Renewal"
+                                                required={true}
+                                                color="primary"
+                                                component={Checkbox}
+                                                variant="outlined"
+                                                fullWidth={true}
+                                            />
+                                        }
+                                        label="AUTOMATIC RENEWAL"
+                                    />
                                 </div>
                                 <Button
                                     type="submit"
@@ -121,8 +189,6 @@ class WizardCreateClientPageTwo extends React.Component {
         );
     }
 }
-
-//export default WizardCreateClientPageTwo;
 
 export default compose(
     withApollo,
