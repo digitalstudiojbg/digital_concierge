@@ -6,6 +6,19 @@ export default gql`
         licenses: [License]
     }
 
+    extend type Mutation {
+        createLicense(input: CreateLicenseInput): License
+    }
+
+    input CreateLicenseInput {
+        key: String
+        license_type_id: Int
+        commence_date: String
+        expire_date: String
+        auto_renewal: Boolean
+        clientId: Int
+    }
+
     type License {
         id: ID!
         key: String
