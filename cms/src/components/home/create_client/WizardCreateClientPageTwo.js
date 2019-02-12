@@ -44,8 +44,7 @@ const LicenseKeyTextField = props => (
 const renderSelectField = ({
     name: nameValue,
     label,
-    required,
-    type,
+
     optionList
 }) => {
     console.log(optionList);
@@ -95,8 +94,7 @@ class WizardCreateClientPageTwo extends React.Component {
                 return renderSelectField({
                     name,
                     label,
-                    required,
-                    type,
+
                     optionList
                 });
             default:
@@ -105,8 +103,6 @@ class WizardCreateClientPageTwo extends React.Component {
     }
 
     render() {
-        console.log(this.props);
-
         const { data: { licenseTypes = {} } = {} } = this.props;
 
         if (licenseTypes.length < 0) return <Loading />;
