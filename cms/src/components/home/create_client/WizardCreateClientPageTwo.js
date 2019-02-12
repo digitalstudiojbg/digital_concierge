@@ -14,19 +14,26 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Loading from "../../loading/Loading";
+import validationSchema from "./two/PageTwoValidationSchema";
 
 const LicenseKeyTextField = props => (
     <MuiTextField
         {...fieldToTextField(props)}
         onChange={event => {
             const { value } = event.target;
-            const filterString = value.split("-").join("");
-            filterString.length <= 16 &&
+            const trimString = value.split("-").join("");
+            trimString.length <= 16 &&
                 props.field.name === "license_key" &&
                 props.form.setFieldValue(
                     props.field.name,
-                    filterString.length % 4 === 0 && filterString.length !== 16
+                    value &&
+                        trimString.length % 4 === 0 &&
+                        trimString.length !== 16 &&
+                        value.slice(-1) !== "-"
                         ? `${value}-`
+                        : value.slice(-1) === "-"
+                        ? value.slice(0, -1)
                         : value
                 );
         }}
@@ -38,8 +45,10 @@ class WizardCreateClientPageTwo extends React.Component {
         const { data: { licenseTypes = {} } = {} } = this.props;
         console.log(licenseTypes);
 
+        if (licenseTypes.length < 0) return <Loading />;
         return (
             <Formik
+                validationSchema={validationSchema}
                 initialValues={{
                     commence_date: dayjs().format("YYYY-MM-DD"),
                     expire_date: dayjs()
@@ -52,139 +61,153 @@ class WizardCreateClientPageTwo extends React.Component {
 
                     setSubmitting(false);
                 }}
-                render={({ errors, values, isSubmitting, setFieldValue }) => (
-                    <Form>
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between"
-                            }}
-                        >
-                            <div style={{ width: "33%", padding: "20px" }}>
-                                <h1>License</h1>
+                render={({ errors, values, isSubmitting, setFieldValue }) => {
+                    console.log(errors);
 
-                                <div
-                                    style={{
-                                        paddingBottom: "20px"
-                                    }}
-                                >
-                                    <Field
-                                        name="license_key"
-                                        label="LICENSE KEY"
-                                        required={true}
-                                        type="text"
-                                        component={LicenseKeyTextField}
-                                        variant="outlined"
-                                        fullWidth={true}
-                                    />
-                                </div>
+                    return (
+                        <Form>
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between"
+                                }}
+                            >
+                                <div style={{ width: "33%", padding: "20px" }}>
+                                    <h1>License</h1>
 
-                                <div
-                                    style={{
-                                        paddingBottom: "20px"
-                                    }}
-                                >
-                                    {licenseTypes.length > 0 && (
-                                        <React.Fragment>
-                                            <InputLabel>
-                                                LICENSE TYPE
-                                            </InputLabel>
-                                            <Field
-                                                name="license_type"
-                                                component={Select}
-                                                disabled={
-                                                    licenseTypes.length < 1
-                                                }
-                                                fullWidth={true}
-                                            >
-                                                <MenuItem value="null" disabled>
+                                    <div
+                                        style={{
+                                            paddingBottom: "20px"
+                                        }}
+                                    >
+                                        <Field
+                                            name="license_key"
+                                            label="LICENSE KEY"
+                                            required={true}
+                                            type="text"
+                                            component={LicenseKeyTextField}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </div>
+
+                                    <div
+                                        style={{
+                                            paddingBottom: "20px"
+                                        }}
+                                    >
+                                        {licenseTypes.length > 0 && (
+                                            <React.Fragment>
+                                                <InputLabel>
                                                     LICENSE TYPE
-                                                </MenuItem>
-                                                {licenseTypes.map(
-                                                    ({ id, name }, index) => (
-                                                        <MenuItem
-                                                            key={`ITEM-${name}-${id}-${index}`}
-                                                            value={id}
-                                                        >
-                                                            {name}
-                                                        </MenuItem>
-                                                    )
-                                                )}
-                                            </Field>
-                                        </React.Fragment>
-                                    )}
-                                </div>
+                                                </InputLabel>
+                                                <Field
+                                                    name="license_type"
+                                                    component={Select}
+                                                    disabled={
+                                                        licenseTypes.length < 1
+                                                    }
+                                                    fullWidth={true}
+                                                >
+                                                    <MenuItem
+                                                        value="null"
+                                                        disabled
+                                                    >
+                                                        LICENSE TYPE
+                                                    </MenuItem>
+                                                    {licenseTypes.map(
+                                                        (
+                                                            { id, name },
+                                                            index
+                                                        ) => (
+                                                            <MenuItem
+                                                                key={`ITEM-${name}-${id}-${index}`}
+                                                                value={id}
+                                                            >
+                                                                {name}
+                                                            </MenuItem>
+                                                        )
+                                                    )}
+                                                </Field>
+                                            </React.Fragment>
+                                        )}
+                                    </div>
 
-                                <div
-                                    style={{
-                                        paddingBottom: "20px"
-                                    }}
-                                >
-                                    <Field
-                                        id="commence_date"
-                                        name="commence_date"
-                                        label="LICENSE COMMENCE DATE"
-                                        required={true}
-                                        type="date"
-                                        component={TextField}
-                                        variant="outlined"
-                                        fullWidth={true}
-                                    />
-                                </div>
-                                <div
-                                    style={{
-                                        paddingBottom: "20px"
-                                    }}
-                                >
-                                    <Field
-                                        id="expire_date"
-                                        name="expire_date"
-                                        label="LICENSE EXPIRE DATE"
-                                        required={true}
-                                        type="date"
-                                        component={TextField}
-                                        variant="outlined"
-                                        fullWidth={true}
-                                    />
-                                </div>
-                                <div
-                                    style={{
-                                        paddingBottom: "20px"
-                                    }}
-                                >
-                                    <FormControlLabel
-                                        control={
-                                            <Field
-                                                id="auto_renewal"
-                                                name="auto_renewal"
-                                                label="Automatic Renewal"
-                                                required={true}
-                                                color="primary"
-                                                component={Checkbox}
-                                                variant="outlined"
-                                                fullWidth={true}
-                                            />
+                                    <div
+                                        style={{
+                                            paddingBottom: "20px"
+                                        }}
+                                    >
+                                        <Field
+                                            id="commence_date"
+                                            name="commence_date"
+                                            label="LICENSE COMMENCE DATE"
+                                            required={true}
+                                            type="date"
+                                            component={TextField}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </div>
+                                    <div
+                                        style={{
+                                            paddingBottom: "20px"
+                                        }}
+                                    >
+                                        <Field
+                                            id="expire_date"
+                                            name="expire_date"
+                                            label="LICENSE EXPIRE DATE"
+                                            required={true}
+                                            type="date"
+                                            component={TextField}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                        />
+                                    </div>
+                                    <div
+                                        style={{
+                                            paddingBottom: "20px"
+                                        }}
+                                    >
+                                        <FormControlLabel
+                                            control={
+                                                <Field
+                                                    id="auto_renewal"
+                                                    name="auto_renewal"
+                                                    label="Automatic Renewal"
+                                                    required={true}
+                                                    color="primary"
+                                                    component={Checkbox}
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                            }
+                                            label="AUTOMATIC RENEWAL"
+                                        />
+                                    </div>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={
+                                            isSubmitting ||
+                                            Object.keys(errors).length > 0
                                         }
-                                        label="AUTOMATIC RENEWAL"
-                                    />
+                                    >
+                                        BUTTON
+                                    </Button>
                                 </div>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    BUTTON
-                                </Button>
+                                <div style={{ width: "33%", padding: "20px" }}>
+                                    <h1>Agreement</h1>
+                                </div>
+                                <div style={{ width: "33%", padding: "20px" }}>
+                                    <h1>Payment</h1>
+                                </div>
                             </div>
-                            <div style={{ width: "33%", padding: "20px" }}>
-                                <h1>Agreement</h1>
-                            </div>
-                            <div style={{ width: "33%", padding: "20px" }}>
-                                <h1>Payment</h1>
-                            </div>
-                        </div>
-                    </Form>
-                )}
+                        </Form>
+                    );
+                }}
             />
         );
     }
