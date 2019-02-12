@@ -4,7 +4,10 @@ import { Query, withApollo, Mutation } from "react-apollo";
 import Loading from "../../loading/Loading";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
-import { getDepartmentListByUser } from "../../../data/query";
+import {
+    getDepartmentListByUser,
+    getPermissionCategoryList
+} from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import { CREATE_DEPARTMENT } from "../../../data/mutation";
 import { ClipLoader } from "react-spinners";
@@ -14,6 +17,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import { Set } from "immutable";
+import { DECIMAL_RADIX } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -40,11 +45,9 @@ const RoleSectionDiv = styled.div`
 
 const RolePermissionContainerDiv = styled.div`
     width: 100%;
-    height: 100%;
-    overflow: auto;
+    height: 500px;
+    overflow-y: scroll;
     border: 1px solid black;
-    display: flex;
-    flex-direction: column;
 `;
 
 const EachRolePermissionContainerDiv = styled.div`
@@ -63,11 +66,25 @@ const EachRoleContainerDiv = styled.div`
 
 const AllPermissionContainerDiv = styled.div`
     width: 50%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     border: 1px solid black;
     padding: 5px;
+`;
+
+const AllPermissionFooterContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: blue;
+`;
+
+const PermissionFooterEntryDiv = styled.span`
+    width: 45%;
+    display: flex;
+    margin-right: 5px;
+    justify-content: center;
+    border: 1px solid blue;
 `;
 
 class WizardCreateClientPageThree extends React.Component {
@@ -75,7 +92,7 @@ class WizardCreateClientPageThree extends React.Component {
         super(props);
         this.state = {
             department_id: null,
-            selected_checkboxes: []
+            selected_checkboxes: Set()
         };
         this.handleChangeDepartment = this.handleChangeDepartment.bind(this);
         this.handleChangePermissionCheckbox = this.handleChangePermissionCheckbox.bind(
@@ -85,8 +102,8 @@ class WizardCreateClientPageThree extends React.Component {
 
     handleChangeDepartment(event) {
         this.setState({
-            department_id: event.target.value,
-            selected_checkboxes: []
+            department_id: event.target.value
+            // selected_checkboxes: Set()
         });
     }
 
@@ -94,34 +111,29 @@ class WizardCreateClientPageThree extends React.Component {
         const { selected_checkboxes } = this.state;
         if (selected_checkboxes.includes(event.target.id)) {
             //Remove from selected checkboxes
-            const index = selected_checkboxes.indexOf(event.target.id);
             this.setState({
-                selected_checkboxes: [
-                    ...selected_checkboxes.slice(0, index),
-                    ...selected_checkboxes.slice(index + 1)
-                ]
+                selected_checkboxes: selected_checkboxes.delete(event.target.id)
             });
         } else {
             //Add to selected checkboxes
             this.setState({
-                selected_checkboxes: [...selected_checkboxes, event.target.id]
+                selected_checkboxes: selected_checkboxes.add(event.target.id)
             });
         }
     }
 
-    renderRolePermissionSection(selected_department) {
-        if (!Boolean(selected_department)) {
-            return <React.Fragment />;
-        } else {
-            const { roles = [] } = selected_department;
-            const { selected_checkboxes } = this.state;
-            let allPermissionsLength = 0;
-            roles.forEach(role => {
-                allPermissionsLength += role.permissions.length;
-            });
-            return (
-                <React.Fragment>
-                    {roles.length > 0 ? (
+    renderRolePermissionSection() {
+        return (
+            <Query query={getPermissionCategoryList}>
+                {({ loading, error, data: { permissionCategories } }) => {
+                    if (loading) return <Loading loadingData />;
+                    if (error) return `Error! ${error.message}`;
+                    const { selected_checkboxes } = this.state;
+                    let allPermissionsLength = 0;
+                    permissionCategories.forEach(category => {
+                        allPermissionsLength += category.permissions.length;
+                    });
+                    return (
                         <RolePermissionContainerDiv>
                             <div
                                 style={{
@@ -142,25 +154,27 @@ class WizardCreateClientPageThree extends React.Component {
                                         control={
                                             <Checkbox
                                                 checked={
-                                                    selected_checkboxes.length ===
+                                                    selected_checkboxes.size ===
                                                     allPermissionsLength
                                                 }
                                                 onChange={() => {
                                                     //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
                                                     if (
-                                                        selected_checkboxes.length ===
+                                                        selected_checkboxes.size ===
                                                         allPermissionsLength
                                                     ) {
                                                         this.setState({
-                                                            selected_checkboxes: []
+                                                            selected_checkboxes: Set()
                                                         });
                                                     } else {
                                                         const permissions = [].concat.apply(
                                                             [],
-                                                            selected_department.roles.map(
-                                                                role => {
+                                                            permissionCategories.map(
+                                                                ({
+                                                                    permissions
+                                                                }) => {
                                                                     let output = [];
-                                                                    role.permissions.forEach(
+                                                                    permissions.forEach(
                                                                         ({
                                                                             id
                                                                         }) => {
@@ -175,7 +189,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                             )
                                                         );
                                                         this.setState({
-                                                            selected_checkboxes: permissions.slice()
+                                                            selected_checkboxes: selected_checkboxes.union(
+                                                                permissions
+                                                            )
                                                         });
                                                     }
                                                 }}
@@ -185,16 +201,20 @@ class WizardCreateClientPageThree extends React.Component {
                                     />
                                 </div>
                             </div>
-                            {roles.map(
+                            {permissionCategories.map(
                                 (
-                                    { id: roleId, name: roleName, permissions },
-                                    roleIndex
+                                    {
+                                        id: categoryId,
+                                        name: categoryName,
+                                        permissions
+                                    },
+                                    categoryIndex
                                 ) => (
                                     <EachRolePermissionContainerDiv
-                                        key={`ROLE-${roleId}-${roleIndex}`}
+                                        key={`CATEGORY-${categoryId}-${categoryIndex}`}
                                     >
                                         <EachRoleContainerDiv>
-                                            {roleName} Permissions
+                                            {categoryName}
                                         </EachRoleContainerDiv>
                                         <AllPermissionContainerDiv>
                                             {permissions.map(
@@ -225,17 +245,52 @@ class WizardCreateClientPageThree extends React.Component {
                                                     />
                                                 )
                                             )}
+                                            <AllPermissionFooterContainerDiv>
+                                                <PermissionFooterEntryDiv
+                                                    onClick={() => {
+                                                        const {
+                                                            selected_checkboxes
+                                                        } = this.state;
+                                                        this.setState({
+                                                            selected_checkboxes: selected_checkboxes.union(
+                                                                permissions.map(
+                                                                    ({ id }) =>
+                                                                        id
+                                                                )
+                                                            )
+                                                        });
+                                                    }}
+                                                >
+                                                    SELECT ALL
+                                                </PermissionFooterEntryDiv>
+                                                <PermissionFooterEntryDiv
+                                                    onClick={() => {
+                                                        const {
+                                                            selected_checkboxes
+                                                        } = this.state;
+                                                        this.setState({
+                                                            selected_checkboxes: selected_checkboxes.subtract(
+                                                                permissions.map(
+                                                                    ({ id }) =>
+                                                                        id
+                                                                )
+                                                            )
+                                                        });
+                                                    }}
+                                                >
+                                                    UNSELECT ALL
+                                                </PermissionFooterEntryDiv>
+                                            </AllPermissionFooterContainerDiv>
                                         </AllPermissionContainerDiv>
                                     </EachRolePermissionContainerDiv>
                                 )
                             )}
                         </RolePermissionContainerDiv>
-                    ) : (
-                        <React.Fragment />
-                    )}
-                </React.Fragment>
-            );
-        }
+                    );
+                }}
+            </Query>
+        );
+        // }
     }
 
     render() {
@@ -400,10 +455,29 @@ class WizardCreateClientPageThree extends React.Component {
                                         return (
                                             <Formik
                                                 onSubmit={(
-                                                    values,
+                                                    { name },
                                                     { setSubmitting }
                                                 ) => {
-                                                    alert(values.name);
+                                                    const {
+                                                        selected_checkboxes,
+                                                        department_id
+                                                    } = this.state;
+                                                    const toSend = {
+                                                        name,
+                                                        permissionsIds: selected_checkboxes
+                                                            .toJS()
+                                                            .map(item =>
+                                                                parseInt(
+                                                                    item,
+                                                                    DECIMAL_RADIX
+                                                                )
+                                                            ),
+                                                        departmentId: parseInt(
+                                                            department_id,
+                                                            DECIMAL_RADIX
+                                                        )
+                                                    };
+                                                    console.log(toSend);
                                                     setSubmitting(false);
                                                 }}
                                                 initialValues={{
@@ -430,108 +504,137 @@ class WizardCreateClientPageThree extends React.Component {
                                                               )
                                                             : null;
                                                     return (
-                                                        <RoleSectionDiv>
-                                                            <div
-                                                                style={{
-                                                                    width:
-                                                                        "45%",
-                                                                    paddingTop: 10,
-                                                                    paddingBottom: 10
-                                                                }}
-                                                            >
+                                                        <Form>
+                                                            <RoleSectionDiv>
                                                                 <div
                                                                     style={{
-                                                                        paddingBottom: 20
+                                                                        width:
+                                                                            "35%",
+                                                                        paddingTop: 10,
+                                                                        paddingBottom: 10
                                                                     }}
                                                                 >
-                                                                    <FormControl
+                                                                    <div
+                                                                        style={{
+                                                                            paddingBottom: 20
+                                                                        }}
+                                                                    >
+                                                                        <FormControl
+                                                                            fullWidth={
+                                                                                true
+                                                                            }
+                                                                        >
+                                                                            <InputLabel htmlFor="simple-department-picker">
+                                                                                {Boolean(
+                                                                                    department_id
+                                                                                )
+                                                                                    ? ""
+                                                                                    : "Department"}
+                                                                            </InputLabel>
+                                                                            {/* <InputLabel htmlFor="simple-department-picker">
+                                                                            Department
+                                                                        </InputLabel> */}
+                                                                            <Select
+                                                                                id="simple-department-picker"
+                                                                                value={
+                                                                                    department_id
+                                                                                }
+                                                                                onChange={
+                                                                                    this
+                                                                                        .handleChangeDepartment
+                                                                                }
+                                                                                disabled={
+                                                                                    departments.length <
+                                                                                    1
+                                                                                }
+                                                                            >
+                                                                                <MenuItem
+                                                                                    value=""
+                                                                                    disabled
+                                                                                >
+                                                                                    Department
+                                                                                </MenuItem>
+                                                                                {departments.map(
+                                                                                    (
+                                                                                        {
+                                                                                            id,
+                                                                                            name
+                                                                                        },
+                                                                                        index
+                                                                                    ) => (
+                                                                                        <MenuItem
+                                                                                            key={`DEPARTMENT-${id}-${index}`}
+                                                                                            value={
+                                                                                                id
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                name
+                                                                                            }
+                                                                                        </MenuItem>
+                                                                                    )
+                                                                                )}
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                    </div>
+                                                                    <Field
+                                                                        name="name"
+                                                                        label="Role Name"
+                                                                        required={
+                                                                            true
+                                                                        }
+                                                                        type="text"
+                                                                        component={
+                                                                            TextField
+                                                                        }
+                                                                        variant="outlined"
                                                                         fullWidth={
                                                                             true
                                                                         }
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    style={{
+                                                                        padding: 10,
+                                                                        flex: 1,
+                                                                        height:
+                                                                            "100%"
+                                                                    }}
+                                                                >
+                                                                    ROLE
+                                                                    PERMISSIONS
+                                                                    {this.renderRolePermissionSection(
+                                                                        selected_department
+                                                                    )}
+                                                                    <div
+                                                                        style={{
+                                                                            paddingTop: 10,
+                                                                            display:
+                                                                                "flex",
+                                                                            justifyContent:
+                                                                                "flex-end"
+                                                                        }}
                                                                     >
-                                                                        <InputLabel htmlFor="simple-department-picker">
-                                                                            {Boolean(
-                                                                                department_id
-                                                                            )
-                                                                                ? ""
-                                                                                : "Department"}
-                                                                        </InputLabel>
-                                                                        {/* <InputLabel htmlFor="simple-department-picker">
-                                                                            Department
-                                                                        </InputLabel> */}
-                                                                        <Select
-                                                                            id="simple-department-picker"
-                                                                            value={
-                                                                                department_id
-                                                                            }
-                                                                            onChange={
-                                                                                this
-                                                                                    .handleChangeDepartment
-                                                                            }
+                                                                        <Button
+                                                                            type="submit"
+                                                                            variant="contained"
+                                                                            color="primary"
                                                                             disabled={
-                                                                                departments.length <
-                                                                                1
+                                                                                isSubmitting ||
+                                                                                Object.keys(
+                                                                                    errors
+                                                                                )
+                                                                                    .length >
+                                                                                    0
                                                                             }
                                                                         >
-                                                                            <MenuItem
-                                                                                value=""
-                                                                                disabled
-                                                                            >
-                                                                                Department
-                                                                            </MenuItem>
-                                                                            {departments.map(
-                                                                                (
-                                                                                    {
-                                                                                        id,
-                                                                                        name
-                                                                                    },
-                                                                                    index
-                                                                                ) => (
-                                                                                    <MenuItem
-                                                                                        key={`DEPARTMENT-${id}-${index}`}
-                                                                                        value={
-                                                                                            id
-                                                                                        }
-                                                                                    >
-                                                                                        {
-                                                                                            name
-                                                                                        }
-                                                                                    </MenuItem>
-                                                                                )
-                                                                            )}
-                                                                        </Select>
-                                                                    </FormControl>
+                                                                            Add
+                                                                            Role
+                                                                        </Button>
+                                                                    </div>
                                                                 </div>
-                                                                <Field
-                                                                    name="name"
-                                                                    label="Role Name"
-                                                                    required={
-                                                                        true
-                                                                    }
-                                                                    type="text"
-                                                                    component={
-                                                                        TextField
-                                                                    }
-                                                                    variant="outlined"
-                                                                    fullWidth={
-                                                                        true
-                                                                    }
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                style={{
-                                                                    padding: 10,
-                                                                    flex: 1,
-                                                                    height:
-                                                                        "100%"
-                                                                }}
-                                                            >
-                                                                ROLE PERMISSIONS
-                                                                {this.renderRolePermissionSection(
-                                                                    selected_department
-                                                                )}
-                                                            </div>
-                                                        </RoleSectionDiv>
+                                                            </RoleSectionDiv>
+                                                        </Form>
                                                     );
                                                 }}
                                             />

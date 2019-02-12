@@ -5,6 +5,7 @@ import { getClientFromUser, getAllClients, getClientImageById } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import { getDepartmentListByUser } from "./department";
 import { getLayoutList } from "./layout";
+import { getPermissionCategoryList } from "./permissionCategory";
 
 export {
     getCurrentUserQuery,
@@ -16,5 +17,6 @@ export {
     getSelectedCountry,
     getClientImageById,
     getDepartmentListByUser,
-    getLayoutList
+    getLayoutList,
+    getPermissionCategoryList
 };
