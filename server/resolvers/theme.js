@@ -43,7 +43,6 @@ export default {
     Mutation: {
         createThemes: async (_root, { input: themes }, { user, clientIp }) => {
             let outputs = [];
-            console.log("THEMES IS ", themes);
             await asyncForEach(themes, async eachTheme => {
                 const {
                     companyLogo,
