@@ -1,13 +1,26 @@
 import * as Yup from "yup";
 import FONT_OPTIONS from "./FontOptions";
-import { HEX_COLOUR_REGEX } from "../../../../utils/Constants";
+import {
+    HEX_COLOUR_REGEX
+    // bytesToKb,
+    // MAX_FILE_SIZE
+} from "../../../../utils/Constants";
 
 const font_values = FONT_OPTIONS.map(({ value }) => value);
 
 export default layout_ids =>
     Yup.array().of(
         Yup.object().shape({
-            companyLogo: Yup.mixed().required("Company Logo Required"),
+            companyLogo: Yup.mixed()
+                // .test({
+                //     name: "checkFileSize",
+                //     message: "Company logo file size is too large",
+                //     test: value => {
+                //         console.log(value);
+                //         return bytesToKb(value.size) <= MAX_FILE_SIZE;
+                //     }
+                // })
+                .required("Company Logo Required"),
             headerFont: Yup.string()
                 .oneOf(font_values)
                 .required("Please select a Header Font"),

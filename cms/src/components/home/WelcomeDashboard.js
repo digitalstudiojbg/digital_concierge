@@ -70,7 +70,7 @@ const styles = () => ({
 
 export const WelcomeDashboard = ({ classes }) => (
     <Query query={getAllClients}>
-        {({ loading, error, data: { clients: clients } }) => {
+        {({ loading, error, data: { clients } }) => {
             console.log(clients);
             if (loading) return <Loading loadingData />;
             if (error) return `Error! ${error.message}`;

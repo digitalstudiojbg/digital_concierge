@@ -8,7 +8,7 @@ function equalTo(ref, msg) {
     return Yup.mixed().test({
         name: "equalTo",
         exclusive: false,
-        message: msg || "${path} must be the same as ${reference}",
+        message: msg || `${ref.path} must be the same as ${ref.reference}`,
         params: {
             reference: ref.path
         },

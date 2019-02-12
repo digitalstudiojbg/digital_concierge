@@ -3,6 +3,7 @@ import { UserInputError } from "apollo-server-express";
 import {
     asyncForEach,
     processUpload,
+    processDelete,
     handleCreateActionActivityLog
 } from "../utils/constant";
 
@@ -42,6 +43,7 @@ export default {
     Mutation: {
         createThemes: async (_root, { input: themes }, { user, clientIp }) => {
             let outputs = [];
+            console.log("THEMES IS ", themes);
             await asyncForEach(themes, async eachTheme => {
                 const {
                     companyLogo,
@@ -53,8 +55,20 @@ export default {
                     defaultStartLayoutId,
                     defaultHomeLayoutId,
                     defaultDirListLayoutId,
-                    defaultDirEntryLayoutId
+                    defaultDirEntryLayoutId,
+                    systemId
                 } = eachTheme;
+
+                //Check System exists
+                try {
+                    await db.system.findByPk(systemId);
+                } catch (error) {
+                    throw new UserInputError(
+                        `System ID ${systemId} does not exist.\nError Message: ${
+                            error.message
+                        }`
+                    );
+                }
 
                 //Process colours
                 const {
@@ -97,7 +111,7 @@ export default {
                 }
 
                 //Try to upload image
-                uploadedCompanyLogo = await processUpload(companyLogo);
+                const uploadedCompanyLogo = await processUpload(companyLogo);
 
                 const theme = db.theme.build({
                     companyLogo: uploadedCompanyLogo.location,
@@ -118,11 +132,12 @@ export default {
                     defaultStartLayoutId,
                     defaultHomeLayoutId,
                     defaultDirListLayoutId,
-                    defaultDirEntryLayoutId
+                    defaultDirEntryLayoutId,
+                    systemId
                 });
 
                 try {
-                    theme.save();
+                    await theme.save();
                 } catch (error) {
                     //Delete image if theme creation fails
                     processDelete(uploadedCompanyLogo.key);
