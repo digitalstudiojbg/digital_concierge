@@ -18,6 +18,21 @@ import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
 import { CREATE_LICENSE } from "../../../data/mutation";
 
+const CREATE_LICENSE_DATE_FIELD = [
+    {
+        name: "commence_date",
+        label: "LICENSE COMMENCE DATE",
+        required: true,
+        type: "date"
+    },
+    {
+        name: "expire_date",
+        label: "LICENSE EXPIRE DATE",
+        required: true,
+        type: "date"
+    }
+];
+
 const LicenseKeyTextField = props => (
     <MuiTextField
         {...fieldToTextField(props)}
@@ -41,12 +56,7 @@ const LicenseKeyTextField = props => (
     />
 );
 
-const renderSelectField = ({
-    name: nameValue,
-    label,
-
-    optionList
-}) => {
+const renderSelectField = ({ name: nameValue, label, optionList }) => {
     console.log(optionList);
 
     return (
@@ -102,8 +112,96 @@ class WizardCreateClientPageTwo extends React.Component {
         }
     }
 
-    render() {
+    renderLicenseForm(errors, values, isSubmitting) {
         const { data: { licenseTypes = {} } = {} } = this.props;
+
+        return (
+            <div style={{ width: "33%", padding: "20px" }}>
+                <h1>License</h1>
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    <Field
+                        name="license_key"
+                        label="LICENSE KEY"
+                        required={true}
+                        type="text"
+                        component={LicenseKeyTextField}
+                        variant="outlined"
+                        fullWidth={true}
+                    />
+                </div>
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    {licenseTypes.length > 0 &&
+                        this.selectRenderMethod({
+                            name: "license_type",
+                            label: "LICENSE TYPE",
+                            required: true,
+                            type: "select",
+                            optionList: licenseTypes
+                        })}
+                </div>
+                {CREATE_LICENSE_DATE_FIELD.map(
+                    ({ name, label, required, type }) => (
+                        <div
+                            style={{
+                                paddingBottom: "20px"
+                            }}
+                        >
+                            {this.selectRenderMethod({
+                                name,
+                                label,
+                                required,
+                                type
+                            })}
+                        </div>
+                    )
+                )}
+                <div
+                    style={{
+                        paddingBottom: "20px"
+                    }}
+                >
+                    <FormControlLabel
+                        control={
+                            <Field
+                                id="auto_renewal"
+                                name="auto_renewal"
+                                label="Automatic Renewal"
+                                required={true}
+                                color="primary"
+                                component={Checkbox}
+                                variant="outlined"
+                                fullWidth={true}
+                            />
+                        }
+                        label="AUTOMATIC RENEWAL"
+                    />
+                </div>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                        isSubmitting ||
+                        Object.keys(errors).length > 0 ||
+                        !values.license_type
+                    }
+                >
+                    BUTTON
+                </Button>
+            </div>
+        );
+    }
+
+    render() {
+        const { data: { licenseTypes = {} } = {}, createLicense } = this.props;
 
         if (licenseTypes.length < 0) return <Loading />;
         return (
@@ -126,26 +224,24 @@ class WizardCreateClientPageTwo extends React.Component {
                     },
                     { setSubmitting }
                 ) => {
-                    this.props
-                        .createLicense({
-                            variables: {
-                                input: {
-                                    key,
-                                    license_type_id: parseInt(license_type),
-                                    auto_renewal,
-                                    commence_date: commence_date,
-                                    expire_date: expire_date,
-                                    clientId: 1
-                                }
+                    createLicense({
+                        variables: {
+                            input: {
+                                key,
+                                license_type_id: parseInt(license_type),
+                                auto_renewal,
+                                commence_date: commence_date,
+                                expire_date: expire_date,
+                                clientId: 1
                             }
-                        })
-                        .then(data => {
-                            console.log("CREATE LICENSE SUCCEED");
-                            console.log(data);
-                        });
+                        }
+                    }).then(data => {
+                        console.log("CREATE LICENSE SUCCEED");
+                        console.log(data);
+                    });
                     setSubmitting(false);
                 }}
-                render={({ errors, values, isSubmitting, setFieldValue }) => {
+                render={({ errors, values, isSubmitting }) => {
                     console.log(errors);
                     return (
                         <Form>
@@ -155,98 +251,11 @@ class WizardCreateClientPageTwo extends React.Component {
                                     justifyContent: "space-between"
                                 }}
                             >
-                                <div style={{ width: "33%", padding: "20px" }}>
-                                    <h1>License</h1>
-
-                                    <div
-                                        style={{
-                                            paddingBottom: "20px"
-                                        }}
-                                    >
-                                        <Field
-                                            name="license_key"
-                                            label="LICENSE KEY"
-                                            required={true}
-                                            type="text"
-                                            component={LicenseKeyTextField}
-                                            variant="outlined"
-                                            fullWidth={true}
-                                        />
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            paddingBottom: "20px"
-                                        }}
-                                    >
-                                        {licenseTypes.length > 0 &&
-                                            this.selectRenderMethod({
-                                                name: "license_type",
-                                                label: "LICENSE TYPE",
-                                                required: true,
-                                                type: "select",
-                                                optionList: licenseTypes
-                                            })}
-                                    </div>
-
-                                    <div
-                                        style={{
-                                            paddingBottom: "20px"
-                                        }}
-                                    >
-                                        {this.selectRenderMethod({
-                                            name: "commence_date",
-                                            label: "LICENSE COMMENCE DATE",
-                                            required: true,
-                                            type: "date"
-                                        })}
-                                    </div>
-                                    <div
-                                        style={{
-                                            paddingBottom: "20px"
-                                        }}
-                                    >
-                                        {this.selectRenderMethod({
-                                            name: "expire_date",
-                                            label: "LICENSE EXPIRE DATE",
-                                            required: true,
-                                            type: "date"
-                                        })}
-                                    </div>
-                                    <div
-                                        style={{
-                                            paddingBottom: "20px"
-                                        }}
-                                    >
-                                        <FormControlLabel
-                                            control={
-                                                <Field
-                                                    id="auto_renewal"
-                                                    name="auto_renewal"
-                                                    label="Automatic Renewal"
-                                                    required={true}
-                                                    color="primary"
-                                                    component={Checkbox}
-                                                    variant="outlined"
-                                                    fullWidth={true}
-                                                />
-                                            }
-                                            label="AUTOMATIC RENEWAL"
-                                        />
-                                    </div>
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={
-                                            isSubmitting ||
-                                            Object.keys(errors).length > 0 ||
-                                            !values.license_type
-                                        }
-                                    >
-                                        BUTTON
-                                    </Button>
-                                </div>
+                                {this.renderLicenseForm(
+                                    errors,
+                                    values,
+                                    isSubmitting
+                                )}
                                 <div style={{ width: "33%", padding: "20px" }}>
                                     <h1>Agreement</h1>
                                 </div>
