@@ -43,7 +43,6 @@ const LicenseKeyTextField = props => (
 class WizardCreateClientPageTwo extends React.Component {
     render() {
         const { data: { licenseTypes = {} } = {} } = this.props;
-        console.log(licenseTypes);
 
         if (licenseTypes.length < 0) return <Loading />;
         return (
@@ -192,7 +191,8 @@ class WizardCreateClientPageTwo extends React.Component {
                                         color="primary"
                                         disabled={
                                             isSubmitting ||
-                                            Object.keys(errors).length > 0
+                                            Object.keys(errors).length > 0 ||
+                                            !values.license_type
                                         }
                                     >
                                         BUTTON
