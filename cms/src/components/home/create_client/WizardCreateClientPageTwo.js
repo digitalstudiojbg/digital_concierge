@@ -41,7 +41,69 @@ const LicenseKeyTextField = props => (
     />
 );
 
+const renderSelectField = ({
+    name: nameValue,
+    label,
+    required,
+    type,
+    optionList
+}) => {
+    console.log(optionList);
+
+    return (
+        <React.Fragment>
+            <InputLabel>{label}</InputLabel>
+            <Field
+                name={nameValue}
+                component={Select}
+                disabled={optionList.length < 1}
+                fullWidth={true}
+            >
+                <MenuItem value="null" disabled>
+                    {label}
+                </MenuItem>
+                {optionList.map(({ id, name }, index) => (
+                    <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
+                        {name}
+                    </MenuItem>
+                ))}
+            </Field>
+        </React.Fragment>
+    );
+};
+
+const renderDateField = ({ name, label, required, type }) => (
+    <Field
+        id={name}
+        name={name}
+        label={label}
+        required={required}
+        type={type}
+        component={TextField}
+        variant="outlined"
+        fullWidth={true}
+    />
+);
+
 class WizardCreateClientPageTwo extends React.Component {
+    selectRenderMethod({ name, label, required, type, optionList = {} }) {
+        switch (type) {
+            case "date":
+            case "text":
+                return renderDateField({ name, label, required, type });
+            case "select":
+                return renderSelectField({
+                    name,
+                    label,
+                    required,
+                    type,
+                    optionList
+                });
+            default:
+                return <React.Fragment />;
+        }
+    }
+
     render() {
         console.log(this.props);
 
@@ -89,7 +151,6 @@ class WizardCreateClientPageTwo extends React.Component {
                 }}
                 render={({ errors, values, isSubmitting, setFieldValue }) => {
                     console.log(errors);
-
                     return (
                         <Form>
                             <div
@@ -122,41 +183,14 @@ class WizardCreateClientPageTwo extends React.Component {
                                             paddingBottom: "20px"
                                         }}
                                     >
-                                        {licenseTypes.length > 0 && (
-                                            <React.Fragment>
-                                                <InputLabel>
-                                                    LICENSE TYPE
-                                                </InputLabel>
-                                                <Field
-                                                    name="license_type"
-                                                    component={Select}
-                                                    disabled={
-                                                        licenseTypes.length < 1
-                                                    }
-                                                    fullWidth={true}
-                                                >
-                                                    <MenuItem
-                                                        value="null"
-                                                        disabled
-                                                    >
-                                                        LICENSE TYPE
-                                                    </MenuItem>
-                                                    {licenseTypes.map(
-                                                        (
-                                                            { id, name },
-                                                            index
-                                                        ) => (
-                                                            <MenuItem
-                                                                key={`ITEM-${name}-${id}-${index}`}
-                                                                value={id}
-                                                            >
-                                                                {name}
-                                                            </MenuItem>
-                                                        )
-                                                    )}
-                                                </Field>
-                                            </React.Fragment>
-                                        )}
+                                        {licenseTypes.length > 0 &&
+                                            this.selectRenderMethod({
+                                                name: "license_type",
+                                                label: "LICENSE TYPE",
+                                                required: true,
+                                                type: "select",
+                                                optionList: licenseTypes
+                                            })}
                                     </div>
 
                                     <div
@@ -164,32 +198,24 @@ class WizardCreateClientPageTwo extends React.Component {
                                             paddingBottom: "20px"
                                         }}
                                     >
-                                        <Field
-                                            id="commence_date"
-                                            name="commence_date"
-                                            label="LICENSE COMMENCE DATE"
-                                            required={true}
-                                            type="date"
-                                            component={TextField}
-                                            variant="outlined"
-                                            fullWidth={true}
-                                        />
+                                        {this.selectRenderMethod({
+                                            name: "commence_date",
+                                            label: "LICENSE COMMENCE DATE",
+                                            required: true,
+                                            type: "date"
+                                        })}
                                     </div>
                                     <div
                                         style={{
                                             paddingBottom: "20px"
                                         }}
                                     >
-                                        <Field
-                                            id="expire_date"
-                                            name="expire_date"
-                                            label="LICENSE EXPIRE DATE"
-                                            required={true}
-                                            type="date"
-                                            component={TextField}
-                                            variant="outlined"
-                                            fullWidth={true}
-                                        />
+                                        {this.selectRenderMethod({
+                                            name: "expire_date",
+                                            label: "LICENSE EXPIRE DATE",
+                                            required: true,
+                                            type: "date"
+                                        })}
                                     </div>
                                     <div
                                         style={{
