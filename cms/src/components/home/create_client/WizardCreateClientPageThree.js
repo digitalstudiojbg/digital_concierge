@@ -9,7 +9,7 @@ import {
     getPermissionCategoryList
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
-import { CREATE_DEPARTMENT } from "../../../data/mutation";
+import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
 import { ClipLoader } from "react-spinners";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -19,6 +19,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
+// import ReactTable from "react-table";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -294,6 +295,14 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
+        const clientId =
+            this.props.client.readQuery({
+                query: gql`
+                    {
+                        new_create_client_id @client
+                    }
+                `
+            }) || 1;
         return (
             <Query query={getDepartmentListByUser}>
                 {({
@@ -431,7 +440,7 @@ class WizardCreateClientPageThree extends React.Component {
                                 </Mutation>
                                 Role
                                 <Mutation
-                                    mutation={CREATE_DEPARTMENT()}
+                                    mutation={CREATE_ROLE()}
                                     refetchQueries={[
                                         {
                                             query: getDepartmentListByUser
@@ -462,9 +471,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                         selected_checkboxes,
                                                         department_id
                                                     } = this.state;
-                                                    const toSend = {
+                                                    const input = {
                                                         name,
-                                                        permissionsIds: selected_checkboxes
+                                                        isStandardRole: false,
+                                                        permissionIds: selected_checkboxes
                                                             .toJS()
                                                             .map(item =>
                                                                 parseInt(
@@ -477,7 +487,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                             DECIMAL_RADIX
                                                         )
                                                     };
-                                                    console.log(toSend);
+                                                    console.log(input);
+                                                    addANewRole({
+                                                        variables: {
+                                                            input
+                                                        }
+                                                    });
                                                     setSubmitting(false);
                                                 }}
                                                 initialValues={{
@@ -488,155 +503,139 @@ class WizardCreateClientPageThree extends React.Component {
                                                     errors,
                                                     values,
                                                     isSubmitting
-                                                }) => {
-                                                    const {
-                                                        department_id
-                                                    } = this.state;
-                                                    const selected_department =
-                                                        Boolean(
-                                                            department_id
-                                                        ) &&
-                                                        department_id.length > 0
-                                                            ? departments.find(
-                                                                  ({ id }) =>
-                                                                      id ===
-                                                                      department_id
-                                                              )
-                                                            : null;
-                                                    return (
-                                                        <Form>
-                                                            <RoleSectionDiv>
+                                                }) => (
+                                                    <Form>
+                                                        <RoleSectionDiv>
+                                                            <div
+                                                                style={{
+                                                                    width:
+                                                                        "35%",
+                                                                    paddingTop: 10,
+                                                                    paddingBottom: 10
+                                                                }}
+                                                            >
                                                                 <div
                                                                     style={{
-                                                                        width:
-                                                                            "35%",
-                                                                        paddingTop: 10,
-                                                                        paddingBottom: 10
+                                                                        paddingBottom: 20
                                                                     }}
                                                                 >
-                                                                    <div
-                                                                        style={{
-                                                                            paddingBottom: 20
-                                                                        }}
-                                                                    >
-                                                                        <FormControl
-                                                                            fullWidth={
-                                                                                true
-                                                                            }
-                                                                        >
-                                                                            <InputLabel htmlFor="simple-department-picker">
-                                                                                {Boolean(
-                                                                                    department_id
-                                                                                )
-                                                                                    ? ""
-                                                                                    : "Department"}
-                                                                            </InputLabel>
-                                                                            {/* <InputLabel htmlFor="simple-department-picker">
-                                                                            Department
-                                                                        </InputLabel> */}
-                                                                            <Select
-                                                                                id="simple-department-picker"
-                                                                                value={
-                                                                                    department_id
-                                                                                }
-                                                                                onChange={
-                                                                                    this
-                                                                                        .handleChangeDepartment
-                                                                                }
-                                                                                disabled={
-                                                                                    departments.length <
-                                                                                    1
-                                                                                }
-                                                                            >
-                                                                                <MenuItem
-                                                                                    value=""
-                                                                                    disabled
-                                                                                >
-                                                                                    Department
-                                                                                </MenuItem>
-                                                                                {departments.map(
-                                                                                    (
-                                                                                        {
-                                                                                            id,
-                                                                                            name
-                                                                                        },
-                                                                                        index
-                                                                                    ) => (
-                                                                                        <MenuItem
-                                                                                            key={`DEPARTMENT-${id}-${index}`}
-                                                                                            value={
-                                                                                                id
-                                                                                            }
-                                                                                        >
-                                                                                            {
-                                                                                                name
-                                                                                            }
-                                                                                        </MenuItem>
-                                                                                    )
-                                                                                )}
-                                                                            </Select>
-                                                                        </FormControl>
-                                                                    </div>
-                                                                    <Field
-                                                                        name="name"
-                                                                        label="Role Name"
-                                                                        required={
-                                                                            true
-                                                                        }
-                                                                        type="text"
-                                                                        component={
-                                                                            TextField
-                                                                        }
-                                                                        variant="outlined"
+                                                                    <FormControl
                                                                         fullWidth={
                                                                             true
                                                                         }
-                                                                    />
-                                                                </div>
-                                                                <div
-                                                                    style={{
-                                                                        padding: 10,
-                                                                        flex: 1,
-                                                                        height:
-                                                                            "100%"
-                                                                    }}
-                                                                >
-                                                                    ROLE
-                                                                    PERMISSIONS
-                                                                    {this.renderRolePermissionSection(
-                                                                        selected_department
-                                                                    )}
-                                                                    <div
-                                                                        style={{
-                                                                            paddingTop: 10,
-                                                                            display:
-                                                                                "flex",
-                                                                            justifyContent:
-                                                                                "flex-end"
-                                                                        }}
                                                                     >
-                                                                        <Button
-                                                                            type="submit"
-                                                                            variant="contained"
-                                                                            color="primary"
+                                                                        <InputLabel htmlFor="simple-department-picker">
+                                                                            {Boolean(
+                                                                                this
+                                                                                    .state
+                                                                                    .department_id
+                                                                            )
+                                                                                ? ""
+                                                                                : "Department"}
+                                                                        </InputLabel>
+                                                                        {/* <InputLabel htmlFor="simple-department-picker">
+                                                                            Department
+                                                                        </InputLabel> */}
+                                                                        <Select
+                                                                            id="simple-department-picker"
+                                                                            value={
+                                                                                this
+                                                                                    .state
+                                                                                    .department_id
+                                                                            }
+                                                                            onChange={
+                                                                                this
+                                                                                    .handleChangeDepartment
+                                                                            }
                                                                             disabled={
-                                                                                isSubmitting ||
-                                                                                Object.keys(
-                                                                                    errors
-                                                                                )
-                                                                                    .length >
-                                                                                    0
+                                                                                departments.length <
+                                                                                1
                                                                             }
                                                                         >
-                                                                            Add
-                                                                            Role
-                                                                        </Button>
-                                                                    </div>
+                                                                            <MenuItem
+                                                                                value=""
+                                                                                disabled
+                                                                            >
+                                                                                Department
+                                                                            </MenuItem>
+                                                                            {departments.map(
+                                                                                (
+                                                                                    {
+                                                                                        id,
+                                                                                        name
+                                                                                    },
+                                                                                    index
+                                                                                ) => (
+                                                                                    <MenuItem
+                                                                                        key={`DEPARTMENT-${id}-${index}`}
+                                                                                        value={
+                                                                                            id
+                                                                                        }
+                                                                                    >
+                                                                                        {
+                                                                                            name
+                                                                                        }
+                                                                                    </MenuItem>
+                                                                                )
+                                                                            )}
+                                                                        </Select>
+                                                                    </FormControl>
                                                                 </div>
-                                                            </RoleSectionDiv>
-                                                        </Form>
-                                                    );
-                                                }}
+                                                                <Field
+                                                                    name="name"
+                                                                    label="Role Name"
+                                                                    required={
+                                                                        true
+                                                                    }
+                                                                    type="text"
+                                                                    component={
+                                                                        TextField
+                                                                    }
+                                                                    variant="outlined"
+                                                                    fullWidth={
+                                                                        true
+                                                                    }
+                                                                />
+                                                            </div>
+                                                            <div
+                                                                style={{
+                                                                    padding: 10,
+                                                                    flex: 1,
+                                                                    height:
+                                                                        "100%"
+                                                                }}
+                                                            >
+                                                                ROLE PERMISSIONS
+                                                                {this.renderRolePermissionSection()}
+                                                                <div
+                                                                    style={{
+                                                                        paddingTop: 10,
+                                                                        display:
+                                                                            "flex",
+                                                                        justifyContent:
+                                                                            "flex-end"
+                                                                    }}
+                                                                >
+                                                                    <Button
+                                                                        type="submit"
+                                                                        variant="contained"
+                                                                        color="primary"
+                                                                        disabled={
+                                                                            isSubmitting ||
+                                                                            Object.keys(
+                                                                                errors
+                                                                            )
+                                                                                .length >
+                                                                                0
+                                                                        }
+                                                                    >
+                                                                        Add Role
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </RoleSectionDiv>
+                                                    </Form>
+                                                )}
                                             />
                                         );
                                     }}

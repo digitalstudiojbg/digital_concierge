@@ -25,6 +25,7 @@
         "react-router-dom": "^4.3.1",
         "react-scripts": "^2.1.4",
         "react-spinners": "^0.4.7",
+        "react-table": "^6.9.2",
         "semantic-ui-react": "^0.84.0",
         "styled-components": "^4.1.1",
         "yup": "^0.26.6"

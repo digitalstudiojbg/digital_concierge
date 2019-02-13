@@ -13,6 +13,7 @@ import { CREATE_CONTACT } from "./contact";
 import { CREATE_USER } from "./user";
 import { CREATE_DEPARTMENT } from "./department";
 import { CREATE_THEMES } from "./theme";
+import { CREATE_ROLE } from "./role";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -25,5 +26,6 @@ export {
     CREATE_DEPARTMENT,
     UPLOAD_FILES_WITH_CLIENT_ID,
     DELETE_FILES,
-    CREATE_THEMES
+    CREATE_THEMES,
+    CREATE_ROLE
 };

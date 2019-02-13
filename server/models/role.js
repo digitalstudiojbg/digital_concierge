@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 },
-                defaultValue: true
+                defaultValue: false
             }
         },
         {}

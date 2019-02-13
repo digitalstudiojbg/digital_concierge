@@ -6,16 +6,40 @@ module.exports = {
             "departments",
             [
                 {
-                    name: "JBG MANAGERS"
+                    name: "JBG MANAGERS",
+                    is_standard_department: false
                 },
                 {
-                    name: "HOLIDAY INN MANAGERS"
+                    name: "HOLIDAY INN MANAGERS",
+                    is_standard_department: false
                 },
                 {
-                    name: "JBG DIGITAL STUDIO"
+                    name: "JBG DIGITAL STUDIO",
+                    is_standard_department: false
                 },
                 {
-                    name: "HOLIDAY INN IT SUPPORT"
+                    name: "HOLIDAY INN IT SUPPORT",
+                    is_standard_department: false
+                },
+                {
+                    name: "MANAGEMENT",
+                    is_standard_department: true
+                },
+                {
+                    name: "KITCHEN",
+                    is_standard_department: true
+                },
+                {
+                    name: "MAINTENANCE",
+                    is_standard_department: true
+                },
+                {
+                    name: "ROOM SERVICE",
+                    is_standard_department: true
+                },
+                {
+                    name: "ACCOUNTS",
+                    is_standard_department: true
                 }
             ],
             {}

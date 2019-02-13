@@ -308,10 +308,19 @@ class WizardCreateClientPageOne extends React.Component {
                                 }).then(
                                     ({
                                         data: {
-                                            createClient: { id: clientId }
+                                            createClient: { id }
                                         }
                                     }) => {
                                         // console.log(data);
+                                        const clientId = parseInt(
+                                            id,
+                                            DECIMAL_RADIX
+                                        );
+                                        this.props.client.writeData({
+                                            data: {
+                                                new_create_client_id: clientId
+                                            }
+                                        });
                                         createUser({
                                             variables: {
                                                 input: {
@@ -321,10 +330,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                     first_phone_number: contact_first_phone_number,
                                                     second_phone_number: contact_second_phone_number,
                                                     password,
-                                                    clientId: parseInt(
-                                                        clientId,
-                                                        DECIMAL_RADIX
-                                                    )
+                                                    clientId
                                                 }
                                             }
                                         });

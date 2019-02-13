@@ -21,7 +21,7 @@ module.exports = {
                 validate: {
                     notEmpty: true
                 },
-                defaultValue: true
+                defaultValue: false
             },
             createdAt: {
                 allowNull: false,
