@@ -9,7 +9,7 @@ import {
 } from "formik-material-ui";
 import MuiTextField from "@material-ui/core/TextField";
 import { Query, withApollo, compose, graphql } from "react-apollo";
-import { getLicenseTypes } from "../../../data/query";
+import { getLicenseTypes, getCurrencyList } from "../../../data/query";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import dayjs from "dayjs";
@@ -63,6 +63,36 @@ const AGREEMENT_DATE_FIELD = [
     {
         name: "agreement_renewal_date",
         label: "AGREEMENT RENEWAL DATE",
+        required: true,
+        type: "date"
+    }
+];
+
+const PAYMENT_TEXT_FIELD = [
+    {
+        name: "invoice_number",
+        label: "INVOICE NUMBER",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "invoice_amount",
+        label: "INVOICE AMOUNT",
+        required: true,
+        type: "text"
+    }
+];
+
+const PAYMENT_DATE_FIELD = [
+    {
+        name: "invoice_date",
+        label: "INVOICE DATE",
+        required: true,
+        type: "date"
+    },
+    {
+        name: "payable_date",
+        label: "PAYABLE DATE",
         required: true,
         type: "date"
     }
@@ -145,7 +175,6 @@ class WizardCreateClientPageTwo extends React.Component {
                 return renderSelectField({
                     name,
                     label,
-
                     optionList
                 });
             default:
@@ -154,7 +183,7 @@ class WizardCreateClientPageTwo extends React.Component {
     }
 
     renderLicenseForm() {
-        const { data: { licenseTypes = {} } = {} } = this.props;
+        const { getLicenseTypes: { licenseTypes = {} } = {} } = this.props;
 
         return (
             <div style={{ width: "33%", padding: "20px 20px 20px 0" }}>
@@ -269,37 +298,72 @@ class WizardCreateClientPageTwo extends React.Component {
     }
 
     renderPaymentForm() {
+        const { getCurrencyList: { currencies = {} } = {} } = this.props;
+
         return (
             <div style={{ width: "33%", padding: "20px 0px 20px 20px" }}>
                 <h1>Payment</h1>
+                {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
+                    <FiledContainer>
+                        {this.selectRenderMethod({
+                            name,
+                            label,
+                            required,
+                            type
+                        })}
+                    </FiledContainer>
+                ))}
+                <FiledContainer>
+                    {currencies.length > 0 &&
+                        this.selectRenderMethod({
+                            name: "currency",
+                            label: "CURRENCY",
+                            required: true,
+                            type: "select",
+                            optionList: currencies
+                        })}
+                </FiledContainer>
+                {PAYMENT_DATE_FIELD.map(({ name, label, required, type }) => (
+                    <FiledContainer>
+                        {this.selectRenderMethod({
+                            name,
+                            label,
+                            required,
+                            type
+                        })}
+                    </FiledContainer>
+                ))}
             </div>
         );
     }
 
     render() {
-        const {
-            data: { licenseTypes = {} } = {},
+        let {
+            getLicenseTypes: { licenseTypes = {} } = {},
+            getCurrencyList: { currencies = {} } = {},
             createLicense,
             createContract
         } = this.props;
+
         const { client_image } = this.state;
         const currentDate = dayjs().format("YYYY-MM-DD");
-        const nextDate = dayjs()
+        const nextYearDate = dayjs()
             .add(1, "year")
             .format("YYYY-MM-DD");
 
-        if (licenseTypes.length < 0) return <Loading />;
+        if (licenseTypes.length < 0 && currencies.length < 0)
+            return <Loading />;
         return (
             <Formik
                 validationSchema={validationSchema}
                 initialValues={{
-                    commence_date: dayjs().format("YYYY-MM-DD"),
-                    expire_date: dayjs()
-                        .add(1, "year")
-                        .format("YYYY-MM-DD"),
+                    commence_date: currentDate,
+                    expire_date: nextYearDate,
                     auto_renewal: true,
                     agreement_date: currentDate,
-                    agreement_renewal_date: nextDate
+                    agreement_renewal_date: nextYearDate,
+                    invoice_date: currentDate,
+                    payable_date: nextYearDate
                 }}
                 onSubmit={(
                     {
@@ -392,7 +456,8 @@ class WizardCreateClientPageTwo extends React.Component {
 
 export default compose(
     withApollo,
-    graphql(getLicenseTypes),
+    graphql(getLicenseTypes, { name: "getLicenseTypes" }),
+    graphql(getCurrencyList, { name: "getCurrencyList" }),
     graphql(CREATE_LICENSE(), { name: "createLicense" }),
     graphql(CREATE_CONTRACT(), { name: "createContract" })
 )(WizardCreateClientPageTwo);
