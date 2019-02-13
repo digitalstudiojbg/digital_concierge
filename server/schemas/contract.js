@@ -25,10 +25,10 @@ export default gql`
     }
 
     input CreateContractInput {
-        number: String
+        number: String!
         file: Upload!
-        agreement_date: String
-        renewal_date: String
-        clientId: Int
+        agreement_date: String!
+        renewal_date: String!
+        clientId: Int!
     }
 `;

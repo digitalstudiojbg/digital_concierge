@@ -11,12 +11,12 @@ export default gql`
     }
 
     input CreateLicenseInput {
-        key: String
-        license_type_id: Int
-        commence_date: String
-        expire_date: String
-        auto_renewal: Boolean
-        clientId: Int
+        key: String!
+        license_type_id: Int!
+        commence_date: String!
+        expire_date: String!
+        auto_renewal: Boolean!
+        clientId: ID!
     }
 
     type License {
