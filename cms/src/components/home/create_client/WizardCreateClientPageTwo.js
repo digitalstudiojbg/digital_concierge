@@ -371,7 +371,7 @@ class WizardCreateClientPageTwo extends React.Component {
                     invoice_date: currentDate,
                     payable_date: nextYearDate
                 }}
-                onSubmit={(
+                onSubmit={async (
                     {
                         license_key: key,
                         license_type,
@@ -389,21 +389,22 @@ class WizardCreateClientPageTwo extends React.Component {
                     },
                     { setSubmitting }
                 ) => {
-                    createLicense({
-                        variables: {
-                            input: {
-                                key,
-                                license_type_id: parseInt(license_type),
-                                auto_renewal,
-                                commence_date: commence_date,
-                                expire_date: expire_date,
-                                clientId: 1
+                    try {
+                        await createLicense({
+                            variables: {
+                                input: {
+                                    key,
+                                    license_type_id: parseInt(license_type),
+                                    auto_renewal,
+                                    commence_date: commence_date,
+                                    expire_date: expire_date,
+                                    clientId: 1
+                                }
                             }
-                        }
-                    }).then(data => {
-                        console.log("CREATE LICENSE SUCCEED");
-                        console.log(data);
-                        createContract({
+                        });
+                        console.log("License Created");
+
+                        await createContract({
                             variables: {
                                 input: {
                                     number,
@@ -413,30 +414,25 @@ class WizardCreateClientPageTwo extends React.Component {
                                     clientId: 1
                                 }
                             }
-                        }).then(data => {
-                            console.log("CREATE CONTRACT SUCCEED");
-                            console.log(data);
-                            createPayment({
-                                variables: {
-                                    input: {
-                                        invoice_number,
-                                        invoice_date,
-                                        invoice_amount: parseInt(
-                                            invoice_amount
-                                        ),
-                                        payable_date,
-                                        currencyId,
-                                        clientId: 1
-                                    }
-                                }
-                            }).then(data => {
-                                console.log("CREATE PAYMENT SUCCEED");
-                                console.log(data);
-                            });
                         });
-                    });
+                        console.log("Contract Created");
 
-                    setSubmitting(false);
+                        await createPayment({
+                            variables: {
+                                input: {
+                                    invoice_number,
+                                    invoice_date,
+                                    invoice_amount: parseInt(invoice_amount),
+                                    payable_date,
+                                    currencyId,
+                                    clientId: 1
+                                }
+                            }
+                        });
+                        console.log("Payment Created");
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }}
                 render={({ errors, values, isSubmitting }) => {
                     console.log(errors);
