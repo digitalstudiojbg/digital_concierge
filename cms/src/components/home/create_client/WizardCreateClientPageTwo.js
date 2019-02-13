@@ -466,7 +466,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                         !client_image
                                     }
                                 >
-                                    SUBMIT
+                                    CONFIRM & CONTINUE
                                 </Button>
                             </div>
                         </Form>
