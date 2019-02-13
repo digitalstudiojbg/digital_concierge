@@ -9,7 +9,11 @@ import {
 } from "formik-material-ui";
 import MuiTextField from "@material-ui/core/TextField";
 import { Query, withApollo, compose, graphql } from "react-apollo";
-import { getLicenseTypes, getCurrencyList } from "../../../data/query";
+import {
+    getLicenseTypes,
+    getCurrencyList,
+    getNewCreatedClientId
+} from "../../../data/query";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import dayjs from "dayjs";
@@ -22,7 +26,6 @@ import {
     CREATE_PAYMENT
 } from "../../../data/mutation";
 import styled from "styled-components";
-import { gql } from "apollo-boost";
 
 const BrowseButton = styled.label`
     border: 3px solid rgb(64, 84, 178);
@@ -167,7 +170,9 @@ const renderDateField = ({ name, label, required, type }) => (
 class WizardCreateClientPageTwo extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { client_image: null };
+        this.state = {
+            client_image: null
+        };
         this.fileInput = React.createRef();
     }
 
@@ -348,7 +353,8 @@ class WizardCreateClientPageTwo extends React.Component {
             getCurrencyList: { currencies = {} } = {},
             createLicense,
             createContract,
-            createPayment
+            createPayment,
+            client
         } = this.props;
 
         const { client_image } = this.state;
@@ -359,6 +365,20 @@ class WizardCreateClientPageTwo extends React.Component {
 
         if (licenseTypes.length < 0 && currencies.length < 0)
             return <Loading />;
+
+        try {
+            client.readQuery({
+                query: getNewCreatedClientId
+            });
+        } catch {
+            return (
+                <React.Fragment>
+                    <h1>Can't Find ClientId From Step 1</h1>
+                    <Loading />
+                </React.Fragment>
+            );
+        }
+
         return (
             <Formik
                 validationSchema={validationSchema}
@@ -390,6 +410,10 @@ class WizardCreateClientPageTwo extends React.Component {
                     { setSubmitting }
                 ) => {
                     try {
+                        let { new_create_client_id } = client.readQuery({
+                            query: getNewCreatedClientId
+                        });
+
                         await createLicense({
                             variables: {
                                 input: {
@@ -398,7 +422,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                     auto_renewal,
                                     commence_date: commence_date,
                                     expire_date: expire_date,
-                                    clientId: 1
+                                    clientId: new_create_client_id
                                 }
                             }
                         });
@@ -411,7 +435,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                     file: this.state.client_image,
                                     agreement_date,
                                     renewal_date,
-                                    clientId: 1
+                                    clientId: new_create_client_id
                                 }
                             }
                         });
@@ -425,7 +449,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                     invoice_amount: parseInt(invoice_amount),
                                     payable_date,
                                     currencyId,
-                                    clientId: 1
+                                    clientId: new_create_client_id
                                 }
                             }
                         });

@@ -135,3 +135,9 @@ export const getClientImageById = gql`
         }
     }
 `;
+
+export const getNewCreatedClientId = gql`
+    {
+        new_create_client_id @client
+    }
+`;

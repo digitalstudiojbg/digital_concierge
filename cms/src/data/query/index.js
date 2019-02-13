@@ -1,7 +1,12 @@
 import { getCurrentUserQuery } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
 import { getSystemsFromUser } from "./system";
-import { getClientFromUser, getAllClients, getClientImageById } from "./client";
+import {
+    getClientFromUser,
+    getAllClients,
+    getClientImageById,
+    getNewCreatedClientId
+} from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import { getDepartmentListByUser } from "./department";
 import { getLayoutList } from "./layout";
@@ -20,5 +25,6 @@ export {
     getDepartmentListByUser,
     getLayoutList,
     getLicenseTypes,
-    getCurrencyList
+    getCurrencyList,
+    getNewCreatedClientId
 };
