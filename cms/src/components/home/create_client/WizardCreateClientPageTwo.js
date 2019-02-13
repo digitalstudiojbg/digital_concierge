@@ -18,6 +18,7 @@ import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
 import { CREATE_LICENSE, CREATE_CONTRACT } from "../../../data/mutation";
 import styled from "styled-components";
+import { gql } from "apollo-boost";
 
 const BrowseButton = styled.label`
     border: 3px solid rgb(64, 84, 178);
@@ -374,7 +375,12 @@ class WizardCreateClientPageTwo extends React.Component {
                         expire_date,
                         agreement_number: number,
                         agreement_date,
-                        agreement_renewal_date: renewal_date
+                        agreement_renewal_date: renewal_date,
+                        invoice_number,
+                        invoice_amount,
+                        invoice_date: currentDate,
+                        payable_date: nextYearDate,
+                        currency
                     },
                     { setSubmitting }
                 ) => {
