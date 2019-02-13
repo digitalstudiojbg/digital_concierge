@@ -16,7 +16,7 @@ import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
-import { CREATE_LICENSE } from "../../../data/mutation";
+import { CREATE_LICENSE, CREATE_CONTRACT } from "../../../data/mutation";
 import styled from "styled-components";
 
 const BrowseButton = styled.label`
@@ -249,7 +249,7 @@ class WizardCreateClientPageTwo extends React.Component {
                 <FiledContainer>
                     <BrowseButton>
                         <input
-                            accept="image/*"
+                            accept="image/*, application/pdf"
                             style={{ display: "none" }}
                             ref={this.fileInput}
                             onChange={() => {
@@ -277,7 +277,12 @@ class WizardCreateClientPageTwo extends React.Component {
     }
 
     render() {
-        const { data: { licenseTypes = {} } = {}, createLicense } = this.props;
+        const {
+            data: { licenseTypes = {} } = {},
+            createLicense,
+            createContract
+        } = this.props;
+        const { client_image } = this.state;
         const currentDate = dayjs().format("YYYY-MM-DD");
         const nextDate = dayjs()
             .add(1, "year")
@@ -302,7 +307,10 @@ class WizardCreateClientPageTwo extends React.Component {
                         license_type,
                         auto_renewal,
                         commence_date,
-                        expire_date
+                        expire_date,
+                        agreement_number: number,
+                        agreement_date,
+                        agreement_renewal_date: renewal_date
                     },
                     { setSubmitting }
                 ) => {
@@ -320,7 +328,23 @@ class WizardCreateClientPageTwo extends React.Component {
                     }).then(data => {
                         console.log("CREATE LICENSE SUCCEED");
                         console.log(data);
+
+                        createContract({
+                            variables: {
+                                input: {
+                                    number,
+                                    file: this.state.client_image,
+                                    agreement_date,
+                                    renewal_date,
+                                    clientId: 1
+                                }
+                            }
+                        }).then(data => {
+                            console.log("CREATE CONTRACT SUCCEED");
+                            console.log(data);
+                        });
                     });
+
                     setSubmitting(false);
                 }}
                 render={({ errors, values, isSubmitting }) => {
@@ -351,7 +375,8 @@ class WizardCreateClientPageTwo extends React.Component {
                                     disabled={
                                         isSubmitting ||
                                         Object.keys(errors).length > 0 ||
-                                        !values.license_type
+                                        !values.license_type ||
+                                        !client_image
                                     }
                                 >
                                     SUBMIT
@@ -368,5 +393,6 @@ class WizardCreateClientPageTwo extends React.Component {
 export default compose(
     withApollo,
     graphql(getLicenseTypes),
-    graphql(CREATE_LICENSE(), { name: "createLicense" })
+    graphql(CREATE_LICENSE(), { name: "createLicense" }),
+    graphql(CREATE_CONTRACT(), { name: "createContract" })
 )(WizardCreateClientPageTwo);

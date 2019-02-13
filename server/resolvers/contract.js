@@ -4,6 +4,7 @@ import {
     processUpload,
     processDelete
 } from "../utils/constant";
+import { log } from "util";
 
 export default {
     Query: {
@@ -20,14 +21,17 @@ export default {
         ) => {
             let contract_file;
             if (file) {
-                contract_file = await processUploadMedia(file, user.id, "file");
+                contract_file = await processUpload(file);
             }
 
             let created_contract = db.contract.build({
                 number,
                 agreement_date: new Date(agreement_date),
                 renewal_date: new Date(renewal_date),
-                file: "http://www.google.com.au",
+                file: contract_file.location,
+                file_key: contract_file.key
+                    ? contract_file.key
+                    : contract_file.Key,
                 clientId
             });
 

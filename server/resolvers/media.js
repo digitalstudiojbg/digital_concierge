@@ -60,13 +60,13 @@ export default {
 
             let output_data;
             const totalImages = await db.media.findAll({
-                where: { clientId: id }
+                where: { clientId: id, type: "image" }
             });
 
             const { name, by } = sortObject;
             if (cursor) {
                 output_data = await db.media.findAll({
-                    where: { clientId: id },
+                    where: { clientId: id, type: "image" },
                     limit,
                     where: {
                         createdAt: {
@@ -77,14 +77,14 @@ export default {
                 });
             } else if (offset) {
                 output_data = await db.media.findAll({
-                    where: { clientId: id },
+                    where: { clientId: id, type: "image" },
                     limit,
                     offset,
                     order: [[name, by]]
                 });
             } else {
                 output_data = await db.media.findAll({
-                    where: { clientId: id },
+                    where: { clientId: id, type: "image" },
                     limit,
                     order: [[name, by]]
                 });

@@ -21,17 +21,6 @@ export default {
             },
             { user, clientIp }
         ) => {
-            console.log("--------------------");
-
-            console.log(key);
-            console.log(licenseTypeId);
-            console.log(commence_date);
-            console.log(expire_date);
-            console.log(auto_renewal);
-
-            console.log(new Date(commence_date));
-            console.log(new Date(expire_date));
-
             let created_license = db.license.build({
                 key,
                 licenseTypeId,

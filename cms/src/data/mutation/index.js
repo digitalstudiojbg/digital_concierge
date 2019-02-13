@@ -13,6 +13,7 @@ import { CREATE_CONTACT } from "./contact";
 import { CREATE_USER } from "./user";
 import { CREATE_DEPARTMENT } from "./department";
 import { CREATE_LICENSE } from "./license";
+import { CREATE_CONTRACT } from "./contract";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -25,5 +26,6 @@ export {
     CREATE_DEPARTMENT,
     UPLOAD_FILES_WITH_CLIENT_ID,
     DELETE_FILES,
-    CREATE_LICENSE
+    CREATE_LICENSE,
+    CREATE_CONTRACT
 };
