@@ -13,6 +13,7 @@ module.exports = {
                     number: "11282-31220-JD",
                     file:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/CONTRACT_AS4000-1997.pdf",
+                    file_key: "cms_users/CONTRACT_AS4000-1997.pdf",
                     agreement_date: current,
                     renewal_date: nextYear,
                     clientid: 1
@@ -21,6 +22,7 @@ module.exports = {
                     number: "48789-20114-AJ",
                     file:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/CONTRACT_AS4000-1997.pdf",
+                    file_key: "cms_users/CONTRACT_AS4000-1997.pdf",
                     agreement_date: current,
                     renewal_date: nextYear,
                     clientid: 2

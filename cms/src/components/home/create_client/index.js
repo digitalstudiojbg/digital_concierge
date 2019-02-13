@@ -128,7 +128,7 @@ class CreateClient extends Component {
                         </div>
                     </div>
                 </div>
-                {activeStep !== 5 && (
+                {/*activeStep !== 5 && (
                     <button
                         style={{
                             height: "50px",
@@ -141,7 +141,7 @@ class CreateClient extends Component {
                     >
                         <h1>GO TO STEP 6 (MEDIA) </h1>
                     </button>
-                )}
+                    )*/}
                 {/* <MultipleMutationAndQueryExample /> */}
             </div>
         );

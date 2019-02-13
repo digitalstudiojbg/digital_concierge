@@ -22,6 +22,13 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            file_key: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             agreement_date: {
                 type: Sequelize.DATE,
                 allowNull: false,
