@@ -16,7 +16,11 @@ import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Loading from "../../loading/Loading";
 import validationSchema from "./two/PageTwoValidationSchema";
-import { CREATE_LICENSE, CREATE_CONTRACT } from "../../../data/mutation";
+import {
+    CREATE_LICENSE,
+    CREATE_CONTRACT,
+    CREATE_PAYMENT
+} from "../../../data/mutation";
 import styled from "styled-components";
 import { gql } from "apollo-boost";
 
@@ -343,7 +347,8 @@ class WizardCreateClientPageTwo extends React.Component {
             getLicenseTypes: { licenseTypes = {} } = {},
             getCurrencyList: { currencies = {} } = {},
             createLicense,
-            createContract
+            createContract,
+            createPayment
         } = this.props;
 
         const { client_image } = this.state;
@@ -378,9 +383,9 @@ class WizardCreateClientPageTwo extends React.Component {
                         agreement_renewal_date: renewal_date,
                         invoice_number,
                         invoice_amount,
-                        invoice_date: currentDate,
-                        payable_date: nextYearDate,
-                        currency
+                        invoice_date,
+                        payable_date,
+                        currency: currencyId
                     },
                     { setSubmitting }
                 ) => {
@@ -398,7 +403,6 @@ class WizardCreateClientPageTwo extends React.Component {
                     }).then(data => {
                         console.log("CREATE LICENSE SUCCEED");
                         console.log(data);
-
                         createContract({
                             variables: {
                                 input: {
@@ -412,6 +416,23 @@ class WizardCreateClientPageTwo extends React.Component {
                         }).then(data => {
                             console.log("CREATE CONTRACT SUCCEED");
                             console.log(data);
+                            createPayment({
+                                variables: {
+                                    input: {
+                                        invoice_number,
+                                        invoice_date,
+                                        invoice_amount: parseInt(
+                                            invoice_amount
+                                        ),
+                                        payable_date,
+                                        currencyId,
+                                        clientId: 1
+                                    }
+                                }
+                            }).then(data => {
+                                console.log("CREATE PAYMENT SUCCEED");
+                                console.log(data);
+                            });
                         });
                     });
 
@@ -465,5 +486,6 @@ export default compose(
     graphql(getLicenseTypes, { name: "getLicenseTypes" }),
     graphql(getCurrencyList, { name: "getCurrencyList" }),
     graphql(CREATE_LICENSE(), { name: "createLicense" }),
-    graphql(CREATE_CONTRACT(), { name: "createContract" })
+    graphql(CREATE_CONTRACT(), { name: "createContract" }),
+    graphql(CREATE_PAYMENT(), { name: "createPayment" })
 )(WizardCreateClientPageTwo);
