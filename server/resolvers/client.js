@@ -145,7 +145,28 @@ export default {
                         postalStateId: postal_state_id
                     });
 
-                    resolve(create_client.save());
+                    await create_client.save();
+
+                    /**
+                     * add department relationships here
+                     */
+                    const departments = await db.department.findAll({
+                        where: {
+                            is_standard_department: true
+                        }
+                    });
+
+                    try {
+                        await create_client.addDepartments(departments);
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Unable to assign standard departments to role.\nError Message: ${
+                                error.message
+                            }`
+                        );
+                    }
+
+                    resolve(await db.client.findByPk(create_client.id));
                 });
             });
         }

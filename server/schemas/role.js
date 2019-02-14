@@ -4,6 +4,11 @@ export default gql`
     extend type Query {
         role(id: ID!): Role
         roles: [Role]
+        rolesByClientId(clientId: ID!): [Role]
+    }
+
+    extend type Mutation {
+        createRole(input: CreateRoleInput): Role
     }
 
     type Role {
@@ -15,5 +20,12 @@ export default gql`
         users: [User]
         permissions: [Permission]
         department: Department
+    }
+
+    input CreateRoleInput {
+        name: String!
+        isStandardRole: Boolean!
+        departmentId: Int!
+        permissionIds: [Int]!
     }
 `;

@@ -60,6 +60,8 @@ Digital Concierge Project
 -   \$ docker-compose up --build
 -   \$ docker exec -it [CONTAINER_ID] sh
 -   \$ docker system prune
+-   Docker Error: no space left on device --> See (https://stackoverflow.com/a/37287054)
+-   \$ docker volume rm \$(docker volume ls -qf dangling=true)
 
 ## CMS Test Admin Account
 
