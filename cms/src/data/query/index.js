@@ -14,6 +14,8 @@ import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getDeviceTypes } from "./deviceType";
 import { getSystemTypes } from "./systemType";
+import { getFeatures } from "./feature";
+import { getFeaturesByCategories } from "./featureCategory";
 
 export {
     getCurrentUserQuery,
@@ -30,5 +32,7 @@ export {
     getCurrencyList,
     getNewCreatedClientId,
     getDeviceTypes,
-    getSystemTypes
+    getSystemTypes,
+    getFeatures,
+    getFeaturesByCategories
 };

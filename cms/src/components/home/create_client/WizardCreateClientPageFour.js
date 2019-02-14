@@ -2,7 +2,11 @@ import React from "react";
 import MediaLibrary from "../../../utils/MediaLibrary";
 import { getCurrentUserQuery as query } from "../../../data/query";
 import { withApollo, compose, graphql } from "react-apollo";
-import { getSystemTypes, getDeviceTypes } from "../../../data/query";
+import {
+    getSystemTypes,
+    getDeviceTypes,
+    getFeaturesByCategories
+} from "../../../data/query";
 import Loading from "../../loading/Loading";
 //import Button from "@material-ui/core/Button";
 import { Formik, Form, Field } from "formik";
@@ -144,6 +148,7 @@ class WizardCreateClientPageFour extends React.Component {
         const {
             getSystemTypes: { systemTypes = {} } = {},
             getDeviceTypes: { deviceTypes = {} } = {},
+            getFeaturesByCategories: { featureCategories = {} } = {},
             client
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
@@ -161,7 +166,9 @@ class WizardCreateClientPageFour extends React.Component {
             );
         }*/
 
-        if (systemTypes.length < 0 && deviceTypes < 0) return <Loading />;
+        if (systemTypes.length < 0 && deviceTypes < 0 && featureCategories < 0)
+            return <Loading />;
+        console.log(featureCategories);
 
         return (
             <Formik
@@ -223,5 +230,6 @@ class WizardCreateClientPageFour extends React.Component {
 export default compose(
     withApollo,
     graphql(getDeviceTypes, { name: "getDeviceTypes" }),
-    graphql(getSystemTypes, { name: "getSystemTypes" })
+    graphql(getSystemTypes, { name: "getSystemTypes" }),
+    graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" })
 )(WizardCreateClientPageFour);
