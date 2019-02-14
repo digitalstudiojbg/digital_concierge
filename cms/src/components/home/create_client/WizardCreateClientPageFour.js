@@ -28,6 +28,26 @@ const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
 
+const PermissionContainer = styled.div`
+    display: flex;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    align-items: center;
+    border-radius: 5px;
+    &:hover {
+        background-color: lightgrey;
+    }
+`;
+
+const SelectUnselectButton = styled.p`
+    color: blue;
+    cursor: pointer;
+    margin-bottom: 0;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
 const renderSelectField = ({ name: nameValue, label, optionList }) => {
     return (
         <React.Fragment>
@@ -50,13 +70,6 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
         </React.Fragment>
     );
 };
-
-const SelectUnselectButton = styled.p`
-    color: blue;
-    &:hover {
-        font-weight: bold;
-    }
-`;
 
 class WizardCreateClientPageFour extends React.Component {
     renderAddSystemSection() {
@@ -204,88 +217,80 @@ class WizardCreateClientPageFour extends React.Component {
                 {featureCategories.length > 0 &&
                     featureCategories.map(eachCategory => {
                         return (
-                            <React.Fragment>
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        paddingBottom: "20px",
-                                        fontSize: "14px"
-                                    }}
-                                >
-                                    <div style={{ width: "30%" }}>
-                                        <p
-                                            style={{
-                                                textOverflow: "ellipsis",
-                                                overflow: "hidden",
-                                                whiteSpace: "nowrap",
-                                                width: "100%"
-                                            }}
-                                        >
-                                            {eachCategory.name}
-                                        </p>
-                                    </div>
-                                    <div
+                            <PermissionContainer>
+                                <div style={{ width: "30%" }}>
+                                    <p
                                         style={{
-                                            width: "70%",
-                                            paddingLeft: "10px"
+                                            /*textOverflow: "ellipsis",
+                                            overflow: "hidden",
+                                            whiteSpace: "nowrap",
+                                            width: "100%"*/
+                                            textAlign: "center"
                                         }}
                                     >
-                                        <ul style={{ listStyleType: "none" }}>
-                                            {eachCategory.features.map(
-                                                eachfeature => {
-                                                    return (
-                                                        <li>
-                                                            <FormControlLabel
-                                                                control={
-                                                                    <Field
-                                                                        id={
-                                                                            eachfeature.name
-                                                                        }
-                                                                        name={
-                                                                            eachfeature.name
-                                                                        }
-                                                                        label={
-                                                                            eachfeature.name
-                                                                        }
-                                                                        required={
-                                                                            true
-                                                                        }
-                                                                        color="primary"
-                                                                        component={
-                                                                            Checkbox
-                                                                        }
-                                                                        variant="outlined"
-                                                                        fullWidth={
-                                                                            true
-                                                                        }
-                                                                    />
-                                                                }
-                                                                label={
-                                                                    eachfeature.name
-                                                                }
-                                                            />
-                                                        </li>
-                                                    );
-                                                }
-                                            )}
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent:
-                                                        "space-between"
-                                                }}
-                                            >
-                                                <SelectUnselectButton>
-                                                    Select All
-                                                </SelectUnselectButton>
-                                                <SelectUnselectButton>
-                                                    Unselect All
-                                                </SelectUnselectButton>
-                                            </div>
-                                        </ul>
-                                    </div>
+                                        {eachCategory.name}
+                                    </p>
                                 </div>
-                            </React.Fragment>
+                                <div
+                                    style={{
+                                        width: "70%",
+                                        paddingLeft: "10px"
+                                    }}
+                                >
+                                    <ul style={{ listStyleType: "none" }}>
+                                        {eachCategory.features.map(
+                                            eachfeature => {
+                                                return (
+                                                    <li>
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Field
+                                                                    id={
+                                                                        eachfeature.name
+                                                                    }
+                                                                    name={
+                                                                        eachfeature.name
+                                                                    }
+                                                                    label={
+                                                                        eachfeature.name
+                                                                    }
+                                                                    required={
+                                                                        true
+                                                                    }
+                                                                    color="primary"
+                                                                    component={
+                                                                        Checkbox
+                                                                    }
+                                                                    variant="outlined"
+                                                                    fullWidth={
+                                                                        true
+                                                                    }
+                                                                />
+                                                            }
+                                                            label={
+                                                                eachfeature.name
+                                                            }
+                                                        />
+                                                    </li>
+                                                );
+                                            }
+                                        )}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-around"
+                                            }}
+                                        >
+                                            <SelectUnselectButton>
+                                                Select All
+                                            </SelectUnselectButton>
+                                            <SelectUnselectButton>
+                                                Unselect All
+                                            </SelectUnselectButton>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </PermissionContainer>
                         );
                     })}
             </div>
