@@ -15,6 +15,17 @@ const ContainerDiv = styled.div`
     height: 100%;
     background-color: rgb(244, 244, 244);
     padding-left: 50px;
+    padding-right: 50px;
+`;
+
+const TitleDiv = styled.div`
+    padding-top: 50px;
+    height: 20%;
+    font-size: 2em;
+`;
+
+const TableContainerDiv = styled.div`
+    height: 80%;
 `;
 
 const centerHorizontalVertical = {
@@ -80,128 +91,133 @@ export const WelcomeClients = props => {
 
                 return (
                     <ContainerDiv>
-                        CLIENTS
-                        <ReactTable
-                            defaultPageSize={10}
-                            data={clients}
-                            columns={[
-                                {
-                                    Header: "CLIENT",
-                                    accessor: "clientName",
-                                    style: {
-                                        ...centerHorizontalVertical
+                        <TitleDiv>CLIENTS</TitleDiv>
+                        <TableContainerDiv>
+                            <ReactTable
+                                defaultPageSize={10}
+                                data={clients}
+                                columns={[
+                                    {
+                                        Header: "CLIENT",
+                                        accessor: "clientName",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        filterable: true,
+                                        sortable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.clientName
+                                                .toLowerCase()
+                                                .includes(
+                                                    filter.value.toLowerCase()
+                                                )
                                     },
-                                    filterable: true,
-                                    sortable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.clientName
-                                            .toLowerCase()
-                                            .includes(
-                                                filter.value.toLowerCase()
+                                    {
+                                        Header: "KEY USER",
+                                        accessor: "keyUser",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        filterable: true,
+                                        sortable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.keyUser
+                                                .toLowerCase()
+                                                .includes(
+                                                    filter.value.toLowerCase()
+                                                )
+                                    },
+                                    {
+                                        Header: "LICENSE KEY",
+                                        accessor: "licenseKey",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        sortable: true,
+                                        filterable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.licenseKey
+                                                .toLowerCase()
+                                                .includes(
+                                                    filter.value.toLowerCase()
+                                                )
+                                    },
+                                    {
+                                        Header: "LICENSE EXPIRY",
+                                        accessor: "licenseExpiry",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        sortable: true,
+                                        filterable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.licenseExpiry
+                                                .toLowerCase()
+                                                .includes(
+                                                    filter.value.toLowerCase()
+                                                )
+                                    },
+                                    {
+                                        Header: "# OF SYSTEMS",
+                                        accessor: "numberOfSystems",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        sortable: true,
+                                        filterable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.numberOfSystems ===
+                                            parseInt(
+                                                filter.value,
+                                                DECIMAL_RADIX
                                             )
-                                },
-                                {
-                                    Header: "KEY USER",
-                                    accessor: "keyUser",
-                                    style: {
-                                        ...centerHorizontalVertical
                                     },
-                                    filterable: true,
-                                    sortable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.keyUser
-                                            .toLowerCase()
-                                            .includes(
-                                                filter.value.toLowerCase()
-                                            )
-                                },
-                                {
-                                    Header: "LICENSE KEY",
-                                    accessor: "licenseKey",
-                                    style: {
-                                        ...centerHorizontalVertical
+                                    {
+                                        Header: "STATUS",
+                                        accessor: "status",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        sortable: true,
+                                        filterable: true,
+                                        filterMethod: (filter, original) =>
+                                            original.status
+                                                .toLowerCase()
+                                                .includes(
+                                                    filter.value.toLowerCase()
+                                                )
                                     },
-                                    sortable: true,
-                                    filterable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.licenseKey
-                                            .toLowerCase()
-                                            .includes(
-                                                filter.value.toLowerCase()
-                                            )
-                                },
-                                {
-                                    Header: "LICENSE EXPIRY",
-                                    accessor: "licenseExpiry",
-                                    style: {
-                                        ...centerHorizontalVertical
+                                    {
+                                        Header: "ACTIONS",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        Cell: <MoreHorizontalIcon />,
+                                        filterable: false,
+                                        sortable: false,
+                                        resizable: false,
+                                        width: 70
                                     },
-                                    sortable: true,
-                                    filterable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.licenseExpiry
-                                            .toLowerCase()
-                                            .includes(
-                                                filter.value.toLowerCase()
-                                            )
-                                },
-                                {
-                                    Header: "# OF SYSTEMS",
-                                    accessor: "numberOfSystems",
-                                    style: {
-                                        ...centerHorizontalVertical
-                                    },
-                                    sortable: true,
-                                    filterable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.numberOfSystems ===
-                                        parseInt(filter.value, DECIMAL_RADIX)
-                                },
-                                {
-                                    Header: "STATUS",
-                                    accessor: "status",
-                                    style: {
-                                        ...centerHorizontalVertical
-                                    },
-                                    sortable: true,
-                                    filterable: true,
-                                    filterMethod: (filter, original) =>
-                                        original.status
-                                            .toLowerCase()
-                                            .includes(
-                                                filter.value.toLowerCase()
-                                            )
-                                },
-                                {
-                                    Header: "ACTIONS",
-                                    style: {
-                                        ...centerHorizontalVertical
-                                    },
-                                    Cell: <MoreHorizontalIcon />,
-                                    filterable: false,
-                                    sortable: false,
-                                    resizable: false,
-                                    width: 70
-                                },
-                                {
-                                    Header: "",
-                                    style: {
-                                        ...centerHorizontalVertical
-                                    },
-                                    filterable: false,
-                                    sortable: false,
-                                    resizable: false,
-                                    width: 70,
-                                    Cell: ({ original: { id } }) => (
-                                        <Checkbox
-                                            id={id}
-                                            checked={selected.includes(id)}
-                                            onChange={handleCheck}
-                                        />
-                                    )
-                                }
-                            ]}
-                        />
+                                    {
+                                        Header: "",
+                                        style: {
+                                            ...centerHorizontalVertical
+                                        },
+                                        filterable: false,
+                                        sortable: false,
+                                        resizable: false,
+                                        width: 70,
+                                        Cell: ({ original: { id } }) => (
+                                            <Checkbox
+                                                id={id}
+                                                checked={selected.includes(id)}
+                                                onChange={handleCheck}
+                                            />
+                                        )
+                                    }
+                                ]}
+                            />
+                        </TableContainerDiv>
                     </ContainerDiv>
                 );
             }}
