@@ -211,6 +211,9 @@ export default {
         payments: async client =>
             await db.payment.findAll({ where: { clientId: client.id } }),
         licenses: async client =>
-            await db.license.findAll({ where: { clientId: client.id } })
+            await db.license.findAll({
+                where: { clientId: client.id },
+                order: [["expire_date", "DESC"]]
+            })
     }
 };

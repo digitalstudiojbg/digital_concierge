@@ -64,6 +64,7 @@ export const getClientFromUser = gql`
 export const getAllClients = gql`
     query get_all_clients {
         clients {
+            id
             name
             full_company_name
             nature_of_business
@@ -112,6 +113,19 @@ export const getAllClients = gql`
             }
             media {
                 id
+            }
+            users {
+                id
+                name
+            }
+            licenses {
+                id
+                key
+                expire_date
+            }
+            systems {
+                id
+                name
             }
         }
     }
