@@ -58,7 +58,7 @@ const array_components = [
 
 class CreateClient extends Component {
     state = {
-        activeStep: 0
+        activeStep: 3
     };
 
     handleNext = () => {
