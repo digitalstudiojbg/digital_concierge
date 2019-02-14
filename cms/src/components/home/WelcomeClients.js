@@ -8,6 +8,7 @@ import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import ReactTable from "react-table";
+import { DECIMAL_RADIX } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -37,10 +38,46 @@ export const WelcomeClients = props => {
 
     return (
         <Query query={getAllClients}>
-            {({ loading, error, data: { clients } }) => {
+            {({ loading, error, data: { clients: originalClients } }) => {
                 if (loading) return <Loading loadingData />;
                 if (error) return `Error: ${error.message}`;
+
+                //Format client for react-table data
+                const clients = originalClients.map(
+                    ({ name, users, licenses, systems, active }) => ({
+                        clientName: name,
+                        keyUser:
+                            Boolean(users) &&
+                            Array.isArray(users) &&
+                            users.length > 0 &&
+                            Boolean(users[0].name)
+                                ? users[0].name
+                                : "",
+                        licenseKey:
+                            Boolean(licenses) &&
+                            Array.isArray(licenses) &&
+                            licenses.length > 0 &&
+                            Boolean(licenses[0].key)
+                                ? licenses[0].key
+                                : "",
+                        licenseExpiry:
+                            Boolean(licenses) &&
+                            Array.isArray(licenses) &&
+                            licenses.length > 0 &&
+                            Boolean(licenses[0].expire_date)
+                                ? dayJs(licenses[0].expire_date).format(
+                                      "DD MMMM YYYY"
+                                  )
+                                : "",
+                        numberOfSystems:
+                            Boolean(systems) && Array.isArray(systems)
+                                ? systems.length
+                                : 0,
+                        status: Boolean(active) ? "ACTIVE" : "INACTIVE"
+                    })
+                );
                 console.log(clients);
+
                 return (
                     <ContainerDiv>
                         CLIENTS
@@ -50,112 +87,90 @@ export const WelcomeClients = props => {
                             columns={[
                                 {
                                     Header: "CLIENT",
-                                    accessor: "name",
+                                    accessor: "clientName",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    // filterable: true,
-                                    sortable: true
-                                    // filterMethod: (filter, original) =>
-                                    //     original.name
-                                    //         .toLowerCase()
-                                    //         .includes(
-                                    //             filter.value.toLowerCase()
-                                    //         )
+                                    filterable: true,
+                                    sortable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.clientName
+                                            .toLowerCase()
+                                            .includes(
+                                                filter.value.toLowerCase()
+                                            )
                                 },
                                 {
                                     Header: "KEY USER",
+                                    accessor: "keyUser",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    // filterable: true,
-                                    sortable: false,
-                                    Cell: ({ original: { users } }) =>
-                                        Boolean(users) &&
-                                        Array.isArray(users) &&
-                                        users.length > 0 &&
-                                        Boolean(users[0].name)
-                                            ? users[0].name
-                                            : ""
-                                    // filterMethod: (filter, original) =>
-                                    //     Boolean(original) &&
-                                    //     Boolean(original._original) &&
-                                    //     Boolean(original._original.users) &&
-                                    //     Array.isArray(
-                                    //         original._original.users
-                                    //     ) &&
-                                    //     original._original.users.length > 0
-                                    //         ? original._original.users[0].name
-                                    //               .toLowerCase()
-                                    //               .includes(
-                                    //                   filter.value.toLowerCase()
-                                    //               )
-                                    //         : false
+                                    filterable: true,
+                                    sortable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.keyUser
+                                            .toLowerCase()
+                                            .includes(
+                                                filter.value.toLowerCase()
+                                            )
                                 },
                                 {
                                     Header: "LICENSE KEY",
+                                    accessor: "licenseKey",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: false,
-                                    Cell: ({ original: { licenses } }) => (
-                                        <span>
-                                            {Boolean(licenses) &&
-                                            Array.isArray(licenses) &&
-                                            licenses.length > 0 &&
-                                            Boolean(licenses[0].key)
-                                                ? licenses[0].key
-                                                : ""}
-                                        </span>
-                                    )
+                                    sortable: true,
+                                    filterable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.licenseKey
+                                            .toLowerCase()
+                                            .includes(
+                                                filter.value.toLowerCase()
+                                            )
                                 },
                                 {
                                     Header: "LICENSE EXPIRY",
+                                    accessor: "licenseExpiry",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: false,
-                                    Cell: ({ original: { licenses } }) => (
-                                        <span>
-                                            {Boolean(licenses) &&
-                                            Array.isArray(licenses) &&
-                                            licenses.length > 0 &&
-                                            Boolean(licenses[0].expire_date)
-                                                ? dayJs(
-                                                      licenses[0].expire_date
-                                                  ).format("DD MMMM YYYY")
-                                                : ""}
-                                        </span>
-                                    )
+                                    sortable: true,
+                                    filterable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.licenseExpiry
+                                            .toLowerCase()
+                                            .includes(
+                                                filter.value.toLowerCase()
+                                            )
                                 },
                                 {
                                     Header: "# OF SYSTEMS",
+                                    accessor: "numberOfSystems",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: false,
-                                    Cell: ({ original: { systems } }) => (
-                                        <span>
-                                            {Boolean(systems) &&
-                                            Array.isArray(systems)
-                                                ? systems.length
-                                                : ""}
-                                        </span>
-                                    )
+                                    sortable: true,
+                                    filterable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.numberOfSystems ===
+                                        parseInt(filter.value, DECIMAL_RADIX)
                                 },
                                 {
                                     Header: "STATUS",
+                                    accessor: "status",
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: false,
-                                    Cell: ({ original: { active } }) => (
-                                        <span>
-                                            {Boolean(active)
-                                                ? "ACTIVE"
-                                                : "INACTIVE"}
-                                        </span>
-                                    )
+                                    sortable: true,
+                                    filterable: true,
+                                    filterMethod: (filter, original) =>
+                                        original.status
+                                            .toLowerCase()
+                                            .includes(
+                                                filter.value.toLowerCase()
+                                            )
                                 },
                                 {
                                     Header: "ACTIONS",
