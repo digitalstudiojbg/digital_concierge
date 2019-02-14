@@ -1,5 +1,4 @@
 import React from "react";
-import MediaLibrary from "../../../utils/MediaLibrary";
 import { getCurrentUserQuery as query } from "../../../data/query";
 import { withApollo, compose, graphql } from "react-apollo";
 import {
@@ -8,7 +7,6 @@ import {
     getFeaturesByCategories
 } from "../../../data/query";
 import Loading from "../../loading/Loading";
-//import Button from "@material-ui/core/Button";
 import { Formik, Form, Field } from "formik";
 import {
     TextField,
@@ -18,7 +16,6 @@ import {
     Checkbox
 } from "formik-material-ui";
 import styled from "styled-components";
-//import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
     FormControlLabel,
     Radio,
@@ -54,8 +51,15 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
     );
 };
 
+const SelectUnselectButton = styled.p`
+    color: blue;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
 class WizardCreateClientPageFour extends React.Component {
-    renderAddSystem() {
+    renderAddSystemSection() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
             getDeviceTypes: { deviceTypes = {} } = {}
@@ -144,6 +148,150 @@ class WizardCreateClientPageFour extends React.Component {
         );
     }
 
+    renderListOfSystem() {
+        return (
+            <div
+                style={{
+                    width: "33%",
+                    padding: "20px 20px 20px 0"
+                }}
+            >
+                <h1>Feature</h1>
+            </div>
+        );
+    }
+
+    renderFeatureSection() {
+        const {
+            getFeaturesByCategories: { featureCategories = {} } = {}
+        } = this.props;
+        console.log(featureCategories);
+
+        return (
+            <div
+                style={{
+                    width: "33%",
+                    padding: "20px 20px 20px 0"
+                }}
+            >
+                <h1>All Client System</h1>
+                <div
+                    style={{
+                        display: "flex",
+                        fontSize: "14px"
+                    }}
+                >
+                    <div style={{ width: "30%" }} />
+                    <div style={{ width: "70%", paddingLeft: "10px" }}>
+                        <FormControlLabel
+                            control={
+                                <Field
+                                    id="all_features"
+                                    name="all_features"
+                                    label="ALL FEATURES"
+                                    required={true}
+                                    color="primary"
+                                    component={Checkbox}
+                                    variant="outlined"
+                                    fullWidth={true}
+                                />
+                            }
+                            label="ALL FEATURES"
+                        />
+                    </div>
+                </div>
+
+                {featureCategories.length > 0 &&
+                    featureCategories.map(eachCategory => {
+                        return (
+                            <React.Fragment>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        paddingBottom: "20px",
+                                        fontSize: "14px"
+                                    }}
+                                >
+                                    <div style={{ width: "30%" }}>
+                                        <p
+                                            style={{
+                                                textOverflow: "ellipsis",
+                                                overflow: "hidden",
+                                                whiteSpace: "nowrap",
+                                                width: "100%"
+                                            }}
+                                        >
+                                            {eachCategory.name}
+                                        </p>
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: "70%",
+                                            paddingLeft: "10px"
+                                        }}
+                                    >
+                                        <ul style={{ listStyleType: "none" }}>
+                                            {eachCategory.features.map(
+                                                eachfeature => {
+                                                    return (
+                                                        <li>
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Field
+                                                                        id={
+                                                                            eachfeature.name
+                                                                        }
+                                                                        name={
+                                                                            eachfeature.name
+                                                                        }
+                                                                        label={
+                                                                            eachfeature.name
+                                                                        }
+                                                                        required={
+                                                                            true
+                                                                        }
+                                                                        color="primary"
+                                                                        component={
+                                                                            Checkbox
+                                                                        }
+                                                                        variant="outlined"
+                                                                        fullWidth={
+                                                                            true
+                                                                        }
+                                                                    />
+                                                                }
+                                                                label={
+                                                                    eachfeature.name
+                                                                }
+                                                            />
+                                                        </li>
+                                                    );
+                                                }
+                                            )}
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent:
+                                                        "space-between"
+                                                }}
+                                            >
+                                                <SelectUnselectButton>
+                                                    Select All
+                                                </SelectUnselectButton>
+                                                <SelectUnselectButton>
+                                                    Unselect All
+                                                </SelectUnselectButton>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        );
+                    })}
+            </div>
+        );
+    }
+
     render() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
@@ -187,24 +335,11 @@ class WizardCreateClientPageFour extends React.Component {
                                     justifyContent: "space-between"
                                 }}
                             >
-                                {this.renderAddSystem()}
+                                {this.renderAddSystemSection()}
 
-                                <div
-                                    style={{
-                                        width: "33%",
-                                        padding: "20px 20px 20px 0"
-                                    }}
-                                >
-                                    <h1>Feature</h1>
-                                </div>
-                                <div
-                                    style={{
-                                        width: "33%",
-                                        padding: "20px 20px 20px 0"
-                                    }}
-                                >
-                                    <h1>All Client System</h1>
-                                </div>
+                                {this.renderFeatureSection()}
+
+                                {this.renderListOfSystem()}
                             </div>
                             <div
                                 style={{
