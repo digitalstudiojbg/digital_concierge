@@ -69,7 +69,7 @@ export const WelcomeClients = props => {
                                         ...centerHorizontalVertical
                                     },
                                     // filterable: true,
-                                    sortable: true,
+                                    sortable: false,
                                     Cell: ({ original: { users } }) =>
                                         Boolean(users) &&
                                         Array.isArray(users) &&
@@ -97,7 +97,7 @@ export const WelcomeClients = props => {
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: true,
+                                    sortable: false,
                                     Cell: ({ original: { licenses } }) => (
                                         <span>
                                             {Boolean(licenses) &&
@@ -114,7 +114,7 @@ export const WelcomeClients = props => {
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: true,
+                                    sortable: false,
                                     Cell: ({ original: { licenses } }) => (
                                         <span>
                                             {Boolean(licenses) &&
@@ -133,7 +133,7 @@ export const WelcomeClients = props => {
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: true,
+                                    sortable: false,
                                     Cell: ({ original: { systems } }) => (
                                         <span>
                                             {Boolean(systems) &&
@@ -148,7 +148,7 @@ export const WelcomeClients = props => {
                                     style: {
                                         ...centerHorizontalVertical
                                     },
-                                    sortable: true,
+                                    sortable: false,
                                     Cell: ({ original: { active } }) => (
                                         <span>
                                             {Boolean(active)
