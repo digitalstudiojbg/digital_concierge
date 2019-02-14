@@ -6,7 +6,8 @@ import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 import {
     getDepartmentListByUser,
-    getPermissionCategoryList
+    getPermissionCategoryList,
+    getRoleList
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
@@ -19,7 +20,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
-// import ReactTable from "react-table";
+import gql from "graphql-tag";
+import ReactTable from "react-table";
+import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -30,6 +33,7 @@ const ContainerDiv = styled.div`
 const SectionDivContainer = styled.div`
     width: 50%;
     height: 100%;
+    padding: 10px;
 `;
 
 const DepartmentSectionDiv = styled.div`
@@ -295,14 +299,19 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        const clientId =
-            this.props.client.readQuery({
+        let clientId = 1;
+        try {
+            clientId = this.props.client.readQuery({
                 query: gql`
                     {
                         new_create_client_id @client
                     }
                 `
-            }) || 1;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
         return (
             <Query query={getDepartmentListByUser}>
                 {({
@@ -443,7 +452,8 @@ class WizardCreateClientPageThree extends React.Component {
                                     mutation={CREATE_ROLE()}
                                     refetchQueries={[
                                         {
-                                            query: getDepartmentListByUser
+                                            query: getRoleList,
+                                            variables: { clientId }
                                         }
                                     ]}
                                 >
@@ -641,9 +651,85 @@ class WizardCreateClientPageThree extends React.Component {
                                     }}
                                 </Mutation>
                             </SectionDivContainer>
-                            <SectionDivContainer>
-                                STRUCTURE TABLE
-                            </SectionDivContainer>
+                            <Query query={getRoleList} variables={{ clientId }}>
+                                {({
+                                    loading: loadingRoles,
+                                    error: errorRoles,
+                                    data: { rolesByClientId: roleList } = {}
+                                }) => {
+                                    if (loadingRoles)
+                                        return (
+                                            <ClipLoader
+                                                sizeUnit={"px"}
+                                                size={24}
+                                                color={"rgba(0, 0, 0, 0.87)"}
+                                                loading={loading}
+                                            />
+                                        );
+                                    if (errorRoles)
+                                        return `Error! ${errorRoles.message}`;
+                                    console.log(roleList);
+                                    return (
+                                        <SectionDivContainer>
+                                            STRUCTURE TABLE
+                                            <ReactTable
+                                                defaultPageSize={10}
+                                                data={roleList}
+                                                columns={[
+                                                    {
+                                                        Header: "ROLE",
+                                                        accessor: "name",
+                                                        style: {
+                                                            textAlign: "center"
+                                                        },
+                                                        filterable: true,
+                                                        filterMethod: (
+                                                            filter,
+                                                            original
+                                                        ) =>
+                                                            original.name
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    filter.value.toLowerCase()
+                                                                )
+                                                    },
+                                                    {
+                                                        Header: "DEPARTMENT",
+                                                        accessor:
+                                                            "department.name",
+                                                        style: {
+                                                            textAlign: "center"
+                                                        },
+                                                        filterable: true,
+                                                        filterMethod: (
+                                                            filter,
+                                                            original
+                                                        ) =>
+                                                            original.department.name
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    filter.value.toLowerCase()
+                                                                )
+                                                    },
+                                                    {
+                                                        Header: "ACTIONS",
+                                                        style: {
+                                                            textAlign: "center"
+                                                        },
+                                                        Cell: (
+                                                            <MoreHorizontalIcon />
+                                                        ),
+                                                        filterable: false,
+                                                        sortable: false,
+                                                        resizable: false,
+                                                        width: 70
+                                                    }
+                                                ]}
+                                            />
+                                        </SectionDivContainer>
+                                    );
+                                }}
+                            </Query>
                         </ContainerDiv>
                     );
                 }}

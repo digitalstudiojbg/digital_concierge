@@ -1,17 +1,13 @@
 import gql from "graphql-tag";
 
 export const getRoleList = gql`
-    query roles_list {
-        departmentsByUser {
+    query roles_list($clientId: ID!) {
+        rolesByClientId(clientId: $clientId) {
             id
             name
-            roles {
+            department {
                 id
                 name
-                permissions {
-                    id
-                    name
-                }
             }
         }
     }

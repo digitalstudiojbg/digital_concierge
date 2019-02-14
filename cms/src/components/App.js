@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
 import "./App.css";
+import "react-table/react-table.css";
 import Loading from "./loading/Loading";
 import {
     WELCOME_URL,
