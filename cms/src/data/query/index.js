@@ -12,6 +12,8 @@ import { getDepartmentListByUser } from "./department";
 import { getLayoutList } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
+import { getDeviceTypes } from "./deviceType";
+import { getSystemTypes } from "./systemType";
 
 export {
     getCurrentUserQuery,
@@ -26,5 +28,7 @@ export {
     getLayoutList,
     getLicenseTypes,
     getCurrencyList,
-    getNewCreatedClientId
+    getNewCreatedClientId,
+    getDeviceTypes,
+    getSystemTypes
 };

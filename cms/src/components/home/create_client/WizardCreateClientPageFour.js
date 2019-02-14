@@ -1,8 +1,8 @@
 import React from "react";
 import MediaLibrary from "../../../utils/MediaLibrary";
 import { getCurrentUserQuery as query } from "../../../data/query";
-import { withApollo } from "react-apollo";
-import { getNewCreatedClientId } from "../../../data/query";
+import { withApollo, compose, graphql } from "react-apollo";
+import { getSystemTypes, getDeviceTypes } from "../../../data/query";
 import Loading from "../../loading/Loading";
 //import Button from "@material-ui/core/Button";
 import { Formik, Form, Field } from "formik";
@@ -15,14 +15,47 @@ import {
 } from "formik-material-ui";
 import styled from "styled-components";
 //import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { FormControlLabel, Radio, Button } from "@material-ui/core";
+import {
+    FormControlLabel,
+    Radio,
+    Button,
+    InputLabel,
+    MenuItem
+} from "@material-ui/core";
 
 const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
 
+const renderSelectField = ({ name: nameValue, label, optionList }) => {
+    return (
+        <React.Fragment>
+            <InputLabel>{label}</InputLabel>
+            <Field
+                name={nameValue}
+                component={Select}
+                disabled={optionList.length < 1}
+                fullWidth={true}
+            >
+                <MenuItem value="null" disabled>
+                    {label}
+                </MenuItem>
+                {optionList.map(({ id, name }, index) => (
+                    <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
+                        {name}
+                    </MenuItem>
+                ))}
+            </Field>
+        </React.Fragment>
+    );
+};
+
 class WizardCreateClientPageFour extends React.Component {
     renderAddSystem() {
+        const {
+            getSystemTypes: { systemTypes = {} } = {},
+            getDeviceTypes: { deviceTypes = {} } = {}
+        } = this.props;
         return (
             <div
                 style={{
@@ -43,26 +76,54 @@ class WizardCreateClientPageFour extends React.Component {
                     />
                 </FiledContainer>
                 <FiledContainer>
-                    <Field
-                        name="aif_boolean"
-                        label="AIF"
-                        required={true}
-                        color="primary"
-                        component={RadioGroup}
-                        variant="outlined"
-                        fullWidth={true}
+                    {systemTypes.length > 0 &&
+                        renderSelectField({
+                            name: "system_type",
+                            label: "SYSTEM TYPE",
+                            optionList: systemTypes
+                        })}
+                </FiledContainer>
+                <FiledContainer>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            alignItems: "center"
+                        }}
                     >
-                        <FormControlLabel
-                            value="yes"
-                            control={<Radio color="primary" />}
-                            label="Yes"
-                        />
-                        <FormControlLabel
-                            value="no"
-                            control={<Radio color="primary" />}
-                            label="No"
-                        />
-                    </Field>
+                        <p style={{ fontSize: "14px", fontFamily: "Roboto" }}>
+                            AIF
+                        </p>
+                        <Field
+                            name="aif_boolean"
+                            label="AIF"
+                            required={true}
+                            color="primary"
+                            component={RadioGroup}
+                            variant="outlined"
+                            fullWidth={true}
+                        >
+                            <FormControlLabel
+                                value="yes"
+                                control={<Radio color="primary" />}
+                                label="Yes"
+                            />
+                            <FormControlLabel
+                                value="no"
+                                control={<Radio color="primary" />}
+                                label="No"
+                            />
+                        </Field>
+                    </div>
+                </FiledContainer>
+
+                <FiledContainer>
+                    {deviceTypes.length > 0 &&
+                        renderSelectField({
+                            name: "device_type",
+                            label: "DEVICE TYPE",
+                            optionList: deviceTypes
+                        })}
                 </FiledContainer>
                 <FiledContainer>
                     <Field
@@ -80,7 +141,11 @@ class WizardCreateClientPageFour extends React.Component {
     }
 
     render() {
-        const { client } = this.props;
+        const {
+            getSystemTypes: { systemTypes = {} } = {},
+            getDeviceTypes: { deviceTypes = {} } = {},
+            client
+        } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
 
         /* try {
@@ -96,11 +161,14 @@ class WizardCreateClientPageFour extends React.Component {
             );
         }*/
 
+        if (systemTypes.length < 0 && deviceTypes < 0) return <Loading />;
+
         return (
             <Formik
                 initialValues={{}}
                 onSubmit={async (values, { setSubmitting }) => {
                     console.log("On-submit");
+                    console.log(values);
                 }}
                 render={({ errors, values, isSubmitting }) => {
                     console.log(errors);
@@ -140,11 +208,6 @@ class WizardCreateClientPageFour extends React.Component {
                                     type="submit"
                                     variant="contained"
                                     color="primary"
-                                    disabled={
-                                        isSubmitting ||
-                                        Object.keys(errors).length > 0 ||
-                                        !values.license_type
-                                    }
                                 >
                                     CONFIRM & CONTINUE
                                 </Button>
@@ -157,4 +220,8 @@ class WizardCreateClientPageFour extends React.Component {
     }
 }
 
-export default withApollo(WizardCreateClientPageFour);
+export default compose(
+    withApollo,
+    graphql(getDeviceTypes, { name: "getDeviceTypes" }),
+    graphql(getSystemTypes, { name: "getSystemTypes" })
+)(WizardCreateClientPageFour);
