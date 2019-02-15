@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import {
     COLOR_JBG_PURPLE,
-    TABLET_CMS_INDEX_URL,
+    SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL
 } from "../../utils/Constants";
 import "./Welcome.css";
@@ -32,7 +32,7 @@ class Welcome extends Component {
             return (
                 <Redirect
                     to={{
-                        pathname: TABLET_CMS_INDEX_URL
+                        pathname: SYSTEM_CMS_INDEX_URL
                     }}
                 />
             );
@@ -88,7 +88,7 @@ class Welcome extends Component {
                     >
                         {!isEmpty(user) && has_tablet && (
                             <Link
-                                to={TABLET_CMS_INDEX_URL}
+                                to={SYSTEM_CMS_INDEX_URL}
                                 style={{
                                     textDecoration: "none",
                                     margin: "10px",

@@ -7,7 +7,7 @@ import "./App.css";
 import Loading from "./loading/Loading";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
+    SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL
@@ -21,7 +21,7 @@ const routes = [
         component: Home
     },
     {
-        path: TABLET_CMS_INDEX_URL,
+        path: SYSTEM_CMS_INDEX_URL,
         component: Home
     },
     {

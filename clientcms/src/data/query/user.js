@@ -8,20 +8,34 @@ export const getSelectedUserQuery = gql`
             email
             active
             avatar
+            first_phone_number
+            second_phone_number
+            position
             createdAt
             updatedAt
-            role {
+            roles {
                 name
-                is_admin
+                is_standard_role
                 permissions {
                     name
                 }
             }
             client {
+                id
                 name
-                avatar
-                number_of_users
+                full_company_name
+                nature_of_business
+                venue_address
+                venue_city
+                venue_zip_code
+                postal_address
+                postal_city
+                postal_zip_code
+                phone
+                email
                 active
+                number_of_users
+                avatar
             }
         }
     }
@@ -35,20 +49,38 @@ export const getCurrentUserQuery = gql`
             email
             active
             avatar
+            first_phone_number
+            second_phone_number
+            position
             createdAt
             updatedAt
-            role {
+            roles {
                 name
-                is_admin
+                is_standard_role
                 permissions {
                     name
                 }
             }
             client {
+                id
                 name
-                avatar
-                number_of_users
+                full_company_name
+                nature_of_business
+                venue_address
+                venue_city
+                venue_zip_code
+                postal_address
+                postal_city
+                postal_zip_code
+                phone
+                email
                 active
+                number_of_users
+                avatar
+                systems {
+                    id
+                    name
+                }
             }
         }
     }

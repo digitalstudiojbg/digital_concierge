@@ -20,6 +20,12 @@ export const directoryListFragment = gql`
             id
             name
             active
+            media {
+                id
+                name
+                path
+                type
+            }
         }
     }
 `;
