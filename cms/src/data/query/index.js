@@ -1,6 +1,6 @@
 import { getCurrentUserQuery } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
-import { getSystemsFromUser } from "./system";
+import { getSystemsFromUser, systemsByClientQuery } from "./system";
 import {
     getClientFromUser,
     getAllClients,
@@ -14,6 +14,10 @@ import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
 import { getRoleList } from "./role";
+import { getDeviceTypes } from "./deviceType";
+import { getSystemTypes } from "./systemType";
+import { getFeatures } from "./feature";
+import { getFeaturesByCategories } from "./featureCategory";
 
 export {
     getCurrentUserQuery,
@@ -30,5 +34,10 @@ export {
     getCurrencyList,
     getNewCreatedClientId,
     getPermissionCategoryList,
-    getRoleList
+    getRoleList,
+    getDeviceTypes,
+    getSystemTypes,
+    getFeatures,
+    getFeaturesByCategories,
+    systemsByClientQuery
 };
