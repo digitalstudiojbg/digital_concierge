@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
             through: "layouts_systems"
         });
         system.belongsTo(models.just_brilliant_guide, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
         });
         system.belongsTo(models.start, {
             foreignKey: { allowNull: true }

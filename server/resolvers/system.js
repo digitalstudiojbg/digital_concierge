@@ -1,4 +1,5 @@
 import db from "../models";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -9,6 +10,44 @@ export default {
         systemsByUser: async (_root, _input, { user }) =>
             await db.system.findAll({ where: { clientId: user.clientId } })
     },
+    Mutation: {
+        createSystem: async (
+            _root,
+            {
+                input: {
+                    name,
+                    aif,
+                    numberOfDevices,
+                    deviceTypeId,
+                    featureIds,
+                    systemTypeId,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            try {
+                let created_system = db.system.build({
+                    name,
+                    aif,
+                    numberOfDevices,
+                    deviceTypeId,
+                    systemTypeId,
+                    clientId
+                });
+                await created_system.save();
+                await created_system.addFeatures(featureIds);
+                return created_system;
+            } catch (error) {
+                throw new UserInputError(
+                    `Create system ${name} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+        }
+    },
+
     System: {
         client: async system => await db.client.findByPk(system.clientId),
         devices: async system =>

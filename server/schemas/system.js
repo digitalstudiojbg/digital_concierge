@@ -30,4 +30,18 @@ export default gql`
         system_type: SystemType
         features: [Feature]
     }
+
+    extend type Mutation {
+        createSystem(input: CreateSystemInput): System
+    }
+
+    input CreateSystemInput {
+        name: String!
+        aif: Boolean!
+        numberOfDevices: Int!
+        deviceTypeId: ID!
+        systemTypeId: ID!
+        featureIds: [ID!]
+        clientId: ID!
+    }
 `;
