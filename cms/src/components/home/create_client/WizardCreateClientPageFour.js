@@ -6,6 +6,7 @@ import {
     getDeviceTypes,
     getFeaturesByCategories
 } from "../../../data/query";
+import { CREATE_SYSTEM } from "../../../data/mutation";
 import Loading from "../../loading/Loading";
 import { Formik, Form, Field } from "formik";
 import {
@@ -387,9 +388,39 @@ class WizardCreateClientPageFour extends React.Component {
         return (
             <Formik
                 initialValues={{}}
-                onSubmit={async (values, { setSubmitting }) => {
-                    console.log("On-submit");
-                    console.log(values);
+                onSubmit={async (
+                    {
+                        name,
+                        aif_boolean: aif,
+                        device_type: deviceTypeId,
+                        numberOfDevices,
+                        system_type: systemTypeId
+                    },
+                    { setSubmitting }
+                ) => {
+                    console.log(name);
+                    console.log(aif);
+                    console.log(deviceTypeId);
+                    console.log(numberOfDevices);
+                    console.log(systemTypeId);
+
+                    const { selected_checkboxes } = this.state;
+
+                    this.props.createSystem({
+                        variables: {
+                            input: {
+                                name,
+                                aif: aif === "yes" ? true : false,
+                                deviceTypeId: parseInt(deviceTypeId),
+                                numberOfDevices: parseInt(numberOfDevices),
+                                systemTypeId: parseInt(systemTypeId),
+                                clientId: 1,
+                                featureIds: selected_checkboxes
+                                    .toJS()
+                                    .map(item => parseInt(item))
+                            }
+                        }
+                    });
                 }}
                 render={({ errors, values, isSubmitting }) => {
                     return (
@@ -431,5 +462,6 @@ export default compose(
     withApollo,
     graphql(getDeviceTypes, { name: "getDeviceTypes" }),
     graphql(getSystemTypes, { name: "getSystemTypes" }),
-    graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" })
+    graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
+    graphql(CREATE_SYSTEM(), { name: "createSystem" })
 )(WizardCreateClientPageFour);
