@@ -34,7 +34,7 @@ const centerHorizontalVertical = {
     alignItems: "center"
 };
 
-export const WelcomeClients = props => {
+export const WelcomeClients = () => {
     const [selected, setSelected] = useState(Set());
 
     const handleCheck = event => {
