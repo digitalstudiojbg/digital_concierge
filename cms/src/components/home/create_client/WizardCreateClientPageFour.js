@@ -53,6 +53,30 @@ const SelectUnselectButton = styled.p`
     }
 `;
 
+const EachClientSystemContainer = styled.div`
+    width: 200px;
+    height: 180px;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    position: relative;
+    &:hover {
+        background-color: lightgrey;
+    }
+`;
+
+const EachClientSystemContainerSystemText = styled.p`
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+`;
+
+const EachClientSystemContainerDeviceTypeText = styled.p`
+    margin-bottom: 5px;
+    color: grey;
+    font-size: 12px;
+`;
+
 const renderSelectField = ({ name: nameValue, label, optionList }) => {
     return (
         <React.Fragment>
@@ -202,14 +226,49 @@ class WizardCreateClientPageFour extends React.Component {
                 }}
             >
                 <h1>All Client System</h1>
-                {systemsByClient.length > 0 &&
-                    systemsByClient.map(eachSystem => {
-                        return (
-                            <div>
-                                <h1>{eachSystem.name}</h1>
-                            </div>
-                        );
-                    })}
+                <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        overflow: "auto",
+                        height: "60vh"
+                    }}
+                >
+                    {systemsByClient.length > 0 &&
+                        systemsByClient.map(
+                            ({ name, system_type, device_type }) => {
+                                return (
+                                    <EachClientSystemContainer>
+                                        <img
+                                            style={{
+                                                display: "block",
+                                                margin: "auto"
+                                            }}
+                                            src={
+                                                system_type.name.includes(
+                                                    "TABLET"
+                                                )
+                                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                                            }
+                                            height=" 80"
+                                        />
+                                        <EachClientSystemContainerSystemText>
+                                            {system_type.name}
+                                        </EachClientSystemContainerSystemText>
+                                        <hr />
+                                        <EachClientSystemContainerSystemText>
+                                            {name}
+                                        </EachClientSystemContainerSystemText>
+                                        <EachClientSystemContainerDeviceTypeText>
+                                            {device_type.name}
+                                        </EachClientSystemContainerDeviceTypeText>
+                                    </EachClientSystemContainer>
+                                );
+                            }
+                        )}
+                </div>
             </div>
         );
     }

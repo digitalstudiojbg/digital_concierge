@@ -16,6 +16,12 @@ export const systemsByClientQuery = gql`
         systemsByClient(id: $id) {
             id
             name
+            device_type {
+                name
+            }
+            system_type {
+                name
+            }
         }
     }
 `;
