@@ -25,6 +25,8 @@ import {
     Checkbox
 } from "@material-ui/core";
 import { Set } from "immutable";
+import validationSchema from "./four/PageFourValidationSchema";
+import { log } from "util";
 
 const FiledContainer = styled.div`
     padding-bottom: 20px;
@@ -147,7 +149,6 @@ class WizardCreateClientPageFour extends React.Component {
                             color="primary"
                             component={RadioGroup}
                             variant="outlined"
-                            fullWidth={true}
                         >
                             <FormControlLabel
                                 value="yes"
@@ -269,7 +270,7 @@ class WizardCreateClientPageFour extends React.Component {
                     </div>
                 </div>
                 {featureCategories.length > 0 &&
-                    featureCategories.map(eachCategory => {
+                    featureCategories.map((eachCategory, index) => {
                         let featureIdPerCategory = [];
 
                         eachCategory.features.length > 0 &&
@@ -278,7 +279,7 @@ class WizardCreateClientPageFour extends React.Component {
                             });
 
                         return (
-                            <FeatureContainer>
+                            <FeatureContainer key={index}>
                                 <div style={{ width: "30%" }}>
                                     <p
                                         style={{
@@ -300,9 +301,9 @@ class WizardCreateClientPageFour extends React.Component {
                                 >
                                     <ul style={{ listStyleType: "none" }}>
                                         {eachCategory.features.map(
-                                            ({ id, name }) => {
+                                            ({ id, name }, index) => {
                                                 return (
-                                                    <li>
+                                                    <li key={index}>
                                                         <FormControlLabel
                                                             control={
                                                                 <Checkbox
@@ -387,7 +388,8 @@ class WizardCreateClientPageFour extends React.Component {
 
         return (
             <Formik
-                initialValues={{}}
+                validationSchema={validationSchema}
+                initialValues={{ aif_boolean: "yes" }}
                 onSubmit={async (
                     {
                         name,
@@ -398,29 +400,27 @@ class WizardCreateClientPageFour extends React.Component {
                     },
                     { setSubmitting }
                 ) => {
-                    console.log(name);
-                    console.log(aif);
-                    console.log(deviceTypeId);
-                    console.log(numberOfDevices);
-                    console.log(systemTypeId);
-
                     const { selected_checkboxes } = this.state;
 
-                    this.props.createSystem({
-                        variables: {
-                            input: {
-                                name,
-                                aif: aif === "yes" ? true : false,
-                                deviceTypeId: parseInt(deviceTypeId),
-                                numberOfDevices: parseInt(numberOfDevices),
-                                systemTypeId: parseInt(systemTypeId),
-                                clientId: 1,
-                                featureIds: selected_checkboxes
-                                    .toJS()
-                                    .map(item => parseInt(item))
+                    this.props
+                        .createSystem({
+                            variables: {
+                                input: {
+                                    name,
+                                    aif: aif === "yes" ? true : false,
+                                    deviceTypeId: parseInt(deviceTypeId),
+                                    numberOfDevices: parseInt(numberOfDevices),
+                                    systemTypeId: parseInt(systemTypeId),
+                                    clientId: 1,
+                                    featureIds: selected_checkboxes
+                                        .toJS()
+                                        .map(item => parseInt(item))
+                                }
                             }
-                        }
-                    });
+                        })
+                        .then(() => {
+                            console.log("CREATE SYSTEM SUCCEED");
+                        });
                 }}
                 render={({ errors, values, isSubmitting }) => {
                     return (
@@ -446,6 +446,12 @@ class WizardCreateClientPageFour extends React.Component {
                                     type="submit"
                                     variant="contained"
                                     color="primary"
+                                    disabled={
+                                        isSubmitting ||
+                                        Object.keys(errors).length > 0 ||
+                                        this.state.selected_checkboxes.toJS()
+                                            .length === 0
+                                    }
                                 >
                                     CONFIRM & CONTINUE
                                 </Button>
