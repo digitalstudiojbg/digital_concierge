@@ -47,6 +47,14 @@ export const WelcomeClients = () => {
         }
     };
 
+    const handleCheckAll = clients => {
+        if (selected.size === clients.length) {
+            setSelected(Set());
+        } else {
+            setSelected(selected.union(clients.map(({ id }) => id)));
+        }
+    };
+
     return (
         <Query query={getAllClients}>
             {({ loading, error, data: { clients: originalClients } }) => {
@@ -55,7 +63,8 @@ export const WelcomeClients = () => {
 
                 //Format client for react-table data
                 const clients = originalClients.map(
-                    ({ name, users, licenses, systems, active }) => ({
+                    ({ id, name, users, licenses, systems, active }) => ({
+                        id,
                         clientName: name,
                         keyUser:
                             Boolean(users) &&
@@ -203,7 +212,7 @@ export const WelcomeClients = () => {
                                         style: {
                                             ...centerHorizontalVertical
                                         },
-                                        filterable: false,
+                                        filterable: true,
                                         sortable: false,
                                         resizable: false,
                                         width: 70,
@@ -212,6 +221,22 @@ export const WelcomeClients = () => {
                                                 id={id}
                                                 checked={selected.includes(id)}
                                                 onChange={handleCheck}
+                                            />
+                                        ),
+                                        Filter: (
+                                            <Checkbox
+                                                indeterminate={
+                                                    selected.size > 0 &&
+                                                    selected.size <
+                                                        clients.length
+                                                }
+                                                checked={
+                                                    selected.size ===
+                                                    clients.length
+                                                }
+                                                onChange={() =>
+                                                    handleCheckAll(clients)
+                                                }
                                             />
                                         )
                                     }
