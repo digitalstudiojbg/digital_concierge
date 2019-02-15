@@ -1,10 +1,11 @@
 import React from "react";
 import { getCurrentUserQuery as query } from "../../../data/query";
-import { withApollo, compose, graphql } from "react-apollo";
+import { Mutation, withApollo, compose, graphql } from "react-apollo";
 import {
     getSystemTypes,
     getDeviceTypes,
-    getFeaturesByCategories
+    getFeaturesByCategories,
+    systemsByClientQuery
 } from "../../../data/query";
 import { CREATE_SYSTEM } from "../../../data/mutation";
 import Loading from "../../loading/Loading";
@@ -188,6 +189,11 @@ class WizardCreateClientPageFour extends React.Component {
     }
 
     renderListOfSystem() {
+        const {
+            systemsByClient: { systemsByClient = {} } = {},
+            client
+        } = this.props;
+
         return (
             <div
                 style={{
@@ -196,6 +202,14 @@ class WizardCreateClientPageFour extends React.Component {
                 }}
             >
                 <h1>All Client System</h1>
+                {systemsByClient.length > 0 &&
+                    systemsByClient.map(eachSystem => {
+                        return (
+                            <div>
+                                <h1>{eachSystem.name}</h1>
+                            </div>
+                        );
+                    })}
             </div>
         );
     }
@@ -366,6 +380,7 @@ class WizardCreateClientPageFour extends React.Component {
             getSystemTypes: { systemTypes = {} } = {},
             getDeviceTypes: { deviceTypes = {} } = {},
             getFeaturesByCategories: { featureCategories = {} } = {},
+            systemsByClient: { systemsByClient = {} } = {},
             client
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
@@ -382,84 +397,109 @@ class WizardCreateClientPageFour extends React.Component {
                 </React.Fragment>
             );
         }*/
+        console.log(this.props);
 
-        if (systemTypes.length < 0 && deviceTypes < 0 && featureCategories < 0)
+        if (
+            systemTypes.length < 0 &&
+            deviceTypes < 0 &&
+            featureCategories < 0 &&
+            systemsByClient < 0
+        )
             return <Loading />;
 
         return (
-            <Formik
-                validationSchema={validationSchema}
-                initialValues={{ aif_boolean: "yes" }}
-                onSubmit={async (
+            <Mutation
+                mutation={CREATE_SYSTEM()}
+                refetchQueries={[
                     {
-                        name,
-                        aif_boolean: aif,
-                        device_type: deviceTypeId,
-                        numberOfDevices,
-                        system_type: systemTypeId
-                    },
-                    { setSubmitting }
-                ) => {
-                    const { selected_checkboxes } = this.state;
-
-                    this.props
-                        .createSystem({
-                            variables: {
-                                input: {
-                                    name,
-                                    aif: aif === "yes" ? true : false,
-                                    deviceTypeId: parseInt(deviceTypeId),
-                                    numberOfDevices: parseInt(numberOfDevices),
-                                    systemTypeId: parseInt(systemTypeId),
-                                    clientId: 1,
-                                    featureIds: selected_checkboxes
-                                        .toJS()
-                                        .map(item => parseInt(item))
-                                }
-                            }
-                        })
-                        .then(() => {
-                            console.log("CREATE SYSTEM SUCCEED");
-                        });
-                }}
-                render={({ errors, values, isSubmitting }) => {
+                        query: systemsByClientQuery,
+                        variables: { id: 1 }
+                    }
+                ]}
+            >
+                {(createSystem, { loading, error }) => {
                     return (
-                        <Form>
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between"
-                                }}
-                            >
-                                {this.renderAddSystemSection()}
+                        <Formik
+                            validationSchema={validationSchema}
+                            initialValues={{ aif_boolean: "yes" }}
+                            onSubmit={async (
+                                {
+                                    name,
+                                    aif_boolean: aif,
+                                    device_type: deviceTypeId,
+                                    numberOfDevices,
+                                    system_type: systemTypeId
+                                },
+                                { setSubmitting }
+                            ) => {
+                                const { selected_checkboxes } = this.state;
 
-                                {this.renderFeatureSection()}
-
-                                {this.renderListOfSystem()}
-                            </div>
-                            <div
-                                style={{
-                                    paddingBottom: "20px"
-                                }}
-                            >
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={
-                                        isSubmitting ||
-                                        Object.keys(errors).length > 0 ||
-                                        this.state.selected_checkboxes.toJS()
-                                            .length === 0
+                                createSystem({
+                                    variables: {
+                                        input: {
+                                            name,
+                                            aif: aif === "yes" ? true : false,
+                                            deviceTypeId: parseInt(
+                                                deviceTypeId
+                                            ),
+                                            numberOfDevices: parseInt(
+                                                numberOfDevices
+                                            ),
+                                            systemTypeId: parseInt(
+                                                systemTypeId
+                                            ),
+                                            clientId: 1,
+                                            featureIds: selected_checkboxes
+                                                .toJS()
+                                                .map(item => parseInt(item))
+                                        }
                                     }
-                                >
-                                    CONFIRM & CONTINUE
-                                </Button>
-                            </div>
-                        </Form>
+                                }).then(() => {
+                                    console.log("CREATE SYSTEM SUCCEED");
+                                });
+                            }}
+                            render={({ errors, values, isSubmitting }) => {
+                                return (
+                                    <Form>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "space-between"
+                                            }}
+                                        >
+                                            {this.renderAddSystemSection()}
+
+                                            {this.renderFeatureSection()}
+
+                                            {this.renderListOfSystem()}
+                                        </div>
+                                        <div
+                                            style={{
+                                                paddingBottom: "20px"
+                                            }}
+                                        >
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                disabled={
+                                                    isSubmitting ||
+                                                    Object.keys(errors).length >
+                                                        0 ||
+                                                    this.state.selected_checkboxes.toJS()
+                                                        .length === 0
+                                                }
+                                            >
+                                                CONFIRM & CONTINUE
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                );
+                            }}
+                        />
                     );
                 }}
-            />
+            </Mutation>
         );
     }
 }
@@ -469,5 +509,10 @@ export default compose(
     graphql(getDeviceTypes, { name: "getDeviceTypes" }),
     graphql(getSystemTypes, { name: "getSystemTypes" }),
     graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
-    graphql(CREATE_SYSTEM(), { name: "createSystem" })
+    graphql(systemsByClientQuery, {
+        options: ownProps => ({
+            variables: { id: 1 }
+        }),
+        name: "systemsByClient"
+    })
 )(WizardCreateClientPageFour);

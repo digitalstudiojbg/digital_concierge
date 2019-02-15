@@ -1,6 +1,6 @@
 import { getCurrentUserQuery } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
-import { getSystemsFromUser } from "./system";
+import { getSystemsFromUser, systemsByClientQuery } from "./system";
 import {
     getClientFromUser,
     getAllClients,
@@ -34,5 +34,6 @@ export {
     getDeviceTypes,
     getSystemTypes,
     getFeatures,
-    getFeaturesByCategories
+    getFeaturesByCategories,
+    systemsByClientQuery
 };
