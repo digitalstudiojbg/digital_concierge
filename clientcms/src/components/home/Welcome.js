@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
     COLOR_JBG_PURPLE,
@@ -11,159 +11,270 @@ import { isEmpty } from "lodash";
 import { Redirect } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
+import styled from "styled-components";
 
-class Welcome extends Component {
-    render() {
-        const SELECT_FONT_STYLE = {
-            textAlign: "center",
-            fontSize: "1.5em",
-            height: "50px",
-            lineHeight: "50px",
-            fontWeight: "bold",
-            color: COLOR_JBG_PURPLE
-        };
-        const { client } = this.props;
-        const { getCurrentUser: user } = client.readQuery({
-            query
-        });
-        const { has_tablet, has_touchscreen } = user.client;
+const ContainerDiv = styled.div`
+    width: 100vw;
+    height: calc(100vh - 80px);
+    position: relative;
+    display: flex;
+`;
 
-        if (has_tablet && !has_touchscreen)
-            return (
-                <Redirect
-                    to={{
-                        pathname: SYSTEM_CMS_INDEX_URL
-                    }}
-                />
-            );
+const SidebarDiv = styled.div`
+    width: 350px;
+    background-color: rgb(252, 252, 252);
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 
-        if (!has_tablet && has_touchscreen)
-            return (
-                <Redirect
-                    to={{
-                        pathname: TOUCHSCREEN_CMS_INDEX_URL
-                    }}
-                />
-            );
+const ContentDiv = styled.div`
+    width: calc(100vw - 350px);
+`;
 
-        return (
-            <div
-                style={{
-                    width: "100vw",
-                    height: `calc(100vh - 80px)`,
-                    position: "relative",
-                    backgroundColor: "rgb(247,247,247)"
-                }}
-            >
-                <div
+const SidebarSelected = styled.div`
+    width: 100%;
+    background: rgb(113, 113, 113);
+    color: white;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+`;
+
+const SidebarNormal = styled.div`
+    width: 100%;
+    background: white;
+    color: black;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+`;
+
+// class Welcome extends Component {
+//     render() {
+//         const SELECT_FONT_STYLE = {
+//             textAlign: "center",
+//             fontSize: "1.5em",
+//             height: "50px",
+//             lineHeight: "50px",
+//             fontWeight: "bold",
+//             color: COLOR_JBG_PURPLE
+//         };
+//         const { client } = this.props;
+//         const { getCurrentUser: user } = client.readQuery({
+//             query
+//         });
+//         const { has_tablet, has_touchscreen } = user.client;
+
+//         if (has_tablet && !has_touchscreen)
+//             return (
+//                 <Redirect
+//                     to={{
+//                         pathname: SYSTEM_CMS_INDEX_URL
+//                     }}
+//                 />
+//             );
+
+//         if (!has_tablet && has_touchscreen)
+//             return (
+//                 <Redirect
+//                     to={{
+//                         pathname: TOUCHSCREEN_CMS_INDEX_URL
+//                     }}
+//                 />
+//             );
+
+//         return (
+//             <div
+//                 style={{
+//                     width: "100vw",
+//                     height: `calc(100vh - 80px)`,
+//                     position: "relative",
+//                     backgroundColor: "rgb(247,247,247)"
+//                 }}
+//             >
+//                 <div
+//                     style={{
+//                         margin: "auto",
+//                         position: "absolute",
+//                         top: "50%",
+//                         left: "50%",
+//                         transform: "translate(-50%, -50%)"
+//                     }}
+//                 >
+//                     <p
+//                         style={{
+//                             color: COLOR_JBG_PURPLE,
+//                             textAlign: "center",
+//                             textTransform: "uppercase",
+//                             fontSize: "1.8em",
+//                             fontWeight: "bold"
+//                         }}
+//                     >
+//                         PLEASE SELECT WHICH PLATFORM TO EDIT
+//                     </p>
+
+//                     <div
+//                         style={{
+//                             display: "flex",
+//                             flexDirection: "row",
+//                             flexWrap: "nowrap",
+//                             justifyContent: "center",
+//                             alignItems: "center",
+//                             alignContent: "center"
+//                         }}
+//                     >
+//                         {!isEmpty(user) && has_tablet && (
+//                             <Link
+//                                 to={SYSTEM_CMS_INDEX_URL}
+//                                 style={{
+//                                     textDecoration: "none",
+//                                     margin: "10px",
+//                                     backgroundColor: "white"
+//                                 }}
+//                             >
+//                                 <div className="welcome_page_selection_image_container">
+//                                     <img
+//                                         className="welcome_page_selection_image_container_image"
+//                                         src="https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/welcome_page_tablet_small.png"
+//                                         alt="welcome_page_tablet_small"
+//                                     />
+//                                     <div className="welcome_page_selection_image_container_middle">
+//                                         <Button
+//                                             variant="contained"
+//                                             type="submit"
+//                                             color="primary"
+//                                             style={{
+//                                                 width: "200px",
+//                                                 color: "white",
+//                                                 fontSize: "1.3em",
+//                                                 backgroundColor: COLOR_JBG_PURPLE
+//                                             }}
+//                                         >
+//                                             EDIT
+//                                         </Button>
+//                                     </div>
+//                                 </div>
+//                                 <p style={SELECT_FONT_STYLE}>
+//                                     DIGITAL COMPENDIUM
+//                                 </p>
+//                             </Link>
+//                         )}
+
+//                         {!isEmpty(user) && has_touchscreen && (
+//                             <Link
+//                                 to={TOUCHSCREEN_CMS_INDEX_URL}
+//                                 style={{
+//                                     textDecoration: "none",
+//                                     margin: "10px",
+//                                     backgroundColor: "white"
+//                                 }}
+//                             >
+//                                 <div className="welcome_page_selection_image_container">
+//                                     <img
+//                                         className="welcome_page_selection_image_container_image"
+//                                         src="https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/welcome_page_touchscreen_small.png"
+//                                         alt="welcome_page_tablet_small"
+//                                     />
+//                                     <div className="welcome_page_selection_image_container_middle">
+//                                         <Button
+//                                             variant="contained"
+//                                             type="submit"
+//                                             color="primary"
+//                                             style={{
+//                                                 width: "200px",
+//                                                 color: "white",
+//                                                 fontSize: "1.3em",
+//                                                 backgroundColor: COLOR_JBG_PURPLE
+//                                             }}
+//                                         >
+//                                             EDIT
+//                                         </Button>
+//                                     </div>
+//                                 </div>
+//                                 <p style={SELECT_FONT_STYLE}>
+//                                     DIGITAL CONCIERGE
+//                                 </p>
+//                             </Link>
+//                         )}
+//                     </div>
+//                 </div>
+//             </div>
+//         );
+//     }
+// }
+
+const WelcomeSystems = React.lazy(() => import("./WelcomeSystems"));
+
+const SIDEBAR_BUTTONS = [
+    { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
+    { id: "account", name: "ACCOUNT", component: "WelcomeAccount" },
+    { id: "theme", name: "THEME SETTINGS", component: "WelcomeSystems" },
+    { id: "users", name: "USERS & STRUCTURES", component: "WelcomeSystems" },
+    { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
+];
+
+export const Welcome = ({ client }) => {
+    const [selected, setSelected] = useState("systems");
+
+    const { getCurrentUser: user } = client.readQuery({ query });
+    const { component: SelectedComponent } = SIDEBAR_BUTTONS.find(
+        ({ id }) => id === selected
+    );
+
+    const handleClickSidebar = event => {
+        setSelected(event.target.id);
+    };
+
+    console.log(user);
+    return (
+        <ContainerDiv>
+            <SidebarDiv>
+                {user.client && user.client.avatar && (
+                    <img
+                        src={user.client.avatar}
+                        style={{
+                            marginTop: "5vh",
+                            width: "50%",
+                            marginBottom: "5vh"
+                        }}
+                        alt={`${user.client.name} avatar`}
+                    />
+                )}
+                <p
                     style={{
-                        margin: "auto",
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)"
+                        fontWeight: "700",
+                        fontSize: "2em",
+                        marginBottom: 20
                     }}
                 >
-                    <p
-                        style={{
-                            color: COLOR_JBG_PURPLE,
-                            textAlign: "center",
-                            textTransform: "uppercase",
-                            fontSize: "1.8em",
-                            fontWeight: "bold"
-                        }}
-                    >
-                        PLEASE SELECT WHICH PLATFORM TO EDIT
-                    </p>
-
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            flexWrap: "nowrap",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            alignContent: "center"
-                        }}
-                    >
-                        {!isEmpty(user) && has_tablet && (
-                            <Link
-                                to={SYSTEM_CMS_INDEX_URL}
-                                style={{
-                                    textDecoration: "none",
-                                    margin: "10px",
-                                    backgroundColor: "white"
-                                }}
+                    ADMIN CONSOLE
+                </p>
+                {SIDEBAR_BUTTONS.map(({ id, name }) => (
+                    <React.Fragment key={id}>
+                        {selected === id ? (
+                            <SidebarSelected
+                                id={id}
+                                onClick={handleClickSidebar}
                             >
-                                <div className="welcome_page_selection_image_container">
-                                    <img
-                                        className="welcome_page_selection_image_container_image"
-                                        src="https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/welcome_page_tablet_small.png"
-                                        alt="welcome_page_tablet_small"
-                                    />
-                                    <div className="welcome_page_selection_image_container_middle">
-                                        <Button
-                                            variant="contained"
-                                            type="submit"
-                                            color="primary"
-                                            style={{
-                                                width: "200px",
-                                                color: "white",
-                                                fontSize: "1.3em",
-                                                backgroundColor: COLOR_JBG_PURPLE
-                                            }}
-                                        >
-                                            EDIT
-                                        </Button>
-                                    </div>
-                                </div>
-                                <p style={SELECT_FONT_STYLE}>
-                                    DIGITAL COMPENDIUM
-                                </p>
-                            </Link>
+                                {name}
+                            </SidebarSelected>
+                        ) : (
+                            <SidebarNormal id={id} onClick={handleClickSidebar}>
+                                {name}
+                            </SidebarNormal>
                         )}
-
-                        {!isEmpty(user) && has_touchscreen && (
-                            <Link
-                                to={TOUCHSCREEN_CMS_INDEX_URL}
-                                style={{
-                                    textDecoration: "none",
-                                    margin: "10px",
-                                    backgroundColor: "white"
-                                }}
-                            >
-                                <div className="welcome_page_selection_image_container">
-                                    <img
-                                        className="welcome_page_selection_image_container_image"
-                                        src="https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/welcome_page_touchscreen_small.png"
-                                        alt="welcome_page_tablet_small"
-                                    />
-                                    <div className="welcome_page_selection_image_container_middle">
-                                        <Button
-                                            variant="contained"
-                                            type="submit"
-                                            color="primary"
-                                            style={{
-                                                width: "200px",
-                                                color: "white",
-                                                fontSize: "1.3em",
-                                                backgroundColor: COLOR_JBG_PURPLE
-                                            }}
-                                        >
-                                            EDIT
-                                        </Button>
-                                    </div>
-                                </div>
-                                <p style={SELECT_FONT_STYLE}>
-                                    DIGITAL CONCIERGE
-                                </p>
-                            </Link>
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
+                    </React.Fragment>
+                ))}
+            </SidebarDiv>
+            <ContentDiv>
+                <React.Suspense>
+                    <SelectedComponent />
+                </React.Suspense>
+            </ContentDiv>
+        </ContainerDiv>
+    );
+};
 
 export default withApollo(Welcome);
