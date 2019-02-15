@@ -12,8 +12,7 @@ import {
     TextField,
     fieldToTextField,
     Select,
-    RadioGroup,
-    Checkbox
+    RadioGroup
 } from "formik-material-ui";
 import styled from "styled-components";
 import {
@@ -21,14 +20,16 @@ import {
     Radio,
     Button,
     InputLabel,
-    MenuItem
+    MenuItem,
+    Checkbox
 } from "@material-ui/core";
+import { Set } from "immutable";
 
 const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
 
-const PermissionContainer = styled.div`
+const FeatureContainer = styled.div`
     display: flex;
     font-size: 14px;
     transition: all 0.3s ease-in-out;
@@ -72,6 +73,29 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
 };
 
 class WizardCreateClientPageFour extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected_checkboxes: Set()
+        };
+    }
+
+    handleFeatures(id) {
+        const { selected_checkboxes } = this.state;
+
+        if (selected_checkboxes.includes(id)) {
+            //Remove from selected checkboxes
+            this.setState({
+                selected_checkboxes: selected_checkboxes.delete(id)
+            });
+        } else {
+            //Add to selected checkboxes
+            this.setState({
+                selected_checkboxes: selected_checkboxes.add(id)
+            });
+        }
+    }
+
     renderAddSystemSection() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
@@ -169,17 +193,32 @@ class WizardCreateClientPageFour extends React.Component {
                     padding: "20px 20px 20px 0"
                 }}
             >
-                <h1>Feature</h1>
+                <h1>All Client System</h1>
             </div>
         );
+    }
+
+    getAllFeatureId() {
+        const {
+            getFeaturesByCategories: { featureCategories = {} } = {}
+        } = this.props;
+
+        let output = [];
+
+        featureCategories.length > 0 &&
+            featureCategories.map(eachCategory => {
+                eachCategory.features.map(({ id }) => {
+                    output.push(id);
+                });
+            });
+        return output;
     }
 
     renderFeatureSection() {
         const {
             getFeaturesByCategories: { featureCategories = {} } = {}
         } = this.props;
-        console.log(featureCategories);
-
+        const { selected_checkboxes } = this.state;
         return (
             <div
                 style={{
@@ -187,7 +226,7 @@ class WizardCreateClientPageFour extends React.Component {
                     padding: "20px 20px 20px 0"
                 }}
             >
-                <h1>All Client System</h1>
+                <h1>Features</h1>
                 <div
                     style={{
                         display: "flex",
@@ -197,27 +236,48 @@ class WizardCreateClientPageFour extends React.Component {
                     <div style={{ width: "30%" }} />
                     <div style={{ width: "70%", paddingLeft: "10px" }}>
                         <FormControlLabel
+                            name="all_features"
                             control={
-                                <Field
-                                    id="all_features"
-                                    name="all_features"
-                                    label="ALL FEATURES"
-                                    required={true}
+                                <Checkbox
                                     color="primary"
-                                    component={Checkbox}
-                                    variant="outlined"
-                                    fullWidth={true}
+                                    checked={
+                                        selected_checkboxes.size ===
+                                            this.getAllFeatureId().length &&
+                                        selected_checkboxes.size !== 0
+                                    }
+                                    onChange={() => {
+                                        if (
+                                            selected_checkboxes.size !==
+                                            this.getAllFeatureId().length
+                                        ) {
+                                            this.setState({
+                                                selected_checkboxes: selected_checkboxes.union(
+                                                    this.getAllFeatureId()
+                                                )
+                                            });
+                                        } else {
+                                            this.setState({
+                                                selected_checkboxes: Set()
+                                            });
+                                        }
+                                    }}
                                 />
                             }
                             label="ALL FEATURES"
                         />
                     </div>
                 </div>
-
                 {featureCategories.length > 0 &&
                     featureCategories.map(eachCategory => {
+                        let featureIdPerCategory = [];
+
+                        eachCategory.features.length > 0 &&
+                            eachCategory.features.map(({ id }) => {
+                                featureIdPerCategory.push(id);
+                            });
+
                         return (
-                            <PermissionContainer>
+                            <FeatureContainer>
                                 <div style={{ width: "30%" }}>
                                     <p
                                         style={{
@@ -239,37 +299,23 @@ class WizardCreateClientPageFour extends React.Component {
                                 >
                                     <ul style={{ listStyleType: "none" }}>
                                         {eachCategory.features.map(
-                                            eachfeature => {
+                                            ({ id, name }) => {
                                                 return (
                                                     <li>
                                                         <FormControlLabel
                                                             control={
-                                                                <Field
-                                                                    id={
-                                                                        eachfeature.name
-                                                                    }
-                                                                    name={
-                                                                        eachfeature.name
-                                                                    }
-                                                                    label={
-                                                                        eachfeature.name
-                                                                    }
-                                                                    required={
-                                                                        true
-                                                                    }
+                                                                <Checkbox
                                                                     color="primary"
-                                                                    component={
-                                                                        Checkbox
-                                                                    }
-                                                                    variant="outlined"
-                                                                    fullWidth={
-                                                                        true
-                                                                    }
+                                                                    checked={selected_checkboxes.includes(
+                                                                        id
+                                                                    )}
+                                                                    onChange={this.handleFeatures.bind(
+                                                                        this,
+                                                                        id
+                                                                    )}
                                                                 />
                                                             }
-                                                            label={
-                                                                eachfeature.name
-                                                            }
+                                                            label={name}
                                                         />
                                                     </li>
                                                 );
@@ -281,16 +327,32 @@ class WizardCreateClientPageFour extends React.Component {
                                                 justifyContent: "space-around"
                                             }}
                                         >
-                                            <SelectUnselectButton>
+                                            <SelectUnselectButton
+                                                onClick={() => {
+                                                    this.setState({
+                                                        selected_checkboxes: selected_checkboxes.union(
+                                                            featureIdPerCategory
+                                                        )
+                                                    });
+                                                }}
+                                            >
                                                 Select All
                                             </SelectUnselectButton>
-                                            <SelectUnselectButton>
+                                            <SelectUnselectButton
+                                                onClick={() => {
+                                                    this.setState({
+                                                        selected_checkboxes: selected_checkboxes.subtract(
+                                                            featureIdPerCategory
+                                                        )
+                                                    });
+                                                }}
+                                            >
                                                 Unselect All
                                             </SelectUnselectButton>
                                         </div>
                                     </ul>
                                 </div>
-                            </PermissionContainer>
+                            </FeatureContainer>
                         );
                     })}
             </div>
@@ -321,7 +383,6 @@ class WizardCreateClientPageFour extends React.Component {
 
         if (systemTypes.length < 0 && deviceTypes < 0 && featureCategories < 0)
             return <Loading />;
-        console.log(featureCategories);
 
         return (
             <Formik
@@ -331,7 +392,6 @@ class WizardCreateClientPageFour extends React.Component {
                     console.log(values);
                 }}
                 render={({ errors, values, isSubmitting }) => {
-                    console.log(errors);
                     return (
                         <Form>
                             <div
