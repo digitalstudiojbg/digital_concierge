@@ -1,8 +1,9 @@
 import { getCurrentUserQuery } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
-import { getSystemsFromUser } from "./system";
+import { getSystemsFromUser, getSystemsFromClient } from "./system";
 import {
     getClientFromUser,
+    getClientDetail,
     getAllClients,
     getClientImageById,
     getNewCreatedClientId
@@ -19,7 +20,9 @@ export {
     getCurrentUserQuery,
     getDirectoryListBySystem,
     getSystemsFromUser,
+    getSystemsFromClient,
     getClientFromUser,
+    getClientDetail,
     getAllClients,
     getCountryList,
     getSelectedCountry,

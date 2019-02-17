@@ -39,7 +39,7 @@ const Welcome = lazy(() => import("./Welcome.js"));
 
 const routes = [
     {
-        path: WELCOME_URL,
+        path: WELCOME_URL + "/:client_id",
         exact: true,
         header: Header,
         main: Welcome,

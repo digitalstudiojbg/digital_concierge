@@ -29,21 +29,15 @@ export const getClientFromUser = gql`
                 id
                 number
                 file
-                package
                 active
-                term_month
                 renewal_date
-                annual_fee
             }
             contracts {
                 id
                 number
                 file
-                package
                 active
-                term_month
                 renewal_date
-                annual_fee
             }
             postal_state {
                 id
@@ -54,6 +48,69 @@ export const getClientFromUser = gql`
                 name
             }
             media {
+                id
+                name
+            }
+            systems {
+                id
+                name
+            }
+        }
+    }
+`;
+
+export const getClientDetail = gql`
+    query get_client_detail($id: ID!) {
+        client(id: $id) {
+            name
+            full_company_name
+            nature_of_business
+            venue_address
+            venue_city
+            venue_zip_code
+            postal_address
+            postal_city
+            postal_zip_code
+            phone
+            email
+            active
+            number_of_users
+            avatar
+            contacts {
+                id
+                name
+                title
+                phone
+                mobile
+                email
+            }
+            active_contract {
+                id
+                number
+                file
+                active
+                renewal_date
+            }
+            contracts {
+                id
+                number
+                file
+                active
+                renewal_date
+            }
+            postal_state {
+                id
+                name
+            }
+            venue_state {
+                id
+                name
+            }
+            media {
+                id
+                name
+            }
+            systems {
                 id
                 name
             }

@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+// import {
+//     COLOR_JBG_PURPLE,
+//     SYSTEM_CMS_INDEX_URL,
+//     TOUCHSCREEN_CMS_INDEX_URL
+// } from "../../utils/Constants";
+// import "./Welcome.css";
+// import Button from "@material-ui/core/Button";
+// import { isEmpty } from "lodash";
+// import { Redirect } from "react-router";
+import Loading from "../loading/Loading";
 import {
-    COLOR_JBG_PURPLE,
-    SYSTEM_CMS_INDEX_URL,
-    TOUCHSCREEN_CMS_INDEX_URL
-} from "../../utils/Constants";
-import "./Welcome.css";
-import Button from "@material-ui/core/Button";
-import { isEmpty } from "lodash";
-import { Redirect } from "react-router";
-import { getCurrentUserQuery as query } from "../../data/query";
-import { withApollo } from "react-apollo";
+    getCurrentUserQuery as query,
+    getClientFromUser,
+    getClientDetail
+} from "../../data/query";
+import { withApollo, Query } from "react-apollo";
 import styled from "styled-components";
 
 const ContainerDiv = styled.div`
@@ -215,31 +220,37 @@ const SIDEBAR_BUTTONS = [
     { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
 ];
 
-export const Welcome = ({ client }) => {
-    const [selected, setSelected] = useState("systems");
+const renderWelcomeComponent = (
+    loading,
+    error,
+    data,
+    selected,
+    handleClickSidebar
+) => {
+    if (loading) return <Loading loadingData />;
+    if (error) return `Error! ${error.message}`;
+    const client =
+        Boolean(data) && Boolean(data.clientByUser)
+            ? data.clientByUser
+            : Boolean(data) && Boolean(data.client)
+            ? data.client
+            : {};
 
-    const { getCurrentUser: user } = client.readQuery({ query });
     const { component: SelectedComponent } = SIDEBAR_BUTTONS.find(
         ({ id }) => id === selected
     );
-
-    const handleClickSidebar = event => {
-        setSelected(event.target.id);
-    };
-
-    console.log(user);
     return (
-        <ContainerDiv>
+        <React.Fragment>
             <SidebarDiv>
-                {user.client && user.client.avatar && (
+                {client && client.avatar && (
                     <img
-                        src={user.client.avatar}
+                        src={client.avatar}
                         style={{
                             marginTop: "5vh",
                             width: "50%",
                             marginBottom: "5vh"
                         }}
-                        alt={`${user.client.name} avatar`}
+                        alt={`${client.name} avatar`}
                     />
                 )}
                 <p
@@ -270,9 +281,57 @@ export const Welcome = ({ client }) => {
             </SidebarDiv>
             <ContentDiv>
                 <React.Suspense>
-                    <SelectedComponent />
+                    <SelectedComponent data={client} />
                 </React.Suspense>
             </ContentDiv>
+        </React.Fragment>
+    );
+};
+
+export const Welcome = ({ client, match }) => {
+    const [selected, setSelected] = useState("systems");
+
+    const { getCurrentUser: user } = client.readQuery({ query });
+
+    const { params } = match || {};
+    const { client_id = "" } = params;
+
+    const handleClickSidebar = event => {
+        setSelected(event.target.id);
+    };
+
+    console.log(user);
+    return (
+        <ContainerDiv>
+            {Boolean(client_id) && client_id.length > 0 ? (
+                <Query query={getClientDetail} variables={{ id: client_id }}>
+                    {({ loading, error, data }) => (
+                        <React.Fragment>
+                            {renderWelcomeComponent(
+                                loading,
+                                error,
+                                data,
+                                selected,
+                                handleClickSidebar
+                            )}
+                        </React.Fragment>
+                    )}
+                </Query>
+            ) : (
+                <Query query={getClientFromUser}>
+                    {({ loading, error, data }) => (
+                        <React.Fragment>
+                            {renderWelcomeComponent(
+                                loading,
+                                error,
+                                data,
+                                selected,
+                                handleClickSidebar
+                            )}
+                        </React.Fragment>
+                    )}
+                </Query>
+            )}
         </ContainerDiv>
     );
 };

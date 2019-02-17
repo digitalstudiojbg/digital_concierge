@@ -10,3 +10,14 @@ export const getSystemsFromUser = gql`
         }
     }
 `;
+
+export const getSystemsFromClient = gql`
+    query get_systems_by_client($id: ID!) {
+        systemsByClient(id: $id) {
+            id
+            name
+            createdAt
+            updatedAt
+        }
+    }
+`;
