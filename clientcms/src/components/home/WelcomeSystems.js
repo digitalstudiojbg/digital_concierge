@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 // import { getSystemsFromUser, getSystemsFromClient } from "../../data/query";
 // import { Query, withApollo } from "react-apollo";
-import { Link } from "react-router-dom";
 // import Loading from "../loading/Loading";
+import { Link } from "react-router-dom";
+import AddIcon from "@material-ui/icons/Add";
 import { SYSTEM_INDEX_URL } from "../../utils/Constants";
+import { withStyles } from "@material-ui/core/styles";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -40,11 +42,19 @@ const system_entry_style = {
     textDecoration: "none",
     color: "black",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     fontSize: "1.7em",
     padding: 10
 };
+
+const styles = () => ({
+    addIcon: {
+        width: 64,
+        height: 64
+    }
+});
 
 // const renderSystems = (loading, error, data) => {
 //     if (loading) return <Loading loadingData />;
@@ -79,7 +89,7 @@ const system_entry_style = {
 //     );
 // };
 
-const WelcomeSystems = ({ data: { systems } }) => (
+const WelcomeSystems = ({ data: { name, systems }, classes }) => (
     <ContainerDiv>
         {/* {Boolean(clientId) && clientId.length > 0 ? (
             <Query query={getSystemsFromClient} variables={{ id: clientId }}>
@@ -111,6 +121,13 @@ const WelcomeSystems = ({ data: { systems } }) => (
                     {system.name}
                 </Link>
             ))}
+            <a
+                style={system_entry_style}
+                href={`mailto:laura@johnbatman.com.au?subject=${name} request for additional system(s)`}
+            >
+                REQUEST ADDITIONAL SYSTEM(S)
+                <AddIcon className={classes.addIcon} />
+            </a>
         </InnerContainerDiv>
     </ContainerDiv>
 );
@@ -196,4 +213,4 @@ WelcomeSystems.propTypes = {
     data: PropTypes.object.isRequired
 };
 
-export default WelcomeSystems;
+export default withStyles(styles)(WelcomeSystems);

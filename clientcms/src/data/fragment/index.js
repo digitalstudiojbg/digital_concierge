@@ -1,2 +1,3 @@
 import { directoryListFragment } from "./directoryList";
-export { directoryListFragment };
+import { clientDetailFragment } from "./client";
+export { directoryListFragment, clientDetailFragment };
