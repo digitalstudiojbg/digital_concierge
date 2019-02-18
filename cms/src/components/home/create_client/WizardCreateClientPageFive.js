@@ -5,16 +5,16 @@ import Loading from "../../loading/Loading";
 import SetupClientThemeAndLayout from "./five/SetupClientThemeAndLayout";
 import gql from "graphql-tag";
 
-export const WizardCreateClientPageFive = ({ next }) => {
+export const WizardCreateClientPageFive = ({ next, client }) => {
     let clientId = null;
     try {
-        clientId = this.props.client.readQuery({
+        clientId = client.readQuery({
             query: gql`
                 {
                     new_create_client_id @client
                 }
             `
-        });
+        }).new_create_client_id;
     } catch (error) {
         console.log(error);
         return (
@@ -26,7 +26,7 @@ export const WizardCreateClientPageFive = ({ next }) => {
     }
     return (
         <Query query={systemsByClientQuery} variables={{ id: clientId }}>
-            {({ loading, error, data: { sys: systems } }) => {
+            {({ loading, error, data: { systemsByClient: systems } }) => {
                 if (loading) return <Loading loadingData />;
                 if (error) return `Error! ${error.message}`;
                 console.log(systems);

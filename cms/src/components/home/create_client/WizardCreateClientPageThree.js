@@ -307,7 +307,7 @@ class WizardCreateClientPageThree extends React.Component {
                         new_create_client_id @client
                     }
                 `
-            });
+            }).new_create_client_id;
         } catch (error) {
             console.log(error);
             return (
@@ -330,7 +330,6 @@ class WizardCreateClientPageThree extends React.Component {
                 }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
-                    console.log(departments);
                     return (
                         <ContainerDiv>
                             <SectionDivContainer>
