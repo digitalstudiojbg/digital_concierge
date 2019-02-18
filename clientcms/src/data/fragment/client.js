@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 
 export const clientDetailFragment = gql`
     fragment clientDetail on Client {
+        id
         name
         full_company_name
         nature_of_business

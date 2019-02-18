@@ -209,6 +209,7 @@ export default {
             await db.layout.findByPk(defaultDirListLayoutId),
         defaultDirEntryLayout: async ({ defaultDirEntryLayoutId }) =>
             await db.layout.findByPk(defaultDirEntryLayoutId),
-        system: async ({ systemId }) => await db.system.findByPk(systemId)
+        system: async ({ systemId }) => await db.system.findByPk(systemId),
+        companyLogoURL: ({ companyLogo }) => companyLogo
     }
 };

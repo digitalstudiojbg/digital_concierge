@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { themeDetailFragment } from "../fragment";
 
 export const CREATE_THEMES = () => {
     return gql`
@@ -10,3 +11,13 @@ export const CREATE_THEMES = () => {
         }
     `;
 };
+
+export const UPDATE_THEMES = () =>
+    gql`
+        mutation updateThemes($input: [CreateThemeInput]) {
+            updateThemes(input: $input) {
+                ...themeDetail
+            }
+        }
+        ${themeDetailFragment}
+    `;

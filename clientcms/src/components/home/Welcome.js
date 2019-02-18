@@ -212,11 +212,12 @@ const SidebarNormal = styled.div`
 // }
 
 const WelcomeSystems = React.lazy(() => import("./WelcomeSystems"));
+const WelcomeTheme = React.lazy(() => import("./WelcomeTheme"));
 
 const SIDEBAR_BUTTONS = [
     { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
     { id: "account", name: "ACCOUNT", component: WelcomeAccount },
-    { id: "theme", name: "THEME SETTINGS", component: "WelcomeSystems" },
+    { id: "theme", name: "THEME SETTINGS", component: WelcomeTheme },
     { id: "users", name: "USERS & STRUCTURES", component: "WelcomeSystems" },
     { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
 ];
@@ -290,7 +291,7 @@ const renderWelcomeComponent = (
 };
 
 export const Welcome = ({ client, match }) => {
-    const [selected, setSelected] = useState("systems");
+    const [selected, setSelected] = useState("theme");
 
     const { getCurrentUser: user } = client.readQuery({ query });
 

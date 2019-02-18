@@ -5,6 +5,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout, getClientIdLocalStorage } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
+import "rc-color-picker/assets/index.css";
 import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,

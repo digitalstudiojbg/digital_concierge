@@ -8,11 +8,13 @@ export default gql`
 
     extend type Mutation {
         createThemes(input: [CreateThemeInput]): [Theme]
+        updateThemes(input: [CreateThemeInput]): [Theme]
     }
 
     type Theme {
         id: ID!
         companyLogo: URL
+        companyLogoURL: URL
         headerFont: String
         subHeaderFont: String
         bodyFont: String
