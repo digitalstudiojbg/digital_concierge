@@ -2,12 +2,12 @@ import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
-import { isLoggedIn, logout } from "../auth/auth";
+import { isLoggedIn, logout, getClientIdLocalStorage } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
+    SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL
@@ -16,12 +16,16 @@ import {
 const Home = lazy(() => import("./home/Home"));
 
 const routes = [
+    // {
+    //     path: WELCOME_URL,
+    //     component: Home
+    // },
     {
-        path: WELCOME_URL,
+        path: WELCOME_URL + "/:client_id",
         component: Home
     },
     {
-        path: TABLET_CMS_INDEX_URL,
+        path: SYSTEM_CMS_INDEX_URL,
         component: Home
     },
     {
@@ -38,7 +42,7 @@ class App extends Component {
 
     handleLogin() {
         this.setState({ loggedIn: true });
-        this.router.history.push(WELCOME_URL);
+        this.router.history.push(WELCOME_URL + "/" + getClientIdLocalStorage());
     }
 
     handleLogout() {

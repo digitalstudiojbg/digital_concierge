@@ -7,25 +7,31 @@ import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
-    TABLET_CMS_HOME_URL,
-    TABLET_CMS_LANDINGPAGE_URL,
+    SYSTEM_CMS_INDEX_URL,
+    SYSTEM_CMS_HOME_URL,
+    SYSTEM_CMS_LANDINGPAGE_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
-    TABLET_CMS_CONTENT_URL,
-    TABLET_CMS_SETTINGS_URL,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
-    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+    SYSTEM_CMS_CONTENT_URL,
+    SYSTEM_CMS_SETTINGS_URL,
+    SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
+    SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
 const TabletContent = lazy(() => import("../tablet/TabletContent"));
-const TabletCreateContent = lazy(() => import("../tablet/content/CreateContent"));
-const TabletCreateCategory = lazy(() => import("../tablet/content/CreateCategory"));
-const TabletCreateDirectory = lazy(() => import("../tablet/content/CreateDirectory"));
+const TabletCreateContent = lazy(() =>
+    import("../tablet/content/CreateContent")
+);
+const TabletCreateCategory = lazy(() =>
+    import("../tablet/content/CreateCategory")
+);
+const TabletCreateDirectory = lazy(() =>
+    import("../tablet/content/CreateDirectory")
+);
 
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
@@ -33,14 +39,14 @@ const Welcome = lazy(() => import("./Welcome.js"));
 
 const routes = [
     {
-        path: WELCOME_URL,
+        path: WELCOME_URL + "/:client_id",
         exact: true,
         header: Header,
         main: Welcome,
         withProps: {}
     },
     {
-        path: TABLET_CMS_INDEX_URL,
+        path: SYSTEM_CMS_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -48,7 +54,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_HOME_URL,
+        path: SYSTEM_CMS_HOME_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -56,7 +62,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_SETTINGS_URL,
+        path: SYSTEM_CMS_SETTINGS_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -64,7 +70,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CONTENT_URL,
+        path: SYSTEM_CMS_CONTENT_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -72,7 +78,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -80,7 +86,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -88,15 +94,15 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
         main: TabletCreateCategory,
-        withProps: { is_sub_category : true }
+        withProps: { is_sub_category: true }
     },
     {
-        path: TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL,
+        path: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,
@@ -104,7 +110,7 @@ const routes = [
         withProps: {}
     },
     {
-        path: TABLET_CMS_LANDINGPAGE_URL,
+        path: SYSTEM_CMS_LANDINGPAGE_URL,
         exact: true,
         sidebar: Sidebar,
         header: Header,

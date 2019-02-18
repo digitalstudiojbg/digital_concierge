@@ -1,12 +1,16 @@
 import React from "react";
+import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AddIcon from "@material-ui/icons/Add";
-import RemoveIcon from "@material-ui/icons/Remove";
+import CancelIcon from "@material-ui/icons/Cancel";
+import ExpandIcon from "@material-ui/icons/ChevronRight";
+import CompressIcon from "@material-ui/icons/ExpandMore";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import DirEntryIcon from "@material-ui/icons/Description";
+import EditIcon from "@material-ui/icons/Edit";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import styled from "styled-components";
 import Table from "@material-ui/core/Table";
@@ -18,14 +22,33 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    DECIMAL_RADIX
 } from "./Constants";
 import { Mutation } from "react-apollo";
-import { changeDirectoryAndCategoryStatus } from "../data/mutation";
+import {
+    changeDirectoryListAndEntryStatus,
+    DELETE_DIR_LIST_ENTRY
+} from "../data/mutation";
 import { getDirectoryListBySystem } from "../data/query";
 import { ClipLoader } from "react-spinners";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from "@material-ui/core/Typography";
+import Slide from "@material-ui/core/Slide";
+import Grid from "@material-ui/core/Grid";
 
-const styles = _theme => ({
+const styles = theme => ({
     buttonCreate: {
         color: "white",
         backgroundColor: "rgb(35,38,92)",
@@ -37,12 +60,14 @@ const styles = _theme => ({
         color: "white",
         backgroundColor: "rgb(35,38,92)",
         paddingLeft: "1px",
-        paddingRight: "1px"
+        paddingRight: "1px",
+        marginRight: 15
     },
     expansionButton: {
         color: "white",
         background: "rgb(155,157,183)",
-        borderRadius: 25
+        padding: 0,
+        margin: theme.spacing.unit * 0.1
     },
     icon: {
         fontSize: "small"
@@ -52,16 +77,37 @@ const styles = _theme => ({
         backgroundColor: "rgb(234,235,238)"
     },
     headerCol: {
-        color: "rgb(131,134,166)"
+        color: "rgb(131,134,166)",
+        width: "5%"
+    },
+    headerTitleCol: {
+        color: "rgb(131,134,166)",
+        width: "80%"
     },
     tableEntryRow: {
         backgroundColor: "rgb(246,246,246)"
     },
     tableEntryCol: {
-        color: "rgb(38,42,95)"
+        color: "rgb(38,42,95)",
+        width: "5%"
+    },
+    tableEntryTitleCol: {
+        color: "rgb(38,42,95)",
+        width: "80%"
     },
     tableCheckboxCol: {
-        width: 30
+        width: "5%"
+    },
+    buttonCreateLeftGrid: {
+        fontSize: "1.3em",
+        paddingRight: 10
+    },
+    buttonCreateRightGrid: {
+        height: "75%",
+        paddingLeft: 5,
+        paddingRight: 0,
+        paddingTop: 5,
+        borderLeft: "2px solid white"
     }
 });
 
@@ -74,6 +120,10 @@ const TreeEntry = styled.div`
     align-items: center;
 `;
 
+const SlideUpTransition = props => {
+    return <Slide direction="up" {...props} />;
+};
+
 class TreeView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -81,10 +131,24 @@ class TreeView extends React.PureComponent {
             expanded: [],
             selected_dir_lists: [],
             selected_dir_entries: [],
-            dataTree: null,
-            dirListOnlyDataTree: null
+            dataTree: [],
+            dirListOnlyDataTree: [],
+            dirEntryOnlyDataTree: [],
+            anchorEl: null,
+            anchorElCreate: null,
+            deleteModal: false
         };
-        this.navigateToCreateContent = this.navigateToCreateContent.bind(this);
+        this.navigateToDiffPage = this.navigateToDiffPage.bind(this);
+        this.handleOpenOptions = this.handleOpenOptions.bind(this);
+        this.handleCloseOptions = this.handleCloseOptions.bind(this);
+        this.handleOpenCreate = this.handleOpenCreate.bind(this);
+        this.handleCloseCreate = this.handleCloseCreate.bind(this);
+        this.openDeleteModal = this.openDeleteModal.bind(this);
+        this.closeDeleteModal = this.closeDeleteModal.bind(this);
+        this.deleteListEntryAction = this.deleteListEntryAction.bind(this);
+        this.sortDirectoryListBasedOnDepth = this.sortDirectoryListBasedOnDepth.bind(
+            this
+        );
     }
 
     componentDidMount() {
@@ -101,6 +165,9 @@ class TreeView extends React.PureComponent {
             dataTree: [...updated],
             dirListOnlyDataTree: [
                 ...updated.filter(item => Boolean(item.is_dir_list))
+            ],
+            dirEntryOnlyDataTree: [
+                ...updated.filter(item => Boolean(!item.is_dir_list))
             ]
         });
     }
@@ -120,6 +187,9 @@ class TreeView extends React.PureComponent {
                 dataTree: [...updated],
                 dirListOnlyDataTree: [
                     ...updated.filter(item => Boolean(item.is_dir_list))
+                ],
+                dirEntryOnlyDataTree: [
+                    ...updated.filter(item => Boolean(!item.is_dir_list))
                 ]
             });
         }
@@ -147,7 +217,8 @@ class TreeView extends React.PureComponent {
 
     //a function that attempts to retrieve all of the parent directory_list ids of a children
     //(the children could be a child directory list or a directory entry)
-    //via recursive function method
+    //via recursive function method the order of the array is from the direct parent and goes
+    //on to the grand parents, great-grandparents, etc.
     //
     //UPDATE: THIS FUNCTION IS NOT RELIABLE TO USE FOR DIRECTORY ENTRIES DUE TO
     //DIRECTORY ENTRY'S MANY TO MANY RELATIONSHIP WITH DIRECTORY LIST
@@ -161,6 +232,10 @@ class TreeView extends React.PureComponent {
                     entry.id === list_id && entry.is_dir_list === is_dir_list
                 );
             });
+            if (is_dir_list && foundItem.is_root) {
+                //Root item certainly do not have parent
+                return [];
+            }
             const possibleParents = Boolean(foundItem)
                 ? dataTree.filter(
                       entry =>
@@ -564,7 +639,7 @@ class TreeView extends React.PureComponent {
     }
 
     //Render expand or minimise icon on a directory list based on whether it is expanded or minimised
-    renderAddOrRemoveIcon(dir_list_id) {
+    renderExpandOrCompressIcon(dir_list_id) {
         const { expanded } = this.state;
         const { classes } = this.props;
         if (expanded.indexOf(dir_list_id) !== -1) {
@@ -574,7 +649,7 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.removeFromExpanded(dir_list_id)}
                 >
-                    <RemoveIcon className={classes.icon} />
+                    <CompressIcon fontSize="large" />
                 </IconButton>
             );
         } else {
@@ -584,13 +659,15 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.addToExpanded(dir_list_id)}
                 >
-                    <AddIcon className={classes.icon} />
+                    <ExpandIcon fontSize="large" />
                 </IconButton>
             );
         }
     }
 
     handleVisibleOrInvisible(row, action) {
+        const { system_id } = this.props.match.params;
+
         const toUpdateList = this.getItemAndAllChildItems(row, true);
 
         const toUpdateDirLists = toUpdateList.filter(element => {
@@ -613,7 +690,6 @@ class TreeView extends React.PureComponent {
         if (row.is_dir_list) {
             const parents = this.getParentItem(row.id, true);
 
-            let output = [];
             parents.forEach(parent => {
                 if (row.active === false) {
                     toUpdateDirListIds.push(parseInt(parent));
@@ -685,23 +761,29 @@ class TreeView extends React.PureComponent {
                 });
             }
         });
-
         action({
             variables: {
                 directoryEntryIdList: toUpdateDirEntryIds,
                 directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
-                status: !row.active
+                status: !row.active,
+                systemId: parseInt(system_id, DECIMAL_RADIX)
             }
         });
+        // console.log({
+        //     directoryEntryIdList: toUpdateDirEntryIds,
+        //     directoryListIdList: getAllUniqueItems(toUpdateDirListIds),
+        //     status: !row.active,
+        //     systemId
+        // });
     }
 
     renderCheck(row) {
         return (
             <Mutation
-                mutation={changeDirectoryAndCategoryStatus()}
+                mutation={changeDirectoryListAndEntryStatus()}
                 refetchQueries={[
                     {
-                        query: getDirectoryListBySystem()
+                        query: getDirectoryListBySystem
                     }
                 ]}
             >
@@ -764,6 +846,34 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
+                        <TableCell className={classes.tableEntryTitleCol}>
+                            <TreeEntry paddingSize={calculatedPaddingSize}>
+                                <div style={{ marginRight: 15 }}>
+                                    {this.renderExpandOrCompressIcon(
+                                        directory.id
+                                    )}
+                                </div>
+                                {directory.name}
+                            </TreeEntry>
+                        </TableCell>
+                        <TableCell>
+                            <EditIcon
+                                onClick={this.navigateToEditPage.bind(
+                                    this,
+                                    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+                                    this.modifyDataBeingSendToEditPage(
+                                        directory
+                                    )
+                                )}
+                            />
+                        </TableCell>
+                        <TableCell>{this.renderCheck(directory)}</TableCell>
+                        <TableCell>
+                            <MoreHorizontalIcon
+                                id={`dir_list-${directory.id}`}
+                                onClick={this.handleOpenOptions}
+                            />
+                        </TableCell>
                         <TableCell
                             padding="checkbox"
                             className={classes.tableCheckboxCol}
@@ -798,18 +908,6 @@ class TreeView extends React.PureComponent {
                                 }
                             />
                         </TableCell>
-                        <TableCell className={classes.tableEntryCol}>
-                            <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <div style={{ marginRight: 15 }}>
-                                    {this.renderAddOrRemoveIcon(directory.id)}
-                                </div>
-                                {directory.name}
-                            </TreeEntry>
-                        </TableCell>
-                        <TableCell>{this.renderCheck(directory)}</TableCell>
-                        <TableCell>
-                            <MoreHorizontalIcon />
-                        </TableCell>
                     </TableRow>
                     {is_expanded &&
                         toLoop.map((child_directory_item, index_directory) => {
@@ -824,12 +922,46 @@ class TreeView extends React.PureComponent {
         } else {
             //Just an empty parent directory list with no child directory list nor a directory entries. Another possibility is that the entry is a plain old directory entry
             const { selected_dir_lists, selected_dir_entries } = this.state;
+            const id_options_header = directory.is_dir_list
+                ? "dir_list"
+                : "dir_entry";
             //No more child, no need to recur any more
             return (
                 <TableRow
                     key={`${directory.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
+                    <TableCell className={classes.tableEntryTitleCol}>
+                        <TreeEntry paddingSize={calculatedPaddingSize}>
+                            <div
+                                style={{
+                                    marginLeft: 15,
+                                    width: `${approximateButtonSize}px`
+                                }}
+                            >
+                                {!directory.is_dir_list && <DirEntryIcon />}
+                            </div>
+                            {directory.name}
+                        </TreeEntry>
+                    </TableCell>
+                    <TableCell>
+                        <EditIcon
+                            onClick={this.navigateToEditPage.bind(
+                                this,
+                                directory.is_dir_list
+                                    ? SYSTEM_MODIFY_DIRECTORY_LIST_URL
+                                    : SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+                                this.modifyDataBeingSendToEditPage(directory)
+                            )}
+                        />
+                    </TableCell>
+                    <TableCell>{this.renderCheck(directory)}</TableCell>
+                    <TableCell>
+                        <MoreHorizontalIcon
+                            id={`${id_options_header}-${directory.id}`}
+                            onClick={this.handleOpenOptions}
+                        />
+                    </TableCell>
                     <TableCell
                         padding="checkbox"
                         className={classes.tableCheckboxCol}
@@ -878,21 +1010,6 @@ class TreeView extends React.PureComponent {
                             }
                         />
                     </TableCell>
-                    <TableCell className={classes.tableEntryCol}>
-                        <TreeEntry paddingSize={calculatedPaddingSize}>
-                            <div
-                                style={{
-                                    marginLeft: 15,
-                                    width: `${approximateButtonSize}px`
-                                }}
-                            />
-                            {directory.name}
-                        </TreeEntry>
-                    </TableCell>
-                    <TableCell>{this.renderCheck(directory)}</TableCell>
-                    <TableCell>
-                        <MoreHorizontalIcon />
-                    </TableCell>
                 </TableRow>
             );
         }
@@ -929,6 +1046,18 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
+                            <TableCell className={classes.headerTitleCol}>
+                                TITLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                EDIT
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                VISIBLE
+                            </TableCell>
+                            <TableCell className={classes.headerCol}>
+                                ACTIONS
+                            </TableCell>
                             <TableCell
                                 padding="checkbox"
                                 className={classes.tableCheckboxCol}
@@ -981,15 +1110,6 @@ class TreeView extends React.PureComponent {
                                     />
                                 )}
                             </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                TITLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                VISIBLE
-                            </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                ACTIONS
-                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -1004,14 +1124,267 @@ class TreeView extends React.PureComponent {
         }
     }
 
-    navigateToCreateContent() {
-        const { history } = this.props;
-        history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+    //Function to navigate to a difference page from create menu
+    navigateToDiffPage(url) {
+        const { history, match } = this.props;
+        this.setState({ anchorElCreate: null }, () => {
+            history.push(url.replace(":system_id", match.params.system_id));
+        });
+    }
+
+    //Function to navigate to edit page from edit icon
+    navigateToEditPage(pathname, data) {
+        const { history, match } = this.props;
+        history.push({
+            pathname: pathname.replace(":system_id", match.params.system_id),
+            state: { data }
+        });
+    }
+
+    //Function to open options menu
+    handleOpenOptions(event) {
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleCloseOptions() {
+        this.setState({ anchorEl: null });
+    }
+
+    //Function to close options menu and navigate to page based on selection
+    handleCloseOptionsAndNavigate(action = "") {
+        const {
+            preview_list_url,
+            preview_entry_url,
+            edit_list_url,
+            edit_entry_url,
+            delete_list_url,
+            delete_entry_url,
+            create_list_url,
+            create_entry_url,
+            history,
+            match
+        } = this.props;
+        const {
+            anchorEl,
+            dirEntryOnlyDataTree,
+            dirListOnlyDataTree
+        } = this.state;
+        // console.log(anchorEl.id);
+        const anchorElIdArray = anchorEl.id.split("-");
+        const directory =
+            anchorElIdArray[0] === "dir_list"
+                ? dirListOnlyDataTree.find(dir => dir.id === anchorElIdArray[1])
+                : dirEntryOnlyDataTree.find(
+                      dir => dir.id === anchorElIdArray[1]
+                  );
+        let pathname = null;
+        const dataToSend = this.modifyDataBeingSendToEditPage(directory);
+        switch (action) {
+            case "preview":
+                pathname = directory.is_dir_list
+                    ? preview_list_url
+                    : preview_entry_url;
+                break;
+            case "edit":
+                pathname = directory.is_dir_list
+                    ? edit_list_url
+                    : edit_entry_url;
+                break;
+            case "delete":
+                pathname = directory.is_dir_list
+                    ? delete_list_url
+                    : delete_entry_url;
+                break;
+            case "create":
+                pathname = directory.is_dir_list
+                    ? create_list_url
+                    : create_entry_url;
+                break;
+            default:
+                pathname = "";
+                break;
+        }
+        pathname = pathname.replace(":system_id", match.params.system_id);
+        this.setState({ anchorEl }, () => {
+            if (pathname.length > 0) {
+                history.push({ pathname, state: { data: dataToSend } });
+            }
+        });
+    }
+
+    //Open menu to show create menu
+    handleOpenCreate(event) {
+        this.setState({ anchorElCreate: event.currentTarget });
+    }
+
+    //Close menu to show create menu
+    handleCloseCreate() {
+        this.setState({ anchorElCreate: null });
+    }
+
+    //Open modal to prompt user to confirm deletion
+    openDeleteModal() {
+        this.setState({ deleteModal: true });
+    }
+
+    //Closing delete modal
+    closeDeleteModal() {
+        this.setState({ deleteModal: false });
+    }
+
+    //Deeper depth goes in first, lower depth goes in later
+    sortDirectoryListBasedOnDepth(directoryListIds) {
+        const { dirListOnlyDataTree } = this.state;
+        return [
+            ...directoryListIds.sort((list_id_1, list_id_2) => {
+                const { depth: depth_1 } = dirListOnlyDataTree.find(
+                    ({ id }) => id === list_id_1
+                );
+                const { depth: depth_2 } = dirListOnlyDataTree.find(
+                    ({ id }) => id === list_id_2
+                );
+
+                return depth_2 - depth_1;
+            })
+        ];
+    }
+
+    deleteListEntryAction(action) {
+        const { selected_dir_lists, selected_dir_entries } = this.state;
+
+        console.log(selected_dir_lists);
+        console.log(selected_dir_entries);
+
+        //Prepare directory list
+        const directoryListIdList = this.sortDirectoryListBasedOnDepth(
+            selected_dir_lists
+        ).map(each => parseInt(each, DECIMAL_RADIX));
+
+        console.log(directoryListIdList);
+
+        //Prepare directory entry
+        const directoryEntryIdList = selected_dir_entries.map(each => {
+            const parents = each.split("-");
+            const lastParentId = parents[parents.length - 2];
+            const entryId = parents[parents.length - 1];
+
+            return {
+                directoryEntryId: parseInt(entryId),
+                directoryListId: parseInt(lastParentId)
+            };
+        });
+
+        console.log(directoryEntryIdList);
+
+        action({
+            variables: {
+                directoryListIdList,
+                directoryEntryIdList,
+                systemId: parseInt(this.props.match.params.system_id)
+            }
+        });
+        this.setState({ deleteModal: false });
+    }
+
+    //Get all items that are checked
+    getAllCheckedItemNames() {
+        const {
+            dataTree,
+            dirListOnlyDataTree,
+            selected_dir_lists,
+            selected_dir_entries
+        } = this.state;
+        let excluded_dir_lists = [];
+        let excluded_dir_entries = [];
+        if (
+            selected_dir_lists.length + selected_dir_entries.length ===
+            dataTree.length
+        ) {
+            return ["ALL CONTENT"];
+        } else {
+            let output = [];
+            for (const dir_list_id of selected_dir_lists) {
+                if (!excluded_dir_lists.includes(dir_list_id)) {
+                    const category = dirListOnlyDataTree.find(
+                        cat => cat.id === dir_list_id
+                    );
+                    if (this.checkChildItemsSelected(category)) {
+                        const items = this.getItemAndAllChildItems(category);
+                        excluded_dir_lists = [
+                            ...excluded_dir_lists,
+                            ...items
+                                .filter(item => Boolean(item.is_category))
+                                .map(item => item.id)
+                        ];
+                        excluded_dir_entries = [
+                            ...excluded_dir_entries,
+                            ...items
+                                .filter(item => !Boolean(item.is_category))
+                                .map(item => item.hash_id)
+                        ];
+                        output = [
+                            ...output,
+                            `${category.name.toUpperCase()} & ALL ENTRIES`
+                        ];
+                    }
+                }
+            }
+            for (const hash_id of selected_dir_entries) {
+                if (!excluded_dir_entries.includes(hash_id)) {
+                    const { name } = dataTree
+                        .filter(item => !Boolean(item.is_category))
+                        .find(item => item.hash_id === hash_id);
+                    output = [...output, name.toUpperCase()];
+                }
+            }
+            return output;
+        }
+    }
+
+    //Modify data of the directory to remove unnecessary key values item
+    //For example child_directory & directory_entries
+    modifyDataBeingSendToEditPage(directory) {
+        const { is_dir_list, is_root = false } = directory;
+        if (is_dir_list) {
+            const {
+                child_directory_lists_key,
+                directory_entries_key
+            } = this.props;
+            const {
+                [child_directory_lists_key]: _unused_child_category_value,
+                [directory_entries_key]: _unused_directory_entries_value,
+                ...others
+            } = directory;
+            //If !directory.is_root need to get parent id
+            return is_root
+                ? { ...others }
+                : {
+                      ...others,
+                      parent_id: this.getParentItem(directory.id)[0]
+                  };
+        } else {
+            const { hash_id = "", ...others } = directory;
+            const hash_id_array = hash_id.split("-");
+            const parent_id =
+                hash_id_array.length > 1
+                    ? hash_id_array[hash_id_array.length - 2]
+                    : null;
+            return { ...others, parent_id };
+        }
     }
 
     render() {
-        const { classes, data } = this.props;
-        const { dataTree, dirListOnlyDataTree } = this.state;
+        const { classes, data, create_menu_bar, match } = this.props;
+        const { params = {} } = match;
+        const { system_id } = params;
+        const {
+            dataTree,
+            selected_dir_entries,
+            selected_dir_lists,
+            anchorEl,
+            anchorElCreate,
+            deleteModal
+        } = this.state;
         return (
             <React.Fragment>
                 <div
@@ -1019,37 +1392,207 @@ class TreeView extends React.PureComponent {
                         marginTop: 30,
                         marginBottom: 20,
                         display: "flex",
-                        width: "50%"
+                        flexDirection: "row-reverse",
+                        width: "100%"
                     }}
                 >
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.buttonCreate}
-                        onClick={this.navigateToCreateContent}
+                        className={classes.buttonDelete}
+                        disabled={
+                            selected_dir_entries.length +
+                                selected_dir_lists.length ===
+                            0
+                        }
+                        onClick={this.openDeleteModal}
                     >
-                        CREATE
+                        <DeleteIcon />
                     </Button>
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.buttonDelete}
+                        className={classes.buttonCreate}
+                        onClick={this.handleOpenCreate}
                     >
-                        <DeleteIcon />
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                        >
+                            <Grid
+                                item
+                                xs={10}
+                                className={classes.buttonCreateLeftGrid}
+                            >
+                                CREATE
+                            </Grid>
+                            <Grid
+                                item
+                                xs={2}
+                                className={classes.buttonCreateRightGrid}
+                            >
+                                <CompressIcon fontSize="small" />
+                            </Grid>
+                        </Grid>
                     </Button>
+                    <Menu
+                        id="simple-menu-create"
+                        anchorEl={anchorElCreate}
+                        open={Boolean(anchorElCreate)}
+                        onClose={this.handleCloseCreate}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "right"
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right"
+                        }}
+                    >
+                        {create_menu_bar.map(({ id, name, url }, index) => (
+                            <MenuItem
+                                key={`CREATE_MENU_BAR_${id}-${index}`}
+                                className={classes.menuItemStyle}
+                                onClick={this.navigateToDiffPage.bind(
+                                    this,
+                                    url.replace(":system_id", system_id)
+                                )}
+                            >
+                                {name}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </div>
 
                 {Boolean(data) &&
                     Array.isArray(data) &&
                     data.length > 0 &&
                     Boolean(dataTree) &&
-                    dataTree.length > 0 &&
-                    Boolean(dirListOnlyDataTree) &&
-                    dirListOnlyDataTree.length > 0 && (
+                    dataTree.length > 0 && (
                         <React.Fragment>
                             {this.renderDirectories()}
+                            <Menu
+                                id="simple-menu"
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={this.handleCloseOptions}
+                                anchorOrigin={{
+                                    vertical: "bottom",
+                                    horizontal: "left"
+                                }}
+                                transformOrigin={{
+                                    vertical: "top",
+                                    horizontal: "right"
+                                }}
+                            >
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "preview"
+                                    )}
+                                >
+                                    PREVIEW
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "edit"
+                                    )}
+                                >
+                                    EDIT
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "delete"
+                                    )}
+                                >
+                                    DELETE
+                                </MenuItem>
+                                <MenuItem
+                                    className={classes.menuItemStyle}
+                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                        this,
+                                        "create"
+                                    )}
+                                >
+                                    ADD NEW
+                                </MenuItem>
+                            </Menu>
                         </React.Fragment>
                     )}
+                <Dialog
+                    open={deleteModal}
+                    TransitionComponent={SlideUpTransition}
+                    keepMounted
+                    onClose={this.closeDeleteModal}
+                >
+                    <DialogTitle>
+                        <Typography
+                            classes={{
+                                root: classes.customDialogTitle
+                            }}
+                        >
+                            ARE YOU SURE YOU WANT TO DELETE?
+                        </Typography>
+                    </DialogTitle>
+                    <DialogContent>
+                        <List>
+                            {this.getAllCheckedItemNames().map(
+                                (item, index) => (
+                                    <ListItem key={index}>
+                                        <ListItemIcon>
+                                            <CancelIcon />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={item}
+                                            classes={{
+                                                primary:
+                                                    classes.customDialogText
+                                            }}
+                                        />
+                                    </ListItem>
+                                )
+                            )}
+                        </List>
+                    </DialogContent>
+                    <DialogActions>
+                        <Mutation mutation={DELETE_DIR_LIST_ENTRY()}>
+                            {(action, { loading, error }) => {
+                                if (loading)
+                                    return (
+                                        <ClipLoader
+                                            sizeUnit={"px"}
+                                            size={24}
+                                            color={"rgba(0, 0, 0, 0.87)"}
+                                            loading={loading}
+                                        />
+                                    );
+                                if (error) return `Error! ${error.message}`;
+
+                                return (
+                                    <Button
+                                        onClick={() => {
+                                            this.deleteListEntryAction(action);
+                                        }}
+                                        color="primary"
+                                    >
+                                        YES
+                                    </Button>
+                                );
+                            }}
+                        </Mutation>
+
+                        <Button onClick={this.closeDeleteModal} color="primary">
+                            NO
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </React.Fragment>
         );
     }
@@ -1057,13 +1600,58 @@ class TreeView extends React.PureComponent {
 
 TreeView.defaultProps = {
     child_directory_lists_key: "child_directory_lists",
-    directory_entries_key: "directory_entries"
+    directory_entries_key: "directory_entries",
+    create_menu_bar: [
+        {
+            id: 1,
+            name: "DIRECTORY LIST ENTRY",
+            url: SYSTEM_MODIFY_DIRECTORY_LIST_URL
+        },
+        {
+            id: 3,
+            name: "DIRECTORY ENTRY",
+            url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
+        },
+        {
+            id: 4,
+            name: "POPUP WINDOW",
+            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+        },
+        {
+            id: 5,
+            name: "GALLERY PAGE",
+            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+        }
+    ],
+    preview_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    preview_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    edit_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    edit_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    delete_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    delete_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    create_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    create_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
 };
 
 TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     child_directory_lists_key: PropTypes.string,
-    directory_entries_key: PropTypes.string
+    directory_entries_key: PropTypes.string,
+    create_menu_bar: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            url: PropTypes.string.isRequired
+        })
+    ),
+    preview_list_url: PropTypes.string,
+    preview_entry_url: PropTypes.string,
+    edit_list_url: PropTypes.string,
+    edit_entry_url: PropTypes.string,
+    delete_list_url: PropTypes.string,
+    delete_entry_url: PropTypes.string,
+    create_list_url: PropTypes.string,
+    create_entry_url: PropTypes.string
 };
 
-export default withStyles(styles)(TreeView);
+export default withRouter(withStyles(styles)(TreeView));

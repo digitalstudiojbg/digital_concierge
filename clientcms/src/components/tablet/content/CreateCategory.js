@@ -2,7 +2,7 @@ import React from "react";
 import {
     ContainerDiv,
     CreateContentContainerDiv,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
+    SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
     modifyDirectoryListData
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
@@ -90,7 +90,7 @@ class CreateCategory extends React.PureComponent {
     navigateAway() {
         const { history } = this.props;
         this.setState({ openDialog: false }, () => {
-            history.push(TABLET_CMS_CREATE_CONTENT_INDEX_URL);
+            history.push(SYSTEM_CMS_CREATE_CONTENT_INDEX_URL);
         });
     }
 

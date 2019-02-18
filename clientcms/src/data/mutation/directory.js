@@ -1,52 +1,18 @@
 import gql from "graphql-tag";
 
-export const changeDirectoryStatus = () => {
+export const changeDirectoryListAndEntryStatus = () => {
     return gql`
-        mutation changeDirectoryStatus(
-            $tbDirectoryId: Int!
-            $tbCategoryId: Int!
+        mutation changeDirectoryListAndEntryStatus(
+            $directoryEntryIdList: [Dir_Entry_And_List_Change_Status_Request]
+            $directoryListIdList: [Int]
             $status: Boolean
+            $systemId: Int
         ) {
-            changeDirectoryStatus(
-                tbDirectoryId: $tbDirectoryId
-                tbCategoryId: $tbCategoryId
+            changeDirectoryListAndEntryStatus(
+                directoryEntryIdList: $directoryEntryIdList
+                directoryListIdList: $directoryListIdList
                 status: $status
-            ) {
-                id
-                name
-            }
-        }
-    `;
-};
-
-export const changeDirectoryAndCategoryStatus = () => {
-    /*return gql`
-        mutation changeDirectoryAndCategoryStatus(
-            $tbDirectoryIdList: [directory_category_request]
-            $tbCategoryIdList: [Int]
-            $status: Boolean
-        ) {
-            changeDirectoryAndCategoryStatus(
-                tbDirectoryIdList: $tbDirectoryIdList
-                tbCategoryIdList: $tbCategoryIdList
-                status: $status
-            ) {
-                id
-                name
-            }
-        }
-    `;*/
-
-    return gql`
-        mutation changeDirectoryAndCategoryStatus(
-            $tbDirectoryIdList: [Directory_Category_Request]
-            $tbCategoryIdList: [Int]
-            $status: Boolean
-        ) {
-            changeDirectoryAndCategoryStatus(
-                tbDirectoryIdList: $tbDirectoryIdList
-                tbCategoryIdList: $tbCategoryIdList
-                status: $status
+                systemId: $systemId
             ) {
                 result
             }

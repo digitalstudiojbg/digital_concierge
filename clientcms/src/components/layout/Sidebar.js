@@ -2,16 +2,15 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import {
     WELCOME_URL,
-    TABLET_CMS_INDEX_URL,
-    TABLET_CMS_HOME_URL,
-    TABLET_CMS_LANDINGPAGE_URL,
+    SYSTEM_CMS_INDEX_URL,
+    SYSTEM_CMS_LANDINGPAGE_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
-    TABLET_CMS_CONTENT_URL,
-    TABLET_CMS_SETTINGS_URL,
-    TABLET_CMS_CREATE_CONTENT_INDEX_URL,
-    TABLET_CMS_CREATE_CONTENT_CATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL
+    SYSTEM_CMS_CONTENT_URL,
+    SYSTEM_CMS_SETTINGS_URL,
+    SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
+    SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
 } from "../../utils/Constants";
 
 const SIDEBAR_ITEMS = [
@@ -24,20 +23,20 @@ const SIDEBAR_ITEMS = [
     },
 
     {
-        name: TABLET_CMS_INDEX_URL,
+        name: SYSTEM_CMS_INDEX_URL,
         displayName: "Dashboard"
     },
     {
-        name: TABLET_CMS_LANDINGPAGE_URL,
+        name: SYSTEM_CMS_LANDINGPAGE_URL,
         displayName: "Landing Page"
     },
     {
-        name: TABLET_CMS_CONTENT_URL,
+        name: SYSTEM_CMS_CONTENT_URL,
         displayName: "Content"
     },
-    
+
     {
-        name: TABLET_CMS_SETTINGS_URL,
+        name: SYSTEM_CMS_SETTINGS_URL,
         displayName: "Settings"
     }
 ];
@@ -66,35 +65,35 @@ class Sidebar extends Component {
         let urlPath;
         if (history) {
             switch (this.props.history.location.pathname) {
-                case TABLET_CMS_INDEX_URL:
-                    urlPath = TABLET_CMS_INDEX_URL;
+                case SYSTEM_CMS_INDEX_URL:
+                    urlPath = SYSTEM_CMS_INDEX_URL;
                     break;
-                case TABLET_CMS_INDEX_URL:
-                    urlPath = TABLET_CMS_INDEX_URL;
+                case SYSTEM_CMS_INDEX_URL:
+                    urlPath = SYSTEM_CMS_INDEX_URL;
                     break;
-                case TABLET_CMS_CONTENT_URL:
-                    urlPath = TABLET_CMS_CONTENT_URL;
+                case SYSTEM_CMS_CONTENT_URL:
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
                     break;
-                case TABLET_CMS_LANDINGPAGE_URL:
-                    urlPath = TABLET_CMS_LANDINGPAGE_URL;
+                case SYSTEM_CMS_LANDINGPAGE_URL:
+                    urlPath = SYSTEM_CMS_LANDINGPAGE_URL;
                     break;
-                case TABLET_CMS_SETTINGS_URL:
-                    urlPath = TABLET_CMS_SETTINGS_URL;
+                case SYSTEM_CMS_SETTINGS_URL:
+                    urlPath = SYSTEM_CMS_SETTINGS_URL;
                     break;
-                case TABLET_CMS_CREATE_CONTENT_INDEX_URL:
-                    urlPath = TABLET_CMS_CONTENT_URL;
+                case SYSTEM_CMS_CREATE_CONTENT_INDEX_URL:
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
                     break;
-                case TABLET_CMS_CREATE_CONTENT_CATEGORY_URL:
-                    urlPath = TABLET_CMS_CONTENT_URL;
+                case SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL:
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
                     break;
-                case TABLET_CMS_CREATE_CONTENT_SUBCATEGORY_URL:
-                    urlPath = TABLET_CMS_CONTENT_URL;
+                case SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL:
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
                     break;
-                case TABLET_CMS_CREATE_CONTENT_DIRECTORY_URL:
-                    urlPath = TABLET_CMS_CONTENT_URL;
+                case SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL:
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
                     break;
                 default:
-                    urlPath = TABLET_CMS_INDEX_URL;
+                    urlPath = SYSTEM_CMS_INDEX_URL;
             }
         }
 

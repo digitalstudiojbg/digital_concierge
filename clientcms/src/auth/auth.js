@@ -1,9 +1,14 @@
 import { API_URL } from "../utils/Constants";
 
 const accessTokenKey = "accessToken";
+const clientIdKey = "clientId";
 
 export function getAccessToken() {
     return localStorage.getItem(accessTokenKey);
+}
+
+export function getClientIdLocalStorage() {
+    return localStorage.getItem(clientIdKey);
 }
 
 export async function login(email, password) {
@@ -18,8 +23,9 @@ export async function login(email, password) {
         }
     );
     if (response.ok) {
-        const { token } = await response.json();
+        const { token, clientId } = await response.json();
         localStorage.setItem(accessTokenKey, token);
+        localStorage.setItem(clientIdKey, clientId);
     }
     return response.ok;
 }
