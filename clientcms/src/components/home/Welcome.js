@@ -17,6 +17,7 @@ import {
 } from "../../data/query";
 import { withApollo, Query } from "react-apollo";
 import styled from "styled-components";
+import WelcomeAccount from "./WelcomeAccount";
 
 const ContainerDiv = styled.div`
     width: 100vw;
@@ -214,7 +215,7 @@ const WelcomeSystems = React.lazy(() => import("./WelcomeSystems"));
 
 const SIDEBAR_BUTTONS = [
     { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
-    { id: "account", name: "ACCOUNT", component: "WelcomeAccount" },
+    { id: "account", name: "ACCOUNT", component: WelcomeAccount },
     { id: "theme", name: "THEME SETTINGS", component: "WelcomeSystems" },
     { id: "users", name: "USERS & STRUCTURES", component: "WelcomeSystems" },
     { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
