@@ -76,6 +76,8 @@ export default {
                         where: { id: system.id }
                     }
                 ]
-            })
+            }),
+        devices_count: async system =>
+            db.device.count({ where: { systemId: system.id } })
     }
 };

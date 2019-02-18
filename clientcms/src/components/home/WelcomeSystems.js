@@ -112,15 +112,26 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
             PLEASE SELECT SYSTEM TO EDIT
         </SubtitleContainerDiv>
         <InnerContainerDiv>
-            {systems.map(system => (
-                <Link
-                    style={system_entry_style}
-                    key={system.id}
-                    to={SYSTEM_INDEX_URL.replace(":system_id", system.id)}
-                >
-                    {system.name}
-                </Link>
-            ))}
+            {systems.map(
+                ({
+                    id,
+                    name,
+                    devices_count,
+                    system_type: { name: systemTypeName },
+                    device_type: { name: deviceTypeName }
+                }) => (
+                    <Link
+                        style={system_entry_style}
+                        key={id}
+                        to={SYSTEM_INDEX_URL.replace(":system_id", id)}
+                    >
+                        <div>{name}</div>
+                        <div>{systemTypeName}</div>
+                        <div>{deviceTypeName}</div>
+                        <div>{devices_count} DEVICES</div>
+                    </Link>
+                )
+            )}
             <a
                 style={system_entry_style}
                 href={`mailto:laura@johnbatman.com.au?subject=${name} request for additional system(s)`}

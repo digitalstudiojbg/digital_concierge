@@ -53,6 +53,15 @@ export const clientDetailFragment = gql`
         systems {
             id
             name
+            devices_count
+            device_type {
+                id
+                name
+            }
+            system_type {
+                id
+                name
+            }
         }
     }
 `;

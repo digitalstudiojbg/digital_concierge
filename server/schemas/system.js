@@ -17,6 +17,7 @@ export default gql`
         updatedAt: DateTime
         client: Client
         devices: [Device]
+        devices_count: Int
         just_brilliant_guide: JustBrilliantGuide
         layouts: [Layout]
         start: Start
