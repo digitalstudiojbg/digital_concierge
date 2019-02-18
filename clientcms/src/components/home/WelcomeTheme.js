@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Query, withApollo, Mutation } from "react-apollo";
 import { getLayoutList, getSystemThemesFromClient } from "../../data/query";
 import Loading from "../loading/Loading";
 import { UPDATE_THEMES } from "../../data/mutation/theme";
-import Immutable from "immutable";
+import Immutable, { Map, List } from "immutable";
 import {
     ContainerDiv,
     ThemeContainerDiv,
@@ -19,7 +19,6 @@ import {
     ColourEntryDiv,
     ColourTitleDiv,
     ButtonContainerDiv,
-    NUMBER_OF_COLOURS_PER_SYSTEM,
     FONT_OPTIONS
 } from "./themeStyles";
 import Stepper from "@material-ui/core/Stepper";
@@ -30,7 +29,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
-import { Map, List, Repeat } from "immutable";
 import ColorPicker from "rc-color-picker";
 import { DECIMAL_RADIX } from "../../utils/Constants";
 
@@ -85,7 +83,15 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
                                 })
                             );
                             return (
-                                <Mutation mutation={UPDATE_THEMES()}>
+                                <Mutation
+                                    mutation={UPDATE_THEMES()}
+                                    refetchQueries={[
+                                        {
+                                            query: getSystemThemesFromClient,
+                                            variables: { id }
+                                        }
+                                    ]}
+                                >
                                     {(
                                         updateThemes,
                                         {
@@ -121,11 +127,19 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
 };
 
 const WelcomeThemeSettings = ({ systems, layouts, updateThemes, classes }) => {
-    const [systemThemes, setSystemTheme] = useState(systems);
+    //Hooks API
+    const [systemThemes, setSystemTheme] = useState(List([Map()]));
     const [systemIndex, setSystemIndex] = useState(0);
-    const [error, setError] = useState(Immutable.Map());
+    const [error, setError] = useState(Map());
     const fileInput = useRef(null);
 
+    //Component did update via hooks
+    useEffect(() => {
+        console.info("Systems changed ", systems);
+        setSystemTheme(systems);
+    }, [systems]);
+
+    //Functional methods
     const handleStep = step => {
         setSystemIndex(step);
     };
@@ -210,6 +224,8 @@ const WelcomeThemeSettings = ({ systems, layouts, updateThemes, classes }) => {
         text: item.name,
         value: parseInt(item.id, DECIMAL_RADIX)
     }));
+
+    //Render method
     return (
         <ContainerDiv>
             <ThemeContainerDiv>
