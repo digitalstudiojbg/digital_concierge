@@ -5,7 +5,8 @@ import {
     getSystemTypes,
     getDeviceTypes,
     getFeaturesByCategories,
-    systemsByClientQuery
+    systemsByClientQuery,
+    getNewCreatedClientId
 } from "../../../data/query";
 import { CREATE_SYSTEM } from "../../../data/mutation";
 import Loading from "../../loading/Loading";
@@ -440,14 +441,16 @@ class WizardCreateClientPageFour extends React.Component {
             getDeviceTypes: { deviceTypes = {} } = {},
             getFeaturesByCategories: { featureCategories = {} } = {},
             systemsByClient: { systemsByClient = {} } = {},
+            next,
             client
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
 
-        /* try {
-            client.readQuery({
+        let new_create_client_id;
+        try {
+            new_create_client_id = client.readQuery({
                 query: getNewCreatedClientId
-            });
+            }).new_create_client_id;
         } catch {
             return (
                 <React.Fragment>
@@ -455,8 +458,7 @@ class WizardCreateClientPageFour extends React.Component {
                     <Loading />
                 </React.Fragment>
             );
-        }*/
-        console.log(this.props);
+        }
 
         if (
             systemTypes.length < 0 &&
@@ -507,7 +509,7 @@ class WizardCreateClientPageFour extends React.Component {
                                             systemTypeId: parseInt(
                                                 systemTypeId
                                             ),
-                                            clientId: 1,
+                                            clientId: new_create_client_id,
                                             featureIds: selected_checkboxes
                                                 .toJS()
                                                 .map(item => parseInt(item))
@@ -515,6 +517,7 @@ class WizardCreateClientPageFour extends React.Component {
                                     }
                                 }).then(() => {
                                     console.log("CREATE SYSTEM SUCCEED");
+                                    next && next();
                                 });
                             }}
                             render={({ errors, values, isSubmitting }) => {

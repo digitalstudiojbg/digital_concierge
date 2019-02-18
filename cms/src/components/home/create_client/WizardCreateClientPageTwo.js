@@ -365,11 +365,11 @@ class WizardCreateClientPageTwo extends React.Component {
 
         if (licenseTypes.length < 0 && currencies.length < 0)
             return <Loading />;
-
+        let new_create_client_id;
         try {
-            client.readQuery({
+            new_create_client_id = client.readQuery({
                 query: getNewCreatedClientId
-            });
+            }).new_create_client_id;
         } catch {
             return (
                 <React.Fragment>
@@ -410,9 +410,7 @@ class WizardCreateClientPageTwo extends React.Component {
                     { setSubmitting }
                 ) => {
                     try {
-                        let { new_create_client_id } = client.readQuery({
-                            query: getNewCreatedClientId
-                        });
+                        const { next } = this.props;
 
                         await createLicense({
                             variables: {
@@ -454,6 +452,8 @@ class WizardCreateClientPageTwo extends React.Component {
                             }
                         });
                         console.log("Payment Created");
+
+                        next && next();
                     } catch (error) {
                         console.log(error);
                     }

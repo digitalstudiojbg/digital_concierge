@@ -239,7 +239,7 @@ class WizardCreateClientPageOne extends React.Component {
     }
 
     render() {
-        const { classes, createClient, createUser } = this.props;
+        const { classes, createClient, createUser, client, next } = this.props;
         const { name: client_image_name = "" } = this.state.client_image || {};
 
         return (
@@ -316,7 +316,7 @@ class WizardCreateClientPageOne extends React.Component {
                                             id,
                                             DECIMAL_RADIX
                                         );
-                                        this.props.client.writeData({
+                                        client.writeData({
                                             data: {
                                                 new_create_client_id: clientId
                                             }
@@ -333,6 +333,8 @@ class WizardCreateClientPageOne extends React.Component {
                                                     clientId
                                                 }
                                             }
+                                        }).then(() => {
+                                            next && next();
                                         });
                                     }
                                 );

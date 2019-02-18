@@ -5,7 +5,6 @@ import Loading from "../../loading/Loading";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
 import {
-    getDepartmentListByUser,
     getPermissionCategoryList,
     getRoleList,
     getDepartmentListByClient
@@ -327,7 +326,7 @@ class WizardCreateClientPageThree extends React.Component {
                 {({
                     loading,
                     error,
-                    data: { departmentsByUser: departments }
+                    data: { departmentsByClient: departments }
                 }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
@@ -340,7 +339,8 @@ class WizardCreateClientPageThree extends React.Component {
                                     mutation={CREATE_DEPARTMENT()}
                                     refetchQueries={[
                                         {
-                                            query: getDepartmentListByUser
+                                            query: getDepartmentListByClient,
+                                            variables: { id: clientId }
                                         }
                                     ]}
                                 >
