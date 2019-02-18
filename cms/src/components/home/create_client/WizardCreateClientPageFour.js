@@ -517,7 +517,6 @@ class WizardCreateClientPageFour extends React.Component {
                                     }
                                 }).then(() => {
                                     console.log("CREATE SYSTEM SUCCEED");
-                                    next && next();
                                 });
                             }}
                             render={({ errors, values, isSubmitting }) => {
@@ -551,6 +550,9 @@ class WizardCreateClientPageFour extends React.Component {
                                                     this.state.selected_checkboxes.toJS()
                                                         .length === 0
                                                 }
+                                                onClick={() => {
+                                                    next && next();
+                                                }}
                                             >
                                                 CONFIRM & CONTINUE
                                             </Button>
