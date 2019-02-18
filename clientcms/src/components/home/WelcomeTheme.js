@@ -30,7 +30,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
 import ColorPicker from "rc-color-picker";
-import { DECIMAL_RADIX } from "../../utils/Constants";
+import { DECIMAL_RADIX, WELCOME_URL } from "../../utils/Constants";
 
 const styles = theme => ({
     formControl: {
@@ -113,6 +113,7 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
                                                 layouts={layouts}
                                                 updateThemes={updateThemes}
                                                 classes={classes}
+                                                clientId={id}
                                             />
                                         );
                                     }}
@@ -126,7 +127,13 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
     );
 };
 
-const WelcomeThemeSettings = ({ systems, layouts, updateThemes, classes }) => {
+const WelcomeThemeSettings = ({
+    systems,
+    layouts,
+    updateThemes,
+    classes,
+    clientId
+}) => {
     //Hooks API
     const [systemThemes, setSystemTheme] = useState(List([Map()]));
     const [systemIndex, setSystemIndex] = useState(0);
@@ -215,6 +222,19 @@ const WelcomeThemeSettings = ({ systems, layouts, updateThemes, classes }) => {
 
     const updateDefaultDirEntryLayout = (_event, data) => {
         updateSystemTheme("defaultDirEntryLayoutId", data.value);
+    };
+
+    const handleSubmit = () => {
+        if (!systemThemes.equals(systems)) {
+            //Do update here
+        }
+    };
+
+    const handleSubmitAndExit = () => {
+        if (!systemThemes.equals(systems)) {
+            //Do update here
+            //Navigate away
+        }
     };
 
     //Constants
@@ -511,6 +531,34 @@ const WelcomeThemeSettings = ({ systems, layouts, updateThemes, classes }) => {
                         </LayoutEntryPreviewDiv>
                     )}
                 </LayoutEntryContainerDiv>
+                <ButtonContainerDiv>
+                    <Button
+                        variant="outlined"
+                        component="span"
+                        className={classes.confirmButton}
+                        onClick={() => {
+                            console.info(
+                                "Is different ",
+                                systemThemes.equals(systems)
+                            );
+                        }}
+                    >
+                        SAVE & EXIT
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        component="span"
+                        className={classes.confirmButton}
+                        onClick={() => {
+                            console.info(
+                                "Is different ",
+                                systemThemes.equals(systems)
+                            );
+                        }}
+                    >
+                        SAVE & KEEP EDITING
+                    </Button>
+                </ButtonContainerDiv>
             </LayoutContainerDiv>
         </ContainerDiv>
     );

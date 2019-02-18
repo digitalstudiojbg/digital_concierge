@@ -96,7 +96,7 @@ export const ColourTitleDiv = styled.div`
 `;
 
 export const ButtonContainerDiv = styled.div`
-    height: 50px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

@@ -291,7 +291,7 @@ const renderWelcomeComponent = (
 };
 
 export const Welcome = ({ client, match }) => {
-    const [selected, setSelected] = useState("theme");
+    const [selected, setSelected] = useState("systems");
 
     const { getCurrentUser: user } = client.readQuery({ query });
 
