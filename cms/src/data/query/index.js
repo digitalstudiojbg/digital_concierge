@@ -8,7 +8,10 @@ import {
     getNewCreatedClientId
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
-import { getDepartmentListByUser } from "./department";
+import {
+    getDepartmentListByUser,
+    getDepartmentListByClient
+} from "./department";
 import { getLayoutList } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
@@ -29,6 +32,7 @@ export {
     getSelectedCountry,
     getClientImageById,
     getDepartmentListByUser,
+    getDepartmentListByClient,
     getLayoutList,
     getLicenseTypes,
     getCurrencyList,

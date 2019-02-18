@@ -20,6 +20,15 @@ export default {
                         where: { id: user.clientId }
                     }
                 ]
+            }),
+        departmentsByClient: async (_root, { id }) =>
+            await db.department.findAll({
+                include: [
+                    {
+                        model: db.client,
+                        where: { id: id }
+                    }
+                ]
             })
     },
     Mutation: {

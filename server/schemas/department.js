@@ -5,6 +5,7 @@ export default gql`
         department(id: ID!): Department
         departments: [Department]
         departmentsByUser: [Department]
+        departmentsByClient(id: ID!): [Department]
     }
 
     extend type Mutation {

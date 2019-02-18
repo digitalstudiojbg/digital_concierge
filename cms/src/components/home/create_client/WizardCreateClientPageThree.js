@@ -7,7 +7,8 @@ import { TextField } from "formik-material-ui";
 import {
     getDepartmentListByUser,
     getPermissionCategoryList,
-    getRoleList
+    getRoleList,
+    getDepartmentListByClient
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
@@ -299,7 +300,7 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        let clientId = 1;
+        let clientId = null;
         try {
             clientId = this.props.client.readQuery({
                 query: gql`
@@ -310,10 +311,19 @@ class WizardCreateClientPageThree extends React.Component {
             });
         } catch (error) {
             console.log(error);
+            return (
+                <React.Fragment>
+                    <h1>Can't Find ClientId From Step 1</h1>
+                    <Loading />
+                </React.Fragment>
+            );
         }
 
         return (
-            <Query query={getDepartmentListByUser}>
+            <Query
+                query={getDepartmentListByClient}
+                variables={{ id: clientId }}
+            >
                 {({
                     loading,
                     error,
@@ -726,6 +736,16 @@ class WizardCreateClientPageThree extends React.Component {
                                                     }
                                                 ]}
                                             />
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() =>
+                                                    this.props.next &&
+                                                    this.props.next()
+                                                }
+                                            >
+                                                CONFIRM & CONTINUE
+                                            </Button>
                                         </SectionDivContainer>
                                     );
                                 }}
