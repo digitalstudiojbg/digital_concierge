@@ -96,7 +96,10 @@ class CreateClient extends Component {
                         );
                     })}
                 </Stepper>
-                <div>
+                <Suspense>
+                    <SelectedComponent next={this.handleNext} />
+                </Suspense>
+                {/* <div>
                     <div>
                         <Suspense>
                             <SelectedComponent next={this.handleNext} />
@@ -127,7 +130,7 @@ class CreateClient extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 {/*activeStep !== 5 && (
                     <button
                         style={{

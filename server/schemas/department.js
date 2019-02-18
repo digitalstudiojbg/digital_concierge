@@ -23,5 +23,6 @@ export default gql`
 
     input CreateDepartmentInput {
         name: String!
+        clientId: Int!
     }
 `;

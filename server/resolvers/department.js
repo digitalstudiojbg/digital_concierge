@@ -34,7 +34,7 @@ export default {
     Mutation: {
         createDepartment: async (
             _root,
-            { input: { name } },
+            { input: { name, clientId } },
             { user, clientIp }
         ) => {
             const department = db.department.build({ name });
@@ -57,7 +57,7 @@ export default {
             );
 
             //Assign client and department relationship
-            const client = await db.client.findByPk(user.clientId);
+            const client = await db.client.findByPk(clientId);
 
             try {
                 await client.addDepartment(department);

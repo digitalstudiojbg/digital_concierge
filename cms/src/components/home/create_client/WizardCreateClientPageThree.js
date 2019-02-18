@@ -317,7 +317,6 @@ class WizardCreateClientPageThree extends React.Component {
                 </React.Fragment>
             );
         }
-
         return (
             <Query
                 query={getDepartmentListByClient}
@@ -372,7 +371,8 @@ class WizardCreateClientPageThree extends React.Component {
                                                         variables: {
                                                             input: {
                                                                 name:
-                                                                    values.name
+                                                                    values.name,
+                                                                clientId
                                                             }
                                                         }
                                                     });
