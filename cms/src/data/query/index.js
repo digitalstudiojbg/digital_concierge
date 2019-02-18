@@ -21,6 +21,7 @@ import { getDeviceTypes } from "./deviceType";
 import { getSystemTypes } from "./systemType";
 import { getFeatures } from "./feature";
 import { getFeaturesByCategories } from "./featureCategory";
+import { getContractByClientId } from "./contract";
 
 export {
     getCurrentUserQuery,
@@ -43,5 +44,6 @@ export {
     getSystemTypes,
     getFeatures,
     getFeaturesByCategories,
-    systemsByClientQuery
+    systemsByClientQuery,
+    getContractByClientId
 };

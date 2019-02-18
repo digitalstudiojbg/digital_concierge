@@ -15,7 +15,7 @@ import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
 import { getRoleList } from "./role";
-
+import { getContractByClientId } from "./contract";
 export {
     getCurrentUserQuery,
     getDirectoryListBySystem,
@@ -33,5 +33,6 @@ export {
     getCurrencyList,
     getNewCreatedClientId,
     getPermissionCategoryList,
-    getRoleList
+    getRoleList,
+    getContractByClientId
 };

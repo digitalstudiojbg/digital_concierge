@@ -9,6 +9,7 @@ export default gql`
 
     extend type Mutation {
         createContract(input: CreateContractInput): Contract
+        #updateContract(input: UpdateContractInput): Contract
     }
 
     type Contract {
@@ -31,4 +32,14 @@ export default gql`
         renewal_date: String!
         clientId: Int!
     }
+
+    #input UpdateContractInput {
+    #    id: ID!
+    #    number: String
+    #    file: Upload!
+    #    agreement_date: String
+    #    renewal_date: String
+    #    active: Boolean
+    #    clientId: Int!
+    #}
 `;
