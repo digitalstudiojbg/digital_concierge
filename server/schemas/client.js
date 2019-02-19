@@ -77,6 +77,7 @@ export default gql`
     }
 
     input UpdateClientInput {
+        id: Int!
         name: String!
         full_company_name: String!
         nature_of_business: String!

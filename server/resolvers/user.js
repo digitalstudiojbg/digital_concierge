@@ -1,6 +1,11 @@
 import db from "../models";
-import { checkUserLogin } from "../utils/constant";
+import {
+    checkUserLogin,
+    handleUpdateActionActivityLog
+} from "../utils/constant";
+const bcrypt = require("bcrypt");
 
+const saltRounds = 10;
 export default {
     Query: {
         getCurrentUser: async (root, input, { user }) => {
@@ -41,8 +46,6 @@ export default {
             },
             { user, clientIp }
         ) => {
-            const bcrypt = require("bcrypt");
-            const saltRounds = 10;
             const hash_password = bcrypt.hashSync(password, saltRounds);
 
             let create_user = db.user.build({
@@ -60,6 +63,56 @@ export default {
             await create_user.save();
 
             return create_user;
+        },
+        updateUser: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    email,
+                    password,
+                    first_phone_number,
+                    second_phone_number,
+                    position
+                }
+            },
+            { user, clientIp }
+        ) => {
+            //https://stackoverflow.com/questions/47892127/succinct-concise-syntax-for-optional-object-keys-in-es6-es7
+            const updatedUser = {
+                name,
+                email,
+                position,
+                ...(Boolean(password) && {
+                    password: bcrypt.hashSync(password, saltRounds)
+                }),
+                ...(Boolean(first_phone_number) && {
+                    first_phone_number
+                }),
+                ...(Boolean(second_phone_number) && {
+                    second_phone_number
+                })
+            };
+
+            const userToUpdate = await db.user.findByPk(id);
+
+            try {
+                await userToUpdate.update({
+                    ...updatedUser
+                });
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to update User ${id}.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Console logging changes
+            handleUpdateActionActivityLog(userToUpdate, {}, user, clientIp);
+
+            return await db.user.findByPk(id);
         }
     },
     User: {

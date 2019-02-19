@@ -9,6 +9,7 @@ export default gql`
 
     extend type Mutation {
         createUser(input: CreateUserInput): User
+        updateUser(input: UpdateUserInput): User
     }
 
     type User {
@@ -36,5 +37,15 @@ export default gql`
         position: String
         # mediumId: Int
         clientId: Int
+    }
+
+    input UpdateUserInput {
+        id: Int!
+        name: String!
+        position: String!
+        email: EmailAddress!
+        first_phone_number: String
+        second_phone_number: String
+        password: String
     }
 `;
