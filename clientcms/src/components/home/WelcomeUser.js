@@ -18,25 +18,33 @@ const styles = theme => ({
 const changeClientDataStructure = ({ client: { users = {} } = {} }) => {
     let outputUser = [];
 
-    users.map(({ roles = [], name = "", email = "", active = "", id }) => {
-        let rolesName;
-        let departmentsName;
-        roles.map(({ name, department }) => {
-            rolesName = rolesName ? `${rolesName} ${name}` : `${name}`;
-            departmentsName = department.name
-                ? `${department.name}`
-                : `${departmentsName} ${department.name}`;
-        });
-        let eachUser = {
-            id,
-            user: name,
-            username: email,
-            status: active ? "Active" : "Inactive",
-            role: rolesName,
-            department: departmentsName
-        };
-        outputUser.push(eachUser);
-    });
+    users.map(
+        ({
+            roles = [],
+            name: user = "",
+            email: username = "",
+            active = "",
+            id
+        }) => {
+            let rolesName;
+            let departmentsName;
+            roles.map(({ name, department }) => {
+                rolesName = rolesName ? `${rolesName} ${name}` : `${name}`;
+                departmentsName = department.name
+                    ? `${department.name}`
+                    : `${departmentsName} ${department.name}`;
+            });
+            let eachUser = {
+                id,
+                user,
+                username,
+                status: active ? "Active" : "Inactive",
+                role: rolesName,
+                department: departmentsName
+            };
+            outputUser.push(eachUser);
+        }
+    );
 
     return outputUser;
 };
@@ -88,7 +96,14 @@ const WelcomeUser = props => {
                                             style: {
                                                 textAlign: "center"
                                             },
-                                            filterable: true
+                                            filterable: true,
+                                            sortable: true,
+                                            filterMethod: (filter, original) =>
+                                                original.user
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        filter.value.toLowerCase()
+                                                    )
                                         },
                                         {
                                             Header: "USERNAME",
@@ -96,7 +111,14 @@ const WelcomeUser = props => {
                                             style: {
                                                 textAlign: "center"
                                             },
-                                            filterable: true
+                                            filterable: true,
+                                            sortable: true,
+                                            filterMethod: (filter, original) =>
+                                                original.username
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        filter.value.toLowerCase()
+                                                    )
                                         },
                                         {
                                             Header: "ROLE",
@@ -104,7 +126,14 @@ const WelcomeUser = props => {
                                             style: {
                                                 textAlign: "center"
                                             },
-                                            filterable: true
+                                            filterable: true,
+                                            sortable: true,
+                                            filterMethod: (filter, original) =>
+                                                original.role
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        filter.value.toLowerCase()
+                                                    )
                                         },
                                         {
                                             Header: "DEPARTMENT",
@@ -112,7 +141,14 @@ const WelcomeUser = props => {
                                             style: {
                                                 textAlign: "center"
                                             },
-                                            filterable: true
+                                            filterable: true,
+                                            sortable: true,
+                                            filterMethod: (filter, original) =>
+                                                original.department
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        filter.value.toLowerCase()
+                                                    )
                                         },
                                         {
                                             Header: "STATUS",
@@ -120,7 +156,14 @@ const WelcomeUser = props => {
                                             style: {
                                                 textAlign: "center"
                                             },
-                                            filterable: true
+                                            filterable: true,
+                                            sortable: true,
+                                            filterMethod: (filter, original) =>
+                                                original.status
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        filter.value.toLowerCase()
+                                                    )
                                         }
                                     ]}
                                 />
