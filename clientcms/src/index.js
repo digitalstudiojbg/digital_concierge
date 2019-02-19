@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 const cache = new InMemoryCache({
     dataIdFromObject: object => {
         switch (object.__typename) {
-            case "TB_Directory":
+            case "User":
                 return Math.random();
             default:
                 return defaultDataIdFromObject(object);

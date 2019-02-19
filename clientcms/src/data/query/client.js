@@ -113,3 +113,24 @@ export const getNewCreatedClientId = gql`
         new_create_client_id @client
     }
 `;
+
+export const getUsersByClient = gql`
+    query get_client_detail($id: ID!) {
+        client(id: $id) {
+            users {
+                id
+                name
+                email
+                active
+                roles {
+                    id
+                    name
+                    department {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+    }
+`;

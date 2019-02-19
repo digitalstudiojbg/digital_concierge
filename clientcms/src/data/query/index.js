@@ -6,7 +6,8 @@ import {
     getClientDetail,
     getAllClients,
     getClientImageById,
-    getNewCreatedClientId
+    getNewCreatedClientId,
+    getUsersByClient
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import { getDepartmentListByUser } from "./department";
@@ -34,5 +35,6 @@ export {
     getNewCreatedClientId,
     getPermissionCategoryList,
     getRoleList,
-    getContractByClientId
+    getContractByClientId,
+    getUsersByClient
 };

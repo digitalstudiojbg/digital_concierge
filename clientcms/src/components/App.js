@@ -12,6 +12,7 @@ import {
     LOGIN_URL,
     API_URL
 } from "../utils/Constants";
+import "react-table/react-table.css";
 
 const Home = lazy(() => import("./home/Home"));
 

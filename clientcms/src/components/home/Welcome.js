@@ -19,6 +19,8 @@ import { withApollo, Query } from "react-apollo";
 import styled from "styled-components";
 import WelcomeAccount from "./WelcomeAccount";
 
+import WeclomeUser from "./WelcomeUser";
+
 const ContainerDiv = styled.div`
     width: 100vw;
     height: calc(100vh - 80px);
@@ -217,7 +219,7 @@ const SIDEBAR_BUTTONS = [
     { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
     { id: "account", name: "ACCOUNT", component: WelcomeAccount },
     { id: "theme", name: "THEME SETTINGS", component: "WelcomeSystems" },
-    { id: "users", name: "USERS & STRUCTURES", component: "WelcomeSystems" },
+    { id: "users", name: "USERS & STRUCTURES", component: WeclomeUser },
     { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
 ];
 
