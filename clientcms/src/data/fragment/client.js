@@ -39,13 +39,29 @@ export const clientDetailFragment = gql`
             active
             renewal_date
         }
+        key_user {
+            id
+            name
+            position
+            email
+            first_phone_number
+            second_phone_number
+        }
         postal_state {
             id
             name
+            country {
+                id
+                name
+            }
         }
         venue_state {
             id
             name
+            country {
+                id
+                name
+            }
         }
         media {
             id

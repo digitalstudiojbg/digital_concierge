@@ -62,7 +62,7 @@ class WelcomeAccount extends Component {
         this.setState({ value });
     };
     render() {
-        const { classes } = this.props;
+        const { classes, data } = this.props;
         const { value } = this.state;
 
         return (
@@ -110,7 +110,7 @@ class WelcomeAccount extends Component {
                     </Tabs>
                     {value === 0 && (
                         <Typography className={classes.typography}>
-                            <WelcomeAccountClient />
+                            <WelcomeAccountClient data={data} />
                         </Typography>
                     )}
                     {value === 1 && (

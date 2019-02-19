@@ -214,6 +214,16 @@ export default {
             await db.license.findAll({
                 where: { clientId: client.id },
                 order: [["expire_date", "DESC"]]
-            })
+            }),
+        key_user: async client => {
+            const users = await db.user.findAll({
+                where: { clientId: client.id },
+                limit: 1,
+                order: [["createdAt", "ASC"]]
+            });
+            return Boolean(users) && Array.isArray(users) && users.length === 1
+                ? users[0]
+                : null;
+        }
     }
 };

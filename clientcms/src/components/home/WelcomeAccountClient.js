@@ -1,11 +1,505 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
+import Loading from "../loading/Loading";
+import { withApollo, Query } from "react-apollo";
+import { Formik, Field, Form, FieldArray } from "formik";
+import { TextField, Select } from "formik-material-ui";
+import MuiTextField from "@material-ui/core/TextField";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import { getCountryList } from "../../data/query";
 
-class WelcomeAccountClient extends Component {
-    state = {};
+const ContainerDiv = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+`;
 
-    render() {
-        return <div>Client Info & Key User</div>;
+const SectionDiv = styled.div`
+    width: ${props => props.width};
+    height: 100%;
+    padding: 10px;
+    border: 2px solid black;
+    margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};
+`;
+
+const TitleDiv = styled.div`
+    font-size: 2em;
+    font-weight: 700;
+    padding-bottom: 20px;
+`;
+
+const ClientContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    margin-bottom: ${props => (Boolean(props.isLastItem) ? "0px" : "20px")};
+`;
+
+const ClientFieldDiv = styled.div`
+    flex-basis: ${props => props.flexBasis};
+    margin-right: ${props => props.marginRight};
+`;
+
+const FieldContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const FieldDiv = styled.div`
+    width: 100%;
+    padding: 0px 10px 10px 10px;
+`;
+
+const CLIENT_TEXT_FIELDS = [
+    [
+        {
+            name: "name",
+            label: "Client Name",
+            required: true,
+            flexBasis: "30%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "full_company_name",
+            label: "Full Client Name",
+            required: false,
+            flexBasis: "30%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "nature_of_business",
+            label: "Nature of Business",
+            required: true,
+            flexBasis: "30%",
+            marginRight: "0px",
+            type: "text"
+        }
+    ],
+    [
+        {
+            name: "phone",
+            label: "Venue Phone Number",
+            required: true,
+            flexBasis: "45%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "email",
+            label: "Business Email",
+            required: true,
+            flexBasis: "45%",
+            marginRight: "0px",
+            type: "text"
+        }
+    ],
+    [
+        {
+            name: "venue_address",
+            label: "Venue Address",
+            required: true,
+            flexBasis: "45%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "postal_address",
+            label: "Postal Address",
+            required: false,
+            flexBasis: "45%",
+            marginRight: "0px",
+            type: "text"
+        }
+    ],
+    [
+        {
+            name: "venue_city",
+            label: "City",
+            required: true,
+            flexBasis: "20%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "venue_zip_code",
+            label: "Zip Code",
+            required: true,
+            flexBasis: "20%",
+            marginRight: "30px",
+            type: "text"
+        },
+        {
+            name: "postal_city",
+            label: "City",
+            required: true,
+            flexBasis: "20%",
+            marginRight: "10px",
+            type: "text"
+        },
+        {
+            name: "postal_zip_code",
+            label: "Zip Code",
+            required: true,
+            flexBasis: "20%",
+            marginRight: "0px",
+            type: "text"
+        }
+    ]
+];
+
+const USER_TEXT_FIELDS = [
+    {
+        name: "user_name",
+        label: "Key Contact / Administrator Name",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "position",
+        label: "Key Contact / Administrator Position",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "user_email",
+        label: "Contact Email",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "first_phone_number",
+        label: "Contact Phone Number 1",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "second_phone_number",
+        label: "Contact Phone Number 2",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "password",
+        label: "Password",
+        required: true,
+        type: "password"
+    },
+    {
+        name: "confirm_password",
+        label: "Confirm Password",
+        required: true,
+        type: "password"
     }
-}
+];
 
-export default WelcomeAccountClient;
+const styles = () => ({
+    addContactButton: {
+        color: "blue",
+        border: "1px solid blue",
+        width: "100%"
+    }
+});
+
+const renderTextField = (name, label, required, type) => (
+    <Field
+        name={name}
+        label={label}
+        required={required}
+        type={type}
+        component={TextField}
+        variant="outlined"
+        fullWidth={true}
+    />
+);
+
+const renderSelectField = (nameValue, label, optionList) => {
+    console.log(optionList);
+
+    return (
+        <React.Fragment>
+            <InputLabel>{label}</InputLabel>
+            <Field
+                name={nameValue}
+                component={Select}
+                disabled={optionList.length < 1}
+                fullWidth={true}
+            >
+                <MenuItem value="null" disabled>
+                    {label}
+                </MenuItem>
+                {optionList.map(({ id, name }, index) => (
+                    <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
+                        {name}
+                    </MenuItem>
+                ))}
+            </Field>
+        </React.Fragment>
+    );
+};
+
+export const WelcomeAccountClient = ({
+    data: {
+        id,
+        name,
+        full_company_name,
+        nature_of_business,
+        phone,
+        email,
+        venue_address,
+        postal_address,
+        venue_city,
+        venue_zip_code,
+        postal_city,
+        postal_zip_code,
+        venue_state: {
+            id: venue_state_id,
+            country: { id: venue_country_id }
+        },
+        postal_state: {
+            id: postal_state_id,
+            country: { id: postal_country_id }
+        },
+        key_user: {
+            id: user_id,
+            name: user_name,
+            position,
+            email: user_email,
+            first_phone_number,
+            second_phone_number
+        },
+        contacts
+    },
+    classes
+}) => {
+    const [loading, setLoading] = useState(false);
+
+    return (
+        <React.Fragment>
+            {loading ? (
+                <Loading loadingData />
+            ) : (
+                <Query query={getCountryList}>
+                    {({ loading, error, data: { countries } }) => {
+                        if (loading) return <Loading loadingData />;
+                        if (error) return `Error! ${error.message}`;
+                        console.log("DATA IS: ", countries);
+                        return (
+                            <Formik
+                                initialValues={{
+                                    name,
+                                    full_company_name,
+                                    nature_of_business,
+                                    phone,
+                                    email,
+                                    venue_address,
+                                    postal_address,
+                                    venue_city,
+                                    venue_zip_code,
+                                    postal_city,
+                                    postal_zip_code,
+                                    venue_state_id,
+                                    venue_country_id,
+                                    postal_state_id,
+                                    postal_country_id,
+                                    user_id,
+                                    user_name,
+                                    position,
+                                    user_email,
+                                    first_phone_number,
+                                    second_phone_number
+                                }}
+                            >
+                                {({
+                                    values: {
+                                        venue_country_id,
+                                        postal_country_id
+                                    },
+                                    errors,
+                                    isSubmitting
+                                }) => {
+                                    //Preparing the list of venue states
+                                    const venue_country =
+                                        countries.find(
+                                            ({ id }) => id === venue_country_id
+                                        ) || {};
+                                    const {
+                                        states: venue_states = []
+                                    } = venue_country;
+
+                                    //Preparing the list of postal states
+                                    const postal_country =
+                                        countries.find(
+                                            ({ id }) => id === postal_country_id
+                                        ) || {};
+                                    const {
+                                        states: postal_states = []
+                                    } = postal_country;
+
+                                    return (
+                                        <Form>
+                                            <ContainerDiv>
+                                                <SectionDiv width="50%">
+                                                    <TitleDiv>
+                                                        CLIENT INFO
+                                                    </TitleDiv>
+                                                    <div
+                                                        style={{
+                                                            marginBottom: 20
+                                                        }}
+                                                    >
+                                                        <MuiTextField
+                                                            label="CLIENT ID NUMBER"
+                                                            type="text"
+                                                            variant="outlined"
+                                                            value={id}
+                                                            disabled={true}
+                                                        />
+                                                    </div>
+                                                    {CLIENT_TEXT_FIELDS.map(
+                                                        (
+                                                            arrayFields,
+                                                            index
+                                                        ) => (
+                                                            <ClientContainerDiv
+                                                                key={`FIELD-CONTAINER-${index}`}
+                                                            >
+                                                                {arrayFields.map(
+                                                                    (
+                                                                        {
+                                                                            name,
+                                                                            label,
+                                                                            required,
+                                                                            flexBasis,
+                                                                            marginRight,
+                                                                            type
+                                                                        },
+                                                                        fieldIndex
+                                                                    ) => (
+                                                                        <ClientFieldDiv
+                                                                            key={`CLIENT-FIELD=${index}-${fieldIndex}`}
+                                                                            flexBasis={
+                                                                                flexBasis
+                                                                            }
+                                                                            marginRight={
+                                                                                marginRight
+                                                                            }
+                                                                        >
+                                                                            {renderTextField(
+                                                                                name,
+                                                                                label,
+                                                                                required,
+                                                                                type
+                                                                            )}
+                                                                        </ClientFieldDiv>
+                                                                    )
+                                                                )}
+                                                            </ClientContainerDiv>
+                                                        )
+                                                    )}
+                                                    <ClientContainerDiv>
+                                                        <ClientFieldDiv
+                                                            flexBasis="45%"
+                                                            marginRight="10px"
+                                                        >
+                                                            {renderSelectField(
+                                                                "venue_state_id",
+                                                                "STATE / PROVINCE (IF APPLICABLE)",
+                                                                venue_states
+                                                            )}
+                                                        </ClientFieldDiv>
+                                                        <ClientFieldDiv
+                                                            flexBasis="45%"
+                                                            marginRight="0px"
+                                                        >
+                                                            {renderSelectField(
+                                                                "postal_state_id",
+                                                                "STATE / PROVINCE (IF APPLICABLE)",
+                                                                postal_states
+                                                            )}
+                                                        </ClientFieldDiv>
+                                                    </ClientContainerDiv>
+                                                    <ClientContainerDiv>
+                                                        <ClientFieldDiv
+                                                            flexBasis="45%"
+                                                            marginRight="10px"
+                                                        >
+                                                            {renderSelectField(
+                                                                "venue_country_id",
+                                                                "COUNTRIES",
+                                                                countries
+                                                            )}
+                                                        </ClientFieldDiv>
+                                                        <ClientFieldDiv
+                                                            flexBasis="45%"
+                                                            marginRight="0px"
+                                                        >
+                                                            {renderSelectField(
+                                                                "postal_country_id",
+                                                                "COUNTRIES",
+                                                                countries
+                                                            )}
+                                                        </ClientFieldDiv>
+                                                    </ClientContainerDiv>
+                                                </SectionDiv>
+                                                <SectionDiv width="25%">
+                                                    <TitleDiv>
+                                                        KEY USER
+                                                    </TitleDiv>
+                                                    <FieldContainerDiv>
+                                                        {USER_TEXT_FIELDS.map(
+                                                            (
+                                                                {
+                                                                    name,
+                                                                    label,
+                                                                    required,
+                                                                    type
+                                                                },
+                                                                index
+                                                            ) => (
+                                                                <FieldDiv
+                                                                    key={`USER-FIELD-${index}`}
+                                                                >
+                                                                    {renderTextField(
+                                                                        name,
+                                                                        label,
+                                                                        required,
+                                                                        type
+                                                                    )}
+                                                                </FieldDiv>
+                                                            )
+                                                        )}
+                                                    </FieldContainerDiv>
+                                                </SectionDiv>
+                                                <SectionDiv
+                                                    width="25%"
+                                                    isLastSection
+                                                >
+                                                    <Button
+                                                        variant="outlined"
+                                                        className={
+                                                            classes.addContactButton
+                                                        }
+                                                    >
+                                                        ADD ADDITIONAL CONTACT
+                                                    </Button>
+                                                </SectionDiv>
+                                            </ContainerDiv>
+                                        </Form>
+                                    );
+                                }}
+                            </Formik>
+                        );
+                    }}
+                </Query>
+            )}
+        </React.Fragment>
+    );
+};
+
+export default withApollo(withStyles(styles)(WelcomeAccountClient));
