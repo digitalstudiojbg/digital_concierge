@@ -8,8 +8,11 @@ import MuiTextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { getCountryList } from "../../data/query";
+import { DECIMAL_RADIX } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -21,7 +24,7 @@ const SectionDiv = styled.div`
     width: ${props => props.width};
     height: 100%;
     padding: 10px;
-    border: 2px solid black;
+    border: ${props => (props.noBorder ? "none" : "2px solid black")};
     margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};
 `;
 
@@ -52,6 +55,30 @@ const FieldContainerDiv = styled.div`
 const FieldDiv = styled.div`
     width: 100%;
     padding: 0px 10px 10px 10px;
+`;
+
+const ContactEntryContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+    margin-bottom: ${props => (Boolean(props.isLastItem) ? "0px" : "20px")};
+    padding: 10px;
+`;
+
+const ContactEntryHeaderContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+`;
+
+const ContactEntryHeaderTitleDiv = styled.div`
+    font-size: 1.5em;
+    font-weight: 700;
+    padding-right: 5px;
 `;
 
 const CLIENT_TEXT_FIELDS = [
@@ -198,11 +225,45 @@ const USER_TEXT_FIELDS = [
     }
 ];
 
+const CONTACT_TEXT_FIELDS = [
+    {
+        name: "name",
+        label: "Contact Name",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "title",
+        label: "Contact Position",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "phone",
+        label: "Contact Phone Number",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "mobile",
+        label: "Contact Mobile Number",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "email",
+        label: "Contact Email Address",
+        required: true,
+        type: "text"
+    }
+];
+
 const styles = () => ({
     addContactButton: {
         color: "blue",
         border: "1px solid blue",
-        width: "100%"
+        width: "100%",
+        marginBottom: 20
     }
 });
 
@@ -219,7 +280,7 @@ const renderTextField = (name, label, required, type) => (
 );
 
 const renderSelectField = (nameValue, label, optionList) => {
-    console.log(optionList);
+    // console.log(optionList);
 
     return (
         <React.Fragment>
@@ -241,6 +302,14 @@ const renderSelectField = (nameValue, label, optionList) => {
             </Field>
         </React.Fragment>
     );
+};
+
+const EMPTY_CONTACT = {
+    email: "",
+    mobile: "",
+    name: "",
+    phone: "",
+    title: ""
 };
 
 export const WelcomeAccountClient = ({
@@ -273,7 +342,7 @@ export const WelcomeAccountClient = ({
             first_phone_number,
             second_phone_number
         },
-        contacts
+        contacts: contactsOriginal
     },
     classes
 }) => {
@@ -288,7 +357,13 @@ export const WelcomeAccountClient = ({
                     {({ loading, error, data: { countries } }) => {
                         if (loading) return <Loading loadingData />;
                         if (error) return `Error! ${error.message}`;
-                        console.log("DATA IS: ", countries);
+
+                        const contacts = contactsOriginal.map(
+                            ({ __typename, ...others }) => ({
+                                ...others
+                            })
+                        );
+                        console.log("CONTACTS IS: ", contacts);
                         return (
                             <Formik
                                 initialValues={{
@@ -312,16 +387,21 @@ export const WelcomeAccountClient = ({
                                     position,
                                     user_email,
                                     first_phone_number,
-                                    second_phone_number
+                                    second_phone_number,
+                                    contacts,
+                                    deletedContacts: []
                                 }}
                             >
                                 {({
                                     values: {
                                         venue_country_id,
-                                        postal_country_id
+                                        postal_country_id,
+                                        contacts,
+                                        deletedContacts
                                     },
                                     errors,
-                                    isSubmitting
+                                    isSubmitting,
+                                    setFieldValue
                                 }) => {
                                     //Preparing the list of venue states
                                     const venue_country =
@@ -479,15 +559,110 @@ export const WelcomeAccountClient = ({
                                                 <SectionDiv
                                                     width="25%"
                                                     isLastSection
+                                                    noBorder
                                                 >
-                                                    <Button
-                                                        variant="outlined"
-                                                        className={
-                                                            classes.addContactButton
-                                                        }
-                                                    >
-                                                        ADD ADDITIONAL CONTACT
-                                                    </Button>
+                                                    <FieldArray
+                                                        name="contacts"
+                                                        render={({
+                                                            push,
+                                                            remove
+                                                        }) => (
+                                                            <div
+                                                                style={{
+                                                                    width:
+                                                                        "100%"
+                                                                }}
+                                                            >
+                                                                <Button
+                                                                    variant="outlined"
+                                                                    className={
+                                                                        classes.addContactButton
+                                                                    }
+                                                                    onClick={() => {
+                                                                        push({
+                                                                            ...EMPTY_CONTACT
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    ADD
+                                                                    ADDITIONAL
+                                                                    CONTACT
+                                                                </Button>
+                                                                {contacts.map(
+                                                                    (
+                                                                        contact,
+                                                                        contactIndex
+                                                                    ) => (
+                                                                        <ContactEntryContainerDiv
+                                                                            key={`CONTACT-FIELD-${contactIndex}`}
+                                                                        >
+                                                                            <ContactEntryHeaderContainerDiv>
+                                                                                <ContactEntryHeaderTitleDiv>
+                                                                                    CONTACT
+                                                                                    #
+                                                                                    {contactIndex +
+                                                                                        1}
+                                                                                </ContactEntryHeaderTitleDiv>
+                                                                                <IconButton
+                                                                                    aria-label="Delete"
+                                                                                    onClick={() => {
+                                                                                        console.log(
+                                                                                            "EMAIL ",
+                                                                                            contact.email
+                                                                                        );
+                                                                                        if (
+                                                                                            Boolean(
+                                                                                                contact.id
+                                                                                            )
+                                                                                        ) {
+                                                                                            setFieldValue(
+                                                                                                "deletedContacts",
+                                                                                                [
+                                                                                                    ...deletedContacts,
+                                                                                                    parseInt(
+                                                                                                        contact.id,
+                                                                                                        DECIMAL_RADIX
+                                                                                                    )
+                                                                                                ],
+                                                                                                false
+                                                                                            );
+                                                                                        }
+                                                                                        remove(
+                                                                                            contactIndex
+                                                                                        );
+                                                                                    }}
+                                                                                >
+                                                                                    <DeleteIcon fontSize="large" />
+                                                                                </IconButton>
+                                                                            </ContactEntryHeaderContainerDiv>
+                                                                            {CONTACT_TEXT_FIELDS.map(
+                                                                                (
+                                                                                    {
+                                                                                        name,
+                                                                                        label,
+                                                                                        required,
+                                                                                        type
+                                                                                    },
+                                                                                    contactFieldIndex
+                                                                                ) => (
+                                                                                    <FieldDiv
+                                                                                        key={`CONTACT-FIELD-${contactIndex}-${name}-${contactFieldIndex}`}
+                                                                                    >
+                                                                                        {renderTextField(
+                                                                                            `contacts[${contactIndex}].${name}`,
+                                                                                            label,
+                                                                                            required,
+                                                                                            type
+                                                                                        )}
+                                                                                    </FieldDiv>
+                                                                                )
+                                                                            )}
+                                                                        </ContactEntryContainerDiv>
+                                                                    )
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    />
                                                 </SectionDiv>
                                             </ContainerDiv>
                                         </Form>
