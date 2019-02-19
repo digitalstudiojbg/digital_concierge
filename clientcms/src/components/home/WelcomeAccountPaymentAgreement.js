@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import { compose, withApollo, graphql, Query } from "react-apollo";
 import { getContractByClientId } from "../../data/query";
 import { log } from "util";
-import TextField from "@material-ui/core/TextField";
+import { TextField, Checkbox, FormControlLabel } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
+import dayjs from "dayjs";
+
 const useContracts = contract => {
     const [contracts, setContracts] = useState([]);
 
@@ -44,11 +46,13 @@ const AGREEMENT_FIELD = [
     },
     {
         name: "agreement_date",
-        label: "AGREEMENT DATE"
+        label: "AGREEMENT DATE",
+        type: "date"
     },
     {
         name: "renewal_date",
-        label: "AGREEMENT RENEWAL DATE"
+        label: "AGREEMENT RENEWAL DATE",
+        type: "date"
     },
     {
         name: "file_key",
@@ -65,10 +69,17 @@ const renderAgreementFiled = contractsFromState => {
         return (
             key && (
                 <TextField
+                    type={each.type === "date" ? "date" : "text"}
                     key={index}
                     id="standard-name"
                     label={each.label}
-                    value={contractsFromState[key]}
+                    value={
+                        each.type === "date"
+                            ? dayjs(contractsFromState[key]).format(
+                                  "YYYY-MM-DD"
+                              )
+                            : contractsFromState[key]
+                    }
                     margin="normal"
                     disabled={true}
                     fullWidth={true}
@@ -81,7 +92,79 @@ const renderAgreementFiled = contractsFromState => {
 const renderLicenseField = license => {
     console.log(license);
 
-    return <h1>TEXT</h1>;
+    return (
+        <React.Fragment>
+            <TextField
+                type="text"
+                id="standard-name"
+                label="LICENSE NUMBER"
+                value={license.key}
+                margin="normal"
+                disabled={true}
+                fullWidth={true}
+            />
+            <TextField
+                type="text"
+                id="standard-name"
+                label="LICENSE TERM"
+                value={license.licenseType.name}
+                margin="normal"
+                disabled={true}
+                fullWidth={true}
+            />
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    width: "100%"
+                }}
+            >
+                <div style={{ width: "45%" }}>
+                    <TextField
+                        type="text"
+                        id="standard-name"
+                        label="LICENSE START DATE"
+                        value={dayjs(license.commence_date).format(
+                            "YYYY-MM-DD"
+                        )}
+                        margin="normal"
+                        disabled={true}
+                        fullWidth={true}
+                    />
+                </div>
+                <div
+                    style={{ width: "10%", textAlign: "center", color: "grey" }}
+                >
+                    TO
+                </div>
+                <div style={{ width: "45%" }}>
+                    <TextField
+                        type="text"
+                        id="standard-name"
+                        label="LICENSE END DATE"
+                        value={dayjs(license.expire_date).format("YYYY-MM-DD")}
+                        margin="normal"
+                        disabled={true}
+                        fullWidth={true}
+                    />
+                </div>
+            </div>
+
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        id="standard-name"
+                        label="AUTOMATIC RENEWAL"
+                        checked={license.auto_renewal}
+                        margin="normal"
+                        color="primary"
+                    />
+                }
+                label="AUTOMATIC RENEWAL"
+            />
+        </React.Fragment>
+    );
 };
 
 const WelcomeAccountPaymentAgreement = props => {
@@ -112,7 +195,7 @@ const WelcomeAccountPaymentAgreement = props => {
                         {renderAgreementFiled(contractsFromState)}
 
                         {renderLicenseField(
-                            contractsFromState.client.activeLicense
+                            contractsFromState.client.activeLicense[0]
                         )}
                     </div>
                     <div style={{ width: "50%" }}>
