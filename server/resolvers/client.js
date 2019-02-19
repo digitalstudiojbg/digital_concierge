@@ -214,6 +214,12 @@ export default {
             await db.license.findAll({
                 where: { clientId: client.id },
                 order: [["expire_date", "DESC"]]
+            }),
+        activeLicense: async client =>
+            await db.license.findAll({
+                where: { clientId: client.id, active: true },
+                limit: 1,
+                order: [["createdAt", "DESC"]]
             })
     }
 };

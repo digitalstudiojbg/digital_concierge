@@ -11,7 +11,7 @@ export const getContractByClientId = gql`
             renewal_date
             active
             client {
-                licenses {
+                activeLicense {
                     key
                     commence_date
                     expire_date

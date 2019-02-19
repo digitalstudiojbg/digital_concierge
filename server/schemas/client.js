@@ -72,5 +72,6 @@ export default gql`
         venue_state: State
         payments: [Payment]
         licenses: [License]
+        activeLicense: [License]
     }
 `;

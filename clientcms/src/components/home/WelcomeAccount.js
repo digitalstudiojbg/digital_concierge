@@ -109,14 +109,14 @@ class WelcomeAccount extends Component {
                         />
                     </Tabs>
                     {value === 0 && (
-                        <Typography className={classes.typography}>
+                        <div className={classes.typography}>
                             <WelcomeAccountClient />
-                        </Typography>
+                        </div>
                     )}
                     {value === 1 && (
-                        <Typography className={classes.typography}>
+                        <div className={classes.typography}>
                             <WelcomeAccountPaymentAgreement />
-                        </Typography>
+                        </div>
                     )}
                 </div>
             </div>
