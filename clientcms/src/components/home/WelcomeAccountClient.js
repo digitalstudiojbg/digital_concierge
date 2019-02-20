@@ -18,6 +18,7 @@ import {
     CREATE_UPDATE_DELETE_CONTACTS,
     UPDATE_USER
 } from "../../data/mutation";
+import * as Yup from "yup";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -318,6 +319,65 @@ const EMPTY_CONTACT = {
     title: ""
 };
 
+//Yup confirm password === password
+//https://github.com/jaredpalmer/formik/issues/90#issuecomment-317804880
+function equalTo(ref, msg) {
+    return Yup.mixed().test({
+        name: "equalTo",
+        exclusive: false,
+        message: msg || `${ref.path} must be the same as ${ref.reference}`,
+        params: {
+            reference: ref.path
+        },
+        test: function(value) {
+            return value === this.resolve(ref);
+        }
+    });
+}
+Yup.addMethod(Yup.string, "equalTo", equalTo);
+
+const requiredErrorMessage = "Required.";
+
+const validationSchema = Yup.object().shape({
+    name: Yup.string().required(requiredErrorMessage),
+    full_company_name: Yup.string().required(requiredErrorMessage),
+    nature_of_business: Yup.string().required(requiredErrorMessage),
+    phone: Yup.string().required(requiredErrorMessage),
+    email: Yup.string()
+        .email("Wrong email format")
+        .required(requiredErrorMessage),
+    venue_address: Yup.string().required(requiredErrorMessage),
+    postal_address: Yup.string().required(requiredErrorMessage),
+    venue_city: Yup.string().required(requiredErrorMessage),
+    venue_zip_code: Yup.string().required(requiredErrorMessage),
+    postal_city: Yup.string().required(requiredErrorMessage),
+    postal_zip_code: Yup.string().required(requiredErrorMessage),
+
+    //Key user validation
+    user_name: Yup.string().required(requiredErrorMessage),
+    position: Yup.string().required(requiredErrorMessage),
+    user_email: Yup.string()
+        .email("Wrong email format")
+        .required(requiredErrorMessage),
+    first_phone_number: Yup.string().required(requiredErrorMessage),
+    second_phone_number: Yup.string(),
+    password: Yup.string(),
+    confirm_password: Yup.string().equalTo(
+        Yup.ref("password"),
+        "Passwords must match"
+    ),
+    contacts: Yup.array().of(
+        Yup.object().shape({
+            email: Yup.string()
+                .email("Wrong email format")
+                .required(requiredErrorMessage),
+            phone: Yup.string().required(requiredErrorMessage),
+            name: Yup.string().required(requiredErrorMessage),
+            title: Yup.string().required(requiredErrorMessage)
+        })
+    )
+});
+
 export const WelcomeAccountClient = ({
     data: {
         id,
@@ -395,6 +455,7 @@ export const WelcomeAccountClient = ({
                                         return `Error ${errorMutation.message}`;
                                     return (
                                         <Formik
+                                            validationSchema={validationSchema}
                                             initialValues={{
                                                 name,
                                                 full_company_name,
