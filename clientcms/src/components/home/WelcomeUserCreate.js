@@ -1,7 +1,111 @@
 import React from "react";
-
+import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
+import { Mutation, withApollo, compose, graphql } from "react-apollo";
+import { getDepartmentListByUser } from "../../data/query";
+//import { CREATE_SYSTEM } from "../../../data/mutation";
+//import Loading from "../../loading/Loading";
+import { Formik, Form, Field } from "formik";
+import {
+    TextField,
+    fieldToTextField,
+    Select,
+    RadioGroup
+} from "formik-material-ui";
+import Button from "@material-ui/core/Button";
 
-const WelcomeUserCreate = () => <h1>CREATE USER PAGE </h1>;
+const ContainerDiv = styled.div`
+    width: 33%;
+`;
 
-export default withStyles()(WelcomeUserCreate);
+const CREATE_USER_FIELD = [
+    {
+        name: "name",
+        label: "USER",
+        required: true,
+        type: "text"
+    },
+    {
+        name: "email",
+        label: "EMAIL",
+        required: true,
+        type: "text"
+    }
+];
+
+const FiledContainer = styled.div`
+    padding-bottom: 20px;
+`;
+
+const WelcomeUserCreate = props => {
+    console.log(props);
+
+    return (
+        <div
+            style={{
+                width: "100%",
+                height: "100%",
+                padding: "30px"
+            }}
+        >
+            <div>
+                <p style={{ fontSize: "20px", paddingBottom: "10px" }}>
+                    Create a user account
+                </p>
+            </div>
+
+            {/**
+                validationSchema={validationSchema}
+                initialValues={{ aif_boolean: "yes" }} 
+            */}
+            <Formik
+                onSubmit={async (values, { setSubmitting }) => {
+                    console.log(values);
+                }}
+                render={({ errors, values, isSubmitting }) => {
+                    return (
+                        <Form>
+                            {" "}
+                            <div style={{ display: "flex" }}>
+                                <ContainerDiv>
+                                    {CREATE_USER_FIELD.map(
+                                        ({ name, label, required, type }) => (
+                                            <FiledContainer>
+                                                <Field
+                                                    id={name}
+                                                    name={name}
+                                                    label={label}
+                                                    required={required}
+                                                    type={type}
+                                                    component={TextField}
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                            </FiledContainer>
+                                        )
+                                    )}
+                                </ContainerDiv>
+                                <ContainerDiv> SECTION 2</ContainerDiv>
+                                <ContainerDiv> SECTION 3</ContainerDiv>
+                            </div>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                CONFIRM & CONTINUE
+                            </Button>
+                        </Form>
+                    );
+                }}
+            />
+        </div>
+    );
+};
+
+export default compose(
+    withStyles(),
+    graphql(getDepartmentListByUser, {
+        name: "getDepartmentListByUser"
+    })
+)(WelcomeUserCreate);
