@@ -38,13 +38,55 @@ const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 const Welcome = lazy(() => import("./Welcome.js"));
 
 const routes = [
+    // {
+    //     path: WELCOME_URL + "/:client_id/",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: {}
+    // },
     {
-        path: WELCOME_URL + "/:client_id",
+        path: WELCOME_URL + "/:client_id/:which",
         exact: true,
         header: Header,
         main: Welcome,
         withProps: {}
     },
+    // {
+    //     path: WELCOME_URL + "/:client_id/systems",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: { tab: "systems" }
+    // },
+    // {
+    //     path: WELCOME_URL + "/:client_id/account",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: { tab: "account" }
+    // },
+    // {
+    //     path: WELCOME_URL + "/:client_id/theme",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: { tab: "theme" }
+    // },
+    // {
+    //     path: WELCOME_URL + "/:client_id/users",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: { tab: "users" }
+    // },
+    // {
+    //     path: WELCOME_URL + "/:client_id/support",
+    //     exact: true,
+    //     header: Header,
+    //     main: Welcome,
+    //     withProps: { tab: "support" }
+    // },
     {
         path: SYSTEM_CMS_INDEX_URL,
         exact: true,

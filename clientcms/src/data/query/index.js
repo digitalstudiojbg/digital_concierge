@@ -1,6 +1,10 @@
 import { getCurrentUserQuery } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
-import { getSystemsFromUser, getSystemsFromClient } from "./system";
+import {
+    getSystemsFromUser,
+    getSystemsFromClient,
+    getSystemThemesFromClient
+} from "./system";
 import {
     getClientFromUser,
     getClientDetail,
@@ -36,5 +40,6 @@ export {
     getPermissionCategoryList,
     getRoleList,
     getContractByClientId,
-    getUsersByClient
+    getUsersByClient,
+    getSystemThemesFromClient
 };

@@ -9,6 +9,7 @@ export default gql`
 
     extend type Mutation {
         createClient(input: CreateClientInput): Client
+        updateClient(input: UpdateClientInput): Client
         uploadFilesWithClientId(files: [Upload!]!, clientId: ID!): [Media!]!
         deleteFiles(media: [DeleteFilesInput]): UploadFilesWithClientIdResult!
     }
@@ -59,6 +60,7 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         users: [User]
+        key_user: User
         departments: [Department]
         guests: [Guest]
         rooms: [Room]
@@ -73,5 +75,24 @@ export default gql`
         payments: [Payment]
         licenses: [License]
         activeLicense: [License]
+    }
+
+    input UpdateClientInput {
+        id: Int!
+        name: String!
+        full_company_name: String!
+        nature_of_business: String!
+        venue_address: String!
+        venue_city: String!
+        venue_zip_code: String!
+        venue_state_id: Int!
+        postal_address: String!
+        postal_city: String!
+        postal_zip_code: String!
+        postal_state_id: Int!
+        phone: String!
+        email: EmailAddress!
+        number_of_users: Int
+        file: Upload
     }
 `;

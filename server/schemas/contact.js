@@ -9,6 +9,9 @@ export default gql`
 
     extend type Mutation {
         createContact(input: CreateContactInput): Contact
+        createUpdateDeleteContact(
+            input: CreateUpdateDeleteContactInput
+        ): [Contact]
     }
 
     input CreateContactInput {
@@ -17,7 +20,16 @@ export default gql`
         phone: String!
         mobile: String!
         email: EmailAddress!
-        clientId: ID!
+        clientId: Int!
+    }
+
+    input UpdateContactInput {
+        id: Int!
+        name: String!
+        title: String!
+        phone: String!
+        mobile: String!
+        email: EmailAddress!
     }
 
     type Contact {
@@ -30,5 +42,12 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
+    }
+
+    input CreateUpdateDeleteContactInput {
+        clientId: Int!
+        createContacts: [CreateContactInput]
+        updateContacts: [UpdateContactInput]
+        deleteContacts: [Int]
     }
 `;

@@ -11,6 +11,15 @@ export const CREATE_CLIENT = () => {
     `;
 };
 
+export const UPDATE_CLIENT = gql`
+    mutation updateClient($input: UpdateClientInput) {
+        updateClient(input: $input) {
+            id
+            name
+        }
+    }
+`;
+
 export const UPLOAD_FILES_WITH_CLIENT_ID = gql`
     mutation uploadFilesWithClientId($files: [Upload!]!, $clientId: ID!) {
         uploadFilesWithClientId(files: $files, clientId: $clientId) {

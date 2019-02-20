@@ -5,6 +5,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout, getClientIdLocalStorage } from "../auth/auth";
 import "./App.css";
 import Loading from "./loading/Loading";
+import "rc-color-picker/assets/index.css";
 import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
@@ -21,8 +22,12 @@ const routes = [
     //     path: WELCOME_URL,
     //     component: Home
     // },
+    // {
+    //     path: WELCOME_URL + "/:client_id/",
+    //     component: Home
+    // },
     {
-        path: WELCOME_URL + "/:client_id",
+        path: WELCOME_URL + "/:client_id/:which",
         component: Home
     },
     {
@@ -43,7 +48,9 @@ class App extends Component {
 
     handleLogin() {
         this.setState({ loggedIn: true });
-        this.router.history.push(WELCOME_URL + "/" + getClientIdLocalStorage());
+        this.router.history.push(
+            WELCOME_URL + "/" + getClientIdLocalStorage() + "/systems"
+        );
     }
 
     handleLogout() {

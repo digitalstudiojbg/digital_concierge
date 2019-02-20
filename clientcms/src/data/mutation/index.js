@@ -7,10 +7,11 @@ import { changeDirectoryListAndEntryStatus } from "./directory";
 import {
     CREATE_CLIENT,
     UPLOAD_FILES_WITH_CLIENT_ID,
-    DELETE_FILES
+    DELETE_FILES,
+    UPDATE_CLIENT
 } from "./client";
-import { CREATE_CONTACT } from "./contact";
-import { CREATE_USER } from "./user";
+import { CREATE_CONTACT, CREATE_UPDATE_DELETE_CONTACTS } from "./contact";
+import { CREATE_USER, UPDATE_USER } from "./user";
 import { CREATE_DEPARTMENT } from "./department";
 import { CREATE_THEMES } from "./theme";
 import { CREATE_LICENSE } from "./license";
@@ -24,8 +25,11 @@ export {
     changeDirectoryListAndEntryStatus,
     DELETE_DIR_LIST_ENTRY,
     CREATE_CLIENT,
+    UPDATE_CLIENT,
     CREATE_CONTACT,
+    CREATE_UPDATE_DELETE_CONTACTS,
     CREATE_USER,
+    UPDATE_USER,
     CREATE_DEPARTMENT,
     UPLOAD_FILES_WITH_CLIENT_ID,
     DELETE_FILES,

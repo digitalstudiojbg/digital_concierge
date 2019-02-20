@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { themeDetailFragment } from "../fragment";
 
 export const getSystemsFromUser = gql`
     query get_systems_by_user {
@@ -20,4 +21,17 @@ export const getSystemsFromClient = gql`
             updatedAt
         }
     }
+`;
+
+export const getSystemThemesFromClient = gql`
+    query get_system_themes_by_client($id: ID!) {
+        systemsByClient(id: $id) {
+            id
+            name
+            theme {
+                ...themeDetail
+            }
+        }
+    }
+    ${themeDetailFragment}
 `;

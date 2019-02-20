@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 // import {
 //     COLOR_JBG_PURPLE,
@@ -18,8 +18,7 @@ import {
 import { withApollo, Query } from "react-apollo";
 import styled from "styled-components";
 import WelcomeAccount from "./WelcomeAccount";
-
-import WeclomeUser from "./WelcomeUser";
+import { WELCOME_URL } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100vw;
@@ -214,12 +213,14 @@ const SidebarNormal = styled.div`
 // }
 
 const WelcomeSystems = React.lazy(() => import("./WelcomeSystems"));
+const WelcomeTheme = React.lazy(() => import("./WelcomeTheme"));
+const WelcomeUser = React.lazy(() => import("./WelcomeUser"));
 
 const SIDEBAR_BUTTONS = [
     { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
     { id: "account", name: "ACCOUNT", component: WelcomeAccount },
-    { id: "theme", name: "THEME SETTINGS", component: "WelcomeSystems" },
-    { id: "users", name: "USERS & STRUCTURES", component: WeclomeUser },
+    { id: "theme", name: "THEME SETTINGS", component: WelcomeTheme },
+    { id: "users", name: "USERS & STRUCTURES", component: WelcomeUser },
     { id: "support", name: "SUPPORT", component: "WelcomeSystems" }
 ];
 
@@ -291,16 +292,23 @@ const renderWelcomeComponent = (
     );
 };
 
-export const Welcome = ({ client, match }) => {
-    const [selected, setSelected] = useState("systems");
+export const Welcome = ({ client, match, history }) => {
+    const { params } = match || {};
+    const { client_id = "", which = "systems" } = params;
+
+    const [selected, setSelected] = useState(which);
+
+    //Component did update via hooks
+    useEffect(() => {
+        console.info("Tabs changed ", match);
+        setSelected(match.params.which || "systems");
+    }, [match.params.which]);
 
     const { getCurrentUser: user } = client.readQuery({ query });
 
-    const { params } = match || {};
-    const { client_id = "" } = params;
-
     const handleClickSidebar = event => {
         setSelected(event.target.id);
+        history.push(`${WELCOME_URL}/${client_id}/${event.target.id}`);
     };
 
     console.log(user);

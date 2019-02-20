@@ -4,7 +4,9 @@ import {
     asyncForEach,
     processUploadMedia,
     checkUserLogin,
-    processDeleteMedia
+    processDeleteMedia,
+    handleCreateActionActivityLog,
+    handleUpdateActionActivityLog
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
 
@@ -147,6 +149,29 @@ export default {
 
                     await create_client.save();
 
+                    handleCreateActionActivityLog(
+                        create_client,
+                        {
+                            name,
+                            full_company_name,
+                            nature_of_business,
+                            venue_address,
+                            venue_city,
+                            venue_zip_code,
+                            postal_address,
+                            postal_city,
+                            postal_zip_code,
+                            phone,
+                            email,
+                            number_of_users,
+                            avatar: data.location,
+                            venueStateId: venue_state_id,
+                            postalStateId: postal_state_id
+                        },
+                        user,
+                        clientIp
+                    );
+
                     /**
                      * add department relationships here
                      */
@@ -169,6 +194,58 @@ export default {
                     resolve(await db.client.findByPk(create_client.id));
                 });
             });
+        },
+        updateClient: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    full_company_name = "",
+                    nature_of_business,
+                    venue_address,
+                    venue_city,
+                    venue_zip_code,
+                    venue_state_id,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    postal_state_id,
+                    phone,
+                    email
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const client = await db.client.findByPk(id);
+            try {
+                await client.update({
+                    name,
+                    full_company_name,
+                    nature_of_business,
+                    venue_address,
+                    venue_city,
+                    venue_zip_code,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    phone,
+                    email,
+                    venueStateId: venue_state_id,
+                    postalStateId: postal_state_id
+                });
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to update Client ${id}.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Console logging changes
+            handleUpdateActionActivityLog(client, {}, user, clientIp);
+
+            return await db.client.findByPk(id);
         }
     },
     Client: {
@@ -220,6 +297,16 @@ export default {
                 where: { clientId: client.id, active: true },
                 limit: 1,
                 order: [["createdAt", "DESC"]]
-            })
+            }),
+        key_user: async client => {
+            const users = await db.user.findAll({
+                where: { clientId: client.id },
+                limit: 1,
+                order: [["createdAt", "ASC"]]
+            });
+            return Boolean(users) && Array.isArray(users) && users.length === 1
+                ? users[0]
+                : null;
+        }
     }
 };
