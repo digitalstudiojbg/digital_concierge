@@ -462,9 +462,9 @@ class WizardCreateClientPageFour extends React.Component {
 
         if (
             systemTypes.length < 0 &&
-            deviceTypes < 0 &&
-            featureCategories < 0 &&
-            systemsByClient < 0
+            deviceTypes.length < 0 &&
+            featureCategories.length < 0 &&
+            systemsByClient.length < 0
         )
             return <Loading />;
 
@@ -550,11 +550,30 @@ class WizardCreateClientPageFour extends React.Component {
                                                     this.state.selected_checkboxes.toJS()
                                                         .length === 0
                                                 }
+                                            >
+                                                ADD SYSTEM
+                                            </Button>
+                                        </div>
+                                        <div
+                                            style={{
+                                                paddingBottom: "20px"
+                                            }}
+                                        >
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                                disabled={
+                                                    isSubmitting ||
+                                                    Object.keys(errors).length >
+                                                        0 ||
+                                                    systemsByClient.length < 0
+                                                }
                                                 onClick={() => {
                                                     next && next();
                                                 }}
                                             >
-                                                CONFIRM & CONTINUE
+                                                CONFIRM & CONTINUOUS
                                             </Button>
                                         </div>
                                     </Form>

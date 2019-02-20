@@ -33,6 +33,21 @@ const CREATE_USER_FIELD = [
     }
 ];
 
+const PASSWORD_FIELD = [
+    {
+        name: "password",
+        label: "PASSWORD",
+        required: true,
+        type: "password"
+    },
+    {
+        name: "confirm_password",
+        label: "CONFIRM PASSWORD",
+        required: true,
+        type: "password"
+    }
+];
+
 const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
@@ -65,7 +80,6 @@ const WelcomeUserCreate = props => {
                 render={({ errors, values, isSubmitting }) => {
                     return (
                         <Form>
-                            {" "}
                             <div style={{ display: "flex" }}>
                                 <ContainerDiv>
                                     {CREATE_USER_FIELD.map(
@@ -85,8 +99,27 @@ const WelcomeUserCreate = props => {
                                         )
                                     )}
                                 </ContainerDiv>
-                                <ContainerDiv> SECTION 2</ContainerDiv>
-                                <ContainerDiv> SECTION 3</ContainerDiv>
+                                <ContainerDiv>
+                                    DEPARTMENT-ROLE-PERMISSION
+                                </ContainerDiv>
+                                <ContainerDiv>
+                                    {PASSWORD_FIELD.map(
+                                        ({ name, label, required, type }) => (
+                                            <FiledContainer>
+                                                <Field
+                                                    id={name}
+                                                    name={name}
+                                                    label={label}
+                                                    required={required}
+                                                    type={type}
+                                                    component={TextField}
+                                                    variant="outlined"
+                                                    fullWidth={true}
+                                                />
+                                            </FiledContainer>
+                                        )
+                                    )}
+                                </ContainerDiv>
                             </div>
                             <Button
                                 type="submit"
