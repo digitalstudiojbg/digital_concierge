@@ -6,7 +6,7 @@ import { log } from "util";
 import { compose, graphql, Query } from "react-apollo";
 import { getUsersByClient, getRoleList } from "../../data/query";
 import Checkbox from "@material-ui/core/Checkbox";
-
+import WelcomeUserCreate from "./WelcomeUserCreate";
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit
@@ -66,197 +66,224 @@ const changeClientDataStructure = ({ client: { users = {} } = {} }) => {
 
 class WelcomeUser extends Component {
     state = {
-        selected: []
+        selected: [],
+        is_create_page: false
     };
 
     render() {
         const { classes } = this.props;
-        const { selected } = this.state;
-        return (
-            <Query
-                query={getUsersByClient}
-                variables={{ id: this.props.data.id }}
-            >
-                {({ loading, error, data }) => {
-                    if (loading) return <h1>Loading</h1>;
-                    if (error) return <h1>Error</h1>;
+        const { selected, is_create_page } = this.state;
+        if (is_create_page) {
+            return <WelcomeUserCreate />;
+        } else {
+            return (
+                <Query
+                    query={getUsersByClient}
+                    variables={{ id: this.props.data.id }}
+                >
+                    {({ loading, error, data }) => {
+                        if (loading) return <h1>Loading</h1>;
+                        if (error) return <h1>Error</h1>;
 
-                    return (
-                        <div
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                backgroundColor: "lightgray",
-                                padding: "20px"
-                            }}
-                        >
-                            <h1>Users</h1>
-                            <div style={{ display: "flex" }}>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        className={classes.button}
-                                    >
-                                        CREATE A USER ACCOUNT
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button
-                                        variant="contained"
-                                        className={classes.button}
-                                    >
-                                        DELETE
-                                    </Button>
-                                </div>
-                            </div>
+                        return (
                             <div
                                 style={{
                                     width: "100%",
                                     height: "100%",
-                                    backgroundColor: "white",
+                                    backgroundColor: "lightgray",
                                     padding: "20px"
                                 }}
                             >
-                                <ReactTable
-                                    defaultPageSize={10}
-                                    data={changeClientDataStructure(data)}
-                                    columns={[
-                                        {
-                                            Header: "USER",
-                                            accessor: "user",
-                                            style: {
-                                                textAlign: "center"
+                                <h1>Users</h1>
+                                <div style={{ display: "flex" }}>
+                                    <div>
+                                        <Button
+                                            variant="contained"
+                                            className={classes.button}
+                                            onClick={() => {
+                                                this.setState({
+                                                    is_create_page: true
+                                                });
+                                            }}
+                                        >
+                                            CREATE A USER ACCOUNT
+                                        </Button>
+                                    </div>
+                                    <div>
+                                        <Button
+                                            variant="contained"
+                                            className={classes.button}
+                                        >
+                                            DELETE
+                                        </Button>
+                                    </div>
+                                </div>
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        backgroundColor: "white",
+                                        padding: "20px"
+                                    }}
+                                >
+                                    <ReactTable
+                                        defaultPageSize={10}
+                                        data={changeClientDataStructure(data)}
+                                        columns={[
+                                            {
+                                                Header: "USER",
+                                                accessor: "user",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                filterable: true,
+                                                filterMethod: (
+                                                    filter,
+                                                    original
+                                                ) =>
+                                                    original.user
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            filter.value.toLowerCase()
+                                                        )
                                             },
-                                            filterable: true,
-                                            filterMethod: (filter, original) =>
-                                                original.user
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        filter.value.toLowerCase()
-                                                    )
-                                        },
-                                        {
-                                            Header: "USERNAME",
-                                            accessor: "username",
-                                            style: {
-                                                textAlign: "center"
+                                            {
+                                                Header: "USERNAME",
+                                                accessor: "username",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                filterable: true,
+                                                filterMethod: (
+                                                    filter,
+                                                    original
+                                                ) =>
+                                                    original.username
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            filter.value.toLowerCase()
+                                                        )
                                             },
-                                            filterable: true,
-                                            filterMethod: (filter, original) =>
-                                                original.username
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        filter.value.toLowerCase()
-                                                    )
-                                        },
-                                        {
-                                            Header: "ROLE",
-                                            accessor: "role",
-                                            style: {
-                                                textAlign: "center"
+                                            {
+                                                Header: "ROLE",
+                                                accessor: "role",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                filterable: true,
+                                                filterMethod: (
+                                                    filter,
+                                                    original
+                                                ) =>
+                                                    original.role
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            filter.value.toLowerCase()
+                                                        )
                                             },
-                                            filterable: true,
-                                            filterMethod: (filter, original) =>
-                                                original.role
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        filter.value.toLowerCase()
-                                                    )
-                                        },
-                                        {
-                                            Header: "DEPARTMENT",
-                                            accessor: "department",
-                                            style: {
-                                                textAlign: "center"
+                                            {
+                                                Header: "DEPARTMENT",
+                                                accessor: "department",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                filterable: true,
+                                                filterMethod: (
+                                                    filter,
+                                                    original
+                                                ) =>
+                                                    original.department
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            filter.value.toLowerCase()
+                                                        )
                                             },
-                                            filterable: true,
-                                            filterMethod: (filter, original) =>
-                                                original.department
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        filter.value.toLowerCase()
-                                                    )
-                                        },
-                                        {
-                                            Header: "STATUS",
-                                            accessor: "status",
-                                            style: {
-                                                textAlign: "center"
+                                            {
+                                                Header: "STATUS",
+                                                accessor: "status",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                filterable: true,
+                                                filterMethod: (
+                                                    filter,
+                                                    original
+                                                ) =>
+                                                    original.status
+                                                        .toLowerCase()
+                                                        .includes(
+                                                            filter.value.toLowerCase()
+                                                        )
                                             },
-                                            filterable: true,
-                                            filterMethod: (filter, original) =>
-                                                original.status
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        filter.value.toLowerCase()
-                                                    )
-                                        },
-                                        {
-                                            Header: "ACTIONS",
-                                            style: {
-                                                textAlign: "center"
+                                            {
+                                                Header: "ACTIONS",
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                Cell: row => {
+                                                    return <div>...</div>;
+                                                }
                                             },
-                                            Cell: row => {
-                                                return <div>...</div>;
-                                            }
-                                        },
-                                        {
-                                            style: {
-                                                textAlign: "center"
-                                            },
-                                            Cell: ({ original }) => {
-                                                const selectedId = parseInt(
-                                                    original.id
-                                                );
-                                                return (
-                                                    <div>
-                                                        <Checkbox
-                                                            checked={this.state.selected.includes(
-                                                                selectedId
-                                                            )}
-                                                            onClick={() => {
-                                                                this.setState({
-                                                                    selected: selected.includes(
-                                                                        parseInt(
-                                                                            selectedId
-                                                                        )
-                                                                    )
-                                                                        ? selected.filter(
-                                                                              each => {
-                                                                                  return (
-                                                                                      each !=
+                                            {
+                                                style: {
+                                                    textAlign: "center"
+                                                },
+                                                Cell: ({ original }) => {
+                                                    const selectedId = parseInt(
+                                                        original.id
+                                                    );
+                                                    return (
+                                                        <div>
+                                                            <Checkbox
+                                                                checked={this.state.selected.includes(
+                                                                    selectedId
+                                                                )}
+                                                                onClick={() => {
+                                                                    this.setState(
+                                                                        {
+                                                                            selected: selected.includes(
+                                                                                parseInt(
+                                                                                    selectedId
+                                                                                )
+                                                                            )
+                                                                                ? selected.filter(
+                                                                                      each => {
+                                                                                          return (
+                                                                                              each !=
+                                                                                              parseInt(
+                                                                                                  selectedId
+                                                                                              )
+                                                                                          );
+                                                                                      }
+                                                                                  )
+                                                                                : [
+                                                                                      ...selected,
                                                                                       parseInt(
                                                                                           selectedId
                                                                                       )
-                                                                                  );
-                                                                              }
-                                                                          )
-                                                                        : [
-                                                                              ...selected,
-                                                                              parseInt(
-                                                                                  selectedId
-                                                                              )
-                                                                          ]
-                                                                });
-                                                            }}
-                                                            value="checkedB"
-                                                            color="primary"
-                                                            style={{
-                                                                padding: "0"
-                                                            }}
-                                                        />
-                                                    </div>
-                                                );
+                                                                                  ]
+                                                                        }
+                                                                    );
+                                                                }}
+                                                                value="checkedB"
+                                                                color="primary"
+                                                                style={{
+                                                                    padding: "0"
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    );
+                                                }
                                             }
-                                        }
-                                    ]}
-                                />
+                                        ]}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    );
-                }}
-            </Query>
-        );
+                        );
+                    }}
+                </Query>
+            );
+        }
     }
 }
 
