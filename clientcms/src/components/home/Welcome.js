@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
 // import {
 //     COLOR_JBG_PURPLE,
@@ -18,6 +18,7 @@ import {
 import { withApollo, Query } from "react-apollo";
 import styled from "styled-components";
 import WelcomeAccount from "./WelcomeAccount";
+import { WELCOME_URL } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100vw;
@@ -290,16 +291,23 @@ const renderWelcomeComponent = (
     );
 };
 
-export const Welcome = ({ client, match }) => {
-    const [selected, setSelected] = useState("systems");
+export const Welcome = ({ client, match, history }) => {
+    const { params } = match || {};
+    const { client_id = "", which = "systems" } = params;
+
+    const [selected, setSelected] = useState(which);
+
+    //Component did update via hooks
+    useEffect(() => {
+        console.info("Tabs changed ", match);
+        setSelected(match.params.which || "systems");
+    }, [match.params.which]);
 
     const { getCurrentUser: user } = client.readQuery({ query });
 
-    const { params } = match || {};
-    const { client_id = "" } = params;
-
     const handleClickSidebar = event => {
         setSelected(event.target.id);
+        history.push(`${WELCOME_URL}/${client_id}/${event.target.id}`);
     };
 
     console.log(user);

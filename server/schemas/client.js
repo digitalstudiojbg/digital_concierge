@@ -91,7 +91,7 @@ export default gql`
         postal_state_id: Int!
         phone: String!
         email: EmailAddress!
-        number_of_users: Int!
+        number_of_users: Int
         file: Upload
     }
 `;

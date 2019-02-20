@@ -20,7 +20,7 @@ export default gql`
         phone: String!
         mobile: String!
         email: EmailAddress!
-        clientId: ID
+        clientId: Int!
     }
 
     input UpdateContactInput {

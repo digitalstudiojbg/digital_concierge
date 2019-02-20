@@ -310,6 +310,7 @@ const renderSelectField = (nameValue, label, optionList) => {
 };
 
 const EMPTY_CONTACT = {
+    id: null,
     email: "",
     mobile: "",
     name: "",
@@ -370,7 +371,7 @@ export const WelcomeAccountClient = ({
                                 ...others
                             })
                         );
-                        // console.log("CONTACTS IS: ", contacts);
+                        console.log("CONTACTS IS: ", contacts);
                         return (
                             <Mutation
                                 mutation={UPDATE_CLIENT}
@@ -389,7 +390,7 @@ export const WelcomeAccountClient = ({
                                     }
                                 ) => {
                                     if (loadingMutation)
-                                        return <Loading loadingData />;
+                                        return <React.Fragment />;
                                     if (errorMutation)
                                         return `Error ${errorMutation.message}`;
                                     return (
@@ -416,15 +417,163 @@ export const WelcomeAccountClient = ({
                                                 user_email,
                                                 first_phone_number,
                                                 second_phone_number,
+                                                password: null,
                                                 contacts,
-                                                deletedContacts: []
+                                                deleteContacts: []
                                             }}
                                             onSubmit={(
-                                                values,
+                                                {
+                                                    name,
+                                                    full_company_name,
+                                                    nature_of_business,
+                                                    phone,
+                                                    email,
+                                                    venue_address,
+                                                    postal_address,
+                                                    venue_city,
+                                                    venue_zip_code,
+                                                    postal_city,
+                                                    postal_zip_code,
+                                                    venue_state_id,
+                                                    postal_state_id,
+                                                    user_id,
+                                                    user_name,
+                                                    position,
+                                                    user_email,
+                                                    first_phone_number,
+                                                    second_phone_number,
+                                                    password,
+                                                    contacts,
+                                                    deleteContacts
+                                                },
                                                 { setSubmitting }
                                             ) => {
                                                 setSubmitting(true);
-                                                // setLoading(true);
+                                                setLoading(true);
+
+                                                const clientId = parseInt(
+                                                    id,
+                                                    DECIMAL_RADIX
+                                                );
+
+                                                const submitClient = {
+                                                    id: clientId,
+                                                    name,
+                                                    full_company_name,
+                                                    nature_of_business,
+                                                    venue_address,
+                                                    venue_city,
+                                                    venue_zip_code,
+                                                    venue_state_id: parseInt(
+                                                        venue_state_id,
+                                                        DECIMAL_RADIX
+                                                    ),
+                                                    postal_address,
+                                                    postal_city,
+                                                    postal_zip_code,
+                                                    postal_state_id: parseInt(
+                                                        postal_state_id,
+                                                        DECIMAL_RADIX
+                                                    ),
+                                                    phone,
+                                                    email
+                                                };
+
+                                                //https://stackoverflow.com/questions/47892127/succinct-concise-syntax-for-optional-object-keys-in-es6-es7
+                                                const submitUser = {
+                                                    id: parseInt(
+                                                        user_id,
+                                                        DECIMAL_RADIX
+                                                    ),
+                                                    name: user_name,
+                                                    position,
+                                                    email: user_email,
+                                                    first_phone_number,
+                                                    second_phone_number,
+                                                    ...(Boolean(password) &&
+                                                        password.length > 0 && {
+                                                            password
+                                                        })
+                                                };
+
+                                                const submitContacts = {
+                                                    createContacts: contacts
+                                                        .filter(
+                                                            ({ id }) =>
+                                                                !Boolean(id)
+                                                        )
+                                                        .map(
+                                                            ({
+                                                                id,
+                                                                ...others
+                                                            }) => ({
+                                                                ...others,
+                                                                clientId
+                                                            })
+                                                        ),
+                                                    updateContacts: contacts
+                                                        .filter(({ id }) =>
+                                                            Boolean(id)
+                                                        )
+                                                        .map(
+                                                            ({
+                                                                id,
+                                                                ...others
+                                                            }) => ({
+                                                                id: parseInt(
+                                                                    id,
+                                                                    DECIMAL_RADIX
+                                                                ),
+                                                                ...others
+                                                            })
+                                                        ),
+                                                    deleteContacts: deleteContacts.slice(),
+                                                    clientId
+                                                };
+
+                                                console.log(
+                                                    "Submit Client: ",
+                                                    submitClient
+                                                );
+                                                console.log(
+                                                    "Submit User: ",
+                                                    submitUser
+                                                );
+                                                console.log(
+                                                    "Submit Contacts: ",
+                                                    submitContacts
+                                                );
+
+                                                updateClient({
+                                                    variables: {
+                                                        input: submitClient
+                                                    }
+                                                }).then(() => {
+                                                    console.log(
+                                                        "CLIENT UPDATED "
+                                                    );
+                                                    updateUser({
+                                                        variables: {
+                                                            input: submitUser
+                                                        }
+                                                    }).then(() => {
+                                                        console.log(
+                                                            "USER UPDATED "
+                                                        );
+                                                        createUpdateDeleteContacts(
+                                                            {
+                                                                variables: {
+                                                                    input: submitContacts
+                                                                }
+                                                            }
+                                                        ).then(() => {
+                                                            console.log(
+                                                                "CONTACTS UPDATED "
+                                                            );
+                                                            window.location.reload();
+                                                        });
+                                                    });
+                                                });
                                             }}
                                         >
                                             {({
@@ -432,7 +581,7 @@ export const WelcomeAccountClient = ({
                                                     venue_country_id,
                                                     postal_country_id,
                                                     contacts,
-                                                    deletedContacts
+                                                    deleteContacts
                                                 },
                                                 errors,
                                                 isSubmitting,
@@ -663,9 +812,9 @@ export const WelcomeAccountClient = ({
                                                                                                         )
                                                                                                     ) {
                                                                                                         setFieldValue(
-                                                                                                            "deletedContacts",
+                                                                                                            "deleteContacts",
                                                                                                             [
-                                                                                                                ...deletedContacts,
+                                                                                                                ...deleteContacts,
                                                                                                                 parseInt(
                                                                                                                     contact.id,
                                                                                                                     DECIMAL_RADIX

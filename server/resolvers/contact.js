@@ -2,7 +2,8 @@ import db from "../models";
 import {
     handleCreateActionActivityLog,
     handleUpdateActionActivityLog,
-    handleDeleteActionActivityLog
+    handleDeleteActionActivityLog,
+    asyncForEach
 } from "../utils/constant";
 
 export default {
