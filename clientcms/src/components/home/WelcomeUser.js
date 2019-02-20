@@ -91,13 +91,23 @@ class WelcomeUser extends Component {
                             }}
                         >
                             <h1>Users</h1>
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    className={classes.button}
-                                >
-                                    CREATE A USER ACCOUNT
-                                </Button>
+                            <div style={{ display: "flex" }}>
+                                <div>
+                                    <Button
+                                        variant="contained"
+                                        className={classes.button}
+                                    >
+                                        CREATE A USER ACCOUNT
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button
+                                        variant="contained"
+                                        className={classes.button}
+                                    >
+                                        DELETE
+                                    </Button>
+                                </div>
                             </div>
                             <div
                                 style={{
