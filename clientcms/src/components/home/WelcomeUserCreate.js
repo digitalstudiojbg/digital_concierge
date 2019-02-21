@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import { Mutation, withApollo, compose, graphql } from "react-apollo";
 import { getDepartmentListByUser } from "../../data/query";
 //import { CREATE_SYSTEM } from "../../../data/mutation";
-//import Loading from "../../loading/Loading";
 import { Formik, Form, Field } from "formik";
 import {
     TextField,
@@ -13,9 +12,14 @@ import {
     RadioGroup
 } from "formik-material-ui";
 import Button from "@material-ui/core/Button";
+import Loading from "../loading/Loading";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import { isEmpty } from "lodash";
 
 const ContainerDiv = styled.div`
     width: 33%;
+    padding: 20px;
 `;
 
 const CREATE_USER_FIELD = [
@@ -52,8 +56,45 @@ const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
 
+const renderSelectField = ({ name: nameValue, label, optionList }) => {
+    return (
+        <React.Fragment>
+            <InputLabel>{label}</InputLabel>
+            <Field
+                name={nameValue}
+                component={Select}
+                disabled={optionList.length < 1}
+                fullWidth={true}
+            >
+                <MenuItem value="null" disabled>
+                    {label}
+                </MenuItem>
+                {optionList.map(({ id, name }, index) => (
+                    <MenuItem
+                        key={`ITEM-${name}-${id}-${index}`}
+                        value={id}
+                        onClick={() => {
+                            console.log("123");
+                        }}
+                    >
+                        {name}
+                    </MenuItem>
+                ))}
+            </Field>
+        </React.Fragment>
+    );
+};
+
 const WelcomeUserCreate = props => {
-    console.log(props);
+    const { getDepartmentListByUser: { departmentsByUser = [] } = {} } = props;
+
+    if (departmentsByUser.length < 0) {
+        return <Loading />;
+    }
+
+    if (!isEmpty(departmentsByUser)) {
+        console.log(departmentsByUser[0].roles);
+    }
 
     return (
         <div
@@ -64,7 +105,7 @@ const WelcomeUserCreate = props => {
             }}
         >
             <div>
-                <p style={{ fontSize: "20px", paddingBottom: "10px" }}>
+                <p style={{ fontSize: "20px", padding: "0px 0px 10px 20px" }}>
                     Create a user account
                 </p>
             </div>
@@ -78,6 +119,14 @@ const WelcomeUserCreate = props => {
                     console.log(values);
                 }}
                 render={({ errors, values, isSubmitting }) => {
+                    console.log(values);
+                    const selectedDepartment = departmentsByUser.find(
+                        department => department.id === values.department
+                    );
+                    console.log(departmentsByUser);
+
+                    console.log(selectedDepartment);
+
                     return (
                         <Form>
                             <div style={{ display: "flex" }}>
@@ -100,8 +149,29 @@ const WelcomeUserCreate = props => {
                                     )}
                                 </ContainerDiv>
                                 <ContainerDiv>
-                                    DEPARTMENT-ROLE-PERMISSION
+                                    <FiledContainer>
+                                        {departmentsByUser.length > 0 &&
+                                            renderSelectField({
+                                                name: "department",
+                                                label: "DEPARTMENT",
+                                                required: true,
+                                                type: "select",
+                                                optionList: departmentsByUser
+                                            })}{" "}
+                                    </FiledContainer>
+                                    <FiledContainer>
+                                        {renderSelectField({
+                                            name: "role",
+                                            label: "ROLE",
+                                            required: true,
+                                            type: "select",
+                                            optionList: selectedDepartment
+                                                ? selectedDepartment.roles
+                                                : []
+                                        })}{" "}
+                                    </FiledContainer>
                                 </ContainerDiv>
+
                                 <ContainerDiv>
                                     {PASSWORD_FIELD.map(
                                         ({ name, label, required, type }) => (
