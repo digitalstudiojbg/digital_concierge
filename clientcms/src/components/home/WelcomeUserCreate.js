@@ -30,6 +30,11 @@ import { ClipLoader } from "react-spinners";
 import { Set } from "immutable";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import WelcomeUserCreateValidationSchema from "./WelcomeUserCreateValidationSchema";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
 
 const CREATE_USER_FIELD = [
     {
@@ -153,6 +158,10 @@ const WelcomeUserCreate = props => {
     const [createNewRoleOpen, setCreateNewRoleOpen] = useState(false);
 
     const [selectedDepartment, setSelectedDepartment] = useState();
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const renderCreateNewDepartmentModel = () => {
         const { classes } = props;
@@ -702,16 +711,12 @@ const WelcomeUserCreate = props => {
                     Create a user account
                 </p>
             </div>
-            {/**
-                validationSchema={validationSchema}
-                initialValues={{ aif_boolean: "yes" }} 
-            */}
             <Formik
                 validate={values => {
-                    console.log(values);
                     !isEmpty(values.department) &&
                         setSelectedDepartment(values.department);
                 }}
+                validationSchema={WelcomeUserCreateValidationSchema}
                 onSubmit={async (values, { setSubmitting }) => {
                     console.log(values);
                 }}
@@ -797,10 +802,50 @@ const WelcomeUserCreate = props => {
                                                     name={name}
                                                     label={label}
                                                     required={required}
-                                                    type={type}
+                                                    type={
+                                                        name === "password"
+                                                            ? showPassword
+                                                                ? "text"
+                                                                : "password"
+                                                            : showConfirmPassword
+                                                            ? "text"
+                                                            : "password"
+                                                    }
                                                     component={TextField}
                                                     variant="outlined"
                                                     fullWidth={true}
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="Toggle password visibility"
+                                                                    onClick={() => {
+                                                                        name ===
+                                                                        "password"
+                                                                            ? setShowPassword(
+                                                                                  !showPassword
+                                                                              )
+                                                                            : setShowConfirmPassword(
+                                                                                  !showConfirmPassword
+                                                                              );
+                                                                    }}
+                                                                >
+                                                                    {name ===
+                                                                    "password" ? (
+                                                                        showPassword ? (
+                                                                            <VisibilityOff />
+                                                                        ) : (
+                                                                            <Visibility />
+                                                                        )
+                                                                    ) : showConfirmPassword ? (
+                                                                        <VisibilityOff />
+                                                                    ) : (
+                                                                        <Visibility />
+                                                                    )}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
                                                 />
                                             </FiledContainer>
                                         )
@@ -811,6 +856,10 @@ const WelcomeUserCreate = props => {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
+                                disabled={
+                                    isSubmitting ||
+                                    Object.keys(errors).length > 0
+                                }
                             >
                                 CONFIRM & CONTINUE
                             </Button>
