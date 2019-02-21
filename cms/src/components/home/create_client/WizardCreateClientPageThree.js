@@ -11,7 +11,11 @@ import {
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
+import {
+    CREATE_DEPARTMENT,
+    CREATE_ROLE,
+    UPDATE_ROLE
+} from "../../../data/mutation";
 import { ClipLoader } from "react-spinners";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -180,7 +184,7 @@ class WizardCreateClientPageThree extends React.Component {
         this.setState({ anchorEl: null, editRole: null });
     }
 
-    renderRolePermissionSection(departments, addRoleAction) {
+    renderRolePermissionSection(departments, addRoleAction, editRoleAction) {
         return (
             <Query query={getPermissionCategoryList}>
                 {({ loading, error, data: { permissionCategories } }) => {
@@ -362,7 +366,11 @@ class WizardCreateClientPageThree extends React.Component {
                                     departments={departments}
                                     permissionsCategories={permissionCategories}
                                     role={this.state.editRole}
-                                    submitAction={addRoleAction}
+                                    submitAction={
+                                        Boolean(this.state.editRole)
+                                            ? editRoleAction
+                                            : addRoleAction
+                                    }
                                 />
                             )}
                         </RolePermissionContainerDiv>
@@ -375,7 +383,7 @@ class WizardCreateClientPageThree extends React.Component {
 
     render() {
         //TODO: UNCOMMENT THIS PLEASE
-        // let clientId = null; 
+        // let clientId = null;
         // try {
         //     clientId = this.props.client.readQuery({
         //         query: gql`
@@ -536,7 +544,7 @@ class WizardCreateClientPageThree extends React.Component {
                                 </Mutation>
                                 Role
                                 <Mutation
-                                    mutation={CREATE_ROLE()}
+                                    mutation={CREATE_ROLE}
                                     refetchQueries={[
                                         {
                                             query: getRoleList,
@@ -703,10 +711,45 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 }}
                                                             >
                                                                 ROLE PERMISSIONS
-                                                                {this.renderRolePermissionSection(
-                                                                    departments,
-                                                                    addANewRole
-                                                                )}
+                                                                <Mutation
+                                                                    mutation={
+                                                                        UPDATE_ROLE
+                                                                    }
+                                                                    refetchQueries={[
+                                                                        {
+                                                                            query: getRoleList,
+                                                                            variables: {
+                                                                                clientId
+                                                                            }
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    {(
+                                                                        editARole,
+                                                                        {
+                                                                            loading: loadingEdit,
+                                                                            error: errorEdit
+                                                                        }
+                                                                    ) => {
+                                                                        if (
+                                                                            loadingEdit
+                                                                        )
+                                                                            return (
+                                                                                <React.Fragment />
+                                                                            );
+                                                                        if (
+                                                                            errorEdit
+                                                                        )
+                                                                            return `Error message: ${
+                                                                                errorEdit.message
+                                                                            }`;
+                                                                        return this.renderRolePermissionSection(
+                                                                            departments,
+                                                                            addANewRole,
+                                                                            editARole
+                                                                        );
+                                                                    }}
+                                                                </Mutation>
                                                                 <div
                                                                     style={{
                                                                         paddingTop: 10,
