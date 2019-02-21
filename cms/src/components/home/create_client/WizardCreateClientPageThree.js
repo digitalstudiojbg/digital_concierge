@@ -374,7 +374,8 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        // let clientId = null;
+        //TODO: UNCOMMENT THIS PLEASE
+        // let clientId = null; 
         // try {
         //     clientId = this.props.client.readQuery({
         //         query: gql`
