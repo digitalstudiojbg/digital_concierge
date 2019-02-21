@@ -250,7 +250,7 @@ class WizardCreateClientPageOne extends React.Component {
                     console.log(countries);
                     return (
                         <Formik
-                            validationSchema={ValidationSchema}
+                            validationSchema={ValidationSchema(countries)}
                             onSubmit={(values, { setSubmitting }) => {
                                 console.log(values);
                                 const { client_image } = this.state;

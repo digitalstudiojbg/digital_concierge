@@ -31,6 +31,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
 import ColorPicker from "rc-color-picker";
 import { DECIMAL_RADIX, WELCOME_URL } from "../../utils/Constants";
+import { withRouter } from "react-router-dom";
 
 const styles = theme => ({
     formControl: {
@@ -53,7 +54,7 @@ const styles = theme => ({
     }
 });
 
-export const WelcomeTheme = ({ data: { id }, classes }) => {
+export const WelcomeTheme = ({ data: { id }, classes, history }) => {
     return (
         <Query query={getLayoutList}>
             {({
@@ -84,7 +85,7 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
                             );
                             return (
                                 <Mutation
-                                    mutation={UPDATE_THEMES()}
+                                    mutation={UPDATE_THEMES}
                                     refetchQueries={[
                                         {
                                             query: getSystemThemesFromClient,
@@ -100,7 +101,7 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
                                         }
                                     ) => {
                                         if (mutationLoading)
-                                            return <Loading loadingData />;
+                                            return <React.Fragment />;
                                         if (mutationError)
                                             return `Error! ${
                                                 mutationError.message
@@ -114,6 +115,7 @@ export const WelcomeTheme = ({ data: { id }, classes }) => {
                                                 updateThemes={updateThemes}
                                                 classes={classes}
                                                 clientId={id}
+                                                history={history}
                                             />
                                         );
                                     }}
@@ -131,13 +133,14 @@ const WelcomeThemeSettings = ({
     systems,
     layouts,
     updateThemes,
+    history,
     classes,
     clientId
 }) => {
     //Hooks API
     const [systemThemes, setSystemTheme] = useState(List([Map()]));
     const [systemIndex, setSystemIndex] = useState(0);
-    const [error, setError] = useState(Map());
+    // const [error, setError] = useState(Map());
     const fileInput = useRef(null);
 
     //Component did update via hooks
@@ -194,8 +197,6 @@ const WelcomeThemeSettings = ({
         const updatedSystemTheme = systemThemes
             .get(systemIndex)
             .set("colours", updatedColours);
-
-        console.log(updatedSystemTheme);
         setSystemTheme(systemThemes.set(systemIndex, updatedSystemTheme));
     };
 
@@ -224,16 +225,39 @@ const WelcomeThemeSettings = ({
         updateSystemTheme("defaultDirEntryLayoutId", data.value);
     };
 
+    const submitData = () => {
+        const systemThemesJS = systemThemes.toJS();
+        const input = systemThemesJS.map(
+            ({ id, __typename, companyLogoURL, name, ...others }) => ({
+                ...others,
+                id: parseInt(id, DECIMAL_RADIX)
+            })
+        );
+
+        return new Promise((resolve, reject) => {
+            updateThemes({ variables: { input } })
+                .then(data => resolve(data))
+                .catch(error => reject(error));
+        });
+    };
+
     const handleSubmit = () => {
         if (!systemThemes.equals(systems)) {
             //Do update here
+            submitData().then(data => {
+                console.log("THEME UPDATED: ", data);
+            });
         }
     };
 
     const handleSubmitAndExit = () => {
         if (!systemThemes.equals(systems)) {
             //Do update here
-            //Navigate away
+            submitData().then(data => {
+                console.log("THEME UPDATED: ", data);
+                //Navigate away
+                history.push(`${WELCOME_URL}/${clientId}/systems`);
+            });
         }
     };
 
@@ -259,11 +283,11 @@ const WelcomeThemeSettings = ({
                             <Step key={`STEP-${system.get("id")}-${index}`}>
                                 <StepButton onClick={() => handleStep(index)}>
                                     <StepLabel
-                                        error={
-                                            Number.isInteger(
-                                                error.get("index")
-                                            ) && error.get("index") === index
-                                        }
+                                    // error={
+                                    //     Number.isInteger(
+                                    //         error.get("index")
+                                    //     ) && error.get("index") === index
+                                    // }
                                     >
                                         {system.get("name")}
                                     </StepLabel>
@@ -536,12 +560,7 @@ const WelcomeThemeSettings = ({
                         variant="outlined"
                         component="span"
                         className={classes.confirmButton}
-                        onClick={() => {
-                            console.info(
-                                "Is different ",
-                                systemThemes.equals(systems)
-                            );
-                        }}
+                        onClick={handleSubmitAndExit}
                     >
                         SAVE & EXIT
                     </Button>
@@ -549,12 +568,7 @@ const WelcomeThemeSettings = ({
                         variant="outlined"
                         component="span"
                         className={classes.confirmButton}
-                        onClick={() => {
-                            console.info(
-                                "Is different ",
-                                systemThemes.equals(systems)
-                            );
-                        }}
+                        onClick={handleSubmit}
                     >
                         SAVE & KEEP EDITING
                     </Button>
@@ -564,4 +578,4 @@ const WelcomeThemeSettings = ({
     );
 };
 
-export default withApollo(withStyles(styles)(WelcomeTheme));
+export default withApollo(withStyles(styles)(withRouter(WelcomeTheme)));
