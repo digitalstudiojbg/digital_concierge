@@ -1,9 +1,9 @@
 import React from "react";
+import { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Mutation, withApollo, compose, graphql } from "react-apollo";
 import { getDepartmentListByUser } from "../../data/query";
-//import { CREATE_SYSTEM } from "../../../data/mutation";
 import { Formik, Form, Field } from "formik";
 import {
     TextField,
@@ -16,11 +16,13 @@ import Loading from "../loading/Loading";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { isEmpty } from "lodash";
-
-const ContainerDiv = styled.div`
-    width: 33%;
-    padding: 20px;
-`;
+import { CREATE_DEPARTMENT } from "../../data/mutation";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 
 const CREATE_USER_FIELD = [
     {
@@ -52,9 +54,46 @@ const PASSWORD_FIELD = [
     }
 ];
 
+const ContainerDiv = styled.div`
+    width: 33%;
+    padding: 20px;
+`;
+
 const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
+
+const BrowseButton = styled.label`
+    border: 3px solid rgb(64, 84, 178);
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.3em;
+    color: rgb(64, 84, 178);
+    border-radius: 5px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+const styles = theme => ({
+    select: {
+        width: "300px"
+    },
+    buttonFont: {
+        fontSize: "1.2em"
+    },
+    checkbox: {
+        paddingTop: "0px",
+        paddingBottom: "0px"
+    }
+});
+
+const Transition = props => {
+    return <Slide direction="up" {...props} />;
+};
 
 const renderSelectField = ({ name: nameValue, label, optionList }) => {
     return (
@@ -92,9 +131,57 @@ const WelcomeUserCreate = props => {
         return <Loading />;
     }
 
-    if (!isEmpty(departmentsByUser)) {
-        console.log(departmentsByUser[0].roles);
-    }
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const renderCreateNewDepartmentModel = () => {
+        const { classes } = props;
+
+        return (
+            <Dialog
+                open={modalOpen}
+                TransitionComponent={Transition}
+                onClose={() => {
+                    setModalOpen(false);
+                }}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    <h2>Confirmation</h2>
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        <h1>CREATE MODAL</h1>
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <React.Fragment>
+                        <Button
+                            onClick={() => {
+                                setModalOpen(false);
+                            }}
+                            color="secondary"
+                            className={classes.buttonFont}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => {}}
+                            color="primary"
+                            autoFocus
+                            className={classes.buttonFont}
+                        >
+                            Create Department
+                        </Button>
+                    </React.Fragment>
+                </DialogActions>
+            </Dialog>
+        );
+    };
+
+    /*useEffect(() => {
+        (() => {
+            setCreateDepartmentOpen(false);
+        })();
+    }, [createDepartmentOpen]);*/
 
     return (
         <div
@@ -157,7 +244,17 @@ const WelcomeUserCreate = props => {
                                                 required: true,
                                                 type: "select",
                                                 optionList: departmentsByUser
-                                            })}{" "}
+                                            })}
+                                    </FiledContainer>
+                                    <FiledContainer>
+                                        <BrowseButton
+                                            onClick={() => {
+                                                setModalOpen(true);
+                                            }}
+                                        >
+                                            CREATE NEW DEPARTMENT
+                                        </BrowseButton>
+                                        {renderCreateNewDepartmentModel()}
                                     </FiledContainer>
                                     <FiledContainer>
                                         {renderSelectField({
@@ -168,7 +265,16 @@ const WelcomeUserCreate = props => {
                                             optionList: selectedDepartment
                                                 ? selectedDepartment.roles
                                                 : []
-                                        })}{" "}
+                                        })}
+                                    </FiledContainer>
+                                    <FiledContainer>
+                                        <BrowseButton
+                                            onClick={() => {
+                                                setModalOpen(true);
+                                            }}
+                                        >
+                                            CREATE NEW ROLE
+                                        </BrowseButton>
                                     </FiledContainer>
                                 </ContainerDiv>
 
@@ -207,7 +313,7 @@ const WelcomeUserCreate = props => {
 };
 
 export default compose(
-    withStyles(),
+    withStyles(styles),
     graphql(getDepartmentListByUser, {
         name: "getDepartmentListByUser"
     })
