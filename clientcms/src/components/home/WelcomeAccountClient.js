@@ -18,6 +18,7 @@ import {
     CREATE_UPDATE_DELETE_CONTACTS,
     UPDATE_USER
 } from "../../data/mutation";
+import * as Yup from "yup";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -318,6 +319,93 @@ const EMPTY_CONTACT = {
     title: ""
 };
 
+//Yup confirm password === password
+//https://github.com/jaredpalmer/formik/issues/90#issuecomment-317804880
+function equalTo(ref, msg) {
+    return Yup.mixed().test({
+        name: "equalTo",
+        exclusive: false,
+        message: msg || `${ref.path} must be the same as ${ref.reference}`,
+        params: {
+            reference: ref.path
+        },
+        test: function(value) {
+            return value === this.resolve(ref);
+        }
+    });
+}
+function validState(ref, message, countries) {
+    return Yup.mixed().test({
+        name: "validState",
+        exclusive: false,
+        message: message,
+        test: function(value) {
+            const country_id = this.resolve(ref);
+            const country = countries.find(({ id }) => id === country_id);
+            const state = country.states.find(({ id }) => id === value);
+            return Boolean(state);
+        }
+    });
+}
+
+Yup.addMethod(Yup.string, "equalTo", equalTo);
+Yup.addMethod(Yup.string, "validState", validState);
+
+const requiredErrorMessage = "Required.";
+
+const validationSchema = countries =>
+    Yup.object().shape({
+        name: Yup.string().required(requiredErrorMessage),
+        full_company_name: Yup.string().required(requiredErrorMessage),
+        nature_of_business: Yup.string().required(requiredErrorMessage),
+        phone: Yup.string().required(requiredErrorMessage),
+        email: Yup.string()
+            .email("Wrong email format")
+            .required(requiredErrorMessage),
+        venue_address: Yup.string().required(requiredErrorMessage),
+        postal_address: Yup.string().required(requiredErrorMessage),
+        venue_city: Yup.string().required(requiredErrorMessage),
+        venue_zip_code: Yup.string().required(requiredErrorMessage),
+        postal_city: Yup.string().required(requiredErrorMessage),
+        postal_zip_code: Yup.string().required(requiredErrorMessage),
+        venue_country_id: Yup.string().required(requiredErrorMessage),
+        venue_state_id: Yup.string()
+            .validState(Yup.ref("venue_country_id"), "Invalid State", countries)
+            .required(requiredErrorMessage),
+        postal_country_id: Yup.string().required(requiredErrorMessage),
+        postal_state_id: Yup.string()
+            .validState(
+                Yup.ref("postal_country_id"),
+                "Invalid State",
+                countries
+            )
+            .required(requiredErrorMessage),
+
+        //Key user validation
+        user_name: Yup.string().required(requiredErrorMessage),
+        position: Yup.string().required(requiredErrorMessage),
+        user_email: Yup.string()
+            .email("Wrong email format")
+            .required(requiredErrorMessage),
+        first_phone_number: Yup.string().required(requiredErrorMessage),
+        second_phone_number: Yup.string(),
+        password: Yup.string(),
+        confirm_password: Yup.string().equalTo(
+            Yup.ref("password"),
+            "Passwords must match"
+        ),
+        contacts: Yup.array().of(
+            Yup.object().shape({
+                email: Yup.string()
+                    .email("Wrong email format")
+                    .required(requiredErrorMessage),
+                phone: Yup.string().required(requiredErrorMessage),
+                name: Yup.string().required(requiredErrorMessage),
+                title: Yup.string().required(requiredErrorMessage)
+            })
+        )
+    });
+
 export const WelcomeAccountClient = ({
     data: {
         id,
@@ -395,6 +483,9 @@ export const WelcomeAccountClient = ({
                                         return `Error ${errorMutation.message}`;
                                     return (
                                         <Formik
+                                            validationSchema={validationSchema(
+                                                countries
+                                            )}
                                             initialValues={{
                                                 name,
                                                 full_company_name,
@@ -417,7 +508,8 @@ export const WelcomeAccountClient = ({
                                                 user_email,
                                                 first_phone_number,
                                                 second_phone_number,
-                                                password: null,
+                                                password: "",
+                                                confirm_password: "",
                                                 contacts,
                                                 deleteContacts: []
                                             }}
@@ -866,7 +958,12 @@ export const WelcomeAccountClient = ({
                                                                         classes.addContactButton
                                                                     }
                                                                     disabled={
-                                                                        isSubmitting
+                                                                        isSubmitting ||
+                                                                        Object.keys(
+                                                                            errors
+                                                                        )
+                                                                            .length >
+                                                                            0
                                                                     }
                                                                 >
                                                                     UPDATE &

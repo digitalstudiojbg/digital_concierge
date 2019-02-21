@@ -4,7 +4,8 @@ import {
     asyncForEach,
     processUpload,
     processDelete,
-    handleCreateActionActivityLog
+    handleCreateActionActivityLog,
+    handleUpdateActionActivityLog
 } from "../utils/constant";
 
 const processColours = colours => {
@@ -59,9 +60,8 @@ export default {
                 } = eachTheme;
 
                 //Check System exists
-                try {
-                    await db.system.findByPk(systemId);
-                } catch (error) {
+                const system = await db.system.findByPk(systemId);
+                if (!Boolean(system)) {
                     throw new UserInputError(
                         `System ID ${systemId} does not exist.\nError Message: ${
                             error.message
@@ -153,6 +153,149 @@ export default {
                     theme,
                     {
                         companyLogo: uploadedCompanyLogo.location,
+                        headerFont,
+                        subHeaderFont,
+                        bodyFont,
+                        captionFont,
+                        colour1Hex,
+                        colour1Alpha,
+                        colour2Hex,
+                        colour2Alpha,
+                        colour3Hex,
+                        colour3Alpha,
+                        colour4Hex,
+                        colour4Alpha,
+                        colour5Hex,
+                        colour5Alpha,
+                        defaultStartLayoutId,
+                        defaultHomeLayoutId,
+                        defaultDirListLayoutId,
+                        defaultDirEntryLayoutId
+                    },
+                    user,
+                    clientIp
+                );
+
+                outputs.push(theme);
+            });
+
+            return outputs;
+        },
+        updateThemes: async (_root, { input: themes }, { user, clientIp }) => {
+            let outputs = [];
+            await asyncForEach(themes, async eachTheme => {
+                const {
+                    companyLogo,
+                    headerFont,
+                    subHeaderFont,
+                    bodyFont,
+                    captionFont,
+                    colours,
+                    defaultStartLayoutId,
+                    defaultHomeLayoutId,
+                    defaultDirListLayoutId,
+                    defaultDirEntryLayoutId,
+                    id
+                } = eachTheme;
+
+                //Check Theme exists
+                const theme = await db.theme.findByPk(id);
+                if (!Boolean(theme)) {
+                    throw new UserInputError(
+                        `System ID ${systemId} does not exist.\nError Message: ${
+                            error.message
+                        }`
+                    );
+                }
+
+                //Process colours
+                const {
+                    colour1Hex,
+                    colour1Alpha,
+                    colour2Hex,
+                    colour2Alpha,
+                    colour3Hex,
+                    colour3Alpha,
+                    colour4Hex,
+                    colour4Alpha,
+                    colour5Hex,
+                    colour5Alpha
+                } = processColours(colours);
+
+                //Check if layouts selected exists
+                let checker = await db.layout.findByPk(defaultStartLayoutId);
+                if (!Boolean(checker)) {
+                    throw new UserInputError(
+                        `Default Start Layout ID ${defaultStartLayoutId} is not found!`
+                    );
+                }
+                checker = await db.layout.findByPk(defaultHomeLayoutId);
+                if (!Boolean(checker)) {
+                    throw new UserInputError(
+                        `Default Home Layout ${defaultHomeLayoutId} is not found!`
+                    );
+                }
+                checker = await db.layout.findByPk(defaultDirListLayoutId);
+                if (!Boolean(checker)) {
+                    throw new UserInputError(
+                        `Default Directory List Layout ID ${defaultDirListLayoutId} is not found!`
+                    );
+                }
+                checker = await db.layout.findByPk(defaultDirEntryLayoutId);
+                if (!Boolean(checker)) {
+                    throw new UserInputError(
+                        `Default Directory Entry Layout ID ${defaultDirEntryLayoutId} is not found!`
+                    );
+                }
+
+                //Try to upload image if updated company logo is provided
+                const uploadedCompanyLogo = Boolean(companyLogo)
+                    ? await processUpload(companyLogo)
+                    : null;
+
+                try {
+                    theme.update({
+                        ...(Boolean(uploadedCompanyLogo) && {
+                            companyLogo: uploadedCompanyLogo.location
+                        }),
+                        headerFont,
+                        subHeaderFont,
+                        bodyFont,
+                        captionFont,
+                        colour1Hex,
+                        colour1Alpha,
+                        colour2Hex,
+                        colour2Alpha,
+                        colour3Hex,
+                        colour3Alpha,
+                        colour4Hex,
+                        colour4Alpha,
+                        colour5Hex,
+                        colour5Alpha,
+                        defaultStartLayoutId,
+                        defaultHomeLayoutId,
+                        defaultDirListLayoutId,
+                        defaultDirEntryLayoutId
+                    });
+                } catch (error) {
+                    //Delete image if theme creation fails
+                    Boolean(uploadedCompanyLogo) &&
+                        processDelete(uploadedCompanyLogo.key);
+
+                    throw new UserInputError(
+                        `Update Theme ${id} status failed.\nError Message: ${
+                            error.message
+                        }`
+                    );
+                }
+
+                //Activity Logging
+                await handleUpdateActionActivityLog(
+                    theme,
+                    {
+                        ...(Boolean(uploadedCompanyLogo) && {
+                            companyLogo: uploadedCompanyLogo.location
+                        }),
                         headerFont,
                         subHeaderFont,
                         bodyFont,

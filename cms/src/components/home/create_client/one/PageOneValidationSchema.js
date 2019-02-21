@@ -17,38 +17,64 @@ function equalTo(ref, msg) {
         }
     });
 }
+function validState(ref, message, countries) {
+    return Yup.mixed().test({
+        name: "validState",
+        exclusive: false,
+        message: message,
+        test: function(value) {
+            const country_id = this.resolve(ref);
+            const country = countries.find(({ id }) => id === country_id);
+            const state = country.states.find(({ id }) => id === value);
+            return Boolean(state);
+        }
+    });
+}
+
 Yup.addMethod(Yup.string, "equalTo", equalTo);
+Yup.addMethod(Yup.string, "validState", validState);
 
-export default Yup.object().shape({
-    //Client validation
-    name: Yup.string().required(requiredErrorMessage),
-    full_company_name: Yup.string().required(requiredErrorMessage),
-    nature_of_business: Yup.string().required(requiredErrorMessage),
-    phone: Yup.string().required(requiredErrorMessage),
-    email: Yup.string()
-        .email()
-        .required(requiredErrorMessage),
-    venue_address: Yup.string().required(requiredErrorMessage),
-    postal_address: Yup.string().required(requiredErrorMessage),
-    venue_city: Yup.string().required(requiredErrorMessage),
-    venue_zip_code: Yup.string().required(requiredErrorMessage),
-    postal_city: Yup.string().required(requiredErrorMessage),
-    postal_zip_code: Yup.string().required(requiredErrorMessage),
-    country_id: Yup.string().required(requiredErrorMessage),
-    postal_country_id: Yup.string().required(requiredErrorMessage),
-    venueStateId: Yup.string().required(requiredErrorMessage),
-    postalStateId: Yup.string().required(requiredErrorMessage),
+export default countries =>
+    Yup.object().shape({
+        //Client validation
+        name: Yup.string().required(requiredErrorMessage),
+        full_company_name: Yup.string().required(requiredErrorMessage),
+        nature_of_business: Yup.string().required(requiredErrorMessage),
+        phone: Yup.string().required(requiredErrorMessage),
+        email: Yup.string()
+            .email("Incorrect email format")
+            .required(requiredErrorMessage),
+        venue_address: Yup.string().required(requiredErrorMessage),
+        postal_address: Yup.string().required(requiredErrorMessage),
+        venue_city: Yup.string().required(requiredErrorMessage),
+        venue_zip_code: Yup.string().required(requiredErrorMessage),
+        postal_city: Yup.string().required(requiredErrorMessage),
+        postal_zip_code: Yup.string().required(requiredErrorMessage),
+        country_id: Yup.string().required(requiredErrorMessage),
+        postal_country_id: Yup.string().required(requiredErrorMessage),
+        venueStateId: Yup.string()
+            .validState(Yup.ref("country_id"), "Invalid State", countries)
+            .required(requiredErrorMessage),
+        postalStateId: Yup.string()
+            .validState(
+                Yup.ref("postal_country_id"),
+                "Invalid State",
+                countries
+            )
+            .required(requiredErrorMessage),
 
-    //Contact validation
-    contact_name: Yup.string().required(requiredErrorMessage),
-    contact_title: Yup.string().required(requiredErrorMessage),
-    contact_email: Yup.string()
-        .email()
-        .required(requiredErrorMessage),
-    contact_first_phone_number: Yup.string().required(requiredErrorMessage),
-    contact_second_phone_number: Yup.string().required(requiredErrorMessage),
-    password: Yup.string().required(requiredErrorMessage),
-    confirm_password: Yup.string()
-        .equalTo(Yup.ref("password"), "Passwords must match")
-        .required(requiredErrorMessage)
-});
+        //Contact validation
+        contact_name: Yup.string().required(requiredErrorMessage),
+        contact_title: Yup.string().required(requiredErrorMessage),
+        contact_email: Yup.string()
+            .email()
+            .required(requiredErrorMessage),
+        contact_first_phone_number: Yup.string().required(requiredErrorMessage),
+        contact_second_phone_number: Yup.string().required(
+            requiredErrorMessage
+        ),
+        password: Yup.string().required(requiredErrorMessage),
+        confirm_password: Yup.string()
+            .equalTo(Yup.ref("password"), "Passwords must match")
+            .required(requiredErrorMessage)
+    });

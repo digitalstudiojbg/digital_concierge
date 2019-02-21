@@ -8,7 +8,7 @@ export default gql`
 
     extend type Mutation {
         createThemes(input: [CreateThemeInput]): [Theme]
-        updateThemes(input: [CreateThemeInput]): [Theme]
+        updateThemes(input: [UpdateThemeInput]): [Theme]
     }
 
     type Theme {
@@ -53,6 +53,20 @@ export default gql`
         defaultDirListLayoutId: Int!
         defaultDirEntryLayoutId: Int!
         systemId: Int!
+    }
+
+    input UpdateThemeInput {
+        id: Int!
+        companyLogo: Upload
+        headerFont: String!
+        subHeaderFont: String!
+        bodyFont: String!
+        captionFont: String!
+        colours: [ColourThemeInput]!
+        defaultStartLayoutId: Int!
+        defaultHomeLayoutId: Int!
+        defaultDirListLayoutId: Int!
+        defaultDirEntryLayoutId: Int!
     }
 
     input ColourThemeInput {

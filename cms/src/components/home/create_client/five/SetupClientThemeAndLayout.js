@@ -415,7 +415,7 @@ class SetupClientThemeAndLayout extends React.Component {
 
     render() {
         return (
-            <Mutation mutation={CREATE_THEMES()}>
+            <Mutation mutation={CREATE_THEMES}>
                 {(createThemes, { loading, error: mutationError }) => {
                     if (loading) return <Loading loadingData />;
                     if (mutationError) return `Error! ${mutationError.message}`;
