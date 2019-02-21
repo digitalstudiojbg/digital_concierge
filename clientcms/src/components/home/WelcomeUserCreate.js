@@ -2,8 +2,12 @@ import React from "react";
 import { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-import { Mutation, withApollo, compose, graphql } from "react-apollo";
-import { getDepartmentListByUser } from "../../data/query";
+import { Mutation, withApollo, compose, graphql, Query } from "react-apollo";
+import {
+    getDepartmentListByUser,
+    getPermissionCategoryList
+} from "../../data/query";
+import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../data/mutation";
 import { Formik, Form, Field } from "formik";
 import {
     TextField,
@@ -16,7 +20,6 @@ import Loading from "../loading/Loading";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { isEmpty } from "lodash";
-import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../data/mutation";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -24,6 +27,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { ClipLoader } from "react-spinners";
+import { Set } from "immutable";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const CREATE_USER_FIELD = [
     {
@@ -74,6 +80,14 @@ const BrowseButton = styled.label`
     font-size: 1.3em;
     color: rgb(64, 84, 178);
     border-radius: 5px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+const SelectAndUnselectAll = styled.div`
+    width: 50%;
+    cursor: pointer;
     &:hover {
         font-weight: bold;
     }
@@ -271,11 +285,14 @@ const WelcomeUserCreate = props => {
         const { classes } = props;
         console.log(selectedDepartment);
 
+        const [selectedPermissions, setSelectedPermissions] = useState(Set());
+
         return (
             <Dialog
                 open={createNewRoleOpen}
                 TransitionComponent={Transition}
                 onClose={() => {
+                    setSelectedPermissions(Set());
                     setCreateNewRoleOpen(false);
                 }}
             >
@@ -283,121 +300,390 @@ const WelcomeUserCreate = props => {
                     <h3>CREATE NEW ROLE</h3>
                 </DialogTitle>
                 <DialogContent>
-                    <Mutation
-                        mutation={CREATE_ROLE()}
-                        refetchQueries={[
-                            {
-                                query: getDepartmentListByUser
-                            }
-                        ]}
-                    >
-                        {(addANewRole, { loading, error }) => {
-                            if (loading) {
-                                return (
-                                    <ClipLoader
-                                        sizeUnit={"px"}
-                                        size={24}
-                                        color={"rgba(0, 0, 0, 0.87)"}
-                                        loading={loading}
-                                    />
-                                );
-                            }
+                    <Query query={getPermissionCategoryList}>
+                        {({
+                            loading,
+                            error,
+                            data: { permissionCategories }
+                        }) => {
+                            if (loading) return <Loading loadingData />;
                             if (error) return `Error! ${error.message}`;
+
+                            let allPermissionsLength = 0;
+                            permissionCategories.forEach(category => {
+                                allPermissionsLength +=
+                                    category.permissions.length;
+                            });
+
+                            console.log(permissionCategories);
+
                             return (
-                                <Formik
-                                    onSubmit={(values, { setSubmitting }) => {
-                                        console.log(selectedDepartment);
-                                        console.log("-----------");
-
-                                        alert(values.name);
-                                        addANewRole({
-                                            variables: {
-                                                input: {
-                                                    name: values.name,
-                                                    isStandardRole: false,
-                                                    departmentId: parseInt(
-                                                        selectedDepartment
-                                                    ),
-                                                    permissionIds: [1]
-                                                }
-                                            }
-                                        });
-                                        setSubmitting(false);
-                                        setCreateNewRoleOpen(false);
-                                    }}
-                                    initialValues={{ name: "" }}
-                                    render={({
-                                        errors,
-                                        values,
-                                        isSubmitting
-                                    }) => (
-                                        <div
-                                            style={{
-                                                width: "300px",
-                                                paddingTop: "10px"
-                                            }}
-                                        >
-                                            <Form>
-                                                <FiledContainer>
-                                                    <Field
-                                                        name="name"
-                                                        label="Department Name"
-                                                        required={true}
-                                                        type="text"
-                                                        component={TextField}
-                                                        variant="outlined"
-                                                        fullWidth={true}
-                                                    />
-                                                </FiledContainer>
-
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        justifyContent:
-                                                            "space-around"
-                                                    }}
-                                                >
-                                                    <Button
-                                                        type="submit"
-                                                        variant="contained"
-                                                        color="primary"
-                                                        disabled={
-                                                            isSubmitting ||
-                                                            Object.keys(errors)
-                                                                .length > 0 ||
-                                                            Boolean(
-                                                                values.name
-                                                                    .length < 1
-                                                            )
+                                <Mutation
+                                    mutation={CREATE_ROLE()}
+                                    refetchQueries={[
+                                        {
+                                            query: getDepartmentListByUser
+                                        }
+                                    ]}
+                                >
+                                    {(addANewRole, { loading, error }) => {
+                                        if (loading) {
+                                            return (
+                                                <ClipLoader
+                                                    sizeUnit={"px"}
+                                                    size={24}
+                                                    color={
+                                                        "rgba(0, 0, 0, 0.87)"
+                                                    }
+                                                    loading={loading}
+                                                />
+                                            );
+                                        }
+                                        if (error)
+                                            return `Error! ${error.message}`;
+                                        return (
+                                            <Formik
+                                                onSubmit={(
+                                                    values,
+                                                    { setSubmitting }
+                                                ) => {
+                                                    alert(values.name);
+                                                    addANewRole({
+                                                        variables: {
+                                                            input: {
+                                                                name:
+                                                                    values.name,
+                                                                isStandardRole: false,
+                                                                departmentId: parseInt(
+                                                                    selectedDepartment
+                                                                ),
+                                                                permissionIds: selectedPermissions
+                                                                    .toJS()
+                                                                    .map(item =>
+                                                                        parseInt(
+                                                                            item
+                                                                        )
+                                                                    )
+                                                            }
                                                         }
-                                                        className={
-                                                            classes.buttonFont
-                                                        }
-                                                    >
-                                                        SAVE
-                                                    </Button>
-
-                                                    <Button
-                                                        onClick={() => {
-                                                            setCreateNewRoleOpen(
-                                                                false
-                                                            );
+                                                    });
+                                                    setSubmitting(false);
+                                                    setSelectedPermissions(
+                                                        Set()
+                                                    );
+                                                    setCreateNewRoleOpen(false);
+                                                }}
+                                                initialValues={{ name: "" }}
+                                                render={({
+                                                    errors,
+                                                    values,
+                                                    isSubmitting
+                                                }) => (
+                                                    <div
+                                                        style={{
+                                                            paddingTop: "10px"
                                                         }}
-                                                        color="secondary"
-                                                        className={
-                                                            classes.buttonFont
-                                                        }
                                                     >
-                                                        Cancel
-                                                    </Button>
-                                                </div>
-                                            </Form>
-                                        </div>
-                                    )}
-                                />
+                                                        <Form>
+                                                            <FiledContainer>
+                                                                <Field
+                                                                    name="name"
+                                                                    label="ROLE NAME"
+                                                                    required={
+                                                                        true
+                                                                    }
+                                                                    type="text"
+                                                                    component={
+                                                                        TextField
+                                                                    }
+                                                                    variant="outlined"
+                                                                    fullWidth={
+                                                                        true
+                                                                    }
+                                                                />
+                                                            </FiledContainer>
+
+                                                            <div>
+                                                                <div
+                                                                    style={{
+                                                                        display:
+                                                                            "flex"
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        style={{
+                                                                            width:
+                                                                                "40%"
+                                                                        }}
+                                                                    />
+                                                                    <div
+                                                                        style={{
+                                                                            width:
+                                                                                "60%"
+                                                                        }}
+                                                                    >
+                                                                        <FormControlLabel
+                                                                            key={`select_all`}
+                                                                            control={
+                                                                                <Checkbox
+                                                                                    color="primary"
+                                                                                    checked={
+                                                                                        selectedPermissions.size ===
+                                                                                        allPermissionsLength
+                                                                                    }
+                                                                                    onChange={() => {
+                                                                                        if (
+                                                                                            selectedPermissions.size ===
+                                                                                            allPermissionsLength
+                                                                                        ) {
+                                                                                            setSelectedPermissions(
+                                                                                                Set()
+                                                                                            );
+                                                                                        } else {
+                                                                                            const permissions = [].concat.apply(
+                                                                                                [],
+                                                                                                permissionCategories.map(
+                                                                                                    ({
+                                                                                                        permissions
+                                                                                                    }) => {
+                                                                                                        let output = [];
+                                                                                                        permissions.forEach(
+                                                                                                            ({
+                                                                                                                id
+                                                                                                            }) => {
+                                                                                                                output = [
+                                                                                                                    ...output,
+                                                                                                                    id
+                                                                                                                ];
+                                                                                                            }
+                                                                                                        );
+                                                                                                        return output;
+                                                                                                    }
+                                                                                                )
+                                                                                            );
+
+                                                                                            setSelectedPermissions(
+                                                                                                selectedPermissions.union(
+                                                                                                    permissions
+                                                                                                )
+                                                                                            );
+                                                                                        }
+                                                                                    }}
+                                                                                />
+                                                                            }
+                                                                            label={
+                                                                                "ALL PERMISSIONS"
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                {permissionCategories.map(
+                                                                    ({
+                                                                        name,
+                                                                        id,
+                                                                        permissions
+                                                                    }) => {
+                                                                        return (
+                                                                            <div
+                                                                                style={{
+                                                                                    display:
+                                                                                        "flex",
+                                                                                    marginTop:
+                                                                                        "5px",
+                                                                                    marginBottom:
+                                                                                        "5px",
+                                                                                    border:
+                                                                                        "1px solid black",
+                                                                                    alignItems:
+                                                                                        "center"
+                                                                                }}
+                                                                            >
+                                                                                <div
+                                                                                    style={{
+                                                                                        paddingLeft:
+                                                                                            "10px",
+                                                                                        width:
+                                                                                            "40%"
+                                                                                    }}
+                                                                                >
+                                                                                    <p>
+                                                                                        {
+                                                                                            name
+                                                                                        }
+                                                                                    </p>
+                                                                                </div>
+                                                                                <div
+                                                                                    style={{
+                                                                                        paddingRight:
+                                                                                            "10px",
+                                                                                        width:
+                                                                                            "60%",
+                                                                                        display:
+                                                                                            "flex",
+                                                                                        flexDirection:
+                                                                                            "column"
+                                                                                    }}
+                                                                                >
+                                                                                    {permissions.map(
+                                                                                        ({
+                                                                                            name,
+                                                                                            id
+                                                                                        }) => {
+                                                                                            return (
+                                                                                                <React.Fragment>
+                                                                                                    <FormControlLabel
+                                                                                                        key={`PERMISSION-${name}-${id}`}
+                                                                                                        control={
+                                                                                                            <Checkbox
+                                                                                                                color="primary"
+                                                                                                                id={
+                                                                                                                    id
+                                                                                                                }
+                                                                                                                checked={selectedPermissions.includes(
+                                                                                                                    id
+                                                                                                                )}
+                                                                                                                onChange={() => {
+                                                                                                                    if (
+                                                                                                                        selectedPermissions.includes(
+                                                                                                                            id
+                                                                                                                        )
+                                                                                                                    ) {
+                                                                                                                        setSelectedPermissions(
+                                                                                                                            selectedPermissions.delete(
+                                                                                                                                id
+                                                                                                                            )
+                                                                                                                        );
+                                                                                                                    } else {
+                                                                                                                        setSelectedPermissions(
+                                                                                                                            selectedPermissions.add(
+                                                                                                                                id
+                                                                                                                            )
+                                                                                                                        );
+                                                                                                                    }
+                                                                                                                }}
+                                                                                                            />
+                                                                                                        }
+                                                                                                        label={
+                                                                                                            name
+                                                                                                        }
+                                                                                                    />
+                                                                                                </React.Fragment>
+                                                                                            );
+                                                                                        }
+                                                                                    )}
+                                                                                    <div
+                                                                                        style={{
+                                                                                            display:
+                                                                                                "flex",
+                                                                                            justifyContent:
+                                                                                                "space-between",
+                                                                                            textAlign:
+                                                                                                "center"
+                                                                                        }}
+                                                                                    >
+                                                                                        <SelectAndUnselectAll
+                                                                                            onClick={() => {
+                                                                                                setSelectedPermissions(
+                                                                                                    selectedPermissions.union(
+                                                                                                        permissions.map(
+                                                                                                            ({
+                                                                                                                id
+                                                                                                            }) =>
+                                                                                                                id
+                                                                                                        )
+                                                                                                    )
+                                                                                                );
+                                                                                            }}
+                                                                                        >
+                                                                                            Select
+                                                                                            All
+                                                                                        </SelectAndUnselectAll>
+                                                                                        <SelectAndUnselectAll
+                                                                                            onClick={() => {
+                                                                                                setSelectedPermissions(
+                                                                                                    selectedPermissions.subtract(
+                                                                                                        permissions.map(
+                                                                                                            ({
+                                                                                                                id
+                                                                                                            }) =>
+                                                                                                                id
+                                                                                                        )
+                                                                                                    )
+                                                                                                );
+                                                                                            }}
+                                                                                        >
+                                                                                            Unselect
+                                                                                            All
+                                                                                        </SelectAndUnselectAll>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </div>
+
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    justifyContent:
+                                                                        "space-around"
+                                                                }}
+                                                            >
+                                                                <Button
+                                                                    type="submit"
+                                                                    variant="contained"
+                                                                    color="primary"
+                                                                    disabled={
+                                                                        isSubmitting ||
+                                                                        Object.keys(
+                                                                            errors
+                                                                        )
+                                                                            .length >
+                                                                            0 ||
+                                                                        Boolean(
+                                                                            values
+                                                                                .name
+                                                                                .length <
+                                                                                1
+                                                                        )
+                                                                    }
+                                                                    className={
+                                                                        classes.buttonFont
+                                                                    }
+                                                                >
+                                                                    SAVE
+                                                                </Button>
+
+                                                                <Button
+                                                                    onClick={() => {
+                                                                        setSelectedPermissions(
+                                                                            Set()
+                                                                        );
+                                                                        setCreateNewRoleOpen(
+                                                                            false
+                                                                        );
+                                                                    }}
+                                                                    color="secondary"
+                                                                    className={
+                                                                        classes.buttonFont
+                                                                    }
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                            </div>
+                                                        </Form>
+                                                    </div>
+                                                )}
+                                            />
+                                        );
+                                    }}
+                                </Mutation>
                             );
                         }}
-                    </Mutation>
+                    </Query>
                 </DialogContent>
             </Dialog>
         );
