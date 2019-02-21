@@ -16,13 +16,14 @@ import Loading from "../loading/Loading";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { isEmpty } from "lodash";
-import { CREATE_DEPARTMENT } from "../../data/mutation";
+import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../data/mutation";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import { ClipLoader } from "react-spinners";
 
 const CREATE_USER_FIELD = [
     {
@@ -131,57 +132,276 @@ const WelcomeUserCreate = props => {
         return <Loading />;
     }
 
-    const [modalOpen, setModalOpen] = useState(false);
+    const [createNewDepartmentOpen, setCreateNewDepartmentOpen] = useState(
+        false
+    );
+
+    const [createNewRoleOpen, setCreateNewRoleOpen] = useState(false);
+
+    const [selectedDepartment, setSelectedDepartment] = useState();
 
     const renderCreateNewDepartmentModel = () => {
         const { classes } = props;
 
         return (
             <Dialog
-                open={modalOpen}
+                open={createNewDepartmentOpen}
                 TransitionComponent={Transition}
                 onClose={() => {
-                    setModalOpen(false);
+                    setCreateNewDepartmentOpen(false);
                 }}
             >
                 <DialogTitle id="alert-dialog-title">
-                    <h2>Confirmation</h2>
+                    <h3>CREATE NEW DEPARTMENT</h3>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        <h1>CREATE MODAL</h1>
-                    </DialogContentText>
+                    <Mutation
+                        mutation={CREATE_DEPARTMENT()}
+                        refetchQueries={[
+                            {
+                                query: getDepartmentListByUser
+                            }
+                        ]}
+                    >
+                        {(addANewDepartment, { loading, error }) => {
+                            if (loading) {
+                                return (
+                                    <ClipLoader
+                                        sizeUnit={"px"}
+                                        size={24}
+                                        color={"rgba(0, 0, 0, 0.87)"}
+                                        loading={loading}
+                                    />
+                                );
+                            }
+                            if (error) return `Error! ${error.message}`;
+                            return (
+                                <Formik
+                                    onSubmit={(values, { setSubmitting }) => {
+                                        alert(values.name);
+                                        addANewDepartment({
+                                            variables: {
+                                                input: {
+                                                    name: values.name,
+                                                    clientId: 1
+                                                }
+                                            }
+                                        });
+                                        setSubmitting(false);
+                                        setCreateNewDepartmentOpen(false);
+                                    }}
+                                    initialValues={{ name: "" }}
+                                    render={({
+                                        errors,
+                                        values,
+                                        isSubmitting
+                                    }) => (
+                                        <div
+                                            style={{
+                                                width: "300px",
+                                                paddingTop: "10px"
+                                            }}
+                                        >
+                                            <Form>
+                                                <FiledContainer>
+                                                    <Field
+                                                        name="name"
+                                                        label="Department Name"
+                                                        required={true}
+                                                        type="text"
+                                                        component={TextField}
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                    />
+                                                </FiledContainer>
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "space-around"
+                                                    }}
+                                                >
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            Object.keys(errors)
+                                                                .length > 0 ||
+                                                            Boolean(
+                                                                values.name
+                                                                    .length < 1
+                                                            )
+                                                        }
+                                                        className={
+                                                            classes.buttonFont
+                                                        }
+                                                    >
+                                                        SAVE
+                                                    </Button>
+
+                                                    <Button
+                                                        onClick={() => {
+                                                            setCreateNewDepartmentOpen(
+                                                                false
+                                                            );
+                                                        }}
+                                                        color="secondary"
+                                                        className={
+                                                            classes.buttonFont
+                                                        }
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                </div>
+                                            </Form>
+                                        </div>
+                                    )}
+                                />
+                            );
+                        }}
+                    </Mutation>
                 </DialogContent>
-                <DialogActions>
-                    <React.Fragment>
-                        <Button
-                            onClick={() => {
-                                setModalOpen(false);
-                            }}
-                            color="secondary"
-                            className={classes.buttonFont}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            onClick={() => {}}
-                            color="primary"
-                            autoFocus
-                            className={classes.buttonFont}
-                        >
-                            Create Department
-                        </Button>
-                    </React.Fragment>
-                </DialogActions>
             </Dialog>
         );
     };
 
-    /*useEffect(() => {
-        (() => {
-            setCreateDepartmentOpen(false);
-        })();
-    }, [createDepartmentOpen]);*/
+    const renderCreateNewRoleModel = selectedDepartment => {
+        const { classes } = props;
+        console.log(selectedDepartment);
+
+        return (
+            <Dialog
+                open={createNewRoleOpen}
+                TransitionComponent={Transition}
+                onClose={() => {
+                    setCreateNewRoleOpen(false);
+                }}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    <h3>CREATE NEW ROLE</h3>
+                </DialogTitle>
+                <DialogContent>
+                    <Mutation
+                        mutation={CREATE_ROLE()}
+                        refetchQueries={[
+                            {
+                                query: getDepartmentListByUser
+                            }
+                        ]}
+                    >
+                        {(addANewRole, { loading, error }) => {
+                            if (loading) {
+                                return (
+                                    <ClipLoader
+                                        sizeUnit={"px"}
+                                        size={24}
+                                        color={"rgba(0, 0, 0, 0.87)"}
+                                        loading={loading}
+                                    />
+                                );
+                            }
+                            if (error) return `Error! ${error.message}`;
+                            return (
+                                <Formik
+                                    onSubmit={(values, { setSubmitting }) => {
+                                        console.log(selectedDepartment);
+                                        console.log("-----------");
+
+                                        alert(values.name);
+                                        addANewRole({
+                                            variables: {
+                                                input: {
+                                                    name: values.name,
+                                                    isStandardRole: false,
+                                                    departmentId: parseInt(
+                                                        selectedDepartment
+                                                    ),
+                                                    permissionIds: [1]
+                                                }
+                                            }
+                                        });
+                                        setSubmitting(false);
+                                        setCreateNewRoleOpen(false);
+                                    }}
+                                    initialValues={{ name: "" }}
+                                    render={({
+                                        errors,
+                                        values,
+                                        isSubmitting
+                                    }) => (
+                                        <div
+                                            style={{
+                                                width: "300px",
+                                                paddingTop: "10px"
+                                            }}
+                                        >
+                                            <Form>
+                                                <FiledContainer>
+                                                    <Field
+                                                        name="name"
+                                                        label="Department Name"
+                                                        required={true}
+                                                        type="text"
+                                                        component={TextField}
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                    />
+                                                </FiledContainer>
+
+                                                <div
+                                                    style={{
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "space-around"
+                                                    }}
+                                                >
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            Object.keys(errors)
+                                                                .length > 0 ||
+                                                            Boolean(
+                                                                values.name
+                                                                    .length < 1
+                                                            )
+                                                        }
+                                                        className={
+                                                            classes.buttonFont
+                                                        }
+                                                    >
+                                                        SAVE
+                                                    </Button>
+
+                                                    <Button
+                                                        onClick={() => {
+                                                            setCreateNewRoleOpen(
+                                                                false
+                                                            );
+                                                        }}
+                                                        color="secondary"
+                                                        className={
+                                                            classes.buttonFont
+                                                        }
+                                                    >
+                                                        Cancel
+                                                    </Button>
+                                                </div>
+                                            </Form>
+                                        </div>
+                                    )}
+                                />
+                            );
+                        }}
+                    </Mutation>
+                </DialogContent>
+            </Dialog>
+        );
+    };
 
     return (
         <div
@@ -196,12 +416,16 @@ const WelcomeUserCreate = props => {
                     Create a user account
                 </p>
             </div>
-
             {/**
                 validationSchema={validationSchema}
                 initialValues={{ aif_boolean: "yes" }} 
             */}
             <Formik
+                validate={values => {
+                    console.log(values);
+                    !isEmpty(values.department) &&
+                        setSelectedDepartment(values.department);
+                }}
                 onSubmit={async (values, { setSubmitting }) => {
                     console.log(values);
                 }}
@@ -210,9 +434,6 @@ const WelcomeUserCreate = props => {
                     const selectedDepartment = departmentsByUser.find(
                         department => department.id === values.department
                     );
-                    console.log(departmentsByUser);
-
-                    console.log(selectedDepartment);
 
                     return (
                         <Form>
@@ -249,12 +470,13 @@ const WelcomeUserCreate = props => {
                                     <FiledContainer>
                                         <BrowseButton
                                             onClick={() => {
-                                                setModalOpen(true);
+                                                setCreateNewDepartmentOpen(
+                                                    true
+                                                );
                                             }}
                                         >
                                             CREATE NEW DEPARTMENT
                                         </BrowseButton>
-                                        {renderCreateNewDepartmentModel()}
                                     </FiledContainer>
                                     <FiledContainer>
                                         {renderSelectField({
@@ -268,13 +490,15 @@ const WelcomeUserCreate = props => {
                                         })}
                                     </FiledContainer>
                                     <FiledContainer>
-                                        <BrowseButton
-                                            onClick={() => {
-                                                setModalOpen(true);
-                                            }}
-                                        >
-                                            CREATE NEW ROLE
-                                        </BrowseButton>
+                                        {!isEmpty(values.department) && (
+                                            <BrowseButton
+                                                onClick={() => {
+                                                    setCreateNewRoleOpen(true);
+                                                }}
+                                            >
+                                                CREATE NEW ROLE
+                                            </BrowseButton>
+                                        )}
                                     </FiledContainer>
                                 </ContainerDiv>
 
@@ -308,6 +532,8 @@ const WelcomeUserCreate = props => {
                     );
                 }}
             />
+            {renderCreateNewDepartmentModel()}
+            {renderCreateNewRoleModel(selectedDepartment)}
         </div>
     );
 };
