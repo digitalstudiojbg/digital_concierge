@@ -10,19 +10,27 @@ import {
     getDepartmentListByClient
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
 import { ClipLoader } from "react-spinners";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
+import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
-import gql from "graphql-tag";
-import ReactTable from "react-table";
+// import ReactTable from "react-table";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
+import LaunchIcon from "@material-ui/icons/Launch";
+import PageThreeRoleModal from "./three/PageThreeRoleModal";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -97,12 +105,24 @@ class WizardCreateClientPageThree extends React.Component {
         super(props);
         this.state = {
             department_id: null,
-            selected_checkboxes: Set()
+            selected_checkboxes: Set(),
+            modalOpen: false,
+            whichModal: "",
+            selected_roles: Set(),
+            anchorEl: null,
+            editRole: null
         };
         this.handleChangeDepartment = this.handleChangeDepartment.bind(this);
         this.handleChangePermissionCheckbox = this.handleChangePermissionCheckbox.bind(
             this
         );
+        this.handleChangeSelectedRoles = this.handleChangeSelectedRoles.bind(
+            this
+        );
+        this.handleOpenRoleModal = this.handleOpenRoleModal.bind(this);
+        this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.handleOpenOptions = this.handleCloseOptions.bind(this);
+        this.handleCloseOptions = this.handleCloseOptions.bind(this);
     }
 
     handleChangeDepartment(event) {
@@ -127,7 +147,40 @@ class WizardCreateClientPageThree extends React.Component {
         }
     }
 
-    renderRolePermissionSection() {
+    handleChangeSelectedRoles(event) {
+        const { selected_roles } = this.state;
+        if (selected_roles.includes(event.target.id)) {
+            //Remove from selected checkboxes
+            this.setState({
+                selected_roles: selected_roles.delete(event.target.id)
+            });
+        } else {
+            //Add to selected checkboxes
+            this.setState({
+                selected_roles: selected_roles.add(event.target.id)
+            });
+        }
+    }
+
+    handleOpenRoleModal() {
+        this.setState({ modalOpen: true, whichModal: "role", anchorEl: null });
+    }
+
+    handleCloseModal() {
+        this.setState({ modalOpen: false, whichModal: "", editRole: null });
+    }
+
+    //Function to open options menu
+    handleOpenOptions(event) {
+        console.log("OPEN OPTION ", event);
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleCloseOptions() {
+        this.setState({ anchorEl: null, editRole: null });
+    }
+
+    renderRolePermissionSection(departments, addRoleAction) {
         return (
             <Query query={getPermissionCategoryList}>
                 {({ loading, error, data: { permissionCategories } }) => {
@@ -147,7 +200,20 @@ class WizardCreateClientPageThree extends React.Component {
                                     padding: 10
                                 }}
                             >
-                                <EachRoleContainerDiv />
+                                <div
+                                    style={{
+                                        width: "50%",
+                                        height: "100%",
+                                        padding: 5
+                                    }}
+                                >
+                                    <IconButton
+                                        aria-label="Expand"
+                                        onClick={this.handleOpenRoleModal}
+                                    >
+                                        <LaunchIcon fontSize="large" />
+                                    </IconButton>
+                                </div>
                                 <div
                                     style={{
                                         width: "50%",
@@ -290,6 +356,15 @@ class WizardCreateClientPageThree extends React.Component {
                                     </EachRolePermissionContainerDiv>
                                 )
                             )}
+                            {this.state.modalOpen && (
+                                <PageThreeRoleModal
+                                    handleClose={this.handleCloseModal}
+                                    departments={departments}
+                                    permissionsCategories={permissionCategories}
+                                    role={this.state.editRole}
+                                    submitAction={addRoleAction}
+                                />
+                            )}
                         </RolePermissionContainerDiv>
                     );
                 }}
@@ -299,24 +374,26 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        let clientId = null;
-        try {
-            clientId = this.props.client.readQuery({
-                query: gql`
-                    {
-                        new_create_client_id @client
-                    }
-                `
-            }).new_create_client_id;
-        } catch (error) {
-            console.log(error);
-            return (
-                <React.Fragment>
-                    <h1>Can't Find ClientId From Step 1</h1>
-                    <Loading />
-                </React.Fragment>
-            );
-        }
+        // let clientId = null;
+        // try {
+        //     clientId = this.props.client.readQuery({
+        //         query: gql`
+        //             {
+        //                 new_create_client_id @client
+        //             }
+        //         `
+        //     }).new_create_client_id;
+        // } catch (error) {
+        //     console.log(error);
+        //     return (
+        //         <React.Fragment>
+        //             <h1>Can't Find ClientId From Step 1</h1>
+        //             <Loading />
+        //         </React.Fragment>
+        //     );
+        // }
+        const clientId = 3; //Testing purposes
+        const { selected_roles } = this.state;
         return (
             <Query
                 query={getDepartmentListByClient}
@@ -625,7 +702,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 }}
                                                             >
                                                                 ROLE PERMISSIONS
-                                                                {this.renderRolePermissionSection()}
+                                                                {this.renderRolePermissionSection(
+                                                                    departments,
+                                                                    addANewRole
+                                                                )}
                                                                 <div
                                                                     style={{
                                                                         paddingTop: 10,
@@ -677,19 +757,120 @@ class WizardCreateClientPageThree extends React.Component {
                                         );
                                     if (errorRoles)
                                         return `Error! ${errorRoles.message}`;
-                                    console.log(roleList);
+                                    // console.log(roleList);
                                     return (
                                         <SectionDivContainer>
                                             STRUCTURE TABLE
-                                            <ReactTable
+                                            {/* <ReactTable
                                                 defaultPageSize={10}
                                                 data={roleList}
+                                                getTdProps={(
+                                                    _state,
+                                                    _rowInfo,
+                                                    column,
+                                                    _instance
+                                                ) => ({
+                                                    onClick: (
+                                                        e,
+                                                        handleOriginal
+                                                    ) => {
+                                                        if (
+                                                            column.Header ===
+                                                            "ACTIONS"
+                                                        ) {
+                                                            //Only fire action in action columns
+                                                            // this.handleOpenOptions(
+                                                            //     e
+                                                            // );
+                                                            handleOriginal &&
+                                                                handleOriginal();
+                                                        }
+                                                    }
+                                                })}
                                                 columns={[
+                                                    {
+                                                        Header: "",
+                                                        style: {
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                            alignItems: "center"
+                                                        },
+                                                        filterable: true,
+                                                        sortable: false,
+                                                        resizable: false,
+                                                        width: 70,
+                                                        Cell: ({
+                                                            original: { id }
+                                                        }) => (
+                                                            <Checkbox
+                                                                id={id}
+                                                                checked={this.state.selected_roles.includes(
+                                                                    id
+                                                                )}
+                                                                onChange={
+                                                                    this
+                                                                        .handleChangeSelectedRoles
+                                                                }
+                                                            />
+                                                        ),
+                                                        Filter: (
+                                                            <Checkbox
+                                                                indeterminate={
+                                                                    this.state
+                                                                        .selected_roles
+                                                                        .size >
+                                                                        0 &&
+                                                                    this.state
+                                                                        .selected_roles
+                                                                        .size <
+                                                                        roleList.length
+                                                                }
+                                                                checked={
+                                                                    this.state
+                                                                        .selected_roles
+                                                                        .size ===
+                                                                    roleList.length
+                                                                }
+                                                                onChange={() => {
+                                                                    if (
+                                                                        this
+                                                                            .state
+                                                                            .selected_roles
+                                                                            .size ===
+                                                                        roleList.length
+                                                                    ) {
+                                                                        this.setState(
+                                                                            {
+                                                                                selected_roles: Set()
+                                                                            }
+                                                                        );
+                                                                    } else {
+                                                                        this.setState(
+                                                                            {
+                                                                                selected_roles: this.state.selected_roles.union(
+                                                                                    roleList.map(
+                                                                                        ({
+                                                                                            id
+                                                                                        }) =>
+                                                                                            id
+                                                                                    )
+                                                                                )
+                                                                            }
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        )
+                                                    },
                                                     {
                                                         Header: "ROLE",
                                                         accessor: "name",
                                                         style: {
-                                                            textAlign: "center"
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                            alignItems: "center"
                                                         },
                                                         filterable: true,
                                                         filterMethod: (
@@ -707,7 +888,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                         accessor:
                                                             "department.name",
                                                         style: {
-                                                            textAlign: "center"
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                            alignItems: "center"
                                                         },
                                                         filterable: true,
                                                         filterMethod: (
@@ -723,10 +907,21 @@ class WizardCreateClientPageThree extends React.Component {
                                                     {
                                                         Header: "ACTIONS",
                                                         style: {
-                                                            textAlign: "center"
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center",
+                                                            alignItems: "center"
                                                         },
-                                                        Cell: (
-                                                            <MoreHorizontalIcon />
+                                                        Cell: ({
+                                                            original: { id }
+                                                        }) => (
+                                                            <MoreHorizontalIcon
+                                                                id={id}
+                                                                onClick={
+                                                                    this
+                                                                        .handleOpenOptions
+                                                                }
+                                                            />
                                                         ),
                                                         filterable: false,
                                                         sortable: false,
@@ -734,7 +929,145 @@ class WizardCreateClientPageThree extends React.Component {
                                                         width: 70
                                                     }
                                                 ]}
-                                            />
+                                            /> */}
+                                            <Table>
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell padding="checkbox">
+                                                            <Checkbox
+                                                                indeterminate={
+                                                                    selected_roles.size >
+                                                                        0 &&
+                                                                    selected_roles.size <
+                                                                        roleList.length
+                                                                }
+                                                                checked={
+                                                                    selected_roles.size ===
+                                                                    roleList.length
+                                                                }
+                                                                onClick={() => {
+                                                                    if (
+                                                                        this
+                                                                            .state
+                                                                            .selected_roles
+                                                                            .size ===
+                                                                        roleList.length
+                                                                    ) {
+                                                                        this.setState(
+                                                                            {
+                                                                                selected_roles: Set()
+                                                                            }
+                                                                        );
+                                                                    } else {
+                                                                        this.setState(
+                                                                            {
+                                                                                selected_roles: this.state.selected_roles.union(
+                                                                                    roleList.map(
+                                                                                        ({
+                                                                                            id
+                                                                                        }) =>
+                                                                                            id
+                                                                                    )
+                                                                                )
+                                                                            }
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            ROLE
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            DEPARTMENT
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            ACTIONS
+                                                        </TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {roleList.map(role => (
+                                                        <TableRow
+                                                            key={`TABLE-ROW-${
+                                                                role.id
+                                                            }`}
+                                                        >
+                                                            <TableCell>
+                                                                <Checkbox
+                                                                    id={role.id}
+                                                                    checked={this.state.selected_roles.includes(
+                                                                        role.id
+                                                                    )}
+                                                                    onChange={
+                                                                        this
+                                                                            .handleChangeSelectedRoles
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {role.name}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {
+                                                                    role
+                                                                        .department
+                                                                        .name
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                <MoreHorizontalIcon
+                                                                    onClick={
+                                                                        // this
+                                                                        //     .handleOpenOptions
+                                                                        event => {
+                                                                            this.setState(
+                                                                                {
+                                                                                    anchorEl:
+                                                                                        event.currentTarget,
+                                                                                    editRole: role
+                                                                                }
+                                                                            );
+                                                                        }
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                            {/* <PageThreeRoleTable
+                                                roles={roleList}
+                                            /> */}
+                                            {/*ANCHOR EL MENU*/}
+                                            <Menu
+                                                id="simple-menu"
+                                                anchorEl={this.state.anchorEl}
+                                                open={Boolean(
+                                                    this.state.anchorEl
+                                                )}
+                                                onClose={
+                                                    this.handleCloseOptions
+                                                }
+                                                anchorOrigin={{
+                                                    vertical: "bottom",
+                                                    horizontal: "right"
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: "top",
+                                                    horizontal: "right"
+                                                }}
+                                            >
+                                                <MenuItem
+                                                    onClick={
+                                                        this.handleOpenRoleModal
+                                                    }
+                                                >
+                                                    EDIT
+                                                </MenuItem>
+                                                <MenuItem>DUPLICATE</MenuItem>
+                                                <MenuItem>DELETE</MenuItem>
+                                            </Menu>
                                             <Button
                                                 variant="contained"
                                                 color="primary"
