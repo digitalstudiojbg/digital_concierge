@@ -65,10 +65,22 @@ const changeClientDataStructure = ({ client: { users = {} } = {} }) => {
 };
 
 class WelcomeUser extends Component {
-    state = {
-        selected: [],
-        is_create_page: false
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            selected: [],
+            is_create_page: false,
+            selected_row: null
+        };
+        this.handleAction = this.handleAction.bind(this);
+    }
+
+    handleAction(original) {
+        this.setState({
+            selected_row: original ? original.id : null
+        });
+        console.log(original);
+    }
 
     handleIsCreatePageState() {
         //   const { is_create_page } = this.state;
@@ -77,7 +89,7 @@ class WelcomeUser extends Component {
 
     render() {
         const { classes } = this.props;
-        const { selected, is_create_page } = this.state;
+        const { selected, is_create_page, selected_row } = this.state;
         if (is_create_page) {
             return (
                 <WelcomeUserCreate
@@ -234,8 +246,56 @@ class WelcomeUser extends Component {
                                                 style: {
                                                     textAlign: "center"
                                                 },
-                                                Cell: row => {
-                                                    return <div>...</div>;
+                                                width: 75,
+                                                Cell: ({ original }) => {
+                                                    return selected_row &&
+                                                        original.id ===
+                                                            selected_row ? (
+                                                        <React.Fragment>
+                                                            <div
+                                                                style={{
+                                                                    position:
+                                                                        "absolute",
+                                                                    backgroundColor:
+                                                                        "lightgrey",
+                                                                    padding:
+                                                                        "15px",
+                                                                    borderRadius:
+                                                                        "10px"
+                                                                }}
+                                                            >
+                                                                <div
+                                                                    style={{
+                                                                        backgroundColor:
+                                                                            "lightgrey"
+                                                                    }}
+                                                                    onClick={() => {
+                                                                        this.handleAction(
+                                                                            null
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <p>Edit</p>
+                                                                    <p>
+                                                                        Delete
+                                                                    </p>
+                                                                    <p>
+                                                                        Duplicate
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ) : (
+                                                        <div
+                                                            onClick={() => {
+                                                                this.handleAction(
+                                                                    original
+                                                                );
+                                                            }}
+                                                        >
+                                                            ...
+                                                        </div>
+                                                    );
                                                 }
                                             },
                                             {
