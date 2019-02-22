@@ -10,6 +10,7 @@ export default gql`
     extend type Mutation {
         createRole(input: CreateRoleInput): Role
         updateRole(input: UpdateRoleInput): Role
+        deleteRoles(input: DeleteRoleInput): Boolean
     }
 
     type Role {
@@ -35,5 +36,10 @@ export default gql`
         name: String!
         departmentId: Int!
         permissionIds: [Int]!
+    }
+
+    input DeleteRoleInput {
+        roleIds: [Int]!
+        clientId: Int
     }
 `;

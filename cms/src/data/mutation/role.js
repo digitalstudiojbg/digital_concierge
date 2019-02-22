@@ -17,3 +17,9 @@ export const UPDATE_ROLE = gql`
         }
     }
 `;
+
+export const DELETE_ROLES = gql`
+    mutation deleteRoles($input: DeleteRoleInput) {
+        deleteRoles(input: $input)
+    }
+`;

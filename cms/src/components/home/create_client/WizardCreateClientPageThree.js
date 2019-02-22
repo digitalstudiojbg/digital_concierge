@@ -34,7 +34,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import LaunchIcon from "@material-ui/icons/Launch";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CopyIcon from "@material-ui/icons/FileCopy";
 import PageThreeRoleModal from "./three/PageThreeRoleModal";
+import PageThreeDeleteModal from "./three/PageThreeDeleteModal";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -124,6 +127,12 @@ class WizardCreateClientPageThree extends React.Component {
             this
         );
         this.handleOpenRoleModal = this.handleOpenRoleModal.bind(this);
+        this.handleOpenSingleDeleteModal = this.handleOpenSingleDeleteModal.bind(
+            this
+        );
+        this.handleOpenMultipleDeleteModal = this.handleOpenMultipleDeleteModal.bind(
+            this
+        );
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleOpenOptions = this.handleCloseOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
@@ -166,6 +175,22 @@ class WizardCreateClientPageThree extends React.Component {
         }
     }
 
+    handleOpenSingleDeleteModal() {
+        this.setState({
+            modalOpen: true,
+            whichModal: "single-delete",
+            anchorEl: null
+        });
+    }
+
+    handleOpenMultipleDeleteModal() {
+        this.setState({
+            modalOpen: true,
+            whichModal: "multiple-delete",
+            anchorEl: null
+        });
+    }
+
     handleOpenRoleModal() {
         this.setState({ modalOpen: true, whichModal: "role", anchorEl: null });
     }
@@ -184,7 +209,12 @@ class WizardCreateClientPageThree extends React.Component {
         this.setState({ anchorEl: null, editRole: null });
     }
 
-    renderRolePermissionSection(departments, addRoleAction, editRoleAction) {
+    renderRolePermissionSection(
+        departments,
+        clientId,
+        addRoleAction,
+        editRoleAction
+    ) {
         return (
             <Query query={getPermissionCategoryList}>
                 {({ loading, error, data: { permissionCategories } }) => {
@@ -360,19 +390,30 @@ class WizardCreateClientPageThree extends React.Component {
                                     </EachRolePermissionContainerDiv>
                                 )
                             )}
-                            {this.state.modalOpen && (
-                                <PageThreeRoleModal
-                                    handleClose={this.handleCloseModal}
-                                    departments={departments}
-                                    permissionsCategories={permissionCategories}
-                                    role={this.state.editRole}
-                                    submitAction={
-                                        Boolean(this.state.editRole)
-                                            ? editRoleAction
-                                            : addRoleAction
-                                    }
-                                />
-                            )}
+                            {this.state.modalOpen &&
+                                this.state.whichModal === "role" && (
+                                    <PageThreeRoleModal
+                                        handleClose={this.handleCloseModal}
+                                        departments={departments}
+                                        permissionsCategories={
+                                            permissionCategories
+                                        }
+                                        role={this.state.editRole}
+                                        submitAction={
+                                            Boolean(this.state.editRole)
+                                                ? editRoleAction
+                                                : addRoleAction
+                                        }
+                                    />
+                                )}
+                            {this.state.modalOpen &&
+                                this.state.whichModal === "single-delete" && (
+                                    <PageThreeDeleteModal
+                                        clientId={clientId}
+                                        role={this.state.editRole}
+                                        handleClose={this.handleCloseModal}
+                                    />
+                                )}
                         </RolePermissionContainerDiv>
                     );
                 }}
@@ -745,6 +786,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             }`;
                                                                         return this.renderRolePermissionSection(
                                                                             departments,
+                                                                            clientId,
                                                                             addANewRole,
                                                                             editARole
                                                                         );
@@ -804,7 +846,66 @@ class WizardCreateClientPageThree extends React.Component {
                                     // console.log(roleList);
                                     return (
                                         <SectionDivContainer>
-                                            STRUCTURE TABLE
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex"
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        width: "80%",
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        fontSize: "1.5em"
+                                                    }}
+                                                >
+                                                    STRUCTURE TABLE
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        width: "10%",
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "flex-end"
+                                                    }}
+                                                >
+                                                    <IconButton
+                                                        aria-label="Copy"
+                                                        disabled={
+                                                            this.state
+                                                                .selected_roles
+                                                                .size === 0
+                                                        }
+                                                    >
+                                                        <CopyIcon fontSize="large" />
+                                                    </IconButton>
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        width: "10%",
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "flex-end"
+                                                    }}
+                                                >
+                                                    <IconButton
+                                                        aria-label="Delete"
+                                                        disabled={
+                                                            this.state
+                                                                .selected_roles
+                                                                .size === 0
+                                                        }
+                                                        onClick={
+                                                            this
+                                                                .handleOpenMultipleDeleteModal
+                                                        }
+                                                    >
+                                                        <DeleteIcon fontSize="large" />
+                                                    </IconButton>
+                                                </div>
+                                            </div>
+
                                             {/* <ReactTable
                                                 defaultPageSize={10}
                                                 data={roleList}
@@ -974,6 +1075,25 @@ class WizardCreateClientPageThree extends React.Component {
                                                     }
                                                 ]}
                                             /> */}
+
+                                            {this.state.modalOpen &&
+                                                this.state.whichModal ===
+                                                    "multiple-delete" && (
+                                                    <PageThreeDeleteModal
+                                                        clientId={clientId}
+                                                        roles={roleList.filter(
+                                                            ({ id }) =>
+                                                                this.state.selected_roles.includes(
+                                                                    id
+                                                                )
+                                                        )}
+                                                        handleClose={
+                                                            this
+                                                                .handleCloseModal
+                                                        }
+                                                    />
+                                                )}
+
                                             <Table>
                                                 <TableHead>
                                                     <TableRow>
@@ -1110,7 +1230,14 @@ class WizardCreateClientPageThree extends React.Component {
                                                     EDIT
                                                 </MenuItem>
                                                 <MenuItem>DUPLICATE</MenuItem>
-                                                <MenuItem>DELETE</MenuItem>
+                                                <MenuItem
+                                                    onClick={
+                                                        this
+                                                            .handleOpenSingleDeleteModal
+                                                    }
+                                                >
+                                                    DELETE
+                                                </MenuItem>
                                             </Menu>
                                             <Button
                                                 variant="contained"
