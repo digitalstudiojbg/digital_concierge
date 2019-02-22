@@ -7,6 +7,16 @@ import { compose, graphql, Query } from "react-apollo";
 import { getUsersByClient, getRoleList } from "../../data/query";
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreate from "./WelcomeUserCreate";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
+import DialogActions from "@material-ui/core/DialogActions";
+
+const Transition = props => {
+    return <Slide direction="up" {...props} />;
+};
+
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit
@@ -70,7 +80,8 @@ class WelcomeUser extends Component {
         this.state = {
             selected: [],
             is_create_page: false,
-            selected_row: null
+            selected_row: null,
+            deleteModal: false
         };
         this.handleAction = this.handleAction.bind(this);
     }
@@ -89,7 +100,12 @@ class WelcomeUser extends Component {
 
     render() {
         const { classes } = this.props;
-        const { selected, is_create_page, selected_row } = this.state;
+        const {
+            selected,
+            is_create_page,
+            selected_row,
+            deleteModal
+        } = this.state;
         if (is_create_page) {
             return (
                 <WelcomeUserCreate
@@ -139,6 +155,11 @@ class WelcomeUser extends Component {
                                         <Button
                                             variant="contained"
                                             className={classes.button}
+                                            onClick={() => {
+                                                this.setState({
+                                                    deleteModal: true
+                                                });
+                                            }}
                                         >
                                             DELETE
                                         </Button>
@@ -253,6 +274,11 @@ class WelcomeUser extends Component {
                                                             selected_row ? (
                                                         <React.Fragment>
                                                             <div
+                                                                onClick={() => {
+                                                                    this.handleAction(
+                                                                        null
+                                                                    );
+                                                                }}
                                                                 style={{
                                                                     position:
                                                                         "absolute",
@@ -264,17 +290,7 @@ class WelcomeUser extends Component {
                                                                         "10px"
                                                                 }}
                                                             >
-                                                                <div
-                                                                    style={{
-                                                                        backgroundColor:
-                                                                            "lightgrey"
-                                                                    }}
-                                                                    onClick={() => {
-                                                                        this.handleAction(
-                                                                            null
-                                                                        );
-                                                                    }}
-                                                                >
+                                                                <div>
                                                                     <p>Edit</p>
                                                                     <p>
                                                                         Delete
@@ -352,6 +368,115 @@ class WelcomeUser extends Component {
                                         ]}
                                     />
                                 </div>
+
+                                <Dialog
+                                    open={deleteModal}
+                                    TransitionComponent={Transition}
+                                    onClose={() => {
+                                        this.setState({ deleteModal: false });
+                                    }}
+                                >
+                                    <DialogTitle id="alert-dialog-title">
+                                        <h3>Confirmation</h3>
+                                    </DialogTitle>
+                                    <DialogContent>
+                                        {selected.length <= 0 ? (
+                                            <p>
+                                                Please choose at least one user
+                                                to delete first.
+                                            </p>
+                                        ) : (
+                                            <React.Fragment>
+                                                <p
+                                                    style={{
+                                                        fontSize: "1.3em"
+                                                    }}
+                                                >
+                                                    Are you sure you want to
+                                                    delete the selected images?
+                                                    Click OK to confirm.
+                                                </p>
+                                                <ul
+                                                    style={{
+                                                        paddingLeft: "30px",
+                                                        paddingRight: "30px"
+                                                    }}
+                                                >
+                                                    {selected.map(each => {
+                                                        const selected_user = changeClientDataStructure(
+                                                            data
+                                                        ).find(eachUser => {
+                                                            return (
+                                                                parseInt(
+                                                                    eachUser.id
+                                                                ) ===
+                                                                parseInt(each)
+                                                            );
+                                                        });
+
+                                                        return (
+                                                            <li
+                                                                style={{
+                                                                    fontSize:
+                                                                        "1.2em"
+                                                                }}
+                                                            >
+                                                                {
+                                                                    selected_user.user
+                                                                }
+                                                            </li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            </React.Fragment>
+                                        )}
+                                    </DialogContent>
+                                    <DialogActions>
+                                        {selected.length > 0 ? (
+                                            <React.Fragment>
+                                                <Button
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            deleteModal: false
+                                                        });
+                                                    }}
+                                                    color="secondary"
+                                                    className={
+                                                        classes.buttonFont
+                                                    }
+                                                >
+                                                    Cancel
+                                                </Button>
+                                                <Button
+                                                    onClick={() => {
+                                                        /**
+                                                         * Start to delete
+                                                         */
+                                                    }}
+                                                    color="primary"
+                                                    autoFocus
+                                                    className={
+                                                        classes.buttonFont
+                                                    }
+                                                >
+                                                    Ok
+                                                </Button>
+                                            </React.Fragment>
+                                        ) : (
+                                            <Button
+                                                onClick={() => {
+                                                    this.setState({
+                                                        deleteModal: false
+                                                    });
+                                                }}
+                                                color="primary"
+                                                className={classes.buttonFont}
+                                            >
+                                                Ok
+                                            </Button>
+                                        )}
+                                    </DialogActions>
+                                </Dialog>
                             </div>
                         );
                     }}

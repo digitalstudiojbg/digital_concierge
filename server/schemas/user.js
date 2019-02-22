@@ -10,6 +10,7 @@ export default gql`
     extend type Mutation {
         createUser(input: CreateUserInput): User
         updateUser(input: UpdateUserInput): User
+        deleteUsers(input: DeleteUserInput): User
     }
 
     type User {
@@ -48,5 +49,9 @@ export default gql`
         first_phone_number: String
         second_phone_number: String
         password: String
+    }
+
+    input DeleteUserInput {
+        ids: [ID!]!
     }
 `;
