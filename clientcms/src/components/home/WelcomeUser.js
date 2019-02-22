@@ -70,16 +70,30 @@ class WelcomeUser extends Component {
         is_create_page: false
     };
 
+    handleIsCreatePageState() {
+        //   const { is_create_page } = this.state;
+        this.setState({ is_create_page: !this.state.is_create_page });
+    }
+
     render() {
         const { classes } = this.props;
         const { selected, is_create_page } = this.state;
         if (is_create_page) {
-            return <WelcomeUserCreate />;
+            return (
+                <WelcomeUserCreate
+                    handleIsCreatePageState={
+                        (this.handleIsCreatePageState = this.handleIsCreatePageState.bind(
+                            this
+                        ))
+                    }
+                />
+            );
         } else {
             return (
                 <Query
                     query={getUsersByClient}
                     variables={{ id: this.props.data.id }}
+                    fetchPolicy="no-cache"
                 >
                     {({ loading, error, data }) => {
                         if (loading) return <h1>Loading</h1>;

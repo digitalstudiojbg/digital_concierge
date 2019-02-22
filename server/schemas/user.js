@@ -37,6 +37,7 @@ export default gql`
         position: String
         # mediumId: Int
         clientId: Int
+        roleId: Int
     }
 
     input UpdateUserInput {

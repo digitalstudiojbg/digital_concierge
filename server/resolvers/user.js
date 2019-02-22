@@ -41,7 +41,8 @@ export default {
                     first_phone_number,
                     second_phone_number,
                     position,
-                    clientId
+                    clientId,
+                    roleId
                 }
             },
             { user, clientIp }
@@ -61,6 +62,9 @@ export default {
             });
 
             await create_user.save();
+
+            roleId && (await create_user.addRole(roleId));
+            //console.log(Object.keys(create_user.__proto__));
 
             return create_user;
         },

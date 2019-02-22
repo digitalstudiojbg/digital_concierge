@@ -7,7 +7,11 @@ import {
     getDepartmentListByUser,
     getPermissionCategoryList
 } from "../../data/query";
-import { CREATE_DEPARTMENT, CREATE_ROLE } from "../../data/mutation";
+import {
+    CREATE_DEPARTMENT,
+    CREATE_ROLE,
+    CREATE_USER
+} from "../../data/mutation";
 import { Formik, Form, Field } from "formik";
 import {
     TextField,
@@ -35,6 +39,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
+import { withRouter } from "react-router-dom";
 
 const CREATE_USER_FIELD = [
     {
@@ -47,6 +52,24 @@ const CREATE_USER_FIELD = [
         name: "email",
         label: "EMAIL",
         required: true,
+        type: "text"
+    },
+    {
+        name: "first_phone_number",
+        label: "FIRST PHONE NUMBER",
+        required: false,
+        type: "text"
+    },
+    {
+        name: "second_phone_number",
+        label: "SECOND PHONE NUMBER",
+        required: false,
+        type: "text"
+    },
+    {
+        name: "position",
+        label: "POSITION",
+        required: false,
         type: "text"
     }
 ];
@@ -145,7 +168,12 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
 };
 
 const WelcomeUserCreate = props => {
-    const { getDepartmentListByUser: { departmentsByUser = [] } = {} } = props;
+    const {
+        getDepartmentListByUser: { departmentsByUser = [] } = {},
+        createUser,
+        handleIsCreatePageState,
+        match: { params: { client_id = {} } = {} } = {}
+    } = props;
 
     if (departmentsByUser.length < 0) {
         return <Loading />;
@@ -292,7 +320,6 @@ const WelcomeUserCreate = props => {
 
     const renderCreateNewRoleModel = selectedDepartment => {
         const { classes } = props;
-        console.log(selectedDepartment);
 
         const [selectedPermissions, setSelectedPermissions] = useState(Set());
 
@@ -717,15 +744,42 @@ const WelcomeUserCreate = props => {
                         setSelectedDepartment(values.department);
                 }}
                 validationSchema={WelcomeUserCreateValidationSchema}
-                onSubmit={async (values, { setSubmitting }) => {
-                    console.log(values);
+                onSubmit={async (
+                    {
+                        position,
+                        email,
+                        first_phone_number,
+                        second_phone_number,
+                        name,
+                        password,
+                        role: roleId
+                    },
+                    { setSubmitting }
+                ) => {
+                    console.log(client_id);
+
+                    createUser({
+                        variables: {
+                            input: {
+                                name,
+                                position,
+                                email,
+                                first_phone_number,
+                                second_phone_number,
+                                password,
+                                clientId: parseInt(client_id),
+                                roleId: parseInt(roleId)
+                            }
+                        }
+                    }).then(() => {
+                        console.log("USER CREATED SUCCESSFULLY");
+                        handleIsCreatePageState();
+                    });
                 }}
                 render={({ errors, values, isSubmitting }) => {
-                    console.log(values);
                     const selectedDepartment = departmentsByUser.find(
                         department => department.id === values.department
                     );
-
                     return (
                         <Form>
                             <div style={{ display: "flex" }}>
@@ -874,8 +928,10 @@ const WelcomeUserCreate = props => {
 };
 
 export default compose(
+    withRouter,
     withStyles(styles),
     graphql(getDepartmentListByUser, {
         name: "getDepartmentListByUser"
-    })
+    }),
+    graphql(CREATE_USER(), { name: "createUser" })
 )(WelcomeUserCreate);
