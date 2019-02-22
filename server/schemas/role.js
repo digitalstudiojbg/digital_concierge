@@ -22,6 +22,7 @@ export default gql`
         users: [User]
         permissions: [Permission]
         department: Department
+        client: Client
     }
 
     input CreateRoleInput {
@@ -29,6 +30,7 @@ export default gql`
         isStandardRole: Boolean!
         departmentId: Int!
         permissionIds: [Int]!
+        clientId: Int
     }
 
     input UpdateRoleInput {
@@ -40,6 +42,6 @@ export default gql`
 
     input DeleteRoleInput {
         roleIds: [Int]!
-        clientId: Int
+        clientId: Int!
     }
 `;

@@ -105,6 +105,7 @@ module.exports = (sequelize, DataTypes) => {
         client.belongsToMany(models.department, {
             through: "clients_departments"
         });
+        client.hasMany(models.role);
         client.hasMany(models.room);
         client.hasMany(models.guest);
         client.hasMany(models.device);

@@ -442,3 +442,7 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-license
  
 node_modules/.bin/sequelize migration:generate --name add-is-standard-department-attribute-to-department
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-license
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-role

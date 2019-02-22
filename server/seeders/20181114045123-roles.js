@@ -8,12 +8,14 @@ module.exports = {
                 {
                     name: "admin",
                     is_standard_role: false,
-                    departmentId: 1
+                    departmentId: 1,
+                    clientId: 2
                 },
                 {
                     name: "admin_holiday",
                     is_standard_role: false,
-                    departmentId: 2
+                    departmentId: 2,
+                    clientId: 1
                 },
                 {
                     name: "GENERAL MANAGER",

@@ -398,6 +398,7 @@ class WizardCreateClientPageThree extends React.Component {
                                         permissionsCategories={
                                             permissionCategories
                                         }
+                                        clientId={clientId}
                                         role={this.state.editRole}
                                         submitAction={
                                             Boolean(this.state.editRole)
@@ -631,15 +632,24 @@ class WizardCreateClientPageThree extends React.Component {
                                                         departmentId: parseInt(
                                                             department_id,
                                                             DECIMAL_RADIX
+                                                        ),
+                                                        clientId: parseInt(
+                                                            clientId,
+                                                            DECIMAL_RADIX
                                                         )
                                                     };
-                                                    console.log(input);
+                                                    // console.log(input);
                                                     addANewRole({
                                                         variables: {
                                                             input
                                                         }
+                                                    }).then(() => {
+                                                        setSubmitting(false);
+                                                        this.setState({
+                                                            selected_checkboxes: Set(),
+                                                            department_id: null
+                                                        });
                                                     });
-                                                    setSubmitting(false);
                                                 }}
                                                 initialValues={{
                                                     name: "",

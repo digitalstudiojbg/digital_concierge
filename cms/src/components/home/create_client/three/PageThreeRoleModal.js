@@ -97,7 +97,8 @@ export const PageThreeRoleModal = ({
     permissionsCategories,
     classes,
     role,
-    submitAction
+    submitAction,
+    clientId
 }) => {
     const permissionsList = [].concat.apply(
         [],
@@ -145,7 +146,7 @@ export const PageThreeRoleModal = ({
                     Boolean(role.permissions) &&
                     Array.isArray(role.permissions)
                         ? role.permissions.map(({ id }) => id) //Set()
-                        : [] //Set([])
+                        : [] //Set([]),
             }}
             validationSchema={validationSchema}
         >
@@ -190,11 +191,11 @@ export const PageThreeRoleModal = ({
                             }
                             onClick={() => {
                                 setSubmitting(true);
-                                console.log("VALUES ARE: ", {
-                                    permissionIds,
-                                    name,
-                                    departmentId
-                                });
+                                // console.log("VALUES ARE: ", {
+                                //     permissionIds,
+                                //     name,
+                                //     departmentId
+                                // });
                                 submitAction({
                                     variables: {
                                         input: {
@@ -206,6 +207,12 @@ export const PageThreeRoleModal = ({
                                             }),
                                             ...(!Boolean(role) && {
                                                 isStandardRole: false
+                                            }),
+                                            ...(!Boolean(role) && {
+                                                clientId: parseInt(
+                                                    clientId,
+                                                    DECIMAL_RADIX
+                                                )
                                             }),
                                             name,
                                             departmentId: parseInt(

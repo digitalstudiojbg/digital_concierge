@@ -30,80 +30,31 @@ export default {
                 throw new AuthenticationError("Unauthorized");
             }
 
-            let output_roles = [];
+            // let output_roles = [];
 
-            const departments = await db.department.findAll({
-                include: [
-                    {
-                        model: db.client,
-                        where: { id: clientId }
-                    }
-                ]
-            });
-
-            await asyncForEach(departments, async department => {
-                console.log("Department ID: ", department.id);
-                const roles = await db.role.findAll({
-                    where: { departmentId: department.id }
-                });
-                await asyncForEach(roles, async ({ id }) => {
-                    console.log("Role ID: ", id);
-                    const role = await db.role.findByPk(id);
-                    output_roles.push(role);
-                });
-            });
-            return output_roles;
-
-            // new Promise(async (resolve, reject) => {
-            //     asyncForEach(departments, async department => {
-            //         const singleDepartmentRoleList = await department.getRoles();
-            //         console.log(Object.keys(department.__proto__));
-
-            //         /* const roles = db.role.findAll({
-            //             where: { departmentId: department.id }
-            //         });
-            //         asyncForEach(roles, async ({ id }) => {
-            //             console.log("Role ID: ", id);
-            //             const role = await db.role.findByPk(id);
-            //             output_roles.push(role);
-            //         });*/
-            //     });
-            //     resolve();
-            // }).then(() => {
-            //     return output_roles;
+            // const departments = await db.department.findAll({
+            //     include: [
+            //         {
+            //             model: db.client,
+            //             where: { id: clientId }
+            //         }
+            //     ]
             // });
-            // for (const department in departments) {
-            //     const deptRoles = await db.role.findAll({
-            //         where: { departmentId: department.id }
-            //     });
-            //     for (const role in deptRoles) {
-            //         console.log("Role ", role);
-            //         roles.push(role);
-            //     }
-            // }
-            // // roles = [].concat.apply([], roles);
-            // console.log("roles ", roles);
 
             // await asyncForEach(departments, async department => {
-            //     // console.log(Object.keys(department.__proto__));
             //     console.log("Department ID: ", department.id);
-            //     // const departmentRoles = await db.role.findAll({
-            //     //     where: { departmentId: department.id }
-            //     // });
-
-            //     await new Promise(async resolve => {
-            //         const departmentRoles = await db.role.findAll({
-            //             where: { departmentId: department.id }
-            //         });
-            //         resolve(departmentRoles);
-            //     }).then(departmentRoles => {
-            //         department_roles.push(departmentRoles);
+            //     const roles = await db.role.findAll({
+            //         where: { departmentId: department.id }
+            //     });
+            //     await asyncForEach(roles, async ({ id }) => {
+            //         console.log("Role ID: ", id);
+            //         const role = await db.role.findByPk(id);
+            //         output_roles.push(role);
             //     });
             // });
+            // return output_roles;
 
-            // console.log(department_roles);
-
-            // await asyncForEach(department_roles, async roles => {});
+            return db.role.findAll({ where: { clientId } });
         }
     },
     Mutation: {
@@ -114,7 +65,8 @@ export default {
                     name,
                     isStandardRole: is_standard_role,
                     permissionIds,
-                    departmentId
+                    departmentId,
+                    clientId
                 }
             },
             { user, clientIp }
@@ -129,10 +81,21 @@ export default {
                 );
             }
 
+            //Check if clientId exists
+            const client = await db.client.findByPk(clientId);
+            if (!Boolean(client)) {
+                throw new UserInputError(
+                    `Client ID ${clientId} does not exist.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
             const role = db.role.build({
                 name,
                 is_standard_role,
-                departmentId
+                departmentId,
+                clientId
             });
 
             try {
@@ -148,7 +111,7 @@ export default {
             //Create Activity Logging
             handleCreateActionActivityLog(
                 role,
-                { name, is_standard_role, departmentId },
+                { name, is_standard_role, departmentId, clientId },
                 user,
                 clientIp
             );
@@ -287,6 +250,10 @@ export default {
             });
         },
         department: async role =>
-            await db.department.findByPk(role.departmentId)
+            await db.department.findByPk(role.departmentId),
+        client: async role =>
+            Boolean(role.clientId)
+                ? await db.client.findByPk(role.clientId)
+                : null
     }
 };
