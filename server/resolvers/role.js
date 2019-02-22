@@ -120,9 +120,8 @@ export default {
             { user, clientIp }
         ) => {
             //Check if departmentId exists
-            try {
-                await db.department.findByPk(departmentId);
-            } catch (error) {
+            const department = await db.department.findByPk(departmentId);
+            if (!Boolean(department)) {
                 throw new UserInputError(
                     `Department ID ${departmentId} does not exist.\nError Message: ${
                         error.message
@@ -187,6 +186,84 @@ export default {
             );
 
             return await db.role.findByPk(role.id);
+        },
+        updateRole: async (
+            _root,
+            { input: { id, name, permissionIds, departmentId } },
+            { user, clientIp }
+        ) => {
+            //Check if deportment exists
+            const role = await db.role.findByPk(id);
+            if (!Boolean(role)) {
+                throw new UserInputError(
+                    `Role ID ${id} does not exist.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            // console.log(Object.keys(role.__proto__));
+
+            //Check if departmentId exists
+            const department = await db.department.findByPk(departmentId);
+            if (!Boolean(department)) {
+                throw new UserInputError(
+                    `Department ID ${departmentId} does not exist.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            try {
+                await role.update({
+                    name,
+                    departmentId
+                });
+            } catch (error) {
+                throw new UserInputError(
+                    `Update Role ID ${id} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Check if the permissions inside permissionIds array exists
+            for (const permissionId in permissionIds) {
+                try {
+                    await db.permission.findByPk(permissionId);
+                } catch (error) {
+                    throw new UserInputError(
+                        `Permission ID ${permissionId} does not exist.\nError Message: ${
+                            error.message
+                        }`
+                    );
+                }
+            }
+
+            // //Attempt to assign permissions to the role
+            try {
+                role.setPermissions(permissionIds);
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to assign selected permissions to role.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Activity logging
+            handleUpdateActionActivityLog(
+                role,
+                {
+                    name,
+                    departmentId,
+                    permissions: `[${Array(permissionIds).toString()}]`
+                },
+                user,
+                clientIp
+            );
+
+            return await db.role.findByPk(id);
         }
     },
     Role: {

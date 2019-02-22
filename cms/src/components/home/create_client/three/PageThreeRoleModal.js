@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
     Dialog,
@@ -20,6 +20,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { Formik, Field, Form } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import * as Yup from "yup";
+import { DECIMAL_RADIX } from "../../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -95,7 +96,8 @@ export const PageThreeRoleModal = ({
     departments,
     permissionsCategories,
     classes,
-    role
+    role,
+    submitAction
 }) => {
     const permissionsList = [].concat.apply(
         [],
@@ -110,7 +112,9 @@ export const PageThreeRoleModal = ({
 
     const validationSchema = Yup.object().shape({
         //Client validation
-        name: Yup.string().required("Required"),
+        name: Yup.string()
+            .min(1, "Required")
+            .required("Required"),
         departmentId: Yup.string()
             .oneOf(
                 departments.map(({ id }) => id),
@@ -143,16 +147,14 @@ export const PageThreeRoleModal = ({
                         ? role.permissions.map(({ id }) => id) //Set()
                         : [] //Set([])
             }}
-            onSubmit={values => {
-                console.log("VALUES ARE: ", values);
-            }}
             validationSchema={validationSchema}
         >
             {({
-                values: { permissionIds },
+                values: { permissionIds, name, departmentId },
                 isSubmitting,
                 errors,
-                setFieldValue
+                setFieldValue,
+                setSubmitting
             }) => (
                 <Dialog
                     disableBackdropClick
@@ -176,299 +178,331 @@ export const PageThreeRoleModal = ({
                             <CloseIcon />
                         </IconButton>
                     </DialogTitle>
-                    <Form>
-                        <DialogActions
-                            classes={{ root: classes.leftDialogAction }}
+
+                    <DialogActions classes={{ root: classes.leftDialogAction }}>
+                        <Button
+                            variant="outlined"
+                            className={classes.submitButton}
+                            disabled={
+                                isSubmitting ||
+                                Object.keys(errors).length > 0 ||
+                                name.length === 0
+                            }
+                            onClick={() => {
+                                setSubmitting(true);
+                                console.log("VALUES ARE: ", {
+                                    permissionIds,
+                                    name,
+                                    departmentId
+                                });
+                                submitAction({
+                                    variables: {
+                                        input: {
+                                            ...(Boolean(role) && {
+                                                id: parseInt(
+                                                    role.id,
+                                                    DECIMAL_RADIX
+                                                )
+                                            }),
+                                            ...(!Boolean(role) && {
+                                                isStandardRole: false
+                                            }),
+                                            name,
+                                            departmentId: parseInt(
+                                                departmentId,
+                                                DECIMAL_RADIX
+                                            ),
+                                            permissionIds: permissionIds.map(
+                                                id =>
+                                                    parseInt(id, DECIMAL_RADIX)
+                                            )
+                                        }
+                                    }
+                                }).then(handleClose());
+                            }}
                         >
-                            <Button
-                                type="submit"
-                                variant="outlined"
-                                className={classes.submitButton}
+                            {Boolean(role) ? "EDIT" : "ADD"}
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            className={classes.cancelButton}
+                            onClick={handleClose}
+                            disabled={isSubmitting}
+                        >
+                            CANCEL
+                        </Button>
+                    </DialogActions>
+                    <DialogContent>
+                        <ContainerDiv>
+                            <div
+                                style={{
+                                    flexBasis: "50%",
+                                    paddingTop: 5,
+                                    paddingRight: 40
+                                }}
                             >
-                                {Boolean(role) ? "EDIT" : "ADD"}
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                className={classes.cancelButton}
-                                onClick={handleClose}
-                            >
-                                CANCEL
-                            </Button>
-                        </DialogActions>
-                        <DialogContent>
-                            <ContainerDiv>
+                                <FormControl
+                                    fullWidth={true}
+                                    error={Boolean(errors.departmentId)}
+                                >
+                                    <InputLabel>DEPARTMENT</InputLabel>
+                                    <Field
+                                        name="departmentId"
+                                        component={Select}
+                                        disabled={departments.length < 1}
+                                        fullWidth={true}
+                                    >
+                                        {departments.map(
+                                            ({ id, name }, index) => (
+                                                <MenuItem
+                                                    key={`ITEM-${name}-${id}-${index}`}
+                                                    value={id}
+                                                >
+                                                    {name}
+                                                </MenuItem>
+                                            )
+                                        )}
+                                    </Field>
+                                    {Boolean(errors.departmentId) && (
+                                        <FormHelperText>
+                                            {errors.departmentId}
+                                        </FormHelperText>
+                                    )}
+                                </FormControl>
+
                                 <div
                                     style={{
-                                        flexBasis: "50%",
-                                        paddingTop: 5,
-                                        paddingRight: 40
+                                        width: "100%",
+                                        paddingTop: 50
                                     }}
                                 >
-                                    <FormControl
+                                    <Field
+                                        name="name"
+                                        component={TextField}
+                                        label="Role Name"
+                                        required={true}
                                         fullWidth={true}
-                                        error={Boolean(errors.departmentId)}
-                                    >
-                                        <InputLabel>DEPARTMENT</InputLabel>
-                                        <Field
-                                            name="departmentId"
-                                            component={Select}
-                                            disabled={departments.length < 1}
-                                            fullWidth={true}
-                                        >
-                                            {departments.map(
-                                                ({ id, name }, index) => (
-                                                    <MenuItem
-                                                        key={`ITEM-${name}-${id}-${index}`}
-                                                        value={id}
-                                                    >
-                                                        {name}
-                                                    </MenuItem>
-                                                )
-                                            )}
-                                        </Field>
-                                        {Boolean(errors.departmentId) && (
-                                            <FormHelperText>
-                                                {errors.departmentId}
-                                            </FormHelperText>
-                                        )}
-                                    </FormControl>
-
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            paddingTop: 50
-                                        }}
-                                    >
-                                        <Field
-                                            name="name"
-                                            component={TextField}
-                                            label="Role Name"
-                                            required={true}
-                                            fullWidth={true}
-                                            variant="outlined"
-                                        />
-                                    </div>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            paddingTop: 50
-                                        }}
+                                        variant="outlined"
                                     />
                                 </div>
                                 <div
                                     style={{
-                                        flexBasis: "50%",
-                                        borderLeft: "2px solid black",
                                         width: "100%",
-                                        height: "100%"
+                                        paddingTop: 50
+                                    }}
+                                />
+                            </div>
+                            <div
+                                style={{
+                                    flexBasis: "50%",
+                                    borderLeft: "2px solid black",
+                                    width: "100%",
+                                    height: "100%"
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        display: "flex"
                                     }}
                                 >
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex"
-                                        }}
-                                    >
-                                        <div style={{ width: "50%" }} />
-                                        <div style={{ width: "50%" }}>
-                                            <div
-                                                style={{
-                                                    width: "50%",
-                                                    padding: 5
-                                                }}
+                                    <div style={{ width: "50%" }} />
+                                    <div style={{ width: "50%" }}>
+                                        <div
+                                            style={{
+                                                width: "50%",
+                                                padding: 5
+                                            }}
+                                        >
+                                            <FormControl
+                                                required
+                                                error={Boolean(
+                                                    errors.permissionIds
+                                                )}
                                             >
-                                                <FormControl
-                                                    required
-                                                    error={Boolean(
-                                                        errors.permissionIds
-                                                    )}
-                                                >
-                                                    <FormControlLabel
-                                                        control={
-                                                            <Checkbox
-                                                                checked={
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={
+                                                                permissionIds.length ===
+                                                                permissionsList.length
+                                                            }
+                                                            indeterminate={
+                                                                permissionIds.length <
+                                                                    permissionsList.length &&
+                                                                permissionIds.length !==
+                                                                    0
+                                                            }
+                                                            onChange={() => {
+                                                                //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
+                                                                if (
                                                                     permissionIds.length ===
                                                                     permissionsList.length
-                                                                }
-                                                                indeterminate={
-                                                                    permissionIds.length <
-                                                                        permissionsList.length &&
-                                                                    permissionIds.length !==
-                                                                        0
-                                                                }
-                                                                onChange={() => {
-                                                                    //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
-                                                                    if (
-                                                                        permissionIds.length ===
-                                                                        permissionsList.length
-                                                                    ) {
-                                                                        setFieldValue(
-                                                                            "permissionIds",
-                                                                            [] // Set()
-                                                                        );
-                                                                    } else {
-                                                                        setFieldValue(
-                                                                            "permissionIds",
-                                                                            Set(
-                                                                                permissionIds
+                                                                ) {
+                                                                    setFieldValue(
+                                                                        "permissionIds",
+                                                                        [] // Set()
+                                                                    );
+                                                                } else {
+                                                                    setFieldValue(
+                                                                        "permissionIds",
+                                                                        Set(
+                                                                            permissionIds
+                                                                        )
+                                                                            .union(
+                                                                                permissionsList
                                                                             )
-                                                                                .union(
-                                                                                    permissionsList
-                                                                                )
-                                                                                .toJS()
-                                                                        );
-                                                                    }
-                                                                }}
-                                                            />
-                                                        }
-                                                        label="All Permissions"
-                                                    />
-                                                    {Boolean(
-                                                        errors.permissionIds
-                                                    ) && (
-                                                        <FormHelperText>
-                                                            {
-                                                                errors.permissionIds
-                                                            }
-                                                        </FormHelperText>
-                                                    )}
-                                                </FormControl>
-                                            </div>
+                                                                            .toJS()
+                                                                    );
+                                                                }
+                                                            }}
+                                                        />
+                                                    }
+                                                    label="All Permissions"
+                                                />
+                                                {Boolean(
+                                                    errors.permissionIds
+                                                ) && (
+                                                    <FormHelperText>
+                                                        {errors.permissionIds}
+                                                    </FormHelperText>
+                                                )}
+                                            </FormControl>
                                         </div>
                                     </div>
-                                    {permissionsCategories.map(
-                                        (
-                                            {
-                                                id: categoryId,
-                                                name: categoryName,
-                                                permissions
-                                            },
-                                            categoryIndex
-                                        ) => (
-                                            <EachRolePermissionContainerDiv
-                                                key={`MODAL-CATEGORY-${categoryId}-${categoryIndex}`}
-                                            >
-                                                <EachRoleContainerDiv>
-                                                    {categoryName}
-                                                </EachRoleContainerDiv>
-                                                <AllPermissionContainerDiv>
-                                                    {permissions.map(
-                                                        (
-                                                            {
-                                                                id: permissionId,
-                                                                name: permissionName
-                                                            },
-                                                            permissionIndex
-                                                        ) => (
-                                                            <FormControlLabel
-                                                                key={`MODAL-PERMISSION-${permissionId}-${permissionIndex}`}
-                                                                control={
-                                                                    <Checkbox
-                                                                        id={
-                                                                            permissionId
-                                                                        }
-                                                                        checked={permissionIds.includes(
-                                                                            permissionId
-                                                                        )}
-                                                                        onChange={event => {
-                                                                            if (
-                                                                                permissionIds.includes(
-                                                                                    event
-                                                                                        .target
-                                                                                        .id
+                                </div>
+                                {permissionsCategories.map(
+                                    (
+                                        {
+                                            id: categoryId,
+                                            name: categoryName,
+                                            permissions
+                                        },
+                                        categoryIndex
+                                    ) => (
+                                        <EachRolePermissionContainerDiv
+                                            key={`MODAL-CATEGORY-${categoryId}-${categoryIndex}`}
+                                        >
+                                            <EachRoleContainerDiv>
+                                                {categoryName}
+                                            </EachRoleContainerDiv>
+                                            <AllPermissionContainerDiv>
+                                                {permissions.map(
+                                                    (
+                                                        {
+                                                            id: permissionId,
+                                                            name: permissionName
+                                                        },
+                                                        permissionIndex
+                                                    ) => (
+                                                        <FormControlLabel
+                                                            key={`MODAL-PERMISSION-${permissionId}-${permissionIndex}`}
+                                                            control={
+                                                                <Checkbox
+                                                                    id={
+                                                                        permissionId
+                                                                    }
+                                                                    checked={permissionIds.includes(
+                                                                        permissionId
+                                                                    )}
+                                                                    onChange={event => {
+                                                                        if (
+                                                                            permissionIds.includes(
+                                                                                event
+                                                                                    .target
+                                                                                    .id
+                                                                            )
+                                                                        ) {
+                                                                            //Remove from selected checkboxes
+                                                                            setFieldValue(
+                                                                                "permissionIds",
+                                                                                Set(
+                                                                                    permissionIds
                                                                                 )
-                                                                            ) {
-                                                                                //Remove from selected checkboxes
-                                                                                setFieldValue(
-                                                                                    "permissionIds",
-                                                                                    Set(
-                                                                                        permissionIds
-                                                                                    )
-                                                                                        .delete(
-                                                                                            event
-                                                                                                .target
-                                                                                                .id
-                                                                                        )
-                                                                                        .toJS()
-                                                                                );
-                                                                            } else {
-                                                                                //Add to selected checkboxes
-                                                                                setFieldValue(
-                                                                                    "permissionIds",
-                                                                                    // permissionIds.add(
-                                                                                    //     event
-                                                                                    //         .target
-                                                                                    //         .id
-                                                                                    // )
-                                                                                    [
-                                                                                        ...permissionIds,
+                                                                                    .delete(
                                                                                         event
                                                                                             .target
                                                                                             .id
-                                                                                    ]
-                                                                                );
-                                                                            }
-                                                                        }}
-                                                                    />
-                                                                }
-                                                                label={
-                                                                    permissionName
-                                                                }
-                                                            />
-                                                        )
-                                                    )}
-                                                    <AllPermissionFooterContainerDiv>
-                                                        <PermissionFooterEntryDiv
-                                                            onClick={() =>
-                                                                setFieldValue(
-                                                                    "permissionIds",
-                                                                    Set(
-                                                                        permissionIds
-                                                                    )
-                                                                        .union(
-                                                                            permissions.map(
-                                                                                ({
-                                                                                    id
-                                                                                }) =>
-                                                                                    id
-                                                                            )
-                                                                        )
-                                                                        .toJS()
-                                                                )
+                                                                                    )
+                                                                                    .toJS()
+                                                                            );
+                                                                        } else {
+                                                                            //Add to selected checkboxes
+                                                                            setFieldValue(
+                                                                                "permissionIds",
+                                                                                // permissionIds.add(
+                                                                                //     event
+                                                                                //         .target
+                                                                                //         .id
+                                                                                // )
+                                                                                [
+                                                                                    ...permissionIds,
+                                                                                    event
+                                                                                        .target
+                                                                                        .id
+                                                                                ]
+                                                                            );
+                                                                        }
+                                                                    }}
+                                                                />
                                                             }
-                                                        >
-                                                            SELECT ALL
-                                                        </PermissionFooterEntryDiv>
-                                                        <PermissionFooterEntryDiv
-                                                            onClick={() =>
-                                                                setFieldValue(
-                                                                    "permissionIds",
-                                                                    Set(
-                                                                        permissionIds
-                                                                    )
-                                                                        .subtract(
-                                                                            permissions.map(
-                                                                                ({
-                                                                                    id
-                                                                                }) =>
-                                                                                    id
-                                                                            )
-                                                                        )
-                                                                        .toJS()
-                                                                )
+                                                            label={
+                                                                permissionName
                                                             }
-                                                        >
-                                                            UNSELECT ALL
-                                                        </PermissionFooterEntryDiv>
-                                                    </AllPermissionFooterContainerDiv>
-                                                </AllPermissionContainerDiv>
-                                            </EachRolePermissionContainerDiv>
-                                        )
-                                    )}
-                                </div>
-                            </ContainerDiv>
-                        </DialogContent>
-                    </Form>
+                                                        />
+                                                    )
+                                                )}
+                                                <AllPermissionFooterContainerDiv>
+                                                    <PermissionFooterEntryDiv
+                                                        onClick={() =>
+                                                            setFieldValue(
+                                                                "permissionIds",
+                                                                Set(
+                                                                    permissionIds
+                                                                )
+                                                                    .union(
+                                                                        permissions.map(
+                                                                            ({
+                                                                                id
+                                                                            }) =>
+                                                                                id
+                                                                        )
+                                                                    )
+                                                                    .toJS()
+                                                            )
+                                                        }
+                                                    >
+                                                        SELECT ALL
+                                                    </PermissionFooterEntryDiv>
+                                                    <PermissionFooterEntryDiv
+                                                        onClick={() =>
+                                                            setFieldValue(
+                                                                "permissionIds",
+                                                                Set(
+                                                                    permissionIds
+                                                                )
+                                                                    .subtract(
+                                                                        permissions.map(
+                                                                            ({
+                                                                                id
+                                                                            }) =>
+                                                                                id
+                                                                        )
+                                                                    )
+                                                                    .toJS()
+                                                            )
+                                                        }
+                                                    >
+                                                        UNSELECT ALL
+                                                    </PermissionFooterEntryDiv>
+                                                </AllPermissionFooterContainerDiv>
+                                            </AllPermissionContainerDiv>
+                                        </EachRolePermissionContainerDiv>
+                                    )
+                                )}
+                            </div>
+                        </ContainerDiv>
+                    </DialogContent>
                 </Dialog>
             )}
         </Formik>
