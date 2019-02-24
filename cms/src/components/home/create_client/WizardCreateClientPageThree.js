@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Query, withApollo, Mutation } from "react-apollo";
+import { Query, withApollo, Mutation, gql } from "react-apollo";
 import Loading from "../../loading/Loading";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
@@ -424,26 +424,25 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        //TODO: UNCOMMENT THIS PLEASE
-        // let clientId = null;
-        // try {
-        //     clientId = this.props.client.readQuery({
-        //         query: gql`
-        //             {
-        //                 new_create_client_id @client
-        //             }
-        //         `
-        //     }).new_create_client_id;
-        // } catch (error) {
-        //     console.log(error);
-        //     return (
-        //         <React.Fragment>
-        //             <h1>Can't Find ClientId From Step 1</h1>
-        //             <Loading />
-        //         </React.Fragment>
-        //     );
-        // }
-        const clientId = 3; //Testing purposes
+        let clientId = null;
+        try {
+            clientId = this.props.client.readQuery({
+                query: gql`
+                    {
+                        new_create_client_id @client
+                    }
+                `
+            }).new_create_client_id;
+        } catch (error) {
+            console.log(error);
+            return (
+                <React.Fragment>
+                    <h1>Can't Find ClientId From Step 1</h1>
+                    <Loading />
+                </React.Fragment>
+            );
+        }
+        // const clientId = 3; //Testing purposes
         const { selected_roles } = this.state;
         return (
             <Query
@@ -1101,6 +1100,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                             this
                                                                 .handleCloseModal
                                                         }
+                                                        role={this.state.role}
                                                     />
                                                 )}
 

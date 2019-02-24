@@ -84,9 +84,40 @@ export const PageThreeDeleteModal = ({
                     }
                 ]}
             >
-                {({ deleteRoles, error, loading }) => {
+                {(deleteRoles, { error, loading }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error message: ${error.message}`;
+
+                    const handleDelete = () => {
+                        let toSend = null;
+
+                        if (Boolean(role)) {
+                            //Only delete one role
+                            toSend = {
+                                roleIds: [parseInt(role.id, DECIMAL_RADIX)],
+                                clientId: parseInt(clientId, DECIMAL_RADIX)
+                            };
+                        } else if (Boolean(roles)) {
+                            //Delete multiple roles
+                            toSend = {
+                                roleIds: roles.map(({ id }) =>
+                                    parseInt(id, DECIMAL_RADIX)
+                                ),
+                                clientId: parseInt(clientId, DECIMAL_RADIX)
+                            };
+                        }
+
+                        console.log("Before sending: ", toSend);
+
+                        deleteRoles({
+                            variables: {
+                                input: toSend
+                            }
+                        }).then(data => {
+                            console.log("Data received: ", data);
+                        });
+                    };
+
                     return (
                         <React.Fragment>
                             <DialogContent>
@@ -125,6 +156,7 @@ export const PageThreeDeleteModal = ({
                                 <Button
                                     variant="outlined"
                                     className={classes.submitButton}
+                                    onClick={handleDelete}
                                 >
                                     YES
                                 </Button>

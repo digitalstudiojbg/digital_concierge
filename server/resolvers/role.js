@@ -227,6 +227,17 @@ export default {
             );
 
             return await db.role.findByPk(id);
+        },
+        deleteRoles: async (
+            _root,
+            { input: { roleIds, clientId } },
+            { user, clientIp }
+        ) => {
+            console.log("Role IDs is ", roleIds);
+            console.log("Client ID is ", clientId);
+            const client = await db.user.findByPk(clientId);
+            console.log(Object.keys(client.__proto__));
+            return true;
         }
     },
     Role: {
