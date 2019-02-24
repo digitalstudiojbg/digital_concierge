@@ -16,7 +16,7 @@ import { CREATE_THEMES } from "./theme";
 import { CREATE_LICENSE } from "./license";
 import { CREATE_CONTRACT } from "./contract";
 import { CREATE_PAYMENT } from "./payment";
-import { CREATE_ROLE } from "./role";
+import { CREATE_ROLE, UPDATE_ROLE, DELETE_ROLES } from "./role";
 import { CREATE_SYSTEM } from "./system";
 
 export {
@@ -35,5 +35,7 @@ export {
     CREATE_CONTRACT,
     CREATE_PAYMENT,
     CREATE_ROLE,
+    UPDATE_ROLE,
+    DELETE_ROLES,
     CREATE_SYSTEM
 };

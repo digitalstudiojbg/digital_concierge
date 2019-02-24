@@ -75,6 +75,7 @@ export default gql`
         payments: [Payment]
         licenses: [License]
         activeLicense: [License]
+        roles: [Role]
     }
 
     input UpdateClientInput {

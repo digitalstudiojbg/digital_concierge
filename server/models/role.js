@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         role.belongsTo(models.department, {
             foreignKey: { allowNull: false }
         });
+        role.belongsTo(models.client, {
+            foreignKey: { allowNull: true }
+        });
     };
     return role;
 };

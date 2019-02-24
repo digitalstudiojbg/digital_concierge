@@ -55,7 +55,7 @@ export default {
         }
     },
     ActivityLog: {
-        user: async activityLog => await db.user.findByPk(activityLog.userId),
+        // user: async activityLog => await db.user.findByPk(activityLog.userId),
         properties_raw: async activityLog => activityLog.properties,
         properties: async activityLog => JSON.parse(activityLog.properties)
     }

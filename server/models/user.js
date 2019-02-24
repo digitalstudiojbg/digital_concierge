@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
         user.belongsTo(models.client, {
             foreignKey: { allowNull: false }
         });
-        user.hasMany(models.activity_log);
+        // user.hasMany(models.activity_log);
         user.belongsTo(models.media, {
             foreignKey: { allowNull: true }
         });

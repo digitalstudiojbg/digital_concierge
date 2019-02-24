@@ -173,7 +173,7 @@ export default {
                     );
 
                     /**
-                     * add department relationships here
+                     * Add department relationships here
                      */
                     const departments = await db.department.findAll({
                         where: {
@@ -181,11 +181,40 @@ export default {
                         }
                     });
 
+                    //Duplicate standard roles here
+                    await asyncForEach(departments, async department => {
+                        const roles = await db.role.findAll({
+                            where: {
+                                departmentId: department.id,
+                                is_standard_role: true
+                            }
+                        });
+
+                        await asyncForEach(roles, async role => {
+                            const duplicateRole = db.role.build({
+                                name: role.name,
+                                is_standard_role: false, //We do not want to duplicate these roles again in the future
+                                departmentId: role.departmentId,
+                                clientId: create_client.id
+                            });
+
+                            try {
+                                await duplicateRole.save();
+                            } catch (error) {
+                                throw new UserInputError(
+                                    `Unable to duplicate standard role ${name}.\nError Message: ${
+                                        error.message
+                                    }`
+                                );
+                            }
+                        });
+                    });
+
                     try {
                         await create_client.addDepartments(departments);
                     } catch (error) {
                         throw new UserInputError(
-                            `Unable to assign standard departments to role.\nError Message: ${
+                            `Unable to assign standard departments to client.\nError Message: ${
                                 error.message
                             }`
                         );
@@ -251,15 +280,18 @@ export default {
     Client: {
         users: async client =>
             await db.user.findAll({ where: { clientId: client.id } }),
-        departments: async client =>
-            await db.department.findAll({
+        departments: async client => {
+            const departments = await db.department.findAll({
                 include: [
                     {
                         model: db.client,
                         where: { id: client.id }
                     }
                 ]
-            }),
+            });
+            console.log("Sample data: ", await departments[0].getRoles());
+            return departments;
+        },
         guests: async client =>
             await db.guest.findAll({ where: { clientId: client.id } }),
         rooms: async client =>
@@ -307,6 +339,8 @@ export default {
             return Boolean(users) && Array.isArray(users) && users.length === 1
                 ? users[0]
                 : null;
-        }
+        },
+        roles: async client =>
+            await db.role.findAll({ where: { clientId: client.id } })
     }
 };
