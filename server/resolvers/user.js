@@ -3,6 +3,7 @@ import {
     checkUserLogin,
     handleUpdateActionActivityLog
 } from "../utils/constant";
+import { log } from "util";
 const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
@@ -67,6 +68,12 @@ export default {
             //console.log(Object.keys(create_user.__proto__));
 
             return create_user;
+        },
+        deleteUsers: async (_root, { input: { id } }, { user, clientIp }) => {
+            console.log("delete user");
+            console.log(id);
+
+            return { result: true };
         },
         updateUser: async (
             _root,
