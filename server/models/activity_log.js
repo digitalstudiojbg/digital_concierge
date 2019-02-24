@@ -24,6 +24,22 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
+            username: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "undefined"
+            },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "undefined"
+            },
             actionType: {
                 type: DataTypes.ENUM("CREATE", "UPDATE", "DELETE"),
                 allowNull: false,
@@ -90,9 +106,9 @@ module.exports = (sequelize, DataTypes) => {
         {}
     );
     activity_log.associate = function(models) {
-        activity_log.belongsTo(models.user, {
-            foreignKey: { allowNull: false }
-        });
+        // activity_log.belongsTo(models.user, {
+        //     foreignKey: { allowNull: false }
+        // });
     };
     return activity_log;
 };

@@ -197,7 +197,8 @@ export const handleCreateActionActivityLog = async (
             city,
             latitude,
             longitude,
-            userId: user.id
+            username: user.name,
+            email: user.email
         });
     } catch (error) {
         throw new new ApolloError(
@@ -237,7 +238,8 @@ export const handleUpdateActionActivityLog = async (
             city,
             latitude,
             longitude,
-            userId: user.id
+            username: user.name,
+            email: user.email
         });
     } catch (error) {
         throw new new ApolloError(
@@ -277,7 +279,8 @@ export const handleDeleteActionActivityLog = async (
             city,
             latitude,
             longitude,
-            userId: user.id
+            username: user.name,
+            email: user.email
         });
     } catch (error) {
         throw new new ApolloError(

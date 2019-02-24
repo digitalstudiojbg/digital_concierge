@@ -26,7 +26,8 @@ export default gql`
         longitude: String
         createdAt: DateTime
         updatedAt: DateTime
-        user: User
+        username: String
+        email: EmailAddress
     }
 
     input ActivityLogInput {

@@ -16,7 +16,8 @@ module.exports = {
                     country: "Australia",
                     region: "VIC",
                     city: "Melbourne",
-                    userId: 1
+                    username: "Yijie Shen",
+                    email: "nealshen@johnbatman.com.au"
                 },
                 {
                     tableName: "layouts",
@@ -29,7 +30,8 @@ module.exports = {
                     country: "Australia",
                     region: "VIC",
                     city: "Melbourne",
-                    userId: 2
+                    username: "Jonathan",
+                    email: "jonathan@johnbatman.com.au"
                 }
             ],
             {}
