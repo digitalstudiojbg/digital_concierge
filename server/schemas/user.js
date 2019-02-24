@@ -10,7 +10,7 @@ export default gql`
     extend type Mutation {
         createUser(input: CreateUserInput): User
         updateUser(input: UpdateUserInput): User
-        deleteUsers(input: DeleteUserInput): User
+        deleteUsers(input: DeleteUserInput): DeleteUserResponse
     }
 
     type User {
@@ -52,6 +52,10 @@ export default gql`
     }
 
     input DeleteUserInput {
-        ids: [ID!]!
+        id: [ID!]!
+    }
+
+    type DeleteUserResponse {
+        result: Boolean
     }
 `;
