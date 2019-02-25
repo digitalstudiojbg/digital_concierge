@@ -1,11 +1,12 @@
 import db from "../models";
 import {
     checkUserLogin,
+    asyncForEach,
     handleUpdateActionActivityLog
 } from "../utils/constant";
 import { log } from "util";
 const bcrypt = require("bcrypt");
-
+import { UserInputError } from "apollo-server-express";
 const saltRounds = 10;
 export default {
     Query: {
@@ -69,11 +70,33 @@ export default {
 
             return create_user;
         },
-        deleteUsers: async (_root, { input: { id } }, { user, clientIp }) => {
-            console.log("delete user");
-            console.log(id);
+        deleteUsers: async (
+            _root,
+            { input: { id: idList } },
+            { user, clientIp }
+        ) => {
+            let output = [];
+            await asyncForEach(idList, async id => {
+                try {
+                    let selected_user = await db.user.findByPk(id);
+                    output.push(selected_user);
+                    await selected_user.removeRoles(
+                        await selected_user.getRoles()
+                    );
 
-            return { result: true };
+                    await db.user.destroy({
+                        where: { id }
+                    });
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete User ${id}.\nError Message: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            return output;
         },
         updateUser: async (
             _root,

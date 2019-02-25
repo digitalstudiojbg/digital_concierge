@@ -783,8 +783,11 @@ const WelcomeUserCreate = props => {
                             <div style={{ display: "flex" }}>
                                 <ContainerDiv>
                                     {CREATE_USER_FIELD.map(
-                                        ({ name, label, required, type }) => (
-                                            <FiledContainer>
+                                        (
+                                            { name, label, required, type },
+                                            index
+                                        ) => (
+                                            <FiledContainer key={index}>
                                                 <Field
                                                     id={name}
                                                     name={name}
@@ -847,8 +850,11 @@ const WelcomeUserCreate = props => {
 
                                 <ContainerDiv>
                                     {PASSWORD_FIELD.map(
-                                        ({ name, label, required, type }) => (
-                                            <FiledContainer>
+                                        (
+                                            { name, label, required, type },
+                                            index
+                                        ) => (
+                                            <FiledContainer key={index}>
                                                 <Field
                                                     id={name}
                                                     name={name}

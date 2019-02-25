@@ -3,8 +3,10 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import ReactTable from "react-table";
 import { log } from "util";
-import { compose, graphql, Query } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import { getUsersByClient, getRoleList } from "../../data/query";
+import { DELETE_USER } from "../../data/mutation";
+
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreate from "./WelcomeUserCreate";
 import Dialog from "@material-ui/core/Dialog";
@@ -90,7 +92,6 @@ class WelcomeUser extends Component {
         this.setState({
             selected_row: original ? original.id : null
         });
-        console.log(original);
     }
 
     handleIsCreatePageState() {
@@ -126,6 +127,7 @@ class WelcomeUser extends Component {
                     {({ loading, error, data }) => {
                         if (loading) return <h1>Loading</h1>;
                         if (error) return <h1>Error</h1>;
+                        console.log(data);
 
                         return (
                             <div
@@ -368,115 +370,168 @@ class WelcomeUser extends Component {
                                         ]}
                                     />
                                 </div>
-
-                                <Dialog
-                                    open={deleteModal}
-                                    TransitionComponent={Transition}
-                                    onClose={() => {
-                                        this.setState({ deleteModal: false });
-                                    }}
+                                <Mutation
+                                    mutation={DELETE_USER}
+                                    refetchQueries={[
+                                        {
+                                            query: getUsersByClient,
+                                            variables: {
+                                                id: this.props.data.id
+                                            }
+                                        }
+                                    ]}
                                 >
-                                    <DialogTitle id="alert-dialog-title">
-                                        <h3>Confirmation</h3>
-                                    </DialogTitle>
-                                    <DialogContent>
-                                        {selected.length <= 0 ? (
-                                            <p>
-                                                Please choose at least one user
-                                                to delete first.
-                                            </p>
-                                        ) : (
-                                            <React.Fragment>
-                                                <p
-                                                    style={{
-                                                        fontSize: "1.3em"
-                                                    }}
-                                                >
-                                                    Are you sure you want to
-                                                    delete the selected images?
-                                                    Click OK to confirm.
-                                                </p>
-                                                <ul
-                                                    style={{
-                                                        paddingLeft: "30px",
-                                                        paddingRight: "30px"
-                                                    }}
-                                                >
-                                                    {selected.map(each => {
-                                                        const selected_user = changeClientDataStructure(
-                                                            data
-                                                        ).find(eachUser => {
-                                                            return (
-                                                                parseInt(
-                                                                    eachUser.id
-                                                                ) ===
-                                                                parseInt(each)
-                                                            );
-                                                        });
-
-                                                        return (
-                                                            <li
-                                                                style={{
-                                                                    fontSize:
-                                                                        "1.2em"
-                                                                }}
-                                                            >
-                                                                {
-                                                                    selected_user.user
-                                                                }
-                                                            </li>
-                                                        );
-                                                    })}
-                                                </ul>
-                                            </React.Fragment>
-                                        )}
-                                    </DialogContent>
-                                    <DialogActions>
-                                        {selected.length > 0 ? (
-                                            <React.Fragment>
-                                                <Button
-                                                    onClick={() => {
-                                                        this.setState({
-                                                            deleteModal: false
-                                                        });
-                                                    }}
-                                                    color="secondary"
-                                                    className={
-                                                        classes.buttonFont
-                                                    }
-                                                >
-                                                    Cancel
-                                                </Button>
-                                                <Button
-                                                    onClick={() => {
-                                                        /**
-                                                         * Start to delete
-                                                         */
-                                                    }}
-                                                    color="primary"
-                                                    autoFocus
-                                                    className={
-                                                        classes.buttonFont
-                                                    }
-                                                >
-                                                    Ok
-                                                </Button>
-                                            </React.Fragment>
-                                        ) : (
-                                            <Button
-                                                onClick={() => {
+                                    {(deleteUsers, { loading, error }) => {
+                                        if (error)
+                                            return `Error! ${error.message}`;
+                                        return (
+                                            <Dialog
+                                                open={deleteModal}
+                                                TransitionComponent={Transition}
+                                                onClose={() => {
                                                     this.setState({
                                                         deleteModal: false
                                                     });
                                                 }}
-                                                color="primary"
-                                                className={classes.buttonFont}
                                             >
-                                                Ok
-                                            </Button>
-                                        )}
-                                    </DialogActions>
-                                </Dialog>
+                                                <DialogTitle id="alert-dialog-title">
+                                                    Confirmation
+                                                </DialogTitle>
+
+                                                <DialogContent>
+                                                    {selected.length <= 0 ? (
+                                                        <p>
+                                                            Please choose at
+                                                            least one user to
+                                                            delete first.
+                                                        </p>
+                                                    ) : (
+                                                        <React.Fragment>
+                                                            <p
+                                                                style={{
+                                                                    fontSize:
+                                                                        "1.3em"
+                                                                }}
+                                                            >
+                                                                Are you sure you
+                                                                want to delete
+                                                                the selected
+                                                                images? Click OK
+                                                                to confirm.
+                                                            </p>
+                                                            <ul
+                                                                style={{
+                                                                    paddingLeft:
+                                                                        "30px",
+                                                                    paddingRight:
+                                                                        "30px"
+                                                                }}
+                                                            >
+                                                                {selected.map(
+                                                                    (
+                                                                        each,
+                                                                        index
+                                                                    ) => {
+                                                                        const selected_user = changeClientDataStructure(
+                                                                            data
+                                                                        ).find(
+                                                                            eachUser => {
+                                                                                return (
+                                                                                    parseInt(
+                                                                                        eachUser.id
+                                                                                    ) ===
+                                                                                    parseInt(
+                                                                                        each
+                                                                                    )
+                                                                                );
+                                                                            }
+                                                                        );
+
+                                                                        return (
+                                                                            <li
+                                                                                key={
+                                                                                    index
+                                                                                }
+                                                                                style={{
+                                                                                    fontSize:
+                                                                                        "1.2em"
+                                                                                }}
+                                                                            >
+                                                                                {selected_user &&
+                                                                                    selected_user.user}
+                                                                            </li>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </ul>
+                                                        </React.Fragment>
+                                                    )}
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    {selected.length > 0 ? (
+                                                        <React.Fragment>
+                                                            <Button
+                                                                onClick={() => {
+                                                                    this.setState(
+                                                                        {
+                                                                            deleteModal: false
+                                                                        }
+                                                                    );
+                                                                }}
+                                                                color="secondary"
+                                                                className={
+                                                                    classes.buttonFont
+                                                                }
+                                                            >
+                                                                Cancel
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => {
+                                                                    deleteUsers(
+                                                                        {
+                                                                            variables: {
+                                                                                input: {
+                                                                                    id: selected
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    );
+                                                                    this.setState(
+                                                                        {
+                                                                            deleteModal: false,
+                                                                            selected: []
+                                                                        }
+                                                                    );
+                                                                }}
+                                                                color="primary"
+                                                                autoFocus
+                                                                className={
+                                                                    classes.buttonFont
+                                                                }
+                                                            >
+                                                                Ok
+                                                            </Button>
+                                                        </React.Fragment>
+                                                    ) : (
+                                                        <Button
+                                                            onClick={() => {
+                                                                this.setState({
+                                                                    deleteModal: false
+                                                                });
+                                                            }}
+                                                            color="primary"
+                                                            className={
+                                                                classes.buttonFont
+                                                            }
+                                                        >
+                                                            Ok
+                                                        </Button>
+                                                    )}
+                                                </DialogActions>
+                                            </Dialog>
+                                        );
+                                    }}
+                                </Mutation>
                             </div>
                         );
                     }}

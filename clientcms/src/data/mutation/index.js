@@ -11,7 +11,7 @@ import {
     UPDATE_CLIENT
 } from "./client";
 import { CREATE_CONTACT, CREATE_UPDATE_DELETE_CONTACTS } from "./contact";
-import { CREATE_USER, UPDATE_USER } from "./user";
+import { CREATE_USER, UPDATE_USER, DELETE_USER } from "./user";
 import { CREATE_DEPARTMENT } from "./department";
 import { CREATE_THEMES } from "./theme";
 import { CREATE_LICENSE } from "./license";
@@ -37,5 +37,6 @@ export {
     CREATE_LICENSE,
     CREATE_CONTRACT,
     CREATE_PAYMENT,
-    CREATE_ROLE
+    CREATE_ROLE,
+    DELETE_USER
 };

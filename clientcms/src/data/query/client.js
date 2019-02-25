@@ -117,6 +117,7 @@ export const getNewCreatedClientId = gql`
 export const getUsersByClient = gql`
     query get_client_detail($id: ID!) {
         client(id: $id) {
+            id
             users {
                 id
                 name
