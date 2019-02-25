@@ -2,11 +2,9 @@ import React, { useState, useEffect, Component } from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import ReactTable from "react-table";
-import { log } from "util";
 import { Mutation, Query } from "react-apollo";
-import { getUsersByClient, getRoleList } from "../../data/query";
+import { getUsersByClient } from "../../data/query";
 import { DELETE_USER } from "../../data/mutation";
-
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreate from "./WelcomeUserCreate";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,6 +12,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import DialogActions from "@material-ui/core/DialogActions";
+import Paper from "@material-ui/core/Paper";
+import Fade from "@material-ui/core/Fade";
+import styled from "styled-components";
+
+const ActionButton = styled.p`
+    padding-left: 5px;
+    padding-right: 5px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
@@ -283,25 +292,53 @@ class WelcomeUser extends Component {
                                                                 }}
                                                                 style={{
                                                                     position:
-                                                                        "absolute",
-                                                                    backgroundColor:
-                                                                        "lightgrey",
-                                                                    padding:
-                                                                        "15px",
-                                                                    borderRadius:
-                                                                        "10px"
+                                                                        "fixed",
+                                                                    width:
+                                                                        "100vw",
+                                                                    height:
+                                                                        "100vh",
+                                                                    top: 0,
+                                                                    right: 0,
+                                                                    bottom: 0,
+                                                                    left: 0
                                                                 }}
-                                                            >
-                                                                <div>
-                                                                    <p>Edit</p>
-                                                                    <p>
-                                                                        Delete
-                                                                    </p>
-                                                                    <p>
-                                                                        Duplicate
-                                                                    </p>
-                                                                </div>
-                                                            </div>
+                                                            />
+                                                            <Fade in>
+                                                                <Paper
+                                                                    elevation={
+                                                                        5
+                                                                    }
+                                                                    style={{
+                                                                        position:
+                                                                            "absolute",
+                                                                        backgroundColor:
+                                                                            "white",
+                                                                        padding:
+                                                                            "15px",
+                                                                        borderRadius:
+                                                                            "5px",
+                                                                        width:
+                                                                            "80px"
+                                                                    }}
+                                                                >
+                                                                    <div
+                                                                        onClick={() => {
+                                                                            this.handleAction(
+                                                                                null
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <div>
+                                                                            <ActionButton>
+                                                                                Edit
+                                                                            </ActionButton>
+                                                                            <ActionButton>
+                                                                                Delete
+                                                                            </ActionButton>
+                                                                        </div>
+                                                                    </div>
+                                                                </Paper>
+                                                            </Fade>
                                                         </React.Fragment>
                                                     ) : (
                                                         <div
