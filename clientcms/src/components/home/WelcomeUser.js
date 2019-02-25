@@ -87,7 +87,8 @@ class WelcomeUser extends Component {
             selected: [],
             is_create_page: false,
             selected_row: null,
-            deleteModal: false
+            deleteModal: false,
+            single_delete: []
         };
         this.handleAction = this.handleAction.bind(this);
     }
@@ -109,7 +110,8 @@ class WelcomeUser extends Component {
             selected,
             is_create_page,
             selected_row,
-            deleteModal
+            deleteModal,
+            single_delete
         } = this.state;
         if (is_create_page) {
             return (
@@ -275,6 +277,10 @@ class WelcomeUser extends Component {
                                                 },
                                                 width: 75,
                                                 Cell: ({ original }) => {
+                                                    const selectedId = parseInt(
+                                                        original.id
+                                                    );
+
                                                     return selected_row &&
                                                         original.id ===
                                                             selected_row ? (
@@ -341,10 +347,16 @@ class WelcomeUser extends Component {
                                                                             >
                                                                                 Edit
                                                                             </Button>
-
                                                                             <Button
                                                                                 variant="outlined"
                                                                                 color="primary"
+                                                                                onClick={() => {
+                                                                                    this.setState(
+                                                                                        {
+                                                                                            deleteModal: true
+                                                                                        }
+                                                                                    );
+                                                                                }}
                                                                             >
                                                                                 Delete
                                                                             </Button>
@@ -356,6 +368,14 @@ class WelcomeUser extends Component {
                                                     ) : (
                                                         <div
                                                             onClick={() => {
+                                                                this.setState({
+                                                                    single_delete: [
+                                                                        ...single_delete,
+                                                                        parseInt(
+                                                                            selectedId
+                                                                        )
+                                                                    ]
+                                                                });
                                                                 this.handleAction(
                                                                     original
                                                                 );
@@ -434,6 +454,12 @@ class WelcomeUser extends Component {
                                     {(deleteUsers, { loading, error }) => {
                                         if (error)
                                             return `Error! ${error.message}`;
+                                        let to_delete_data;
+                                        if (single_delete.length > 0) {
+                                            to_delete_data = single_delete;
+                                        } else {
+                                            to_delete_data = selected;
+                                        }
                                         return (
                                             <Dialog
                                                 open={deleteModal}
@@ -449,7 +475,11 @@ class WelcomeUser extends Component {
                                                 </DialogTitle>
 
                                                 <DialogContent>
-                                                    {selected.length <= 0 ? (
+                                                    {(selected.length <= 0 &&
+                                                        single_delete.length <
+                                                            0) ||
+                                                    single_delete.length <=
+                                                        0 ? (
                                                         <p>
                                                             Please choose at
                                                             least one user to
@@ -477,7 +507,7 @@ class WelcomeUser extends Component {
                                                                         "30px"
                                                                 }}
                                                             >
-                                                                {selected.map(
+                                                                {single_delete.map(
                                                                     (
                                                                         each,
                                                                         index
@@ -518,13 +548,15 @@ class WelcomeUser extends Component {
                                                     )}
                                                 </DialogContent>
                                                 <DialogActions>
-                                                    {selected.length > 0 ? (
+                                                    {selected.length > 0 ||
+                                                    single_delete.length > 0 ? (
                                                         <React.Fragment>
                                                             <Button
                                                                 onClick={() => {
                                                                     this.setState(
                                                                         {
-                                                                            deleteModal: false
+                                                                            deleteModal: false,
+                                                                            single_delete: []
                                                                         }
                                                                     );
                                                                 }}
@@ -537,11 +569,19 @@ class WelcomeUser extends Component {
                                                             </Button>
                                                             <Button
                                                                 onClick={() => {
+                                                                    console.log(
+                                                                        "delete button"
+                                                                    );
+
                                                                     deleteUsers(
                                                                         {
                                                                             variables: {
                                                                                 input: {
-                                                                                    id: selected
+                                                                                    id:
+                                                                                        single_delete.length >
+                                                                                        0
+                                                                                            ? single_delete
+                                                                                            : selected
                                                                                 }
                                                                             }
                                                                         }
@@ -549,7 +589,8 @@ class WelcomeUser extends Component {
                                                                     this.setState(
                                                                         {
                                                                             deleteModal: false,
-                                                                            selected: []
+                                                                            selected: [],
+                                                                            single_delete: []
                                                                         }
                                                                     );
                                                                 }}
@@ -566,7 +607,8 @@ class WelcomeUser extends Component {
                                                         <Button
                                                             onClick={() => {
                                                                 this.setState({
-                                                                    deleteModal: false
+                                                                    deleteModal: false,
+                                                                    single_delete: []
                                                                 });
                                                             }}
                                                             color="primary"
