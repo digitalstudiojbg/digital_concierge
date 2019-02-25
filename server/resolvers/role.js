@@ -352,7 +352,7 @@ export default {
                 } catch (error) {
                     throw new UserInputError(
                         `Unable to duplicate role Id ${roleId}.\nError message: ${
-                            err.message
+                            error.message
                         }`
                     );
                 }
@@ -371,9 +371,9 @@ export default {
                     await duplicateRole.setPermissions(permissions);
                 } catch (error) {
                     throw new UserInputError(
-                        `Unable to duplicate permissions for role name ${
+                        `Unable to duplicate permissions for role ID ${
                             duplicateRole.id
-                        }.\nError message: ${err.message}`
+                        }.\nError message: ${error.message}`
                     );
                 }
 
