@@ -8,7 +8,11 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
-import { CREATE_NEW_CLIENT } from "../../utils/Constants";
+import {
+    CREATE_NEW_CLIENT,
+    WELCOME_URL,
+    CLIENT_CMS_URL
+} from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -102,12 +106,24 @@ export const WelcomeDashboard = ({ classes }) => (
                                     key={`client-${client.id}-${index}`}
                                 >
                                     <Card className={classes.card}>
-                                        <CardMedia
-                                            component="img"
-                                            alt={`${client.name} alt avatar`}
-                                            className={classes.card_media}
-                                            image={client.avatar}
-                                        />
+                                        <a
+                                            href={
+                                                CLIENT_CMS_URL +
+                                                WELCOME_URL +
+                                                "/" +
+                                                client.id
+                                            }
+                                            target="_blank"
+                                        >
+                                            <CardMedia
+                                                component="img"
+                                                alt={`${
+                                                    client.name
+                                                } alt avatar`}
+                                                className={classes.card_media}
+                                                image={client.avatar}
+                                            />
+                                        </a>
                                     </Card>
                                 </EntryCardDiv>
                             ))}

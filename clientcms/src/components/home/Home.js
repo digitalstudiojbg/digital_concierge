@@ -16,7 +16,8 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
     SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_INDEX_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -87,6 +88,14 @@ const routes = [
     //     main: Welcome,
     //     withProps: { tab: "support" }
     // },
+    {
+        path: SYSTEM_INDEX_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletDashboard,
+        withProps: {}
+    },
     {
         path: SYSTEM_CMS_INDEX_URL,
         exact: true,

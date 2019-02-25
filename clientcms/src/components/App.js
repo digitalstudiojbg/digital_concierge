@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout, getClientIdLocalStorage } from "../auth/auth";
@@ -11,7 +11,8 @@ import {
     SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
-    API_URL
+    API_URL,
+    SYSTEM_INDEX_URL
 } from "../utils/Constants";
 import "react-table/react-table.css";
 
@@ -27,7 +28,26 @@ const routes = [
     //     component: Home
     // },
     {
+        path: WELCOME_URL + "/:client_id",
+        component: props => {
+            // const clientId = getClientIdLocalStorage();
+            // console.log("PROPS IS: ", props);
+            const clientId =
+                Boolean(props) &&
+                Boolean(props.match) &&
+                Boolean(props.match.params) &&
+                Boolean(props.match.params.client_id)
+                    ? props.match.params.client_id
+                    : getClientIdLocalStorage();
+            return <Redirect to={WELCOME_URL + "/" + clientId + "/systems"} />;
+        }
+    },
+    {
         path: WELCOME_URL + "/:client_id/:which",
+        component: Home
+    },
+    {
+        path: SYSTEM_INDEX_URL,
         component: Home
     },
     {
@@ -78,9 +98,20 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
+                                    <React.Fragment>
+                                        {isLoggedIn() &&
+                                        Boolean(getClientIdLocalStorage()) ? (
+                                            <Redirect
+                                                to={`${WELCOME_URL}/${getClientIdLocalStorage}`}
+                                            />
+                                        ) : (
+                                            <Login
+                                                onLogin={this.handleLogin.bind(
+                                                    this
+                                                )}
+                                            />
+                                        )}
+                                    </React.Fragment>
                                 )}
                             />
                             <Route

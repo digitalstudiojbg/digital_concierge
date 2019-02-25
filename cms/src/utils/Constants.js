@@ -7,6 +7,16 @@ export const API_URL =
         ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/api"
         : "http://localhost:3000";
 
+export const PORTAL_URL =
+    process.env.NODE_ENV === "production"
+        ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com/cms"
+        : "http://localhost:4000";
+
+export const CLIENT_CMS_URL =
+    process.env.NODE_ENV === "production"
+        ? "http://platypus-env.bxpjxuug9t.ap-southeast-2.elasticbeanstalk.com"
+        : "http://localhost:9000";
+
 export const DECIMAL_RADIX = 10;
 
 //URL Constants
