@@ -102,7 +102,7 @@ class App extends Component {
                                         {isLoggedIn() &&
                                         Boolean(getClientIdLocalStorage()) ? (
                                             <Redirect
-                                                to={`${WELCOME_URL}/${getClientIdLocalStorage}`}
+                                                to={`${WELCOME_URL}/${getClientIdLocalStorage()}`}
                                             />
                                         ) : (
                                             <Login
