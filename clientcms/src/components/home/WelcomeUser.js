@@ -349,7 +349,7 @@ class WelcomeUser extends Component {
                                                                             </Button>
                                                                             <Button
                                                                                 variant="outlined"
-                                                                                color="primary"
+                                                                                color="secondary"
                                                                                 onClick={() => {
                                                                                     this.setState(
                                                                                         {
@@ -477,7 +477,10 @@ class WelcomeUser extends Component {
                                                 </DialogTitle>
 
                                                 <DialogContent>
-                                                    {(selected.length < 0 &&
+                                                    {(selected.length === 0 &&
+                                                        single_delete.length ===
+                                                            0) ||
+                                                    (selected.length < 0 &&
                                                         single_delete.length >
                                                             0) ||
                                                     (selected.length > 0 &&
