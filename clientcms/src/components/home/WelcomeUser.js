@@ -16,19 +16,14 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import styled from "styled-components";
 
-const ActionButton = styled.p`
-    padding-left: 5px;
-    padding-right: 5px;
-    &:hover {
-        font-weight: bold;
-    }
-`;
-
 const Transition = props => {
     return <Slide direction="up" {...props} />;
 };
 
 const styles = theme => ({
+    buttonPaddingBottom: {
+        marginBottom: "10px"
+    },
     button: {
         margin: theme.spacing.unit
     },
@@ -316,9 +311,7 @@ class WelcomeUser extends Component {
                                                                         padding:
                                                                             "15px",
                                                                         borderRadius:
-                                                                            "5px",
-                                                                        width:
-                                                                            "80px"
+                                                                            "5px"
                                                                     }}
                                                                 >
                                                                     <div
@@ -328,13 +321,33 @@ class WelcomeUser extends Component {
                                                                             );
                                                                         }}
                                                                     >
-                                                                        <div>
-                                                                            <ActionButton>
+                                                                        <div
+                                                                            style={{
+                                                                                display:
+                                                                                    "flex",
+                                                                                flexDirection:
+                                                                                    "column"
+                                                                            }}
+                                                                        >
+                                                                            <Button
+                                                                                className={
+                                                                                    this
+                                                                                        .props
+                                                                                        .classes
+                                                                                        .buttonPaddingBottom
+                                                                                }
+                                                                                variant="outlined"
+                                                                                color="primary"
+                                                                            >
                                                                                 Edit
-                                                                            </ActionButton>
-                                                                            <ActionButton>
+                                                                            </Button>
+
+                                                                            <Button
+                                                                                variant="outlined"
+                                                                                color="primary"
+                                                                            >
                                                                                 Delete
-                                                                            </ActionButton>
+                                                                            </Button>
                                                                         </div>
                                                                     </div>
                                                                 </Paper>
