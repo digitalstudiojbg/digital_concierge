@@ -474,7 +474,7 @@ class WizardCreateClientPageFour extends React.Component {
                 refetchQueries={[
                     {
                         query: systemsByClientQuery,
-                        variables: { id: 1 }
+                        variables: { id: new_create_client_id }
                     }
                 ]}
             >
@@ -491,7 +491,7 @@ class WizardCreateClientPageFour extends React.Component {
                                     numberOfDevices,
                                     system_type: systemTypeId
                                 },
-                                { setSubmitting }
+                                { setSubmitting, resetForm }
                             ) => {
                                 const { selected_checkboxes } = this.state;
 
@@ -517,6 +517,8 @@ class WizardCreateClientPageFour extends React.Component {
                                     }
                                 }).then(() => {
                                     console.log("CREATE SYSTEM SUCCEED");
+                                    resetForm({});
+                                    setSubmitting(false);
                                 });
                             }}
                             render={({ errors, values, isSubmitting }) => {
@@ -564,10 +566,7 @@ class WizardCreateClientPageFour extends React.Component {
                                                 variant="contained"
                                                 color="primary"
                                                 disabled={
-                                                    isSubmitting ||
-                                                    Object.keys(errors).length >
-                                                        0 ||
-                                                    systemsByClient.length < 0
+                                                    systemsByClient.length <= 0
                                                 }
                                                 onClick={() => {
                                                     next && next();
@@ -594,7 +593,11 @@ export default compose(
     graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
     graphql(systemsByClientQuery, {
         options: ownProps => ({
-            variables: { id: 1 }
+            variables: {
+                id: ownProps.client.readQuery({
+                    query: getNewCreatedClientId
+                }).new_create_client_id
+            }
         }),
         name: "systemsByClient"
     })
