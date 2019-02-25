@@ -115,6 +115,7 @@ export const PageThreeDeleteModal = ({
                             }
                         }).then(data => {
                             console.log("Data received: ", data);
+                            handleClose();
                         });
                     };
 

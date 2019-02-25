@@ -2,7 +2,8 @@ import db from "../models";
 import {
     handleCreateActionActivityLog,
     handleUpdateActionActivityLog,
-    asyncForEach
+    asyncForEach,
+    handleDeleteActionActivityLog
 } from "../utils/constant";
 import { rejects } from "assert";
 
@@ -235,8 +236,100 @@ export default {
         ) => {
             console.log("Role IDs is ", roleIds);
             console.log("Client ID is ", clientId);
-            const client = await db.user.findByPk(clientId);
-            console.log(Object.keys(client.__proto__));
+            const client = await db.client.findByPk(clientId);
+            // console.log(Object.keys(client.__proto__));
+
+            // const roles = await client.getRoles();
+            // console.log("Roles retrieved");
+
+            // console.log(
+            //     "creating roles array: ",
+            //     roles.map(role => ({ id: role.id, name: role.name }))
+            // );
+
+            // console.log("next statement");
+
+            await asyncForEach(roleIds, async roleId => {
+                const role = await db.role.findByPk(roleId);
+
+                //For logging purposes
+                const roleLog = {
+                    id: role.id,
+                    name: role.name,
+                    is_standard_role: role.is_standard_role,
+                    departmentId: role.departmentId,
+                    clientId: clientId
+                };
+
+                //Get all permissions of the role
+                const permissions = await role.getPermissions();
+
+                //For logging purposes
+                const originalRolePermissions = permissions.map(permission => ({
+                    id: permission.id,
+                    name: permission.name
+                }));
+
+                //So we can delete entries in the pivot table between role and permissions
+                try {
+                    //Delete relationship between role and permissions
+                    await role.removePermissions(permissions);
+                } catch (err) {
+                    throw new UserInputError(
+                        `Unable to delete permissions from role Id ${roleId}.\nError message: ${
+                            err.message
+                        }`
+                    );
+                }
+
+                //Get all users attached to this role
+                const users = await role.getUsers();
+
+                //For logging purposes
+                const originalRoleUsers = users.map(user => ({
+                    id: user.name,
+                    name: user.name,
+                    email: user.email
+                }));
+
+                //So we can delete entries in the pivot table between user and role
+                try {
+                    //Delete relationship between role and user
+                    await role.removeUsers(users);
+                } catch (err) {
+                    throw new UserInputError(
+                        `Unable to delete users from role Id ${roleId}.\nError message: ${
+                            err.message
+                        }`
+                    );
+                }
+
+                //Remove all relationship entries, so now we can actually delete the role for real
+                //Delete relationship between selected directory entry from selected directory list
+                try {
+                    await db.role.destroy({
+                        where: { id: roleId }
+                    });
+                } catch (err) {
+                    throw new UserInputError(
+                        `Unable to delete role Id ${roleId}.\nError message: ${
+                            err.message
+                        }`
+                    );
+                }
+
+                handleDeleteActionActivityLog(
+                    role,
+                    {
+                        role: { ...roleLog },
+                        users: [...originalRoleUsers],
+                        permissions: [...originalRolePermissions]
+                    },
+                    user,
+                    clientIp
+                );
+            });
+
             return true;
         }
     },

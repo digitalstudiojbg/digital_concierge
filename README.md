@@ -72,3 +72,4 @@ Digital Concierge Project
 ## Tips:
 
 -   If you have trouble for installing new packages via npm or yarn, please try to delete package-lock.json or yarn.lock and then restart docker.
+-   If you receive error "ssh remote host identification has changed" when trying to ssh to AWS Server, please type [this command](https://stackoverflow.com/questions/20840012/ssh-remote-host-identification-has-changed) in the terminal (anywhere) \$ `ssh-keygen -R ec2-13-239-90-250.ap-southeast-2.compute.amazonaws.com`
