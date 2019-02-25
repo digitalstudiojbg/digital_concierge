@@ -331,6 +331,70 @@ export default {
             });
 
             return true;
+        },
+        duplicateRoles: async (
+            _root,
+            { input: { roleIds } },
+            { user, clientIp }
+        ) => {
+            await asyncForEach(roleIds, async roleId => {
+                const role = await db.role.findByPk(roleId);
+
+                const duplicateRole = db.role.build({
+                    name: role.name + " (DUPLICATE)",
+                    departmentId: role.departmentId,
+                    clientId: role.clientId
+                });
+
+                //Try duplicating the array
+                try {
+                    await duplicateRole.save();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to duplicate role Id ${roleId}.\nError message: ${
+                            err.message
+                        }`
+                    );
+                }
+
+                //Get all permissions
+                const permissions = await role.getPermissions();
+
+                //For logging purposes
+                const originalRolePermissions = permissions.map(permission => ({
+                    id: permission.id,
+                    name: permission.name
+                }));
+
+                //Try to assign same permissions to the duplicated permissions
+                try {
+                    await duplicateRole.setPermissions(permissions);
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to duplicate permissions for role name ${
+                            duplicateRole.id
+                        }.\nError message: ${err.message}`
+                    );
+                }
+
+                //Activity logging
+                handleCreateActionActivityLog(
+                    duplicateRole,
+                    {
+                        role: {
+                            name: duplicateRole.name,
+                            is_standard_role: duplicateRole.is_standard_role,
+                            departmentId: duplicateRole.departmentId,
+                            clientId: duplicateRole.clientId
+                        },
+                        permissions: [...originalRolePermissions]
+                    },
+                    user,
+                    clientIp
+                );
+            });
+
+            return true;
         }
     },
     Role: {
