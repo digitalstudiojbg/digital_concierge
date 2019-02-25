@@ -38,6 +38,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CopyIcon from "@material-ui/icons/FileCopy";
 import PageThreeRoleModal from "./three/PageThreeRoleModal";
 import PageThreeDeleteModal from "./three/PageThreeDeleteModal";
+import PageThreeDuplicateModal from "./three/PageThreeDuplicateModal";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -133,6 +134,12 @@ class WizardCreateClientPageThree extends React.Component {
         this.handleOpenMultipleDeleteModal = this.handleOpenMultipleDeleteModal.bind(
             this
         );
+        this.handleOpenSingleDuplicateModal = this.handleOpenSingleDuplicateModal.bind(
+            this
+        );
+        this.handleOpenMultipleDuplicateModal = this.handleOpenMultipleDuplicateModal.bind(
+            this
+        );
         this.handleCloseModal = this.handleCloseModal.bind(this);
         this.handleOpenOptions = this.handleCloseOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
@@ -187,6 +194,22 @@ class WizardCreateClientPageThree extends React.Component {
         this.setState({
             modalOpen: true,
             whichModal: "multiple-delete",
+            anchorEl: null
+        });
+    }
+
+    handleOpenSingleDuplicateModal() {
+        this.setState({
+            modalOpen: true,
+            whichModal: "single-duplicate",
+            anchorEl: null
+        });
+    }
+
+    handleOpenMultipleDuplicateModal() {
+        this.setState({
+            modalOpen: true,
+            whichModal: "multiple-duplicate",
             anchorEl: null
         });
     }
@@ -415,6 +438,15 @@ class WizardCreateClientPageThree extends React.Component {
                                         handleClose={this.handleCloseModal}
                                     />
                                 )}
+                            {this.state.modalOpen &&
+                                this.state.whichModal ===
+                                    "single-duplicate" && (
+                                    <PageThreeDuplicateModal
+                                        clientId={clientId}
+                                        role={this.state.editRole}
+                                        handleClose={this.handleCloseModal}
+                                    />
+                                )}
                         </RolePermissionContainerDiv>
                     );
                 }}
@@ -442,7 +474,7 @@ class WizardCreateClientPageThree extends React.Component {
                 </React.Fragment>
             );
         }
-        // const clientId = 3; //Testing purposes
+        // const clientId = "3"; //Testing purposes
         const { selected_roles } = this.state;
         return (
             <Query
@@ -886,6 +918,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 .selected_roles
                                                                 .size === 0
                                                         }
+                                                        onClick={
+                                                            this
+                                                                .handleOpenMultipleDuplicateModal
+                                                        }
                                                     >
                                                         <CopyIcon fontSize="large" />
                                                     </IconButton>
@@ -1100,7 +1136,24 @@ class WizardCreateClientPageThree extends React.Component {
                                                             this
                                                                 .handleCloseModal
                                                         }
-                                                        role={this.state.role}
+                                                    />
+                                                )}
+
+                                            {this.state.modalOpen &&
+                                                this.state.whichModal ===
+                                                    "multiple-duplicate" && (
+                                                    <PageThreeDuplicateModal
+                                                        clientId={clientId}
+                                                        roles={roleList.filter(
+                                                            ({ id }) =>
+                                                                this.state.selected_roles.includes(
+                                                                    id
+                                                                )
+                                                        )}
+                                                        handleClose={
+                                                            this
+                                                                .handleCloseModal
+                                                        }
                                                     />
                                                 )}
 
@@ -1239,7 +1292,14 @@ class WizardCreateClientPageThree extends React.Component {
                                                 >
                                                     EDIT
                                                 </MenuItem>
-                                                <MenuItem>DUPLICATE</MenuItem>
+                                                <MenuItem
+                                                    onClick={
+                                                        this
+                                                            .handleOpenSingleDuplicateModal
+                                                    }
+                                                >
+                                                    DUPLICATE
+                                                </MenuItem>
                                                 <MenuItem
                                                     onClick={
                                                         this

@@ -207,6 +207,20 @@ export default {
                                     }`
                                 );
                             }
+
+                            //Duplicating permissions assigned to standard roles
+                            const permissions = await role.getPermissions();
+
+                            //Try to assign same permissions to the duplicated permissions
+                            try {
+                                await duplicateRole.setPermissions(permissions);
+                            } catch (error) {
+                                throw new UserInputError(
+                                    `Unable to duplicate permissions for role ID ${
+                                        duplicateRole.id
+                                    }.\nError message: ${error.message}`
+                                );
+                            }
                         });
                     });
 

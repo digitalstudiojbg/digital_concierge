@@ -11,6 +11,7 @@ export default gql`
         createRole(input: CreateRoleInput): Role
         updateRole(input: UpdateRoleInput): Role
         deleteRoles(input: DeleteRoleInput): Boolean
+        duplicateRoles(input: DuplicateRoleInput): Boolean
     }
 
     type Role {
@@ -43,5 +44,9 @@ export default gql`
     input DeleteRoleInput {
         roleIds: [Int]!
         clientId: Int!
+    }
+
+    input DuplicateRoleInput {
+        roleIds: [Int]!
     }
 `;

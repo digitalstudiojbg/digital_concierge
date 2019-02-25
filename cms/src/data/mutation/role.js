@@ -23,3 +23,9 @@ export const DELETE_ROLES = gql`
         deleteRoles(input: $input)
     }
 `;
+
+export const DUPLICATE_ROLES = gql`
+    mutation duplicateRoles($input: DuplicateRoleInput) {
+        duplicateRoles(input: $input)
+    }
+`;

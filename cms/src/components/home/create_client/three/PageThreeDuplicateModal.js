@@ -13,12 +13,12 @@ import {
     ListItemText
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import CancelIcon from "@material-ui/icons/Cancel";
+import CopyIcon from "@material-ui/icons/FileCopy";
 import Loading from "../../../loading/Loading";
 import { Mutation, withApollo } from "react-apollo";
 import { withStyles } from "@material-ui/core/styles";
 import { DECIMAL_RADIX } from "../../../../utils/Constants";
-import { DELETE_ROLES } from "../../../../data/mutation";
+import { DUPLICATE_ROLES } from "../../../../data/mutation";
 import { getRoleList } from "../../../../data/query";
 
 const styles = theme => ({
@@ -49,7 +49,7 @@ const styles = theme => ({
     }
 });
 
-export const PageThreeDeleteModal = ({
+export const PageThreeDuplicateModal = ({
     handleClose,
     classes,
     role,
@@ -68,15 +68,15 @@ export const PageThreeDeleteModal = ({
             <DialogTitle disableTypography className={classes.dialogTitle}>
                 <h2>
                     {Boolean(role)
-                        ? `DELETE ${role.name} ROLE`
-                        : "DELETE ROLES"}
+                        ? `DUPLICATE ${role.name} ROLE`
+                        : "DUPLICATE ROLES"}
                 </h2>
                 <IconButton onClick={handleClose}>
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
             <Mutation
-                mutation={DELETE_ROLES}
+                mutation={DUPLICATE_ROLES}
                 refetchQueries={[
                     {
                         query: getRoleList,
@@ -84,32 +84,30 @@ export const PageThreeDeleteModal = ({
                     }
                 ]}
             >
-                {(deleteRoles, { error, loading }) => {
+                {(duplicateRoles, { error, loading }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error message: ${error.message}`;
 
-                    const handleDelete = () => {
+                    const handleDuplicate = () => {
                         let toSend = null;
 
                         if (Boolean(role)) {
-                            //Only delete one role
+                            //Only duplicate one role
                             toSend = {
-                                roleIds: [parseInt(role.id, DECIMAL_RADIX)],
-                                clientId: parseInt(clientId, DECIMAL_RADIX)
+                                roleIds: [parseInt(role.id, DECIMAL_RADIX)]
                             };
                         } else if (Boolean(roles)) {
-                            //Delete multiple roles
+                            //Duplicate multiple roles
                             toSend = {
                                 roleIds: roles.map(({ id }) =>
                                     parseInt(id, DECIMAL_RADIX)
-                                ),
-                                clientId: parseInt(clientId, DECIMAL_RADIX)
+                                )
                             };
                         }
 
                         console.log("Before sending: ", toSend);
 
-                        deleteRoles({
+                        duplicateRoles({
                             variables: {
                                 input: toSend
                             }
@@ -124,14 +122,14 @@ export const PageThreeDeleteModal = ({
                             <DialogContent>
                                 {Boolean(role) && (
                                     <DialogContentText>
-                                        Are you sure you want to delete role{" "}
+                                        Are you sure you want to duplicate role{" "}
                                         {role.name}?
                                     </DialogContentText>
                                 )}
                                 {Boolean(roles) && (
                                     <React.Fragment>
                                         <DialogContentText>
-                                            Are you sure you want to delete
+                                            Are you sure you want to duplicate
                                             these roles?
                                         </DialogContentText>
                                         <List>
@@ -141,7 +139,7 @@ export const PageThreeDeleteModal = ({
                                                         key={`${id}-${index}`}
                                                     >
                                                         <ListItemIcon>
-                                                            <CancelIcon />
+                                                            <CopyIcon />
                                                         </ListItemIcon>
                                                         <ListItemText>
                                                             {name}
@@ -157,7 +155,7 @@ export const PageThreeDeleteModal = ({
                                 <Button
                                     variant="outlined"
                                     className={classes.submitButton}
-                                    onClick={handleDelete}
+                                    onClick={handleDuplicate}
                                 >
                                     YES
                                 </Button>
@@ -177,4 +175,4 @@ export const PageThreeDeleteModal = ({
     );
 };
 
-export default withApollo(withStyles(styles)(PageThreeDeleteModal));
+export default withApollo(withStyles(styles)(PageThreeDuplicateModal));
