@@ -466,7 +466,9 @@ class WelcomeUser extends Component {
                                                 TransitionComponent={Transition}
                                                 onClose={() => {
                                                     this.setState({
-                                                        deleteModal: false
+                                                        deleteModal: false,
+                                                        selected: [],
+                                                        single_delete: []
                                                     });
                                                 }}
                                             >
@@ -475,11 +477,12 @@ class WelcomeUser extends Component {
                                                 </DialogTitle>
 
                                                 <DialogContent>
-                                                    {(selected.length <= 0 &&
-                                                        single_delete.length <
+                                                    {(selected.length < 0 &&
+                                                        single_delete.length >
                                                             0) ||
-                                                    single_delete.length <=
-                                                        0 ? (
+                                                    (selected.length > 0 &&
+                                                        single_delete.length <
+                                                            0) ? (
                                                         <p>
                                                             Please choose at
                                                             least one user to
@@ -507,7 +510,7 @@ class WelcomeUser extends Component {
                                                                         "30px"
                                                                 }}
                                                             >
-                                                                {single_delete.map(
+                                                                {to_delete_data.map(
                                                                     (
                                                                         each,
                                                                         index
