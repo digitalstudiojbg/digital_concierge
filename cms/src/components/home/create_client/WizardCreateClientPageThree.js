@@ -7,7 +7,8 @@ import { TextField } from "formik-material-ui";
 import {
     getPermissionCategoryList,
     getRoleList,
-    getDepartmentListByClient
+    getDepartmentListByClient,
+    getNewCreatedClientId
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -458,13 +459,14 @@ class WizardCreateClientPageThree extends React.Component {
     render() {
         let clientId = null;
         try {
+            console.log("-------------");
+
             clientId = this.props.client.readQuery({
-                query: gql`
-                    {
-                        new_create_client_id @client
-                    }
-                `
+                query: getNewCreatedClientId
             }).new_create_client_id;
+            console.log(clientId);
+
+            console.log("-------------");
         } catch (error) {
             console.log(error);
             return (
