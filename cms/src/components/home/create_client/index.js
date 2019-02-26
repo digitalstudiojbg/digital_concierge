@@ -93,13 +93,13 @@ class CreateClient extends Component {
         });
     };
 
-    handlePrev = () => {
-        const { activeStep } = this.state;
+    // handlePrev = () => {
+    //     const { activeStep } = this.state;
 
-        this.setState({
-            activeStep: Math.max(activeStep - 1, 0)
-        });
-    };
+    //     this.setState({
+    //         activeStep: Math.max(activeStep - 1, 0)
+    //     });
+    // };
 
     handleCancel = () => {
         const { cancelClient, client, history } = this.props;
