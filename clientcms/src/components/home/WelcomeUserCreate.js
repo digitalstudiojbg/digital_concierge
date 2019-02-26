@@ -734,6 +734,7 @@ const WelcomeUserCreate = props => {
             </Dialog>
         );
     };
+    console.log(selected_user);
 
     return (
         <div
@@ -745,7 +746,9 @@ const WelcomeUserCreate = props => {
         >
             <div>
                 <p style={{ fontSize: "20px", padding: "0px 0px 10px 20px" }}>
-                    {is_edit ? "Edit a user account" : "Create a user account"}
+                    {is_edit
+                        ? `Edit User ${selected_user.user}`
+                        : "Create a user account"}
                 </p>
             </div>
             <Formik
@@ -1003,7 +1006,7 @@ const WelcomeUserCreate = props => {
                                     Object.keys(errors).length > 0
                                 }
                             >
-                                CONFIRM & CONTINUE
+                                CONFIRM & UPDATE
                             </Button>
                         </Form>
                     );
