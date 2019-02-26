@@ -14,7 +14,7 @@ module.exports = {
                     departmentId: 3
                 },
                 {
-                    clientId: 2,
+                    clientId: 1,
                     departmentId: 2
                 },
                 {

@@ -170,8 +170,18 @@ const WelcomeUserCreate = props => {
         getDepartmentListByUser: { departmentsByUser = [] } = {},
         createUser,
         handleIsCreatePageState,
-        match: { params: { client_id = {} } = {} } = {}
+        match: { params: { client_id = {} } = {} } = {},
+        is_edit = false,
+        selected_user = null
     } = props;
+
+    console.log("---------");
+
+    console.log(is_edit);
+
+    console.log(selected_user);
+
+    console.log("---------");
 
     if (departmentsByUser.length < 0) {
         return <Loading />;
@@ -184,6 +194,13 @@ const WelcomeUserCreate = props => {
     const [createNewRoleOpen, setCreateNewRoleOpen] = useState(false);
 
     const [selectedDepartment, setSelectedDepartment] = useState();
+
+    /*useEffect(() => {
+        is_edit &&
+            selected_user &&
+            selected_user.roles.length > 0 &&
+            setSelectedDepartment(selected_user.roles[0].department.id);
+    }, []);*/
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -232,7 +249,9 @@ const WelcomeUserCreate = props => {
                                             variables: {
                                                 input: {
                                                     name: values.name,
-                                                    clientId: 1
+                                                    clientId: parseInt(
+                                                        client_id
+                                                    )
                                                 }
                                             }
                                         });
@@ -397,7 +416,10 @@ const WelcomeUserCreate = props => {
                                                                         parseInt(
                                                                             item
                                                                         )
-                                                                    )
+                                                                    ),
+                                                                clientId: parseInt(
+                                                                    client_id
+                                                                )
                                                             }
                                                         }
                                                     });
@@ -733,7 +755,7 @@ const WelcomeUserCreate = props => {
         >
             <div>
                 <p style={{ fontSize: "20px", padding: "0px 0px 10px 20px" }}>
-                    Create a user account
+                    {is_edit ? "Edit a user account" : "Create a user account"}
                 </p>
             </div>
             <Formik
@@ -774,10 +796,30 @@ const WelcomeUserCreate = props => {
                         handleIsCreatePageState();
                     });
                 }}
+                initialValues={{
+                    name: selected_user && selected_user.user,
+                    email: selected_user && selected_user.username,
+                    first_phone_number:
+                        selected_user && selected_user.first_phone_number,
+                    second_phone_number:
+                        selected_user && selected_user.second_phone_number,
+                    position: selected_user && selected_user.position,
+                    role: selected_user && selected_user.roles[0].id,
+                    department:
+                        selected_user && selected_user.roles[0].department.id
+                }}
                 render={({ errors, values, isSubmitting }) => {
+                    console.log(values);
+
                     const selectedDepartment = departmentsByUser.find(
-                        department => department.id === values.department
+                        department => {
+                            return department.id === values.department;
+                        }
                     );
+                    console.log(departmentsByUser);
+
+                    console.log(selectedDepartment);
+
                     return (
                         <Form>
                             <div style={{ display: "flex" }}>
@@ -836,7 +878,8 @@ const WelcomeUserCreate = props => {
                                         })}
                                     </FiledContainer>
                                     <FiledContainer>
-                                        {!isEmpty(values.department) && (
+                                        {(!isEmpty(values.department) ||
+                                            is_edit) && (
                                             <BrowseButton
                                                 onClick={() => {
                                                     setCreateNewRoleOpen(true);

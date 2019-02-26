@@ -16,7 +16,7 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-
+import { isEmpty } from "lodash";
 const Transition = props => {
     return <Slide direction="up" {...props} />;
 };
@@ -46,21 +46,29 @@ const useCheckedUsers = checkedUser => {
 
     return checkedUsers;
 };
-
-const changeClientDataStructure = ({ client: { users = {} } = {} }) => {
+//{ client: { users = {} } = {} }
+const changeClientDataStructure = data => {
     let outputUser = [];
+    console.log(data);
+    // const users = data.client.users;
 
-    users.map(
+    data.client.users.map(
         ({
             roles = [],
             name: user = "",
             email: username = "",
             active = "",
-            id
+            id,
+            first_phone_number: first_phone_number = "",
+            second_phone_number: second_phone_number = "",
+            position: position = ""
         }) => {
             let rolesName;
             let departmentsName;
-            roles.map(({ name, department }) => {
+
+            roles.map(({ id, name, department }) => {
+                // roles_id = id;
+                //  department_id = department.id;
                 rolesName = rolesName ? `${rolesName} ${name}` : `${name}`;
                 departmentsName = department.name
                     ? `${department.name}`
@@ -72,7 +80,11 @@ const changeClientDataStructure = ({ client: { users = {} } = {} }) => {
                 username,
                 status: active ? "Active" : "Inactive",
                 role: rolesName,
-                department: departmentsName
+                roles,
+                department: departmentsName,
+                first_phone_number,
+                second_phone_number,
+                position
             };
             outputUser.push(eachUser);
         }
@@ -89,7 +101,8 @@ class WelcomeUser extends Component {
             is_create_page: false,
             selected_row: null,
             deleteModal: false,
-            single_delete: []
+            single_delete: [],
+            selected_object: null
         };
         this.handleAction = this.handleAction.bind(this);
     }
@@ -113,7 +126,8 @@ class WelcomeUser extends Component {
             selected_row,
             deleteModal,
             editModal,
-            single_delete
+            single_delete,
+            selected_object
         } = this.state;
         if (is_create_page) {
             return (
@@ -130,7 +144,7 @@ class WelcomeUser extends Component {
                 <Query
                     query={getUsersByClient}
                     variables={{ id: this.props.data.id }}
-                    fetchPolicy="no-cache"
+                    fetchPolicy="network-only"
                 >
                     {({ loading, error, data }) => {
                         if (loading) return <h1>Loading</h1>;
@@ -379,11 +393,24 @@ class WelcomeUser extends Component {
                                                             onClick={() => {
                                                                 this.setState({
                                                                     single_delete: [
-                                                                        ...single_delete,
                                                                         parseInt(
                                                                             selectedId
                                                                         )
-                                                                    ]
+                                                                    ],
+                                                                    selected_object: changeClientDataStructure(
+                                                                        data
+                                                                    ).find(
+                                                                        eachUser => {
+                                                                            return (
+                                                                                parseInt(
+                                                                                    eachUser.id
+                                                                                ) ===
+                                                                                parseInt(
+                                                                                    selectedId
+                                                                                )
+                                                                            );
+                                                                        }
+                                                                    )
                                                                 });
                                                                 this.handleAction(
                                                                     original
@@ -463,21 +490,13 @@ class WelcomeUser extends Component {
                                 >
                                     <DialogTitle>DETAIL</DialogTitle>
                                     <DialogContent>
-                                        <WelcomeUserCreate />
+                                        <WelcomeUserCreate
+                                            is_edit
+                                            selected_user={
+                                                this.state.selected_object
+                                            }
+                                        />
                                     </DialogContent>
-                                    <DialogActions>
-                                        <Button
-                                            onClick={() => {
-                                                this.setState({
-                                                    editModal: false
-                                                });
-                                            }}
-                                            color="primary"
-                                            className={classes.buttonFont}
-                                        >
-                                            Ok
-                                        </Button>
-                                    </DialogActions>
                                 </Dialog>
 
                                 <Mutation

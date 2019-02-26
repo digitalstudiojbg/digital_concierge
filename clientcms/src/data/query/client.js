@@ -123,6 +123,9 @@ export const getUsersByClient = gql`
                 name
                 email
                 active
+                position
+                first_phone_number
+                second_phone_number
                 roles {
                     id
                     name

@@ -6,6 +6,7 @@ import {
     handleDeleteActionActivityLog
 } from "../utils/constant";
 import { rejects } from "assert";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -72,6 +73,8 @@ export default {
             },
             { user, clientIp }
         ) => {
+            console.log("1");
+
             //Check if departmentId exists
             const department = await db.department.findByPk(departmentId);
             if (!Boolean(department)) {
@@ -81,6 +84,7 @@ export default {
                     }`
                 );
             }
+            console.log("2");
 
             //Check if clientId exists
             const client = await db.client.findByPk(clientId);
@@ -91,6 +95,7 @@ export default {
                     }`
                 );
             }
+            console.log("3");
 
             const role = db.role.build({
                 name,
@@ -108,6 +113,7 @@ export default {
                     }`
                 );
             }
+            console.log("4");
 
             //Create Activity Logging
             handleCreateActionActivityLog(
