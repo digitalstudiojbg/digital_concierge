@@ -33,6 +33,8 @@ import { Set } from "immutable";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreateValidationSchema from "./WelcomeUserCreateValidationSchema";
+import WelcomeUserUpdateValidationSchema from "./WelcomeUserUpdateValidationSchema";
+
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -83,6 +85,21 @@ const PASSWORD_FIELD = [
         name: "confirm_password",
         label: "CONFIRM PASSWORD",
         required: true,
+        type: "password"
+    }
+];
+
+const EDIT_PASSWORD_FIELD = [
+    {
+        name: "password",
+        label: "PASSWORD",
+        required: false,
+        type: "password"
+    },
+    {
+        name: "confirm_password",
+        label: "CONFIRM PASSWORD",
+        required: false,
         type: "password"
     }
 ];
@@ -150,13 +167,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                     {label}
                 </MenuItem>
                 {optionList.map(({ id, name }, index) => (
-                    <MenuItem
-                        key={`ITEM-${name}-${id}-${index}`}
-                        value={id}
-                        onClick={() => {
-                            console.log("123");
-                        }}
-                    >
+                    <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
                         {name}
                     </MenuItem>
                 ))}
@@ -175,14 +186,6 @@ const WelcomeUserCreate = props => {
         selected_user = null
     } = props;
 
-    console.log("---------");
-
-    console.log(is_edit);
-
-    console.log(selected_user);
-
-    console.log("---------");
-
     if (departmentsByUser.length < 0) {
         return <Loading />;
     }
@@ -194,13 +197,6 @@ const WelcomeUserCreate = props => {
     const [createNewRoleOpen, setCreateNewRoleOpen] = useState(false);
 
     const [selectedDepartment, setSelectedDepartment] = useState();
-
-    /*useEffect(() => {
-        is_edit &&
-            selected_user &&
-            selected_user.roles.length > 0 &&
-            setSelectedDepartment(selected_user.roles[0].department.id);
-    }, []);*/
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -367,8 +363,6 @@ const WelcomeUserCreate = props => {
                                 allPermissionsLength +=
                                     category.permissions.length;
                             });
-
-                            console.log(permissionCategories);
 
                             return (
                                 <Mutation
@@ -760,10 +754,32 @@ const WelcomeUserCreate = props => {
             </div>
             <Formik
                 validate={values => {
+                    let errors = {};
                     !isEmpty(values.department) &&
                         setSelectedDepartment(values.department);
+
+                    if (is_edit) {
+                        if (
+                            !isEmpty(values.password) &&
+                            isEmpty(values.confirm_password)
+                        ) {
+                            errors.confirm_password = "Please confirm password";
+                        }
+                        if (
+                            isEmpty(values.password) &&
+                            !isEmpty(values.confirm_password)
+                        ) {
+                            errors.confirm_password = "Please enter password";
+                        }
+                    }
+
+                    return errors;
                 }}
-                validationSchema={WelcomeUserCreateValidationSchema}
+                validationSchema={
+                    is_edit
+                        ? WelcomeUserUpdateValidationSchema
+                        : WelcomeUserCreateValidationSchema
+                }
                 onSubmit={async (
                     {
                         position,
@@ -771,30 +787,41 @@ const WelcomeUserCreate = props => {
                         first_phone_number,
                         second_phone_number,
                         name,
-                        password,
+                        password = null,
                         role: roleId
                     },
                     { setSubmitting }
                 ) => {
                     console.log(client_id);
-
-                    createUser({
-                        variables: {
-                            input: {
-                                name,
-                                position,
-                                email,
-                                first_phone_number,
-                                second_phone_number,
-                                password,
-                                clientId: parseInt(client_id),
-                                roleId: parseInt(roleId)
+                    if (!is_edit) {
+                        createUser({
+                            variables: {
+                                input: {
+                                    name,
+                                    position,
+                                    email,
+                                    first_phone_number,
+                                    second_phone_number,
+                                    password,
+                                    clientId: parseInt(client_id),
+                                    roleId: parseInt(roleId)
+                                }
                             }
-                        }
-                    }).then(() => {
-                        console.log("USER CREATED SUCCESSFULLY");
-                        handleIsCreatePageState();
-                    });
+                        }).then(() => {
+                            console.log("USER CREATED SUCCESSFULLY");
+                            handleIsCreatePageState();
+                            setSubmitting(false);
+                        });
+                    } else {
+                        console.log(position);
+                        console.log(email);
+                        console.log(first_phone_number);
+                        console.log(second_phone_number);
+                        console.log(name);
+                        console.log(password);
+                        console.log(roleId);
+                        setSubmitting(false);
+                    }
                 }}
                 initialValues={{
                     name: selected_user && selected_user.user,
@@ -816,9 +843,10 @@ const WelcomeUserCreate = props => {
                             return department.id === values.department;
                         }
                     );
-                    console.log(departmentsByUser);
 
-                    console.log(selectedDepartment);
+                    const renderPasswordFieldsList = is_edit
+                        ? EDIT_PASSWORD_FIELD
+                        : PASSWORD_FIELD;
 
                     return (
                         <Form>
@@ -892,7 +920,8 @@ const WelcomeUserCreate = props => {
                                 </ContainerDiv>
 
                                 <ContainerDiv>
-                                    {PASSWORD_FIELD.map(
+                                    {is_edit && <h4>Reset Password</h4>}
+                                    {renderPasswordFieldsList.map(
                                         (
                                             { name, label, required, type },
                                             index
