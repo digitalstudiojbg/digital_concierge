@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, Fragment } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Mutation, withApollo, compose, graphql, Query } from "react-apollo";
@@ -13,12 +13,7 @@ import {
     CREATE_USER
 } from "../../data/mutation";
 import { Formik, Form, Field } from "formik";
-import {
-    TextField,
-    fieldToTextField,
-    Select,
-    RadioGroup
-} from "formik-material-ui";
+import { TextField, Select } from "formik-material-ui";
 import Button from "@material-ui/core/Button";
 import Loading from "../loading/Loading";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -34,7 +29,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreateValidationSchema from "./WelcomeUserCreateValidationSchema";
 import WelcomeUserUpdateValidationSchema from "./WelcomeUserUpdateValidationSchema";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
@@ -815,15 +809,6 @@ const WelcomeUserCreate = props => {
                             setSubmitting(false);
                         });
                     } else {
-                        console.log(selected_user.id);
-                        console.log(position);
-                        console.log(email);
-                        console.log(first_phone_number);
-                        console.log(second_phone_number);
-                        console.log(name);
-                        console.log(password);
-                        console.log(roleId);
-
                         updateUser({
                             variables: {
                                 input: {
@@ -846,7 +831,6 @@ const WelcomeUserCreate = props => {
                         }).then(() => {
                             console.log("USER UPDATED SUCCESSFULLY");
                             handleEditModal();
-
                             setSubmitting(false);
                         });
                     }

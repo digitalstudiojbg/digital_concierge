@@ -14,9 +14,8 @@ import Slide from "@material-ui/core/Slide";
 import DialogActions from "@material-ui/core/DialogActions";
 import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
-import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import { isEmpty } from "lodash";
+
 const Transition = props => {
     return <Slide direction="up" {...props} />;
 };
@@ -33,24 +32,9 @@ const styles = theme => ({
     }
 });
 
-const useCheckedUsers = checkedUser => {
-    const [checkedUsers, setCheckedUsers] = useState([]);
-
-    useEffect(() => {
-        (checkedUser => {
-            console.log("1");
-
-            setCheckedUsers(checkedUser);
-        })(checkedUser);
-    }, [checkedUser]);
-
-    return checkedUsers;
-};
-//{ client: { users = {} } = {} }
 const changeClientDataStructure = data => {
     let outputUser = [];
     console.log(data);
-    // const users = data.client.users;
 
     data.client.users.map(
         ({
@@ -116,13 +100,11 @@ class WelcomeUser extends Component {
     }
 
     handleIsCreatePageState() {
-        //   const { is_create_page } = this.state;
         this.setState({ is_create_page: !this.state.is_create_page });
     }
 
     handleEditModal() {
         this.setState({ editModal: !this.state.editModal });
-        //this.forceUpdate();
     }
 
     render() {
@@ -728,13 +710,3 @@ class WelcomeUser extends Component {
 }
 
 export default withRouter(withStyles(styles)(WelcomeUser));
-
-/*export default compose(
-    withStyles(styles),
-    graphql(getUsersByClient, {
-        options: ownProps => ({
-            variables: { id: 1 }
-        }),
-        name: "getUsersByClient"
-    })
-)(WelcomeUser);*/

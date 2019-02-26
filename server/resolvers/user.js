@@ -130,9 +130,11 @@ export default {
                 })
             };
 
-            Boolean(role_id) && (await user.setRoles([role_id]));
-
             const userToUpdate = await db.user.findByPk(id);
+
+            if (Boolean(role_id)) {
+                await userToUpdate.setRoles([role_id]);
+            }
 
             try {
                 await userToUpdate.update({
