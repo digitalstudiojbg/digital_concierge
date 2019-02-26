@@ -29,36 +29,44 @@ const styles = theme => ({
     }
 });
 
+const WizardInitialPage = lazy(() => import("./WizardInitialPage"));
+
 const array_components = [
     {
         component: lazy(() => import("./WizardCreateClientPageOne")),
-        title: "Client"
+        title: "Client",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageTwo")),
-        title: "Account set-up"
+        title: "Account set-up",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageThree")),
-        title: "Structure"
+        title: "Structure",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFour")),
-        title: "System"
+        title: "System",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFive")),
-        title: "Theme"
+        title: "Theme",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageSix")),
-        title: "Media"
+        title: "Media",
+        inStepper: true
     }
 ];
 
 class CreateClient extends Component {
     state = {
-        activeStep: 0
+        activeStep: -1
     };
 
     handleNext = () => {
@@ -80,22 +88,35 @@ class CreateClient extends Component {
     render() {
         const { classes } = this.props;
         const { activeStep } = this.state;
-        const SelectedComponent = array_components[activeStep].component;
+        const SelectedComponent =
+            activeStep === -1
+                ? WizardInitialPage
+                : array_components[activeStep].component;
 
         return (
             <div className={classes.root}>
-                <NewClientSetupTitle>New Client Setup</NewClientSetupTitle>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {array_components.map(({ title }) => {
-                        const props = {};
-                        const labelProps = {};
-                        return (
-                            <Step key={title} {...props}>
-                                <StepLabel {...labelProps}>{title}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
+                {activeStep > -1 && (
+                    <React.Fragment>
+                        <NewClientSetupTitle>
+                            New Client Setup
+                        </NewClientSetupTitle>
+                        <Stepper activeStep={activeStep} alternativeLabel>
+                            {array_components
+                                .filter(({ inStepper }) => Boolean(inStepper))
+                                .map(({ title }) => {
+                                    const props = {};
+                                    const labelProps = {};
+                                    return (
+                                        <Step key={title} {...props}>
+                                            <StepLabel {...labelProps}>
+                                                {title}
+                                            </StepLabel>
+                                        </Step>
+                                    );
+                                })}
+                        </Stepper>
+                    </React.Fragment>
+                )}
                 <Suspense>
                     <SelectedComponent next={this.handleNext} />
                 </Suspense>

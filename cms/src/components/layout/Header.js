@@ -179,7 +179,8 @@ class Header extends Component {
                                     alignItems: "center",
                                     paddingLeft: 30,
                                     color: "rgb(52, 255, 163)",
-                                    fontSize: "3em"
+                                    fontSize: "3em",
+                                    fontWeight: 700
                                 }}
                             >
                                 PORTAL
