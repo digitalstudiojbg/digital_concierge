@@ -15,6 +15,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
@@ -111,6 +112,7 @@ class WelcomeUser extends Component {
             is_create_page,
             selected_row,
             deleteModal,
+            editModal,
             single_delete
         } = this.state;
         if (is_create_page) {
@@ -344,8 +346,15 @@ class WelcomeUser extends Component {
                                                                                 }
                                                                                 variant="outlined"
                                                                                 color="primary"
+                                                                                onClick={() => {
+                                                                                    this.setState(
+                                                                                        {
+                                                                                            editModal: true
+                                                                                        }
+                                                                                    );
+                                                                                }}
                                                                             >
-                                                                                Edit
+                                                                                DETAIL
                                                                             </Button>
                                                                             <Button
                                                                                 variant="outlined"
@@ -440,6 +449,37 @@ class WelcomeUser extends Component {
                                         ]}
                                     />
                                 </div>
+
+                                <Dialog
+                                    open={editModal}
+                                    TransitionComponent={Transition}
+                                    onClose={() => {
+                                        this.setState({
+                                            editModal: false
+                                        });
+                                    }}
+                                    maxWidth="xl"
+                                    fullWidth
+                                >
+                                    <DialogTitle>DETAIL</DialogTitle>
+                                    <DialogContent>
+                                        <WelcomeUserCreate />
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button
+                                            onClick={() => {
+                                                this.setState({
+                                                    editModal: false
+                                                });
+                                            }}
+                                            color="primary"
+                                            className={classes.buttonFont}
+                                        >
+                                            Ok
+                                        </Button>
+                                    </DialogActions>
+                                </Dialog>
+
                                 <Mutation
                                     mutation={DELETE_USER}
                                     refetchQueries={[
@@ -472,7 +512,7 @@ class WelcomeUser extends Component {
                                                     });
                                                 }}
                                             >
-                                                <DialogTitle id="alert-dialog-title">
+                                                <DialogTitle>
                                                     Confirmation
                                                 </DialogTitle>
 
@@ -639,7 +679,7 @@ class WelcomeUser extends Component {
     }
 }
 
-export default withStyles(styles)(WelcomeUser);
+export default withRouter(withStyles(styles)(WelcomeUser));
 
 /*export default compose(
     withStyles(styles),
