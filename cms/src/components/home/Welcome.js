@@ -34,6 +34,38 @@ const ContentDiv = styled.div`
     width: calc(100vw - 350px);
 `;
 
+const SidebarHeaderTitle = styled.div`
+    width: 100%;
+    font-weight: 700;
+    color: rgb(52, 255, 163);
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+`;
+
+const SidebarSelected = styled.div`
+    width: 100%;
+    background: rgb(113, 113, 113);
+    color: white;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+`;
+
+const SidebarNormal = styled.div`
+    width: 100%;
+    background: white;
+    color: black;
+    font-weight: 700;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+`;
+
 const styles = () => ({
     sidebarButtonSelected: {
         background: "rgb(113, 113, 113)",
@@ -51,7 +83,7 @@ const styles = () => ({
     }
 });
 
-const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
+// const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
 const WelcomeAccount = lazy(() => import("./WelcomeAccount"));
 const WelcomeDashboard = lazy(() => import("./WelcomeDashboard"));
 const WelcomeClients = lazy(() => import("./WelcomeClients"));
@@ -59,15 +91,15 @@ const WelcomeClients = lazy(() => import("./WelcomeClients"));
 class Welcome extends Component {
     sidebarButtons = [
         { id: "dashboard", name: "DASHBOARD", component: WelcomeDashboard },
-        { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
+        // { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
         { id: "clients", name: "CLIENTS", component: WelcomeClients },
-        { id: "account", name: "ACCOUNT", component: WelcomeAccount },
-        { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },
-        { id: "users", name: "USERS & ROLES", component: WelcomeSystems },
-        { id: "support", name: "SUPPORT", component: WelcomeSystems }
+        { id: "account", name: "ACCOUNT", component: WelcomeAccount }
+        // { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },
+        // { id: "users", name: "USERS & ROLES", component: WelcomeSystems },
+        // { id: "support", name: "SUPPORT", component: WelcomeSystems }
     ];
     state = {
-        selected: "systems"
+        selected: "dashboard"
     };
 
     clickSidebarButton(selected) {
@@ -80,19 +112,34 @@ class Welcome extends Component {
         return (
             <Fragment>
                 {this.sidebarButtons.map(({ id, name }) => (
-                    <Button
-                        id={id}
-                        size="large"
-                        key={id}
-                        className={
-                            selected === id
-                                ? classes.sidebarButtonSelected
-                                : classes.sidebarButtonNormal
-                        }
-                        onClick={this.clickSidebarButton.bind(this, id)}
-                    >
-                        {name}
-                    </Button>
+                    // <Button
+                    //     id={id}
+                    //     size="large"
+                    //     key={id}
+                    //     className={
+                    //         selected === id
+                    //             ? classes.sidebarButtonSelected
+                    //             : classes.sidebarButtonNormal
+                    //     }
+                    //     onClick={this.clickSidebarButton.bind(this, id)}
+                    // >
+                    //     {name}
+                    // </Button>
+                    <Fragment key={id}>
+                        {selected === id ? (
+                            <SidebarSelected
+                                onClick={this.clickSidebarButton.bind(this, id)}
+                            >
+                                {name}
+                            </SidebarSelected>
+                        ) : (
+                            <SidebarNormal
+                                onClick={this.clickSidebarButton.bind(this, id)}
+                            >
+                                {name}
+                            </SidebarNormal>
+                        )}
+                    </Fragment>
                 ))}
             </Fragment>
         );
@@ -120,9 +167,15 @@ class Welcome extends Component {
                             alt={`${user.client.name} avatar`}
                         />
                     )}
-                    <p style={{ fontWeight: "700", fontSize: "2em" }}>
-                        ADMIN CONSOLE
-                    </p>
+                    <SidebarHeaderTitle>
+                        <span style={{ fontSize: "4em", paddingRight: 5 }}>
+                            PORTAL
+                        </span>
+                        <span style={{ fontSize: "1.5em" }}>
+                            <div>ADMIN</div>
+                            <div>CONSOLE</div>
+                        </span>
+                    </SidebarHeaderTitle>
                     {this.renderSidebarButtons()}
                 </SidebarDiv>
                 <ContentDiv>

@@ -3,7 +3,8 @@ import {
     COLOR_JBG_PURPLE,
     SYSTEM_CMS_INDEX_URL,
     TOUCHSCREEN_CMS_INDEX_URL,
-    LOGIN_URL
+    LOGIN_URL,
+    CREATE_NEW_CLIENT
 } from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
@@ -18,13 +19,18 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import PersonIcon from "@material-ui/icons/Person";
+import PersonIcon from "@material-ui/icons/PersonOutlined";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
+import HomeIcon from "@material-ui/icons/HomeOutlined";
+import MessageIcon from "@material-ui/icons/MessageOutlined";
+import EmailIcon from "@material-ui/icons/EmailOutlined";
+import NotificationIcon from "@material-ui/icons/NotificationsOutlined";
 import { logout } from "../../auth/auth";
 
 const styles = theme => ({
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing.unit * 0.1,
+        padding: 0,
         color: "rgb(154,166,174)"
     },
     avatar: {
@@ -32,6 +38,19 @@ const styles = theme => ({
     },
     icon: {
         marginRight: -5
+    },
+    iconMargin: {
+        width: 30,
+        height: 30,
+        marginRight: 20
+    },
+    iconNoMargin: {
+        width: 30,
+        height: 30
+    },
+    personIcon: {
+        width: 40,
+        height: 40
     }
 });
 
@@ -40,7 +59,8 @@ const ContainerDiv = styled.div`
     height: 80px;
     position: fixed;
     top: 0px;
-    background-color: ${COLOR_JBG_PURPLE};
+    /* background-color: ${COLOR_JBG_PURPLE}; */
+    background-color: black;
     color: white;
     display: flex;
     justify-content: flex-start;
@@ -97,8 +117,8 @@ class Header extends Component {
             query
         });
         //Calculate percentage of the user div and title div after a fixed size sidebar div of 350px
-        const availableWidth = window.innerWidth - 350;
-        const userDivWidth = availableWidth * 0.35;
+        // const availableWidth = window.innerWidth - 350;
+        // const userDivWidth = availableWidth * 0.35;
 
         const { has_tablet = false, has_touchscreen = false, name = "" } =
             user.venue || {};
@@ -108,7 +128,8 @@ class Header extends Component {
 
         return (
             <ContainerDiv>
-                {match.url === URL_WELCOME ? (
+                {match.url === URL_WELCOME ||
+                match.url === CREATE_NEW_CLIENT ? (
                     <WelcomeDiv>PLATYPUS</WelcomeDiv>
                 ) : (
                     <div style={{ width: 350 }}>
@@ -134,23 +155,53 @@ class Header extends Component {
                 )}
                 <div
                     style={{
-                        flex: 1
+                        flex: 1,
+                        display: "flex",
+                        justifyContent: "flex-end"
                     }}
                 >
-                    {match.url !== URL_WELCOME && (
-                        <React.Fragment>
-                            <div>{name.toUpperCase()}</div>
-                            <div>
-                                {match.url.includes(SYSTEM_CMS_INDEX_URL)
-                                    ? "DIGITAL COMPENDIUM"
-                                    : "TOUCHSCREEN"}
+                    <div style={{ width: "60%" }}>
+                        {/* {match.url !== URL_WELCOME && (
+                            <React.Fragment>
+                                <div>{name.toUpperCase()}</div>
+                                <div>
+                                    {match.url.includes(SYSTEM_CMS_INDEX_URL)
+                                        ? "DIGITAL COMPENDIUM"
+                                        : "TOUCHSCREEN"}
+                                </div>
+                            </React.Fragment>
+                        )} */}
+                        {match.url === CREATE_NEW_CLIENT && (
+                            <div
+                                style={{
+                                    height: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    paddingLeft: 30,
+                                    color: "rgb(52, 255, 163)",
+                                    fontSize: "3em"
+                                }}
+                            >
+                                PORTAL
                             </div>
-                        </React.Fragment>
-                    )}
+                        )}
+                    </div>
+                    <div
+                        style={{
+                            width: "40%",
+                            display: "flex",
+                            justifyContent: "flex-end"
+                        }}
+                    >
+                        <HomeIcon className={classes.iconMargin} />
+                        <MessageIcon className={classes.iconMargin} />
+                        <EmailIcon className={classes.iconMargin} />
+                        <NotificationIcon className={classes.iconNoMargin} />
+                    </div>
                 </div>
                 <div
                     style={{
-                        width: `${userDivWidth}px`,
+                        // width: `${userDivWidth}px`,
                         marginRight: "1.5vw"
                     }}
                 >
@@ -162,8 +213,9 @@ class Header extends Component {
                                 borderLeft: "2px solid white"
                             }}
                         >
-                            <p style={{}}>{user.name}</p>
+                            <p>{user.name}</p>
                         </div>
+                        <PersonIcon className={classes.personIcon} />
                         <IconButton
                             className={classes.button}
                             onClick={this.handleClick}
@@ -189,7 +241,7 @@ class Header extends Component {
                                 <ListItemText inset primary="LOGOUT" />
                             </MenuItem>
                         </Menu>
-                        {user.avatar && (
+                        {/* {user.avatar && (
                             <img
                                 style={{
                                     height: "50px"
@@ -197,7 +249,7 @@ class Header extends Component {
                                 src={user.avatar}
                                 alt={`{user.name}_avatar`}
                             />
-                        )}
+                        )} */}
                     </WelcomeUserDetailContainerDiv>
                 </div>
             </ContainerDiv>
