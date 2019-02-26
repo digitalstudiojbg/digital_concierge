@@ -1,5 +1,6 @@
 import React, { Component, lazy, Suspense } from "react";
-import { withApollo } from "react-apollo";
+import { withApollo, compose, graphql } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,11 +8,26 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { CANCEL_CLIENT } from "../../../data/mutation";
+import { getNewCreatedClientId } from "../../../data/query";
+import { WELCOME_URL } from "../../../utils/Constants";
 // import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
+
+const NewClientSetupTitleContainer = styled.div`
+    width: 100%;
+    display: flex;
+`;
 
 const NewClientSetupTitle = styled.p`
     font-size: 2.5em;
     padding-top: 15px;
+`;
+
+const CancelButtonContainer = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 `;
 
 const styles = theme => ({
@@ -85,6 +101,34 @@ class CreateClient extends Component {
         });
     };
 
+    handleCancel = () => {
+        const { cancelClient, client, history } = this.props;
+        const { activeStep } = this.state;
+
+        let new_create_client_id = null;
+
+        if (activeStep > 0) {
+            //Only try to get client ID from cache after the first step (which is creating the client)
+            try {
+                new_create_client_id = client.readQuery({
+                    query: getNewCreatedClientId
+                }).new_create_client_id;
+                console.log("Cache Client ID: ", new_create_client_id);
+            } catch {
+                console.log("Unable to get cache Client ID");
+            }
+        }
+
+        //If client ID from cache cannot be retrieved, just redirect to welcome page url
+        Boolean(cancelClient) && Boolean(new_create_client_id)
+            ? cancelClient({ variables: { id: new_create_client_id } }).then(
+                  () => {
+                      history.push(WELCOME_URL);
+                  }
+              )
+            : history.push(WELCOME_URL);
+    };
+
     render() {
         const { classes } = this.props;
         const { activeStep } = this.state;
@@ -97,9 +141,19 @@ class CreateClient extends Component {
             <div className={classes.root}>
                 {activeStep > -1 && (
                     <React.Fragment>
-                        <NewClientSetupTitle>
-                            New Client Setup
-                        </NewClientSetupTitle>
+                        <NewClientSetupTitleContainer>
+                            <NewClientSetupTitle>
+                                New Client Setup
+                            </NewClientSetupTitle>
+                            <CancelButtonContainer>
+                                <Button
+                                    variant="outlined"
+                                    onClick={this.handleCancel}
+                                >
+                                    CANCEL
+                                </Button>
+                            </CancelButtonContainer>
+                        </NewClientSetupTitleContainer>
                         <Stepper activeStep={activeStep} alternativeLabel>
                             {array_components
                                 .filter(({ inStepper }) => Boolean(inStepper))
@@ -176,4 +230,9 @@ CreateClient.propTypes = {
     classes: PropTypes.object
 };
 
-export default withApollo(withStyles(styles)(CreateClient));
+export default compose(
+    withApollo,
+    withRouter,
+    withStyles(styles),
+    graphql(CANCEL_CLIENT, { name: "cancelClient" })
+)(CreateClient);

@@ -27,3 +27,9 @@ export const DELETE_FILES = gql`
         }
     }
 `;
+
+export const CANCEL_CLIENT = gql`
+    mutation cancelClient($id: ID!) {
+        cancelClient(id: $id)
+    }
+`;

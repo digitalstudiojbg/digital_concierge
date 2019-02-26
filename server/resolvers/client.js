@@ -6,7 +6,8 @@ import {
     checkUserLogin,
     processDeleteMedia,
     handleCreateActionActivityLog,
-    handleUpdateActionActivityLog
+    handleUpdateActionActivityLog,
+    processDelete
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
 
@@ -289,6 +290,179 @@ export default {
             handleUpdateActionActivityLog(client, {}, user, clientIp);
 
             return await db.client.findByPk(id);
+        },
+        cancelClient: async (_root, { id }, { user, clientIp }) => {
+            const client = await db.client.findByPk(id);
+            if (!Boolean(client)) {
+                //Client not found
+                throw new UserInputError(
+                    `Client ID ${id} was not found. Please try again.`
+                );
+            }
+            // console.log(Object.keys(client.__proto__));
+
+            //Deleting all users
+            const users = await client.getUsers();
+            await asyncForEach(users, async user => {
+                try {
+                    await user.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete user ${user.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            //Deleting all license
+            const licenses = await client.getLicenses();
+            await asyncForEach(licenses, async license => {
+                try {
+                    await license.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete license ${license.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+            //Deleting all contracts
+            const contracts = await client.getContracts();
+            await asyncForEach(contracts, async contract => {
+                const contractKey = contract.file_key;
+                try {
+                    await contract.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete contract ${contract.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+
+                //Delete actual contract file
+                await processDelete(contractKey);
+            });
+
+            //Deleting all payments
+            const payments = await client.getPayments();
+            await asyncForEach(payments, async payment => {
+                try {
+                    await payment.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete payment ${payment.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            //Deleting all roles
+            const roles = await client.getRoles();
+            await asyncForEach(roles, async role => {
+                //Removing all permissions from this role
+                const permissions = await role.getPermissions();
+                try {
+                    await role.removePermissions(permissions);
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to remove permissions for role ${
+                            role.id
+                        }.\nError: ${error.message}`
+                    );
+                }
+
+                //Delete the role
+                try {
+                    await role.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete role ${role.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            //Deleting all departments
+            const departments = await client.getDepartments();
+            try {
+                await client.removeDepartments(departments);
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to remove departments for client ID: ${id}.\nError: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Deleting all systems
+            const systems = await client.getSystems();
+            await asyncForEach(systems, async system => {
+                //Deleting all themes
+                const theme = await system.getTheme();
+                try {
+                    await theme.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete theme ${theme.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+
+                //Deleting all features
+                const features = await system.getFeatures();
+                try {
+                    await system.removeFeatures(features);
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete features for system ID: ${
+                            system.id
+                        }.\nError: ${error.message}`
+                    );
+                }
+
+                //Delete the system
+                try {
+                    await system.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete system ${system.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            //Deleting all media
+            const media = await client.getMedia();
+            await asyncForEach(media, async medium => {
+                try {
+                    await medium.destroy();
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to delete Media ${medium.id}.\nError: ${
+                            error.message
+                        }`
+                    );
+                }
+            });
+
+            //Finally attempt to delete client
+            try {
+                await client.destroy();
+                return true;
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to delete Client ${client.id}.\nError: ${
+                        error.message
+                    }`
+                );
+            }
         }
     },
     Client: {
