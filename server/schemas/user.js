@@ -49,6 +49,7 @@ export default gql`
         first_phone_number: String
         second_phone_number: String
         password: String
+        role_id: Int
     }
 
     input DeleteUserInput {

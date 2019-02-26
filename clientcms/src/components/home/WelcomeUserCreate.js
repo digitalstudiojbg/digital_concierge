@@ -183,7 +183,9 @@ const WelcomeUserCreate = props => {
         handleIsCreatePageState,
         match: { params: { client_id = {} } = {} } = {},
         is_edit = false,
-        selected_user = null
+        selected_user = null,
+        updateUser,
+        handleEditModal
     } = props;
 
     if (departmentsByUser.length < 0) {
@@ -813,6 +815,7 @@ const WelcomeUserCreate = props => {
                             setSubmitting(false);
                         });
                     } else {
+                        console.log(selected_user.id);
                         console.log(position);
                         console.log(email);
                         console.log(first_phone_number);
@@ -820,7 +823,32 @@ const WelcomeUserCreate = props => {
                         console.log(name);
                         console.log(password);
                         console.log(roleId);
-                        setSubmitting(false);
+
+                        updateUser({
+                            variables: {
+                                input: {
+                                    id: parseInt(selected_user.id),
+                                    name,
+                                    position,
+                                    email,
+                                    ...(Boolean(first_phone_number) && {
+                                        first_phone_number
+                                    }),
+                                    ...(Boolean(second_phone_number) && {
+                                        second_phone_number
+                                    }),
+                                    ...(Boolean(password) && {
+                                        password
+                                    }),
+                                    role_id: parseInt(roleId)
+                                }
+                            }
+                        }).then(() => {
+                            console.log("USER UPDATED SUCCESSFULLY");
+                            handleEditModal();
+
+                            setSubmitting(false);
+                        });
                     }
                 }}
                 initialValues={{
@@ -1005,6 +1033,7 @@ const WelcomeUserCreate = props => {
 
 export default compose(
     withRouter,
+    withApollo,
     withStyles(styles),
     graphql(getDepartmentListByUser, {
         name: "getDepartmentListByUser"

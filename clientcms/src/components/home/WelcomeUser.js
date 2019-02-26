@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ReactTable from "react-table";
 import { Mutation, Query } from "react-apollo";
 import { getUsersByClient } from "../../data/query";
-import { DELETE_USER } from "../../data/mutation";
+import { DELETE_USER, UPDATE_USER } from "../../data/mutation";
 import Checkbox from "@material-ui/core/Checkbox";
 import WelcomeUserCreate from "./WelcomeUserCreate";
 import Dialog from "@material-ui/core/Dialog";
@@ -101,10 +101,12 @@ class WelcomeUser extends Component {
             is_create_page: false,
             selected_row: null,
             deleteModal: false,
+            editModal: false,
             single_delete: [],
             selected_object: null
         };
         this.handleAction = this.handleAction.bind(this);
+        this.handleEditModal = this.handleEditModal.bind(this);
     }
 
     handleAction(original) {
@@ -116,6 +118,11 @@ class WelcomeUser extends Component {
     handleIsCreatePageState() {
         //   const { is_create_page } = this.state;
         this.setState({ is_create_page: !this.state.is_create_page });
+    }
+
+    handleEditModal() {
+        this.setState({ editModal: !this.state.editModal });
+        //this.forceUpdate();
     }
 
     render() {
@@ -477,28 +484,50 @@ class WelcomeUser extends Component {
                                     />
                                 </div>
 
-                                <Dialog
-                                    open={editModal}
-                                    TransitionComponent={Transition}
-                                    onClose={() => {
-                                        this.setState({
-                                            editModal: false
-                                        });
-                                    }}
-                                    maxWidth="xl"
-                                    fullWidth
-                                >
-                                    <DialogTitle>DETAIL</DialogTitle>
-                                    <DialogContent>
-                                        <WelcomeUserCreate
-                                            is_edit
-                                            selected_user={
-                                                this.state.selected_object
+                                <Mutation
+                                    mutation={UPDATE_USER}
+                                    refetchQueries={[
+                                        {
+                                            query: getUsersByClient,
+                                            variables: {
+                                                id: this.props.data.id
                                             }
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-
+                                        }
+                                    ]}
+                                >
+                                    {(updateUser, { loading, error }) => {
+                                        return (
+                                            <Dialog
+                                                open={editModal}
+                                                TransitionComponent={Transition}
+                                                onClose={() => {
+                                                    this.setState({
+                                                        editModal: false
+                                                    });
+                                                }}
+                                                maxWidth="xl"
+                                                fullWidth
+                                            >
+                                                <DialogTitle>
+                                                    DETAIL
+                                                </DialogTitle>
+                                                <DialogContent>
+                                                    <WelcomeUserCreate
+                                                        updateUser={updateUser}
+                                                        handleEditModal={
+                                                            this.handleEditModal
+                                                        }
+                                                        is_edit
+                                                        selected_user={
+                                                            this.state
+                                                                .selected_object
+                                                        }
+                                                    />
+                                                </DialogContent>
+                                            </Dialog>
+                                        );
+                                    }}
+                                </Mutation>
                                 <Mutation
                                     mutation={DELETE_USER}
                                     refetchQueries={[

@@ -108,7 +108,8 @@ export default {
                     password,
                     first_phone_number,
                     second_phone_number,
-                    position
+                    position,
+                    role_id = null
                 }
             },
             { user, clientIp }
@@ -128,6 +129,8 @@ export default {
                     second_phone_number
                 })
             };
+
+            Boolean(role_id) && (await user.setRoles([role_id]));
 
             const userToUpdate = await db.user.findByPk(id);
 
