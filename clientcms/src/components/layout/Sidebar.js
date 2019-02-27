@@ -34,7 +34,7 @@ import {
     Settings,
     People
 } from "@material-ui/icons";
-import loading from "../loading/Loading";
+import Loading from "../loading/Loading";
 
 const SIDEBAR_ITEMS = [
     {
@@ -206,8 +206,8 @@ class Sidebar extends Component {
                 `}
             >
                 {({ loading, error, data: { system } }) => {
-                    if (loading) return <React.Fragment />;
-                    if (error) return <div />;
+                    if (loading) return <Loading loadingData />;
+                    if (error) return `Error message:\n${error.message}`;
                     return (
                         <div
                             style={{
