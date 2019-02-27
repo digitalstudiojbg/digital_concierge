@@ -27,7 +27,9 @@ const ContainerDiv = styled.div`
 
 const SectionDiv = styled.div`
     width: ${props => props.width};
-    height: 100%;
+    height: ${props => (Boolean(props.height) ? props.height : "100%")};
+    display: flex;
+    flex-direction: column;
 `;
 
 const ClientFieldContainerDiv = styled.div`
@@ -431,72 +433,93 @@ class WizardCreateClientPageOne extends React.Component {
                                                     )}
                                                 </FieldContainerDiv>
                                             </SectionDiv>
-                                            <SectionDiv width="25%">
+                                            <SectionDiv
+                                                width="25%"
+                                                height="500px"
+                                            >
                                                 Client Profile Image
-                                                <FieldContainerDiv>
-                                                    <FieldDiv>
-                                                        <MuiTextField
-                                                            value={
-                                                                client_image_name
-                                                            }
-                                                            disabled={true}
-                                                            fullWidth={true}
-                                                            label="File Name"
-                                                            variant="outlined"
-                                                        />
-                                                    </FieldDiv>
-                                                    <FieldDiv>
-                                                        <input
-                                                            accept="image/*"
-                                                            className={
-                                                                classes.hideFileInput
-                                                            }
-                                                            ref={this.fileInput}
-                                                            onChange={
-                                                                this
-                                                                    .updateClientImage
-                                                            }
-                                                            id="upload-client-image"
-                                                            type="file"
-                                                        />
-                                                        <div
-                                                            style={{
-                                                                width: "100%",
-                                                                display: "flex",
-                                                                flexDirection:
-                                                                    "row-reverse"
-                                                            }}
-                                                        >
-                                                            <label htmlFor="upload-client-image">
-                                                                <Button
-                                                                    variant="outlined"
-                                                                    component="span"
-                                                                    className={
-                                                                        classes.uploadButton
-                                                                    }
-                                                                >
-                                                                    Browse
-                                                                </Button>
-                                                            </label>
-                                                        </div>
-                                                    </FieldDiv>
-                                                </FieldContainerDiv>
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    color="primary"
-                                                    disabled={
-                                                        isSubmitting ||
-                                                        Object.keys(errors)
-                                                            .length > 0 ||
-                                                        !Boolean(
-                                                            this.state
-                                                                .client_image
-                                                        )
-                                                    }
+                                                <div style={{ height: 100 }}>
+                                                    <FieldContainerDiv>
+                                                        <FieldDiv>
+                                                            <MuiTextField
+                                                                value={
+                                                                    client_image_name
+                                                                }
+                                                                disabled={true}
+                                                                fullWidth={true}
+                                                                label="File Name"
+                                                                variant="outlined"
+                                                            />
+                                                        </FieldDiv>
+                                                        <FieldDiv>
+                                                            <input
+                                                                accept="image/*"
+                                                                className={
+                                                                    classes.hideFileInput
+                                                                }
+                                                                ref={
+                                                                    this
+                                                                        .fileInput
+                                                                }
+                                                                onChange={
+                                                                    this
+                                                                        .updateClientImage
+                                                                }
+                                                                id="upload-client-image"
+                                                                type="file"
+                                                            />
+                                                            <div
+                                                                style={{
+                                                                    width:
+                                                                        "100%",
+                                                                    display:
+                                                                        "flex",
+                                                                    flexDirection:
+                                                                        "row-reverse"
+                                                                }}
+                                                            >
+                                                                <label htmlFor="upload-client-image">
+                                                                    <Button
+                                                                        variant="outlined"
+                                                                        component="span"
+                                                                        className={
+                                                                            classes.uploadButton
+                                                                        }
+                                                                    >
+                                                                        Browse
+                                                                    </Button>
+                                                                </label>
+                                                            </div>
+                                                        </FieldDiv>
+                                                    </FieldContainerDiv>
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        flex: 1,
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        justifyContent:
+                                                            "flex-end",
+                                                        alignItems: "flex-end"
+                                                    }}
                                                 >
-                                                    Confirm & Continue
-                                                </Button>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="contained"
+                                                        color="primary"
+                                                        disabled={
+                                                            isSubmitting ||
+                                                            Object.keys(errors)
+                                                                .length > 0 ||
+                                                            !Boolean(
+                                                                this.state
+                                                                    .client_image
+                                                            )
+                                                        }
+                                                    >
+                                                        Confirm & Continue
+                                                    </Button>
+                                                </div>
                                             </SectionDiv>
                                         </ContainerDiv>
                                     </Form>

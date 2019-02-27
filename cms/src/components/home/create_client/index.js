@@ -140,7 +140,7 @@ class CreateClient extends Component {
         return (
             <div className={classes.root}>
                 {activeStep > -1 && (
-                    <React.Fragment>
+                    <div style={{ width: "100%", height: 250 }}>
                         <NewClientSetupTitleContainer>
                             <NewClientSetupTitle>
                                 New Client Setup
@@ -169,11 +169,13 @@ class CreateClient extends Component {
                                     );
                                 })}
                         </Stepper>
-                    </React.Fragment>
+                    </div>
                 )}
+                {/* <div style={{ flex: 1, height: "100%" }}> */}
                 <Suspense>
                     <SelectedComponent next={this.handleNext} />
                 </Suspense>
+                {/* </div> */}
                 {/* <div>
                     <div>
                         <Suspense>

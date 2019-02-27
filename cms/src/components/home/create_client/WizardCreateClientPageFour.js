@@ -216,7 +216,8 @@ class WizardCreateClientPageFour extends React.Component {
     renderListOfSystem() {
         const {
             systemsByClient: { systemsByClient = {} } = {},
-            client
+            client,
+            next
         } = this.props;
 
         return (
@@ -270,6 +271,25 @@ class WizardCreateClientPageFour extends React.Component {
                             }
                         )}
                 </div>
+                <div
+                    style={{
+                        width: "100%",
+                        paddingBottom: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        disabled={systemsByClient.length <= 0}
+                        onClick={() => {
+                            next && next();
+                        }}
+                    >
+                        CONFIRM & CONTINUE
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -290,7 +310,7 @@ class WizardCreateClientPageFour extends React.Component {
         return output;
     }
 
-    renderFeatureSection() {
+    renderFeatureSection(isSubmitting, errors) {
         const {
             getFeaturesByCategories: { featureCategories = {} } = {}
         } = this.props;
@@ -431,6 +451,27 @@ class WizardCreateClientPageFour extends React.Component {
                             </FeatureContainer>
                         );
                     })}
+                <div
+                    style={{
+                        width: "100%",
+                        paddingTop: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={
+                            isSubmitting ||
+                            Object.keys(errors).length > 0 ||
+                            this.state.selected_checkboxes.toJS().length === 0
+                        }
+                    >
+                        ADD SYSTEM
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -532,11 +573,14 @@ class WizardCreateClientPageFour extends React.Component {
                                         >
                                             {this.renderAddSystemSection()}
 
-                                            {this.renderFeatureSection()}
+                                            {this.renderFeatureSection(
+                                                isSubmitting,
+                                                errors
+                                            )}
 
                                             {this.renderListOfSystem()}
                                         </div>
-                                        <div
+                                        {/* <div
                                             style={{
                                                 paddingBottom: "20px"
                                             }}
@@ -555,14 +599,13 @@ class WizardCreateClientPageFour extends React.Component {
                                             >
                                                 ADD SYSTEM
                                             </Button>
-                                        </div>
-                                        <div
+                                        </div> */}
+                                        {/* <div
                                             style={{
                                                 paddingBottom: "20px"
                                             }}
                                         >
                                             <Button
-                                                type="submit"
                                                 variant="contained"
                                                 color="primary"
                                                 disabled={
@@ -572,9 +615,9 @@ class WizardCreateClientPageFour extends React.Component {
                                                     next && next();
                                                 }}
                                             >
-                                                CONFIRM & CONTINUOUS
+                                                CONFIRM & CONTINUE
                                             </Button>
-                                        </div>
+                                        </div> */}
                                     </Form>
                                 );
                             }}
