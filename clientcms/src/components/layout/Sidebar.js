@@ -271,7 +271,10 @@ class Sidebar extends Component {
                                                       )
                                                     : name &&
                                                       this.props.history.push(
-                                                          name
+                                                          name.replace(
+                                                              ":system_id",
+                                                              system.id
+                                                          )
                                                       );
                                             }}
                                             selectedItem={selectedItem}
