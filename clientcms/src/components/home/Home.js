@@ -16,7 +16,9 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
     SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
-    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    SYSTEM_INDEX_URL,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -36,6 +38,10 @@ const TabletCreateDirectory = lazy(() =>
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
 const Welcome = lazy(() => import("./Welcome.js"));
+
+const ModifyDirectoryList = lazy(() =>
+    import("../tablet/content/ModifyDirectoryList")
+);
 
 const routes = [
     // {
@@ -87,6 +93,14 @@ const routes = [
     //     main: Welcome,
     //     withProps: { tab: "support" }
     // },
+    {
+        path: SYSTEM_INDEX_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletDashboard,
+        withProps: {}
+    },
     {
         path: SYSTEM_CMS_INDEX_URL,
         exact: true,
@@ -157,6 +171,14 @@ const routes = [
         sidebar: Sidebar,
         header: Header,
         main: TabletLandingPage,
+        withProps: {}
+    },
+    {
+        path: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: ModifyDirectoryList,
         withProps: {}
     },
     {

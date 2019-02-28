@@ -12,6 +12,7 @@ export default gql`
         updateClient(input: UpdateClientInput): Client
         uploadFilesWithClientId(files: [Upload!]!, clientId: ID!): [Media!]!
         deleteFiles(media: [DeleteFilesInput]): UploadFilesWithClientIdResult!
+        cancelClient(id: ID!): Boolean
     }
 
     input DeleteFilesInput {

@@ -1311,16 +1311,25 @@ class WizardCreateClientPageThree extends React.Component {
                                                     DELETE
                                                 </MenuItem>
                                             </Menu>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() =>
-                                                    this.props.next &&
-                                                    this.props.next()
-                                                }
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex",
+                                                    justifyContent: "flex-end",
+                                                    paddingTop: 50
+                                                }}
                                             >
-                                                CONFIRM & CONTINUE
-                                            </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() =>
+                                                        this.props.next &&
+                                                        this.props.next()
+                                                    }
+                                                >
+                                                    CONFIRM & CONTINUE
+                                                </Button>
+                                            </div>
                                         </SectionDivContainer>
                                     );
                                 }}

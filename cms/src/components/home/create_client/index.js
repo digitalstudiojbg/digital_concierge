@@ -1,5 +1,6 @@
 import React, { Component, lazy, Suspense } from "react";
-import { withApollo } from "react-apollo";
+import { withApollo, compose, graphql } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,11 +8,26 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { CANCEL_CLIENT } from "../../../data/mutation";
+import { getNewCreatedClientId } from "../../../data/query";
+import { WELCOME_URL } from "../../../utils/Constants";
 // import MultipleMutationAndQueryExample from "./MultipleMutationAndQueryExample";
+
+const NewClientSetupTitleContainer = styled.div`
+    width: 100%;
+    display: flex;
+`;
 
 const NewClientSetupTitle = styled.p`
     font-size: 2.5em;
     padding-top: 15px;
+`;
+
+const CancelButtonContainer = styled.div`
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 `;
 
 const styles = theme => ({
@@ -29,36 +45,44 @@ const styles = theme => ({
     }
 });
 
+const WizardInitialPage = lazy(() => import("./WizardInitialPage"));
+
 const array_components = [
     {
         component: lazy(() => import("./WizardCreateClientPageOne")),
-        title: "Client"
+        title: "Client",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageTwo")),
-        title: "Account set-up"
+        title: "Account set-up",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageThree")),
-        title: "Structure"
+        title: "Structure",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFour")),
-        title: "System"
+        title: "System",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFive")),
-        title: "Theme"
+        title: "Theme",
+        inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageSix")),
-        title: "Media"
+        title: "Media",
+        inStepper: true
     }
 ];
 
 class CreateClient extends Component {
     state = {
-        activeStep: 0
+        activeStep: -1
     };
 
     handleNext = () => {
@@ -69,36 +93,89 @@ class CreateClient extends Component {
         });
     };
 
-    handlePrev = () => {
+    // handlePrev = () => {
+    //     const { activeStep } = this.state;
+
+    //     this.setState({
+    //         activeStep: Math.max(activeStep - 1, 0)
+    //     });
+    // };
+
+    handleCancel = () => {
+        const { cancelClient, client, history } = this.props;
         const { activeStep } = this.state;
 
-        this.setState({
-            activeStep: Math.max(activeStep - 1, 0)
-        });
+        let new_create_client_id = null;
+
+        if (activeStep > 0) {
+            //Only try to get client ID from cache after the first step (which is creating the client)
+            try {
+                new_create_client_id = client.readQuery({
+                    query: getNewCreatedClientId
+                }).new_create_client_id;
+                console.log("Cache Client ID: ", new_create_client_id);
+            } catch {
+                console.log("Unable to get cache Client ID");
+            }
+        }
+
+        //If client ID from cache cannot be retrieved, just redirect to welcome page url
+        Boolean(cancelClient) && Boolean(new_create_client_id)
+            ? cancelClient({ variables: { id: new_create_client_id } }).then(
+                  () => {
+                      history.push(WELCOME_URL);
+                  }
+              )
+            : history.push(WELCOME_URL);
     };
 
     render() {
         const { classes } = this.props;
         const { activeStep } = this.state;
-        const SelectedComponent = array_components[activeStep].component;
+        const SelectedComponent =
+            activeStep === -1
+                ? WizardInitialPage
+                : array_components[activeStep].component;
 
         return (
             <div className={classes.root}>
-                <NewClientSetupTitle>New Client Setup</NewClientSetupTitle>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {array_components.map(({ title }) => {
-                        const props = {};
-                        const labelProps = {};
-                        return (
-                            <Step key={title} {...props}>
-                                <StepLabel {...labelProps}>{title}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
+                {activeStep > -1 && (
+                    <div style={{ width: "100%", height: 250 }}>
+                        <NewClientSetupTitleContainer>
+                            <NewClientSetupTitle>
+                                New Client Setup
+                            </NewClientSetupTitle>
+                            <CancelButtonContainer>
+                                <Button
+                                    variant="outlined"
+                                    onClick={this.handleCancel}
+                                >
+                                    CANCEL
+                                </Button>
+                            </CancelButtonContainer>
+                        </NewClientSetupTitleContainer>
+                        <Stepper activeStep={activeStep} alternativeLabel>
+                            {array_components
+                                .filter(({ inStepper }) => Boolean(inStepper))
+                                .map(({ title }) => {
+                                    const props = {};
+                                    const labelProps = {};
+                                    return (
+                                        <Step key={title} {...props}>
+                                            <StepLabel {...labelProps}>
+                                                {title}
+                                            </StepLabel>
+                                        </Step>
+                                    );
+                                })}
+                        </Stepper>
+                    </div>
+                )}
+                {/* <div style={{ flex: 1, height: "100%" }}> */}
                 <Suspense>
                     <SelectedComponent next={this.handleNext} />
                 </Suspense>
+                {/* </div> */}
                 {/* <div>
                     <div>
                         <Suspense>
@@ -155,4 +232,9 @@ CreateClient.propTypes = {
     classes: PropTypes.object
 };
 
-export default withApollo(withStyles(styles)(CreateClient));
+export default compose(
+    withApollo,
+    withRouter,
+    withStyles(styles),
+    graphql(CANCEL_CLIENT, { name: "cancelClient" })
+)(CreateClient);

@@ -307,7 +307,8 @@ class WizardCreateClientPageTwo extends React.Component {
         );
     }
 
-    renderPaymentForm() {
+    renderPaymentForm(isSubmitting, errors, values) {
+        const { client_image } = this.state;
         const { getCurrencyList: { currencies = {} } = {} } = this.props;
 
         return (
@@ -343,6 +344,27 @@ class WizardCreateClientPageTwo extends React.Component {
                         })}
                     </FiledContainer>
                 ))}
+                <div
+                    style={{
+                        paddingBottom: "20px",
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={
+                            isSubmitting ||
+                            Object.keys(errors).length > 0 ||
+                            !values.license_type ||
+                            !client_image
+                        }
+                    >
+                        CONFIRM & CONTINUE
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -472,9 +494,13 @@ class WizardCreateClientPageTwo extends React.Component {
 
                                 {this.renderAgreementForm()}
 
-                                {this.renderPaymentForm()}
+                                {this.renderPaymentForm(
+                                    isSubmitting,
+                                    errors,
+                                    values
+                                )}
                             </div>
-                            <div
+                            {/* <div
                                 style={{
                                     paddingBottom: "20px"
                                 }}
@@ -492,7 +518,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                 >
                                     CONFIRM & CONTINUE
                                 </Button>
-                            </div>
+                            </div> */}
                         </Form>
                     );
                 }}

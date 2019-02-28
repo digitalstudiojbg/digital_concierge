@@ -33,6 +33,10 @@ export const SYSTEM_MODIFY_DIRECTORY_LIST_URL =
 export const SYSTEM_MODIFY_DIRECTORY_ENTRY_URL =
     SYSTEM_INDEX_URL + "/content/modify_directory_entry";
 export const SYSTEM_CMS_LIBRARY = SYSTEM_INDEX_URL + "/library";
+export const SYSTEM_CMS_PROMOTION = SYSTEM_INDEX_URL + "/promotion";
+export const SYSTEM_CMS_DEVICES = SYSTEM_INDEX_URL + "/devices";
+export const SYSTEM_CMS_GUESTS = SYSTEM_INDEX_URL + "/guests";
+export const SYSTEM_CMS_ACTIVITY = SYSTEM_INDEX_URL + "/activity";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 

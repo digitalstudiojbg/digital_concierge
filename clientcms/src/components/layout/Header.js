@@ -40,7 +40,8 @@ const ContainerDiv = styled.div`
     height: 80px;
     position: fixed;
     top: 0px;
-    background-color: ${COLOR_JBG_PURPLE};
+    /* background-color: ${COLOR_JBG_PURPLE}; */
+    background-color: black;
     color: white;
     display: flex;
     justify-content: flex-start;
@@ -103,8 +104,15 @@ class Header extends Component {
                 {match.url === URL_WELCOME ? (
                     <WelcomeDiv>Welcome</WelcomeDiv>
                 ) : (
-                    <div style={{ width: 350 }}>
-                        {has_tablet && has_touchscreen && (
+                    <div
+                        style={{
+                            width: 350,
+                            fontSize: "2em",
+                            paddingLeft: 30,
+                            fontWeight: 700
+                        }}
+                    >
+                        {/* {has_tablet && has_touchscreen && (
                             <Link
                                 to={
                                     match.url.includes(SYSTEM_CMS_INDEX_URL)
@@ -121,7 +129,8 @@ class Header extends Component {
                                 </IconButton>
                                 SWITCH SITE
                             </Link>
-                        )}
+                        )} */}
+                        PLATYPUS
                     </div>
                 )}
                 <div
@@ -132,7 +141,7 @@ class Header extends Component {
                     {match.url !== URL_WELCOME && (
                         <React.Fragment>
                             <div>{name.toUpperCase()}</div>
-                            <div>
+                            <div style={{ color: "black" }}>
                                 {match.url.includes(SYSTEM_CMS_INDEX_URL)
                                     ? "DIGITAL COMPENDIUM"
                                     : "TOUCHSCREEN"}

@@ -4,8 +4,16 @@ import { getCurrentUserQuery as query } from "../../../data/query";
 import { withApollo } from "react-apollo";
 import { getNewCreatedClientId } from "../../../data/query";
 import Loading from "../../loading/Loading";
+import Button from "@material-ui/core/Button";
+import { withRouter } from "react-router-dom";
+import { WELCOME_URL } from "../../../utils/Constants";
 
 class WizardCreateClientPageSix extends React.Component {
+    navigateToDashboard = () => {
+        const { history } = this.props;
+        history.push(WELCOME_URL);
+    };
+
     render() {
         const { client } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
@@ -32,9 +40,25 @@ class WizardCreateClientPageSix extends React.Component {
                         height={"60vh"}
                     />
                 )}
+                <div
+                    style={{
+                        width: "100%",
+                        paddingTop: 20,
+                        display: "flex",
+                        justifyContent: "flex-end"
+                    }}
+                >
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.navigateToDashboard}
+                    >
+                        Confirm & Complete Setup
+                    </Button>
+                </div>
             </div>
         );
     }
 }
 
-export default withApollo(WizardCreateClientPageSix);
+export default withApollo(withRouter(WizardCreateClientPageSix));

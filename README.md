@@ -52,7 +52,7 @@ Digital Concierge Project
 -   \$ node_modules/.bin/sequelize migration:generate --name add-associations
 -   \$ node_modules/.bin/sequelize seed:generate --name user
 -   \$ node_modules/.bin/sequelize model:generate --name company --attributes name:string,description:text
--   \$ console.log(Object.keys(instance.**proto**)) //List of sequelize instance magic commands
+-   \$ console.log(Object.keys(select_directory.__proto__));) //List of sequelize instance magic commands
 
 ## Useful docker commands
 

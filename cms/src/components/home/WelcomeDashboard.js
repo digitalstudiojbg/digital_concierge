@@ -8,7 +8,11 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
-import { CREATE_NEW_CLIENT } from "../../utils/Constants";
+import {
+    CREATE_NEW_CLIENT,
+    WELCOME_URL,
+    CLIENT_CMS_URL
+} from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -21,15 +25,17 @@ const ContainerDiv = styled.div`
 `;
 
 const EntryContainerDiv = styled.div`
-    width: 50%;
+    width: 35%;
     height: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow-y: auto;
 `;
 
 const EntryTitleDiv = styled.div`
     font-size: 1.5em;
+    padding-bottom: 30px;
 `;
 
 const EntryEntryContainerDiv = styled.div`
@@ -48,6 +54,7 @@ const EntryCardDiv = styled.div`
 
 const styles = () => ({
     card: {
+        padding: 20,
         width: 200,
         height: 200,
         marginBottom: 30,
@@ -85,15 +92,31 @@ export const WelcomeDashboard = ({ classes }) => (
                                     style={{ textDecoration: "none" }}
                                 >
                                     <Card className={classes.card}>
-                                        <AddIcon className={classes.addIcon} />
-                                        <span
+                                        <div
                                             style={{
-                                                color: "gray",
-                                                fontSize: "1.3em"
+                                                width: "100%",
+                                                height: "100%",
+                                                padding: 5,
+                                                border:
+                                                    "2px solid rgb(238,238,238)",
+                                                display: "flex",
+                                                flexDirection: "column",
+                                                justifyContent: "center",
+                                                alignItems: "center"
                                             }}
                                         >
-                                            Add client
-                                        </span>
+                                            <AddIcon
+                                                className={classes.addIcon}
+                                            />
+                                            <span
+                                                style={{
+                                                    color: "gray",
+                                                    fontSize: "1.3em"
+                                                }}
+                                            >
+                                                Add client
+                                            </span>
+                                        </div>
                                     </Card>
                                 </Link>
                             </EntryCardDiv>
@@ -102,12 +125,24 @@ export const WelcomeDashboard = ({ classes }) => (
                                     key={`client-${client.id}-${index}`}
                                 >
                                     <Card className={classes.card}>
-                                        <CardMedia
-                                            component="img"
-                                            alt={`${client.name} alt avatar`}
-                                            className={classes.card_media}
-                                            image={client.avatar}
-                                        />
+                                        <a
+                                            href={
+                                                CLIENT_CMS_URL +
+                                                WELCOME_URL +
+                                                "/" +
+                                                client.id
+                                            }
+                                            target="_blank"
+                                        >
+                                            <CardMedia
+                                                component="img"
+                                                alt={`${
+                                                    client.name
+                                                } alt avatar`}
+                                                className={classes.card_media}
+                                                image={client.avatar}
+                                            />
+                                        </a>
                                     </Card>
                                 </EntryCardDiv>
                             ))}

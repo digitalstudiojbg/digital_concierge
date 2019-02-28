@@ -113,16 +113,20 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
         </SubtitleContainerDiv>
         <InnerContainerDiv>
             {systems.map(
-                ({
-                    id,
-                    name,
-                    devices_count,
-                    system_type: { name: systemTypeName },
-                    device_type: { name: deviceTypeName }
-                }) => (
+                (
+                    {
+                        id,
+                        name,
+                        devices_count,
+                        system_type: { name: systemTypeName },
+                        device_type: { name: deviceTypeName }
+                    },
+                    index
+                ) => (
                     <Link
                         style={system_entry_style}
-                        key={id}
+                        key={`${id}-${index}`}
+                        target="_blank"
                         to={SYSTEM_INDEX_URL.replace(":system_id", id)}
                     >
                         <div>{name}</div>

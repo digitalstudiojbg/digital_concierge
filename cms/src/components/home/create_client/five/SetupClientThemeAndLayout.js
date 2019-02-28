@@ -427,7 +427,8 @@ class SetupClientThemeAndLayout extends React.Component {
                         : Map();
                     const colours = Boolean(values)
                         ? values.get("colours")
-                        : [];
+                        : List();
+
                     const { id: systemId } = systems[systemIndex] || {};
                     const LAYOUT_OPTIONS = this.getLayoutOptions();
                     // const currentDefaultStartLayout =
@@ -642,8 +643,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                         COLOUR THEME
                                         <ColourThemeContainerDiv>
                                             {Boolean(colours) &&
-                                                Array.isArray(colours) &&
-                                                colours.length > 0 &&
+                                                colours.size > 0 &&
                                                 colours.map(
                                                     (colour, colourIndex) => (
                                                         <ColourEntryContainerDiv

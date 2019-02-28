@@ -7,7 +7,8 @@ import { changeDirectoryListAndEntryStatus } from "./directory";
 import {
     CREATE_CLIENT,
     UPLOAD_FILES_WITH_CLIENT_ID,
-    DELETE_FILES
+    DELETE_FILES,
+    CANCEL_CLIENT
 } from "./client";
 import { CREATE_CONTACT } from "./contact";
 import { CREATE_USER } from "./user";
@@ -30,6 +31,7 @@ export {
     changeDirectoryListAndEntryStatus,
     DELETE_DIR_LIST_ENTRY,
     CREATE_CLIENT,
+    CANCEL_CLIENT,
     CREATE_CONTACT,
     CREATE_USER,
     CREATE_DEPARTMENT,
