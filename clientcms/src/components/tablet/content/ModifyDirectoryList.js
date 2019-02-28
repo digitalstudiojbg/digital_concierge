@@ -486,11 +486,7 @@ class ModifyDirectoryList extends React.PureComponent {
                                                         isSubmitting ||
                                                         Boolean(errors.name) ||
                                                         !Boolean(values.name) ||
-                                                        values.name.length ===
-                                                            0 ||
-                                                        !Boolean(
-                                                            selected_directory
-                                                        )
+                                                        values.name.length === 0 //|| !Boolean(selected_directory)
                                                     }
                                                     className={
                                                         classes.saveButton
