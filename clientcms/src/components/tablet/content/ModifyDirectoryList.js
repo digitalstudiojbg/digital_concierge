@@ -306,6 +306,15 @@ class ModifyDirectoryList extends React.PureComponent {
             : "ADD DIRECTORY LIST ENTRY";
         const subTitleText = "DIRECTORY LIST TITLE";
 
+        const has_system_id =
+            Boolean(this.props.match) &&
+            Boolean(this.props.match.params) &&
+            Boolean(this.props.match.params.system_id);
+
+        const system_id = has_system_id
+            ? this.props.match.params.system_id
+            : "";
+
         console.log(this.state.images);
 
         return (
@@ -609,6 +618,7 @@ class ModifyDirectoryList extends React.PureComponent {
                                                         }}
                                                     />
                                                 </div>
+
                                                 <div
                                                     style={{
                                                         fontSize: "0.8em",
@@ -626,63 +636,78 @@ class ModifyDirectoryList extends React.PureComponent {
                                                         CATEGORY
                                                     </p>
                                                 </div>
-                                                <Query
-                                                    query={getDirectoryListBySystem(
-                                                        1
-                                                    )}
-                                                >
-                                                    {({
-                                                        loading,
-                                                        error,
-                                                        data
-                                                    }) => {
-                                                        if (loading)
-                                                            return (
-                                                                <Loading
-                                                                    loadingData
-                                                                />
+
+                                                {has_system_id && (
+                                                    <Query
+                                                        query={getDirectoryListBySystem()}
+                                                        variables={{
+                                                            id: system_id
+                                                        }}
+                                                    >
+                                                        {({
+                                                            loading,
+                                                            error,
+                                                            data
+                                                        }) => {
+                                                            if (loading)
+                                                                return (
+                                                                    <Loading
+                                                                        loadingData
+                                                                    />
+                                                                );
+                                                            if (error)
+                                                                return `Error! ${
+                                                                    error.message
+                                                                }`;
+                                                            const modifiedData = modifyDirectoryListData(
+                                                                data.directoryLists_by_system
                                                             );
-                                                        if (error)
-                                                            return `Error! ${
-                                                                error.message
-                                                            }`;
-                                                        const modifiedData = modifyDirectoryListData(
-                                                            data.directoryLists_by_system
-                                                        );
-                                                        if (
-                                                            !Boolean(editData)
-                                                        ) {
-                                                            return (
-                                                                <TreeviewCheckbox
-                                                                    data={
-                                                                        modifiedData
-                                                                    }
-                                                                    updateSelectedDirectory={
-                                                                        this
-                                                                            .updateSelectedDirectory
-                                                                    }
-                                                                    selectAmount="single"
-                                                                />
-                                                            );
-                                                        } else {
-                                                            return (
-                                                                <TreeviewCheckbox
-                                                                    data={
-                                                                        modifiedData
-                                                                    }
-                                                                    updateSelectedDirectory={
-                                                                        this
-                                                                            .updateSelectedDirectory
-                                                                    }
-                                                                    selectAmount="single"
-                                                                    selectedValue={
-                                                                        selected_directory
-                                                                    }
-                                                                />
-                                                            );
-                                                        }
-                                                    }}
-                                                </Query>
+                                                            if (
+                                                                !Boolean(
+                                                                    editData
+                                                                ) &&
+                                                                modifiedData.length >
+                                                                    0
+                                                            ) {
+                                                                return (
+                                                                    <TreeviewCheckbox
+                                                                        data={
+                                                                            modifiedData
+                                                                        }
+                                                                        updateSelectedDirectory={
+                                                                            this
+                                                                                .updateSelectedDirectory
+                                                                        }
+                                                                        selectAmount="single"
+                                                                    />
+                                                                );
+                                                            } else if (
+                                                                modifiedData.length >
+                                                                0
+                                                            ) {
+                                                                return (
+                                                                    <TreeviewCheckbox
+                                                                        data={
+                                                                            modifiedData
+                                                                        }
+                                                                        updateSelectedDirectory={
+                                                                            this
+                                                                                .updateSelectedDirectory
+                                                                        }
+                                                                        selectAmount="single"
+                                                                        selectedValue={
+                                                                            selected_directory
+                                                                        }
+                                                                    />
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <React.Fragment />
+                                                                );
+                                                            }
+                                                        }}
+                                                    </Query>
+                                                )}
                                             </div>
                                         </CreateContentContainerDiv>
                                     </Form>

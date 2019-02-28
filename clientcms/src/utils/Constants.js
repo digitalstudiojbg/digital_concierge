@@ -134,9 +134,13 @@ function _modifyDirectoryListOrEntry(
 
 //Function to modify category and directory entries data
 export const modifyDirectoryListData = data => {
-    return data.map(item => {
-        return _modifyDirectoryListOrEntry(item);
-    });
+    if (data.length === 0) {
+        return [];
+    } else {
+        return data.map(item => {
+            return _modifyDirectoryListOrEntry(item);
+        });
+    }
 };
 
 //https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
