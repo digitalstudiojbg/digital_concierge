@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import {
-    // WELCOME_URL,
+    WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
     SYSTEM_CMS_LANDINGPAGE_URL,
     SYSTEM_CMS_HOME_URL,
@@ -49,7 +49,7 @@ const SIDEBAR_ITEMS = [
         center: false
     },
     {
-        name: SYSTEM_CMS_HOME_URL,
+        name: WELCOME_URL,
         displayName: "Home",
         icon: Home,
         center: false
@@ -256,6 +256,7 @@ class Sidebar extends Component {
                             id
                             name
                             client {
+                                id
                                 avatar
                             }
                         }
@@ -265,6 +266,7 @@ class Sidebar extends Component {
                 {({ loading, error, data: { system } }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error message:\n${error.message}`;
+                    console.log(system);
                     return (
                         <div
                             style={{
@@ -319,6 +321,25 @@ class Sidebar extends Component {
                                         <SidebarItem
                                             key={index}
                                             onClick={() => {
+                                                console.log("Name is ", name);
+                                                if (name === WELCOME_URL) {
+                                                    const navigateTo =
+                                                        WELCOME_URL +
+                                                        "/" +
+                                                        system.client.id +
+                                                        "/systems";
+
+                                                    // console.log(navigateTo);
+                                                    // this.props.history.push(
+                                                    //     "/"
+                                                    // );
+
+                                                    //TODO: FIX TO USE REACT ROUTER
+                                                    // window.open(navigateTo);
+                                                    window.location.replace(
+                                                        navigateTo
+                                                    );
+                                                }
                                                 this.setState({
                                                     selectedItem: name
                                                 });
