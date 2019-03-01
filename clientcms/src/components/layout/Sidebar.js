@@ -321,40 +321,33 @@ class Sidebar extends Component {
                                         <SidebarItem
                                             key={index}
                                             onClick={() => {
-                                                console.log("Name is ", name);
+                                                // console.log("Name is ", name);
                                                 if (name === WELCOME_URL) {
                                                     const navigateTo =
                                                         WELCOME_URL +
                                                         "/" +
                                                         system.client.id +
                                                         "/systems";
-
-                                                    // console.log(navigateTo);
-                                                    // this.props.history.push(
-                                                    //     "/"
-                                                    // );
-
-                                                    //TODO: FIX TO USE REACT ROUTER
-                                                    // window.open(navigateTo);
-                                                    window.location.replace(
+                                                    this.props.history.push(
                                                         navigateTo
                                                     );
-                                                }
-                                                this.setState({
-                                                    selectedItem: name
-                                                });
-                                                displayName === "View Site"
-                                                    ? window.open(
-                                                          name,
-                                                          "_blank"
-                                                      )
-                                                    : name &&
-                                                      this.props.history.push(
-                                                          name.replace(
-                                                              ":system_id",
-                                                              system.id
+                                                } else {
+                                                    this.setState({
+                                                        selectedItem: name
+                                                    });
+                                                    displayName === "View Site"
+                                                        ? window.open(
+                                                              name,
+                                                              "_blank"
                                                           )
-                                                      );
+                                                        : name &&
+                                                          this.props.history.push(
+                                                              name.replace(
+                                                                  ":system_id",
+                                                                  system.id
+                                                              )
+                                                          );
+                                                }
                                             }}
                                             selectedItem={selectedItem}
                                             expectedItem={name}
