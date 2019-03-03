@@ -2,17 +2,15 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        layout(id: ID!): Layout
-        layouts: [Layout]
+        layoutFamily(id: ID!): LayoutFamily
+        layoutFamilies: [LayoutFamily]
     }
 
-    type Layout {
+    type LayoutFamily {
         id: ID!
         name: String
-        layoutFamily: LayoutFamily
+        layouts: [Layout]
         createdAt: DateTime
         updatedAt: DateTime
-        templates: [Template]
-        media: Media
     }
 `;

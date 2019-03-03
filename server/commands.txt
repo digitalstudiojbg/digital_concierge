@@ -446,3 +446,9 @@ node_modules/.bin/sequelize migration:generate --name add-is-standard-department
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-license
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-role
+
+node_modules/.bin/sequelize model:generate --name layout_family --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout_family-and-layout
+
+node_modules/.bin/sequelize seed:generate --name layout_family
