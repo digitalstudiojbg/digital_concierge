@@ -130,7 +130,13 @@ class MediaLibrary extends React.Component {
     };
 
     render() {
-        const { clientId: id, classes } = this.props;
+        const {
+            clientId: id,
+            classes,
+            isBrowserMedia = false,
+            setSelectedImages = null,
+            multipleSelect = false
+        } = this.props;
         const { limit, offset, selected, sort } = this.state;
         return (
             <div>
@@ -140,52 +146,233 @@ class MediaLibrary extends React.Component {
                         paddingBottom: "20px"
                     }}
                 >
-                    <Mutation
-                        mutation={UPLOAD_FILES_WITH_CLIENT_ID}
-                        refetchQueries={[
-                            {
-                                query: getClientImageById,
-                                variables: { id, limit, offset, sort }
-                            }
-                        ]}
-                        update={(cache, data) => {
-                            this.resetSelected();
-                        }}
-                    >
-                        {(uploadFilesWithClientId, { loading, error }) => {
-                            return (
-                                <div>
-                                    <UploadDeleteButton>
-                                        {!loading ? (
-                                            <React.Fragment>
-                                                <input
-                                                    style={{ display: "none" }}
-                                                    type="file"
-                                                    accept=".png,.jpg"
-                                                    multiple
-                                                    required
-                                                    onChange={({
-                                                        target: {
-                                                            validity,
-                                                            files
-                                                        }
-                                                    }) => {
-                                                        uploadFilesWithClientId(
-                                                            {
-                                                                variables: {
-                                                                    files,
-                                                                    clientId: id
-                                                                }
+                    {!isBrowserMedia && (
+                        <Mutation
+                            mutation={UPLOAD_FILES_WITH_CLIENT_ID}
+                            refetchQueries={[
+                                {
+                                    query: getClientImageById,
+                                    variables: { id, limit, offset, sort }
+                                }
+                            ]}
+                            update={(cache, data) => {
+                                this.resetSelected();
+                            }}
+                        >
+                            {(uploadFilesWithClientId, { loading, error }) => {
+                                return (
+                                    <div>
+                                        <UploadDeleteButton>
+                                            {!loading ? (
+                                                <React.Fragment>
+                                                    <input
+                                                        style={{
+                                                            display: "none"
+                                                        }}
+                                                        type="file"
+                                                        accept=".png,.jpg"
+                                                        multiple
+                                                        required
+                                                        onChange={({
+                                                            target: {
+                                                                validity,
+                                                                files
                                                             }
-                                                        );
-                                                        this.resetSelected();
+                                                        }) => {
+                                                            uploadFilesWithClientId(
+                                                                {
+                                                                    variables: {
+                                                                        files,
+                                                                        clientId: id
+                                                                    }
+                                                                }
+                                                            );
+                                                            this.resetSelected();
+                                                        }}
+                                                    />
+                                                    UPLOAD FILE
+                                                </React.Fragment>
+                                            ) : (
+                                                <Loading button />
+                                            )}
+                                            {error && (
+                                                <p
+                                                    style={{
+                                                        color: "red",
+                                                        fontSize: "1.2em"
                                                     }}
-                                                />
-                                                UPLOAD FILE
-                                            </React.Fragment>
-                                        ) : (
-                                            <Loading button />
-                                        )}
+                                                >
+                                                    `Error! ${error.message}`
+                                                </p>
+                                            )}
+                                        </UploadDeleteButton>
+                                    </div>
+                                );
+                            }}
+                        </Mutation>
+                    )}
+
+                    {!isBrowserMedia && (
+                        <Mutation
+                            mutation={DELETE_FILES}
+                            refetchQueries={[
+                                {
+                                    query: getClientImageById,
+                                    variables: { id, limit, offset, sort }
+                                }
+                            ]}
+                            update={(cache, data) => {
+                                this.resetSelected();
+                            }}
+                        >
+                            {(deleteFiles, { loading, error }) => {
+                                return (
+                                    <div style={{ paddingLeft: "25px" }}>
+                                        <UploadDeleteButton
+                                            onClick={() => {
+                                                this.handleClickOpen();
+                                            }}
+                                        >
+                                            {!loading ? (
+                                                <span>DELETE SELECTED</span>
+                                            ) : (
+                                                <Loading button />
+                                            )}
+                                        </UploadDeleteButton>
+
+                                        <Dialog
+                                            open={this.state.deleteAlertOpen}
+                                            TransitionComponent={Transition}
+                                            onClose={this.handleClose}
+                                        >
+                                            <DialogTitle id="alert-dialog-title">
+                                                <h2>Confirmation</h2>
+                                            </DialogTitle>
+                                            <DialogContent>
+                                                <DialogContentText id="alert-dialog-description">
+                                                    {selected.length > 0 ? (
+                                                        <React.Fragment>
+                                                            <p
+                                                                style={{
+                                                                    fontSize:
+                                                                        "1.3em"
+                                                                }}
+                                                            >
+                                                                Are you sure you
+                                                                want to delete
+                                                                the selected
+                                                                images? Click OK
+                                                                to confirm.
+                                                            </p>
+                                                            <ul
+                                                                style={{
+                                                                    paddingLeft:
+                                                                        "30px",
+                                                                    paddingRight:
+                                                                        "30px"
+                                                                }}
+                                                            >
+                                                                {selected.map(
+                                                                    each => {
+                                                                        return (
+                                                                            <li
+                                                                                style={{
+                                                                                    fontSize:
+                                                                                        "1.2em"
+                                                                                }}
+                                                                            >
+                                                                                {
+                                                                                    each.name
+                                                                                }
+                                                                            </li>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </ul>
+                                                        </React.Fragment>
+                                                    ) : (
+                                                        <p
+                                                            style={{
+                                                                fontSize:
+                                                                    "1.3em"
+                                                            }}
+                                                        >
+                                                            Please choose at
+                                                            least one image to
+                                                            delete first.
+                                                        </p>
+                                                    )}
+                                                </DialogContentText>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                {selected.length > 0 ? (
+                                                    <React.Fragment>
+                                                        <Button
+                                                            onClick={
+                                                                this.handleClose
+                                                            }
+                                                            color="secondary"
+                                                            className={
+                                                                classes.buttonFont
+                                                            }
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                        <Button
+                                                            onClick={() => {
+                                                                let toDelete = [];
+                                                                selected.map(
+                                                                    each => {
+                                                                        toDelete.push(
+                                                                            {
+                                                                                id: parseInt(
+                                                                                    each.id
+                                                                                ),
+                                                                                key:
+                                                                                    each.key
+                                                                            }
+                                                                        );
+                                                                    }
+                                                                );
+                                                                selected.length >
+                                                                0
+                                                                    ? deleteFiles(
+                                                                          {
+                                                                              variables: {
+                                                                                  media: toDelete
+                                                                              }
+                                                                          }
+                                                                      )
+                                                                    : alert(
+                                                                          "Please select one image"
+                                                                      );
+                                                                this.handleClose();
+                                                                this.resetSelected();
+                                                            }}
+                                                            color="primary"
+                                                            autoFocus
+                                                            className={
+                                                                classes.buttonFont
+                                                            }
+                                                        >
+                                                            Ok
+                                                        </Button>
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <Button
+                                                        onClick={
+                                                            this.handleClose
+                                                        }
+                                                        color="primary"
+                                                        className={
+                                                            classes.buttonFont
+                                                        }
+                                                    >
+                                                        Ok
+                                                    </Button>
+                                                )}
+                                            </DialogActions>
+                                        </Dialog>
                                         {error && (
                                             <p
                                                 style={{
@@ -196,178 +383,22 @@ class MediaLibrary extends React.Component {
                                                 `Error! ${error.message}`
                                             </p>
                                         )}
-                                    </UploadDeleteButton>
-                                </div>
-                            );
-                        }}
-                    </Mutation>
-                    <Mutation
-                        mutation={DELETE_FILES}
-                        refetchQueries={[
-                            {
-                                query: getClientImageById,
-                                variables: { id, limit, offset, sort }
-                            }
-                        ]}
-                        update={(cache, data) => {
-                            this.resetSelected();
-                        }}
-                    >
-                        {(deleteFiles, { loading, error }) => {
-                            return (
-                                <div style={{ paddingLeft: "25px" }}>
-                                    <UploadDeleteButton
-                                        onClick={() => {
-                                            this.handleClickOpen();
-                                        }}
-                                    >
-                                        {!loading ? (
-                                            <span>DELETE SELECTED</span>
-                                        ) : (
-                                            <Loading button />
-                                        )}
-                                    </UploadDeleteButton>
+                                    </div>
+                                );
+                            }}
+                        </Mutation>
+                    )}
 
-                                    <Dialog
-                                        open={this.state.deleteAlertOpen}
-                                        TransitionComponent={Transition}
-                                        onClose={this.handleClose}
-                                    >
-                                        <DialogTitle id="alert-dialog-title">
-                                            <h2>Confirmation</h2>
-                                        </DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText id="alert-dialog-description">
-                                                {selected.length > 0 ? (
-                                                    <React.Fragment>
-                                                        <p
-                                                            style={{
-                                                                fontSize:
-                                                                    "1.3em"
-                                                            }}
-                                                        >
-                                                            Are you sure you
-                                                            want to delete the
-                                                            selected images?
-                                                            Click OK to confirm.
-                                                        </p>
-                                                        <ul
-                                                            style={{
-                                                                paddingLeft:
-                                                                    "30px",
-                                                                paddingRight:
-                                                                    "30px"
-                                                            }}
-                                                        >
-                                                            {selected.map(
-                                                                each => {
-                                                                    return (
-                                                                        <li
-                                                                            style={{
-                                                                                fontSize:
-                                                                                    "1.2em"
-                                                                            }}
-                                                                        >
-                                                                            {
-                                                                                each.name
-                                                                            }
-                                                                        </li>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </ul>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <p
-                                                        style={{
-                                                            fontSize: "1.3em"
-                                                        }}
-                                                    >
-                                                        Please choose at least
-                                                        one image to delete
-                                                        first.
-                                                    </p>
-                                                )}
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            {selected.length > 0 ? (
-                                                <React.Fragment>
-                                                    <Button
-                                                        onClick={
-                                                            this.handleClose
-                                                        }
-                                                        color="secondary"
-                                                        className={
-                                                            classes.buttonFont
-                                                        }
-                                                    >
-                                                        Cancel
-                                                    </Button>
-                                                    <Button
-                                                        onClick={() => {
-                                                            let toDelete = [];
-                                                            selected.map(
-                                                                each => {
-                                                                    toDelete.push(
-                                                                        {
-                                                                            id: parseInt(
-                                                                                each.id
-                                                                            ),
-                                                                            key:
-                                                                                each.key
-                                                                        }
-                                                                    );
-                                                                }
-                                                            );
-                                                            selected.length > 0
-                                                                ? deleteFiles({
-                                                                      variables: {
-                                                                          media: toDelete
-                                                                      }
-                                                                  })
-                                                                : alert(
-                                                                      "Please select one image"
-                                                                  );
-                                                            this.handleClose();
-                                                            this.resetSelected();
-                                                        }}
-                                                        color="primary"
-                                                        autoFocus
-                                                        className={
-                                                            classes.buttonFont
-                                                        }
-                                                    >
-                                                        Ok
-                                                    </Button>
-                                                </React.Fragment>
-                                            ) : (
-                                                <Button
-                                                    onClick={this.handleClose}
-                                                    color="primary"
-                                                    className={
-                                                        classes.buttonFont
-                                                    }
-                                                >
-                                                    Ok
-                                                </Button>
-                                            )}
-                                        </DialogActions>
-                                    </Dialog>
-                                    {error && (
-                                        <p
-                                            style={{
-                                                color: "red",
-                                                fontSize: "1.2em"
-                                            }}
-                                        >
-                                            `Error! ${error.message}`
-                                        </p>
-                                    )}
-                                </div>
-                            );
-                        }}
-                    </Mutation>
+                    {isBrowserMedia && setSelectedImages && multipleSelect && (
+                        <div
+                            style={{ paddingLeft: "25px" }}
+                            onClick={() => {
+                                setSelectedImages(this.state.selected);
+                            }}
+                        >
+                            <UploadDeleteButton>SAVE</UploadDeleteButton>
+                        </div>
+                    )}
                 </div>
 
                 <Query
@@ -525,27 +556,40 @@ class MediaLibrary extends React.Component {
                                                             marginBottom: "0px"
                                                         }}
                                                     >
-                                                        <Checkbox
-                                                            checked={this.state.selected.includes(
-                                                                image
-                                                            )}
-                                                            onChange={this.handleCheckbox.bind(
-                                                                this,
-                                                                image
-                                                            )}
-                                                            className={
-                                                                classes.checkbox
-                                                            }
-                                                            value="checkedB"
-                                                            color="primary"
-                                                        />
+                                                        {multipleSelect ||
+                                                            (!isBrowserMedia && (
+                                                                <Checkbox
+                                                                    checked={this.state.selected.includes(
+                                                                        image
+                                                                    )}
+                                                                    onChange={this.handleCheckbox.bind(
+                                                                        this,
+                                                                        image
+                                                                    )}
+                                                                    className={
+                                                                        classes.checkbox
+                                                                    }
+                                                                    value="checkedB"
+                                                                    color="primary"
+                                                                />
+                                                            ))}
+
                                                         {image.name}
                                                     </p>
                                                     <a
                                                         onClick={() => {
-                                                            window.open(
-                                                                image.path
-                                                            );
+                                                            if (
+                                                                multipleSelect ||
+                                                                !isBrowserMedia
+                                                            ) {
+                                                                window.open(
+                                                                    image.path
+                                                                );
+                                                            } else {
+                                                                setSelectedImages(
+                                                                    [image]
+                                                                );
+                                                            }
                                                         }}
                                                     >
                                                         <img
@@ -733,7 +777,10 @@ class MediaLibrary extends React.Component {
 
 MediaLibrary.propTypes = {
     clientId: PropTypes.number.isRequired,
-    height: PropTypes.string.isRequired
+    height: PropTypes.string.isRequired,
+    isBrowserMedia: PropTypes.bool,
+    setSelectedImages: PropTypes.func,
+    multipleSelect: PropTypes.bool
 };
 
 export default withStyles(styles)(withApollo(MediaLibrary));

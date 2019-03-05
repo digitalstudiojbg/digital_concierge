@@ -35,3 +35,17 @@ export const getSystemThemesFromClient = gql`
     }
     ${themeDetailFragment}
 `;
+
+export const getSystemDetailSidebar = gql`
+    query getSystemDetailSidebar($id: ID!) {
+        system(id: $id) {
+            id
+            name
+            client {
+                id
+                name
+                avatar
+            }
+        }
+    }
+`;

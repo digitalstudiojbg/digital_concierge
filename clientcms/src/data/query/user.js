@@ -61,6 +61,10 @@ export const getCurrentUserQuery = gql`
                     name
                 }
             }
+            client {
+                id
+                name
+            }
             # client {
             #     id
             #     name

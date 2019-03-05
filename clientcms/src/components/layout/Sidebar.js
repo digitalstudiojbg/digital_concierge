@@ -37,6 +37,7 @@ import {
     People
 } from "@material-ui/icons";
 import Loading from "../loading/Loading";
+import { getSystemDetailSidebar } from "../../data/query";
 
 const SIDEBAR_ITEMS = [
     {
@@ -248,20 +249,7 @@ class Sidebar extends Component {
         const { params } = match || {};
         const { system_id = "" } = params || {};
         return (
-            <Query
-                variables={{ id: system_id }}
-                query={gql`
-                    query getSystemDetailSidebar($id: ID!) {
-                        system(id: $id) {
-                            id
-                            name
-                            client {
-                                avatar
-                            }
-                        }
-                    }
-                `}
-            >
+            <Query variables={{ id: system_id }} query={getSystemDetailSidebar}>
                 {({ loading, error, data: { system } }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error message:\n${error.message}`;

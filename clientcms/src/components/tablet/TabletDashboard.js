@@ -4,6 +4,7 @@ import { SYSTEM_CMS_LANDINGPAGE_URL } from "../../utils/Constants";
 import UploadFile from "./content/UploadFile";
 import UploadFiles from "./content/UploadFiles";
 import UploadFileDropZone from "./content/UploadFileDropZone";
+import BrowserMedia from "../../utils/BrowserMedia";
 
 class TabletDashboard extends Component {
     render() {
@@ -23,6 +24,8 @@ class TabletDashboard extends Component {
                 <UploadFileDropZone /> <br />
                 <h3>Multiple Images Upload</h3>
                 <UploadFiles /> <br />
+                <BrowserMedia />
+                <br />
             </div>
         );
     }

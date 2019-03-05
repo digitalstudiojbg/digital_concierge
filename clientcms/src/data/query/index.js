@@ -3,7 +3,8 @@ import { getDirectoryListBySystem } from "./directoryList";
 import {
     getSystemsFromUser,
     getSystemsFromClient,
-    getSystemThemesFromClient
+    getSystemThemesFromClient,
+    getSystemDetailSidebar
 } from "./system";
 import {
     getClientFromUser,
@@ -41,5 +42,6 @@ export {
     getRoleList,
     getContractByClientId,
     getUsersByClient,
-    getSystemThemesFromClient
+    getSystemThemesFromClient,
+    getSystemDetailSidebar
 };
