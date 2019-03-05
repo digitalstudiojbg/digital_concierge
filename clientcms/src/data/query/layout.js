@@ -1,15 +1,11 @@
 import gql from "graphql-tag";
+import { layoutDetailFragment } from "../fragment";
 
 export const getLayoutList = gql`
     query getLayoutList {
         layouts {
-            id
-            name
-            media {
-                id
-                path
-                type
-            }
+            ...layoutDetail
         }
+        ${layoutDetailFragment}
     }
 `;

@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         layoutFamily(id: ID!): LayoutFamily
         layoutFamilies: [LayoutFamily]
+        layoutFamilyFilter(name: String!): LayoutFamily
     }
 
     type LayoutFamily {
