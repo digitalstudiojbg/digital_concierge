@@ -8,7 +8,13 @@ import ModifyDirectoryListContent from "./ModifyDirectoryListContent";
 import PropTypes from "prop-types";
 import { ContainerDiv } from "../../../utils/Constants";
 // import { withStyles } from "@material-ui/core/styles";
+import styled from "styled-components";
 
+export const ContainerDivTab = styled.div`
+    width: 100%;
+    overflow-y: auto;
+    height: 80vh;
+`;
 const TabContainer = props => {
     return (
         // <Typography component="div" style={{ height: "100%" }}>
@@ -45,8 +51,9 @@ const ModifyDirectoryList = props => {
         <div
             style={{
                 width: "100%",
+                // height: "100%",
                 // height: "calc(100vh-80px)",
-                overflowY: "auto",
+                // overflowY: "auto",
                 backgroundColor: lightGreyHeader
             }}
         >
@@ -87,16 +94,7 @@ const ModifyDirectoryList = props => {
                     <Tab label="CONTENT" />
                 </Tabs>
             </Paper>
-            <div
-                style={{
-                    width: "100%",
-                    // height: "calc(100vh-140px)",
-                    // height: "100%",
-                    backgroundColor: "white",
-                    overflowY: "scroll"
-                    //   flexGrow: "1"
-                }}
-            >
+            <ContainerDivTab>
                 {tab === 0 && <TabContainer>PREVIEW</TabContainer>}
                 {tab === 1 && (
                     <TabContainer>
@@ -108,7 +106,7 @@ const ModifyDirectoryList = props => {
                         <ModifyDirectoryListContent />
                     </TabContainer>
                 )}
-            </div>
+            </ContainerDivTab>
         </div>
     );
 };
