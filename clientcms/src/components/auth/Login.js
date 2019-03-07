@@ -58,123 +58,103 @@ const LoginFormSection = styled.div`
     text-align: center;
 `;
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: "",
-            error: false,
-            errorMessage: ""
-        };
-    }
+const Login = props => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    handleChange(event) {
+    const handleChange = event => {
         const { name, value } = event.target;
-        this.setState({ [name]: value });
-    }
+        name === "email" ? setEmail(value) : setPassword(value);
+    };
 
-    handleClick(event) {
+    const handleClick = event => {
         event.preventDefault();
-        const { email, password } = this.state;
-
         if (!isEmpty(email) && !isEmpty(password)) {
             login(email, password).then(ok => {
                 if (ok) {
-                    this.props.onLogin();
+                    props.onLogin();
                 } else {
-                    this.setState({
-                        error: true,
-                        errorMessage: "Login Failed! Please try again!"
-                    });
+                    setError(true);
+                    setErrorMessage("Login Failed! Please try again!");
                 }
             });
         } else {
-            this.setState({
-                error: true,
-                errorMessage: "Please enter email & password!"
-            });
+            setError(true);
+            setErrorMessage("Please enter email & password!");
         }
-    }
+    };
 
-    render() {
-        const { email, password, error, errorMessage } = this.state;
-        return (
-            <LoginBodyContainer>
-                <CenterDivContainer>
-                    <form>
-                        <LoginFormContainer>
-                            <div>
-                                <TitleDivContainer>
-                                    <p>PLATYPUS</p>
-                                </TitleDivContainer>
-                                <LoginFormSection>
-                                    <div>
-                                        {error ? (
-                                            <ErrorWarningMessage>
-                                                {errorMessage}
-                                            </ErrorWarningMessage>
-                                        ) : (
-                                            <React.Fragment>
-                                                <WelcomeMessage>
-                                                    Please login to your account
-                                                </WelcomeMessage>
-                                            </React.Fragment>
-                                        )}
-                                    </div>
-                                    <div>
-                                        <TextField
-                                            id="standard-name"
-                                            label="Email"
-                                            margin="normal"
-                                            fullWidth={true}
-                                            value={email}
-                                            name="email"
-                                            onChange={this.handleChange.bind(
-                                                this
-                                            )}
-                                        />
-                                    </div>
-                                    <div>
-                                        <TextField
-                                            id="standard-password-input"
-                                            label="Password"
-                                            type="password"
-                                            margin="normal"
-                                            value={password}
-                                            name="password"
-                                            fullWidth={true}
-                                            onChange={this.handleChange.bind(
-                                                this
-                                            )}
-                                        />
-                                    </div>
-                                    <div style={{ paddingTop: "1vh" }}>
-                                        <Button
-                                            variant="contained"
-                                            type="submit"
-                                            color="primary"
-                                            style={{
-                                                width: "100%",
-                                                color: "white",
-                                                fontSize: "1.3em",
-                                                backgroundColor: "rgb(0,203,109"
-                                            }}
-                                            onClick={this.handleClick.bind(
-                                                this
-                                            )}
-                                        >
-                                            Log in
-                                        </Button>
-                                    </div>
-                                </LoginFormSection>
-                            </div>
-                        </LoginFormContainer>
-                    </form>
-                </CenterDivContainer>
-            </LoginBodyContainer>
-        );
-    }
-}
+    return (
+        <LoginBodyContainer>
+            <CenterDivContainer>
+                <form>
+                    <LoginFormContainer>
+                        <div>
+                            <TitleDivContainer>
+                                <p>PLATYPUS</p>
+                            </TitleDivContainer>
+                            <LoginFormSection>
+                                <div>
+                                    {error ? (
+                                        <ErrorWarningMessage>
+                                            {errorMessage}
+                                        </ErrorWarningMessage>
+                                    ) : (
+                                        <React.Fragment>
+                                            <WelcomeMessage>
+                                                Please login to your account
+                                            </WelcomeMessage>
+                                        </React.Fragment>
+                                    )}
+                                </div>
+                                <div>
+                                    <TextField
+                                        id="standard-name"
+                                        label="Email"
+                                        margin="normal"
+                                        fullWidth={true}
+                                        value={email}
+                                        name="email"
+                                        onChange={handleChange.bind(this)}
+                                    />
+                                </div>
+                                <div>
+                                    <TextField
+                                        id="standard-password-input"
+                                        label="Password"
+                                        type="password"
+                                        margin="normal"
+                                        value={password}
+                                        name="password"
+                                        fullWidth={true}
+                                        onChange={handleChange.bind(this)}
+                                    />
+                                </div>
+                                <div style={{ paddingTop: "1vh" }}>
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        color="primary"
+                                        style={{
+                                            width: "100%",
+                                            color: "white",
+                                            fontSize: "1.3em",
+                                            backgroundColor: "rgb(0,203,109"
+                                        }}
+                                        onClick={handleClick.bind(this)}
+                                    >
+                                        Log in
+                                    </Button>
+                                </div>
+                            </LoginFormSection>
+                        </div>
+                    </LoginFormContainer>
+                </form>
+            </CenterDivContainer>
+        </LoginBodyContainer>
+    );
+};
 
 export default Login;
