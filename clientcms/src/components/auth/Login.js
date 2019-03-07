@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { login } from "../../auth/auth";
+import { login, getEmailLocalStorage } from "../../auth/auth";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { isEmpty } from "lodash";
 import styled from "styled-components";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const WelcomeMessage = styled.p`
     color: rgb(166, 167, 173);
@@ -61,15 +63,30 @@ const LoginFormSection = styled.div`
     text-align: center;
 `;
 
+const RememberMeForgotPasswordContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+`;
+
 const LoginButton = styled.div`
     padding-top: 1vh;
 `;
 
 const Login = props => {
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(
+        Boolean(getEmailLocalStorage()) ? getEmailLocalStorage : ""
+    );
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const [rememberMe, setRememberMe] = useState(
+        !isEmpty(getEmailLocalStorage()) ? true : false
+    );
 
     const handleChange = event => {
         const { name, value } = event.target;
@@ -79,7 +96,7 @@ const Login = props => {
     const handleClick = event => {
         event.preventDefault();
         if (!isEmpty(email) && !isEmpty(password)) {
-            login(email, password).then(ok => {
+            login(email, password, rememberMe).then(ok => {
                 if (ok) {
                     props.onLogin();
                 } else {
@@ -138,6 +155,29 @@ const Login = props => {
                                     onChange={handleChange.bind(this)}
                                 />
                             </div>
+                            <RememberMeForgotPasswordContainer>
+                                <div>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={rememberMe}
+                                                onChange={() => {
+                                                    rememberMe &&
+                                                        localStorage.setItem(
+                                                            "email",
+                                                            ""
+                                                        );
+                                                    setRememberMe(!rememberMe);
+                                                }}
+                                                value="checkedB"
+                                                color="primary"
+                                            />
+                                        }
+                                        label="  Remember me?"
+                                    />
+                                </div>
+                                <div>Forgot Password</div>
+                            </RememberMeForgotPasswordContainer>
                             <LoginButton>
                                 <Button
                                     variant="contained"
