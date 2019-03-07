@@ -1,17 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { login } from "../../auth/auth";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { isEmpty } from "lodash";
-import { COLOR_JBG_PURPLE } from "../../utils/Constants";
 import styled from "styled-components";
-
-const CMSTitle = styled.p`
-    margin-left: 0.5vw;
-    color: rgb(124, 126, 162);
-    font-size: 1.2em;
-    text-transform: uppercase;
-`;
 
 const WelcomeMessage = styled.p`
     color: rgb(166, 167, 173);
@@ -24,27 +16,46 @@ const ErrorWarningMessage = styled.p`
     color: red;
 `;
 
-const LoginBodyLayout = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: stretch;
-    align-content: stretch;
-    width: 100vw;
-    height: 100vh;
-`;
-
-const LoginLeftContainer = styled.div`
-    background-image: url(https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/wallpaper_login_small.jpg);
+const LoginBodyContainer = styled.div`
+    background-image: url("https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/Smoke_Abstract_Creative_Design_HD_Photo.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    width: 60vw;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
 `;
 
-const LoginRightContainer = styled.div`
-    width: 40vw;
+const LoginFormContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+`;
+
+const CenterDivContainer = styled.div`
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: white;
+`;
+
+const TitleDivContainer = styled.div`
+    padding: 25px 60px 25px 60px;
+    background-color: lightgrey;
+    font-size: 4.5em;
+    text-align: center;
+    font-weight: bold;
+`;
+
+const LoginFormSection = styled.div`
+    padding: 30px;
+    text-align: center;
 `;
 
 class Login extends Component {
@@ -89,127 +100,79 @@ class Login extends Component {
     render() {
         const { email, password, error, errorMessage } = this.state;
         return (
-            <LoginBodyLayout>
-                <LoginLeftContainer />
-                <LoginRightContainer>
+            <LoginBodyContainer>
+                <CenterDivContainer>
                     <form>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                flexWrap: "nowrap",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                alignContent: "center",
-                                width: "100%",
-                                height: "100vh"
-                            }}
-                        >
-                            <div
-                                style={{
-                                    width: "50%"
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                        flexWrap: "nowrap",
-                                        justifyContent: "flex-start",
-                                        alignItems: "center",
-                                        alignContent: "center"
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            width: "50%"
-                                        }}
-                                    >
-                                        <img
-                                            alt="logo"
-                                            style={{ height: "3vw" }}
-                                            src="https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/logo_login.png"
+                        <LoginFormContainer>
+                            <div>
+                                <TitleDivContainer>
+                                    <p>PLATYPUS</p>
+                                </TitleDivContainer>
+                                <LoginFormSection>
+                                    <div>
+                                        {error ? (
+                                            <ErrorWarningMessage>
+                                                {errorMessage}
+                                            </ErrorWarningMessage>
+                                        ) : (
+                                            <React.Fragment>
+                                                <WelcomeMessage>
+                                                    Please login to your account
+                                                </WelcomeMessage>
+                                            </React.Fragment>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <TextField
+                                            id="standard-name"
+                                            label="Email"
+                                            margin="normal"
+                                            fullWidth={true}
+                                            value={email}
+                                            name="email"
+                                            onChange={this.handleChange.bind(
+                                                this
+                                            )}
                                         />
                                     </div>
-                                    <div
-                                        style={{
-                                            width: "50%",
-                                            height: "100%",
-                                            textAlign: "left",
-                                            borderLeft:
-                                                "2px solid rgb(124,126,162)"
-                                        }}
-                                    >
-                                        <CMSTitle>
-                                            CONTENT MANAGEMENT SYSTEM (CLIENT)
-                                        </CMSTitle>
+                                    <div>
+                                        <TextField
+                                            id="standard-password-input"
+                                            label="Password"
+                                            type="password"
+                                            margin="normal"
+                                            value={password}
+                                            name="password"
+                                            fullWidth={true}
+                                            onChange={this.handleChange.bind(
+                                                this
+                                            )}
+                                        />
                                     </div>
-                                </div>
-                                <div
-                                    style={{
-                                        textAlign: "center",
-                                        marginTop: "2vh"
-                                    }}
-                                >
-                                    {error ? (
-                                        <ErrorWarningMessage>
-                                            {errorMessage}
-                                        </ErrorWarningMessage>
-                                    ) : (
-                                        <React.Fragment>
-                                            <WelcomeMessage>
-                                                Welcome back!
-                                            </WelcomeMessage>
-                                            <WelcomeMessage>
-                                                Please login to your account
-                                            </WelcomeMessage>
-                                        </React.Fragment>
-                                    )}
-                                </div>
-                                <div>
-                                    <TextField
-                                        id="standard-name"
-                                        label="Email"
-                                        margin="normal"
-                                        fullWidth={true}
-                                        value={email}
-                                        name="email"
-                                        onChange={this.handleChange.bind(this)}
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        id="standard-password-input"
-                                        label="Password"
-                                        type="password"
-                                        margin="normal"
-                                        value={password}
-                                        name="password"
-                                        fullWidth={true}
-                                        onChange={this.handleChange.bind(this)}
-                                    />
-                                </div>
-                                <div style={{ paddingTop: "1vh" }}>
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        color="primary"
-                                        style={{
-                                            width: "100%",
-                                            color: "white",
-                                            fontSize: "1.3em",
-                                            backgroundColor: COLOR_JBG_PURPLE
-                                        }}
-                                        onClick={this.handleClick.bind(this)}
-                                    >
-                                        Login
-                                    </Button>
-                                </div>
+                                    <div style={{ paddingTop: "1vh" }}>
+                                        <Button
+                                            variant="contained"
+                                            type="submit"
+                                            color="primary"
+                                            style={{
+                                                width: "100%",
+                                                color: "white",
+                                                fontSize: "1.3em",
+                                                backgroundColor: "rgb(0,203,109"
+                                            }}
+                                            onClick={this.handleClick.bind(
+                                                this
+                                            )}
+                                        >
+                                            Log in
+                                        </Button>
+                                    </div>
+                                </LoginFormSection>
                             </div>
-                        </div>
+                        </LoginFormContainer>
                     </form>
-                </LoginRightContainer>
-            </LoginBodyLayout>
+                </CenterDivContainer>
+            </LoginBodyContainer>
         );
     }
 }
