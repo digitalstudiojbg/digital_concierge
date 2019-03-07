@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { login } from "../../auth/auth";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -43,19 +43,26 @@ const CenterDivContainer = styled.div`
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     background-color: white;
+    width: 400px;
 `;
 
 const TitleDivContainer = styled.div`
-    padding: 25px 60px 25px 60px;
+    width: 100%;
     background-color: lightgrey;
     font-size: 4.5em;
     text-align: center;
     font-weight: bold;
+    padding: 10px 0px 10px 0px;
 `;
 
 const LoginFormSection = styled.div`
+    width: 100%;
     padding: 30px;
     text-align: center;
+`;
+
+const LoginButton = styled.div`
+    padding-top: 1vh;
 `;
 
 const Login = props => {
@@ -91,65 +98,63 @@ const Login = props => {
             <CenterDivContainer>
                 <form>
                     <LoginFormContainer>
-                        <div>
-                            <TitleDivContainer>
-                                <p>PLATYPUS</p>
-                            </TitleDivContainer>
-                            <LoginFormSection>
-                                <div>
-                                    {error ? (
-                                        <ErrorWarningMessage>
-                                            {errorMessage}
-                                        </ErrorWarningMessage>
-                                    ) : (
-                                        <React.Fragment>
-                                            <WelcomeMessage>
-                                                Please login to your account
-                                            </WelcomeMessage>
-                                        </React.Fragment>
-                                    )}
-                                </div>
-                                <div>
-                                    <TextField
-                                        id="standard-name"
-                                        label="Email"
-                                        margin="normal"
-                                        fullWidth={true}
-                                        value={email}
-                                        name="email"
-                                        onChange={handleChange.bind(this)}
-                                    />
-                                </div>
-                                <div>
-                                    <TextField
-                                        id="standard-password-input"
-                                        label="Password"
-                                        type="password"
-                                        margin="normal"
-                                        value={password}
-                                        name="password"
-                                        fullWidth={true}
-                                        onChange={handleChange.bind(this)}
-                                    />
-                                </div>
-                                <div style={{ paddingTop: "1vh" }}>
-                                    <Button
-                                        variant="contained"
-                                        type="submit"
-                                        color="primary"
-                                        style={{
-                                            width: "100%",
-                                            color: "white",
-                                            fontSize: "1.3em",
-                                            backgroundColor: "rgb(0,203,109"
-                                        }}
-                                        onClick={handleClick.bind(this)}
-                                    >
-                                        Log in
-                                    </Button>
-                                </div>
-                            </LoginFormSection>
-                        </div>
+                        <TitleDivContainer>
+                            <p>PLATYPUS</p>
+                        </TitleDivContainer>
+                        <LoginFormSection>
+                            <div>
+                                {error ? (
+                                    <ErrorWarningMessage>
+                                        {errorMessage}
+                                    </ErrorWarningMessage>
+                                ) : (
+                                    <React.Fragment>
+                                        <WelcomeMessage>
+                                            Please login to your account
+                                        </WelcomeMessage>
+                                    </React.Fragment>
+                                )}
+                            </div>
+                            <div>
+                                <TextField
+                                    id="standard-name"
+                                    label="Email"
+                                    margin="normal"
+                                    fullWidth={true}
+                                    value={email}
+                                    name="email"
+                                    onChange={handleChange.bind(this)}
+                                />
+                            </div>
+                            <div>
+                                <TextField
+                                    id="standard-password-input"
+                                    label="Password"
+                                    type="password"
+                                    margin="normal"
+                                    value={password}
+                                    name="password"
+                                    fullWidth={true}
+                                    onChange={handleChange.bind(this)}
+                                />
+                            </div>
+                            <LoginButton>
+                                <Button
+                                    variant="contained"
+                                    type="submit"
+                                    color="primary"
+                                    style={{
+                                        width: "100%",
+                                        color: "white",
+                                        fontSize: "1.3em",
+                                        backgroundColor: "rgb(0,203,109"
+                                    }}
+                                    onClick={handleClick.bind(this)}
+                                >
+                                    Log in
+                                </Button>
+                            </LoginButton>
+                        </LoginFormSection>
                     </LoginFormContainer>
                 </form>
             </CenterDivContainer>
