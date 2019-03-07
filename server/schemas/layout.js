@@ -9,7 +9,7 @@ export default gql`
     type Layout {
         id: ID!
         name: String
-        layoutFamily: LayoutFamily
+        layout_family: LayoutFamily
         createdAt: DateTime
         updatedAt: DateTime
         templates: [Template]

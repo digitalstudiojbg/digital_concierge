@@ -4,8 +4,11 @@ import { ContainerDiv } from "../../../utils/Constants";
 
 export const ModifyDirectoryListLayout = () => {
     return (
-        <div style={{ height: "calc(100vh-140px)" }}>
-            <LayoutPicker />
+        <div style={{ width: "100%", height: "100%", display: "flex" }}>
+            <div style={{ flexBasis: "40%" }} />
+            <div style={{ flexBasis: "40%" }}>
+                <LayoutPicker />
+            </div>
         </div>
     );
 };

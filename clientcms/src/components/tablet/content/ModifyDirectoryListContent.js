@@ -327,7 +327,8 @@ class ModifyDirectoryList extends React.PureComponent {
                     }
                     refetchQueries={[
                         {
-                            query: getDirectoryListBySystem()
+                            query: getDirectoryListBySystem,
+                            variables: { id: system_id }
                         }
                     ]}
                 >
@@ -635,7 +636,9 @@ class ModifyDirectoryList extends React.PureComponent {
 
                                                 {has_system_id && (
                                                     <Query
-                                                        query={getDirectoryListBySystem()}
+                                                        query={
+                                                            getDirectoryListBySystem
+                                                        }
                                                         variables={{
                                                             id: system_id
                                                         }}
