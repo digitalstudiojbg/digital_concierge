@@ -2,7 +2,7 @@ import React from "react";
 import {
     ContainerDiv,
     CreateContentContainerDiv,
-    modifyDirectoryListData,
+    // modifyDirectoryListData,
     SYSTEM_CMS_CONTENT_URL
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
@@ -11,7 +11,8 @@ import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
-import { Formik, Form, Field } from "formik";
+// import { Formik, Form, Field } from "formik";
+import { Field } from "formik";
 import * as Yup from "yup";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -19,18 +20,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
-import { Query, Mutation } from "react-apollo";
-import Loading from "../../loading/Loading";
+// import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
+// import { Query } from "react-apollo";
+// import Loading from "../../loading/Loading";
 import { withApollo } from "react-apollo";
-import { getDirectoryListBySystem } from "../../../data/query";
+// import { getDirectoryListBySystem } from "../../../data/query";
 // import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
-import {
-    CREATE_DIRECTORY_LIST,
-    EDIT_DIRECTORY_LIST
-} from "../../../data/mutation";
 
 const styles = _theme => ({
     saveButton: {
@@ -105,7 +102,7 @@ class ModifyDirectoryList extends React.PureComponent {
         //Create Referencess
         this.dropZoneRef = React.createRef();
 
-        this.updateSelectedDirectory = this.updateSelectedDirectory.bind(this);
+        // this.updateSelectedDirectory = this.updateSelectedDirectory.bind(this);
         this.changeImageName = this.changeImageName.bind(this);
         this.removeImage = this.removeImage.bind(this);
         this.navigateAway = this.navigateAway.bind(this);
@@ -116,9 +113,11 @@ class ModifyDirectoryList extends React.PureComponent {
         this.openFileBrowser = this.openFileBrowser.bind(this);
     }
 
-    updateSelectedDirectory(selected_directory) {
-        this.setState({ selected_directory });
-    }
+    // updateSelectedDirectory(selected_directory) {
+    //     this.setState({ selected_directory }, () => {
+    //         this.props.setFieldValue("parent_id", selected_directory);
+    //     });
+    // }
 
     changeImageName(imageName) {
         this.setState({ imageName });
@@ -162,15 +161,24 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     onDrop(images) {
-        this.setState({
-            images: images.map(file =>
-                Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                    uploaded: false
-                })
-            ),
-            imageName: images[0].name
-        });
+        this.setState(
+            {
+                images: images.map(file =>
+                    Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                        uploaded: false
+                    })
+                ),
+                imageName: images[0].name
+            },
+            () => {
+                this.props.setFieldValue(
+                    "images",
+                    [...this.state.images],
+                    false
+                );
+            }
+        );
     }
 
     removeImage() {
@@ -298,423 +306,224 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     render() {
-        const { selected_directory, images, is_create } = this.state;
-        const { classes, location = {}, match } = this.props;
-        const { data: editData = null } = location.state || {};
-        const titleText = Boolean(editData)
-            ? "EDIT DIRECTORY LIST ENTRY"
-            : "ADD DIRECTORY LIST ENTRY";
+        // const { selected_directory, images, is_create } = this.state;
+        // const { selected_directory } = this.state;
+        const {
+            classes,
+            location = {}
+            // match,
+            // values,
+            // setFieldValue,
+            // isSubmitting,
+            // errors
+        } = this.props;
+        // const { data: editData = null } = location.state || {};
+        // const titleText = Boolean(editData)
+        //     ? "EDIT DIRECTORY LIST ENTRY"
+        //     : "ADD DIRECTORY LIST ENTRY";
         const subTitleText = "DIRECTORY LIST TITLE";
 
-        const has_system_id =
-            Boolean(this.props.match) &&
-            Boolean(this.props.match.params) &&
-            Boolean(this.props.match.params.system_id);
+        // const has_system_id =
+        //     Boolean(this.props.match) &&
+        //     Boolean(this.props.match.params) &&
+        //     Boolean(this.props.match.params.system_id);
 
-        const system_id = has_system_id
-            ? this.props.match.params.system_id
-            : "";
+        // const system_id = has_system_id
+        //     ? this.props.match.params.system_id
+        //     : "";
 
-        console.log(this.state.images);
+        // console.log(this.state.images);
 
         return (
             <ContainerDiv>
-                <Mutation
-                    mutation={
-                        is_create
-                            ? CREATE_DIRECTORY_LIST()
-                            : EDIT_DIRECTORY_LIST()
-                    }
-                    refetchQueries={[
-                        {
-                            query: getDirectoryListBySystem,
-                            variables: { id: system_id }
-                        }
-                    ]}
+                {/* <div
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: 40
+                    }}
                 >
-                    {(action, { loading, error }) => (
-                        <React.Fragment>
-                            {loading && <p>Loading...</p>}
-                            {error && (
-                                <p>Error :( Please try again {error.message}</p>
-                            )}
-                            <Formik
-                                initialValues={{
-                                    name: Boolean(editData) ? editData.name : ""
-                                }}
-                                onSubmit={(values, { setSubmitting }) => {
-                                    //TODO: Add logic to send mutation to DB
-                                    alert(values.name);
-                                    setSubmitting(false);
+                    <div
+                        style={{
+                            color: "rgb(35,38,92)",
+                            fontSize: "2.7em",
+                            width: "52%"
+                        }}
+                    >
+                        {titleText}
+                    </div>
+                    <div style={{ width: "10%" }}>
+                        <Button
+                            className={classes.cancelButton}
+                            disabled={isSubmitting}
+                            size="large"
+                            variant="outlined"
+                            onClick={this.openDialogCancel}
+                        >
+                            CANCEL
+                        </Button>
+                    </div>
+                    <div style={{ width: "10%" }}>
+                        <Button
+                            type="submit"
+                            disabled={
+                                isSubmitting ||
+                                Boolean(errors.name) ||
+                                !Boolean(values.name) ||
+                                values.name.length === 0 //|| !Boolean(selected_directory)
+                            }
+                            className={classes.saveButton}
+                            variant="outlined"
+                            size="large"
+                        >
+                            ADD & SAVE
+                        </Button>
+                    </div>
+                </div> */}
+                <CreateContentContainerDiv>
+                    <div style={{ width: "50%" }}>
+                        <div style={{ padding: 20 }}>HEADER IMAGE:</div>
 
-                                    if (
-                                        images &&
-                                        images.length === 1 &&
-                                        is_create
-                                    ) {
-                                        console.log("CREATE WITH IMAGE");
-
-                                        action({
-                                            variables: {
-                                                name: values.name,
-                                                is_root: selected_directory
-                                                    ? true
-                                                    : false,
-                                                layout_id: 1,
-                                                system_id: parseInt(
-                                                    match.params.system_id
-                                                ),
-                                                parent_id: parseInt(
-                                                    selected_directory
-                                                ),
-                                                image: images[0]
-                                            }
-                                        });
-                                    } else if (
-                                        images &&
-                                        images.length === 1 &&
-                                        !is_create
-                                    ) {
-                                        console.log("UPDATE WITH IMAGE");
-                                        console.log(images[0]);
-                                        //If user upload another image
-                                        if (!images[0].uploaded) {
-                                            action({
-                                                variables: {
-                                                    id: parseInt(
-                                                        this.props.location
-                                                            .state.data.id
-                                                    ),
-                                                    name: values.name,
-                                                    is_root: selected_directory
-                                                        ? true
-                                                        : false,
-                                                    layout_id: 1,
-                                                    system_id: parseInt(
-                                                        match.params.system_id
-                                                    ),
-                                                    parent_id: parseInt(
-                                                        selected_directory
-                                                    ),
-                                                    image: images[0]
-                                                }
-                                            });
-                                        } else {
-                                            action({
-                                                variables: {
-                                                    id: parseInt(
-                                                        this.props.location
-                                                            .state.data.id
-                                                    ),
-                                                    name: values.name,
-                                                    is_root: selected_directory
-                                                        ? true
-                                                        : false,
-                                                    layout_id: 1,
-                                                    system_id: parseInt(
-                                                        match.params.system_id
-                                                    ),
-                                                    parent_id: parseInt(
-                                                        selected_directory
-                                                    )
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        action({
-                                            variables: {
-                                                name: values.name,
-                                                is_root: selected_directory
-                                                    ? true
-                                                    : false,
-                                                layout_id: 1,
-                                                system_id: parseInt(
-                                                    match.params.system_id
-                                                ),
-                                                parent_id: parseInt(
-                                                    selected_directory
-                                                )
-                                            }
-                                        });
+                        {this.renderImageUploader()}
+                    </div>
+                    <div style={{ width: "50%" }}>
+                        <div
+                            style={{
+                                padding: "20px 20px 20px 0px"
+                            }}
+                        >
+                            {subTitleText}
+                        </div>
+                        {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
+                        <Field
+                            name="name"
+                            validateOnBlur
+                            validateOnChange
+                            render={({ field, form }) => (
+                                <TextField
+                                    className={classes.categoryNameTextField}
+                                    variant="outlined"
+                                    name={field.name}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    error={
+                                        form.errors[field.name] &&
+                                        form.touched[field.name]
                                     }
-
-                                    this.props.history.push(
-                                        SYSTEM_CMS_CONTENT_URL.replace(
-                                            ":system_id",
-                                            parseInt(match.params.system_id)
-                                        )
-                                    );
+                                    helperText={
+                                        form.errors[field.name] &&
+                                        form.touched[field.name] &&
+                                        String(form.errors[field.name])
+                                    }
+                                    FormHelperTextProps={{
+                                        classes: {
+                                            root: classes.categoryNameFormHelper
+                                        }
+                                    }}
+                                />
+                            )}
+                        />
+                        <div
+                            style={{
+                                width: "60%",
+                                marginTop: 40
+                            }}
+                        >
+                            <div
+                                style={{
+                                    fontSize: "0.8em"
                                 }}
-                                validationSchema={DirectoryListSchema}
                             >
-                                {({ isSubmitting, errors, values }) => (
-                                    <Form>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                alignItems: "center",
-                                                marginBottom: 40
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    color: "rgb(35,38,92)",
-                                                    fontSize: "2.7em",
-                                                    width: "52%"
-                                                }}
+                                IMAGE NAME
+                            </div>
+                            <TextField
+                                disabled={true}
+                                value={this.state.imageName}
+                                className={classes.imageNameTextField}
+                                margin="normal"
+                                variant="outlined"
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                disabled={
+                                                    this.state.imageName
+                                                        .length === 0
+                                                }
+                                                onClick={this.openDialogImage}
                                             >
-                                                {titleText}
-                                            </div>
-                                            <div style={{ width: "10%" }}>
-                                                <Button
-                                                    className={
-                                                        classes.cancelButton
-                                                    }
-                                                    disabled={isSubmitting}
-                                                    size="large"
-                                                    variant="outlined"
-                                                    onClick={
-                                                        this.openDialogCancel
-                                                    }
-                                                >
-                                                    CANCEL
-                                                </Button>
-                                            </div>
-                                            <div style={{ width: "10%" }}>
-                                                <Button
-                                                    type="submit"
-                                                    disabled={
-                                                        isSubmitting ||
-                                                        Boolean(errors.name) ||
-                                                        !Boolean(values.name) ||
-                                                        values.name.length === 0 //|| !Boolean(selected_directory)
-                                                    }
-                                                    className={
-                                                        classes.saveButton
-                                                    }
-                                                    variant="outlined"
-                                                    size="large"
-                                                >
-                                                    ADD & SAVE
-                                                </Button>
-                                            </div>
-                                        </div>
-                                        <CreateContentContainerDiv>
-                                            <div style={{ width: "50%" }}>
-                                                <div style={{ padding: 20 }}>
-                                                    HEADER IMAGE:
-                                                </div>
+                                                <CancelIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        </div>
+                        {/* <div
+                            style={{
+                                fontSize: "0.8em",
+                                marginTop: 20
+                            }}
+                        >
+                            SELECT LOCATION
+                            <p
+                                style={{
+                                    fontSize: "0.7em"
+                                }}
+                            >
+                                LEAVE BLANK IF CREATING A FIRST DIRECTORY LIST
+                                CATEGORY
+                            </p>
+                        </div> */}
+                        {/* {has_system_id && (
+                            <Query
+                                query={getDirectoryListBySystem}
+                                variables={{
+                                    id: system_id
+                                }}
+                            >
+                                {({ loading, error, data }) => {
+                                    if (loading) return <Loading loadingData />;
+                                    if (error) return `Error! ${error.message}`;
+                                    const modifiedData = modifyDirectoryListData(
+                                        data.directoryLists_by_system
+                                    );
+                                    if (
+                                        !Boolean(editData) &&
+                                        modifiedData.length > 0
+                                    ) {
+                                        return (
+                                            <TreeviewCheckbox
+                                                data={modifiedData}
+                                                updateSelectedDirectory={
+                                                    this.updateSelectedDirectory
+                                                }
+                                                selectAmount="single"
+                                            />
+                                        );
+                                    } else if (modifiedData.length > 0) {
+                                        return (
+                                            <TreeviewCheckbox
+                                                data={modifiedData}
+                                                updateSelectedDirectory={
+                                                    this.updateSelectedDirectory
+                                                }
+                                                selectAmount="single"
+                                                selectedValue={
+                                                    selected_directory
+                                                }
+                                            />
+                                        );
+                                    } else {
+                                        return <React.Fragment />;
+                                    }
+                                }}
+                            </Query> */}
+                        {/* )} */}
+                    </div>
+                </CreateContentContainerDiv>
 
-                                                {this.renderImageUploader()}
-                                            </div>
-                                            <div style={{ width: "50%" }}>
-                                                <div
-                                                    style={{
-                                                        padding:
-                                                            "20px 20px 20px 0px"
-                                                    }}
-                                                >
-                                                    {subTitleText}
-                                                </div>
-                                                {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
-                                                <Field
-                                                    name="name"
-                                                    validateOnBlur
-                                                    validateOnChange
-                                                    render={({
-                                                        field,
-                                                        form
-                                                    }) => (
-                                                        <TextField
-                                                            className={
-                                                                classes.categoryNameTextField
-                                                            }
-                                                            variant="outlined"
-                                                            name={field.name}
-                                                            value={field.value}
-                                                            onChange={
-                                                                field.onChange
-                                                            }
-                                                            onBlur={
-                                                                field.onBlur
-                                                            }
-                                                            error={
-                                                                form.errors[
-                                                                    field.name
-                                                                ] &&
-                                                                form.touched[
-                                                                    field.name
-                                                                ]
-                                                            }
-                                                            helperText={
-                                                                form.errors[
-                                                                    field.name
-                                                                ] &&
-                                                                form.touched[
-                                                                    field.name
-                                                                ] &&
-                                                                String(
-                                                                    form.errors[
-                                                                        field
-                                                                            .name
-                                                                    ]
-                                                                )
-                                                            }
-                                                            FormHelperTextProps={{
-                                                                classes: {
-                                                                    root:
-                                                                        classes.categoryNameFormHelper
-                                                                }
-                                                            }}
-                                                        />
-                                                    )}
-                                                />
-                                                <div
-                                                    style={{
-                                                        width: "60%",
-                                                        marginTop: 40
-                                                    }}
-                                                >
-                                                    <div
-                                                        style={{
-                                                            fontSize: "0.8em"
-                                                        }}
-                                                    >
-                                                        IMAGE NAME
-                                                    </div>
-                                                    <TextField
-                                                        disabled={true}
-                                                        value={
-                                                            this.state.imageName
-                                                        }
-                                                        className={
-                                                            classes.imageNameTextField
-                                                        }
-                                                        margin="normal"
-                                                        variant="outlined"
-                                                        InputProps={{
-                                                            endAdornment: (
-                                                                <InputAdornment position="end">
-                                                                    <IconButton
-                                                                        disabled={
-                                                                            this
-                                                                                .state
-                                                                                .imageName
-                                                                                .length ===
-                                                                            0
-                                                                        }
-                                                                        onClick={
-                                                                            this
-                                                                                .openDialogImage
-                                                                        }
-                                                                    >
-                                                                        <CancelIcon />
-                                                                    </IconButton>
-                                                                </InputAdornment>
-                                                            )
-                                                        }}
-                                                    />
-                                                </div>
-
-                                                <div
-                                                    style={{
-                                                        fontSize: "0.8em",
-                                                        marginTop: 20
-                                                    }}
-                                                >
-                                                    SELECT LOCATION
-                                                    <p
-                                                        style={{
-                                                            fontSize: "0.7em"
-                                                        }}
-                                                    >
-                                                        LEAVE BLANK IF CREATING
-                                                        A FIRST DIRECTORY LIST
-                                                        CATEGORY
-                                                    </p>
-                                                </div>
-
-                                                {has_system_id && (
-                                                    <Query
-                                                        query={
-                                                            getDirectoryListBySystem
-                                                        }
-                                                        variables={{
-                                                            id: system_id
-                                                        }}
-                                                    >
-                                                        {({
-                                                            loading,
-                                                            error,
-                                                            data
-                                                        }) => {
-                                                            if (loading)
-                                                                return (
-                                                                    <Loading
-                                                                        loadingData
-                                                                    />
-                                                                );
-                                                            if (error)
-                                                                return `Error! ${
-                                                                    error.message
-                                                                }`;
-                                                            const modifiedData = modifyDirectoryListData(
-                                                                data.directoryLists_by_system
-                                                            );
-                                                            if (
-                                                                !Boolean(
-                                                                    editData
-                                                                ) &&
-                                                                modifiedData.length >
-                                                                    0
-                                                            ) {
-                                                                return (
-                                                                    <TreeviewCheckbox
-                                                                        data={
-                                                                            modifiedData
-                                                                        }
-                                                                        updateSelectedDirectory={
-                                                                            this
-                                                                                .updateSelectedDirectory
-                                                                        }
-                                                                        selectAmount="single"
-                                                                    />
-                                                                );
-                                                            } else if (
-                                                                modifiedData.length >
-                                                                0
-                                                            ) {
-                                                                return (
-                                                                    <TreeviewCheckbox
-                                                                        data={
-                                                                            modifiedData
-                                                                        }
-                                                                        updateSelectedDirectory={
-                                                                            this
-                                                                                .updateSelectedDirectory
-                                                                        }
-                                                                        selectAmount="single"
-                                                                        selectedValue={
-                                                                            selected_directory
-                                                                        }
-                                                                    />
-                                                                );
-                                                            } else {
-                                                                return (
-                                                                    <React.Fragment />
-                                                                );
-                                                            }
-                                                        }}
-                                                    </Query>
-                                                )}
-                                            </div>
-                                        </CreateContentContainerDiv>
-                                    </Form>
-                                )}
-                            </Formik>
-                        </React.Fragment>
-                    )}
-                </Mutation>
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}
