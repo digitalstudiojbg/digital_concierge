@@ -42,6 +42,7 @@ import feature_resolver from "./feature";
 import payment_resolver from "./payment";
 import licenseType_resolver from "./licenseType";
 import license_resolver from "./license";
+import layoutFamily_resolver from "./layoutFamily";
 
 export default [
     user_resolver,
@@ -87,5 +88,6 @@ export default [
     feature_resolver,
     payment_resolver,
     licenseType_resolver,
-    license_resolver
+    license_resolver,
+    layoutFamily_resolver
 ];

@@ -28,7 +28,7 @@ class TabletContent extends PureComponent {
         const { system_id = "" } = params || {};
         return (
             <Query
-                query={getDirectoryListBySystem()}
+                query={getDirectoryListBySystem}
                 variables={{ id: system_id }}
             >
                 {({ loading, error, data }) => {

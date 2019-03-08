@@ -3,20 +3,14 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert(
-            "layouts",
+            "layout_families",
             [
                 {
-                    name: "GENERAL LAYOUT",
-                    mediumId: 1
+                    name: "MATERIAL UI-BASED"
                 },
 
                 {
-                    name: "LAYOUT 1",
-                    mediumId: 2
-                },
-                {
-                    name: "LAYOUT 2",
-                    mediumId: 1
+                    name: "MINIMALIST"
                 }
             ],
             {}

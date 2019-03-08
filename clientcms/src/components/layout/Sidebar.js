@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Query, withApollo } from "react-apollo";
 import gql from "graphql-tag";
 import {
-    // WELCOME_URL,
+    WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
     SYSTEM_CMS_LANDINGPAGE_URL,
     SYSTEM_CMS_HOME_URL,
@@ -50,7 +50,7 @@ const SIDEBAR_ITEMS = [
         center: false
     },
     {
-        name: SYSTEM_CMS_HOME_URL,
+        name: WELCOME_URL,
         displayName: "Home",
         icon: Home,
         center: false
@@ -253,6 +253,7 @@ class Sidebar extends Component {
                 {({ loading, error, data: { system } }) => {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error message:\n${error.message}`;
+                    console.log(system);
                     return (
                         <div
                             style={{
@@ -265,7 +266,8 @@ class Sidebar extends Component {
                                 width: "350px",
                                 backgroundColor: "rgb(71,70,71)",
                                 color: "rgb(223,223,223)",
-                                height: "calc(100vh-80px)"
+                                // height: "calc(100vh-80px)"
+                                height: "100%"
                             }}
                         >
                             {Boolean(system) &&
@@ -307,21 +309,33 @@ class Sidebar extends Component {
                                         <SidebarItem
                                             key={index}
                                             onClick={() => {
-                                                this.setState({
-                                                    selectedItem: name
-                                                });
-                                                displayName === "View Site"
-                                                    ? window.open(
-                                                          name,
-                                                          "_blank"
-                                                      )
-                                                    : name &&
-                                                      this.props.history.push(
-                                                          name.replace(
-                                                              ":system_id",
-                                                              system.id
+                                                // console.log("Name is ", name);
+                                                if (name === WELCOME_URL) {
+                                                    const navigateTo =
+                                                        WELCOME_URL +
+                                                        "/" +
+                                                        system.client.id +
+                                                        "/systems";
+                                                    this.props.history.push(
+                                                        navigateTo
+                                                    );
+                                                } else {
+                                                    this.setState({
+                                                        selectedItem: name
+                                                    });
+                                                    displayName === "View Site"
+                                                        ? window.open(
+                                                              name,
+                                                              "_blank"
                                                           )
-                                                      );
+                                                        : name &&
+                                                          this.props.history.push(
+                                                              name.replace(
+                                                                  ":system_id",
+                                                                  system.id
+                                                              )
+                                                          );
+                                                }
                                             }}
                                             selectedItem={selectedItem}
                                             expectedItem={name}

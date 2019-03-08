@@ -9,6 +9,10 @@ export const directoryListFragment = gql`
         layout {
             id
             name
+            layout_family {
+                id
+                name
+            }
         }
         media {
             id

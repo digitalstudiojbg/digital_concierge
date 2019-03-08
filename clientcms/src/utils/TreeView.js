@@ -9,6 +9,7 @@ import ExpandIcon from "@material-ui/icons/ChevronRight";
 import CompressIcon from "@material-ui/icons/ExpandMore";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
+import DirListIcon from "@material-ui/icons/List";
 import DirEntryIcon from "@material-ui/icons/Description";
 import EditIcon from "@material-ui/icons/Edit";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
@@ -114,6 +115,7 @@ const styles = theme => ({
 //A few constants settings
 const paddingSize = 30;
 const approximateButtonSize = 40;
+const approximateIconSize = 15;
 const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
     display: flex;
@@ -819,7 +821,8 @@ class TreeView extends React.PureComponent {
 
     renderDirectory(directory, index) {
         const { depth } = directory;
-        const calculatedPaddingSize = depth * paddingSize;
+        const calculatedPaddingSize =
+            depth * (paddingSize + approximateIconSize);
         const {
             child_directory_lists_key,
             directory_entries_key,
@@ -853,6 +856,7 @@ class TreeView extends React.PureComponent {
                                         directory.id
                                     )}
                                 </div>
+                                <DirListIcon />
                                 {directory.name}
                             </TreeEntry>
                         </TableCell>
@@ -935,11 +939,15 @@ class TreeView extends React.PureComponent {
                         <TreeEntry paddingSize={calculatedPaddingSize}>
                             <div
                                 style={{
-                                    marginLeft: 15,
+                                    marginLeft: directory.is_dir_list ? 0 : 15,
                                     width: `${approximateButtonSize}px`
                                 }}
                             >
-                                {!directory.is_dir_list && <DirEntryIcon />}
+                                {!directory.is_dir_list ? (
+                                    <DirEntryIcon />
+                                ) : (
+                                    <DirListIcon />
+                                )}
                             </div>
                             {directory.name}
                         </TreeEntry>

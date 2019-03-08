@@ -15,6 +15,8 @@ export default {
                     }
                 ]
             }),
-        media: async layout => await db.media.findByPk(layout.mediumId)
+        media: async layout => await db.media.findByPk(layout.mediumId),
+        layout_family: async layout =>
+            await db.layout_family.findByPk(layout.layoutFamilyId)
     }
 };

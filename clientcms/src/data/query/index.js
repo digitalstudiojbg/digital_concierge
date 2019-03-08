@@ -22,6 +22,10 @@ import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
 import { getRoleList } from "./role";
 import { getContractByClientId } from "./contract";
+import {
+    getLayoutFamilyList,
+    getLayoutFamilyDetailFilter
+} from "./layoutFamily";
 export {
     getCurrentUserQuery,
     getDirectoryListBySystem,
@@ -43,5 +47,7 @@ export {
     getContractByClientId,
     getUsersByClient,
     getSystemThemesFromClient,
-    getSystemDetailSidebar
+    getSystemDetailSidebar,
+    getLayoutFamilyList,
+    getLayoutFamilyDetailFilter
 };
