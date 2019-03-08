@@ -28,7 +28,7 @@ const BrowserMedia = props => {
     const [browserMediaOpen, setBrowserMediaOpen] = useState(false);
 
     /**
-     * state: selectedImages has list of selected images in array for other components to use
+     * [state] selectedImages has list of selected images in array for other components to use
      */
     const [selectedImages, setSelectedImages] = useState([]);
 
