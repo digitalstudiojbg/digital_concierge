@@ -30,9 +30,9 @@ const cache = new InMemoryCache({
         }
     }
 });
-cache.writeData({
-    data: { currentSystem: true }
-});
+// cache.writeData({
+//     data: { currentSystem: true }
+// });
 // const stateLink = withClientState({
 //     cache,
 //     resolvers: {},
