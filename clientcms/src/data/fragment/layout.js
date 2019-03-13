@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export const layoutDetailFragment = gql`
-    fragment layoutDetail on Layout {
+    fragment LayoutDetail on Layout {
         id
         name
         media {
