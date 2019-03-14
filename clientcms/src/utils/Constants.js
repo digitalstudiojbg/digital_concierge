@@ -56,6 +56,7 @@ export const CreateContentContainerDiv = styled.div`
     background-color: white;
     color: rgb(113, 116, 152);
     width: 70%;
+    height: 90%;
     border: 2px solid rgb(186, 185, 206);
     padding-left: 20px;
     padding-right: 20px;
