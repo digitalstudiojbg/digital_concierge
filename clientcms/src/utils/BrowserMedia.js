@@ -49,7 +49,7 @@ const BrowserMedia = ({
     /**
      * [state] selectedImages has list of selected images in array for other components to use
      */
-    const [selectedImages, setSelectedImages] = useState([]);
+    // const [selectedImages, setSelectedImages] = useState([]);
 
     const handleClose = () => {
         setBrowserMediaOpen(false);
