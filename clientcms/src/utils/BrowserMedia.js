@@ -61,7 +61,7 @@ const BrowserMedia = ({
     };
 
     return (
-        <div>
+        <React.Fragment>
             <Button
                 variant={variant}
                 color={color}
@@ -111,7 +111,7 @@ const BrowserMedia = ({
                     </Query>
                 </DialogContent>
             </Dialog>
-        </div>
+        </React.Fragment>
     );
 };
 
