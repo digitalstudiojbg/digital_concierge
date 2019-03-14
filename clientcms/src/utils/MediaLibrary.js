@@ -129,6 +129,13 @@ class MediaLibrary extends React.Component {
         this.setState({ selected: [] });
     };
 
+    eachMediaSectionOnClick = image => {
+        const { isBrowserMedia, multipleSelect } = this.props;
+        if (isBrowserMedia && multipleSelect) {
+            this.handleCheckbox(image);
+        }
+    };
+
     render() {
         const {
             clientId: id,
@@ -138,8 +145,11 @@ class MediaLibrary extends React.Component {
             multipleSelect = false
         } = this.props;
         const { limit, offset, selected, sort } = this.state;
+
+        const toRenderCheckbox = multipleSelect || !isBrowserMedia;
+
         return (
-            <div>
+            <div style={{ width: "100%" }}>
                 <div
                     style={{
                         display: "flex",
@@ -541,7 +551,13 @@ class MediaLibrary extends React.Component {
                                     {images.length > 0 &&
                                         images.map((image, index) => {
                                             return (
-                                                <EachMediaSection key={index}>
+                                                <EachMediaSection
+                                                    key={index}
+                                                    onClick={this.eachMediaSectionOnClick.bind(
+                                                        this,
+                                                        image
+                                                    )}
+                                                >
                                                     <p
                                                         style={{
                                                             width: "300px",
@@ -556,36 +572,36 @@ class MediaLibrary extends React.Component {
                                                             marginBottom: "0px"
                                                         }}
                                                     >
-                                                        {multipleSelect ||
-                                                            (!isBrowserMedia && (
-                                                                <Checkbox
-                                                                    checked={this.state.selected.includes(
-                                                                        image
-                                                                    )}
-                                                                    onChange={this.handleCheckbox.bind(
-                                                                        this,
-                                                                        image
-                                                                    )}
-                                                                    className={
-                                                                        classes.checkbox
-                                                                    }
-                                                                    value="checkedB"
-                                                                    color="primary"
-                                                                />
-                                                            ))}
+                                                        {toRenderCheckbox && (
+                                                            <Checkbox
+                                                                checked={this.state.selected.includes(
+                                                                    image
+                                                                )}
+                                                                onChange={this.handleCheckbox.bind(
+                                                                    this,
+                                                                    image
+                                                                )}
+                                                                className={
+                                                                    classes.checkbox
+                                                                }
+                                                                value="checkedB"
+                                                                color="primary"
+                                                            />
+                                                        )}
 
                                                         {image.name}
                                                     </p>
                                                     <a
                                                         onClick={() => {
                                                             if (
-                                                                multipleSelect ||
                                                                 !isBrowserMedia
                                                             ) {
                                                                 window.open(
                                                                     image.path
                                                                 );
-                                                            } else {
+                                                            } else if (
+                                                                !multipleSelect
+                                                            ) {
                                                                 setSelectedImages(
                                                                     [image]
                                                                 );
@@ -776,7 +792,8 @@ class MediaLibrary extends React.Component {
 }
 
 MediaLibrary.propTypes = {
-    clientId: PropTypes.number.isRequired,
+    clientId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
     height: PropTypes.string.isRequired,
     isBrowserMedia: PropTypes.bool,
     setSelectedImages: PropTypes.func,

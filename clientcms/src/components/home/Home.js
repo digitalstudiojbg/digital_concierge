@@ -22,7 +22,7 @@ import {
     SYSTEM_CMS_LIBRARY
 } from "../../utils/Constants";
 import { getSystemDetailSidebar } from "../../data/query";
-import { withApollo } from "react-apollo";
+import { withRouter } from "react-router-dom";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
@@ -208,73 +208,101 @@ class Home extends Component {
     };
 
     render() {
+        const { system_id } = this.props.match.params;
         return (
             <Query query={getCurrentUserQuery} /*fetchPolicy="no-cache"*/>
-                {({
-                    loading,
-                    error,
-                    data: { getCurrentUser: client = null } = null
-                }) => {
-                    if (loading) return <Loading loadingData />;
-                    if (error) return `Error! ${error.message}`;
-                    //  console.log(data);
-
-                    return (
-                        <div>
-                            {this.routes(client).map(
-                                (route, index) =>
-                                    route.header && (
-                                        <PrivateRoute
-                                            key={index}
-                                            path={route.path}
-                                            exact={route.exact}
-                                            component={route.header}
-                                        />
-                                    )
-                            )}
-                            <div
-                                style={{
-                                    paddingTop: "80px",
-                                    height: "100vh",
-                                    width: "100vw",
-                                    display: "flex"
-                                }}
+                {({ loading: loadingUser, error: errorUser }) => (
+                    <React.Fragment>
+                        {loadingUser && <Loading loadingData />}
+                        {errorUser && <p>{`Error! ${errorUser.message}`}</p>}
+                        {!loadingUser && !errorUser && (
+                            <Query
+                                query={getSystemDetailSidebar}
+                                variables={{ id: system_id }}
                             >
-                                {this.routes(client).map(
-                                    (route, index) =>
-                                        route.sidebar && (
-                                            <PrivateRoute
-                                                key={index}
-                                                path={route.path}
-                                                exact={route.exact}
-                                                component={route.sidebar}
-                                            />
-                                        )
-                                )}
-
-                                {this.routes(client).map(
-                                    (route, index) =>
-                                        route.main && (
-                                            <Suspense
-                                                key={index}
-                                                fallback={<Loading />}
+                                {({ loading, error, data: { system } }) => {
+                                    if (loading) return <Loading loadingData />;
+                                    if (error) return `Error! ${error.message}`;
+                                    const { client = {} } = system;
+                                    const routes = this.routes(client);
+                                    return (
+                                        <div>
+                                            {this.routes(client).map(
+                                                (route, index) =>
+                                                    route.header && (
+                                                        <PrivateRoute
+                                                            key={index}
+                                                            path={route.path}
+                                                            exact={route.exact}
+                                                            component={
+                                                                route.header
+                                                            }
+                                                        />
+                                                    )
+                                            )}
+                                            <div
+                                                style={{
+                                                    paddingTop: "80px",
+                                                    height: "100vh",
+                                                    width: "100vw",
+                                                    display: "flex"
+                                                }}
                                             >
-                                                <PrivateRoute
-                                                    path={route.path}
-                                                    exact={route.exact}
-                                                    component={route.main}
-                                                    withProps={route.withProps}
-                                                />
-                                            </Suspense>
-                                        )
-                                )}
-                            </div>
-                        </div>
-                    );
-                }}
+                                                {routes.map(
+                                                    (route, index) =>
+                                                        route.sidebar && (
+                                                            <PrivateRoute
+                                                                key={index}
+                                                                path={
+                                                                    route.path
+                                                                }
+                                                                exact={
+                                                                    route.exact
+                                                                }
+                                                                component={
+                                                                    route.sidebar
+                                                                }
+                                                            />
+                                                        )
+                                                )}
+
+                                                {routes.map(
+                                                    (route, index) =>
+                                                        route.main && (
+                                                            <Suspense
+                                                                key={index}
+                                                                fallback={
+                                                                    <Loading />
+                                                                }
+                                                            >
+                                                                <PrivateRoute
+                                                                    path={
+                                                                        route.path
+                                                                    }
+                                                                    exact={
+                                                                        route.exact
+                                                                    }
+                                                                    component={
+                                                                        route.main
+                                                                    }
+                                                                    withProps={
+                                                                        route.withProps
+                                                                    }
+                                                                />
+                                                            </Suspense>
+                                                        )
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                }}
+                            </Query>
+                        )}
+                    </React.Fragment>
+                )}
             </Query>
         );
     }
 }
 
-export default withApollo(Home);
+export default withRouter(Home);

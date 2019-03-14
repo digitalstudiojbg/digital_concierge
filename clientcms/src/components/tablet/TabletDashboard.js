@@ -24,7 +24,12 @@ class TabletDashboard extends Component {
                 <UploadFileDropZone /> <br />
                 <h3>Multiple Images Upload</h3>
                 <UploadFiles /> <br />
-                <BrowserMedia />
+                <BrowserMedia
+                    multipleSelect={true}
+                    updateImageSelection={images =>
+                        console.log("Images selected ", images)
+                    }
+                />
                 <br />
             </div>
         );

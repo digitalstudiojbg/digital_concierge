@@ -7,7 +7,6 @@ import {
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
 import { Field } from "formik";
 import * as Yup from "yup";
 import Dialog from "@material-ui/core/Dialog";
@@ -19,6 +18,9 @@ import Slide from "@material-ui/core/Slide";
 import { withApollo } from "react-apollo";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
+import BrowserMedia from "../../../utils/BrowserMedia";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 
 const styles = _theme => ({
     saveButton: {
@@ -50,8 +52,17 @@ const styles = _theme => ({
     icon: {
         fontSize: "large"
     },
+    dialogTitle: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
     removeImageButton: {
         backgroundColor: "white"
+    },
+    uploadFileButton: {
+        backgroundColor: "white",
+        marginBottom: 10
     }
 });
 
@@ -107,6 +118,7 @@ class ModifyDirectoryList extends React.PureComponent {
         this.closeDialog = this.closeDialog.bind(this);
         this.removeImage = this.removeImage.bind(this);
         this.openFileBrowser = this.openFileBrowser.bind(this);
+        this.mediaSelectImage = this.mediaSelectImage.bind(this);
     }
 
     changeImageName(imageName) {
@@ -159,6 +171,25 @@ class ModifyDirectoryList extends React.PureComponent {
                         uploaded: false
                     })
                 ),
+                imageName: images[0].name
+            },
+            () => {
+                this.props.setFieldValue(
+                    "images",
+                    [...this.state.images],
+                    false
+                );
+            }
+        );
+    }
+
+    mediaSelectImage(images) {
+        this.setState(
+            {
+                images: images.map(image => ({
+                    ...image,
+                    uploaded: true
+                })),
                 imageName: images[0].name
             },
             () => {
@@ -226,7 +257,7 @@ class ModifyDirectoryList extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex",
-                        height: "50%"
+                        height: "45%"
                     }}
                 >
                     <div style={{ width: "60%", height: "100%" }}>
@@ -260,7 +291,34 @@ class ModifyDirectoryList extends React.PureComponent {
                             {!Boolean(image) && <div>DRAG & DROP HERE</div>}
                         </Dropzone>
                     </div>
-                    <div style={{ width: "35%" }}>BUTTONS GO HERE</div>
+                    <div
+                        style={{
+                            width: "35%",
+                            height: "90%",
+                            paddingLeft: 10,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-end"
+                        }}
+                    >
+                        <Button
+                            variant="outlined"
+                            className={classes.uploadFileButton}
+                            variant="outlined"
+                            fullWidth={true}
+                            onClick={this.openFileBrowser}
+                        >
+                            UPLOAD FILE
+                        </Button>
+                        <BrowserMedia
+                            variant="outlined"
+                            color="default"
+                            buttonStyle={{ backgroundColor: "white" }}
+                            fullWidth={true}
+                            multipleSelect={false}
+                            updateImageSelection={this.mediaSelectImage}
+                        />
+                    </div>
                 </div>
             </React.Fragment>
         );
@@ -317,20 +375,26 @@ class ModifyDirectoryList extends React.PureComponent {
                         />
                     </div>
                 </CreateContentContainerDiv>
-
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}
                     keepMounted
                     onClose={this.closeDialog}
                 >
-                    <DialogTitle id="alert-dialog-slide-title">
+                    <DialogTitle
+                        id="alert-dialog-slide-title"
+                        disableTypography
+                        className={classes.dialogTitle}
+                    >
                         {this.state.whichDialog === "image" && (
-                            <p>CONFIRM IMAGE DELETION</p>
+                            <h2>CONFIRM IMAGE DELETION</h2>
                         )}
                         {this.state.whichDialog === "cancel" && (
-                            <p>CONFIRM PAGE NAVIGATION</p>
+                            <h2>CONFIRM PAGE NAVIGATION</h2>
                         )}
+                        <IconButton onClick={this.closeDialog}>
+                            <CloseIcon />
+                        </IconButton>
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">

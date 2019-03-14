@@ -25,7 +25,17 @@ const styles = () => ({
     }
 });
 
-const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
+const BrowserMedia = ({
+    buttonLabel,
+    color,
+    variant,
+    buttonStyle,
+    fullWidth,
+    multipleSelect,
+    classes,
+    updateImageSelection,
+    match
+}) => {
     const { params: { system_id = null } = null } = match;
     // const { system: { client: { id } = null } = null } = props.client.readQuery(
     //     {
@@ -45,6 +55,11 @@ const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
         setBrowserMediaOpen(false);
     };
 
+    const updateImages = images => {
+        updateImageSelection(images);
+        handleClose();
+    };
+
     return (
         <div>
             <Button
@@ -54,8 +69,9 @@ const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
                 onClick={() => {
                     setBrowserMediaOpen(true);
                 }}
+                fullWidth={fullWidth}
             >
-                Browser Media
+                {buttonLabel}
             </Button>
 
             <Dialog
@@ -84,10 +100,10 @@ const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
                                 {id && (
                                     <MediaLibrary
                                         clientId={id}
-                                        setSelectedImages={setSelectedImages}
+                                        setSelectedImages={updateImages}
                                         isBrowserMedia
                                         height={"100%"}
-                                        multipleSelect={false}
+                                        multipleSelect={multipleSelect}
                                     />
                                 )}
                             </React.Fragment>
@@ -100,15 +116,22 @@ const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
 };
 
 BrowserMedia.defaultProps = {
+    buttonLabel: "BROWSE MEDIA",
     color: "primary",
     variant: "contained",
-    buttonStyle: {}
+    buttonStyle: {},
+    fullWidth: false,
+    multipleSelect: false
 };
 
 BrowserMedia.propTypes = {
+    buttonLabel: PropTypes.string,
     color: PropTypes.string,
     variant: PropTypes.string,
-    buttonStyle: PropTypes.object
+    buttonStyle: PropTypes.object,
+    fullWidth: PropTypes.bool,
+    multipleSelect: PropTypes.bool,
+    updateImageSelection: PropTypes.func.isRequired
 };
 
 export default withRouter(withStyles(styles)(BrowserMedia));
