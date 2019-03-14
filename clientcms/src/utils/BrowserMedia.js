@@ -10,14 +10,14 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import MediaLibrary from "./MediaLibrary";
-// import { log } from "util";
+import PropTypes from "prop-types";
 import { getSystemDetailSidebar as query } from "../data/query";
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
 };
 
-const styles = theme => ({
+const styles = () => ({
     dialogTitle: {
         display: "flex",
         justifyContent: "space-between",
@@ -25,8 +25,8 @@ const styles = theme => ({
     }
 });
 
-const BrowserMedia = props => {
-    const { match: { params: { system_id = null } = null } = null } = props;
+const BrowserMedia = ({ color, variant, buttonStyle, classes, match }) => {
+    const { params: { system_id = null } = null } = match;
     // const { system: { client: { id } = null } = null } = props.client.readQuery(
     //     {
     //         query,
@@ -47,12 +47,10 @@ const BrowserMedia = props => {
 
     return (
         <div>
-            <h1>Button</h1>
-
             <Button
-                type="submit"
-                variant="contained"
-                color="primary"
+                variant={variant}
+                color={color}
+                style={buttonStyle}
                 onClick={() => {
                     setBrowserMediaOpen(true);
                 }}
@@ -67,10 +65,7 @@ const BrowserMedia = props => {
                 fullWidth
                 maxWidth="xl"
             >
-                <DialogTitle
-                    disableTypography
-                    className={props.classes.dialogTitle}
-                >
+                <DialogTitle disableTypography className={classes.dialogTitle}>
                     <h3>BROWSER MEDIA</h3>
                     <IconButton onClick={handleClose}>
                         <CloseIcon />
@@ -102,6 +97,18 @@ const BrowserMedia = props => {
             </Dialog>
         </div>
     );
+};
+
+BrowserMedia.defaultProps = {
+    color: "primary",
+    variant: "contained",
+    buttonStyle: {}
+};
+
+BrowserMedia.propTypes = {
+    color: PropTypes.string,
+    variant: PropTypes.string,
+    buttonStyle: PropTypes.object
 };
 
 export default withRouter(withStyles(styles)(BrowserMedia));
