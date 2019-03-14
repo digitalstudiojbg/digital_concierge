@@ -2,16 +2,12 @@ import React from "react";
 import {
     ContainerDiv,
     CreateContentContainerDiv,
-    // modifyDirectoryListData,
     SYSTEM_CMS_CONTENT_URL
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import CancelIcon from "@material-ui/icons/Cancel";
-// import { Formik, Form, Field } from "formik";
 import { Field } from "formik";
 import * as Yup from "yup";
 import Dialog from "@material-ui/core/Dialog";
@@ -20,12 +16,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-// import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
-// import { Query } from "react-apollo";
-// import Loading from "../../loading/Loading";
 import { withApollo } from "react-apollo";
-// import { getDirectoryListBySystem } from "../../../data/query";
-// import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 
@@ -43,7 +34,9 @@ const styles = _theme => ({
         width: "100%"
     },
     imageNameTextField: {
-        width: "100%"
+        // marginTop: 15,
+        paddingBottom: 20,
+        width: "60%"
     },
     categoryNameFormHelper: {
         fontSize: "0.7em",
@@ -56,6 +49,9 @@ const styles = _theme => ({
     },
     icon: {
         fontSize: "large"
+    },
+    removeImageButton: {
+        backgroundColor: "white"
     }
 });
 
@@ -112,12 +108,6 @@ class ModifyDirectoryList extends React.PureComponent {
         this.removeImage = this.removeImage.bind(this);
         this.openFileBrowser = this.openFileBrowser.bind(this);
     }
-
-    // updateSelectedDirectory(selected_directory) {
-    //     this.setState({ selected_directory }, () => {
-    //         this.props.setFieldValue("parent_id", selected_directory);
-    //     });
-    // }
 
     changeImageName(imageName) {
         this.setState({ imageName });
@@ -195,194 +185,96 @@ class ModifyDirectoryList extends React.PureComponent {
         const { images } = this.state;
         const image = images.length > 0 ? images[0] : null;
         return (
-            <div
-                style={{
-                    width: "90%",
-                    border: "1px solid #CACED5",
-                    padding: 10
-                }}
-            >
-                {!Boolean(image) && (
-                    <p
-                        style={{
-                            fontSize: "0.5em",
-                            color: "#4D4F5C",
-                            marginLeft: "1.2vw"
-                        }}
-                    >
-                        UPLOAD
-                    </p>
-                )}
+            <React.Fragment>
                 <div
                     style={{
                         width: "100%",
                         display: "flex",
-                        justifyContent: "center"
+                        alignItems: "center"
                     }}
                 >
-                    <Dropzone
-                        ref={this.dropZoneRef}
-                        disableClick={true}
+                    <TextField
+                        label="FILENAME"
+                        disabled={true}
+                        value={this.state.imageName}
+                        className={classes.imageNameTextField}
+                        fullWidth={true}
+                        variant="outlined"
+                    />
+                    <div
                         style={{
-                            position: "relative",
-                            width: "90%",
-                            backgroundColor: "#F0F2F8",
-                            height: "320px",
+                            width: "35%",
+                            height: "80%",
                             display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
+                            paddingLeft: 10,
                             alignItems: "center"
                         }}
-                        onDrop={this.onDrop.bind(this)}
                     >
-                        {!Boolean(image) ? (
-                            <React.Fragment>
-                                <div
-                                    style={{
-                                        padding: 10,
-                                        border: "1px solid #DDDFE7",
-                                        borderRadius: 45
-                                    }}
-                                    onClick={this.openFileBrowser}
-                                >
-                                    <div
-                                        style={{
-                                            padding: 10,
-                                            border: "1px solid #DDDFE7",
-                                            borderRadius: 35,
-                                            display: "flex",
-                                            alignItems: "center"
-                                        }}
-                                    >
-                                        <IconButton
-                                            className={`fas fa-arrow-circle-up ${
-                                                classes.expansionButton
-                                            }`}
-                                        />
-                                    </div>
-                                </div>
-                                <div
-                                    style={{
-                                        marginTop: 10,
-                                        textAlign: "center",
-                                        color: "#43425D",
-                                        fontSize: "1em"
-                                    }}
-                                >
-                                    DRAG & DROP
-                                    <p
-                                        style={{
-                                            color: "#aaaaaa",
-                                            fontSize: "0.5em"
-                                        }}
-                                    >
-                                        YOUR FILES OR{" "}
-                                        <span
-                                            onClick={this.openFileBrowser}
-                                            style={{
-                                                color: "#3B86FF",
-                                                textDecoration: "underline",
-                                                fontWeight: 700
-                                            }}
-                                        >
-                                            BROWSE
-                                        </span>
-                                    </p>
-                                </div>
-                            </React.Fragment>
-                        ) : (
-                            <img
-                                src={
-                                    image.uploaded ? image.path : image.preview
-                                }
-                                alt=""
-                                style={{ height: 320 }}
-                            />
-                        )}
-                    </Dropzone>
+                        <Button
+                            variant="outlined"
+                            className={classes.removeImageButton}
+                            variant="outlined"
+                            fullWidth={true}
+                            disabled={this.state.imageName.length === 0}
+                            onClick={this.openDialogImage}
+                        >
+                            REMOVE EXISTING
+                        </Button>
+                    </div>
                 </div>
-            </div>
+                <div
+                    style={{
+                        width: "100%",
+                        display: "flex",
+                        height: "50%"
+                    }}
+                >
+                    <div style={{ width: "60%", height: "100%" }}>
+                        <Dropzone
+                            ref={this.dropZoneRef}
+                            disableClick={true}
+                            style={{
+                                color: "rgb(123,123,123)",
+                                fontSize: "0.8em",
+                                position: "relative",
+                                width: "100%",
+                                backgroundColor: "rgb(221, 221, 221)",
+                                height: "90%",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundImage:
+                                    Boolean(image) && Boolean(image.uploaded)
+                                        ? `url(${image.path})`
+                                        : Boolean(image) &&
+                                          !Boolean(image.uploaded)
+                                        ? `url(${image.preview})`
+                                        : "none",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                                backgroundSize: "contain"
+                            }}
+                            onDrop={this.onDrop.bind(this)}
+                        >
+                            {!Boolean(image) && <div>DRAG & DROP HERE</div>}
+                        </Dropzone>
+                    </div>
+                    <div style={{ width: "35%" }}>BUTTONS GO HERE</div>
+                </div>
+            </React.Fragment>
         );
     }
 
     render() {
-        // const { selected_directory, images, is_create } = this.state;
-        // const { selected_directory } = this.state;
-        const {
-            classes,
-            location = {}
-            // match,
-            // values,
-            // setFieldValue,
-            // isSubmitting,
-            // errors
-        } = this.props;
-        // const { data: editData = null } = location.state || {};
-        // const titleText = Boolean(editData)
-        //     ? "EDIT DIRECTORY LIST ENTRY"
-        //     : "ADD DIRECTORY LIST ENTRY";
+        const { classes } = this.props;
         const subTitleText = "DIRECTORY LIST TITLE";
-
-        // const has_system_id =
-        //     Boolean(this.props.match) &&
-        //     Boolean(this.props.match.params) &&
-        //     Boolean(this.props.match.params.system_id);
-
-        // const system_id = has_system_id
-        //     ? this.props.match.params.system_id
-        //     : "";
-
-        // console.log(this.state.images);
 
         return (
             <ContainerDiv>
-                {/* <div
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginBottom: 40
-                    }}
-                >
-                    <div
-                        style={{
-                            color: "rgb(35,38,92)",
-                            fontSize: "2.7em",
-                            width: "52%"
-                        }}
-                    >
-                        {titleText}
-                    </div>
-                    <div style={{ width: "10%" }}>
-                        <Button
-                            className={classes.cancelButton}
-                            disabled={isSubmitting}
-                            size="large"
-                            variant="outlined"
-                            onClick={this.openDialogCancel}
-                        >
-                            CANCEL
-                        </Button>
-                    </div>
-                    <div style={{ width: "10%" }}>
-                        <Button
-                            type="submit"
-                            disabled={
-                                isSubmitting ||
-                                Boolean(errors.name) ||
-                                !Boolean(values.name) ||
-                                values.name.length === 0 //|| !Boolean(selected_directory)
-                            }
-                            className={classes.saveButton}
-                            variant="outlined"
-                            size="large"
-                        >
-                            ADD & SAVE
-                        </Button>
-                    </div>
-                </div> */}
                 <CreateContentContainerDiv>
                     <div style={{ width: "50%" }}>
-                        <div style={{ padding: 20 }}>HEADER IMAGE:</div>
+                        <div style={{ padding: 20 }}>HEADER IMAGE</div>
 
                         {this.renderImageUploader()}
                     </div>
@@ -394,7 +286,6 @@ class ModifyDirectoryList extends React.PureComponent {
                         >
                             {subTitleText}
                         </div>
-                        {/* <Field name="name" style={{width: "100%", height: "5vh", fontSize: "1.5em"}} /> */}
                         <Field
                             name="name"
                             validateOnBlur
@@ -424,103 +315,6 @@ class ModifyDirectoryList extends React.PureComponent {
                                 />
                             )}
                         />
-                        <div
-                            style={{
-                                width: "60%",
-                                marginTop: 40
-                            }}
-                        >
-                            <div
-                                style={{
-                                    fontSize: "0.8em"
-                                }}
-                            >
-                                IMAGE NAME
-                            </div>
-                            <TextField
-                                disabled={true}
-                                value={this.state.imageName}
-                                className={classes.imageNameTextField}
-                                margin="normal"
-                                variant="outlined"
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                disabled={
-                                                    this.state.imageName
-                                                        .length === 0
-                                                }
-                                                onClick={this.openDialogImage}
-                                            >
-                                                <CancelIcon />
-                                            </IconButton>
-                                        </InputAdornment>
-                                    )
-                                }}
-                            />
-                        </div>
-                        {/* <div
-                            style={{
-                                fontSize: "0.8em",
-                                marginTop: 20
-                            }}
-                        >
-                            SELECT LOCATION
-                            <p
-                                style={{
-                                    fontSize: "0.7em"
-                                }}
-                            >
-                                LEAVE BLANK IF CREATING A FIRST DIRECTORY LIST
-                                CATEGORY
-                            </p>
-                        </div> */}
-                        {/* {has_system_id && (
-                            <Query
-                                query={getDirectoryListBySystem}
-                                variables={{
-                                    id: system_id
-                                }}
-                            >
-                                {({ loading, error, data }) => {
-                                    if (loading) return <Loading loadingData />;
-                                    if (error) return `Error! ${error.message}`;
-                                    const modifiedData = modifyDirectoryListData(
-                                        data.directoryLists_by_system
-                                    );
-                                    if (
-                                        !Boolean(editData) &&
-                                        modifiedData.length > 0
-                                    ) {
-                                        return (
-                                            <TreeviewCheckbox
-                                                data={modifiedData}
-                                                updateSelectedDirectory={
-                                                    this.updateSelectedDirectory
-                                                }
-                                                selectAmount="single"
-                                            />
-                                        );
-                                    } else if (modifiedData.length > 0) {
-                                        return (
-                                            <TreeviewCheckbox
-                                                data={modifiedData}
-                                                updateSelectedDirectory={
-                                                    this.updateSelectedDirectory
-                                                }
-                                                selectAmount="single"
-                                                selectedValue={
-                                                    selected_directory
-                                                }
-                                            />
-                                        );
-                                    } else {
-                                        return <React.Fragment />;
-                                    }
-                                }}
-                            </Query> */}
-                        {/* )} */}
                     </div>
                 </CreateContentContainerDiv>
 
