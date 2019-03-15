@@ -4,7 +4,9 @@ import {
     getSystemsFromUser,
     getSystemsFromClient,
     getSystemThemesFromClient,
-    getSystemDetailSidebar
+    getSystemDetailSidebar,
+    getSystemDetail,
+    getSystemTheme
 } from "./system";
 import {
     getClientFromUser,
@@ -49,5 +51,7 @@ export {
     getSystemThemesFromClient,
     getSystemDetailSidebar,
     getLayoutFamilyList,
-    getLayoutFamilyDetailFilter
+    getLayoutFamilyDetailFilter,
+    getSystemDetail,
+    getSystemTheme
 };

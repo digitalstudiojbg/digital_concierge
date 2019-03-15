@@ -62,7 +62,6 @@ export const CreateContentContainerDiv = styled.div`
     padding-right: 20px;
     padding-bottom: 20px;
     font-size: 1.9em;
-    display: flex;
 `;
 
 //Helper recursive function to recursively modify the data received from GraphQL

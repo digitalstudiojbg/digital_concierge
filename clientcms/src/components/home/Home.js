@@ -1,6 +1,6 @@
 import React, { Component, lazy, Suspense } from "react";
 import { Query } from "react-apollo";
-import { getCurrentUserQuery } from "../../data/query";
+import { getCurrentUserQuery, getSystemDetail } from "../../data/query";
 import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
@@ -21,7 +21,6 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_CMS_LIBRARY
 } from "../../utils/Constants";
-import { getSystemDetailSidebar } from "../../data/query";
 import { withRouter } from "react-router-dom";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -217,7 +216,7 @@ class Home extends Component {
                         {errorUser && <p>{`Error! ${errorUser.message}`}</p>}
                         {!loadingUser && !errorUser && (
                             <Query
-                                query={getSystemDetailSidebar}
+                                query={getSystemDetail}
                                 variables={{ id: system_id }}
                             >
                                 {({ loading, error, data: { system } }) => {

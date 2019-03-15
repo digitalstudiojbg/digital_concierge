@@ -102,7 +102,8 @@ const ModifyDirectoryList = props => {
                       Array.isArray(directoryList.media) &&
                       directoryList.media.length > 0
                           ? [{ ...directoryList.media[0], uploaded: true }]
-                          : []
+                          : [],
+                  colours: []
               }
             : {
                   id: null,
@@ -110,7 +111,8 @@ const ModifyDirectoryList = props => {
                   layout_family_id: null,
                   layout_id: null,
                   parent_id: null,
-                  images: []
+                  images: [],
+                  colours: []
               };
 
     return (

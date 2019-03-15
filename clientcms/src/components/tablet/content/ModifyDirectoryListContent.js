@@ -19,6 +19,7 @@ import { withApollo } from "react-apollo";
 import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 import BrowserMedia from "../../../utils/BrowserMedia";
+import ColourSchemePicker from "../../../utils/ColourSchemePicker";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -324,6 +325,24 @@ class ModifyDirectoryList extends React.PureComponent {
         );
     }
 
+    renderColourSchemePicker() {
+        const { setFieldValue } = this.props;
+        const handleOnChange = colours =>
+            setFieldValue("colours", colours, false);
+        return (
+            <div
+                style={{
+                    width: "100%",
+                    fontSize: "0.5em",
+                    height: "40%",
+                    color: "black"
+                }}
+            >
+                <ColourSchemePicker handleOnChange={handleOnChange} />
+            </div>
+        );
+    }
+
     render() {
         const { classes } = this.props;
         const subTitleText = "DIRECTORY LIST TITLE";
@@ -331,49 +350,61 @@ class ModifyDirectoryList extends React.PureComponent {
         return (
             <ContainerDiv>
                 <CreateContentContainerDiv>
-                    <div style={{ width: "50%" }}>
-                        <div style={{ padding: 20 }}>HEADER IMAGE</div>
+                    <div
+                        style={{
+                            width: "100%",
+                            height: "60%",
+                            display: "flex"
+                        }}
+                    >
+                        <div style={{ width: "50%" }}>
+                            <div style={{ padding: 20 }}>HEADER IMAGE</div>
 
-                        {this.renderImageUploader()}
-                    </div>
-                    <div style={{ width: "50%" }}>
-                        <div
-                            style={{
-                                padding: "20px 20px 20px 0px"
-                            }}
-                        >
-                            {subTitleText}
+                            {this.renderImageUploader()}
                         </div>
-                        <Field
-                            name="name"
-                            validateOnBlur
-                            validateOnChange
-                            render={({ field, form }) => (
-                                <TextField
-                                    className={classes.categoryNameTextField}
-                                    variant="outlined"
-                                    name={field.name}
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    onBlur={field.onBlur}
-                                    error={
-                                        form.errors[field.name] &&
-                                        form.touched[field.name]
-                                    }
-                                    helperText={
-                                        form.errors[field.name] &&
-                                        form.touched[field.name] &&
-                                        String(form.errors[field.name])
-                                    }
-                                    FormHelperTextProps={{
-                                        classes: {
-                                            root: classes.categoryNameFormHelper
+                        <div style={{ width: "50%" }}>
+                            <div
+                                style={{
+                                    padding: "20px 20px 20px 0px"
+                                }}
+                            >
+                                {subTitleText}
+                            </div>
+                            <Field
+                                name="name"
+                                validateOnBlur
+                                validateOnChange
+                                render={({ field, form }) => (
+                                    <TextField
+                                        className={
+                                            classes.categoryNameTextField
                                         }
-                                    }}
-                                />
-                            )}
-                        />
+                                        variant="outlined"
+                                        name={field.name}
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        onBlur={field.onBlur}
+                                        error={
+                                            form.errors[field.name] &&
+                                            form.touched[field.name]
+                                        }
+                                        helperText={
+                                            form.errors[field.name] &&
+                                            form.touched[field.name] &&
+                                            String(form.errors[field.name])
+                                        }
+                                        FormHelperTextProps={{
+                                            classes: {
+                                                root:
+                                                    classes.categoryNameFormHelper
+                                            }
+                                        }}
+                                    />
+                                )}
+                            />
+                        </div>
                     </div>
+                    {this.renderColourSchemePicker()}
                 </CreateContentContainerDiv>
                 <Dialog
                     open={this.state.openDialog}

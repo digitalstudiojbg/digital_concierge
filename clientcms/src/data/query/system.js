@@ -49,3 +49,73 @@ export const getSystemDetailSidebar = gql`
         }
     }
 `;
+
+export const getSystemDetail = gql`
+    query getSystemDetail($id: ID!) {
+        system(id: $id) {
+            id
+            name
+            aif
+            numberOfDevices
+            createdAt
+            updatedAt
+            client {
+                name
+                full_company_name
+                phone
+                email
+                active
+                number_of_users
+                avatar
+                contacts {
+                    id
+                    name
+                    title
+                    phone
+                    mobile
+                    email
+                }
+            }
+            layouts {
+                id
+                name
+            }
+            start {
+                id
+                name
+            }
+            home {
+                id
+                name
+            }
+            device_type {
+                id
+                name
+            }
+            system_type {
+                id
+                name
+            }
+            features {
+                id
+                name
+            }
+            theme {
+                ...themeDetail
+            }
+        }
+    }
+    ${themeDetailFragment}
+`;
+
+export const getSystemTheme = gql`
+    query getSystemTheme($id: ID!) {
+        system(id: $id) {
+            id
+            theme {
+                ...themeDetail
+            }
+        }
+    }
+    ${themeDetailFragment}
+`;
