@@ -127,7 +127,7 @@ export const ColourSchemePicker = ({
                         {loading && <Loading loadingData />}
                         {error && (
                             <React.Fragment>
-                                ERROR! {error.messsage}
+                                ERROR! {error.message}
                             </React.Fragment>
                         )}
                         {!loading && !error && (
