@@ -6,6 +6,7 @@ export const directoryListFragment = gql`
         name
         is_root
         active
+        colours
         layout {
             id
             name
@@ -24,6 +25,7 @@ export const directoryListFragment = gql`
             id
             name
             active
+            colours
             media {
                 id
                 name

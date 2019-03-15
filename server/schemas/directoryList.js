@@ -22,6 +22,17 @@ export default gql`
         name: String
         is_root: Boolean
         active: Boolean
+        colours: [JSON]
+        colour1Hex: String
+        colour1Alpha: Int
+        colour2Hex: String
+        colour2Alpha: Int
+        colour3Hex: String
+        colour3Alpha: Int
+        colour4Hex: String
+        colour4Alpha: Int
+        colour5Hex: String
+        colour5Alpha: Int
         createdAt: DateTime
         updatedAt: DateTime
         child_directory_lists: [DirectoryList]

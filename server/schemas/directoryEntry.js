@@ -20,6 +20,17 @@ export default gql`
         name: String
         title: String
         active: Boolean
+        colours: [JSON]
+        colour1Hex: String
+        colour1Alpha: Int
+        colour2Hex: String
+        colour2Alpha: Int
+        colour3Hex: String
+        colour3Alpha: Int
+        colour4Hex: String
+        colour4Alpha: Int
+        colour5Hex: String
+        colour5Alpha: Int
         createdAt: DateTime
         updatedAt: DateTime
         directoryLists: [DirectoryList]

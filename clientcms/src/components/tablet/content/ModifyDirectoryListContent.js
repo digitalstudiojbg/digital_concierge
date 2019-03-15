@@ -326,7 +326,9 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     renderColourSchemePicker() {
-        const { setFieldValue } = this.props;
+        const { setFieldValue, location } = this.props;
+        const { is_create } = this.state;
+        const initialColours = !is_create ? location.state.data.colours : [];
         const handleOnChange = colours =>
             setFieldValue("colours", colours, false);
         return (
@@ -338,7 +340,10 @@ class ModifyDirectoryList extends React.PureComponent {
                     color: "black"
                 }}
             >
-                <ColourSchemePicker handleOnChange={handleOnChange} />
+                <ColourSchemePicker
+                    initialColours={initialColours}
+                    handleOnChange={handleOnChange}
+                />
             </div>
         );
     }

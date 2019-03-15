@@ -206,7 +206,7 @@ export const ColourSchemePicker = ({
 };
 
 ColourSchemePicker.defaultProps = {
-    initialColour: [],
+    initialColours: [],
     handleOnChange: null
 };
 

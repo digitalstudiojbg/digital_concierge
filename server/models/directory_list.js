@@ -26,6 +26,86 @@ module.exports = (sequelize, DataTypes) => {
                 },
                 defaultValue: false
             },
+            colour1Hex: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "#FFFFFF"
+            },
+            colour1Alpha: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 100
+            },
+            colour2Hex: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "#FFFFFF"
+            },
+            colour2Alpha: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 100
+            },
+            colour3Hex: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "#FFFFFF"
+            },
+            colour3Alpha: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 100
+            },
+            colour4Hex: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "#FFFFFF"
+            },
+            colour4Alpha: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 100
+            },
+            colour5Hex: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "#FFFFFF"
+            },
+            colour5Alpha: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 100
+            },
             directoryListId: {
                 type: DataTypes.INTEGER,
                 allowNull: true
