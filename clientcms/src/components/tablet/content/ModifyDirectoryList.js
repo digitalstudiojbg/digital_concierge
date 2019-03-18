@@ -7,7 +7,11 @@ import Button from "@material-ui/core/Button";
 import ModifyDirectoryListLayout from "./ModifyDirectoryListLayout";
 import ModifyDirectoryListContent from "./ModifyDirectoryListContent";
 import PropTypes from "prop-types";
-import { ContainerDiv, SYSTEM_CMS_CONTENT_URL } from "../../../utils/Constants";
+import {
+    ContainerDiv,
+    SYSTEM_CMS_CONTENT_URL,
+    HEX_COLOUR_REGEX
+} from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { Formik, Form } from "formik";
@@ -17,6 +21,7 @@ import {
     CREATE_DIRECTORY_LIST
 } from "../../../data/mutation";
 import { getDirectoryListBySystem } from "../../../data/query";
+import * as Yup from "yup";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -62,6 +67,26 @@ const styles = () => ({
 
 const lightGreyHeader = "rgb(247,247,247)";
 
+const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Required."),
+    layout_id: Yup.string().required("Required."),
+    parent_id: Yup.string("Required."),
+    images: Yup.mixed().required("Required."),
+    colours: Yup.array()
+        .of(
+            Yup.object().shape({
+                hex: Yup.string()
+                    .matches(HEX_COLOUR_REGEX)
+                    .required("Please select the correct colour format"),
+                alpha: Yup.number()
+                    .min(0)
+                    .max(100)
+                    .required("Please select the correct alpha format")
+            })
+        )
+        .required("Required.")
+});
+
 TabContainer.propTypes = {
     children: PropTypes.node.isRequired
 };
@@ -103,7 +128,7 @@ const ModifyDirectoryList = props => {
                       directoryList.media.length > 0
                           ? [{ ...directoryList.media[0], uploaded: true }]
                           : [],
-                  colours: []
+                  colours: [...directoryList.colours]
               }
             : {
                   id: null,
@@ -140,99 +165,100 @@ const ModifyDirectoryList = props => {
                 {action => (
                     <Formik
                         initialValues={initialValues}
+                        validationSchema={validationSchema}
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(true);
                             console.log(values);
-                            alert(values.name);
+                            // alert(values.name);
 
-                            const {
-                                images,
-                                parent_id: selected_directory
-                            } = values;
+                            // const {
+                            //     images,
+                            //     parent_id: selected_directory
+                            // } = values;
                             const { match, history } = props;
 
-                            if (images && images.length === 1 && !has_data) {
-                                console.log("CREATE WITH IMAGE");
+                            // if (images && images.length === 1 && !has_data) {
+                            //     console.log("CREATE WITH IMAGE");
 
-                                action({
-                                    variables: {
-                                        name: values.name,
-                                        is_root: selected_directory
-                                            ? true
-                                            : false,
-                                        layout_id: 1,
-                                        system_id: parseInt(
-                                            match.params.system_id
-                                        ),
-                                        parent_id: parseInt(selected_directory),
-                                        image: images[0]
-                                    }
-                                });
-                            } else if (
-                                images &&
-                                images.length === 1 &&
-                                has_data
-                            ) {
-                                console.log("UPDATE WITH IMAGE");
-                                console.log(images[0]);
-                                //If user upload another image
-                                if (!images[0].uploaded) {
-                                    action({
-                                        variables: {
-                                            id: parseInt(
-                                                this.props.location.state.data
-                                                    .id
-                                            ),
-                                            name: values.name,
-                                            is_root: selected_directory
-                                                ? true
-                                                : false,
-                                            layout_id: 1,
-                                            system_id: parseInt(
-                                                match.params.system_id
-                                            ),
-                                            parent_id: parseInt(
-                                                selected_directory
-                                            ),
-                                            image: images[0]
-                                        }
-                                    });
-                                } else {
-                                    action({
-                                        variables: {
-                                            id: parseInt(
-                                                this.props.location.state.data
-                                                    .id
-                                            ),
-                                            name: values.name,
-                                            is_root: selected_directory
-                                                ? true
-                                                : false,
-                                            layout_id: 1,
-                                            system_id: parseInt(
-                                                match.params.system_id
-                                            ),
-                                            parent_id: parseInt(
-                                                selected_directory
-                                            )
-                                        }
-                                    });
-                                }
-                            } else {
-                                action({
-                                    variables: {
-                                        name: values.name,
-                                        is_root: selected_directory
-                                            ? true
-                                            : false,
-                                        layout_id: 1,
-                                        system_id: parseInt(
-                                            match.params.system_id
-                                        ),
-                                        parent_id: parseInt(selected_directory)
-                                    }
-                                });
-                            }
+                            //     action({
+                            //         variables: {
+                            //             name: values.name,
+                            //             is_root: selected_directory
+                            //                 ? true
+                            //                 : false,
+                            //             layout_id: 1,
+                            //             system_id: parseInt(
+                            //                 match.params.system_id
+                            //             ),
+                            //             parent_id: parseInt(selected_directory),
+                            //             image: images[0]
+                            //         }
+                            //     });
+                            // } else if (
+                            //     images &&
+                            //     images.length === 1 &&
+                            //     has_data
+                            // ) {
+                            //     console.log("UPDATE WITH IMAGE");
+                            //     console.log(images[0]);
+                            //     //If user upload another image
+                            //     if (!images[0].uploaded) {
+                            //         action({
+                            //             variables: {
+                            //                 id: parseInt(
+                            //                     this.props.location.state.data
+                            //                         .id
+                            //                 ),
+                            //                 name: values.name,
+                            //                 is_root: selected_directory
+                            //                     ? true
+                            //                     : false,
+                            //                 layout_id: 1,
+                            //                 system_id: parseInt(
+                            //                     match.params.system_id
+                            //                 ),
+                            //                 parent_id: parseInt(
+                            //                     selected_directory
+                            //                 ),
+                            //                 image: images[0]
+                            //             }
+                            //         });
+                            //     } else {
+                            //         action({
+                            //             variables: {
+                            //                 id: parseInt(
+                            //                     this.props.location.state.data
+                            //                         .id
+                            //                 ),
+                            //                 name: values.name,
+                            //                 is_root: selected_directory
+                            //                     ? true
+                            //                     : false,
+                            //                 layout_id: 1,
+                            //                 system_id: parseInt(
+                            //                     match.params.system_id
+                            //                 ),
+                            //                 parent_id: parseInt(
+                            //                     selected_directory
+                            //                 )
+                            //             }
+                            //         });
+                            //     }
+                            // } else {
+                            //     action({
+                            //         variables: {
+                            //             name: values.name,
+                            //             is_root: selected_directory
+                            //                 ? true
+                            //                 : false,
+                            //             layout_id: 1,
+                            //             system_id: parseInt(
+                            //                 match.params.system_id
+                            //             ),
+                            //             parent_id: parseInt(selected_directory)
+                            //         }
+                            //     });
+                            // }
                             if (toExit) {
                                 history.push(
                                     SYSTEM_CMS_CONTENT_URL.replace(
