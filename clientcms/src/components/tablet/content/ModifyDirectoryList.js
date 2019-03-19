@@ -122,7 +122,7 @@ const ModifyDirectoryList = props => {
                   layout_id: directoryList.layout.id,
                   parent_id: Boolean(directoryList.parent_id)
                       ? directoryList.parent_id
-                      : null,
+                      : "",
                   images:
                       directoryList.media &&
                       Array.isArray(directoryList.media) &&
@@ -135,8 +135,8 @@ const ModifyDirectoryList = props => {
                   id: null,
                   name: "",
                   layout_family_id: null,
-                  layout_id: null,
-                  parent_id: null,
+                  layout_id: "",
+                  parent_id: "",
                   images: [],
                   colours: []
               };
@@ -177,7 +177,7 @@ const ModifyDirectoryList = props => {
                                 layout_id: layout_idString,
                                 colours,
                                 images,
-                                parent_id: selected_directory
+                                parent_id
                             } = values;
                             const { match, history } = props;
 
@@ -189,12 +189,16 @@ const ModifyDirectoryList = props => {
 
                             let toSubmit = {
                                 name,
-                                is_root: Boolean(selected_directory)
-                                    ? true
-                                    : false,
+                                is_root: Boolean(parent_id),
                                 layout_id,
                                 system_id: parseInt(match.params.system_id),
-                                parent_id: parseInt(selected_directory),
+                                //https://stackoverflow.com/a/47892178
+                                ...(Boolean(parent_id) && {
+                                    parent_id: parseInt(
+                                        parent_id,
+                                        DECIMAL_RADIX
+                                    )
+                                }),
                                 colours
                             };
 
