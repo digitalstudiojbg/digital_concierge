@@ -8,7 +8,8 @@ import { UserInputError } from "apollo-server-express";
 import {
     processUploadMedia,
     processUpload,
-    processDelete
+    processDelete,
+    processColours
 } from "../utils/constant";
 import { log } from "util";
 
@@ -28,7 +29,16 @@ export default {
         createDirectoryList: async (
             _root,
             {
-                input: { name, is_root, parent_id, layout_id, system_id, image }
+                input: {
+                    name,
+                    is_root,
+                    parent_id,
+                    layout_id,
+                    system_id,
+                    image,
+                    media_id,
+                    colours
+                }
             },
             { user, clientIp }
         ) => {
@@ -45,6 +55,8 @@ export default {
                     user.id,
                     "image"
                 );
+            } else if (media_id) {
+                created_media = await db.media.findByPk(media_id);
             }
 
             //Create directory list
@@ -53,7 +65,8 @@ export default {
                 is_root,
                 directoryListId: parent_id,
                 layoutId: layout_id,
-                systemId: system_id
+                systemId: system_id,
+                ...processColours(colours)
             });
 
             try {
@@ -91,7 +104,9 @@ export default {
                     parent_id,
                     layout_id,
                     system_id,
-                    image
+                    image,
+                    media_id,
+                    colours
                 }
             },
             { user, clientIp }
@@ -100,7 +115,7 @@ export default {
             //const system = await db.system.findByPk(system_id);
             //await checkUserPermissionModifySystem(user, system);
 
-            let updated_image;
+            let updated_image = null;
             let updated_directory_list;
 
             //Check if image update
@@ -110,13 +125,23 @@ export default {
                     user.id,
                     "image"
                 );
+            } else if (media_id) {
+                //If Image was changed from media library
+                updated_image = await db.media.findByPk(media_id);
             }
 
             let to_update;
             //Update directory list in DB
             try {
                 updated_directory_list = await db.directory_list.update(
-                    { name, is_root, parent_id, layout_id, system_id },
+                    {
+                        name,
+                        is_root,
+                        parent_id,
+                        layout_id,
+                        system_id,
+                        ...processColours(colours)
+                    },
                     { where: { id } }
                 );
                 try {
@@ -125,13 +150,13 @@ export default {
                     try {
                         //Get list of media from update directory list from DB
                         const to_delete_images = await to_update.getMedia();
-                        let to_delete_images_key = [];
-                        to_delete_images.map(each => {
-                            to_delete_images_key.push({
-                                key: each.key,
-                                id: id
-                            });
-                        });
+                        // let to_delete_images_key = [];
+                        // to_delete_images.map(each => {
+                        //     to_delete_images_key.push({
+                        //         key: each.key,
+                        //         id: id
+                        //     });
+                        // });
                         if (image) {
                             //Delete previous images on S3
                             /*await to_delete_images_key.map(each => {

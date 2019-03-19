@@ -49,6 +49,7 @@ export default gql`
         layout_id: Int!
         system_id: Int!
         image: Upload
+        colours: [ColourThemeInput]!
     }
 
     input UpdateDirectoryListInput {
@@ -59,6 +60,8 @@ export default gql`
         layout_id: Int!
         system_id: Int!
         image: Upload
+        media_id: Int
+        colours: [ColourThemeInput]
     }
 
     type Dir_Entry_And_List_Delete_Response {

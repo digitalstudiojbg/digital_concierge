@@ -95,7 +95,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             </div>
             <div style={{ flexBasis: "40%" }}>
                 <SubtitleDiv>LAYOUT</SubtitleDiv>
-                <LayoutPicker values={values} />
+                <LayoutPicker values={values} setFieldValue={setFieldValue} />
             </div>
         </div>
     );

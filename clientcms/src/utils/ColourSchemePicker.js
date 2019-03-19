@@ -89,7 +89,7 @@ export const ColourSchemePicker = ({
         // console.log(updatedColours);
 
         setColours(updatedColours);
-        handleOnChange && handleOnChange(updatedColours);
+        handleOnChange && handleOnChange(updatedColours.toJS());
     };
 
     const { params } = match || {};
@@ -118,7 +118,7 @@ export const ColourSchemePicker = ({
                         handleOnChange && handleOnChange(initialColours);
                     } else {
                         setColours(immutableSystemTheme);
-                        handleOnChange && handleOnChange(immutableSystemTheme);
+                        handleOnChange && handleOnChange(systemColours);
                     }
                 };
                 // console.log("Current state colour ", colours);

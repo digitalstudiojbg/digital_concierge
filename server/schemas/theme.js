@@ -70,7 +70,7 @@ export default gql`
     }
 
     input ColourThemeInput {
-        hex: String
-        alpha: Int
+        hex: String!
+        alpha: Int!
     }
 `;

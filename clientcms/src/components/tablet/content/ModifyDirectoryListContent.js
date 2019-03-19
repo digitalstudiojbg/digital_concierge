@@ -80,31 +80,24 @@ class ModifyDirectoryList extends React.PureComponent {
         super(props);
         const has_data =
             props.location && props.location.state && props.location.state.data;
+        // const has_media_data =
+        //     has_data &&
+        //     props.location.state.data.media &&
+        //     props.location.state.data.media.length > 0;
         const has_media_data =
-            has_data &&
-            props.location.state.data.media &&
-            props.location.state.data.media.length > 0;
-        const images = has_media_data
-            ? props.location.state.data.media.map(image => ({
-                  ...image,
-                  uploaded: true
-              }))
-            : [];
-
+            Array.isArray(props.values.images) &&
+            props.values.images.length > 0;
+        // const images = has_media_data
+        //     ? props.location.state.data.media.map(image => ({
+        //           ...image,
+        //           uploaded: true,
+        //           changed: false
+        //       }))
+        //     : [];
         this.state = {
-            imageName: has_media_data
-                ? props.location.state.data.media[0].name
-                : "",
+            imageName: has_media_data ? props.values.images[0].name : "",
             openDialog: false,
-            whichDialog: "",
-            selected_directory:
-                has_data &&
-                !props.location.state.data.is_root &&
-                props.location.state.data.is_dir_list
-                    ? props.location.state.data.parent_id
-                    : null,
-            images,
-            is_create: has_data ? false : true
+            whichDialog: ""
         };
 
         //Create Referencess
@@ -154,68 +147,101 @@ class ModifyDirectoryList extends React.PureComponent {
         this.dropZoneRef.current.open();
     }
 
-    componentWillUnmount() {
-        this.state.images.forEach(image => {
-            if (!Boolean(image.uploaded) && Boolean(image.preview)) {
-                // Make sure to revoke the preview data uris to avoid memory leaks
-                URL.revokeObjectURL(image.preview);
-            }
-        });
-    }
+    // componentWillUnmount() {
+    //     this.state.images.forEach(image => {
+    //         if (!Boolean(image.uploaded) && Boolean(image.preview)) {
+    //             // Make sure to revoke the preview data uris to avoid memory leaks
+    //             URL.revokeObjectURL(image.preview);
+    //         }
+    //     });
+    // }
 
     onDrop(images) {
-        this.setState(
-            {
-                images: images.map(file =>
+        this.setState({ imageName: images[0].name }, () => {
+            this.props.setFieldValue(
+                "images",
+                images.map(file =>
                     Object.assign(file, {
                         preview: URL.createObjectURL(file),
-                        uploaded: false
+                        uploaded: false,
+                        changed: true
                     })
                 ),
-                imageName: images[0].name
-            },
-            () => {
-                this.props.setFieldValue(
-                    "images",
-                    [...this.state.images],
-                    false
-                );
-            }
-        );
+                false
+            );
+        });
+
+        // this.setState(
+        //     {
+        //         images: images.map(file =>
+        //             Object.assign(file, {
+        //                 preview: URL.createObjectURL(file),
+        //                 uploaded: false,
+        //                 changed: true
+        //             })
+        //         ),
+        //         imageName: images[0].name
+        //     },
+        //     () => {
+        //         this.props.setFieldValue(
+        //             "images",
+        //             [...this.state.images],
+        //             false
+        //         );
+        //     }
+        // );
     }
 
     mediaSelectImage(images) {
+        // this.setState(
+        //     {
+        //         images: images.map(image => ({
+        //             ...image,
+        //             uploaded: true,
+        //             changed: true
+        //         })),
+        //         imageName: images[0].name
+        //     },
+        //     () => {
+        //         this.props.setFieldValue(
+        //             "images",
+        //             [...this.state.images],
+        //             false
+        //         );
+        //     }
+        // );
+        this.setState({ imageName: images[0].name }, () => {
+            this.props.setFieldValue(
+                "images",
+                images.map(image => ({
+                    ...image,
+                    uploaded: true,
+                    changed: true
+                })),
+                false
+            );
+        });
+    }
+
+    removeImage() {
         this.setState(
             {
-                images: images.map(image => ({
-                    ...image,
-                    uploaded: true
-                })),
-                imageName: images[0].name
+                imageName: "",
+                openDialog: false,
+                whichDialog: ""
             },
             () => {
-                this.props.setFieldValue(
-                    "images",
-                    [...this.state.images],
-                    false
-                );
+                this.props.setFieldValue("images", [], false);
             }
         );
     }
 
-    removeImage() {
-        this.setState({
-            images: [],
-            imageName: "",
-            openDialog: false,
-            whichDialog: ""
-        });
-    }
-
     renderImageUploader() {
-        const { classes } = this.props;
-        const { images } = this.state;
-        const image = images.length > 0 ? images[0] : null;
+        const { classes, values } = this.props;
+        const { imageName } = this.state;
+        const { images } = values;
+        const image =
+            Array.isArray(images) && images.length > 0 ? images[0] : null;
         return (
             <React.Fragment>
                 <div
@@ -247,7 +273,10 @@ class ModifyDirectoryList extends React.PureComponent {
                             className={classes.removeImageButton}
                             variant="outlined"
                             fullWidth={true}
-                            disabled={this.state.imageName.length === 0}
+                            disabled={
+                                Boolean(imageName) &&
+                                Boolean(imageName.length === 0)
+                            }
                             onClick={this.openDialogImage}
                         >
                             REMOVE EXISTING
@@ -326,9 +355,8 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     renderColourSchemePicker() {
-        const { setFieldValue, location } = this.props;
-        const { is_create } = this.state;
-        const initialColours = !is_create ? location.state.data.colours : [];
+        const { setFieldValue, values } = this.props;
+        // const initialColours = !is_create ? values.colours : []; //location.state.data.colours
         const handleOnChange = colours =>
             setFieldValue("colours", colours, false);
         return (
@@ -341,7 +369,7 @@ class ModifyDirectoryList extends React.PureComponent {
                 }}
             >
                 <ColourSchemePicker
-                    initialColours={initialColours}
+                    initialColours={values.colours}
                     handleOnChange={handleOnChange}
                 />
             </div>

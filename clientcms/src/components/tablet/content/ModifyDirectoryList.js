@@ -10,7 +10,8 @@ import PropTypes from "prop-types";
 import {
     ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
-    HEX_COLOUR_REGEX
+    HEX_COLOUR_REGEX,
+    DECIMAL_RADIX
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -108,7 +109,7 @@ const ModifyDirectoryList = props => {
 
     const saveAndKeepEditing = submitForm => {
         setToExit(false);
-        submitForm && submitForm();
+        submitForm();
     };
 
     const directoryList = has_data ? props.location.state.data : null;
@@ -169,96 +170,100 @@ const ModifyDirectoryList = props => {
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(true);
                             console.log(values);
-                            // alert(values.name);
 
-                            // const {
-                            //     images,
-                            //     parent_id: selected_directory
-                            // } = values;
+                            const {
+                                id,
+                                name,
+                                layout_id: layout_idString,
+                                colours,
+                                images,
+                                parent_id: selected_directory
+                            } = values;
                             const { match, history } = props;
 
-                            // if (images && images.length === 1 && !has_data) {
-                            //     console.log("CREATE WITH IMAGE");
+                            const has_data = Boolean(id);
+                            const layout_id = parseInt(
+                                layout_idString,
+                                DECIMAL_RADIX
+                            );
 
-                            //     action({
-                            //         variables: {
-                            //             name: values.name,
-                            //             is_root: selected_directory
-                            //                 ? true
-                            //                 : false,
-                            //             layout_id: 1,
-                            //             system_id: parseInt(
-                            //                 match.params.system_id
-                            //             ),
-                            //             parent_id: parseInt(selected_directory),
-                            //             image: images[0]
-                            //         }
-                            //     });
-                            // } else if (
-                            //     images &&
-                            //     images.length === 1 &&
-                            //     has_data
-                            // ) {
-                            //     console.log("UPDATE WITH IMAGE");
-                            //     console.log(images[0]);
-                            //     //If user upload another image
-                            //     if (!images[0].uploaded) {
-                            //         action({
-                            //             variables: {
-                            //                 id: parseInt(
-                            //                     this.props.location.state.data
-                            //                         .id
-                            //                 ),
-                            //                 name: values.name,
-                            //                 is_root: selected_directory
-                            //                     ? true
-                            //                     : false,
-                            //                 layout_id: 1,
-                            //                 system_id: parseInt(
-                            //                     match.params.system_id
-                            //                 ),
-                            //                 parent_id: parseInt(
-                            //                     selected_directory
-                            //                 ),
-                            //                 image: images[0]
-                            //             }
-                            //         });
-                            //     } else {
-                            //         action({
-                            //             variables: {
-                            //                 id: parseInt(
-                            //                     this.props.location.state.data
-                            //                         .id
-                            //                 ),
-                            //                 name: values.name,
-                            //                 is_root: selected_directory
-                            //                     ? true
-                            //                     : false,
-                            //                 layout_id: 1,
-                            //                 system_id: parseInt(
-                            //                     match.params.system_id
-                            //                 ),
-                            //                 parent_id: parseInt(
-                            //                     selected_directory
-                            //                 )
-                            //             }
-                            //         });
-                            //     }
-                            // } else {
-                            //     action({
-                            //         variables: {
-                            //             name: values.name,
-                            //             is_root: selected_directory
-                            //                 ? true
-                            //                 : false,
-                            //             layout_id: 1,
-                            //             system_id: parseInt(
-                            //                 match.params.system_id
-                            //             ),
-                            //             parent_id: parseInt(selected_directory)
-                            //         }
-                            //     });
-                            // }
+                            let toSubmit = {
+                                name,
+                                is_root: Boolean(selected_directory)
+                                    ? true
+                                    : false,
+                                layout_id,
+                                system_id: parseInt(match.params.system_id),
+                                parent_id: parseInt(selected_directory),
+                                colours
+                            };
+
+                            if (images && images.length === 1 && !has_data) {
+                                if (!images[0].uploaded) {
+                                    console.log("CREATE WITH UPLOAD IMAGE");
+                                    toSubmit = {
+                                        ...toSubmit,
+                                        image: images[0]
+                                    };
+                                } else if (images[0].uploaded) {
+                                    toSubmit = {
+                                        ...toSubmit,
+                                        media_id: parseInt(
+                                            images[0].id,
+                                            DECIMAL_RADIX
+                                        )
+                                    };
+                                }
+
+                                console.log(toSubmit);
+
+                                action({
+                                    variables: { input: toSubmit }
+                                });
+                            } else if (
+                                images &&
+                                images.length === 1 &&
+                                has_data
+                            ) {
+                                console.log(images[0]);
+                                toSubmit = {
+                                    ...toSubmit,
+                                    id: parseInt(id, DECIMAL_RADIX)
+                                };
+                                if (!images[0].uploaded) {
+                                    //If user upload another image
+                                    console.log("UPDATE WITH NEW IMAGE");
+
+                                    toSubmit = {
+                                        ...toSubmit,
+                                        image: images[0]
+                                    };
+                                } else if (
+                                    images[0].uploaded &&
+                                    images[0].changed
+                                ) {
+                                    console.log(
+                                        "UPDATE WITH EXISTING IMAGE FROM LIBRARY"
+                                    );
+
+                                    toSubmit = {
+                                        ...toSubmit,
+                                        media_id: parseInt(
+                                            images[0].id,
+                                            DECIMAL_RADIX
+                                        )
+                                    };
+                                } else {
+                                    console.log(
+                                        "UPDATE WITHOUT CHANGING IMAGE"
+                                    );
+                                }
+                                console.log(toSubmit);
+
+                                action({
+                                    variables: { input: toSubmit }
+                                });
+                            }
                             if (toExit) {
                                 history.push(
                                     SYSTEM_CMS_CONTENT_URL.replace(

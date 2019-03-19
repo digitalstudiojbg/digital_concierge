@@ -314,3 +314,31 @@ export const processUploadMedia = async (image, clientId, type) => {
         throw new UserInputError(e);
     }
 };
+
+export const processColours = colours => {
+    //Check that there are 5 colours that were sent
+    if (colours.length !== 5) {
+        throw new UserInputError("Theme Colours Array must have a size of 5!");
+    }
+
+    const [
+        { hex: colour1Hex, alpha: colour1Alpha },
+        { hex: colour2Hex, alpha: colour2Alpha },
+        { hex: colour3Hex, alpha: colour3Alpha },
+        { hex: colour4Hex, alpha: colour4Alpha },
+        { hex: colour5Hex, alpha: colour5Alpha }
+    ] = colours;
+
+    return {
+        colour1Hex,
+        colour1Alpha,
+        colour2Hex,
+        colour2Alpha,
+        colour3Hex,
+        colour3Alpha,
+        colour4Hex,
+        colour4Alpha,
+        colour5Hex,
+        colour5Alpha
+    };
+};
