@@ -145,7 +145,8 @@ const ModifyDirectoryList = props => {
                       directoryList.media.length > 0
                           ? [{ ...directoryList.media[0], uploaded: true }]
                           : [],
-                  colours: [...directoryList.colours]
+                  colours: [...directoryList.colours],
+                  initial_colours: [...directoryList.colours]
               }
             : {
                   id: null,
@@ -154,7 +155,8 @@ const ModifyDirectoryList = props => {
                   layout_id: "",
                   parent_id: "",
                   images: [],
-                  colours: []
+                  colours: [],
+                  initial_colours: []
               };
 
     return (
