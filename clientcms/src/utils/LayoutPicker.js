@@ -27,7 +27,7 @@ const InnerContainerDiv = styled.div`
 
 const LayoutOptionsDiv = styled.div`
     width: 100%;
-    height: 80%;
+    height: 70%;
     border: 2px solid rgb(196, 196, 196);
     margin-top: 20px;
     display: flex;
@@ -61,7 +61,13 @@ const LayoutImageDiv = styled.div`
     background-color: white;
 `;
 
-const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
+const LayoutPicker = ({
+    whichLayout,
+    values,
+    setFieldValue,
+    layoutFamilyFieldName,
+    layoutFieldName
+}) => {
     // const [selectedFamily, setSelectedFamily] = useState(null);
     // const [selectedLayout, setSelectedLayout] = useState(null);
 
@@ -71,7 +77,7 @@ const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
 
     const updateLayout = (_event, { value }) => {
         // setSelectedLayout(value);
-        setFieldValue("layout_id", value, false);
+        setFieldValue(layoutFieldName, value, false);
     };
 
     const renderLayoutOptions = layouts => (
@@ -81,7 +87,7 @@ const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
                     <LayoutLabelDiv>
                         <Radio
                             value={id}
-                            checked={values.layout_id === id}
+                            checked={values[layoutFieldName] === id}
                             onChange={updateLayout}
                         />
                         <div>{name}</div>
@@ -98,12 +104,12 @@ const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
         //     value: item.id
         // }));
 
-        const { layout_family_id } = values;
+        const layoutFamilyId = values[layoutFamilyFieldName];
         // const familyData = Boolean(selectedFamily)
         //     ? layoutFamilies.find(({ id }) => id === selectedFamily)
         //     : null;
-        const familyData = Boolean(layout_family_id)
-            ? layoutFamilies.find(({ id }) => id === layout_family_id)
+        const familyData = Boolean(layoutFamilyId)
+            ? layoutFamilies.find(({ id }) => id === layoutFamilyId)
             : null;
 
         const { layouts = [] } = familyData || {};
@@ -121,7 +127,7 @@ const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
                     value={selectedFamily}
                 /> */}
                 <Field
-                    name="layout_family_id"
+                    name={layoutFamilyFieldName}
                     component={Select}
                     disabled={layoutFamilies.length < 1}
                     fullWidth={true}
@@ -185,11 +191,16 @@ const LayoutPicker = ({ whichLayout, values, setFieldValue }) => {
 };
 
 LayoutPicker.defaultProps = {
-    whichLayout: "all"
+    whichLayout: "all",
+    layoutFamilyFieldName: "layout_family_id",
+    layoutFieldName: "layout_id"
 };
 
 LayoutPicker.propTypes = {
-    whichLayout: PropTypes.string
+    whichLayout: PropTypes.string,
+    layoutFamilyFieldName: PropTypes.string,
+    layoutFieldName: PropTypes.string,
+    setFieldValue: PropTypes.func.isRequired
 };
 
 export default LayoutPicker;
