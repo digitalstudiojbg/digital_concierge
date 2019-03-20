@@ -35,7 +35,7 @@ import {
     LocalMoviesOutlined,
     NotificationsActiveOutlined,
     GroupOutlined,
-    ScoreOutlined,
+    ShowChartOutlined,
     // TabletMac,
     // Settings,
     People
@@ -116,7 +116,7 @@ const SIDEBAR_ITEMS = [
     {
         name: SYSTEM_CMS_REPORTS,
         displayName: "Reports",
-        icon: ScoreOutlined,
+        icon: ShowChartOutlined,
         center: false
     },
     {
