@@ -10,13 +10,13 @@ import PropTypes from "prop-types";
 import {
     ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
-    HEX_COLOUR_REGEX,
+    // HEX_COLOUR_REGEX,
     DECIMAL_RADIX
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { Formik, Form } from "formik";
-import { Mutation, withApollo } from "react-apollo";
+import { Mutation } from "react-apollo";
 import {
     EDIT_DIRECTORY_LIST,
     CREATE_DIRECTORY_LIST
@@ -443,5 +443,5 @@ const ModifyDirectoryList = props => {
     );
 };
 
-export default withApollo(withStyles(styles)(ModifyDirectoryList));
+export default withStyles(styles)(ModifyDirectoryList);
 // export default ModifyDirectoryList;
