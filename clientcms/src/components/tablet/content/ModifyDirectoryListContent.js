@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import { Field } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -65,10 +65,6 @@ const styles = _theme => ({
         backgroundColor: "white",
         marginBottom: 10
     }
-});
-
-const DirectoryListSchema = Yup.object().shape({
-    name: Yup.string().required("Required")
 });
 
 function SlideUpTransition(props) {

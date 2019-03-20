@@ -50,9 +50,10 @@ export default {
             //Upload and Create image
             let created_media;
             if (image) {
+                const { clientId } = await db.system.findByPk(system_id);
                 created_media = await processUploadMedia(
                     image,
-                    user.id,
+                    clientId,
                     "image"
                 );
             } else if (media_id) {
@@ -112,7 +113,7 @@ export default {
             { user, clientIp }
         ) => {
             await checkUserLogin(user);
-            //const system = await db.system.findByPk(system_id);
+            const system = await db.system.findByPk(system_id);
             //await checkUserPermissionModifySystem(user, system);
 
             let updated_image = null;
@@ -122,7 +123,7 @@ export default {
             if (image) {
                 updated_image = await processUploadMedia(
                     image,
-                    user.id,
+                    system.clientId,
                     "image"
                 );
             } else if (media_id) {
@@ -137,9 +138,9 @@ export default {
                     {
                         name,
                         is_root,
-                        parent_id,
-                        layout_id,
-                        system_id,
+                        directoryListId: parent_id,
+                        layoutId: layout_id,
+                        systemId: system_id,
                         ...processColours(colours)
                     },
                     { where: { id } }
@@ -157,14 +158,14 @@ export default {
                         //         id: id
                         //     });
                         // });
-                        if (image) {
+                        if (Boolean(image) || Boolean(media_id)) {
                             //Delete previous images on S3
                             /*await to_delete_images_key.map(each => {
-                                    processDelete(each.key);
-                                });*/
+                                        processDelete(each.key);
+                                    });*/
                             try {
                                 //Remove relationship between list and previous image in DB
-                                await to_update.removeMedium(to_delete_images);
+                                await to_update.removeMedia(to_delete_images);
 
                                 try {
                                     //Add new image into directory in DB

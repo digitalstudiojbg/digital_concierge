@@ -72,7 +72,8 @@ export const ColourSchemePicker = ({
     match
 }) => {
     const initialColours =
-        Boolean(initialColoursProp) && initialColoursProp.length > 0
+        Boolean(initialColoursProp) &&
+        (initialColoursProp.length > 0 || initialColoursProp.size > 0)
             ? fromJS(initialColoursProp)
             : INITIAL_VALUE_COLOURS;
 
@@ -89,7 +90,7 @@ export const ColourSchemePicker = ({
         // console.log(updatedColours);
 
         setColours(updatedColours);
-        handleOnChange && handleOnChange(updatedColours.toJS());
+        handleOnChange && handleOnChange(updatedColours);
     };
 
     const { params } = match || {};
@@ -118,7 +119,7 @@ export const ColourSchemePicker = ({
                         handleOnChange && handleOnChange(initialColours);
                     } else {
                         setColours(immutableSystemTheme);
-                        handleOnChange && handleOnChange(systemColours);
+                        handleOnChange && handleOnChange(immutableSystemTheme);
                     }
                 };
                 // console.log("Current state colour ", colours);
@@ -211,12 +212,12 @@ ColourSchemePicker.defaultProps = {
 };
 
 ColourSchemePicker.propTypes = {
-    initialColours: PropTypes.arrayOf(
-        PropTypes.shape({
-            hex: PropTypes.string,
-            alpha: PropTypes.number
-        })
-    ),
+    // initialColours: PropTypes.arrayOf(
+    //     PropTypes.shape({
+    //         hex: PropTypes.string,
+    //         alpha: PropTypes.number
+    //     })
+    // ),
     handleOnChange: PropTypes.func
 };
 

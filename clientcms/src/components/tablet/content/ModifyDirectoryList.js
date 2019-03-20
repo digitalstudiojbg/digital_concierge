@@ -23,6 +23,7 @@ import {
 } from "../../../data/mutation";
 import { getDirectoryListBySystem } from "../../../data/query";
 import * as Yup from "yup";
+import { List } from "immutable";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -72,20 +73,20 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().required("Required."),
     layout_id: Yup.string().required("Required."),
     parent_id: Yup.string("Required."),
-    images: Yup.mixed().required("Required."),
-    colours: Yup.array()
-        .of(
-            Yup.object().shape({
-                hex: Yup.string()
-                    .matches(HEX_COLOUR_REGEX)
-                    .required("Please select the correct colour format"),
-                alpha: Yup.number()
-                    .min(0)
-                    .max(100)
-                    .required("Please select the correct alpha format")
-            })
-        )
-        .required("Required.")
+    images: Yup.mixed().required("Required.")
+    // colours: Yup.array()
+    //     .of(
+    //         Yup.object().shape({
+    //             hex: Yup.string()
+    //                 .matches(HEX_COLOUR_REGEX)
+    //                 .required("Please select the correct colour format"),
+    //             alpha: Yup.number()
+    //                 .min(0)
+    //                 .max(100)
+    //                 .required("Please select the correct alpha format")
+    //         })
+    //     )
+    //     .required("Required.")
 });
 
 TabContainer.propTypes = {
@@ -175,7 +176,7 @@ const ModifyDirectoryList = props => {
                                 id,
                                 name,
                                 layout_id: layout_idString,
-                                colours,
+                                colours: coloursImmutable,
                                 images,
                                 parent_id
                             } = values;
@@ -186,13 +187,19 @@ const ModifyDirectoryList = props => {
                                 layout_idString,
                                 DECIMAL_RADIX
                             );
+                            const colours = List.isList(coloursImmutable)
+                                ? coloursImmutable.toJS()
+                                : [...coloursImmutable];
 
+                            //https://stackoverflow.com/a/47892178
                             let toSubmit = {
+                                ...(Boolean(id) && {
+                                    id: parseInt(id, DECIMAL_RADIX)
+                                }),
                                 name,
-                                is_root: Boolean(parent_id),
+                                is_root: !Boolean(parent_id),
                                 layout_id,
                                 system_id: parseInt(match.params.system_id),
-                                //https://stackoverflow.com/a/47892178
                                 ...(Boolean(parent_id) && {
                                     parent_id: parseInt(
                                         parent_id,
@@ -222,7 +229,7 @@ const ModifyDirectoryList = props => {
                                 console.log(toSubmit);
 
                                 action({
-                                    variables: { input: toSubmit }
+                                    variables: { input: { ...toSubmit } }
                                 });
                             } else if (
                                 images &&
@@ -230,10 +237,6 @@ const ModifyDirectoryList = props => {
                                 has_data
                             ) {
                                 console.log(images[0]);
-                                toSubmit = {
-                                    ...toSubmit,
-                                    id: parseInt(id, DECIMAL_RADIX)
-                                };
                                 if (!images[0].uploaded) {
                                     //If user upload another image
                                     console.log("UPDATE WITH NEW IMAGE");
@@ -265,7 +268,7 @@ const ModifyDirectoryList = props => {
                                 console.log(toSubmit);
 
                                 action({
-                                    variables: { input: toSubmit }
+                                    variables: { input: { ...toSubmit } }
                                 });
                             }
                             if (toExit) {
