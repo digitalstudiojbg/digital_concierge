@@ -37,6 +37,8 @@ export const SYSTEM_CMS_PROMOTION = SYSTEM_INDEX_URL + "/promotion";
 export const SYSTEM_CMS_DEVICES = SYSTEM_INDEX_URL + "/devices";
 export const SYSTEM_CMS_GUESTS = SYSTEM_INDEX_URL + "/guests";
 export const SYSTEM_CMS_ACTIVITY = SYSTEM_INDEX_URL + "/activity";
+export const SYSTEM_CMS_REPORTS = SYSTEM_INDEX_URL + "/reports";
+export const SYSTEM_CMS_STAFF = SYSTEM_INDEX_URL + "/staff";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 

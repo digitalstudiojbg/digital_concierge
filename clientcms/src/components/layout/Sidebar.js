@@ -18,7 +18,9 @@ import {
     SYSTEM_CMS_LIBRARY,
     // SYSTEM_CMS_DEVICES,
     SYSTEM_CMS_GUESTS,
-    SYSTEM_CMS_ACTIVITY
+    SYSTEM_CMS_ACTIVITY,
+    SYSTEM_CMS_REPORTS,
+    SYSTEM_CMS_STAFF
 } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -32,6 +34,8 @@ import {
     ImageOutlined,
     LocalMoviesOutlined,
     NotificationsActiveOutlined,
+    GroupOutlined,
+    ScoreOutlined,
     // TabletMac,
     // Settings,
     People
@@ -108,6 +112,18 @@ const SIDEBAR_ITEMS = [
         displayName: "Library",
         icon: LocalMoviesOutlined,
         center: true
+    },
+    {
+        name: SYSTEM_CMS_REPORTS,
+        displayName: "Reports",
+        icon: ScoreOutlined,
+        center: false
+    },
+    {
+        name: SYSTEM_CMS_STAFF,
+        displayName: "Staff",
+        icon: GroupOutlined,
+        center: false
     }
     // {
     //     name: SYSTEM_CMS_DEVICES,
@@ -286,8 +302,7 @@ class Sidebar extends Component {
                             >
                                 <div
                                     style={{
-                                        width: "50%",
-                                        height: "100%",
+                                        width: "100%",
                                         display: "flex",
                                         alignItems: "center",
                                         fontSize: "1.5em"
