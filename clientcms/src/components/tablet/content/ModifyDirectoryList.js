@@ -297,6 +297,7 @@ const ModifyDirectoryList = props => {
                         }}
                     >
                         {({
+                            dirty,
                             isSubmitting,
                             errors,
                             values,
@@ -414,8 +415,32 @@ const ModifyDirectoryList = props => {
                                         </DialogTitleHelper>
                                         <DialogContent>
                                             <DialogContentText>
-                                                ARE YOU SURE YOU WANT TO LEAVE
-                                                THIS PAGE?
+                                                {dirty ? (
+                                                    <React.Fragment>
+                                                        <div
+                                                            style={{
+                                                                paddingTop: 10
+                                                            }}
+                                                        >
+                                                            ARE YOU SURE YOU
+                                                            WANT TO LEAVE THIS
+                                                            PAGE?
+                                                        </div>
+                                                        <div>
+                                                            YOU HAVE UNSAVED
+                                                            CHANGES.
+                                                        </div>
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <div
+                                                        style={{
+                                                            paddingTop: 10
+                                                        }}
+                                                    >
+                                                        ARE YOU SURE YOU WANT TO
+                                                        LEAVE THIS PAGE?
+                                                    </div>
+                                                )}
                                             </DialogContentText>
                                         </DialogContent>
                                         <DialogActions>
