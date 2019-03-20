@@ -68,6 +68,7 @@ const ColourTitleDiv = styled.div`
 
 export const ColourSchemePicker = ({
     initialColours: initialColoursProp,
+    currentColours: currentColoursProp,
     handleOnChange,
     match
 }) => {
@@ -77,7 +78,13 @@ export const ColourSchemePicker = ({
             ? fromJS(initialColoursProp)
             : INITIAL_VALUE_COLOURS;
 
-    const [colours, setColours] = useState(initialColours);
+    const currentColours =
+        Boolean(currentColoursProp) &&
+        (currentColoursProp.length > 0 || currentColoursProp.size > 0)
+            ? fromJS(currentColoursProp)
+            : initialColours;
+
+    const [colours, setColours] = useState(currentColours);
 
     const handleUpdateColourPicker = (index, colourData) => {
         // console.log("Colours before update: ", colours);
@@ -218,6 +225,8 @@ ColourSchemePicker.propTypes = {
     //         alpha: PropTypes.number
     //     })
     // ),
+    initialColours: PropTypes.any.isRequired, //Initial value of the colour scheme
+    currentColours: PropTypes.any.isRequired, //Current value of the colour scheme
     handleOnChange: PropTypes.func
 };
 
