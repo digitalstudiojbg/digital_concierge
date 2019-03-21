@@ -1333,7 +1333,11 @@ class TreeView extends React.PureComponent {
     }
 
     deleteListEntryAction(action) {
-        const { anchorElId } = this.state;
+        const { anchorElId, dirListOnlyDataTree } = this.state;
+        const systemId = parseInt(
+            this.props.match.params.system_id,
+            DECIMAL_RADIX
+        );
         if (Boolean(anchorElId)) {
             if (anchorElId.includes(HEADER_KEY_DIR_LIST)) {
                 //Selected element is a Directory List
@@ -1341,17 +1345,37 @@ class TreeView extends React.PureComponent {
                     HEADER_KEY_DIR_LIST + "-",
                     ""
                 );
+                const directory = dirListOnlyDataTree.find(
+                    ({ id }) => id === directory_id
+                );
+                const items = this.getItemAndAllChildItems(directory);
+                const directory_lists = items
+                    .filter(item => Boolean(item.is_dir_list))
+                    .map(item => item.id);
+                const directory_entries = items
+                    .filter(item => !item.is_dir_list)
+                    .map(item => item.hash_id);
+
+                const directoryListIdList = this.sortDirectoryListBasedOnDepth(
+                    directory_lists
+                ).map(each => parseInt(each, DECIMAL_RADIX));
+
+                const directoryEntryIdList = directory_entries.map(each => {
+                    const parents = each.split("-");
+                    const lastParentId = parents[parents.length - 2];
+                    const entryId = parents[parents.length - 1];
+
+                    return {
+                        directoryEntryId: parseInt(entryId, DECIMAL_RADIX),
+                        directoryListId: parseInt(lastParentId, DECIMAL_RADIX)
+                    };
+                });
 
                 action({
                     variables: {
-                        directoryListIdList: [
-                            parseInt(directory_id, DECIMAL_RADIX)
-                        ],
-                        directoryEntryIdList: [],
-                        systemId: parseInt(
-                            this.props.match.params.system_id,
-                            DECIMAL_RADIX
-                        )
+                        directoryListIdList,
+                        directoryEntryIdList,
+                        systemId
                     }
                 }).then(() => {
                     this.setState({ deleteModal: false, anchorElId: "" });
@@ -1381,10 +1405,7 @@ class TreeView extends React.PureComponent {
                                 )
                             }
                         ],
-                        systemId: parseInt(
-                            this.props.match.params.system_id,
-                            DECIMAL_RADIX
-                        )
+                        systemId
                     }
                 }).then(() => {
                     this.setState({ deleteModal: false, anchorElId: "" });
@@ -1422,10 +1443,7 @@ class TreeView extends React.PureComponent {
                 variables: {
                     directoryListIdList,
                     directoryEntryIdList,
-                    systemId: parseInt(
-                        this.props.match.params.system_id,
-                        DECIMAL_RADIX
-                    )
+                    systemId
                 }
             }).then(() => {
                 this.setState({ deleteModal: false });
