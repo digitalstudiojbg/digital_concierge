@@ -143,6 +143,8 @@ const TreeEntry = styled.div`
     display: flex;
     align-items: center;
 `;
+const HEADER_KEY_DIR_LIST = "dir_list";
+const HEADER_KEY_DIR_ENTRY = "dir_entry";
 
 const SlideUpTransition = props => {
     return <Slide direction="up" {...props} />;
@@ -159,6 +161,7 @@ class TreeView extends React.PureComponent {
             dirListOnlyDataTree: [],
             dirEntryOnlyDataTree: [],
             anchorEl: null,
+            anchorElId: "",
             // anchorElCreate: null,
             deleteModal: false
         };
@@ -168,6 +171,7 @@ class TreeView extends React.PureComponent {
         // this.handleOpenCreate = this.handleOpenCreate.bind(this);
         // this.handleCloseCreate = this.handleCloseCreate.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
+        this.openDeleteModalFromMenu = this.openDeleteModalFromMenu.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.deleteListEntryAction = this.deleteListEntryAction.bind(this);
         this.sortDirectoryListBasedOnDepth = this.sortDirectoryListBasedOnDepth.bind(
@@ -708,7 +712,7 @@ class TreeView extends React.PureComponent {
          */
         let toUpdateDirListIds = [];
         toUpdateDirLists.forEach(element => {
-            toUpdateDirListIds.push(parseInt(element.id));
+            toUpdateDirListIds.push(parseInt(element.id, DECIMAL_RADIX));
         });
 
         if (row.is_dir_list) {
@@ -716,7 +720,7 @@ class TreeView extends React.PureComponent {
 
             parents.forEach(parent => {
                 if (row.active === false) {
-                    toUpdateDirListIds.push(parseInt(parent));
+                    toUpdateDirListIds.push(parseInt(parent, DECIMAL_RADIX));
                 }
 
                 const parentObject = dataTree.find(item => {
@@ -732,7 +736,7 @@ class TreeView extends React.PureComponent {
                         return eachDirList.active === row.active;
                     }).length === 1
                 ) {
-                    toUpdateDirListIds.push(parseInt(parent));
+                    toUpdateDirListIds.push(parseInt(parent, DECIMAL_RADIX));
                 }
             });
         }
@@ -746,8 +750,8 @@ class TreeView extends React.PureComponent {
             const parents = element.hash_id.split("-");
             const lastParentId = parents[parents.length - 2];
             toUpdateDirEntryIds.push({
-                directoryEntryId: parseInt(element.id),
-                directoryListId: parseInt(lastParentId)
+                directoryEntryId: parseInt(element.id, DECIMAL_RADIX),
+                directoryListId: parseInt(lastParentId, DECIMAL_RADIX)
             });
 
             const lastParentObject = dataTree.find(item => {
@@ -780,7 +784,9 @@ class TreeView extends React.PureComponent {
             if (shouldChangeLastParentStatus) {
                 parents.forEach((element, index) => {
                     if (parents.length - 1 > index && row.active === false) {
-                        toUpdateDirListIds.push(parseInt(parseInt(element)));
+                        toUpdateDirListIds.push(
+                            parseInt(element, DECIMAL_RADIX)
+                        );
                     }
                 });
             }
@@ -964,8 +970,11 @@ class TreeView extends React.PureComponent {
             //Just an empty parent directory list with no child directory list nor a directory entries. Another possibility is that the entry is a plain old directory entry
             const { selected_dir_lists, selected_dir_entries } = this.state;
             const id_options_header = directory.is_dir_list
-                ? "dir_list"
-                : "dir_entry";
+                ? HEADER_KEY_DIR_LIST
+                : HEADER_KEY_DIR_ENTRY;
+            const id_options_header_id = directory.is_dir_list
+                ? directory.id
+                : directory.hash_id;
             //No more child, no need to recur any more
             return (
                 <TableRow
@@ -1022,7 +1031,7 @@ class TreeView extends React.PureComponent {
                     <TableCell>{this.renderCheck(directory)}</TableCell>
                     <TableCell>
                         <MoreHorizontalIcon
-                            id={`${id_options_header}-${directory.id}`}
+                            id={`${id_options_header}-${id_options_header_id}`}
                             onClick={this.handleOpenOptions}
                         />
                     </TableCell>
@@ -1216,14 +1225,12 @@ class TreeView extends React.PureComponent {
     }
 
     //Function to close options menu and navigate to page based on selection
-    handleCloseOptionsAndNavigate(action = "") {
+    handleCloseOptionsAndNavigate(action = "", mutationAction = null) {
         const {
             preview_list_url,
             preview_entry_url,
             edit_list_url,
             edit_entry_url,
-            delete_list_url,
-            delete_entry_url,
             create_list_url,
             create_entry_url,
             history,
@@ -1237,7 +1244,7 @@ class TreeView extends React.PureComponent {
         // console.log(anchorEl.id);
         const anchorElIdArray = anchorEl.id.split("-");
         const directory =
-            anchorElIdArray[0] === "dir_list"
+            anchorElIdArray[0] === HEADER_KEY_DIR_LIST
                 ? dirListOnlyDataTree.find(dir => dir.id === anchorElIdArray[1])
                 : dirEntryOnlyDataTree.find(
                       dir => dir.id === anchorElIdArray[1]
@@ -1256,9 +1263,8 @@ class TreeView extends React.PureComponent {
                     : edit_entry_url;
                 break;
             case "delete":
-                pathname = directory.is_dir_list
-                    ? delete_list_url
-                    : delete_entry_url;
+                //Delete is special case because it will popup modal
+                this.openDeleteModalFromMenu();
                 break;
             case "create":
                 pathname = directory.is_dir_list
@@ -1269,12 +1275,14 @@ class TreeView extends React.PureComponent {
                 pathname = "";
                 break;
         }
-        pathname = pathname.replace(":system_id", match.params.system_id);
-        this.setState({ anchorEl }, () => {
-            if (pathname.length > 0) {
-                history.push({ pathname, state: { data: dataToSend } });
-            }
-        });
+        if (action !== "delete") {
+            pathname = pathname.replace(":system_id", match.params.system_id);
+            this.setState({ anchorEl }, () => {
+                if (pathname.length > 0) {
+                    history.push({ pathname, state: { data: dataToSend } });
+                }
+            });
+        }
     }
 
     //Open menu to show create menu
@@ -1292,9 +1300,19 @@ class TreeView extends React.PureComponent {
         this.setState({ deleteModal: true });
     }
 
+    openDeleteModalFromMenu() {
+        const { anchorEl } = this.state;
+        const { id: anchorElId } = anchorEl;
+        this.setState({
+            anchorEl: null,
+            deleteModal: true,
+            anchorElId
+        });
+    }
+
     //Closing delete modal
     closeDeleteModal() {
-        this.setState({ deleteModal: false });
+        this.setState({ deleteModal: false, anchorElId: "" });
     }
 
     //Deeper depth goes in first, lower depth goes in later
@@ -1315,42 +1333,105 @@ class TreeView extends React.PureComponent {
     }
 
     deleteListEntryAction(action) {
-        const { selected_dir_lists, selected_dir_entries } = this.state;
+        const { anchorElId } = this.state;
+        if (Boolean(anchorElId)) {
+            if (anchorElId.includes(HEADER_KEY_DIR_LIST)) {
+                //Selected element is a Directory List
+                const directory_id = anchorElId.replace(
+                    HEADER_KEY_DIR_LIST + "-",
+                    ""
+                );
 
-        console.log(selected_dir_lists);
-        console.log(selected_dir_entries);
+                action({
+                    variables: {
+                        directoryListIdList: [
+                            parseInt(directory_id, DECIMAL_RADIX)
+                        ],
+                        directoryEntryIdList: [],
+                        systemId: parseInt(
+                            this.props.match.params.system_id,
+                            DECIMAL_RADIX
+                        )
+                    }
+                }).then(() => {
+                    this.setState({ deleteModal: false, anchorElId: "" });
+                });
+            } else if (anchorElId.includes(HEADER_KEY_DIR_ENTRY)) {
+                //Selected element is a Directory Entry
+                const hash_id = anchorElId.replace(
+                    HEADER_KEY_DIR_ENTRY + "-",
+                    ""
+                );
+                const array_hash_id = hash_id.split("-");
+                const lastParentId = array_hash_id[array_hash_id.length - 2];
+                const entryId = array_hash_id[array_hash_id.length - 1];
 
-        //Prepare directory list
-        const directoryListIdList = this.sortDirectoryListBasedOnDepth(
-            selected_dir_lists
-        ).map(each => parseInt(each, DECIMAL_RADIX));
-
-        console.log(directoryListIdList);
-
-        //Prepare directory entry
-        const directoryEntryIdList = selected_dir_entries.map(each => {
-            const parents = each.split("-");
-            const lastParentId = parents[parents.length - 2];
-            const entryId = parents[parents.length - 1];
-
-            return {
-                directoryEntryId: parseInt(entryId),
-                directoryListId: parseInt(lastParentId)
-            };
-        });
-
-        console.log(directoryEntryIdList);
-
-        action({
-            variables: {
-                directoryListIdList,
-                directoryEntryIdList,
-                systemId: parseInt(this.props.match.params.system_id)
+                action({
+                    variables: {
+                        directoryListIdList: [],
+                        directoryEntryIdList: [
+                            {
+                                directoryEntryId: parseInt(
+                                    entryId,
+                                    DECIMAL_RADIX
+                                ),
+                                directoryListId: parseInt(
+                                    lastParentId,
+                                    DECIMAL_RADIX
+                                )
+                            }
+                        ],
+                        systemId: parseInt(
+                            this.props.match.params.system_id,
+                            DECIMAL_RADIX
+                        )
+                    }
+                }).then(() => {
+                    this.setState({ deleteModal: false, anchorElId: "" });
+                });
             }
-        });
-        this.setState({ deleteModal: false });
-    }
+        } else {
+            //Delete action if dialog was open from main delete button
+            const { selected_dir_lists, selected_dir_entries } = this.state;
 
+            console.log(selected_dir_lists);
+            console.log(selected_dir_entries);
+
+            //Prepare directory list
+            const directoryListIdList = this.sortDirectoryListBasedOnDepth(
+                selected_dir_lists
+            ).map(each => parseInt(each, DECIMAL_RADIX));
+
+            console.log(directoryListIdList);
+
+            //Prepare directory entry
+            const directoryEntryIdList = selected_dir_entries.map(each => {
+                const parents = each.split("-");
+                const lastParentId = parents[parents.length - 2];
+                const entryId = parents[parents.length - 1];
+
+                return {
+                    directoryEntryId: parseInt(entryId, DECIMAL_RADIX),
+                    directoryListId: parseInt(lastParentId, DECIMAL_RADIX)
+                };
+            });
+
+            console.log(directoryEntryIdList);
+
+            action({
+                variables: {
+                    directoryListIdList,
+                    directoryEntryIdList,
+                    systemId: parseInt(
+                        this.props.match.params.system_id,
+                        DECIMAL_RADIX
+                    )
+                }
+            }).then(() => {
+                this.setState({ deleteModal: false });
+            });
+        }
+    }
     //Get all items that are checked
     getAllCheckedItemNames() {
         const {
@@ -1406,6 +1487,32 @@ class TreeView extends React.PureComponent {
         }
     }
 
+    getAnchorElIdName() {
+        const {
+            anchorElId,
+            dirListOnlyDataTree,
+            dirEntryOnlyDataTree
+        } = this.state;
+        if (anchorElId.includes(HEADER_KEY_DIR_LIST)) {
+            const dir_id = anchorElId.replace(HEADER_KEY_DIR_LIST + "-", "");
+            const { name } = dirListOnlyDataTree.find(
+                ({ id }) => id === dir_id
+            );
+            return `${name.toUpperCase()} & ALL ENTRIES`;
+        } else if (anchorElId.includes(HEADER_KEY_DIR_ENTRY)) {
+            const dir_hash_id = anchorElId.replace(
+                HEADER_KEY_DIR_ENTRY + "-",
+                ""
+            );
+            const { name } = dirEntryOnlyDataTree.find(
+                ({ hash_id }) => hash_id === dir_hash_id
+            );
+            return name.toUpperCase();
+        } else {
+            return "ERROR";
+        }
+    }
+
     //Modify data of the directory to remove unnecessary key values item
     //For example child_directory & directory_entries
     modifyDataBeingSendToEditPage(directory) {
@@ -1439,17 +1546,17 @@ class TreeView extends React.PureComponent {
     }
 
     render() {
-        const { classes, data, create_menu_bar, match } = this.props;
-        const { params = {} } = match;
-        const { system_id } = params;
+        const { classes, data, match } = this.props;
         const {
             dataTree,
             selected_dir_entries,
             selected_dir_lists,
             anchorEl,
-            anchorElCreate,
+            anchorElId,
             deleteModal
         } = this.state;
+        const { params = {} } = match;
+        const { system_id } = params;
         return (
             <React.Fragment>
                 <div
@@ -1547,7 +1654,6 @@ class TreeView extends React.PureComponent {
                         ))}
                     </Menu> */}
                 </div>
-
                 {Boolean(data) &&
                     Array.isArray(data) &&
                     data.length > 0 &&
@@ -1555,57 +1661,95 @@ class TreeView extends React.PureComponent {
                     dataTree.length > 0 && (
                         <React.Fragment>
                             {this.renderDirectories()}
-                            <Menu
-                                id="simple-menu"
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={this.handleCloseOptions}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left"
-                                }}
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right"
-                                }}
+                            <Mutation
+                                mutation={DELETE_DIR_LIST_ENTRY()}
+                                refetchQueries={[
+                                    {
+                                        query: getDirectoryListBySystem,
+                                        variables: { id: system_id }
+                                    }
+                                ]}
                             >
-                                <MenuItem
-                                    className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                        this,
-                                        "preview"
-                                    )}
-                                >
-                                    PREVIEW
-                                </MenuItem>
-                                <MenuItem
-                                    className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                        this,
-                                        "edit"
-                                    )}
-                                >
-                                    EDIT
-                                </MenuItem>
-                                <MenuItem
-                                    className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                        this,
-                                        "delete"
-                                    )}
-                                >
-                                    DELETE
-                                </MenuItem>
-                                <MenuItem
-                                    className={classes.menuItemStyle}
-                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                        this,
-                                        "create"
-                                    )}
-                                >
-                                    ADD NEW
-                                </MenuItem>
-                            </Menu>
+                                {(action, { loading, error }) => {
+                                    if (loading)
+                                        return (
+                                            <ClipLoader
+                                                sizeUnit={"px"}
+                                                size={24}
+                                                color={"rgba(0, 0, 0, 0.87)"}
+                                                loading={loading}
+                                            />
+                                        );
+                                    if (error) return `Error! ${error.message}`;
+
+                                    return (
+                                        <React.Fragment>
+                                            <Menu
+                                                id="simple-menu"
+                                                anchorEl={anchorEl}
+                                                open={Boolean(anchorEl)}
+                                                onClose={
+                                                    this.handleCloseOptions
+                                                }
+                                                anchorOrigin={{
+                                                    vertical: "bottom",
+                                                    horizontal: "left"
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: "top",
+                                                    horizontal: "right"
+                                                }}
+                                            >
+                                                <MenuItem
+                                                    className={
+                                                        classes.menuItemStyle
+                                                    }
+                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                        this,
+                                                        "preview"
+                                                    )}
+                                                >
+                                                    PREVIEW
+                                                </MenuItem>
+                                                <MenuItem
+                                                    className={
+                                                        classes.menuItemStyle
+                                                    }
+                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                        this,
+                                                        "edit"
+                                                    )}
+                                                >
+                                                    EDIT
+                                                </MenuItem>
+                                                <MenuItem
+                                                    className={
+                                                        classes.menuItemStyle
+                                                    }
+                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                        this,
+                                                        "delete",
+                                                        action
+                                                    )}
+                                                >
+                                                    DELETE
+                                                </MenuItem>
+                                                <MenuItem
+                                                    className={
+                                                        classes.menuItemStyle
+                                                    }
+                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                        this,
+                                                        "create"
+                                                    )}
+                                                >
+                                                    ADD NEW
+                                                </MenuItem>
+                                            </Menu>
+                                        </React.Fragment>
+                                    );
+                                }}
+                            </Mutation>
                         </React.Fragment>
                     )}
                 <Dialog
@@ -1625,26 +1769,50 @@ class TreeView extends React.PureComponent {
                     </DialogTitle>
                     <DialogContent>
                         <List>
-                            {this.getAllCheckedItemNames().map(
-                                (item, index) => (
-                                    <ListItem key={index}>
-                                        <ListItemIcon>
-                                            <CancelIcon />
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary={item}
-                                            classes={{
-                                                primary:
-                                                    classes.customDialogText
-                                            }}
-                                        />
-                                    </ListItem>
-                                )
+                            {Boolean(anchorElId) ? (
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <CancelIcon />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        primary={this.getAnchorElIdName()}
+                                        classes={{
+                                            primary: classes.customDialogText
+                                        }}
+                                    />
+                                </ListItem>
+                            ) : (
+                                <React.Fragment>
+                                    {this.getAllCheckedItemNames().map(
+                                        (item, index) => (
+                                            <ListItem key={index}>
+                                                <ListItemIcon>
+                                                    <CancelIcon />
+                                                </ListItemIcon>
+                                                <ListItemText
+                                                    primary={item}
+                                                    classes={{
+                                                        primary:
+                                                            classes.customDialogText
+                                                    }}
+                                                />
+                                            </ListItem>
+                                        )
+                                    )}
+                                </React.Fragment>
                             )}
                         </List>
                     </DialogContent>
                     <DialogActions>
-                        <Mutation mutation={DELETE_DIR_LIST_ENTRY()}>
+                        <Mutation
+                            mutation={DELETE_DIR_LIST_ENTRY()}
+                            refetchQueries={[
+                                {
+                                    query: getDirectoryListBySystem,
+                                    variables: { id: system_id }
+                                }
+                            ]}
+                        >
                             {(action, { loading, error }) => {
                                 if (loading)
                                     return (
@@ -1709,8 +1877,6 @@ TreeView.defaultProps = {
     preview_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     edit_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     edit_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
-    delete_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-    delete_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     create_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     create_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
 };
@@ -1730,8 +1896,6 @@ TreeView.propTypes = {
     preview_entry_url: PropTypes.string,
     edit_list_url: PropTypes.string,
     edit_entry_url: PropTypes.string,
-    delete_list_url: PropTypes.string,
-    delete_entry_url: PropTypes.string,
     create_list_url: PropTypes.string,
     create_entry_url: PropTypes.string
 };
