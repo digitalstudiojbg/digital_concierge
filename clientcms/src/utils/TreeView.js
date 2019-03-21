@@ -49,7 +49,7 @@ import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
 import Grid from "@material-ui/core/Grid";
 
-const styles = theme => ({
+const styles = () => ({
     buttonCreate: {
         color: "white",
         backgroundColor: "rgb(35,38,92)",
@@ -66,19 +66,24 @@ const styles = theme => ({
     },
     expansionButton: {
         color: "white",
-        background: "rgb(155,157,183)",
+        background: "rgb(38,153,251)",
         padding: 0,
-        margin: theme.spacing.unit * 0.1
+        margin: 0,
+        width: 24,
+        height: 24
     },
     icon: {
         fontSize: "small"
     },
     tableHeaderRow: {
-        borderTop: "1px solid rgba(224, 224, 224, 1)",
-        backgroundColor: "rgb(234,235,238)"
+        borderTop: "1px solid rgb(165, 165, 165)",
+        borderLeft: "1px solid rgb(170,170,170)",
+        borderRight: "1px solid rgb(173,173,173)",
+        borderBottom: "1px solid rgb(181,181,181)",
+        backgroundColor: "rgb(235,235,235)"
     },
     headerCol: {
-        color: "rgb(131,134,166)",
+        color: "rgb(49,49,49)",
         width: "5%"
     },
     headerTitleCol: {
@@ -86,15 +91,18 @@ const styles = theme => ({
         width: "80%"
     },
     tableEntryRow: {
-        backgroundColor: "rgb(246,246,246)"
+        backgroundColor: "white",
+        borderLeft: "1px solid rgb(201,201,201)",
+        borderRight: "1px solid rgb(181,181,181)"
     },
     tableEntryCol: {
-        color: "rgb(38,42,95)",
+        color: "rgb(89,89,89)",
         width: "5%"
     },
     tableEntryTitleCol: {
-        color: "rgb(38,42,95)",
-        width: "80%"
+        color: "rgb(89,89,89)",
+        width: "80%",
+        fontSize: "1.3em"
     },
     tableCheckboxCol: {
         width: "5%"
@@ -114,7 +122,7 @@ const styles = theme => ({
 
 //A few constants settings
 const paddingSize = 30;
-const approximateButtonSize = 40;
+const approximateButtonSize = 24;
 const approximateIconSize = 15;
 const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
@@ -651,7 +659,7 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.removeFromExpanded(dir_list_id)}
                 >
-                    <CompressIcon fontSize="large" />
+                    <CompressIcon fontSize="small" />
                 </IconButton>
             );
         } else {
@@ -661,7 +669,7 @@ class TreeView extends React.PureComponent {
                     className={classes.expansionButton}
                     onClick={() => this.addToExpanded(dir_list_id)}
                 >
-                    <ExpandIcon fontSize="large" />
+                    <ExpandIcon fontSize="small" />
                 </IconButton>
             );
         }
@@ -857,7 +865,9 @@ class TreeView extends React.PureComponent {
                                     )}
                                 </div>
                                 <DirListIcon />
-                                {directory.name}
+                                <span style={{ fontWeight: 600 }}>
+                                    {directory.name}
+                                </span>
                             </TreeEntry>
                         </TableCell>
                         <TableCell>
@@ -939,7 +949,7 @@ class TreeView extends React.PureComponent {
                         <TreeEntry paddingSize={calculatedPaddingSize}>
                             <div
                                 style={{
-                                    marginLeft: directory.is_dir_list ? 0 : 15,
+                                    marginLeft: 0, //directory.is_dir_list ? 0 : 15,
                                     width: `${approximateButtonSize}px`
                                 }}
                             >
@@ -949,7 +959,15 @@ class TreeView extends React.PureComponent {
                                     <DirListIcon />
                                 )}
                             </div>
-                            {directory.name}
+                            <span
+                                style={{
+                                    fontWeight: directory.is_dir_list
+                                        ? 600
+                                        : 400
+                                }}
+                            >
+                                {directory.name}
+                            </span>
                         </TreeEntry>
                     </TableCell>
                     <TableCell>
