@@ -22,11 +22,15 @@ export async function login(email, password, rememberMe = false) {
         }
     );
     if (response.ok) {
-        const { token } = await response.json();
-        localStorage.setItem(accessTokenKey, token);
-        rememberMe && localStorage.setItem(emailUsername, email);
+        const { token, clientName } = await response.json();
+        //PORTAL CMS can only be logged in by JBG STAFF MEMBERS ONLY!
+        if (clientName.toUpperCase() === "JOHN BATMAN GROUP") {
+            localStorage.setItem(accessTokenKey, token);
+            rememberMe && localStorage.setItem(emailUsername, email);
+            return response.ok;
+        }
+        return false;
     }
-    return response.ok;
 }
 
 export function isLoggedIn() {
