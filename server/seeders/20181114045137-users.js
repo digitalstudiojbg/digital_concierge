@@ -10,14 +10,14 @@ module.exports = {
             "users",
             [
                 {
-                    name: "Yijie SHEN",
-                    email: "nealshen@johnbatman.com.au",
+                    name: "Jonathan Adhitama",
+                    email: "jonathan@johnbatman.com.au",
                     password: hash,
                     active: true,
                     mediumId: 2,
-                    clientId: 1,
+                    clientId: 2,
                     first_phone_number: "0425872504",
-                    position: "Owner"
+                    position: "Developer"
                 },
                 {
                     name: "Holiday Inn",
@@ -29,14 +29,34 @@ module.exports = {
                     first_phone_number: "0425872504"
                 },
                 {
-                    name: "Neal Shen",
-                    email: "admin@admin.com.au",
+                    name: "Matthew Senyard",
+                    email: "matt@ihg.com",
+                    password: hash,
+                    active: true,
+                    mediumId: 1,
+                    clientId: 1,
+                    first_phone_number: "0425872504",
+                    position: "Acting General Manager"
+                },
+                {
+                    name: "Calum Beech",
+                    email: "calum@johnbatman.com.au",
                     password: hash,
                     active: true,
                     mediumId: 2,
                     clientId: 2,
                     first_phone_number: "0425872504",
-                    position: "Founder"
+                    position: "Digital Integration Coordinator"
+                },
+                {
+                    name: "Laura Morina",
+                    email: "laura@johnbatman.com.au",
+                    password: hash,
+                    active: true,
+                    mediumId: 2,
+                    clientId: 2,
+                    first_phone_number: "0425872504",
+                    position: "Graphics Designer"
                 }
             ],
             {}
