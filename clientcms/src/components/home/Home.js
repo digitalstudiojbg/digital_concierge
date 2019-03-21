@@ -5,6 +5,7 @@ import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
+import { Redirect } from "react-router-dom";
 import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
@@ -297,11 +298,40 @@ const Home = ({ match }) => {
                                     if (errorInner)
                                         return `Error! ${errorInner.message}`;
                                     console.log(dataInner);
-                                    return (
-                                        <React.Fragment>
-                                            {renderRoutes(routes)}
-                                        </React.Fragment>
-                                    );
+                                    const { getCurrentUser } = data;
+                                    const { client: userClient } =
+                                        getCurrentUser || {};
+                                    const {
+                                        id: userClientId = "",
+                                        name: userClientName = ""
+                                    } = userClient || {};
+                                    const { system } = dataInner;
+                                    const { client: systemClient } =
+                                        system || {};
+                                    const { id: systemClientId = "" } =
+                                        systemClient || {};
+                                    if (
+                                        (userClientId !== "" &&
+                                            userClientId === systemClientId) ||
+                                        userClientName.toUpperCase() ===
+                                            "JOHN BATMAN GROUP"
+                                    ) {
+                                        //User client ID has to be the same with System client ID
+                                        //Except for JBG Users
+                                        return (
+                                            <React.Fragment>
+                                                {renderRoutes(routes)}
+                                            </React.Fragment>
+                                        );
+                                    } else {
+                                        //If User client ID not equal to System client ID or User is not JBG
+                                        //Redirect to the welcome page
+                                        return (
+                                            <Redirect
+                                                to={`${WELCOME_URL}/${userClientId}`}
+                                            />
+                                        );
+                                    }
                                 }}
                             </Query>
                         );

@@ -60,6 +60,7 @@ export const getSystemDetail = gql`
             createdAt
             updatedAt
             client {
+                id
                 name
                 full_company_name
                 phone
