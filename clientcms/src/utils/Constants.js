@@ -52,7 +52,7 @@ export const ContainerDiv = styled.div`
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
-    color: rgb(113, 116, 152);
+    color: rgb(67, 66, 93);
 `;
 
 export const CreateContentContainerDiv = styled.div`

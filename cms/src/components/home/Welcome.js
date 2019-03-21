@@ -4,7 +4,6 @@ import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
 // import { Query } from "react-apollo";
 // import { gql } from "apollo-boost";
 

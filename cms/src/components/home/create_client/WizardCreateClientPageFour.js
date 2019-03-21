@@ -18,17 +18,14 @@ import {
     RadioGroup
 } from "formik-material-ui";
 import styled from "styled-components";
-import {
-    FormControlLabel,
-    Radio,
-    Button,
-    InputLabel,
-    MenuItem,
-    Checkbox
-} from "@material-ui/core";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import validationSchema from "./four/PageFourValidationSchema";
-import { log } from "util";
 
 const FiledContainer = styled.div`
     padding-bottom: 20px;

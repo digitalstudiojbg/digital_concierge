@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Query, withApollo } from "react-apollo";
 import Loading from "../loading/Loading";
 import { getClientFromUser } from "../../data/query";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";

@@ -12,7 +12,8 @@ import {
     // Dropdown
 } from "semantic-ui-react";
 import { Select } from "formik-material-ui";
-import { MenuItem, InputLabel } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import InputLabel from "@material-ui/core/InputLabel";
 import { Field } from "formik";
 
 const ContainerDiv = styled.div`

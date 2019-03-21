@@ -24,22 +24,18 @@ import {
 } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import {
-    Visibility,
-    Home,
-    Dashboard,
-    Stars,
-    BookmarkBorder,
-    List,
-    ImageOutlined,
-    LocalMoviesOutlined,
-    NotificationsActiveOutlined,
-    GroupOutlined,
-    ShowChartOutlined,
-    // TabletMac,
-    // Settings,
-    People
-} from "@material-ui/icons";
+import Visibility from "@material-ui/icons/Visibility";
+import Home from "@material-ui/icons/Home";
+import Dashboard from "@material-ui/icons/Dashboard";
+import Stars from "@material-ui/icons/Stars";
+import BookmarkBorder from "@material-ui/icons/BookmarkBorder";
+import List from "@material-ui/icons/List";
+import ImageOutlined from "@material-ui/icons/ImageOutlined";
+import LocalMoviesOutlined from "@material-ui/icons/LocalMoviesOutlined";
+import NotificationsActiveOutlined from "@material-ui/icons/NotificationsActiveOutlined";
+import GroupOutlined from "@material-ui/icons/GroupOutlined";
+import ShowChartOutlined from "@material-ui/icons/ShowChartOutlined";
+import People from "@material-ui/icons/People";
 import Loading from "../loading/Loading";
 import { getSystemDetailSidebar } from "../../data/query";
 

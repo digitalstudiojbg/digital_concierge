@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import { WELCOME_URL } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";

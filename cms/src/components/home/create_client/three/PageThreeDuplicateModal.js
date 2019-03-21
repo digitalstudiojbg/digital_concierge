@@ -1,17 +1,16 @@
 import React from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-    DialogContentText,
-    IconButton,
-    Button,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText
-} from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+
 import CloseIcon from "@material-ui/icons/Close";
 import CopyIcon from "@material-ui/icons/FileCopy";
 import Loading from "../../../loading/Loading";

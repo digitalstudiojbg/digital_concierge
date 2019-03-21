@@ -1,19 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import {
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    DialogActions,
-    FormControlLabel,
-    Checkbox,
-    IconButton,
-    FormControl,
-    FormHelperText,
-    InputLabel,
-    MenuItem,
-    Button
-} from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import CloseIcon from "@material-ui/icons/Close";
 import { Set } from "immutable";
 import { withStyles } from "@material-ui/core/styles";
