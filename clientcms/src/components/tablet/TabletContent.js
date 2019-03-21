@@ -78,7 +78,7 @@ const TabletContent = ({ history, match, classes }) => {
                                 >
                                     <InfoIcon
                                         className={classes.infoIcon}
-                                        fontSize="medium"
+                                        fontSize="small"
                                     />
                                 </Tooltip>
                             </div>
