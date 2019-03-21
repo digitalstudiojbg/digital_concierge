@@ -61,7 +61,8 @@ const styles = () => ({
         right: 180,
         backgroundColor: "white",
         color: "rgb(33,143,250)",
-        borderColor: "rgb(33,143,250)"
+        border: "2px solid rgb(33,143,250)",
+        fontWeight: 600
     },
     buttonSaveKeep: {
         width: 150,

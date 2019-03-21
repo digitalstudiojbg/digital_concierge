@@ -23,7 +23,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import PropTypes from "prop-types";
 import {
     getAllUniqueItems,
-    SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
+    // SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     DECIMAL_RADIX
@@ -47,16 +47,16 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import Slide from "@material-ui/core/Slide";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 
 const styles = () => ({
-    buttonCreate: {
-        color: "white",
-        backgroundColor: "rgb(35,38,92)",
-        marginRight: "15px",
-        paddingLeft: "25px",
-        paddingRight: "25px"
-    },
+    // buttonCreate: {
+    //     color: "white",
+    //     backgroundColor: "rgb(35,38,92)",
+    //     marginRight: "15px",
+    //     paddingLeft: "25px",
+    //     paddingRight: "25px"
+    // },
     buttonDelete: {
         color: "white",
         backgroundColor: "rgb(35,38,92)",
@@ -107,16 +107,30 @@ const styles = () => ({
     tableCheckboxCol: {
         width: "5%"
     },
-    buttonCreateLeftGrid: {
-        fontSize: "1.3em",
-        paddingRight: 10
+    // buttonCreateLeftGrid: {
+    //     fontSize: "1.3em",
+    //     paddingRight: 10
+    // },
+    // buttonCreateRightGrid: {
+    //     height: "75%",
+    //     paddingLeft: 5,
+    //     paddingRight: 0,
+    //     paddingTop: 5,
+    //     borderLeft: "2px solid white"
+    // },
+    buttonAddList: {
+        backgroundColor: "white",
+        color: "rgb(33,143,250)",
+        border: "2px solid rgb(33,143,250)",
+        marginRight: "15px",
+        fontWeight: 600
     },
-    buttonCreateRightGrid: {
-        height: "75%",
-        paddingLeft: 5,
-        paddingRight: 0,
-        paddingTop: 5,
-        borderLeft: "2px solid white"
+    buttonAddEntry: {
+        backgroundColor: "white",
+        color: "rgb(33,143,250)",
+        border: "2px solid rgb(33,143,250)",
+        marginRight: "15px",
+        fontWeight: 600
     }
 });
 
@@ -145,14 +159,14 @@ class TreeView extends React.PureComponent {
             dirListOnlyDataTree: [],
             dirEntryOnlyDataTree: [],
             anchorEl: null,
-            anchorElCreate: null,
+            // anchorElCreate: null,
             deleteModal: false
         };
-        this.navigateToDiffPage = this.navigateToDiffPage.bind(this);
+        // this.navigateToDiffPage = this.navigateToDiffPage.bind(this);
         this.handleOpenOptions = this.handleOpenOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
-        this.handleOpenCreate = this.handleOpenCreate.bind(this);
-        this.handleCloseCreate = this.handleCloseCreate.bind(this);
+        // this.handleOpenCreate = this.handleOpenCreate.bind(this);
+        // this.handleCloseCreate = this.handleCloseCreate.bind(this);
         this.openDeleteModal = this.openDeleteModal.bind(this);
         this.closeDeleteModal = this.closeDeleteModal.bind(this);
         this.deleteListEntryAction = this.deleteListEntryAction.bind(this);
@@ -1175,14 +1189,15 @@ class TreeView extends React.PureComponent {
     }
 
     //Function to navigate to a difference page from create menu
-    navigateToDiffPage(url) {
-        const { history, match } = this.props;
-        this.setState({ anchorElCreate: null }, () => {
-            history.push(url.replace(":system_id", match.params.system_id));
-        });
-    }
+    // navigateToDiffPage(url) {
+    //     const { history, match } = this.props;
+    //     this.setState({ anchorElCreate: null }, () => {
+    //         history.push(url.replace(":system_id", match.params.system_id));
+    //     });
+    // }
 
     //Function to navigate to edit page from edit icon
+    //If data is null will navigate to add page instead
     navigateToEditPage(pathname, data) {
         const { history, match } = this.props;
         history.push({
@@ -1263,14 +1278,14 @@ class TreeView extends React.PureComponent {
     }
 
     //Open menu to show create menu
-    handleOpenCreate(event) {
-        this.setState({ anchorElCreate: event.currentTarget });
-    }
+    // handleOpenCreate(event) {
+    //     this.setState({ anchorElCreate: event.currentTarget });
+    // }
 
     //Close menu to show create menu
-    handleCloseCreate() {
-        this.setState({ anchorElCreate: null });
-    }
+    // handleCloseCreate() {
+    //     this.setState({ anchorElCreate: null });
+    // }
 
     //Open modal to prompt user to confirm deletion
     openDeleteModal() {
@@ -1459,7 +1474,7 @@ class TreeView extends React.PureComponent {
                     >
                         <DeleteIcon />
                     </Button>
-                    <Button
+                    {/* <Button
                         variant="contained"
                         color="primary"
                         className={classes.buttonCreate}
@@ -1486,8 +1501,25 @@ class TreeView extends React.PureComponent {
                                 <CompressIcon fontSize="small" />
                             </Grid>
                         </Grid>
+                    </Button> */}
+                    <Button
+                        variant="outlined"
+                        className={classes.buttonAddEntry}
+                    >
+                        ADD DIRECTORY ENTRY
                     </Button>
-                    <Menu
+                    <Button
+                        variant="outlined"
+                        className={classes.buttonAddList}
+                        onClick={this.navigateToEditPage.bind(
+                            this,
+                            SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+                            null
+                        )}
+                    >
+                        ADD DIRECTORY LIST
+                    </Button>
+                    {/* <Menu
                         id="simple-menu-create"
                         anchorEl={anchorElCreate}
                         open={Boolean(anchorElCreate)}
@@ -1513,7 +1545,7 @@ class TreeView extends React.PureComponent {
                                 {name}
                             </MenuItem>
                         ))}
-                    </Menu>
+                    </Menu> */}
                 </div>
 
                 {Boolean(data) &&
@@ -1651,28 +1683,28 @@ class TreeView extends React.PureComponent {
 TreeView.defaultProps = {
     child_directory_lists_key: "child_directory_lists",
     directory_entries_key: "directory_entries",
-    create_menu_bar: [
-        {
-            id: 1,
-            name: "DIRECTORY LIST ENTRY",
-            url: SYSTEM_MODIFY_DIRECTORY_LIST_URL
-        },
-        {
-            id: 3,
-            name: "DIRECTORY ENTRY",
-            url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
-        },
-        {
-            id: 4,
-            name: "POPUP WINDOW",
-            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
-        },
-        {
-            id: 5,
-            name: "GALLERY PAGE",
-            url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
-        }
-    ],
+    // create_menu_bar: [
+    //     {
+    //         id: 1,
+    //         name: "DIRECTORY LIST ENTRY",
+    //         url: SYSTEM_MODIFY_DIRECTORY_LIST_URL
+    //     },
+    //     {
+    //         id: 3,
+    //         name: "DIRECTORY ENTRY",
+    //         url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
+    //     },
+    //     {
+    //         id: 4,
+    //         name: "POPUP WINDOW",
+    //         url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+    //     },
+    //     {
+    //         id: 5,
+    //         name: "GALLERY PAGE",
+    //         url: SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL
+    //     }
+    // ],
     preview_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     preview_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     edit_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
@@ -1687,13 +1719,13 @@ TreeView.propTypes = {
     data: PropTypes.arrayOf(PropTypes.object),
     child_directory_lists_key: PropTypes.string,
     directory_entries_key: PropTypes.string,
-    create_menu_bar: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            url: PropTypes.string.isRequired
-        })
-    ),
+    // create_menu_bar: PropTypes.arrayOf(
+    //     PropTypes.shape({
+    //         id: PropTypes.number.isRequired,
+    //         name: PropTypes.string.isRequired,
+    //         url: PropTypes.string.isRequired
+    //     })
+    // ),
     preview_list_url: PropTypes.string,
     preview_entry_url: PropTypes.string,
     edit_list_url: PropTypes.string,
