@@ -788,12 +788,16 @@ class TreeView extends React.PureComponent {
     }
 
     renderCheck(row) {
+        const { match } = this.props;
+        const { params = {} } = match;
+        const { system_id } = params;
         return (
             <Mutation
                 mutation={changeDirectoryListAndEntryStatus()}
                 refetchQueries={[
                     {
-                        query: getDirectoryListBySystem
+                        query: getDirectoryListBySystem,
+                        variables: { id: system_id }
                     }
                 ]}
             >
@@ -865,7 +869,16 @@ class TreeView extends React.PureComponent {
                                     )}
                                 </div>
                                 <DirListIcon />
-                                <span style={{ fontWeight: 600 }}>
+                                <span
+                                    style={{ fontWeight: 600 }}
+                                    onClick={this.navigateToEditPage.bind(
+                                        this,
+                                        SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+                                        this.modifyDataBeingSendToEditPage(
+                                            directory
+                                        )
+                                    )}
+                                >
                                     {directory.name}
                                 </span>
                             </TreeEntry>
@@ -965,6 +978,17 @@ class TreeView extends React.PureComponent {
                                         ? 600
                                         : 400
                                 }}
+                                onClick={
+                                    directory.is_dir_list
+                                        ? this.navigateToEditPage.bind(
+                                              this,
+                                              SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+                                              this.modifyDataBeingSendToEditPage(
+                                                  directory
+                                              )
+                                          )
+                                        : () => console.log(directory.name) //TODO: NAVIGATE TO DIRECTORY ENTRY LIST
+                                }
                             >
                                 {directory.name}
                             </span>

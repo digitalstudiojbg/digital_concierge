@@ -5,7 +5,8 @@ import {
     SYSTEM_CMS_CONTENT_URL
 } from "../../../utils/Constants";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import MuiTextField from "@material-ui/core/TextField";
+import { TextField } from "formik-material-ui";
 import { withStyles } from "@material-ui/core/styles";
 import { Field } from "formik";
 // import * as Yup from "yup";
@@ -247,7 +248,7 @@ class ModifyDirectoryList extends React.PureComponent {
                         alignItems: "center"
                     }}
                 >
-                    <TextField
+                    <MuiTextField
                         label="FILENAME"
                         disabled={true}
                         value={this.state.imageName}
@@ -406,33 +407,14 @@ class ModifyDirectoryList extends React.PureComponent {
                                 name="name"
                                 validateOnBlur
                                 validateOnChange
-                                render={({ field, form }) => (
-                                    <TextField
-                                        className={
-                                            classes.categoryNameTextField
-                                        }
-                                        variant="outlined"
-                                        name={field.name}
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        onBlur={field.onBlur}
-                                        error={
-                                            form.errors[field.name] &&
-                                            form.touched[field.name]
-                                        }
-                                        helperText={
-                                            form.errors[field.name] &&
-                                            form.touched[field.name] &&
-                                            String(form.errors[field.name])
-                                        }
-                                        FormHelperTextProps={{
-                                            classes: {
-                                                root:
-                                                    classes.categoryNameFormHelper
-                                            }
-                                        }}
-                                    />
-                                )}
+                                variant="outlined"
+                                component={TextField}
+                                className={classes.categoryNameTextField}
+                                FormHelperTextProps={{
+                                    classes: {
+                                        root: classes.categoryNameFormHelper
+                                    }
+                                }}
                             />
                         </div>
                     </div>

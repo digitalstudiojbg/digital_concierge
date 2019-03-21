@@ -48,7 +48,10 @@ export const checkUserPermissionModifySystem = async (user, system) => {
     const systemClient = await system.getClient();
     const userClient = await user.getClient();
 
-    let allowUserToModify = systemClient.id === userClient.id;
+    //User can only modify because they are from the same client or because the client is JBG
+    let allowUserToModify =
+        systemClient.id === userClient.id ||
+        systemClient.name.toUpperCase === "JOHN BATMAN GROUP";
 
     //TODO: CHECK User level permission
 
