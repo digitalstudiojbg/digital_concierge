@@ -93,20 +93,22 @@ app.get("/test", (req, res) => {
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await db.user.findOne({
+    const { id, clientId, password: userPassword } = await db.user.findOne({
         where: {
-            email: email
+            email
         }
     });
 
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (!bcrypt.compareSync(password, userPassword)) {
         res.sendStatus(401);
         return;
     }
 
-    const token = jwt.sign({ sub: user.id }, jwtSecret);
+    const token = jwt.sign({ sub: id }, jwtSecret);
 
-    res.send({ token, clientId: user.clientId });
+    const { name: clientName } = await db.client.findByPk(clientId);
+
+    res.send({ token, clientId, clientName });
 });
 
 db.sequelize
