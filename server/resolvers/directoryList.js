@@ -206,18 +206,18 @@ export default {
             //Delete entries
             await asyncForEach(directoryEntryIdList, async each => {
                 const { directoryEntryId, directoryListId } = each;
-                let select_directory_entry;
                 let select_directory_list;
                 let media_list;
                 let select_directory_entry_other_list;
 
-                try {
-                    //Retrieve entry
-                    select_directory_entry = await db.directory_entry.findByPk(
-                        directoryEntryId
+                //Retrieve entry
+                const select_directory_entry = await db.directory_entry.findByPk(
+                    directoryEntryId
+                );
+                if (!select_directory_entry) {
+                    throw new UserInputError(
+                        `Dir Entry ${directoryEntryId} not found!`
                     );
-                } catch (err) {
-                    throw new UserInputError(err);
                 }
 
                 try {
@@ -247,7 +247,7 @@ export default {
                 if (select_directory_entry_other_list.length === 1) {
                     try {
                         //Delete relationship between selected entry and media
-                        await select_directory_entry.removeMedium(media_list);
+                        await select_directory_entry.removeMedia(media_list);
                     } catch (err) {
                         throw new UserInputError(err);
                     }
@@ -283,14 +283,12 @@ export default {
 
             //Delete lists
             await asyncForEach(directoryListIdList, async list_id => {
-                const id = parseInt(list_id);
-                let list;
                 let media_list;
-                try {
-                    //Retrieve list
-                    list = await db.directory_list.findByPk(id);
-                } catch (err) {
-                    throw new UserInputError(err);
+
+                //Retrieve list
+                const list = await db.directory_list.findByPk(list_id);
+                if (!list) {
+                    throw new UserInputError(`Dir List ${list_id} not found!`);
                 }
 
                 try {
@@ -309,7 +307,7 @@ export default {
 
                 try {
                     //Delete list
-                    db.directory_list.destroy({ where: { id } });
+                    db.directory_list.destroy({ where: { id: list_id } });
                 } catch (err) {
                     throw new UserInputError(err);
                 }
