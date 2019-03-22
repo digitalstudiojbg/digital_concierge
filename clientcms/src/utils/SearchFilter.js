@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
 
-export const SearchFilter = ({
+const SearchFilter = ({
     data,
     child_directory_lists_key,
     directory_entries_key
@@ -111,4 +111,4 @@ SearchFilter.propTypes = {
     directory_entries_key: PropTypes.string
 };
 
-export default SearchFilter;
+export default React.memo(SearchFilter);
