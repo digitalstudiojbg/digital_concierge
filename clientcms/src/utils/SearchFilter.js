@@ -67,12 +67,11 @@ export const SearchFilter = ({
         }
     };
 
-    let all = [];
-    data.forEach(entry => {
-        all = [...all, ...getItemAndAllChildItems(entry, true)];
-    });
+    //Merge / flatten an array https://stackoverflow.com/a/10865042
+    const dirListOnlyDataTree = [].concat
+        .apply([], data.map(entry => getItemAndAllChildItems(entry, true)))
+        .filter(item => Boolean(item.is_dir_list));
 
-    const dirListOnlyDataTree = all.filter(item => Boolean(item.is_dir_list));
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleChange = event => {
