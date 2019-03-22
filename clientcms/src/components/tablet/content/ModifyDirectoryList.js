@@ -112,8 +112,19 @@ const ModifyDirectoryList = props => {
     const handleCancelButton = () => setOpenDialog(true);
     const closeDialog = () => setOpenDialog(false);
 
+    //Used to determine whether this is going to be a create or edit page
     const has_data =
-        props.location && props.location.state && props.location.state.data;
+        props.location &&
+        props.location.state &&
+        props.location.state.data &&
+        props.location.state.data.id;
+
+    //Used to determine whether this is going to be a create with additional information about the parent_id
+    const has_parent_id =
+        props.location &&
+        props.location.state &&
+        props.location.state.data &&
+        props.location.state.data.parent_id;
 
     const handleChange = (_event, value) => {
         setTab(value);
@@ -154,7 +165,9 @@ const ModifyDirectoryList = props => {
                   name: "",
                   layout_family_id: null,
                   layout_id: "",
-                  parent_id: "",
+                  parent_id: has_parent_id
+                      ? props.location.state.data.parent_id
+                      : "",
                   images: [],
                   colours: [],
                   initial_colours: []

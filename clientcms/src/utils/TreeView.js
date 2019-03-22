@@ -131,7 +131,8 @@ const styles = () => ({
         border: "2px solid rgb(33,143,250)",
         marginRight: "15px",
         fontWeight: 600
-    }
+    },
+    menuItemStyle: {}
 });
 
 //A few constants settings
@@ -1217,7 +1218,10 @@ class TreeView extends React.PureComponent {
 
     //Function to open options menu
     handleOpenOptions(event) {
-        this.setState({ anchorEl: event.currentTarget });
+        this.setState({
+            anchorEl: event.currentTarget,
+            anchorElId: event.currentTarget.id
+        });
     }
 
     handleCloseOptions() {
@@ -1266,20 +1270,24 @@ class TreeView extends React.PureComponent {
                 //Delete is special case because it will popup modal
                 this.openDeleteModalFromMenu();
                 break;
-            case "create":
-                pathname = directory.is_dir_list
-                    ? create_list_url
-                    : create_entry_url;
+            case "create_dir_list":
+                pathname = create_list_url;
                 break;
             default:
-                pathname = "";
-                break;
+                return this.setState({ anchorEl: null });
         }
         if (action !== "delete") {
             pathname = pathname.replace(":system_id", match.params.system_id);
             this.setState({ anchorEl }, () => {
                 if (pathname.length > 0) {
-                    history.push({ pathname, state: { data: dataToSend } });
+                    history.push({
+                        pathname,
+                        state: {
+                            data: action.includes("create")
+                                ? { parent_id: dataToSend.id }
+                                : dataToSend
+                        }
+                    });
                 }
             });
         }
@@ -1301,12 +1309,9 @@ class TreeView extends React.PureComponent {
     }
 
     openDeleteModalFromMenu() {
-        const { anchorEl } = this.state;
-        const { id: anchorElId } = anchorEl;
         this.setState({
             anchorEl: null,
-            deleteModal: true,
-            anchorElId
+            deleteModal: true
         });
     }
 
@@ -1752,17 +1757,35 @@ class TreeView extends React.PureComponent {
                                                 >
                                                     DELETE
                                                 </MenuItem>
-                                                <MenuItem
-                                                    className={
-                                                        classes.menuItemStyle
-                                                    }
-                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                                        this,
-                                                        "create"
-                                                    )}
-                                                >
-                                                    ADD NEW
-                                                </MenuItem>
+                                                {/* ONLY SHOW ADD NEW FOR DIR LIST ONLY */}
+                                                {anchorElId.includes(
+                                                    HEADER_KEY_DIR_LIST
+                                                ) && (
+                                                    <React.Fragment>
+                                                        <MenuItem
+                                                            className={
+                                                                classes.menuItemStyle
+                                                            }
+                                                            onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                                this,
+                                                                "create_dir_list"
+                                                            )}
+                                                        >
+                                                            ADD DIR LIST
+                                                        </MenuItem>
+                                                        <MenuItem
+                                                            className={
+                                                                classes.menuItemStyle
+                                                            }
+                                                            onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                                this,
+                                                                "create_dir_entry"
+                                                            )}
+                                                        >
+                                                            ADD DIR ENTRY
+                                                        </MenuItem>
+                                                    </React.Fragment>
+                                                )}
                                             </Menu>
                                         </React.Fragment>
                                     );
