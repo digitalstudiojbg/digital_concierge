@@ -477,7 +477,7 @@ class TreeviewCheckbox extends React.PureComponent {
                 disabled={
                     !Boolean(selected_dir_list) ||
                     (Array.isArray(selected_dir_list) &&
-                        selected_dir_list.length > 0)
+                        selected_dir_list.length === 0)
                 }
                 onClick={this.handleClearSelection}
             >
@@ -502,7 +502,8 @@ class TreeviewCheckbox extends React.PureComponent {
 }
 
 TreeviewCheckbox.defaultProps = {
-    child_directory_lists_key: "child_directory_lists"
+    child_directory_lists_key: "child_directory_lists",
+    directory_entries_key: "directory_entries"
 };
 
 TreeviewCheckbox.propTypes = {
@@ -510,6 +511,7 @@ TreeviewCheckbox.propTypes = {
     updateSelectedDirectory: PropTypes.func,
     selectAmount: PropTypes.oneOf(["single", "multiple"]),
     child_directory_lists_key: PropTypes.string,
+    directory_entries_key: PropTypes.string,
     selectedValue: PropTypes.string,
     selectedValues: PropTypes.arrayOf(PropTypes.string)
 };
