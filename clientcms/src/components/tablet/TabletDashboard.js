@@ -11,6 +11,7 @@ import BrowserMedia from "../../utils/BrowserMedia";
 import { Query } from "react-apollo";
 import { getDirectoryListBySystem } from "../../data/query";
 import SearchFilter from "../../utils/SearchFilter";
+import TreeviewSelector from "../../utils/TreeviewSelector";
 
 class TabletDashboard extends Component {
     render() {
@@ -43,7 +44,7 @@ class TabletDashboard extends Component {
                     <br />
                     <br />
                 </div>
-                <div style={{ flexBasis: "50%" }}>
+                <div style={{ flexBasis: "40%" }}>
                     <h1>SEARCH FILTER GOES HERE</h1>
                     <Query
                         query={getDirectoryListBySystem}
@@ -64,7 +65,23 @@ class TabletDashboard extends Component {
                             const modifiedData = modifyDirectoryListData(
                                 directoryLists
                             );
-                            return <SearchFilter data={modifiedData} />;
+                            return (
+                                <React.Fragment>
+                                    <SearchFilter data={modifiedData} />
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            paddingTop: 20,
+                                            height: 200
+                                        }}
+                                    >
+                                        <TreeviewSelector
+                                            data={modifiedData}
+                                            selectAmount="single"
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            );
                         }}
                     </Query>
                 </div>
