@@ -48,7 +48,14 @@ const routes = [
     },
     {
         path: SYSTEM_INDEX_URL,
-        component: Home
+        component: ({ match }) => (
+            <Redirect
+                to={SYSTEM_CMS_INDEX_URL.replace(
+                    ":system_id",
+                    match.params.system_id
+                )}
+            />
+        )
     },
     {
         path: SYSTEM_CMS_INDEX_URL,
