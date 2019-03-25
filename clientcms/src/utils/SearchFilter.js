@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = () => ({
+    filterQueryList: {
+        borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRight: "1px solid rgba(0, 0, 0, 0.12)",
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginTop: 8
+    }
+});
 
 const SearchFilter = ({
     data,
     child_directory_lists_key,
-    directory_entries_key
+    directory_entries_key,
+    classes
 }) => {
     //Get a directory list and all of its child directory list or directory entries, as it is usually one or the other
     //I.E. one directory list can only have a child directory lists or directory entries
@@ -83,6 +99,8 @@ const SearchFilter = ({
             name.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
+    const filterResults = filterDirList();
+
     return (
         <div style={{ width: "80%" }}>
             <TextField
@@ -91,10 +109,20 @@ const SearchFilter = ({
                 value={searchQuery}
                 onChange={handleChange}
             />
-            {searchQuery.length > 0 &&
-                filterDirList().map(({ name, id }) => (
-                    <div key={id}>{name.toUpperCase()}</div>
-                ))}
+            {searchQuery.length > 0 && (
+                <List className={classes.filterQueryList}>
+                    {filterResults.length > 0 && <Divider />}
+                    {filterResults.map(({ name, id }, index) => (
+                        <ListItem
+                            button
+                            divider
+                            key={`DIR_LIST-${index}-${id}`}
+                        >
+                            <ListItemText primary={name} />
+                        </ListItem>
+                    ))}
+                </List>
+            )}
         </div>
     );
 };
@@ -111,4 +139,4 @@ SearchFilter.propTypes = {
     directory_entries_key: PropTypes.string
 };
 
-export default React.memo(SearchFilter);
+export default withStyles(styles)(React.memo(SearchFilter));
