@@ -416,7 +416,10 @@ class WelcomeAccount extends React.Component {
                     </div>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
+                    <DialogContentText
+                        id="alert-dialog-slide-description"
+                        component="div"
+                    >
                         {ModalContentComponent && (
                             <ModalContentComponent data={data} />
                         )}

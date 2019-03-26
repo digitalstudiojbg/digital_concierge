@@ -430,7 +430,7 @@ const ModifyDirectoryList = props => {
                                             CONFIRM PAGE NAVIGATION
                                         </DialogTitleHelper>
                                         <DialogContent>
-                                            <DialogContentText>
+                                            <DialogContentText component="div">
                                                 {dirty ? (
                                                     <React.Fragment>
                                                         <div
