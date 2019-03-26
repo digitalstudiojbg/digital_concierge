@@ -58,7 +58,8 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                     if (loading) return <Loading loadingData />;
                                     if (error) return `Error! ${error.message}`;
                                     const modifiedData = modifyDirectoryListData(
-                                        data.directoryLists_by_system
+                                        data.directoryLists_by_system,
+                                        false
                                     );
                                     if (
                                         !Boolean(values.parent_id) &&

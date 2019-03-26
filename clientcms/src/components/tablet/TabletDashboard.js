@@ -26,7 +26,7 @@ class TabletDashboard extends Component {
                     display: "flex"
                 }}
             >
-                <div style={{ flexBasis: "50%" }}>
+                <div style={{ flexBasis: "100%" }}>
                     <h1>Tablet Homepage</h1>
                     <Link to={SYSTEM_CMS_LANDINGPAGE_URL}>List</Link> <br />
                     <h3>Single Image Upload: </h3>
@@ -43,8 +43,47 @@ class TabletDashboard extends Component {
                     />
                     <br />
                     <br />
+                    <Query
+                        query={getDirectoryListBySystem}
+                        variables={{ id: system_id }}
+                    >
+                        {({
+                            loading,
+                            error,
+                            data: { directoryLists_by_system: directoryLists }
+                        }) => {
+                            if (loading) return <React.Fragment />;
+                            if (error)
+                                return (
+                                    <React.Fragment>
+                                        {error.message}
+                                    </React.Fragment>
+                                );
+                            const modifiedData = modifyDirectoryListData(
+                                directoryLists,
+                                false
+                            );
+                            return (
+                                <React.Fragment>
+                                    {/* <SearchFilter data={modifiedData} /> */}
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            paddingTop: 20,
+                                            height: 200
+                                        }}
+                                    >
+                                        <TreeviewSelector
+                                            data={modifiedData}
+                                            selectAmount="single"
+                                        />
+                                    </div>
+                                </React.Fragment>
+                            );
+                        }}
+                    </Query>
                 </div>
-                <div style={{ flexBasis: "40%" }}>
+                {/* <div style={{ flexBasis: "40%" }}>
                     <h1>SEARCH FILTER GOES HERE</h1>
                     <Query
                         query={getDirectoryListBySystem}
@@ -84,7 +123,7 @@ class TabletDashboard extends Component {
                             );
                         }}
                     </Query>
-                </div>
+                </div> */}
             </div>
         );
     }

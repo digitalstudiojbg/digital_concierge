@@ -441,6 +441,7 @@ class TreeView extends React.PureComponent {
                 .filter(item => !item.is_dir_list)
                 .map(item => item.hash_id);
 
+            /*
             //If all entries under parent directory list is checked, we have to select the parent directory list as well
             const parents = this.getParentItem(
                 directory.id,
@@ -461,11 +462,12 @@ class TreeView extends React.PureComponent {
                     to_check_parent = [...to_check_parent, parent_id];
                 }
             });
+            */
 
             this.setState({
                 selected_dir_lists: [
                     ...selected_dir_lists,
-                    ...to_check_parent,
+                    // ...to_check_parent,
                     ...directory_lists
                 ],
                 selected_dir_entries: [
@@ -478,6 +480,7 @@ class TreeView extends React.PureComponent {
             if (directory.is_dir_list) {
                 //An directory list with empty child
 
+                /*
                 //If all entries under parent directory list is checked, we have to select the parent directory list as well
                 const parents = this.getParentItem(
                     directory.id,
@@ -492,15 +495,17 @@ class TreeView extends React.PureComponent {
                         to_check_parent = [...to_check_parent, parent_id];
                     }
                 });
+                */
 
                 this.setState({
                     selected_dir_lists: [
                         ...selected_dir_lists,
-                        ...to_check_parent,
+                        // ...to_check_parent,
                         directory.id
                     ]
                 });
             } else {
+                /*
                 //If all directories entries are selected, we have to select the parent directory list as well
                 const child_and_parents = directory.hash_id.split("-");
                 const parents = child_and_parents.slice(
@@ -520,10 +525,11 @@ class TreeView extends React.PureComponent {
                         to_check_parent = [...to_check_parent, parent_id];
                     }
                 });
+                */
                 this.setState({
                     selected_dir_lists: [
-                        ...selected_dir_lists,
-                        ...to_check_parent
+                        ...selected_dir_lists
+                        // ...to_check_parent
                     ],
                     selected_dir_entries: [
                         ...selected_dir_entries,
@@ -1539,32 +1545,36 @@ class TreeView extends React.PureComponent {
     //Modify data of the directory to remove unnecessary key values item
     //For example child_directory & directory_entries
     modifyDataBeingSendToEditPage(directory) {
-        const { is_dir_list, is_root = false } = directory;
-        if (is_dir_list) {
-            const {
-                child_directory_lists_key,
-                directory_entries_key
-            } = this.props;
-            const {
-                [child_directory_lists_key]: _unused_child_category_value,
-                [directory_entries_key]: _unused_directory_entries_value,
-                ...others
-            } = directory;
-            //If !directory.is_root need to get parent id
-            return is_root
-                ? { ...others }
-                : {
-                      ...others,
-                      parent_id: this.getParentItem(directory.id)[0]
-                  };
+        if (directory.id) {
+            const { is_dir_list, is_root = false } = directory;
+            if (is_dir_list) {
+                const {
+                    child_directory_lists_key,
+                    directory_entries_key
+                } = this.props;
+                const {
+                    [child_directory_lists_key]: _unused_child_category_value,
+                    [directory_entries_key]: _unused_directory_entries_value,
+                    ...others
+                } = directory;
+                //If !directory.is_root need to get parent id
+                return is_root
+                    ? { ...others }
+                    : {
+                          ...others,
+                          parent_id: this.getParentItem(directory.id)[0]
+                      };
+            } else {
+                const { hash_id = "", ...others } = directory;
+                const hash_id_array = hash_id.split("-");
+                const parent_id =
+                    hash_id_array.length > 1
+                        ? hash_id_array[hash_id_array.length - 2]
+                        : null;
+                return { ...others, parent_id };
+            }
         } else {
-            const { hash_id = "", ...others } = directory;
-            const hash_id_array = hash_id.split("-");
-            const parent_id =
-                hash_id_array.length > 1
-                    ? hash_id_array[hash_id_array.length - 2]
-                    : null;
-            return { ...others, parent_id };
+            return null;
         }
     }
 

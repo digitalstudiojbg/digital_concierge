@@ -4,7 +4,12 @@ import { withStyles } from "@material-ui/core/styles";
 import ExpandIcon from "@material-ui/icons/ChevronRight";
 import CompressIcon from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Divider from "@material-ui/core/Divider";
+
 import PropTypes from "prop-types";
 import { getAllUniqueItems } from "./Constants";
 import DirListIcon from "@material-ui/icons/List";
@@ -20,13 +25,33 @@ const styles = () => ({
     },
     dirListIcon: {
         paddingLeft: 5
+    },
+    filterQueryList: {
+        borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRight: "1px solid rgba(0, 0, 0, 0.12)",
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginTop: 8
     }
 });
 
 const paddingSize = 24;
 const approximateButtonSize = 24;
 
+const ContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+`;
+
+const SearchFilterContainerDiv = styled.div`
+    flex-basis: 30%;
+    padding-right: 10px;
+    border-right: 2px solid rgb(187, 187, 187);
+    margin-right: 10px;
+`;
+
 const DirectoryListContainerDiv = styled.div`
+    flex-basis: 40%;
     overflow-y: auto;
     border-top: 1px solid rgb(200, 199, 200);
     /* border-bottom: 1px solid rgb(204, 204, 204); */
@@ -64,10 +89,13 @@ class TreeviewSelector extends React.PureComponent {
         this.state = {
             expanded: [],
             selected_dir_lists: [], //Set selected directory list initial value
-            dataTree: dataTree.filter(({ is_dir_list }) => is_dir_list)
+            dataTree: dataTree.filter(({ is_dir_list }) => is_dir_list),
+            searchQuery: "",
+            showListItems: false
         };
 
         this.addOrRemoveFromSelected = this.addOrRemoveFromSelected.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -131,6 +159,7 @@ class TreeviewSelector extends React.PureComponent {
             const foundItem = dataTree.find(entry => {
                 return entry.id === list_id && entry.is_dir_list;
             });
+            console.log(foundItem);
             if (foundItem.is_root) {
                 //Root item certainly do not have parent
                 return [];
@@ -215,11 +244,41 @@ class TreeviewSelector extends React.PureComponent {
         }
     }
 
-    //Method to extract directory ID from event target ID
-    getDirListIdFromEvent(event) {
-        const temp = event.target.id.split("-");
-        return temp[temp.length - 1];
-    }
+    filterDirList = () => {
+        const { dataTree, searchQuery } = this.state;
+        return dataTree.filter(({ name }) =>
+            name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    };
+
+    handleChange = event => {
+        this.setState({
+            searchQuery: event.target.value,
+            showListItems: event.target.value.length > 0
+        });
+    };
+
+    handleClickListItem = dir_list_id => {
+        const {
+            selected_dir_lists,
+            expanded: expandedOriginal,
+            dataTree
+        } = this.state;
+        const { selectAmount } = this.props;
+        if (!selected_dir_lists.includes(dir_list_id)) {
+            //Not inside selected list
+            this.addToSelected(dir_list_id);
+            const expanded = [
+                ...expandedOriginal,
+                ...this.getParentItem(dir_list_id)
+            ];
+            this.setState({
+                ...(selectAmount === "single" && { showListItems: false }), //Close list items after single selection
+                expanded: [...getAllUniqueItems(expanded)],
+                searchQuery: dataTree.find(({ id }) => id === dir_list_id).name
+            });
+        }
+    };
 
     //Method gets called when we expand a directory list
     addToExpanded(dir_list_id) {
@@ -374,14 +433,51 @@ class TreeviewSelector extends React.PureComponent {
         );
     }
 
+    renderSearchQuerySection() {
+        const { searchQuery, showListItems } = this.state;
+        const { classes } = this.props;
+        const filterResults = this.filterDirList();
+        return (
+            <SearchFilterContainerDiv>
+                <TextField
+                    variant="outlined"
+                    fullWidth={true}
+                    value={searchQuery}
+                    onChange={this.handleChange}
+                />
+                {showListItems && (
+                    <List className={classes.filterQueryList}>
+                        {filterResults.length > 0 && <Divider />}
+                        {filterResults.map(({ name, id }, index) => (
+                            <ListItem
+                                button
+                                divider
+                                key={`DIR_LIST-${index}-${id}`}
+                                onClick={this.handleClickListItem.bind(
+                                    this,
+                                    id
+                                )}
+                            >
+                                <ListItemText primary={name} />
+                            </ListItem>
+                        ))}
+                    </List>
+                )}
+            </SearchFilterContainerDiv>
+        );
+    }
+
     render() {
         const { data } = this.props;
         return (
-            <React.Fragment>
+            <ContainerDiv>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
-                    <React.Fragment>{this.renderDirectories()}</React.Fragment>
+                    <React.Fragment>
+                        {this.renderSearchQuerySection()}
+                        {this.renderDirectories()}
+                    </React.Fragment>
                 )}
-            </React.Fragment>
+            </ContainerDiv>
         );
     }
 }

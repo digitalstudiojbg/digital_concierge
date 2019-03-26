@@ -38,7 +38,8 @@ const TabletContent = ({ history, match, classes }) => {
                 if (error) return `Error! ${error.message}`;
                 console.log(data);
                 const modifiedData = modifyDirectoryListData(
-                    data.directoryLists_by_system
+                    data.directoryLists_by_system,
+                    false
                 );
                 console.log(modifiedData);
 
@@ -49,6 +50,7 @@ const TabletContent = ({ history, match, classes }) => {
                                 width: "100%",
                                 display: "flex",
                                 fontSize: "1.7em",
+                                fontWeight: 600,
                                 alignItems: "center"
                             }}
                         >

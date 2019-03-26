@@ -47,6 +47,10 @@ const routes = [
         component: Home
     },
     {
+        path: SYSTEM_INDEX_URL + "/:which",
+        component: Home
+    },
+    {
         path: SYSTEM_INDEX_URL,
         component: ({ match }) => (
             <Redirect
@@ -57,10 +61,10 @@ const routes = [
             />
         )
     },
-    {
-        path: SYSTEM_CMS_INDEX_URL,
-        component: Home
-    },
+    // {
+    //     path: SYSTEM_CMS_INDEX_URL,
+    //     component: Home
+    // },
     {
         path: TOUCHSCREEN_CMS_INDEX_URL,
         component: Home

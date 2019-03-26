@@ -136,13 +136,30 @@ function _modifyDirectoryListOrEntry(
 }
 
 //Function to modify category and directory entries data
-export const modifyDirectoryListData = data => {
+export const modifyDirectoryListData = (
+    data,
+    withHome = true,
+    child_directory_lists_key = "child_directory_lists"
+) => {
     if (data.length === 0) {
         return [];
     } else {
-        return data.map(item => {
-            return _modifyDirectoryListOrEntry(item);
-        });
+        if (withHome) {
+            const children = data.map(item => {
+                return _modifyDirectoryListOrEntry(item, 1);
+            });
+            return [
+                {
+                    id: "-1",
+                    name: "HOME",
+                    depth: 0,
+                    is_dir_list: true,
+                    [child_directory_lists_key]: children
+                }
+            ];
+        } else {
+            return data.map(item => _modifyDirectoryListOrEntry(item));
+        }
     }
 };
 

@@ -41,85 +41,87 @@ import { getSystemDetailSidebar } from "../../data/query";
 
 const SIDEBAR_ITEMS = [
     {
-        url:
+        name:
             process.env.NODE_ENV === "production"
                 ? "http://digitalconcierge-env.uir8vfstfw.ap-southeast-2.elasticbeanstalk.com/tablet/"
                 : "http://localhost:5000",
-        displayName: "View Site",
+        displayName: "View System",
         icon: Visibility,
-        center: false
+        paddingLeft: "30px"
     },
     {
         name: WELCOME_URL,
         displayName: "Home",
         icon: Home,
-        center: false
+        paddingLeft: "30px"
     },
     {
         name: SYSTEM_CMS_INDEX_URL,
         displayName: "Dashboard",
         icon: Dashboard,
-        center: false
+        paddingLeft: "30px"
     },
     {
         name: SYSTEM_CMS_ACTIVITY,
         displayName: "Activity",
         icon: NotificationsActiveOutlined,
-        center: false
+        paddingLeft: "30px"
     },
     {
         name: SYSTEM_CMS_GUESTS,
         displayName: "Guests",
         icon: People,
-        center: false
+        paddingLeft: "30px"
     },
     {
-        name: SYSTEM_CMS_CREATE_CONTENT_INDEX_URL,
+        name: "expandContent",
         displayName: "System Content",
         icon: List,
-        center: false
-    },
-    {
-        name: SYSTEM_CMS_LANDINGPAGE_URL,
-        displayName: "Start",
-        icon: Stars,
-        center: true
-    },
-    {
-        name: SYSTEM_CMS_HOME_URL,
-        displayName: "Home",
-        icon: BookmarkBorder,
-        center: true
-    },
-    {
-        name: SYSTEM_CMS_CONTENT_URL,
-        displayName: "Directories",
-        icon: List,
-        center: true
-    },
-    {
-        name: SYSTEM_CMS_PROMOTION,
-        displayName: "Promotions",
-        icon: ImageOutlined,
-        center: true
-    },
-    {
-        name: SYSTEM_CMS_LIBRARY,
-        displayName: "Library",
-        icon: LocalMoviesOutlined,
-        center: true
+        paddingLeft: "30px",
+        expandItems: [
+            {
+                name: SYSTEM_CMS_LANDINGPAGE_URL,
+                displayName: "Start",
+                icon: Stars,
+                paddingLeft: "60px"
+            },
+            {
+                name: SYSTEM_CMS_HOME_URL,
+                displayName: "Home",
+                icon: BookmarkBorder,
+                paddingLeft: "60px"
+            },
+            {
+                name: SYSTEM_CMS_CONTENT_URL,
+                displayName: "Directories",
+                icon: List,
+                paddingLeft: "60px"
+            },
+            {
+                name: SYSTEM_CMS_PROMOTION,
+                displayName: "Promotions",
+                icon: ImageOutlined,
+                paddingLeft: "60px"
+            },
+            {
+                name: SYSTEM_CMS_LIBRARY,
+                displayName: "Library",
+                icon: LocalMoviesOutlined,
+                paddingLeft: "60px"
+            }
+        ]
     },
     {
         name: SYSTEM_CMS_REPORTS,
         displayName: "Reports",
         icon: ShowChartOutlined,
-        center: false
+        paddingLeft: "30px"
     },
     {
         name: SYSTEM_CMS_STAFF,
         displayName: "Staff",
         icon: GroupOutlined,
-        center: false
+        paddingLeft: "30px"
     }
     // {
     //     name: SYSTEM_CMS_DEVICES,
@@ -138,7 +140,8 @@ const SidebarItem = styled.div`
     /* line-height: 70px; */
     flex: 1;
     height: 100%;
-    padding-left: ${props => (props.center ? "0px" : "30px")};
+    /* padding-left: ${props => (props.center ? "0px" : "30px")}; */
+    padding-left: ${props => props.paddingLeft};
     transition: all 0.3s linear;
 
     background-color: ${({ selectedItem, expectedItem }) =>
@@ -153,12 +156,12 @@ const SidebarItem = styled.div`
 
     display: flex;
     align-items: center;
-    justify-content: ${props => (props.center ? "center" : "stretch")};
+    /* justify-content: ${props => (props.center ? "center" : "stretch")}; */
 `;
 
 const SidebarLabel = styled.div`
     font-size: 1.5em;
-    font-weight: 700;
+    /* font-weight: 700; */
     padding-left: 10px;
 `;
 
@@ -186,6 +189,7 @@ class Sidebar extends Component {
         const { system_id = "" } = params || {};
 
         let urlPath;
+        let expandContent = false;
         if (history) {
             switch (this.props.history.location.pathname) {
                 // case SYSTEM_CMS_INDEX_URL:
@@ -196,15 +200,18 @@ class Sidebar extends Component {
                     break;
                 case SYSTEM_CMS_HOME_URL.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_HOME_URL;
+                    expandContent = true;
                     break;
                 case SYSTEM_CMS_CONTENT_URL.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_CONTENT_URL;
+                    expandContent = true;
                     break;
                 case SYSTEM_CMS_LANDINGPAGE_URL.replace(
                     ":system_id",
                     system_id
                 ):
                     urlPath = SYSTEM_CMS_LANDINGPAGE_URL;
+                    expandContent = true;
                     break;
                 case SYSTEM_CMS_SETTINGS_URL.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_SETTINGS_URL;
@@ -235,9 +242,11 @@ class Sidebar extends Component {
                     break;
                 case SYSTEM_CMS_PROMOTION.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_PROMOTION;
+                    expandContent = true;
                     break;
                 case SYSTEM_CMS_LIBRARY.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_LIBRARY;
+                    expandContent = true;
                     break;
                 case SYSTEM_CMS_GUESTS.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_GUESTS;
@@ -251,7 +260,8 @@ class Sidebar extends Component {
         }
 
         this.state = {
-            selectedItem: urlPath
+            selectedItem: urlPath,
+            expandContent
         };
     }
 
@@ -312,55 +322,127 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
-                                    center
+                                    paddingLeft,
+                                    expandItems = []
                                 } = items;
                                 return (
                                     name &&
                                     displayName && (
-                                        <SidebarItem
-                                            key={index}
-                                            onClick={() => {
-                                                // console.log("Name is ", name);
-                                                if (name === WELCOME_URL) {
-                                                    const navigateTo =
-                                                        WELCOME_URL +
-                                                        "/" +
-                                                        system.client.id +
-                                                        "/systems";
-                                                    this.props.history.push(
-                                                        navigateTo
-                                                    );
-                                                } else {
-                                                    this.setState({
-                                                        selectedItem: name
-                                                    });
-                                                    displayName === "View Site"
-                                                        ? window.open(
-                                                              name,
-                                                              "_blank"
-                                                          )
-                                                        : name &&
-                                                          this.props.history.push(
-                                                              name.replace(
-                                                                  ":system_id",
-                                                                  system.id
+                                        <React.Fragment key={index}>
+                                            <SidebarItem
+                                                onClick={() => {
+                                                    // console.log("Name is ", name);
+                                                    if (name === WELCOME_URL) {
+                                                        const navigateTo =
+                                                            WELCOME_URL +
+                                                            "/" +
+                                                            system.client.id +
+                                                            "/systems";
+                                                        this.props.history.push(
+                                                            navigateTo
+                                                        );
+                                                    } else if (
+                                                        name.includes("expand")
+                                                    ) {
+                                                        //Do not navigate if expand
+                                                        this.setState({
+                                                            [name]: !this.state[
+                                                                name
+                                                            ]
+                                                        });
+                                                    } else {
+                                                        this.setState({
+                                                            selectedItem: name
+                                                        });
+                                                        displayName ===
+                                                        "View Site"
+                                                            ? window.open(
+                                                                  name,
+                                                                  "_blank"
                                                               )
-                                                          );
-                                                }
-                                            }}
-                                            selectedItem={selectedItem}
-                                            expectedItem={name}
-                                            center={center}
-                                        >
-                                            {Boolean(EntryIcon) && (
-                                                <EntryIcon
-                                                    className={classes.icon}
-                                                />
-                                            )}
-                                            <SidebarLabel>
-                                                {displayName}
-                                            </SidebarLabel>
-                                        </SidebarItem>
+                                                            : name &&
+                                                              this.props.history.push(
+                                                                  name.replace(
+                                                                      ":system_id",
+                                                                      system.id
+                                                                  )
+                                                              );
+                                                    }
+                                                }}
+                                                selectedItem={selectedItem}
+                                                expectedItem={name}
+                                                paddingLeft={paddingLeft}
+                                            >
+                                                {Boolean(EntryIcon) && (
+                                                    <EntryIcon
+                                                        className={classes.icon}
+                                                    />
+                                                )}
+                                                <SidebarLabel>
+                                                    {displayName}
+                                                </SidebarLabel>
+                                            </SidebarItem>
+                                            {name.includes("expand") &&
+                                                this.state[name] &&
+                                                Array.isArray(expandItems) &&
+                                                expandItems.length > 0 && (
+                                                    <React.Fragment>
+                                                        {expandItems.map(
+                                                            (eItem, eIndex) => {
+                                                                const {
+                                                                    name: eName,
+                                                                    displayName: eDisplayName,
+                                                                    icon: EEntryIcon,
+                                                                    paddingLeft: ePaddingLeft
+                                                                } = eItem;
+                                                                return (
+                                                                    <SidebarItem
+                                                                        key={`${index}-${eIndex}`}
+                                                                        onClick={() => {
+                                                                            // console.log("Name is ", name);
+                                                                            this.setState(
+                                                                                {
+                                                                                    selectedItem: eName
+                                                                                }
+                                                                            );
+                                                                            this.props.history.push(
+                                                                                eName.replace(
+                                                                                    ":system_id",
+                                                                                    system.id
+                                                                                )
+                                                                            );
+                                                                        }}
+                                                                        selectedItem={
+                                                                            selectedItem
+                                                                        }
+                                                                        expectedItem={
+                                                                            eName
+                                                                        }
+                                                                        paddingLeft={
+                                                                            ePaddingLeft
+                                                                        }
+                                                                    >
+                                                                        {Boolean(
+                                                                            EEntryIcon
+                                                                        ) && (
+                                                                            <EEntryIcon
+                                                                                className={
+                                                                                    classes.icon
+                                                                                }
+                                                                            />
+                                                                        )}
+                                                                        <SidebarLabel>
+                                                                            {
+                                                                                eDisplayName
+                                                                            }
+                                                                        </SidebarLabel>
+                                                                    </SidebarItem>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </React.Fragment>
+                                                )}
+                                        </React.Fragment>
                                     )
                                 );
                             })}
