@@ -10,7 +10,6 @@ import UploadFileDropZone from "./content/UploadFileDropZone";
 import BrowserMedia from "../../utils/BrowserMedia";
 import { Query } from "react-apollo";
 import { getDirectoryListBySystem } from "../../data/query";
-import SearchFilter from "../../utils/SearchFilter";
 import TreeviewSelector from "../../utils/TreeviewSelector";
 
 class TabletDashboard extends Component {
@@ -64,21 +63,18 @@ class TabletDashboard extends Component {
                                 false
                             );
                             return (
-                                <React.Fragment>
-                                    {/* <SearchFilter data={modifiedData} /> */}
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            paddingTop: 20,
-                                            height: 150
-                                        }}
-                                    >
-                                        <TreeviewSelector
-                                            data={modifiedData}
-                                            selectAmount="single"
-                                        />
-                                    </div>
-                                </React.Fragment>
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        paddingTop: 20,
+                                        height: 150
+                                    }}
+                                >
+                                    <TreeviewSelector
+                                        data={modifiedData}
+                                        selectAmount="single"
+                                    />
+                                </div>
                             );
                         }}
                     </Query>
