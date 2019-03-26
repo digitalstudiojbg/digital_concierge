@@ -40,7 +40,15 @@ const approximateButtonSize = 24;
 
 const ContainerDiv = styled.div`
     width: 100%;
-    display: flex;
+    height: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+
+const TitleHeaderDiv = styled.div`
+    font-size: 1.5em;
+    color: rgb(10, 10, 10);
+    padding-bottom: 30px;
 `;
 
 const SearchFilterContainerDiv = styled.div`
@@ -51,7 +59,7 @@ const SearchFilterContainerDiv = styled.div`
 `;
 
 const DirectoryListContainerDiv = styled.div`
-    flex-basis: 40%;
+    flex-grow: 1;
     overflow-y: auto;
     border-top: 1px solid rgb(200, 199, 200);
     /* border-bottom: 1px solid rgb(204, 204, 204); */
@@ -273,7 +281,7 @@ class TreeviewSelector extends React.PureComponent {
                 ...this.getParentItem(dir_list_id)
             ];
             this.setState({
-                ...(selectAmount === "single" && { showListItems: false }), //Close list items after single selection
+                showListItems: false,
                 expanded: [...getAllUniqueItems(expanded)],
                 searchQuery: dataTree.find(({ id }) => id === dir_list_id).name
             });
@@ -425,11 +433,29 @@ class TreeviewSelector extends React.PureComponent {
         const { dataTree } = this.state;
         const rootDirLists = dataTree.filter(({ depth }) => depth === 0);
         return (
-            <DirectoryListContainerDiv>
-                {rootDirLists.map((item, index) => {
-                    return this.renderDirectory(item, index);
-                })}
-            </DirectoryListContainerDiv>
+            <div
+                style={{
+                    flexBasis: "70%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column"
+                }}
+            >
+                <div
+                    style={{
+                        fontSize: "1em",
+                        color: "rgb(137,137,137)",
+                        height: "15%"
+                    }}
+                >
+                    SELECT LOCATION BY EXPANDING AND COLLAPSING THE LISTS BELOW
+                </div>
+                <DirectoryListContainerDiv>
+                    {rootDirLists.map((item, index) => {
+                        return this.renderDirectory(item, index);
+                    })}
+                </DirectoryListContainerDiv>
+            </div>
         );
     }
 
@@ -439,12 +465,17 @@ class TreeviewSelector extends React.PureComponent {
         const filterResults = this.filterDirList();
         return (
             <SearchFilterContainerDiv>
-                <TextField
-                    variant="outlined"
-                    fullWidth={true}
-                    value={searchQuery}
-                    onChange={this.handleChange}
-                />
+                <div style={{ width: "100%" }}>
+                    <div style={{ fontSize: "1em", color: "rgb(137,137,137)" }}>
+                        SEARCH BY NAME
+                    </div>
+                    <TextField
+                        variant="outlined"
+                        fullWidth={true}
+                        value={searchQuery}
+                        onChange={this.handleChange}
+                    />
+                </div>
                 {showListItems && (
                     <List className={classes.filterQueryList}>
                         {filterResults.length > 0 && <Divider />}
@@ -471,11 +502,18 @@ class TreeviewSelector extends React.PureComponent {
         const { data } = this.props;
         return (
             <ContainerDiv>
+                <TitleHeaderDiv>LINKS FROM</TitleHeaderDiv>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
-                    <React.Fragment>
+                    <div
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex"
+                        }}
+                    >
                         {this.renderSearchQuerySection()}
                         {this.renderDirectories()}
-                    </React.Fragment>
+                    </div>
                 )}
             </ContainerDiv>
         );

@@ -70,7 +70,7 @@ class TabletDashboard extends Component {
                                         style={{
                                             width: "100%",
                                             paddingTop: 20,
-                                            height: 200
+                                            height: 150
                                         }}
                                     >
                                         <TreeviewSelector
