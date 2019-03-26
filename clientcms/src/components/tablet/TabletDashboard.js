@@ -60,7 +60,7 @@ class TabletDashboard extends Component {
                                 );
                             const modifiedData = modifyDirectoryListData(
                                 directoryLists,
-                                false
+                                true
                             );
                             return (
                                 <div

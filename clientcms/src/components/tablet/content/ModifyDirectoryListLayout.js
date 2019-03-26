@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { getDirectoryListBySystem } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import { modifyDirectoryListData } from "../../../utils/Constants";
-import TreeviewCheckbox from "../../../utils/TreeviewCheckbox";
+import TreeviewSelector from "../../../utils/TreeviewSelector";
 
 const SubtitleDiv = styled.div`
     font-size: 1.5em;
@@ -47,7 +47,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
 
                 <Field name="parent_id">
                     {() => (
-                        <div style={{ marginTop: 20 }}>
+                        <div style={{ marginTop: 20, height: "70%" }}>
                             <Query
                                 query={getDirectoryListBySystem}
                                 variables={{
@@ -59,14 +59,14 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                     if (error) return `Error! ${error.message}`;
                                     const modifiedData = modifyDirectoryListData(
                                         data.directoryLists_by_system,
-                                        false
+                                        true
                                     );
                                     if (
                                         !Boolean(values.parent_id) &&
                                         modifiedData.length > 0
                                     ) {
                                         return (
-                                            <TreeviewCheckbox
+                                            <TreeviewSelector
                                                 data={modifiedData}
                                                 updateSelectedDirectory={
                                                     updateSelectedDirectory
@@ -76,7 +76,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                         );
                                     } else if (modifiedData.length > 0) {
                                         return (
-                                            <TreeviewCheckbox
+                                            <TreeviewSelector
                                                 data={modifiedData}
                                                 updateSelectedDirectory={
                                                     updateSelectedDirectory

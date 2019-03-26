@@ -59,7 +59,7 @@ const SearchFilterContainerDiv = styled.div`
 `;
 
 const DirectoryListContainerDiv = styled.div`
-    flex-grow: 1;
+    /* flex-grow: 1; */
     overflow-y: auto;
     border-top: 1px solid rgb(200, 199, 200);
     /* border-bottom: 1px solid rgb(204, 204, 204); */
@@ -413,8 +413,14 @@ class TreeviewSelector extends React.PureComponent {
                     <DirListIcon
                         fontSize="large"
                         className={classes.dirListIcon}
+                        id={id}
+                        onClick={this.addOrRemoveFromSelected}
                     />
-                    <span style={{ paddingLeft: 5, fontSize: "1.5em" }}>
+                    <span
+                        style={{ paddingLeft: 5, fontSize: "1.5em" }}
+                        id={id}
+                        onClick={this.addOrRemoveFromSelected}
+                    >
                         {name}
                     </span>
                 </DirectoryListEntryDiv>
