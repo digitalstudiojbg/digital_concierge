@@ -148,9 +148,12 @@ const ModifyDirectoryList = props => {
                   name: directoryList.name,
                   layout_family_id: directoryList.layout.layout_family.id,
                   layout_id: directoryList.layout.id,
-                  parent_id: Boolean(directoryList.parent_id)
-                      ? directoryList.parent_id
-                      : "",
+                  parent_id:
+                      Boolean(directoryList.parent_id) && !directoryList.is_root //Non-root Directory list
+                          ? directoryList.parent_id
+                          : directoryList.is_root //Root directory list
+                          ? "-1"
+                          : "",
                   images:
                       directoryList.media &&
                       Array.isArray(directoryList.media) &&
@@ -231,12 +234,14 @@ const ModifyDirectoryList = props => {
                                 is_root: !Boolean(parent_id),
                                 layout_id,
                                 system_id: parseInt(match.params.system_id),
-                                ...(Boolean(parent_id) && {
-                                    parent_id: parseInt(
-                                        parent_id,
-                                        DECIMAL_RADIX
-                                    )
-                                }),
+                                ...(Boolean(parent_id) &&
+                                    parent_id !== "-1" && {
+                                        //Make sure parent_id is not equal to -1 because that is the home id, which means we are creating a root directory entry
+                                        parent_id: parseInt(
+                                            parent_id,
+                                            DECIMAL_RADIX
+                                        )
+                                    }),
                                 colours
                             };
 
