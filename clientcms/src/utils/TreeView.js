@@ -140,7 +140,7 @@ const styles = () => ({
 
 //A few constants settings
 const paddingSize = 30;
-const approximateButtonSize = 24;
+//const approximateButtonSize = 24;
 // const approximateIconSize = 15;
 const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
@@ -432,8 +432,8 @@ class TreeView extends React.PureComponent {
     addToSelected(directory, has_child) {
         const {
             selected_dir_lists,
-            selected_dir_entries,
-            dirListOnlyDataTree
+            selected_dir_entries
+            // dirListOnlyDataTree
         } = this.state;
         if (has_child) {
             const items = this.getItemAndAllChildItems(directory);
@@ -994,7 +994,7 @@ class TreeView extends React.PureComponent {
                             <div
                                 style={{
                                     marginLeft: 0, //directory.is_dir_list ? 0 : 15,
-                                    width: `${approximateButtonSize}px`,
+                                    // width: `${approximateButtonSize}px`,
                                     width: "100%",
                                     height: "100%",
                                     display: "flex",
@@ -1239,14 +1239,14 @@ class TreeView extends React.PureComponent {
     }
 
     //Function to close options menu and navigate to page based on selection
-    handleCloseOptionsAndNavigate(action = "", mutationAction = null) {
+    handleCloseOptionsAndNavigate(action = "" /*mutationAction = null*/) {
         const {
             preview_list_url,
             preview_entry_url,
             edit_list_url,
             edit_entry_url,
             create_list_url,
-            create_entry_url,
+            //create_entry_url,
             history,
             match
         } = this.props;

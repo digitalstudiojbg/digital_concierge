@@ -1,13 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { compose, withApollo, graphql, Query } from "react-apollo";
+import { compose, withApollo, graphql } from "react-apollo";
 import { getContractByClientId } from "../../data/query";
 // import { log } from "util";
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { withStyles } from "@material-ui/core/styles";
-import { isEmpty } from "lodash";
 import dayjs from "dayjs";
 
 const useContracts = contract => {

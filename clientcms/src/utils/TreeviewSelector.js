@@ -272,7 +272,7 @@ class TreeviewSelector extends React.PureComponent {
             expanded: expandedOriginal,
             dataTree
         } = this.state;
-        const { selectAmount } = this.props;
+
         if (!selected_dir_lists.includes(dir_list_id)) {
             //Not inside selected list
             this.addToSelected(dir_list_id);

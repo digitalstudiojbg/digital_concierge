@@ -75,8 +75,8 @@ function SlideUpTransition(props) {
 class ModifyDirectoryList extends React.PureComponent {
     constructor(props) {
         super(props);
-        const has_data =
-            props.location && props.location.state && props.location.state.data;
+        // const has_data =
+        //     props.location && props.location.state && props.location.state.data;
         // const has_media_data =
         //     has_data &&
         //     props.location.state.data.media &&
@@ -268,7 +268,6 @@ class ModifyDirectoryList extends React.PureComponent {
                         <Button
                             variant="outlined"
                             className={classes.removeImageButton}
-                            variant="outlined"
                             fullWidth={true}
                             disabled={
                                 Boolean(imageName) &&
@@ -331,7 +330,6 @@ class ModifyDirectoryList extends React.PureComponent {
                         <Button
                             variant="outlined"
                             className={classes.uploadFileButton}
-                            variant="outlined"
                             fullWidth={true}
                             onClick={this.openFileBrowser}
                         >

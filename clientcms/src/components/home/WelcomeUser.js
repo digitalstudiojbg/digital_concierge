@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import ReactTable from "react-table";
@@ -33,10 +33,9 @@ const styles = theme => ({
 });
 
 const changeClientDataStructure = data => {
-    let outputUser = [];
     console.log(data);
 
-    data.client.users.map(
+    return data.client.users.map(
         ({
             roles = [],
             name: user = "",
@@ -50,7 +49,7 @@ const changeClientDataStructure = data => {
             let rolesName;
             let departmentsName;
 
-            roles.map(({ id, name, department }) => {
+            roles.forEach(({ name, department }) => {
                 // roles_id = id;
                 //  department_id = department.id;
                 rolesName = rolesName ? `${rolesName} ${name}` : `${name}`;
@@ -58,7 +57,7 @@ const changeClientDataStructure = data => {
                     ? `${department.name}`
                     : `${departmentsName} ${department.name}`;
             });
-            let eachUser = {
+            return {
                 id,
                 user,
                 username,
@@ -70,11 +69,8 @@ const changeClientDataStructure = data => {
                 second_phone_number,
                 position
             };
-            outputUser.push(eachUser);
         }
     );
-
-    return outputUser;
 };
 
 class WelcomeUser extends Component {
@@ -115,8 +111,7 @@ class WelcomeUser extends Component {
             selected_row,
             deleteModal,
             editModal,
-            single_delete,
-            selected_object
+            single_delete
         } = this.state;
         if (is_create_page) {
             return (
@@ -420,45 +415,41 @@ class WelcomeUser extends Component {
                                                         original.id
                                                     );
                                                     return (
-                                                        <div>
-                                                            <Checkbox
-                                                                checked={this.state.selected.includes(
-                                                                    selectedId
-                                                                )}
-                                                                onClick={() => {
-                                                                    this.setState(
-                                                                        {
-                                                                            selected: selected.includes(
-                                                                                parseInt(
-                                                                                    selectedId
-                                                                                )
-                                                                            )
-                                                                                ? selected.filter(
-                                                                                      each => {
-                                                                                          return (
-                                                                                              each !=
-                                                                                              parseInt(
-                                                                                                  selectedId
-                                                                                              )
-                                                                                          );
-                                                                                      }
-                                                                                  )
-                                                                                : [
-                                                                                      ...selected,
+                                                        <Checkbox
+                                                            checked={this.state.selected.includes(
+                                                                selectedId
+                                                            )}
+                                                            onClick={() => {
+                                                                this.setState({
+                                                                    selected: selected.includes(
+                                                                        parseInt(
+                                                                            selectedId
+                                                                        )
+                                                                    )
+                                                                        ? selected.filter(
+                                                                              each => {
+                                                                                  return (
+                                                                                      each !==
                                                                                       parseInt(
                                                                                           selectedId
                                                                                       )
-                                                                                  ]
-                                                                        }
-                                                                    );
-                                                                }}
-                                                                value="checkedB"
-                                                                color="primary"
-                                                                style={{
-                                                                    padding: "0"
-                                                                }}
-                                                            />
-                                                        </div>
+                                                                                  );
+                                                                              }
+                                                                          )
+                                                                        : [
+                                                                              ...selected,
+                                                                              parseInt(
+                                                                                  selectedId
+                                                                              )
+                                                                          ]
+                                                                });
+                                                            }}
+                                                            value="checkedB"
+                                                            color="primary"
+                                                            style={{
+                                                                padding: "0"
+                                                            }}
+                                                        />
                                                     );
                                                 }
                                             }

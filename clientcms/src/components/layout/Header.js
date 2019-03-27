@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
     COLOR_JBG_PURPLE,
     SYSTEM_CMS_INDEX_URL,
-    TOUCHSCREEN_CMS_INDEX_URL,
+    // TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL
 } from "../../utils/Constants";
 import { withRouter } from "react-router";
@@ -11,9 +11,9 @@ import { withApollo } from "react-apollo";
 import styled from "styled-components";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import ArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
+// import ArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import { withStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -93,7 +93,7 @@ class Header extends Component {
         const availableWidth = window.innerWidth - 350;
         const userDivWidth = availableWidth * 0.35;
 
-        const { has_tablet = false, has_touchscreen = false, name = "" } =
+        const { name = "" /*has_tablet = false, has_touchscreen = false*/ } =
             user.venue || {};
 
         const { anchorEl } = this.state;

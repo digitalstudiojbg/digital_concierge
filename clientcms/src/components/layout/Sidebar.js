@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Query, withApollo } from "react-apollo";
-import gql from "graphql-tag";
 import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
