@@ -20,8 +20,13 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
     const { params } = match || {};
     const { system_id = "" } = params;
 
-    const updateSelectedDirectory = selected_directory => {
-        setFieldValue("parent_id", selected_directory, false);
+    const updateSelectedDirectory = selected_directories => {
+        if (
+            Array.isArray(selected_directories) &&
+            selected_directories.length > 0
+        ) {
+            setFieldValue("parent_id", selected_directories[0], false);
+        }
     };
 
     return (
@@ -29,25 +34,48 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             style={{
                 width: "100%",
                 height: "100%",
-                display: "flex",
                 paddingTop: 20
             }}
         >
-            <div style={{ flexBasis: "40%", marginRight: "5%" }}>
-                <SubtitleDiv>LIST DETAILS</SubtitleDiv>
-                <Field
-                    name="name"
-                    label="DIRECTORY LIST NAME"
-                    required={true}
-                    type="text"
-                    component={TextField}
-                    variant="outlined"
-                    fullWidth={true}
-                />
-
+            <SubtitleDiv>DETAILS</SubtitleDiv>
+            <div
+                style={{
+                    width: "80%",
+                    display: "flex",
+                    paddingBottom: 10
+                }}
+            >
+                <div style={{ flexBasis: "30%" }}>
+                    <div style={{ width: "80%" }}>
+                        <Field
+                            name="name"
+                            label="DIRECTORY LIST NAME"
+                            required={true}
+                            type="text"
+                            component={TextField}
+                            variant="outlined"
+                            fullWidth={true}
+                        />
+                    </div>
+                </div>
+                <div style={{ flexBasis: "50%" }} />
+                <div style={{ flexBasis: "10%" }}>
+                    <Field
+                        min={0}
+                        name="order"
+                        label="SORT ORDER"
+                        required={false}
+                        type="number"
+                        component={TextField}
+                        variant="outlined"
+                        fullWidth={true}
+                    />
+                </div>
+            </div>
+            <div style={{ width: "80%", height: "30%" }}>
                 <Field name="parent_id">
                     {() => (
-                        <div style={{ marginTop: 20, height: "70%" }}>
+                        <div style={{ marginTop: 20, height: "100%" }}>
                             <Query
                                 query={getDirectoryListBySystem}
                                 variables={{
@@ -61,20 +89,21 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                         data.directoryLists_by_system,
                                         true
                                     );
-                                    if (
-                                        !Boolean(values.parent_id) &&
-                                        modifiedData.length > 0
-                                    ) {
-                                        return (
-                                            <TreeviewSelector
-                                                data={modifiedData}
-                                                updateSelectedDirectory={
-                                                    updateSelectedDirectory
-                                                }
-                                                selectAmount="single"
-                                            />
-                                        );
-                                    } else if (modifiedData.length > 0) {
+                                    // if (
+                                    //     !Boolean(values.parent_id) &&
+                                    //     modifiedData.length > 0
+                                    // ) {
+                                    //     return (
+                                    //         <TreeviewSelector
+                                    //             data={modifiedData}
+                                    //             updateSelectedDirectory={
+                                    //                 updateSelectedDirectory
+                                    //             }
+                                    //             selectAmount="single"
+                                    //         />
+                                    //     );
+                                    // } else
+                                    if (modifiedData.length > 0) {
                                         return (
                                             <TreeviewSelector
                                                 data={modifiedData}
@@ -94,7 +123,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     )}
                 </Field>
             </div>
-            <div style={{ flexBasis: "40%" }}>
+            <div style={{ width: "80%", height: "50%" }}>
                 <SubtitleDiv>LAYOUT</SubtitleDiv>
                 <LayoutPicker values={values} setFieldValue={setFieldValue} />
             </div>

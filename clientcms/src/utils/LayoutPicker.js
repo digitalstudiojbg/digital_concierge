@@ -7,14 +7,12 @@ import {
     getLayoutFamilyDetailFilter
 } from "../data/query";
 import Loading from "../components/loading/Loading";
-import {
-    Radio
-    // Dropdown
-} from "semantic-ui-react";
+import Radio from "@material-ui/core/Radio";
 import { Select } from "formik-material-ui";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Field } from "formik";
+import { withStyles } from "@material-ui/core/styles";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -32,29 +30,28 @@ const LayoutOptionsDiv = styled.div`
     border: 2px solid rgb(196, 196, 196);
     margin-top: 20px;
     display: flex;
-    flex-direction: column;
     flex-wrap: wrap;
 `;
 
 const LayoutEntryDiv = styled.div`
-    flex-basis: 33%;
+    flex-basis: 20%;
     padding: 20px;
-    width: 80%;
     height: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 `;
 
 const LayoutLabelDiv = styled.div`
-    width: 15%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 `;
 
 const LayoutImageDiv = styled.div`
-    width: 85%;
-    height: 100%;
+    width: 100%;
+    height: 80%;
     background-image: url(${props => props.imageUrl});
     background-position: center;
     background-repeat: no-repeat;
@@ -62,12 +59,22 @@ const LayoutImageDiv = styled.div`
     background-color: white;
 `;
 
+const styles = () => ({
+    radio: {
+        "&$checked": {
+            color: "rgb(43,43,43)"
+        }
+    },
+    checked: {}
+});
+
 const LayoutPicker = ({
     whichLayout,
     values,
     setFieldValue,
     layoutFamilyFieldName,
-    layoutFieldName
+    layoutFieldName,
+    classes
 }) => {
     // const [selectedFamily, setSelectedFamily] = useState(null);
     // const [selectedLayout, setSelectedLayout] = useState(null);
@@ -76,24 +83,28 @@ const LayoutPicker = ({
     //     setSelectedFamily(data.value);
     // };
 
-    const updateLayout = (_event, { value }) => {
+    const updateLayout = event => {
         // setSelectedLayout(value);
-        setFieldValue(layoutFieldName, value, false);
+        setFieldValue(layoutFieldName, event.target.value, false);
     };
 
     const renderLayoutOptions = layouts => (
         <LayoutOptionsDiv>
             {layouts.map(({ id, name, media: { path } }, index) => (
                 <LayoutEntryDiv key={`LAYOUT-${id}-${index}`}>
+                    <LayoutImageDiv imageUrl={path} />
                     <LayoutLabelDiv>
                         <Radio
                             value={id}
                             checked={values[layoutFieldName] === id}
                             onChange={updateLayout}
+                            classes={{
+                                root: classes.radio,
+                                checked: classes.checked
+                            }}
                         />
                         <div>{name}</div>
                     </LayoutLabelDiv>
-                    <LayoutImageDiv imageUrl={path} />
                 </LayoutEntryDiv>
             ))}
         </LayoutOptionsDiv>
@@ -117,32 +128,24 @@ const LayoutPicker = ({
 
         return (
             <InnerContainerDiv>
-                <InputLabel>Layout Family</InputLabel>
-                {/* <Dropdown
-                    id="layoutFamilyDropdown"
-                    placeholder="Layout Family"
-                    fluid
-                    selection
-                    options={LAYOUT_FAMILY_OPTIONS}
-                    onChange={updateDropdown}
-                    value={selectedFamily}
-                /> */}
-                <Field
-                    name={layoutFamilyFieldName}
-                    component={Select}
-                    disabled={layoutFamilies.length < 1}
-                    fullWidth={true}
-                >
-                    {layoutFamilies.map(({ id, name }, index) => (
-                        <MenuItem
-                            key={`ITEM-${name}-${id}-${index}`}
-                            value={id}
-                        >
-                            {name}
-                        </MenuItem>
-                    ))}
-                </Field>
-
+                <div style={{ width: "30%" }}>
+                    <InputLabel>Family</InputLabel>
+                    <Field
+                        name={layoutFamilyFieldName}
+                        component={Select}
+                        disabled={layoutFamilies.length < 1}
+                        fullWidth={true}
+                    >
+                        {layoutFamilies.map(({ id, name }, index) => (
+                            <MenuItem
+                                key={`ITEM-${name}-${id}-${index}`}
+                                value={id}
+                            >
+                                {name}
+                            </MenuItem>
+                        ))}
+                    </Field>
+                </div>
                 {layouts.length > 0 && renderLayoutOptions(layouts)}
             </InnerContainerDiv>
         );
@@ -204,4 +207,4 @@ LayoutPicker.propTypes = {
     setFieldValue: PropTypes.func.isRequired
 };
 
-export default LayoutPicker;
+export default withStyles(styles)(LayoutPicker);

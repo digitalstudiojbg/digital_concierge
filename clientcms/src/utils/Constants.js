@@ -48,7 +48,7 @@ export const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: rgb(246, 246, 246);
+    /* background-color: rgb(246, 246, 246); */
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
