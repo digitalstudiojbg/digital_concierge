@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import ExpandIcon from "@material-ui/icons/ChevronRight";
 import CompressIcon from "@material-ui/icons/ExpandMore";
+import CheckIcon from "@material-ui/icons/Check";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
@@ -32,6 +33,9 @@ const styles = () => ({
         paddingTop: 0,
         paddingBottom: 0,
         marginTop: 8
+    },
+    checkIcon: {
+        color: "white"
     }
 });
 
@@ -41,8 +45,8 @@ const approximateButtonSize = 24;
 const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
-    padding-left: 20px;
-    padding-right: 20px;
+    /* padding-left: 20px;
+    padding-right: 20px; */
 `;
 
 const TitleHeaderDiv = styled.div`
@@ -168,7 +172,7 @@ class TreeviewSelector extends React.PureComponent {
                 return entry.id === list_id && entry.is_dir_list;
             });
             console.log(foundItem);
-            if (foundItem.is_root) {
+            if (Boolean(foundItem) && foundItem.is_root) {
                 //Root item certainly do not have parent
                 return [];
             }
@@ -423,6 +427,23 @@ class TreeviewSelector extends React.PureComponent {
                     >
                         {name}
                     </span>
+                    {selected && (
+                        <span
+                            style={{
+                                flexGrow: 1,
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                paddingRight: 10
+                            }}
+                            id={id}
+                            onClick={this.addOrRemoveFromSelected}
+                        >
+                            <CheckIcon
+                                fontSize="large"
+                                className={classes.checkIcon}
+                            />
+                        </span>
+                    )}
                 </DirectoryListEntryDiv>
                 {has_child &&
                     is_expanded &&
@@ -450,8 +471,7 @@ class TreeviewSelector extends React.PureComponent {
                 <div
                     style={{
                         fontSize: "1em",
-                        color: "rgb(137,137,137)",
-                        height: "15%"
+                        color: "rgb(137,137,137)"
                     }}
                 >
                     SELECT LOCATION BY EXPANDING AND COLLAPSING THE LISTS BELOW
