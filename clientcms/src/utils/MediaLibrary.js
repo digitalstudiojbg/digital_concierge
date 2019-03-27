@@ -1,5 +1,5 @@
 import React from "react";
-import { Query, Mutation, withApollo, compose, graphql } from "react-apollo";
+import { Query, Mutation, withApollo } from "react-apollo";
 import { getClientImageById } from "../data/query";
 import PropTypes from "prop-types";
 import Loading from "../components/loading/Loading";
@@ -7,7 +7,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { times } from "lodash";
 import styled from "styled-components";
-import { formatBytes, downloadFile } from "./Constants";
+import { formatBytes } from "./Constants";
 import { UPLOAD_FILES_WITH_CLIENT_ID, DELETE_FILES } from "../data/mutation";
 import Checkbox from "@material-ui/core/Checkbox";
 import Dialog from "@material-ui/core/Dialog";
@@ -111,7 +111,7 @@ class MediaLibrary extends React.Component {
         this.setState({
             selected: selected.includes(image)
                 ? selected.filter(each => {
-                      return each != image;
+                      return each !== image;
                   })
                 : [...selected, image]
         });
@@ -330,19 +330,28 @@ class MediaLibrary extends React.Component {
                                                         </Button>
                                                         <Button
                                                             onClick={() => {
-                                                                let toDelete = [];
-                                                                selected.map(
-                                                                    each => {
-                                                                        toDelete.push(
-                                                                            {
-                                                                                id: parseInt(
-                                                                                    each.id
-                                                                                ),
-                                                                                key:
-                                                                                    each.key
-                                                                            }
-                                                                        );
-                                                                    }
+                                                                // let toDelete = [];
+                                                                // selected.map(
+                                                                //     each => {
+                                                                //         toDelete.push(
+                                                                //             {
+                                                                //                 id: parseInt(
+                                                                //                     each.id
+                                                                //                 ),
+                                                                //                 key:
+                                                                //                     each.key
+                                                                //             }
+                                                                //         );
+                                                                //     }
+                                                                // );
+                                                                const toDelete = selected.map(
+                                                                    each => ({
+                                                                        id: parseInt(
+                                                                            each.id
+                                                                        ),
+                                                                        key:
+                                                                            each.key
+                                                                    })
                                                                 );
                                                                 selected.length >
                                                                 0
@@ -591,7 +600,7 @@ class MediaLibrary extends React.Component {
 
                                                         {image.name}
                                                     </p>
-                                                    <a
+                                                    <div
                                                         onClick={() => {
                                                             if (
                                                                 !isBrowserMedia
@@ -615,8 +624,9 @@ class MediaLibrary extends React.Component {
                                                                     "200px"
                                                             }}
                                                             src={image.path}
+                                                            alt="Entry for CLient Library"
                                                         />
-                                                    </a>
+                                                    </div>
 
                                                     <div
                                                         style={{
