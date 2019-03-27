@@ -132,13 +132,16 @@ const styles = () => ({
         marginRight: "15px",
         fontWeight: 600
     },
-    menuItemStyle: {}
+    menuItemStyle: {},
+    dirIconStyle: {
+        marginRight: 5
+    }
 });
 
 //A few constants settings
 const paddingSize = 30;
 const approximateButtonSize = 24;
-const approximateIconSize = 15;
+// const approximateIconSize = 15;
 const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
     display: flex;
@@ -860,8 +863,7 @@ class TreeView extends React.PureComponent {
 
     renderDirectory(directory, index) {
         const { depth } = directory;
-        const calculatedPaddingSize =
-            depth * (paddingSize + approximateIconSize);
+        const calculatedPaddingSize = depth * paddingSize;
         const {
             child_directory_lists_key,
             directory_entries_key,
@@ -890,14 +892,13 @@ class TreeView extends React.PureComponent {
                     <TableRow className={classes.tableEntryRow}>
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <div style={{ marginRight: 15 }}>
+                                <div style={{ marginRight: 5 }}>
                                     {this.renderExpandOrCompressIcon(
                                         directory.id
                                     )}
                                 </div>
-                                <DirListIcon />
+                                <DirListIcon className={classes.dirIconStyle} />
                                 <span
-                                    style={{ fontWeight: 600 }}
                                     onClick={this.navigateToEditPage.bind(
                                         this,
                                         SYSTEM_MODIFY_DIRECTORY_LIST_URL,
@@ -993,35 +994,38 @@ class TreeView extends React.PureComponent {
                             <div
                                 style={{
                                     marginLeft: 0, //directory.is_dir_list ? 0 : 15,
-                                    width: `${approximateButtonSize}px`
+                                    width: `${approximateButtonSize}px`,
+                                    width: "100%",
+                                    height: "100%",
+                                    display: "flex",
+                                    alignItems: "center"
                                 }}
                             >
                                 {!directory.is_dir_list ? (
-                                    <DirEntryIcon />
+                                    <DirEntryIcon
+                                        className={classes.dirIconStyle}
+                                    />
                                 ) : (
-                                    <DirListIcon />
+                                    <DirListIcon
+                                        className={classes.dirIconStyle}
+                                    />
                                 )}
-                            </div>
-                            <span
-                                style={{
-                                    fontWeight: directory.is_dir_list
-                                        ? 600
-                                        : 400
-                                }}
-                                onClick={
-                                    directory.is_dir_list
-                                        ? this.navigateToEditPage.bind(
-                                              this,
-                                              SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-                                              this.modifyDataBeingSendToEditPage(
-                                                  directory
+                                <span
+                                    onClick={
+                                        directory.is_dir_list
+                                            ? this.navigateToEditPage.bind(
+                                                  this,
+                                                  SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+                                                  this.modifyDataBeingSendToEditPage(
+                                                      directory
+                                                  )
                                               )
-                                          )
-                                        : () => console.log(directory.name) //TODO: NAVIGATE TO DIRECTORY ENTRY LIST
-                                }
-                            >
-                                {directory.name}
-                            </span>
+                                            : () => console.log(directory.name) //TODO: NAVIGATE TO DIRECTORY ENTRY LIST
+                                    }
+                                >
+                                    {directory.name}
+                                </span>
+                            </div>
                         </TreeEntry>
                     </TableCell>
                     <TableCell>
