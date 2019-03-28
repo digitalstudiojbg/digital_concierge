@@ -146,8 +146,11 @@ const ModifyDirectoryList = props => {
             ? {
                   id: directoryList.id,
                   name: directoryList.name,
+                  title: directoryList.title,
+                  description: directoryList.description,
                   layout_family_id: directoryList.layout.layout_family.id,
                   layout_id: directoryList.layout.id,
+                  order: directoryList.order,
                   parent_id:
                       Boolean(directoryList.parent_id) && !directoryList.is_root //Non-root Directory list
                           ? directoryList.parent_id
@@ -166,6 +169,9 @@ const ModifyDirectoryList = props => {
             : {
                   id: null,
                   name: "",
+                  title: "",
+                  description: "",
+                  order: 0,
                   layout_family_id: null,
                   layout_id: "",
                   parent_id: has_parent_id

@@ -58,10 +58,10 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                         />
                     </div>
                 </div>
-                <div style={{ flexBasis: "50%" }} />
+                {/* <div style={{ flexBasis: "50%" }} /> */}
                 <div style={{ flexBasis: "10%" }}>
                     <Field
-                        min={0}
+                        inputProps={{ min: "0", step: "1" }}
                         name="order"
                         label="SORT ORDER"
                         required={false}
