@@ -15,6 +15,24 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            title: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: {
+                type: Sequelize.TEXT
+            },
+            order: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

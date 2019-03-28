@@ -16,10 +16,22 @@ module.exports = {
                 }
             },
             title: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             },
             description: {
-                type: Sequelize.TEXT("long")
+                type: Sequelize.TEXT
+            },
+            order: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
             },
             start_date: {
                 type: Sequelize.DATE

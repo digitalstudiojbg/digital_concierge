@@ -10,8 +10,22 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            title: DataTypes.STRING,
-            description: DataTypes.TEXT("long"),
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: DataTypes.TEXT,
+            order: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
+            },
             start_date: DataTypes.DATE,
             end_date: DataTypes.DATE,
             phone: DataTypes.STRING,

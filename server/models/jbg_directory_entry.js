@@ -9,6 +9,22 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: DataTypes.TEXT,
+            order: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
             }
         },
         {}

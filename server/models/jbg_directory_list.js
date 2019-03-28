@@ -10,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
+            title: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: DataTypes.TEXT,
             is_root: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
@@ -17,6 +25,14 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 },
                 defaultValue: false
+            },
+            order: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
             },
             active: {
                 type: DataTypes.BOOLEAN,

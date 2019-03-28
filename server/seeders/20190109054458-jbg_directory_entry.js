@@ -7,14 +7,17 @@ module.exports = {
             [
                 {
                     name: "ADVERTISEMENT 1",
+                    title: "ADVERTISEMENT 1",
                     layoutId: 1
                 },
                 {
                     name: "ADVERTISEMENT 2",
+                    title: "ADVERTISEMENT 2",
                     layoutId: 1
                 },
                 {
                     name: "ADVERTISEMENT 3",
+                    title: "ADVERTISEMENT 3",
                     layoutId: 2
                 }
             ],

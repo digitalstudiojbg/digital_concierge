@@ -4,6 +4,9 @@ export const directoryListFragment = gql`
     fragment directoryListDetail on DirectoryList {
         id
         name
+        title
+        description
+        order
         is_root
         active
         colours

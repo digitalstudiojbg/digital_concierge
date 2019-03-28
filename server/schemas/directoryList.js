@@ -20,6 +20,9 @@ export default gql`
     type DirectoryList {
         id: ID!
         name: String
+        title: String
+        description: String
+        order: Int
         is_root: Boolean
         active: Boolean
         colours: [JSON]

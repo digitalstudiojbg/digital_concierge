@@ -10,6 +10,9 @@ export default gql`
     type JbgDirectoryList {
         id: ID!
         name: String
+        title: String
+        description: String
+        order: Int
         createdAt: DateTime
         updatedAt: DateTime
         just_brilliant_guides: [JustBrilliantGuide]

@@ -19,6 +19,8 @@ export default gql`
         id: ID!
         name: String
         title: String
+        description: String
+        order: Int
         active: Boolean
         colours: [JSON]
         colour1Hex: String

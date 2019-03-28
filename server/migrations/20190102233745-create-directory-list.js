@@ -15,6 +15,16 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            title: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            description: {
+                type: Sequelize.TEXT
+            },
             is_root: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
@@ -30,6 +40,14 @@ module.exports = {
                     notEmpty: true
                 },
                 defaultValue: true
+            },
+            order: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: 0
             },
             colour1Hex: {
                 type: Sequelize.STRING,
