@@ -6,6 +6,12 @@ export const CREATE_DIRECTORY_LIST = () => {
             createDirectoryList(input: $input) {
                 id
                 name
+                media {
+                    id
+                    name
+                    path
+                    type
+                }
             }
         }
     `;

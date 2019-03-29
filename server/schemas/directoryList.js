@@ -47,17 +47,24 @@ export default gql`
 
     input CreateDirectoryListInput {
         name: String!
+        title: String!
+        description: String!
+        order: Int!
         is_root: Boolean!
         parent_id: Int
         layout_id: Int!
         system_id: Int!
         image: Upload
+        media_id: Int
         colours: [ColourThemeInput]!
     }
 
     input UpdateDirectoryListInput {
         id: ID!
         name: String!
+        title: String!
+        description: String!
+        order: Int!
         is_root: Boolean!
         parent_id: Int
         layout_id: Int!

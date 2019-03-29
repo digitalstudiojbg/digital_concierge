@@ -11,7 +11,8 @@ import {
     ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
     // HEX_COLOUR_REGEX,
-    DECIMAL_RADIX
+    DECIMAL_RADIX,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -147,7 +148,9 @@ const ModifyDirectoryList = props => {
                   id: directoryList.id,
                   name: directoryList.name,
                   title: directoryList.title,
-                  description: directoryList.description,
+                  description: Boolean(directoryList.description)
+                      ? directoryList.description
+                      : "",
                   layout_family_id: directoryList.layout.layout_family.id,
                   layout_id: directoryList.layout.id,
                   order: directoryList.order,
@@ -182,6 +185,70 @@ const ModifyDirectoryList = props => {
                   initial_colours: []
               };
 
+    //Modify data of the directory to remove unnecessary key values item
+    //For example child_directory & directory_entries
+    const modifyDataBeingSendToEditPage = (values, directory) => {
+        if (directory.id && directory.media) {
+            const is_dir_list = true;
+            const {
+                name,
+                title,
+                description,
+                layout_family_id,
+                layout_id,
+                order,
+                parent_id,
+                colours
+            } = values;
+            const is_root = values.parent_id === "-1";
+            const { id, media } = directory;
+
+            return {
+                id,
+                name,
+                title,
+                description,
+                layout: {
+                    id: layout_id,
+                    layout_family: {
+                        id: layout_family_id
+                    }
+                },
+                order,
+                parent_id,
+                active: true,
+                media,
+                colours: colours.toJS(),
+                is_dir_list,
+                is_root
+            };
+        } else {
+            return null;
+        }
+    };
+
+    const actionAfterSubmission = (values, data) => {
+        const { history, match } = props;
+        if (toExit) {
+            history.push(
+                SYSTEM_CMS_CONTENT_URL.replace(
+                    ":system_id",
+                    parseInt(match.params.system_id)
+                )
+            );
+        } else if (!has_data) {
+            //FROM CREATE PAGE NAVIGATE TO MODIFY PAGE AS WELL AS SET UPDATED DATA IN LOCATION
+
+            history.push({
+                pathname: SYSTEM_MODIFY_DIRECTORY_LIST_URL.replace(
+                    ":system_id",
+                    system_id
+                ),
+                state: { data: modifyDataBeingSendToEditPage(values, data) }
+            });
+        }
+    };
+
     return (
         <div
             style={{
@@ -215,12 +282,15 @@ const ModifyDirectoryList = props => {
                             const {
                                 id,
                                 name,
+                                title,
+                                order,
+                                description,
                                 layout_id: layout_idString,
                                 colours: coloursImmutable,
                                 images,
                                 parent_id
                             } = values;
-                            const { match, history } = props;
+                            const { match } = props;
 
                             const has_data = Boolean(id);
                             const layout_id = parseInt(
@@ -237,7 +307,7 @@ const ModifyDirectoryList = props => {
                                     id: parseInt(id, DECIMAL_RADIX)
                                 }),
                                 name,
-                                is_root: !Boolean(parent_id),
+                                is_root: parent_id === "-1",
                                 layout_id,
                                 system_id: parseInt(match.params.system_id),
                                 ...(Boolean(parent_id) &&
@@ -248,7 +318,10 @@ const ModifyDirectoryList = props => {
                                             DECIMAL_RADIX
                                         )
                                     }),
-                                colours
+                                colours,
+                                title,
+                                order,
+                                description
                             };
 
                             if (images && images.length === 1 && !has_data) {
@@ -272,6 +345,12 @@ const ModifyDirectoryList = props => {
 
                                 action({
                                     variables: { input: { ...toSubmit } }
+                                }).then(({ data }) => {
+                                    console.log(data);
+                                    actionAfterSubmission(
+                                        values,
+                                        data.createDirectoryList
+                                    );
                                 });
                             } else if (
                                 images &&
@@ -311,15 +390,13 @@ const ModifyDirectoryList = props => {
 
                                 action({
                                     variables: { input: { ...toSubmit } }
+                                }).then(({ data }) => {
+                                    console.log(data);
+                                    actionAfterSubmission(
+                                        values,
+                                        data.editDirectoryList
+                                    );
                                 });
-                            }
-                            if (toExit) {
-                                history.push(
-                                    SYSTEM_CMS_CONTENT_URL.replace(
-                                        ":system_id",
-                                        parseInt(match.params.system_id)
-                                    )
-                                );
                             }
                         }}
                     >

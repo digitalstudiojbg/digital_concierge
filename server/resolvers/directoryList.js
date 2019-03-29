@@ -31,6 +31,9 @@ export default {
             {
                 input: {
                     name,
+                    title,
+                    description,
+                    order,
                     is_root,
                     parent_id,
                     layout_id,
@@ -64,6 +67,9 @@ export default {
             let created_dir_list = db.directory_list.build({
                 name,
                 is_root,
+                title,
+                description,
+                order,
                 directoryListId: parent_id,
                 layoutId: layout_id,
                 systemId: system_id,
@@ -138,6 +144,9 @@ export default {
                     {
                         name,
                         is_root,
+                        title,
+                        description,
+                        order,
                         directoryListId: parent_id,
                         layoutId: layout_id,
                         systemId: system_id,
