@@ -11,6 +11,7 @@ import BrowserMedia from "../../utils/BrowserMedia";
 import { Query } from "react-apollo";
 import { getDirectoryListBySystem } from "../../data/query";
 import TreeviewSelector from "../../utils/TreeviewSelector";
+import ColourSchemePicker from "../../utils/ColourSchemePicker";
 
 class TabletDashboard extends Component {
     render() {
@@ -69,13 +70,16 @@ class TabletDashboard extends Component {
                                     style={{
                                         width: "100%",
                                         paddingTop: 20,
-                                        height: 500
+                                        height: 500,
+                                        marginBottom: 20
                                     }}
                                 >
                                     <TreeviewSelector
                                         data={modifiedData}
                                         selectAmount="multiple"
                                     />
+
+                                    <ColourSchemePicker />
                                 </div>
                             );
                         }}

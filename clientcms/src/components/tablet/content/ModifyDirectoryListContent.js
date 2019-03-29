@@ -34,8 +34,8 @@ const styles = _theme => ({
         marginLeft: 30,
         color: "#A2A2A2"
     },
-    categoryNameTextField: {
-        width: "100%"
+    descriptionTextField: {
+        margin: 0
     },
     imageNameTextField: {
         // marginTop: 15,
@@ -270,7 +270,7 @@ class ModifyDirectoryList extends React.PureComponent {
                             className={classes.removeImageButton}
                             fullWidth={true}
                             disabled={
-                                Boolean(imageName) &&
+                                !Boolean(imageName) &&
                                 Boolean(imageName.length === 0)
                             }
                             onClick={this.openDialogImage}
@@ -369,6 +369,7 @@ class ModifyDirectoryList extends React.PureComponent {
                     initialColours={initial_colours}
                     currentColours={colours}
                     handleOnChange={handleOnChange}
+                    withWrap={true}
                 />
             </div>
         );
@@ -376,7 +377,7 @@ class ModifyDirectoryList extends React.PureComponent {
 
     render() {
         const { classes } = this.props;
-        const subTitleText = "DIRECTORY LIST TITLE";
+        const subTitleText = "TITLE";
 
         return (
             <ContainerDiv>
@@ -388,35 +389,70 @@ class ModifyDirectoryList extends React.PureComponent {
                             display: "flex"
                         }}
                     >
-                        <div style={{ width: "50%" }}>
-                            <div style={{ padding: 20 }}>HEADER IMAGE</div>
-
-                            {this.renderImageUploader()}
-                        </div>
-                        <div style={{ width: "50%" }}>
-                            <div
-                                style={{
-                                    padding: "20px 20px 20px 0px"
-                                }}
-                            >
-                                {subTitleText}
+                        <div style={{ flexBasis: "35%" }}>
+                            <div style={{ width: "95%", paddingBottom: 20 }}>
+                                <div
+                                    style={{
+                                        paddingBottom: 20
+                                    }}
+                                >
+                                    {subTitleText}
+                                </div>
+                                <Field
+                                    name="title"
+                                    validateOnBlur
+                                    validateOnChange
+                                    variant="outlined"
+                                    component={TextField}
+                                    fullWidth
+                                    FormHelperTextProps={{
+                                        classes: {
+                                            root: classes.categoryNameFormHelper
+                                        }
+                                    }}
+                                />
                             </div>
-                            <Field
-                                name="name"
-                                validateOnBlur
-                                validateOnChange
-                                variant="outlined"
-                                component={TextField}
-                                className={classes.categoryNameTextField}
-                                FormHelperTextProps={{
-                                    classes: {
-                                        root: classes.categoryNameFormHelper
-                                    }
-                                }}
-                            />
+                            <div style={{ width: "95%" }}>
+                                <div
+                                    style={{
+                                        paddingBottom: 20
+                                    }}
+                                >
+                                    TEXT FIELD
+                                </div>
+                                <Field
+                                    name="description"
+                                    multiline
+                                    fullWidth
+                                    rows="3"
+                                    margin="normal"
+                                    validateOnBlur
+                                    validateOnChange
+                                    variant="outlined"
+                                    component={TextField}
+                                    className={classes.descriptionTextField}
+                                    FormHelperTextProps={{
+                                        classes: {
+                                            root: classes.categoryNameFormHelper
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div style={{ flexBasis: "35%" }}>
+                            <div style={{ width: "95%", height: "100%" }}>
+                                <div style={{ paddingBottom: 20 }}>
+                                    HEADER IMAGE
+                                </div>
+
+                                {this.renderImageUploader()}
+                            </div>
+                        </div>
+
+                        <div style={{ flexBasis: "30%" }}>
+                            {this.renderColourSchemePicker()}
                         </div>
                     </div>
-                    {this.renderColourSchemePicker()}
                 </CreateContentContainerDiv>
                 <Dialog
                     open={this.state.openDialog}

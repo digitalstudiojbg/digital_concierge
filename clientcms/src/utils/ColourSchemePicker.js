@@ -9,6 +9,9 @@ import { Query } from "react-apollo";
 import { getSystemTheme } from "../data/query";
 import { withRouter } from "react-router-dom";
 import Loading from "../components/loading/Loading";
+import { chunkArray } from "./Constants";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
 
@@ -40,8 +43,14 @@ const ColourThemeContainerDiv = styled.div`
     border: 2px solid black;
 `;
 
+const ColourThemeContainerDivWithWrap = styled.div`
+    width: 80%;
+    padding: 10px;
+    border: 2px solid black;
+`;
+
 const ColourEntryContainerDiv = styled.div`
-    width: 150px;
+    width: 200px;
     height: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -51,6 +60,10 @@ const ColourEntryContainerDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const FinalEntryWithWrapContainerDiv = styled(ColourEntryContainerDiv)`
+    border: none;
 `;
 
 const ColourEntryDiv = styled.div`
@@ -66,11 +79,24 @@ const ColourTitleDiv = styled.div`
     font-weight: 700;
 `;
 
+const styles = () => ({
+    importColourThemeButton: {
+        backgroundColor: "white"
+    },
+    saveCurrentThemeButton: {
+        backgroundColor: "white",
+        marginBottom: 10
+    }
+});
+
 export const ColourSchemePicker = ({
     initialColours: initialColoursProp,
     currentColours: currentColoursProp,
     handleOnChange,
-    match
+    match,
+    withWrap,
+    coloursPerRow,
+    classes
 }) => {
     const initialColours =
         Boolean(initialColoursProp) &&
@@ -103,6 +129,53 @@ export const ColourSchemePicker = ({
     const { params } = match || {};
     const { system_id = "" } = params;
 
+    const ColourContainer = withWrap
+        ? ColourThemeContainerDivWithWrap
+        : ColourThemeContainerDiv;
+
+    let howToRender = chunkArray(
+        [...Array(NUMBER_OF_COLOURS_PER_SYSTEM).keys()],
+        coloursPerRow
+    );
+
+    howToRender = [
+        ...howToRender.slice(0, howToRender.length - 1),
+        [...howToRender[howToRender.length - 1], -1]
+    ];
+
+    console.log(howToRender);
+
+    const renderColourEntry = (colour, colourIndex) => (
+        <ColourEntryContainerDiv key={`COLOUR-${colour.id}-${colourIndex}`}>
+            <ColorPicker
+                onChange={colour =>
+                    handleUpdateColourPicker(colourIndex, colour)
+                }
+                color={colour.get("hex")}
+                alpha={colour.get("alpha")}
+                placement="topLeft"
+            >
+                <ColourEntryDiv />
+            </ColorPicker>
+            <div
+                style={{
+                    width: "100%",
+                    paddingLeft: 10
+                }}
+            >
+                <ColourTitleDiv>COLOUR #{colourIndex + 1}</ColourTitleDiv>
+            </div>
+            <div
+                style={{
+                    width: "100%",
+                    paddingLeft: 10
+                }}
+            >
+                {colour.get("hex").toUpperCase()} {colour.get("alpha")}%
+            </div>
+        </ColourEntryContainerDiv>
+    );
+
     return (
         <Query query={getSystemTheme} variables={{ id: system_id }}>
             {({
@@ -130,6 +203,36 @@ export const ColourSchemePicker = ({
                     }
                 };
                 // console.log("Current state colour ", colours);
+
+                const renderFinalItemWithWrap = () => (
+                    <FinalEntryWithWrapContainerDiv>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={colours.equals(
+                                        immutableSystemTheme
+                                    )}
+                                    onChange={setSameAsSystemTheme}
+                                />
+                            }
+                            label="SAME AS SYSTEM THEME"
+                        />
+                        <Button
+                            variant="outlined"
+                            className={classes.saveCurrentThemeButton}
+                            fullWidth={true}
+                        >
+                            SAVE CURRENT THEME
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            className={classes.importColourThemeButton}
+                            fullWidth={true}
+                        >
+                            IMPORT COLOUR THEME
+                        </Button>
+                    </FinalEntryWithWrapContainerDiv>
+                );
                 return (
                     <React.Fragment>
                         {loading && <Loading loadingData />}
@@ -144,65 +247,79 @@ export const ColourSchemePicker = ({
                                     <HeaderTitleDiv>
                                         COLOUR SCHEME
                                     </HeaderTitleDiv>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={colours.equals(
-                                                    immutableSystemTheme
-                                                )}
-                                                onChange={setSameAsSystemTheme}
-                                            />
-                                        }
-                                        label="SAME AS SYSTEM THEME"
-                                    />
+                                    {!withWrap && (
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={colours.equals(
+                                                        immutableSystemTheme
+                                                    )}
+                                                    onChange={
+                                                        setSameAsSystemTheme
+                                                    }
+                                                />
+                                            }
+                                            label="SAME AS SYSTEM THEME"
+                                        />
+                                    )}
                                 </HeaderDiv>
 
                                 {Boolean(colours) && colours.size > 0 && (
-                                    <ColourThemeContainerDiv>
-                                        {colours.map((colour, colourIndex) => (
-                                            <ColourEntryContainerDiv
-                                                key={`COLOUR-${
-                                                    colour.id
-                                                }-${colourIndex}`}
-                                            >
-                                                <ColorPicker
-                                                    onChange={colour =>
-                                                        handleUpdateColourPicker(
-                                                            colourIndex,
-                                                            colour
-                                                        )
-                                                    }
-                                                    color={colour.get("hex")}
-                                                    alpha={colour.get("alpha")}
-                                                    placement="topLeft"
-                                                >
-                                                    <ColourEntryDiv />
-                                                </ColorPicker>
-                                                <div
-                                                    style={{
-                                                        width: "100%",
-                                                        paddingLeft: 10
-                                                    }}
-                                                >
-                                                    <ColourTitleDiv>
-                                                        COLOUR #
-                                                        {colourIndex + 1}
-                                                    </ColourTitleDiv>
-                                                </div>
-                                                <div
-                                                    style={{
-                                                        width: "100%",
-                                                        paddingLeft: 10
-                                                    }}
-                                                >
-                                                    {colour
-                                                        .get("hex")
-                                                        .toUpperCase()}{" "}
-                                                    {colour.get("alpha")}%
-                                                </div>
-                                            </ColourEntryContainerDiv>
-                                        ))}
-                                    </ColourThemeContainerDiv>
+                                    <ColourContainer>
+                                        {!withWrap
+                                            ? colours.map(
+                                                  (colour, colourIndex) =>
+                                                      renderColourEntry(
+                                                          colour,
+                                                          colourIndex
+                                                      )
+                                              )
+                                            : howToRender.map(
+                                                  (
+                                                      colourIndexesRow,
+                                                      firstIndex
+                                                  ) => (
+                                                      <div
+                                                          style={{
+                                                              width: "100%",
+                                                              display: "flex",
+                                                              justifyContent:
+                                                                  "center",
+                                                              paddingBottom:
+                                                                  firstIndex +
+                                                                      1 ===
+                                                                  howToRender.length
+                                                                      ? 0
+                                                                      : 10
+                                                          }}
+                                                          key={`COLOUR-CONTAINER-${firstIndex}`}
+                                                      >
+                                                          {colourIndexesRow.map(
+                                                              (
+                                                                  colourIndex,
+                                                                  index
+                                                              ) => {
+                                                                  const colour =
+                                                                      colourIndex >=
+                                                                      0
+                                                                          ? colours.get(
+                                                                                colourIndex
+                                                                            )
+                                                                          : null;
+                                                                  return Boolean(
+                                                                      colour
+                                                                  )
+                                                                      ? renderColourEntry(
+                                                                            colour,
+                                                                            index
+                                                                        )
+                                                                      : renderFinalItemWithWrap();
+                                                              }
+                                                          )}
+                                                      </div>
+                                                  )
+                                              )}
+                                    </ColourContainer>
                                 )}
                             </ContainerDiv>
                         )}
@@ -215,7 +332,9 @@ export const ColourSchemePicker = ({
 
 ColourSchemePicker.defaultProps = {
     initialColours: [],
-    handleOnChange: null
+    handleOnChange: null,
+    withWrap: false,
+    coloursPerRow: 2
 };
 
 ColourSchemePicker.propTypes = {
@@ -227,7 +346,9 @@ ColourSchemePicker.propTypes = {
     // ),
     initialColours: PropTypes.any.isRequired, //Initial value of the colour scheme
     currentColours: PropTypes.any.isRequired, //Current value of the colour scheme
-    handleOnChange: PropTypes.func
+    handleOnChange: PropTypes.func,
+    withWrap: PropTypes.func,
+    coloursPerRow: PropTypes.number
 };
 
-export default withRouter(ColourSchemePicker);
+export default withRouter(withStyles(styles)(ColourSchemePicker));

@@ -56,14 +56,14 @@ export const ContainerDiv = styled.div`
 `;
 
 export const CreateContentContainerDiv = styled.div`
-    background-color: white;
+    /* background-color: white; */
     color: rgb(113, 116, 152);
-    width: 70%;
+    width: 100%;
     height: 90%;
-    border: 2px solid rgb(186, 185, 206);
+    /* border: 2px solid rgb(186, 185, 206);
     padding-left: 20px;
     padding-right: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 20px; */
     font-size: 1.9em;
 `;
 
@@ -266,3 +266,21 @@ export const bytesToKb = size => size / 1024;
 
 //https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation/8027444
 export const HEX_COLOUR_REGEX = /^#[0-9A-F]{6}$/i;
+
+//https://ourcodeworld.com/articles/read/278/how-to-split-an-array-into-chunks-of-the-same-size-easily-in-javascript
+/**
+ * Returns an array with arrays of the given size.
+ *
+ * @param myArray {Array} array to split
+ * @param chunk_size {Integer} Size of every group
+ */
+export const chunkArray = (myArray, chunk_size) => {
+    let tempArray = [];
+    for (let index = 0; index < myArray.length; index += chunk_size) {
+        const myChunk = myArray.slice(index, index + chunk_size);
+        // Do something if you want with the group
+        tempArray = [...tempArray, myChunk];
+    }
+
+    return tempArray;
+};
