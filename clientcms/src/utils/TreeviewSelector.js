@@ -168,9 +168,9 @@ class TreeviewSelector extends React.PureComponent {
     getParentItem(list_id) {
         const { dataTree } = this.state;
         if (Boolean(dataTree && dataTree.length > 0)) {
-            const foundItem = dataTree.find(entry => {
-                return entry.id === list_id && entry.is_dir_list;
-            });
+            const foundItem = dataTree.find(
+                entry => entry.id === list_id && entry.is_dir_list
+            );
             console.log(foundItem);
             if (Boolean(foundItem) && foundItem.is_root) {
                 //Root item certainly do not have parent

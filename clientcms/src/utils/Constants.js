@@ -125,7 +125,7 @@ function _modifyDirectoryListOrEntryWithHome(
     } else {
         const is_dir_list = Boolean(entry[directory_entries_key]);
         if (is_dir_list) {
-            return { ...entry, is_dir_list, depth };
+            return { ...entry, is_dir_list, depth, is_root: false };
         } else {
             return {
                 ...entry,

@@ -17,12 +17,12 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { Formik, Form } from "formik";
-import { Mutation } from "react-apollo";
+import { Mutation, withApollo } from "react-apollo";
 import {
     EDIT_DIRECTORY_LIST,
     CREATE_DIRECTORY_LIST
 } from "../../../data/mutation";
-import { getDirectoryListBySystem } from "../../../data/query";
+import { getDirectoryListBySystem, getSystemTheme } from "../../../data/query";
 import * as Yup from "yup";
 import { List } from "immutable";
 import Slide from "@material-ui/core/Slide";
@@ -141,6 +141,20 @@ const ModifyDirectoryList = props => {
 
     const { classes } = props;
 
+    const {
+        system: {
+            theme: {
+                defaultDirListLayout: {
+                    id: layout_id,
+                    layout_family: { id: layout_family_id }
+                }
+            }
+        }
+    } = props.client.readQuery({
+        query: getSystemTheme,
+        variables: { id: system_id }
+    });
+
     const directoryList = has_data ? props.location.state.data : null;
     const initialValues =
         has_data && directoryList
@@ -175,8 +189,10 @@ const ModifyDirectoryList = props => {
                   title: "",
                   description: "",
                   order: 0,
-                  layout_family_id: null,
-                  layout_id: "",
+                  layout_family_id: Boolean(layout_family_id)
+                      ? layout_family_id
+                      : "",
+                  layout_id: Boolean(layout_id) ? layout_id : "",
                   parent_id: has_parent_id
                       ? props.location.state.data.parent_id
                       : "",
@@ -572,5 +588,5 @@ const ModifyDirectoryList = props => {
     );
 };
 
-export default withStyles(styles)(ModifyDirectoryList);
+export default withApollo(withStyles(styles)(ModifyDirectoryList));
 // export default ModifyDirectoryList;

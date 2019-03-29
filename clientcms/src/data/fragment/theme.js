@@ -10,8 +10,40 @@ export const themeDetailFragment = gql`
         captionFont
         colours
         defaultStartLayoutId
+        defaultStartLayout {
+            id
+            name
+            layout_family {
+                id
+                name
+            }
+        }
         defaultHomeLayoutId
+        defaultHomeLayout {
+            id
+            name
+            layout_family {
+                id
+                name
+            }
+        }
         defaultDirListLayoutId
+        defaultDirListLayout {
+            id
+            name
+            layout_family {
+                id
+                name
+            }
+        }
         defaultDirEntryLayoutId
+        defaultDirEntryLayout {
+            id
+            name
+            layout_family {
+                id
+                name
+            }
+        }
     }
 `;
