@@ -143,7 +143,7 @@ export const ColourSchemePicker = ({
         [...howToRender[howToRender.length - 1], -1]
     ];
 
-    console.log(howToRender);
+    //console.log(howToRender);
 
     const renderColourEntry = (colour, colourIndex) => (
         <ColourEntryContainerDiv key={`COLOUR-${colour.id}-${colourIndex}`}>
@@ -347,7 +347,7 @@ ColourSchemePicker.propTypes = {
     initialColours: PropTypes.any.isRequired, //Initial value of the colour scheme
     currentColours: PropTypes.any.isRequired, //Current value of the colour scheme
     handleOnChange: PropTypes.func,
-    withWrap: PropTypes.func,
+    withWrap: PropTypes.bool,
     coloursPerRow: PropTypes.number
 };
 

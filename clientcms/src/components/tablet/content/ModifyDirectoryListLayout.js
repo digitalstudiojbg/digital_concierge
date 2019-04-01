@@ -41,8 +41,10 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             <div
                 style={{
                     width: "80%",
+                    height: "8%",
                     display: "flex",
-                    paddingBottom: 10
+                    paddingBottom: 10,
+                    marginBottom: 20
                 }}
             >
                 <div style={{ flexBasis: "30%" }}>
@@ -72,54 +74,52 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     />
                 </div>
             </div>
-            <div style={{ width: "80%", height: "30%" }}>
+            <div style={{ width: "80%", height: "40%" }}>
                 <Field name="parent_id">
                     {() => (
-                        <div style={{ marginTop: 20, height: "100%" }}>
-                            <Query
-                                query={getDirectoryListBySystem}
-                                variables={{
-                                    id: system_id
-                                }}
-                            >
-                                {({ loading, error, data }) => {
-                                    if (loading) return <Loading loadingData />;
-                                    if (error) return `Error! ${error.message}`;
-                                    const modifiedData = modifyDirectoryListData(
-                                        data.directoryLists_by_system,
-                                        true
+                        <Query
+                            query={getDirectoryListBySystem}
+                            variables={{
+                                id: system_id
+                            }}
+                        >
+                            {({ loading, error, data }) => {
+                                if (loading) return <Loading loadingData />;
+                                if (error) return `Error! ${error.message}`;
+                                const modifiedData = modifyDirectoryListData(
+                                    data.directoryLists_by_system,
+                                    true
+                                );
+                                // if (
+                                //     !Boolean(values.parent_id) &&
+                                //     modifiedData.length > 0
+                                // ) {
+                                //     return (
+                                //         <TreeviewSelector
+                                //             data={modifiedData}
+                                //             updateSelectedDirectory={
+                                //                 updateSelectedDirectory
+                                //             }
+                                //             selectAmount="single"
+                                //         />
+                                //     );
+                                // } else
+                                if (modifiedData.length > 0) {
+                                    return (
+                                        <TreeviewSelector
+                                            data={modifiedData}
+                                            updateSelectedDirectory={
+                                                updateSelectedDirectory
+                                            }
+                                            selectAmount="single"
+                                            selectedValue={values.parent_id}
+                                        />
                                     );
-                                    // if (
-                                    //     !Boolean(values.parent_id) &&
-                                    //     modifiedData.length > 0
-                                    // ) {
-                                    //     return (
-                                    //         <TreeviewSelector
-                                    //             data={modifiedData}
-                                    //             updateSelectedDirectory={
-                                    //                 updateSelectedDirectory
-                                    //             }
-                                    //             selectAmount="single"
-                                    //         />
-                                    //     );
-                                    // } else
-                                    if (modifiedData.length > 0) {
-                                        return (
-                                            <TreeviewSelector
-                                                data={modifiedData}
-                                                updateSelectedDirectory={
-                                                    updateSelectedDirectory
-                                                }
-                                                selectAmount="single"
-                                                selectedValue={values.parent_id}
-                                            />
-                                        );
-                                    } else {
-                                        return <React.Fragment />;
-                                    }
-                                }}
-                            </Query>
-                        </div>
+                                } else {
+                                    return <React.Fragment />;
+                                }
+                            }}
+                        </Query>
                     )}
                 </Field>
             </div>

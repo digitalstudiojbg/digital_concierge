@@ -32,7 +32,9 @@ const styles = () => ({
         borderRight: "1px solid rgba(0, 0, 0, 0.12)",
         paddingTop: 0,
         paddingBottom: 0,
-        marginTop: 8
+        marginTop: 8,
+        overflowY: "auto",
+        flexGrow: 1
     },
     checkIcon: {
         color: "white"
@@ -47,6 +49,8 @@ const ContainerDiv = styled.div`
     height: 100%;
     /* padding-left: 20px;
     padding-right: 20px; */
+    display: flex;
+    flex-direction: column;
 `;
 
 const TitleHeaderDiv = styled.div`
@@ -60,6 +64,8 @@ const SearchFilterContainerDiv = styled.div`
     padding-right: 10px;
     border-right: 2px solid rgb(187, 187, 187);
     margin-right: 10px;
+    display: flex;
+    flex-direction: column;
 `;
 
 const DirectoryListContainerDiv = styled.div`
@@ -503,7 +509,7 @@ class TreeviewSelector extends React.PureComponent {
                     />
                 </div>
                 {showListItems && (
-                    <List className={classes.filterQueryList}>
+                    <List className={classes.filterQueryList} disablePadding>
                         {filterResults.length > 0 && <Divider />}
                         {filterResults.map(({ name, id }, index) => (
                             <ListItem
@@ -532,6 +538,7 @@ class TreeviewSelector extends React.PureComponent {
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
                     <div
                         style={{
+                            flexGrow: 1,
                             width: "100%",
                             height: "100%",
                             display: "flex"
