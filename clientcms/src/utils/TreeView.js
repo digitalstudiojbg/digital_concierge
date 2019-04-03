@@ -682,20 +682,23 @@ class TreeView extends React.PureComponent {
         const { classes } = this.props;
         if (expanded.indexOf(dir_list_id) !== -1) {
             //Inside expanded array
+            const removeFromExpandedAction = () =>
+                this.removeFromExpanded(dir_list_id);
             return (
                 <IconButton
                     className={classes.expansionButton}
-                    onClick={() => this.removeFromExpanded(dir_list_id)}
+                    onClick={removeFromExpandedAction}
                 >
                     <CompressIcon fontSize="small" />
                 </IconButton>
             );
         } else {
             //Not inside expanded array
+            const addToExpandedAction = () => this.addToExpanded(dir_list_id);
             return (
                 <IconButton
                     className={classes.expansionButton}
-                    onClick={() => this.addToExpanded(dir_list_id)}
+                    onClick={addToExpandedAction}
                 >
                     <ExpandIcon fontSize="small" />
                 </IconButton>
@@ -1461,7 +1464,12 @@ class TreeView extends React.PureComponent {
                     systemId
                 }
             }).then(() => {
-                this.setState({ deleteModal: false });
+                this.setState({
+                    deleteModal: false,
+                    //Reset selected items since they no longer exists
+                    selected_dir_lists: [],
+                    selected_dir_entries: []
+                });
             });
         }
     }
@@ -1487,7 +1495,10 @@ class TreeView extends React.PureComponent {
                     const category = dirListOnlyDataTree.find(
                         cat => cat.id === dir_list_id
                     );
-                    if (this.checkChildItemsSelected(category)) {
+                    if (
+                        Boolean(category) &&
+                        this.checkChildItemsSelected(category)
+                    ) {
                         const items = this.getItemAndAllChildItems(category);
                         excluded_dir_lists = [
                             ...excluded_dir_lists,
@@ -1879,12 +1890,11 @@ class TreeView extends React.PureComponent {
                                         />
                                     );
                                 if (error) return `Error! ${error.message}`;
-
+                                const deleteSelectedItems = () =>
+                                    this.deleteListEntryAction(action);
                                 return (
                                     <Button
-                                        onClick={() => {
-                                            this.deleteListEntryAction(action);
-                                        }}
+                                        onClick={deleteSelectedItems}
                                         color="primary"
                                     >
                                         YES
