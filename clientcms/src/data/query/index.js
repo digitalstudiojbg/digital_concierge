@@ -28,6 +28,8 @@ import {
     getLayoutFamilyList,
     getLayoutFamilyDetailFilter
 } from "./layoutFamily";
+import { getTemplateListFromType } from "./template";
+
 export {
     getCurrentUserQuery,
     getDirectoryListBySystem,
@@ -53,5 +55,6 @@ export {
     getLayoutFamilyList,
     getLayoutFamilyDetailFilter,
     getSystemDetail,
-    getSystemTheme
+    getSystemTheme,
+    getTemplateListFromType
 };

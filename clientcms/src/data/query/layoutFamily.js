@@ -13,6 +13,10 @@ export const getLayoutFamilyList = gql`
                     path
                     type
                 }
+                templates {
+                    id
+                    name
+                }
             }
         }
     }
@@ -30,6 +34,10 @@ export const getLayoutFamilyDetailFilter = gql`
                     id
                     path
                     type
+                }
+                templates {
+                    id
+                    name
                 }
             }
         }
