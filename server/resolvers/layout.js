@@ -1,4 +1,5 @@
 import db from "../models";
+const Sequelize = require("sequelize");
 
 export default {
     Query: {
@@ -14,7 +15,29 @@ export default {
                     layoutFamilyId: familyId,
                     layoutTypeId: typeId
                 }
-            })
+            }),
+        layoutsFromType: async (_root, { typeName }) => {
+            const type = await db.layout_type.findOne({
+                where: {
+                    name: Sequelize.where(
+                        Sequelize.fn("LOWER", Sequelize.col("name")),
+                        "LIKE",
+                        "%" + typeName.toLowerCase() + "%"
+                    )
+                }
+            });
+
+            if (Boolean(type)) {
+                const { id: layoutTypeId } = type;
+                return await db.layout.findAll({
+                    where: {
+                        layoutTypeId
+                    }
+                });
+            } else {
+                return [];
+            }
+        }
     },
     Layout: {
         templates: async layout =>

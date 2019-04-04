@@ -8,7 +8,12 @@ import {
 
 const font_values = FONT_OPTIONS.map(({ value }) => value);
 
-export default layout_ids =>
+export default (
+    start_layout_ids,
+    home_layout_ids,
+    list_layout_ids,
+    entry_layout_ids
+) =>
     Yup.array().of(
         Yup.object().shape({
             companyLogo: Yup.mixed()
@@ -34,16 +39,16 @@ export default layout_ids =>
                 .oneOf(font_values)
                 .required("Please select a Caption Copy Font"),
             defaultStartLayout: Yup.string()
-                .oneOf(layout_ids)
+                .oneOf(start_layout_ids)
                 .required("Please select a Default Start Layout"),
             defaultHomeLayout: Yup.string()
-                .oneOf(layout_ids)
+                .oneOf(home_layout_ids)
                 .required("Please select a Default Home Layout"),
             defaultDirListLayout: Yup.string()
-                .oneOf(layout_ids)
+                .oneOf(list_layout_ids)
                 .required("Please select a Default Directory List Layout"),
             defaultDirEntryLayout: Yup.string()
-                .oneOf(layout_ids)
+                .oneOf(entry_layout_ids)
                 .required("Please select a Default Directory Entry Layout"),
             colours: Yup.array().of(
                 Yup.object().shape({

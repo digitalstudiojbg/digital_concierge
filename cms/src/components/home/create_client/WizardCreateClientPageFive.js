@@ -4,6 +4,7 @@ import { systemsByClientQuery, getLayoutList } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import SetupClientThemeAndLayout from "./five/SetupClientThemeAndLayout";
 import gql from "graphql-tag";
+import { getLayoutListFromType } from "../../../data/query/layout";
 
 export const WizardCreateClientPageFive = ({ next, client }) => {
     let clientId = null;
@@ -32,21 +33,121 @@ export const WizardCreateClientPageFive = ({ next, client }) => {
                 console.log(systems);
 
                 return (
-                    <Query query={getLayoutList}>
+                    <Query
+                        query={getLayoutListFromType}
+                        variables={{ typeName: "start" }}
+                    >
                         {({
-                            loading: loading2,
-                            error: error2,
-                            data: { layouts }
+                            loading: loadingStart,
+                            error: errorStart,
+                            data: { layoutsFromType: layoutsStart }
                         }) => {
-                            if (loading2) return <Loading loadingData />;
-                            if (error2) return `Error! ${error2.message}`;
-                            console.log(layouts);
+                            if (loadingStart) return <Loading loadingData />;
+                            if (errorStart)
+                                return `Error! ${errorStart.message}`;
+                            console.log(layoutsStart);
                             return (
-                                <SetupClientThemeAndLayout
-                                    systems={systems}
-                                    layouts={layouts}
-                                    next={next}
-                                />
+                                <Query
+                                    query={getLayoutListFromType}
+                                    variables={{ typeName: "home" }}
+                                >
+                                    {({
+                                        loading: loadingHome,
+                                        error: errorHome,
+                                        data: { layoutsFromType: layoutsHome }
+                                    }) => {
+                                        if (loadingHome)
+                                            return <Loading loadingData />;
+                                        if (errorHome)
+                                            return `Error! ${
+                                                errorHome.message
+                                            }`;
+                                        console.log(layoutsHome);
+                                        return (
+                                            <Query
+                                                query={getLayoutListFromType}
+                                                variables={{ typeName: "list" }}
+                                            >
+                                                {({
+                                                    loading: loadingList,
+                                                    error: errorList,
+                                                    data: {
+                                                        layoutsFromType: layoutsList
+                                                    }
+                                                }) => {
+                                                    if (loadingList)
+                                                        return (
+                                                            <Loading
+                                                                loadingData
+                                                            />
+                                                        );
+                                                    if (errorList)
+                                                        return `Error! ${
+                                                            errorList.message
+                                                        }`;
+                                                    console.log(layoutsList);
+                                                    return (
+                                                        <Query
+                                                            query={
+                                                                getLayoutListFromType
+                                                            }
+                                                            variables={{
+                                                                typeName:
+                                                                    "entry"
+                                                            }}
+                                                        >
+                                                            {({
+                                                                loading: loadingEntry,
+                                                                error: errorEntry,
+                                                                data: {
+                                                                    layoutsFromType: layoutsEntry
+                                                                }
+                                                            }) => {
+                                                                if (
+                                                                    loadingEntry
+                                                                )
+                                                                    return (
+                                                                        <Loading
+                                                                            loadingData
+                                                                        />
+                                                                    );
+                                                                if (errorEntry)
+                                                                    return `Error! ${
+                                                                        errorEntry.message
+                                                                    }`;
+                                                                console.log(
+                                                                    layoutsEntry
+                                                                );
+                                                                return (
+                                                                    <SetupClientThemeAndLayout
+                                                                        systems={
+                                                                            systems
+                                                                        }
+                                                                        layoutsStart={
+                                                                            layoutsStart
+                                                                        }
+                                                                        layoutsHome={
+                                                                            layoutsHome
+                                                                        }
+                                                                        layoutsList={
+                                                                            layoutsList
+                                                                        }
+                                                                        layoutsEntry={
+                                                                            layoutsEntry
+                                                                        }
+                                                                        next={
+                                                                            next
+                                                                        }
+                                                                    />
+                                                                );
+                                                            }}
+                                                        </Query>
+                                                    );
+                                                }}
+                                            </Query>
+                                        );
+                                    }}
+                                </Query>
                             );
                         }}
                     </Query>

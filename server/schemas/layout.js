@@ -5,6 +5,7 @@ export default gql`
         layout(id: ID!): Layout
         layouts: [Layout]
         layoutsFromFamilyAndType(familyId: ID!, typeId: ID!): [Layout]
+        layoutsFromType(typeName: String!): [Layout]
     }
 
     type Layout {

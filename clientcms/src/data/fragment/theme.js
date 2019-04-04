@@ -17,6 +17,18 @@ export const themeDetailFragment = gql`
                 id
                 name
             }
+            templates {
+                id
+                name
+                validations {
+                    id
+                    name
+                }
+                template_type {
+                    id
+                    name
+                }
+            }
         }
         defaultHomeLayoutId
         defaultHomeLayout {
@@ -25,6 +37,18 @@ export const themeDetailFragment = gql`
             layout_family {
                 id
                 name
+            }
+            templates {
+                id
+                name
+                validations {
+                    id
+                    name
+                }
+                template_type {
+                    id
+                    name
+                }
             }
         }
         defaultDirListLayoutId
@@ -35,6 +59,18 @@ export const themeDetailFragment = gql`
                 id
                 name
             }
+            templates {
+                id
+                name
+                validations {
+                    id
+                    name
+                }
+                template_type {
+                    id
+                    name
+                }
+            }
         }
         defaultDirEntryLayoutId
         defaultDirEntryLayout {
@@ -43,6 +79,18 @@ export const themeDetailFragment = gql`
             layout_family {
                 id
                 name
+            }
+            templates {
+                id
+                name
+                validations {
+                    id
+                    name
+                }
+                template_type {
+                    id
+                    name
+                }
             }
         }
     }

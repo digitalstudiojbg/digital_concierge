@@ -305,8 +305,21 @@ class SetupClientThemeAndLayout extends React.Component {
         });
     }
 
-    getLayoutOptions = () => {
-        const { layouts = [] } = this.props;
+    getLayoutOptions = which => {
+        const {
+            layoutsStart = [],
+            layoutsHome = [],
+            layoutsList = [],
+            layoutsEntry = []
+        } = this.props;
+        const layouts =
+            which === "start"
+                ? layoutsStart
+                : which === "home"
+                ? layoutsHome
+                : "list"
+                ? layoutsList
+                : layoutsEntry;
         return layouts.map(item => ({ text: item.name, value: item.id }));
     };
 
@@ -324,14 +337,23 @@ class SetupClientThemeAndLayout extends React.Component {
 
     validateAndSubmitData = createThemes => {
         const { systemThemes: immutableSystemThemes, error } = this.state;
-        const { layouts = [], systems = [] } = this.props || {};
+        const {
+            layoutsStart = [],
+            layoutsHome = [],
+            layoutsList = [],
+            layoutsEntry = [],
+            systems = []
+        } = this.props || {};
         if (
             Boolean(immutableSystemThemes) &&
             immutableSystemThemes.size === systems.length
         ) {
             const systemThemes = immutableSystemThemes.toJS();
             const SYSTEM_THEMES_SCHEMA = systemThemeSchemaCreator(
-                layouts.map(({ id }) => id)
+                layoutsStart.map(({ id }) => id),
+                layoutsHome.map(({ id }) => id),
+                layoutsList.map(({ id }) => id),
+                layoutsEntry.map(({ id }) => id)
             );
             // SYSTEM_THEMES_SCHEMA.validate(systemThemes, { abortEarly: false })
             SYSTEM_THEMES_SCHEMA.validate(systemThemes)
@@ -430,7 +452,10 @@ class SetupClientThemeAndLayout extends React.Component {
                         : List();
 
                     const { id: systemId } = systems[systemIndex] || {};
-                    const LAYOUT_OPTIONS = this.getLayoutOptions();
+                    const START_LAYOUT_OPTIONS = this.getLayoutOptions("start");
+                    const HOME_LAYOUT_OPTIONS = this.getLayoutOptions("home");
+                    const LIST_LAYOUT_OPTIONS = this.getLayoutOptions("list");
+                    const ENTRY_LAYOUT_OPTIONS = this.getLayoutOptions("entry");
                     // const currentDefaultStartLayout =
                     //     values.get("defaultStartLayout") || Map();
                     // const currentDefaultHomeLayout =
@@ -708,7 +733,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     placeholder="Default Start Layout"
                                                     fluid
                                                     selection
-                                                    options={LAYOUT_OPTIONS}
+                                                    options={
+                                                        START_LAYOUT_OPTIONS
+                                                    }
                                                     onChange={
                                                         this
                                                             .updateDefaultStartLayout
@@ -759,7 +786,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     placeholder="Default Home Layout"
                                                     fluid
                                                     selection
-                                                    options={LAYOUT_OPTIONS}
+                                                    options={
+                                                        HOME_LAYOUT_OPTIONS
+                                                    }
                                                     onChange={
                                                         this
                                                             .updateDefaultHomeLayout
@@ -806,7 +835,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     placeholder="Default Directory List Layout"
                                                     fluid
                                                     selection
-                                                    options={LAYOUT_OPTIONS}
+                                                    options={
+                                                        LIST_LAYOUT_OPTIONS
+                                                    }
                                                     onChange={
                                                         this
                                                             .updateDefaultDirListLayout
@@ -855,7 +886,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     placeholder="Default Directory Entry Layout"
                                                     fluid
                                                     selection
-                                                    options={LAYOUT_OPTIONS}
+                                                    options={
+                                                        ENTRY_LAYOUT_OPTIONS
+                                                    }
                                                     onChange={
                                                         this
                                                             .updateDefaultDirEntryLayout
