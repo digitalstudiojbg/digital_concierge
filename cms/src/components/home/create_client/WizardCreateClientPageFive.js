@@ -1,10 +1,12 @@
 import React from "react";
-import { Query, withApollo } from "react-apollo";
-import { systemsByClientQuery, getLayoutList } from "../../../data/query";
+import { Query } from "react-apollo";
+import {
+    systemsByClientQuery,
+    getLayoutListFromType
+} from "../../../data/query";
 import Loading from "../../loading/Loading";
 import SetupClientThemeAndLayout from "./five/SetupClientThemeAndLayout";
 import gql from "graphql-tag";
-import { getLayoutListFromType } from "../../../data/query/layout";
 
 export const WizardCreateClientPageFive = ({ next, client }) => {
     let clientId = null;
@@ -157,4 +159,4 @@ export const WizardCreateClientPageFive = ({ next, client }) => {
     );
 };
 
-export default withApollo(WizardCreateClientPageFive);
+export default WizardCreateClientPageFive;

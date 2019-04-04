@@ -12,7 +12,7 @@ import {
     getDepartmentListByUser,
     getDepartmentListByClient
 } from "./department";
-import { getLayoutList } from "./layout";
+import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
@@ -45,5 +45,6 @@ export {
     getFeatures,
     getFeaturesByCategories,
     systemsByClientQuery,
-    getContractByClientId
+    getContractByClientId,
+    getLayoutListFromType
 };
