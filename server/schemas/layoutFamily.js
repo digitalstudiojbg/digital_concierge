@@ -11,6 +11,7 @@ export default gql`
         id: ID!
         name: String
         layouts: [Layout]
+        layoutsByType(typeName: String!): [Layout]
         createdAt: DateTime
         updatedAt: DateTime
     }

@@ -33,6 +33,29 @@ export default {
                         where: { id: layoutFamily.id }
                     }
                 ]
-            })
+            }),
+        layoutsByType: async ({ id: layoutFamilyId }, { typeName }) => {
+            const layoutTypes = await db.layout_type.findAll({
+                limit: 1,
+                where: {
+                    name: Sequelize.where(
+                        Sequelize.fn("LOWER", Sequelize.col("name")),
+                        "LIKE",
+                        "%" + typeName.toLowerCase() + "%"
+                    )
+                }
+            });
+            if (Array.isArray(layoutTypes) && layoutTypes.length > 0) {
+                const { id: layoutTypeId } = layoutTypes[0];
+                return await db.layout.findAll({
+                    where: {
+                        layoutFamilyId,
+                        layoutTypeId
+                    }
+                });
+            } else {
+                return [];
+            }
+        }
     }
 };
