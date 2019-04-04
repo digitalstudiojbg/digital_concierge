@@ -107,6 +107,9 @@ export default {
                 input: {
                     id,
                     name,
+                    title,
+                    description,
+                    order,
                     is_root,
                     parent_id,
                     layout_id,
