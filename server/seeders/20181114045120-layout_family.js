@@ -17,6 +17,6 @@ module.exports = {
         );
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("layouts", null, {});
+        return queryInterface.bulkDelete("layout_families", null, {});
     }
 };

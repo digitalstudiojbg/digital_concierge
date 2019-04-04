@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
         layout.belongsTo(models.layout_family, {
             foreignKey: { allowNull: false }
         });
+        layout.belongsTo(models.layout_type, {
+            foreignKey: { allowNull: false }
+        });
     };
     return layout;
 };

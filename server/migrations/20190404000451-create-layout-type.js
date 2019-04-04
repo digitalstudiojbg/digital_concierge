@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("layouts", {
+        return queryInterface.createTable("layout_types", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -28,6 +28,6 @@ module.exports = {
         });
     },
     down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("layouts");
+        return queryInterface.dropTable("layout_types");
     }
 };

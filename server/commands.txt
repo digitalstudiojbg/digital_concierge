@@ -452,3 +452,9 @@ node_modules/.bin/sequelize model:generate --name layout_family --attributes nam
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout_family-and-layout
 
 node_modules/.bin/sequelize seed:generate --name layout_family
+
+node_modules/.bin/sequelize model:generate --name layout_type --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-layout_type-and-layout
+
+node_modules/.bin/sequelize seed:generate --name layout_type
