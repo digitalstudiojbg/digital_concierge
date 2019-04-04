@@ -1,11 +1,11 @@
 import gql from "graphql-tag";
 
 export const getLayoutFamilyList = gql`
-    query getLayoutFamilyList {
+    query getLayoutFamilyList($typeName: String!) {
         layoutFamilies {
             id
             name
-            layouts {
+            layoutsByType(typeName: $typeName) {
                 id
                 name
                 media {
@@ -19,11 +19,11 @@ export const getLayoutFamilyList = gql`
 `;
 
 export const getLayoutFamilyDetailFilter = gql`
-    query getLayoutFamilyDetailFilter($name: String!) {
+    query getLayoutFamilyDetailFilter($name: String!, $typeName: String!) {
         layoutFamilyFilter(name: $name) {
             id
             name
-            layouts {
+            layoutsByType(typeName: $typeName) {
                 id
                 name
                 media {

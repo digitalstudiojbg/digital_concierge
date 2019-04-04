@@ -74,7 +74,8 @@ const LayoutPicker = ({
     setFieldValue,
     layoutFamilyFieldName,
     layoutFieldName,
-    classes
+    classes,
+    layoutType
 }) => {
     // const [selectedFamily, setSelectedFamily] = useState(null);
     // const [selectedLayout, setSelectedLayout] = useState(null);
@@ -124,7 +125,7 @@ const LayoutPicker = ({
             ? layoutFamilies.find(({ id }) => id === layoutFamilyId)
             : null;
 
-        const { layouts = [] } = familyData || {};
+        const { layoutsByType: layouts = [] } = familyData || {};
 
         return (
             <InnerContainerDiv>
@@ -167,7 +168,10 @@ const LayoutPicker = ({
     return (
         <ContainerDiv>
             {whichLayout === "all" ? (
-                <Query query={getLayoutFamilyList}>
+                <Query
+                    query={getLayoutFamilyList}
+                    variables={{ typeName: layoutType }}
+                >
                     {({ loading, error, data: { layoutFamilies } }) => {
                         if (loading) return <Loading loadingData />;
                         if (error) return `Error: ${error.message}`;
@@ -177,7 +181,7 @@ const LayoutPicker = ({
             ) : (
                 <Query
                     query={getLayoutFamilyDetailFilter}
-                    variables={{ name: whichLayout }}
+                    variables={{ name: whichLayout, typeName: layoutType }}
                 >
                     {({
                         loading,
@@ -204,7 +208,8 @@ LayoutPicker.propTypes = {
     whichLayout: PropTypes.string,
     layoutFamilyFieldName: PropTypes.string,
     layoutFieldName: PropTypes.string,
-    setFieldValue: PropTypes.func.isRequired
+    setFieldValue: PropTypes.func.isRequired,
+    layoutType: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(LayoutPicker);

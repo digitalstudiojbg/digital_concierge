@@ -125,7 +125,11 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             </div>
             <div style={{ width: "80%", height: "50%" }}>
                 <SubtitleDiv>LAYOUT</SubtitleDiv>
-                <LayoutPicker values={values} setFieldValue={setFieldValue} />
+                <LayoutPicker
+                    values={values}
+                    setFieldValue={setFieldValue}
+                    layoutType="list"
+                />
             </div>
         </div>
     );
