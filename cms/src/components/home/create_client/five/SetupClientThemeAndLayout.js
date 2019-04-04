@@ -188,6 +188,13 @@ class SetupClientThemeAndLayout extends React.Component {
             this
         );
         this.validateAndSubmitData = this.validateAndSubmitData.bind(this);
+
+        this.layouts = [
+            ...props.layoutsStart,
+            ...props.layoutsHome,
+            ...props.layoutsList,
+            ...props.layoutsEntry
+        ];
     }
 
     componentDidMount() {
@@ -324,13 +331,13 @@ class SetupClientThemeAndLayout extends React.Component {
     };
 
     getLayoutItem = layoutId => {
-        const { layouts = [] } = this.props;
-        return layouts.find(({ id }) => id === layoutId) || {};
+        // const { layouts = [] } = this.props;
+        return this.layouts.find(({ id }) => id === layoutId) || {};
     };
 
     getLayoutMedia = layoutId => {
-        const { layouts = [] } = this.props;
-        const { media } = layouts.find(({ id }) => id === layoutId) || {};
+        // const { layouts = [] } = this.props;
+        const { media } = this.layouts.find(({ id }) => id === layoutId) || {};
         const { path = "" } = media || {};
         return path;
     };
