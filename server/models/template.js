@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         template.belongsTo(models.template_type, {
             foreignKey: { allowNull: false }
         });
+        template.hasMany(models.directory_list);
     };
     return template;
 };

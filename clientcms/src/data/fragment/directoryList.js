@@ -18,6 +18,14 @@ export const directoryListFragment = gql`
                 name
             }
         }
+        template {
+            id
+            name
+            validations {
+                id
+                name
+            }
+        }
         media {
             id
             name

@@ -43,6 +43,7 @@ export default gql`
         layout: Layout
         directory_entries: [DirectoryEntry]
         media: [Media]
+        template: Template
     }
 
     input CreateDirectoryListInput {

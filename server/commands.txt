@@ -464,3 +464,5 @@ node_modules/.bin/sequelize model:generate --name template_type --attributes nam
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template_type-and-template
 
 node_modules/.bin/sequelize seed:generate --name template_type
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-directory_list
