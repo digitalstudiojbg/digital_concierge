@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         template.belongsToMany(models.validation, {
             through: "templates_validations"
         });
+        template.belongsTo(models.template_type, {
+            foreignKey: { allowNull: false }
+        });
     };
     return template;
 };

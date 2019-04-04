@@ -6,16 +6,28 @@ module.exports = {
             "templates",
             [
                 {
-                    name: "ROOM FEATURE TEMPLATE"
+                    name: "ROOM FEATURE TEMPLATE",
+                    templateTypeId: 4
                 },
                 {
-                    name: "ROOM SERVICE TEMPLATE"
+                    name: "ROOM SERVICE TEMPLATE",
+                    templateTypeId: 4
                 },
                 {
-                    name: "VENUE RESTAURANT TEMPLATE"
+                    name: "VENUE RESTAURANT TEMPLATE",
+                    templateTypeId: 4
                 },
                 {
-                    name: "VENUE ACTIVITY TEMPLATE"
+                    name: "VENUE ACTIVITY TEMPLATE",
+                    templateTypeId: 4
+                },
+                {
+                    name: "DIRECTORY LIST GENERAL INFORMATION",
+                    templateTypeId: 3
+                },
+                {
+                    name: "DIRECTORY LIST GENERAL INFORMATION #2",
+                    templateTypeId: 3
                 }
             ],
             {}

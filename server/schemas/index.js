@@ -42,6 +42,7 @@ import licenseType_schema from "./licenseType";
 import license_schema from "./license";
 import layoutFamily_schema from "./layoutFamily";
 import layoutType_schema from "./layoutType";
+import templateType_schema from "./templateType";
 
 const link_schema = gql`
     type Query {
@@ -99,5 +100,6 @@ export default [
     licenseType_schema,
     license_schema,
     layoutFamily_schema,
-    layoutType_schema
+    layoutType_schema,
+    templateType_schema
 ];

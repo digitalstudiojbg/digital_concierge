@@ -93,11 +93,18 @@ app.get("/test", (req, res) => {
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const { id, clientId, password: userPassword } = await db.user.findOne({
+    const user = await db.user.findOne({
         where: {
             email
         }
     });
+
+    if (!Boolean(user)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    const { id, clientId, password: userPassword } = user;
 
     if (!bcrypt.compareSync(password, userPassword)) {
         res.sendStatus(401);
