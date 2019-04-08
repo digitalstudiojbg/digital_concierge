@@ -134,13 +134,13 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: true }
         });
         directory_list.belongsTo(models.system, {
-            foreignKey: { allowNull: true }
+            foreignKey: { allowNull: false }
         });
         directory_list.belongsToMany(models.media, {
             through: "directory_lists_media"
         });
         directory_list.belongsTo(models.layout, {
-            foreignKey: { allowNull: true }
+            foreignKey: { allowNull: false }
         });
         directory_list.belongsTo(models.template, {
             foreignKey: { allowNull: true }

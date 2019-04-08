@@ -10,32 +10,32 @@ module.exports = {
                     title: "IN-ROOM SERVICES",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1,
-                    templateId: 5
+                    layoutId: 1
+                    // templateId: 5
                 },
                 {
                     name: "HOTEL SERVICES",
                     title: "HOTEL SERVICES",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1,
-                    templateId: 6
+                    layoutId: 1
+                    // templateId: 6
                 },
                 {
                     name: "DESTINATION VANUATU",
                     title: "DESTINATION VANUATU",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1,
-                    templateId: 5
+                    layoutId: 1
+                    // templateId: 5
                 },
                 {
                     name: "HOLIDAY INN RESORT PHOTO GALLERY",
                     title: "HOLIDAY INN RESORT PHOTO GALLERY",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1,
-                    templateId: 6
+                    layoutId: 1
+                    // templateId: 6
                 },
                 {
                     name: "IN-ROOM DINING",
@@ -43,8 +43,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2,
-                    templateId: 5
+                    layoutId: 2
+                    // templateId: 5
                 },
                 {
                     name: "SERVICES & FACILITIES",
@@ -52,8 +52,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2,
-                    templateId: 6
+                    layoutId: 2
+                    // templateId: 6
                 },
                 {
                     name: "PHONE DIRECTORY",
@@ -61,8 +61,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2,
-                    templateId: 5
+                    layoutId: 2
+                    // templateId: 5
                 },
                 {
                     name: "TV GUIDE",
@@ -70,8 +70,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2,
-                    templateId: 6
+                    layoutId: 2
+                    // templateId: 6
                 },
                 {
                     name: "HEALTH & SAFETY",
@@ -79,8 +79,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2,
-                    templateId: 5
+                    layoutId: 2
+                    // templateId: 5
                 },
                 {
                     name: "BREAKFAST",
@@ -88,8 +88,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3,
-                    templateId: 6
+                    layoutId: 3
+                    // templateId: 6
                 },
                 {
                     name: "LUNCH",
@@ -97,8 +97,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3,
-                    templateId: 5
+                    layoutId: 3
+                    // templateId: 5
                 },
                 {
                     name: "DINNER",
@@ -106,8 +106,8 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3,
-                    templateId: 6
+                    layoutId: 3
+                    // templateId: 6
                 }
             ],
             {}
