@@ -14,3 +14,17 @@ export const getLayoutList = gql`
         }
     }
 `;
+
+export const getLayoutListFromType = gql`
+    query layoutsFromType($typeName: String!) {
+        layoutsFromType(typeName: $typeName) {
+            id
+            name
+            media {
+                id
+                path
+                type
+            }
+        }
+    }
+`;

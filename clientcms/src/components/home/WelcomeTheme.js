@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Query, withApollo, Mutation } from "react-apollo";
-import { getLayoutList, getSystemThemesFromClient } from "../../data/query";
+import { Query, Mutation } from "react-apollo";
+import {
+    getLayoutListFromType,
+    getSystemThemesFromClient
+} from "../../data/query";
 import Loading from "../loading/Loading";
 import { UPDATE_THEMES } from "../../data/mutation/theme";
 import Immutable, { Map, List } from "immutable";
@@ -56,73 +59,186 @@ const styles = theme => ({
 
 export const WelcomeTheme = ({ data: { id }, classes, history }) => {
     return (
-        <Query query={getLayoutList}>
+        <Query query={getSystemThemesFromClient} variables={{ id }}>
             {({
-                loading: loadingLayout,
-                error: errorLayout,
-                data: { layouts }
+                loading: loadingSystems,
+                error: errorSystems,
+                data: { systemsByClient: systemsOriginal }
             }) => {
-                if (loadingLayout) return <Loading loadingData />;
-                if (errorLayout) return `Error! ${errorLayout.message}`;
-                return (
-                    <Query query={getSystemThemesFromClient} variables={{ id }}>
-                        {({
-                            loading: loadingSystems,
-                            error: errorSystems,
-                            data: { systemsByClient: systemsOriginal }
-                        }) => {
-                            if (loadingSystems) return <Loading loadingData />;
-                            if (errorSystems)
-                                return `Error! ${errorSystems.message}`;
+                if (loadingSystems) return <Loading loadingData />;
+                if (errorSystems) return `Error! ${errorSystems.message}`;
 
-                            //Modify system data
-                            const systems = systemsOriginal.map(
-                                ({ id, name, theme }) => ({
-                                    id,
-                                    name,
-                                    ...theme
-                                })
-                            );
+                //Modify system data
+                const systems = systemsOriginal.map(({ id, name, theme }) => ({
+                    id,
+                    name,
+                    ...theme
+                }));
+                return (
+                    <Mutation
+                        mutation={UPDATE_THEMES}
+                        refetchQueries={[
+                            {
+                                query: getSystemThemesFromClient,
+                                variables: { id }
+                            }
+                        ]}
+                    >
+                        {(
+                            updateThemes,
+                            { loading: mutationLoading, error: mutationError }
+                        ) => {
+                            if (mutationLoading) return <React.Fragment />;
+                            if (mutationError)
+                                return `Error! ${mutationError.message}`;
                             return (
-                                <Mutation
-                                    mutation={UPDATE_THEMES}
-                                    refetchQueries={[
-                                        {
-                                            query: getSystemThemesFromClient,
-                                            variables: { id }
-                                        }
-                                    ]}
+                                <Query
+                                    query={getLayoutListFromType}
+                                    variables={{ typeName: "start" }}
                                 >
-                                    {(
-                                        updateThemes,
-                                        {
-                                            loading: mutationLoading,
-                                            error: mutationError
-                                        }
-                                    ) => {
-                                        if (mutationLoading)
-                                            return <React.Fragment />;
-                                        if (mutationError)
+                                    {({
+                                        loading: loadingStart,
+                                        error: errorStart,
+                                        data: { layoutsFromType: layoutsStart }
+                                    }) => {
+                                        if (loadingStart)
+                                            return <Loading loadingData />;
+                                        if (errorStart)
                                             return `Error! ${
-                                                mutationError.message
+                                                errorStart.message
                                             }`;
+                                        console.log(layoutsStart);
                                         return (
-                                            <WelcomeThemeSettings
-                                                systems={Immutable.fromJS(
-                                                    systems
-                                                )}
-                                                layouts={layouts}
-                                                updateThemes={updateThemes}
-                                                classes={classes}
-                                                clientId={id}
-                                                history={history}
-                                            />
+                                            <Query
+                                                query={getLayoutListFromType}
+                                                variables={{ typeName: "home" }}
+                                            >
+                                                {({
+                                                    loading: loadingHome,
+                                                    error: errorHome,
+                                                    data: {
+                                                        layoutsFromType: layoutsHome
+                                                    }
+                                                }) => {
+                                                    if (loadingHome)
+                                                        return (
+                                                            <Loading
+                                                                loadingData
+                                                            />
+                                                        );
+                                                    if (errorHome)
+                                                        return `Error! ${
+                                                            errorHome.message
+                                                        }`;
+                                                    console.log(layoutsHome);
+                                                    return (
+                                                        <Query
+                                                            query={
+                                                                getLayoutListFromType
+                                                            }
+                                                            variables={{
+                                                                typeName: "list"
+                                                            }}
+                                                        >
+                                                            {({
+                                                                loading: loadingList,
+                                                                error: errorList,
+                                                                data: {
+                                                                    layoutsFromType: layoutsList
+                                                                }
+                                                            }) => {
+                                                                if (loadingList)
+                                                                    return (
+                                                                        <Loading
+                                                                            loadingData
+                                                                        />
+                                                                    );
+                                                                if (errorList)
+                                                                    return `Error! ${
+                                                                        errorList.message
+                                                                    }`;
+                                                                console.log(
+                                                                    layoutsList
+                                                                );
+                                                                return (
+                                                                    <Query
+                                                                        query={
+                                                                            getLayoutListFromType
+                                                                        }
+                                                                        variables={{
+                                                                            typeName:
+                                                                                "entry"
+                                                                        }}
+                                                                    >
+                                                                        {({
+                                                                            loading: loadingEntry,
+                                                                            error: errorEntry,
+                                                                            data: {
+                                                                                layoutsFromType: layoutsEntry
+                                                                            }
+                                                                        }) => {
+                                                                            if (
+                                                                                loadingEntry
+                                                                            )
+                                                                                return (
+                                                                                    <Loading
+                                                                                        loadingData
+                                                                                    />
+                                                                                );
+                                                                            if (
+                                                                                errorEntry
+                                                                            )
+                                                                                return `Error! ${
+                                                                                    errorEntry.message
+                                                                                }`;
+                                                                            console.log(
+                                                                                layoutsEntry
+                                                                            );
+                                                                            return (
+                                                                                <WelcomeThemeSettings
+                                                                                    systems={Immutable.fromJS(
+                                                                                        systems
+                                                                                    )}
+                                                                                    layoutsStart={
+                                                                                        layoutsStart
+                                                                                    }
+                                                                                    layoutsHome={
+                                                                                        layoutsHome
+                                                                                    }
+                                                                                    layoutsList={
+                                                                                        layoutsList
+                                                                                    }
+                                                                                    layoutsEntry={
+                                                                                        layoutsEntry
+                                                                                    }
+                                                                                    updateThemes={
+                                                                                        updateThemes
+                                                                                    }
+                                                                                    classes={
+                                                                                        classes
+                                                                                    }
+                                                                                    clientId={
+                                                                                        id
+                                                                                    }
+                                                                                    history={
+                                                                                        history
+                                                                                    }
+                                                                                />
+                                                                            );
+                                                                        }}
+                                                                    </Query>
+                                                                );
+                                                            }}
+                                                        </Query>
+                                                    );
+                                                }}
+                                            </Query>
                                         );
                                     }}
-                                </Mutation>
+                                </Query>
                             );
                         }}
-                    </Query>
+                    </Mutation>
                 );
             }}
         </Query>
@@ -131,7 +247,10 @@ export const WelcomeTheme = ({ data: { id }, classes, history }) => {
 
 const WelcomeThemeSettings = ({
     systems,
-    layouts,
+    layoutsStart,
+    layoutsHome,
+    layoutsList,
+    layoutsEntry,
     updateThemes,
     history,
     classes,
@@ -200,9 +319,36 @@ const WelcomeThemeSettings = ({
         setSystemTheme(systemThemes.set(systemIndex, updatedSystemTheme));
     };
 
-    const getLayoutMedia = layoutId => {
+    const getLayoutMediaStart = layoutId => {
         const { media } =
-            layouts.find(
+            layoutsStart.find(
+                ({ id }) => parseInt(id, DECIMAL_RADIX) === layoutId
+            ) || {};
+        const { path = "" } = media || {};
+        return path;
+    };
+
+    const getLayoutMediaHome = layoutId => {
+        const { media } =
+            layoutsHome.find(
+                ({ id }) => parseInt(id, DECIMAL_RADIX) === layoutId
+            ) || {};
+        const { path = "" } = media || {};
+        return path;
+    };
+
+    const getLayoutMediaList = layoutId => {
+        const { media } =
+            layoutsList.find(
+                ({ id }) => parseInt(id, DECIMAL_RADIX) === layoutId
+            ) || {};
+        const { path = "" } = media || {};
+        return path;
+    };
+
+    const getLayoutMediaEntry = layoutId => {
+        const { media } =
+            layoutsEntry.find(
                 ({ id }) => parseInt(id, DECIMAL_RADIX) === layoutId
             ) || {};
         const { path = "" } = media || {};
@@ -264,7 +410,19 @@ const WelcomeThemeSettings = ({
     //Constants
     const values = systemThemes.get(systemIndex);
     const colours = values.get("colours");
-    const LAYOUT_OPTIONS = layouts.map(item => ({
+    const LAYOUT_OPTIONS_START = layoutsStart.map(item => ({
+        text: item.name,
+        value: parseInt(item.id, DECIMAL_RADIX)
+    }));
+    const LAYOUT_OPTIONS_HOME = layoutsHome.map(item => ({
+        text: item.name,
+        value: parseInt(item.id, DECIMAL_RADIX)
+    }));
+    const LAYOUT_OPTIONS_LIST = layoutsList.map(item => ({
+        text: item.name,
+        value: parseInt(item.id, DECIMAL_RADIX)
+    }));
+    const LAYOUT_OPTIONS_ENTRY = layoutsEntry.map(item => ({
         text: item.name,
         value: parseInt(item.id, DECIMAL_RADIX)
     }));
@@ -454,7 +612,7 @@ const WelcomeThemeSettings = ({
                             placeholder="Default Start Layout"
                             fluid
                             selection
-                            options={LAYOUT_OPTIONS}
+                            options={LAYOUT_OPTIONS_START}
                             onChange={updateDefaultStartLayout}
                             value={values.get("defaultStartLayoutId")}
                             // error={
@@ -466,7 +624,7 @@ const WelcomeThemeSettings = ({
                     {Boolean(Boolean(values.get("defaultStartLayoutId"))) && (
                         <LayoutEntryPreviewDiv>
                             <LayoutEntryPreviewImage
-                                src={getLayoutMedia(
+                                src={getLayoutMediaStart(
                                     values.get("defaultStartLayoutId")
                                 )}
                                 alt="layout preview"
@@ -481,7 +639,7 @@ const WelcomeThemeSettings = ({
                             placeholder="Default Home Layout"
                             fluid
                             selection
-                            options={LAYOUT_OPTIONS}
+                            options={LAYOUT_OPTIONS_HOME}
                             onChange={updateDefaultHomeLayout}
                             value={values.get("defaultHomeLayoutId")}
                             // error={
@@ -493,7 +651,7 @@ const WelcomeThemeSettings = ({
                     {Boolean(values.get("defaultHomeLayoutId")) && (
                         <LayoutEntryPreviewDiv>
                             <LayoutEntryPreviewImage
-                                src={getLayoutMedia(
+                                src={getLayoutMediaHome(
                                     values.get("defaultHomeLayoutId")
                                 )}
                                 alt="layout preview"
@@ -508,7 +666,7 @@ const WelcomeThemeSettings = ({
                             placeholder="Default Directory List Layout"
                             fluid
                             selection
-                            options={LAYOUT_OPTIONS}
+                            options={LAYOUT_OPTIONS_LIST}
                             onChange={updateDefaultDirListLayout}
                             value={values.get("defaultDirListLayoutId")}
                             // error={
@@ -520,7 +678,7 @@ const WelcomeThemeSettings = ({
                     {Boolean(values.get("defaultDirListLayoutId")) && (
                         <LayoutEntryPreviewDiv>
                             <LayoutEntryPreviewImage
-                                src={getLayoutMedia(
+                                src={getLayoutMediaList(
                                     values.get("defaultDirListLayoutId")
                                 )}
                                 alt="layout preview"
@@ -535,7 +693,7 @@ const WelcomeThemeSettings = ({
                             placeholder="Default Directory Entry Layout"
                             fluid
                             selection
-                            options={LAYOUT_OPTIONS}
+                            options={LAYOUT_OPTIONS_ENTRY}
                             onChange={updateDefaultDirEntryLayout}
                             value={values.get("defaultDirEntryLayoutId")}
                             // error={
@@ -547,7 +705,7 @@ const WelcomeThemeSettings = ({
                     {Boolean(values.get("defaultDirEntryLayoutId")) && (
                         <LayoutEntryPreviewDiv>
                             <LayoutEntryPreviewImage
-                                src={getLayoutMedia(
+                                src={getLayoutMediaEntry(
                                     values.get("defaultDirEntryLayoutId")
                                 )}
                                 alt="layout preview"
@@ -578,4 +736,4 @@ const WelcomeThemeSettings = ({
     );
 };
 
-export default withApollo(withStyles(styles)(withRouter(WelcomeTheme)));
+export default withRouter(withStyles(styles)(WelcomeTheme));

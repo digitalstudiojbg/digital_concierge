@@ -23,9 +23,9 @@ module.exports = {
                     colour5Hex: "#000000",
                     colour5Alpha: 100,
                     defaultStartLayoutId: 1,
-                    defaultHomeLayoutId: 1,
-                    defaultDirListLayoutId: 1,
-                    defaultDirEntryLayoutId: 1,
+                    defaultHomeLayoutId: 4,
+                    defaultDirListLayoutId: 8,
+                    defaultDirEntryLayoutId: 10,
                     systemId: 1
                 },
                 {
@@ -46,9 +46,9 @@ module.exports = {
                     colour5Hex: "#000000",
                     colour5Alpha: 100,
                     defaultStartLayoutId: 1,
-                    defaultHomeLayoutId: 1,
-                    defaultDirListLayoutId: 1,
-                    defaultDirEntryLayoutId: 1,
+                    defaultHomeLayoutId: 4,
+                    defaultDirListLayoutId: 8,
+                    defaultDirEntryLayoutId: 10,
                     systemId: 2
                 },
                 {
@@ -69,9 +69,9 @@ module.exports = {
                     colour5Hex: "#000000",
                     colour5Alpha: 100,
                     defaultStartLayoutId: 1,
-                    defaultHomeLayoutId: 1,
-                    defaultDirListLayoutId: 1,
-                    defaultDirEntryLayoutId: 1,
+                    defaultHomeLayoutId: 4,
+                    defaultDirListLayoutId: 8,
+                    defaultDirEntryLayoutId: 10,
                     systemId: 3
                 },
                 {
@@ -91,10 +91,10 @@ module.exports = {
                     colour4Alpha: 100,
                     colour5Hex: "#000000",
                     colour5Alpha: 100,
-                    defaultStartLayoutId: 2,
-                    defaultHomeLayoutId: 2,
-                    defaultDirListLayoutId: 2,
-                    defaultDirEntryLayoutId: 2,
+                    defaultStartLayoutId: 1,
+                    defaultHomeLayoutId: 4,
+                    defaultDirListLayoutId: 8,
+                    defaultDirEntryLayoutId: 10,
                     systemId: 4
                 }
             ],

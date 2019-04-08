@@ -18,7 +18,7 @@ import {
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import { getDepartmentListByUser } from "./department";
-import { getLayoutList } from "./layout";
+import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
@@ -56,5 +56,6 @@ export {
     getLayoutFamilyDetailFilter,
     getSystemDetail,
     getSystemTheme,
-    getTemplateListFromType
+    getTemplateListFromType,
+    getLayoutListFromType
 };
