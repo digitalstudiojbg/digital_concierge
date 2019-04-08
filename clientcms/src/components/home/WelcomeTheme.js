@@ -374,7 +374,17 @@ const WelcomeThemeSettings = ({
     const submitData = () => {
         const systemThemesJS = systemThemes.toJS();
         const input = systemThemesJS.map(
-            ({ id, __typename, companyLogoURL, name, ...others }) => ({
+            ({
+                id,
+                __typename,
+                companyLogoURL,
+                name,
+                defaultDirEntryLayout,
+                defaultDirListLayout,
+                defaultHomeLayout,
+                defaultStartLayout,
+                ...others
+            }) => ({
                 ...others,
                 id: parseInt(id, DECIMAL_RADIX)
             })
