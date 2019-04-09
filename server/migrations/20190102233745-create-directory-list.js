@@ -129,6 +129,22 @@ module.exports = {
                 },
                 defaultValue: 100
             },
+            sortBy: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "createdAt"
+            },
+            orderBy: {
+                type: Sequelize.ENUM("ASC", "DESC"),
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: "ASC"
+            },
             directoryListId: {
                 type: Sequelize.INTEGER,
                 allowNull: true,

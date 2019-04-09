@@ -36,6 +36,8 @@ export default gql`
         colour4Alpha: Int
         colour5Hex: String
         colour5Alpha: Int
+        sortBy: String
+        orderBy: String
         createdAt: DateTime
         updatedAt: DateTime
         child_directory_lists: [DirectoryList]
