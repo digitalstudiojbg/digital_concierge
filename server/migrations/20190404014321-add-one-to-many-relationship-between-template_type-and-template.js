@@ -20,7 +20,7 @@ module.exports = {
 
     down: (queryInterface, _Sequelize) => {
         return queryInterface.removeColumn(
-            "layouts", // name of Source table
+            "templates", // name of Source table
             "templateTypeId" // key we want to remove
         );
     }
