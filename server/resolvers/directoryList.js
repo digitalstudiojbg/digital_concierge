@@ -329,12 +329,42 @@ export default {
         }
     },
     DirectoryList: {
-        child_directory_lists: async dl => {
-            return await db.directory_list.findAll({
+        child_directory_lists: async ({ id, sortBy, orderBy }) => {
+            const dirLists = await db.directory_list.findAll({
                 where: {
-                    directoryListId: dl.id
-                }
+                    directoryListId: id
+                },
+                order: [[sortBy, orderBy]]
             });
+
+            //Take all entries with sort order greater than zero
+            const dirListsWithSortOrder = dirLists.filter(
+                ({ order }) => order > 0
+            );
+
+            if (dirListsWithSortOrder.length === 0) {
+                //No need to sort based on sort order
+                return dirLists;
+            } else {
+                //NEED TO Sort lists with sort order greater than zero properly
+
+                //Get dir lists that have sort order equal to zero
+                const dirListsWithoutSortOrder = dirLists.filter(
+                    ({ order }) => order === 0
+                );
+
+                const sortedDirLists = [
+                    //Sort the lists with sort order greater than zero
+                    //Lists with smaller sort order goes first, bigger ones goes later
+                    ...dirListsWithSortOrder.sort(
+                        ({ order: order1 }, { order: order2 }) =>
+                            order1 - order2
+                    ),
+                    ...dirListsWithoutSortOrder
+                ];
+
+                return sortedDirLists;
+            }
         },
         system: async dl => {
             return await db.system.findByPk(dl.systemId);
@@ -343,50 +373,110 @@ export default {
             return await db.layout.findByPk(dl.layoutId);
         },
         directory_entries: async dl => {
-            const activeDirectoryEntryList = await db.directory_entry.findAll({
-                include: [
-                    {
-                        model: db.directory_list,
-                        where: { id: dl.id },
-                        through: { where: { active: true } }
+            const { sortBy, orderBy } = dl;
+
+            // const activeDirectoryEntryList = await db.directory_entry.findAll({
+            //     include: [
+            //         {
+            //             model: db.directory_list,
+            //             where: { id: dl.id },
+            //             through: { where: { active: true } }
+
+            //         }
+            //     ]
+            // });
+
+            // for (
+            //     let index = 0;
+            //     index < activeDirectoryEntryList.length;
+            //     ++index
+            // ) {
+            //     activeDirectoryEntryList[index].active = true;
+            // }
+
+            // const inactiveDirectoryEntryList = await db.directory_entry.findAll(
+            //     {
+            //         include: [
+            //             {
+            //                 model: db.directory_list,
+            //                 where: { id: dl.id },
+            //                 through: { where: { active: false } }
+            //             }
+            //         ]
+            //     }
+            // );
+
+            // for (
+            //     let index = 0;
+            //     index < inactiveDirectoryEntryList.length;
+            //     ++index
+            // ) {
+            //     inactiveDirectoryEntryList[index].active = false;
+            // }
+
+            // return [
+            //     ...activeDirectoryEntryList,
+            //     ...inactiveDirectoryEntryList
+            // ].sort((obj1, obj2) => {
+            //     return obj1.id - obj2.id;
+            // });
+
+            const allDirEntryIdsWithActive = await db.directory_entries_directory_lists
+                .findAll({
+                    where: {
+                        directoryListId: dl.id
                     }
-                ]
-            });
+                })
+                .map(({ directoryEntryId, active }) => ({
+                    id: directoryEntryId,
+                    active
+                }));
 
-            for (
-                let index = 0;
-                index < activeDirectoryEntryList.length;
-                ++index
-            ) {
-                activeDirectoryEntryList[index].active = true;
-            }
+            const dirEntryIds = allDirEntryIdsWithActive.map(({ id }) => id);
 
-            const inactiveDirectoryEntryList = await db.directory_entry.findAll(
-                {
-                    include: [
-                        {
-                            model: db.directory_list,
-                            where: { id: dl.id },
-                            through: { where: { active: false } }
-                        }
-                    ]
-                }
+            const dirEntries = await db.directory_entry
+                .findAll({
+                    raw: true, //https://stackoverflow.com/a/46382598 Only get attributes of the directory entry
+                    where: {
+                        id: dirEntryIds
+                    },
+                    order: [[sortBy, orderBy]]
+                })
+                .map((item, index) => ({
+                    ...item,
+                    active: allDirEntryIdsWithActive[index].active
+                }));
+
+            // console.log("DATA IS ", dirEntries);
+
+            //Take all entries with sort order greater than zero
+            const dirEntriesWithSortOrder = dirEntries.filter(
+                ({ order }) => order > 0
             );
 
-            for (
-                let index = 0;
-                index < inactiveDirectoryEntryList.length;
-                ++index
-            ) {
-                inactiveDirectoryEntryList[index].active = false;
-            }
+            if (dirEntriesWithSortOrder.length === 0) {
+                //No need to sort based on sort order
+                return dirEntries;
+            } else {
+                //NEED TO Sort entries with sort order greater than zero properly
 
-            return [
-                ...activeDirectoryEntryList,
-                ...inactiveDirectoryEntryList
-            ].sort((obj1, obj2) => {
-                return obj1.id - obj2.id;
-            });
+                //Get dir entries that have sort order equal to zero
+                const dirEntriesWithoutSortOrder = dirEntries.filter(
+                    ({ order }) => order === 0
+                );
+
+                const sortedDirEntries = [
+                    //Sort the entries with sort order greater than zero
+                    //Entries with smaller sort order goes first, bigger ones goes later
+                    ...dirEntriesWithSortOrder.sort(
+                        ({ order: order1 }, { order: order2 }) =>
+                            order1 - order2
+                    ),
+                    ...dirEntriesWithoutSortOrder
+                ];
+
+                return sortedDirEntries;
+            }
         },
         media: async dl => {
             return await db.media.findAll({
