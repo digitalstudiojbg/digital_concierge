@@ -466,3 +466,9 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize seed:generate --name template_type
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-directory_list
+
+node_modules/.bin/sequelize model:generate --name palette --attributes name:string,colour1Hex:string,colour1Alpha:integer,colour2Hex:string,colour2Alpha:integer,colour3Hex:string,colour3Alpha:integer,colour4Hex:string,colour4Alpha:integer,colour5Hex:string,colour5Alpha:integer
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-palette
+
+node_modules/.bin/sequelize seed:generate --name palette

@@ -121,6 +121,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         client.hasMany(models.payment);
         client.hasMany(models.license);
+        client.hasMany(models.palette);
     };
     return client;
 };

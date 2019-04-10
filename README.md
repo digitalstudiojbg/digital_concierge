@@ -53,6 +53,7 @@ Digital Concierge Project
 -   \$ node_modules/.bin/sequelize seed:generate --name user
 -   \$ node_modules/.bin/sequelize model:generate --name company --attributes name:string,description:text
 -   \$ `console.log(Object.keys(select_directory.__proto__));)` //List of sequelize instance magic commands
+-   \$ node_modules/.bin/sequelize db:seed --seed [seed file name]
 
 ## Useful docker commands
 
