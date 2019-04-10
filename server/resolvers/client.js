@@ -477,7 +477,7 @@ export default {
                     }
                 ]
             });
-            console.log("Sample data: ", await departments[0].getRoles());
+            // console.log("Sample data: ", await departments[0].getRoles());
             return departments;
         },
         guests: async client =>
@@ -529,6 +529,8 @@ export default {
                 : null;
         },
         roles: async client =>
-            await db.role.findAll({ where: { clientId: client.id } })
+            await db.role.findAll({ where: { clientId: client.id } }),
+        palettes: async ({ id }) =>
+            await db.palette.findAll({ where: { clientId: id } })
     }
 };

@@ -45,6 +45,7 @@ import license_resolver from "./license";
 import layoutFamily_resolver from "./layoutFamily";
 import layoutType_resolver from "./layoutType";
 import templateType_resolver from "./templateType";
+import palette_resolver from "./palette";
 
 export default [
     user_resolver,
@@ -93,5 +94,6 @@ export default [
     license_resolver,
     layoutFamily_resolver,
     layoutType_resolver,
-    templateType_resolver
+    templateType_resolver,
+    palette_resolver
 ];

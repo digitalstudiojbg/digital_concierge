@@ -77,6 +77,7 @@ export default gql`
         licenses: [License]
         activeLicense: [License]
         roles: [Role]
+        palettes: [Palette]
     }
 
     input UpdateClientInput {
