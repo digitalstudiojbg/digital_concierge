@@ -60,6 +60,8 @@ export default gql`
         image: Upload
         media_id: Int
         colours: [ColourThemeInput]!
+        sortBy: String!
+        orderBy: String!
     }
 
     input UpdateDirectoryListInput {
@@ -75,6 +77,8 @@ export default gql`
         image: Upload
         media_id: Int
         colours: [ColourThemeInput]
+        sortBy: String!
+        orderBy: String!
     }
 
     type Dir_Entry_And_List_Delete_Response {

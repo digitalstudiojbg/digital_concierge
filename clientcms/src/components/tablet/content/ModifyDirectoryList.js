@@ -12,7 +12,8 @@ import {
     SYSTEM_CMS_CONTENT_URL,
     // HEX_COLOUR_REGEX,
     DECIMAL_RADIX,
-    SYSTEM_MODIFY_DIRECTORY_LIST_URL
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    SORT_BY_ORDER_BY_OPTIONS
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -156,6 +157,13 @@ const ModifyDirectoryList = props => {
     });
 
     const directoryList = has_data ? props.location.state.data : null;
+    const { value: sortBy } = has_data
+        ? SORT_BY_ORDER_BY_OPTIONS.find(
+              ({ actualValue: { sortBy, orderBy } }) =>
+                  sortBy === directoryList.sortBy &&
+                  orderBy === directoryList.orderBy
+          )
+        : { value: null };
     const initialValues =
         has_data && directoryList
             ? {
@@ -181,7 +189,8 @@ const ModifyDirectoryList = props => {
                           ? [{ ...directoryList.media[0], uploaded: true }]
                           : [],
                   colours: [...directoryList.colours],
-                  initial_colours: [...directoryList.colours]
+                  initial_colours: [...directoryList.colours],
+                  sortBy
               }
             : {
                   id: null,
@@ -198,7 +207,8 @@ const ModifyDirectoryList = props => {
                       : "",
                   images: [],
                   colours: [],
-                  initial_colours: []
+                  initial_colours: [],
+                  sortBy: 1
               };
 
     //Modify data of the directory to remove unnecessary key values item
@@ -304,7 +314,8 @@ const ModifyDirectoryList = props => {
                                 layout_id: layout_idString,
                                 colours: coloursImmutable,
                                 images,
-                                parent_id
+                                parent_id,
+                                sortBy: sortByIndex
                             } = values;
                             const { match } = props;
 
@@ -316,6 +327,9 @@ const ModifyDirectoryList = props => {
                             const colours = List.isList(coloursImmutable)
                                 ? coloursImmutable.toJS()
                                 : [...coloursImmutable];
+                            const {
+                                actualValue: { sortBy, orderBy }
+                            } = SORT_BY_ORDER_BY_OPTIONS[sortByIndex];
 
                             //https://stackoverflow.com/a/47892178
                             let toSubmit = {
@@ -337,7 +351,9 @@ const ModifyDirectoryList = props => {
                                 colours,
                                 title,
                                 order,
-                                description
+                                description,
+                                sortBy,
+                                orderBy
                             };
 
                             if (images && images.length === 1 && !has_data) {

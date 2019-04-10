@@ -40,7 +40,9 @@ export default {
                     system_id,
                     image,
                     media_id,
-                    colours
+                    colours,
+                    sortBy,
+                    orderBy
                 }
             },
             { user, clientIp }
@@ -70,6 +72,8 @@ export default {
                 title,
                 description,
                 order,
+                sortBy,
+                orderBy,
                 directoryListId: parent_id,
                 layoutId: layout_id,
                 systemId: system_id,
@@ -116,7 +120,9 @@ export default {
                     system_id,
                     image,
                     media_id,
-                    colours
+                    colours,
+                    sortBy,
+                    orderBy
                 }
             },
             { user, clientIp }
@@ -150,6 +156,8 @@ export default {
                         title,
                         description,
                         order,
+                        sortBy,
+                        orderBy,
                         directoryListId: parent_id,
                         layoutId: layout_id,
                         systemId: system_id,

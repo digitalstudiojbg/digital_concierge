@@ -44,6 +44,29 @@ export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
 export const MAX_FILE_SIZE = 104857600; //100MB in bytes
 
+export const SORT_BY_ORDER_BY_OPTIONS = [
+    {
+        text: "Date created order (new to old)",
+        value: 0,
+        actualValue: { sortBy: "createdAt", orderBy: "DESC" }
+    },
+    {
+        text: "Date created order (old to new)",
+        value: 1,
+        actualValue: { sortBy: "createdAt", orderBy: "ASC" }
+    },
+    {
+        text: "Alphabetical order (A-Z)",
+        value: 2,
+        actualValue: { sortBy: "title", orderBy: "ASC" }
+    },
+    {
+        text: "Alphabetical order (Z-A)",
+        value: 3,
+        actualValue: { sortBy: "title", orderBy: "DESC" }
+    }
+];
+
 export const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;

@@ -10,6 +10,8 @@ export const directoryListFragment = gql`
         is_root
         active
         colours
+        sortBy
+        orderBy
         layout {
             id
             name

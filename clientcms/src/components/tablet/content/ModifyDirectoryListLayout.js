@@ -7,8 +7,12 @@ import { TextField } from "formik-material-ui";
 import styled from "styled-components";
 import { getDirectoryListBySystem } from "../../../data/query";
 import Loading from "../../loading/Loading";
-import { modifyDirectoryListData } from "../../../utils/Constants";
+import {
+    modifyDirectoryListData,
+    SORT_BY_ORDER_BY_OPTIONS
+} from "../../../utils/Constants";
 import TreeviewSelector from "../../../utils/TreeviewSelector";
+import { Dropdown } from "semantic-ui-react";
 
 const SubtitleDiv = styled.div`
     font-size: 1.5em;
@@ -28,6 +32,9 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             setFieldValue("parent_id", selected_directories[0], false);
         }
     };
+
+    const updateSortByDropdown = (event, { value }) =>
+        setFieldValue("sortBy", value, false);
 
     return (
         <div
@@ -60,18 +67,39 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                         />
                     </div>
                 </div>
-                {/* <div style={{ flexBasis: "50%" }} /> */}
                 <div style={{ flexBasis: "10%" }}>
-                    <Field
-                        inputProps={{ min: "0", step: "1" }}
-                        name="order"
-                        label="SORT ORDER"
-                        required={false}
-                        type="number"
-                        component={TextField}
-                        variant="outlined"
-                        fullWidth={true}
-                    />
+                    <div style={{ width: "80%" }}>
+                        <Field
+                            inputProps={{ min: "0", step: "1" }}
+                            name="order"
+                            label="SORT ORDER"
+                            required={false}
+                            type="number"
+                            component={TextField}
+                            variant="outlined"
+                            fullWidth={true}
+                        />
+                    </div>
+                </div>
+                <div style={{ flexBasis: "40%" }}>
+                    <div style={{ width: "80%" }}>
+                        <div
+                            style={{
+                                fontSize: "1em",
+                                color: "rgb(137,137,137)"
+                            }}
+                        >
+                            SORT BY
+                        </div>
+                        <Dropdown
+                            value={values.sortBy}
+                            placeholder="Select Sort By"
+                            fluid
+                            selection
+                            options={SORT_BY_ORDER_BY_OPTIONS}
+                            onChange={updateSortByDropdown}
+                        />
+                    </div>
                 </div>
             </div>
             <div style={{ width: "80%", height: "40%" }}>
