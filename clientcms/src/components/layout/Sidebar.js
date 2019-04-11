@@ -19,7 +19,8 @@ import {
     SYSTEM_CMS_GUESTS,
     SYSTEM_CMS_ACTIVITY,
     SYSTEM_CMS_REPORTS,
-    SYSTEM_CMS_STAFF
+    SYSTEM_CMS_STAFF,
+    SYSTEM_MODIFY_DIRECTORY_LIST_URL
 } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -253,11 +254,17 @@ class Sidebar extends Component {
                 case SYSTEM_CMS_ACTIVITY.replace(":system_id", system_id):
                     urlPath = SYSTEM_CMS_ACTIVITY;
                     break;
+                case SYSTEM_MODIFY_DIRECTORY_LIST_URL.replace(
+                    ":system_id",
+                    system_id
+                ):
+                    urlPath = SYSTEM_CMS_CONTENT_URL;
+                    expandContent = true;
+                    break;
                 default:
                     urlPath = SYSTEM_CMS_INDEX_URL;
             }
         }
-
         this.state = {
             selectedItem: urlPath,
             expandContent
