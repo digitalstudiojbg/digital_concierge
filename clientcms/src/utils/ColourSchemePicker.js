@@ -158,6 +158,11 @@ export const ColourSchemePicker = ({
         handleOnChange && handleOnChange(updatedColours);
     };
 
+    const setColoursExternal = updatedColours => {
+        setColours(updatedColours);
+        handleOnChange && handleOnChange(updatedColours);
+    };
+
     const { params } = match || {};
     const { system_id = "" } = params;
 
@@ -381,7 +386,7 @@ export const ColourSchemePicker = ({
                                     <DialogContent>
                                         {openDialog.which === "import" ? (
                                             <ModalImportPalette
-                                                setColours={setColours}
+                                                setColours={setColoursExternal}
                                                 palettes={palettes}
                                                 closeDialog={closeDialog}
                                             />
