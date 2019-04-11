@@ -23,7 +23,10 @@ import {
     EDIT_DIRECTORY_LIST,
     CREATE_DIRECTORY_LIST
 } from "../../../data/mutation";
-import { getDirectoryListBySystem, getSystemTheme } from "../../../data/query";
+import {
+    getDirectoryListBySystem,
+    getSystemThemeAndPalettes
+} from "../../../data/query";
 import * as Yup from "yup";
 import { List } from "immutable";
 import Slide from "@material-ui/core/Slide";
@@ -152,7 +155,7 @@ const ModifyDirectoryList = props => {
             }
         }
     } = props.client.readQuery({
-        query: getSystemTheme,
+        query: getSystemThemeAndPalettes,
         variables: { id: system_id }
     });
 

@@ -15,7 +15,7 @@ module.exports = {
                     colour3Alpha: 100,
                     colour4Hex: "#000000",
                     colour4Alpha: 100,
-                    colour5Hex: "#000000",
+                    colour5Hex: "#FFFFFF",
                     colour5Alpha: 100,
                     clientId: 1
                 },
@@ -29,7 +29,7 @@ module.exports = {
                     colour3Alpha: 100,
                     colour4Hex: "#000000",
                     colour4Alpha: 100,
-                    colour5Hex: "#000000",
+                    colour5Hex: "#FFFFFF",
                     colour5Alpha: 100,
                     clientId: 2
                 }

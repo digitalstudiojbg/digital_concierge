@@ -6,7 +6,7 @@ import {
     getSystemThemesFromClient,
     getSystemDetailSidebar,
     getSystemDetail,
-    getSystemTheme
+    getSystemThemeAndPalettes
 } from "./system";
 import {
     getClientFromUser,
@@ -55,7 +55,7 @@ export {
     getLayoutFamilyList,
     getLayoutFamilyDetailFilter,
     getSystemDetail,
-    getSystemTheme,
+    getSystemThemeAndPalettes,
     getTemplateListFromType,
     getLayoutListFromType
 };

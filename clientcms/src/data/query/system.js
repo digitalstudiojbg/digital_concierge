@@ -109,12 +109,20 @@ export const getSystemDetail = gql`
     ${themeDetailFragment}
 `;
 
-export const getSystemTheme = gql`
+export const getSystemThemeAndPalettes = gql`
     query getSystemTheme($id: ID!) {
         system(id: $id) {
             id
             theme {
                 ...themeDetail
+            }
+            client {
+                id
+                palettes {
+                    id
+                    name
+                    colours
+                }
             }
         }
     }

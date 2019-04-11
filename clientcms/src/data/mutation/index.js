@@ -18,6 +18,7 @@ import { CREATE_LICENSE } from "./license";
 import { CREATE_CONTRACT } from "./contract";
 import { CREATE_PAYMENT } from "./payment";
 import { CREATE_ROLE } from "./role";
+import { CREATE_PALETTE } from "./palette";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -38,5 +39,6 @@ export {
     CREATE_CONTRACT,
     CREATE_PAYMENT,
     CREATE_ROLE,
-    DELETE_USER
+    DELETE_USER,
+    CREATE_PALETTE
 };
