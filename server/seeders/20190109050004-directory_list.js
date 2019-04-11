@@ -10,7 +10,7 @@ module.exports = {
                     title: "IN-ROOM SERVICES",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -18,7 +18,7 @@ module.exports = {
                     title: "HOTEL SERVICES",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1
+                    layoutId: 7
                     // templateId: 6
                 },
                 {
@@ -26,7 +26,7 @@ module.exports = {
                     title: "DESTINATION VANUATU",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -34,7 +34,7 @@ module.exports = {
                     title: "HOLIDAY INN RESORT PHOTO GALLERY",
                     is_root: true,
                     systemId: 1,
-                    layoutId: 1
+                    layoutId: 7
                     // templateId: 6
                 },
                 {
@@ -43,7 +43,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -52,7 +52,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2
+                    layoutId: 7
                     // templateId: 6
                 },
                 {
@@ -61,7 +61,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -70,7 +70,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2
+                    layoutId: 7
                     // templateId: 6
                 },
                 {
@@ -79,7 +79,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
-                    layoutId: 2
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -88,7 +88,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3
+                    layoutId: 7
                     // templateId: 6
                 },
                 {
@@ -97,7 +97,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3
+                    layoutId: 7
                     // templateId: 5
                 },
                 {
@@ -106,7 +106,7 @@ module.exports = {
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
-                    layoutId: 3
+                    layoutId: 7
                     // templateId: 6
                 }
             ],
