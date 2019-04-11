@@ -1,4 +1,9 @@
 import db from "../models";
+import {
+    processColours,
+    handleCreateActionActivityLog
+} from "../utils/constant";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -7,7 +12,71 @@ export default {
         palettesByClient: async (_root, { id }) =>
             await db.palette.findAll({ where: { clientId: id } })
     },
-    // Mutation: {},
+    Mutation: {
+        createPalette: async (
+            _root,
+            { input: { name, colours, clientId } },
+            { user, clientIp }
+        ) => {
+            //Process colours
+            const {
+                colour1Hex,
+                colour1Alpha,
+                colour2Hex,
+                colour2Alpha,
+                colour3Hex,
+                colour3Alpha,
+                colour4Hex,
+                colour4Alpha,
+                colour5Hex,
+                colour5Alpha
+            } = processColours(colours);
+
+            let created_palette = db.palette.build({
+                name,
+                colour1Hex,
+                colour1Alpha,
+                colour2Hex,
+                colour2Alpha,
+                colour3Hex,
+                colour3Alpha,
+                colour4Hex,
+                colour4Alpha,
+                colour5Hex,
+                colour5Alpha,
+                clientId
+            });
+
+            try {
+                await created_palette.save();
+            } catch (e) {
+                throw new UserInputError(e);
+            }
+
+            //Do logging here
+            handleCreateActionActivityLog(
+                created_palette,
+                {
+                    name,
+                    colour1Hex,
+                    colour1Alpha,
+                    colour2Hex,
+                    colour2Alpha,
+                    colour3Hex,
+                    colour3Alpha,
+                    colour4Hex,
+                    colour4Alpha,
+                    colour5Hex,
+                    colour5Alpha,
+                    clientId
+                },
+                user,
+                clientIp
+            );
+
+            return created_palette;
+        }
+    },
     Palette: {
         colours: ({
             colour1Hex,

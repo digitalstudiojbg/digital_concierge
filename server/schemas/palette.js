@@ -6,6 +6,9 @@ export default gql`
         palettes: [Palette]
         palettesByClient(id: ID!): [Palette]
     }
+    extend type Mutation {
+        createPalette(input: CreatePaletteInput): Palette
+    }
 
     type Palette {
         id: ID!
@@ -22,5 +25,11 @@ export default gql`
         colour5Hex: String
         colour5Alpha: Int
         client: Client
+    }
+
+    input CreatePaletteInput {
+        name: String!
+        colours: [ColourThemeInput]!
+        clientId: Int
     }
 `;
