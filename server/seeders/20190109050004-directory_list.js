@@ -7,7 +7,8 @@ module.exports = {
             [
                 {
                     name: "IN-ROOM SERVICES",
-                    title: "IN-ROOM SERVICES",
+                    title: "<p>IN-ROOM SERVICES</p>",
+                    title_plaintext: "IN-ROOM SERVICES",
                     is_root: true,
                     systemId: 1,
                     layoutId: 7
@@ -15,7 +16,8 @@ module.exports = {
                 },
                 {
                     name: "HOTEL SERVICES",
-                    title: "HOTEL SERVICES",
+                    title: "<p>HOTEL SERVICES</p>",
+                    title_plaintext: "HOTEL SERVICES",
                     is_root: true,
                     systemId: 1,
                     layoutId: 7
@@ -23,7 +25,8 @@ module.exports = {
                 },
                 {
                     name: "DESTINATION VANUATU",
-                    title: "DESTINATION VANUATU",
+                    title: "<p>DESTINATION VANUATU</p>",
+                    title_plaintext: "DESTINATION VANUATU",
                     is_root: true,
                     systemId: 1,
                     layoutId: 7
@@ -31,7 +34,8 @@ module.exports = {
                 },
                 {
                     name: "HOLIDAY INN RESORT PHOTO GALLERY",
-                    title: "HOLIDAY INN RESORT PHOTO GALLERY",
+                    title: "<p>HOLIDAY INN RESORT PHOTO GALLERY</p>",
+                    title_plaintext: "HOLIDAY INN RESORT PHOTO GALLERY",
                     is_root: true,
                     systemId: 1,
                     layoutId: 7
@@ -39,7 +43,8 @@ module.exports = {
                 },
                 {
                     name: "IN-ROOM DINING",
-                    title: "IN-ROOM DINING",
+                    title: "<p>IN-ROOM DINING</p>",
+                    title_plaintext: "IN-ROOM DINING",
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
@@ -48,7 +53,8 @@ module.exports = {
                 },
                 {
                     name: "SERVICES & FACILITIES",
-                    title: "SERVICES & FACILITIES",
+                    title: "<p>SERVICES & FACILITIES</p>",
+                    title_plaintext: "SERVICES & FACILITIES",
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
@@ -57,7 +63,8 @@ module.exports = {
                 },
                 {
                     name: "PHONE DIRECTORY",
-                    title: "PHONE DIRECTORY",
+                    title: "<p>PHONE DIRECTORY</p>",
+                    title_plaintext: "PHONE DIRECTORY",
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
@@ -66,7 +73,8 @@ module.exports = {
                 },
                 {
                     name: "TV GUIDE",
-                    title: "TV GUIDE",
+                    title: "<p>TV GUIDE</p>",
+                    title_plaintext: "TV GUIDE",
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
@@ -75,7 +83,8 @@ module.exports = {
                 },
                 {
                     name: "HEALTH & SAFETY",
-                    title: "HEALTH & SAFETY",
+                    title: "<p>HEALTH & SAFETY</p>",
+                    title_plaintext: "HEALTH & SAFETY",
                     is_root: false,
                     directoryListId: 1,
                     systemId: 1,
@@ -84,7 +93,8 @@ module.exports = {
                 },
                 {
                     name: "BREAKFAST",
-                    title: "BREAKFAST",
+                    title: "<p>BREAKFAST</p>",
+                    title_plaintext: "BREAKFAST",
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
@@ -93,7 +103,8 @@ module.exports = {
                 },
                 {
                     name: "LUNCH",
-                    title: "LUNCH",
+                    title: "<p>LUNCH</p>",
+                    title_plaintext: "LUNCH",
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,
@@ -102,7 +113,8 @@ module.exports = {
                 },
                 {
                     name: "DINNER",
-                    title: "DINNER",
+                    title: "<p>DINNER</p>",
+                    title_plaintext: "DINNER",
                     is_root: false,
                     directoryListId: 5,
                     systemId: 1,

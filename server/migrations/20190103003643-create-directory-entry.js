@@ -16,6 +16,13 @@ module.exports = {
                 }
             },
             title: {
+                type: Sequelize.TEXT,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            title_plaintext: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {

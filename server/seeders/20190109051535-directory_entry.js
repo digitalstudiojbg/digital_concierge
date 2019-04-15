@@ -7,43 +7,49 @@ module.exports = {
             [
                 {
                     name: "CHECK-OUT TIME",
-                    title: "CHECK-OUT TIME",
+                    title: "<p>CHECK-OUT TIME</p>",
+                    title_plaintext: "CHECK-OUT TIME",
                     description:
-                        "Check-out time is 11am, if you wish to extend beyond this time, please contact Reception (dial 9). IHG® Rewards Club Members can enjoy complimentary extended check out. Subject to availability.",
+                        "<p>Check-out time is 11am, if you wish to extend beyond this time, please contact Reception (dial 9). IHG® Rewards Club Members can enjoy complimentary extended check out. Subject to availability.</p>",
                     layoutId: 1
                 },
                 {
                     name: "IRON & IRONING BOARD",
-                    title: "IRON & IRONING BOARD",
+                    title: "<p>IRON & IRONING BOARD</p>",
+                    title_plaintext: "IRON & IRONING BOARD",
                     description:
-                        "An iron and ironing board are located in the wardrobe for your convenience.",
+                        "<p>An iron and ironing board are located in the wardrobe for your convenience.</p>",
                     layoutId: 1
                 },
                 {
                     name: "BREAD MENU",
-                    title: "BREAD MENU",
+                    title: "<p>BREAD MENU</p>",
+                    title_plaintext: "BREAD MENU",
                     description:
-                        "BREAD MENU Rosemary and Sea Salt Focaccia (V) (DF) 900 VT Balsamic Vinegar, Extra Virgin Olive Oil Garlic & Cheese Pizza Bread (GF*) 900 VT Confit Garlic, Rosemary, Mozzarella Tomato Bruschetta (V) (DF) (GF*) 1,200 VT Ciabatta, Tomato Salsa, Pickled Red Onion, Extra Virgin Olive Oil",
+                        "<p>BREAD MENU Rosemary and Sea Salt Focaccia (V) (DF) 900 VT Balsamic Vinegar, Extra Virgin Olive Oil Garlic & Cheese Pizza Bread (GF*) 900 VT Confit Garlic, Rosemary, Mozzarella Tomato Bruschetta (V) (DF) (GF*) 1,200 VT Ciabatta, Tomato Salsa, Pickled Red Onion, Extra Virgin Olive Oil</p>",
                     layoutId: 1
                 },
                 {
                     name: "SALAD MENU",
-                    title: "SALAD MENU",
+                    title: "<p>SALAD MENU</p>",
+                    title_plaintext: "SALAD MENU",
                     description:
-                        "SALAD MENU Garden Salad (V) (DF) (GF) 1,200 VT Roma Tomato, Cucumber, Spanish, Red Onion, Balsamic Vinaigrette Tomato Salad (V) (GF) (DF*) 1,500 VT Roma Tomato, Spanish Red Onion, Capers, Mozzarella, Basil, Red Wine, Vinegar, Extra Virgin Olive Oil Cucumber Ribbon Salad (V) (GF) (DF) 1,500 VT Cucumber, Mint, Walnuts, Red Grape, Toasted Nori, Rice Wine Dressing Caesar Salad (GF*) 1,800 VT Cos Lettuce, Anchovies, Bacon Wafer, Ciabatta, Grana Padano + Add Poached Chicken 600 VT",
+                        "<p>SALAD MENU Garden Salad (V) (DF) (GF) 1,200 VT Roma Tomato, Cucumber, Spanish, Red Onion, Balsamic Vinaigrette Tomato Salad (V) (GF) (DF*) 1,500 VT Roma Tomato, Spanish Red Onion, Capers, Mozzarella, Basil, Red Wine, Vinegar, Extra Virgin Olive Oil Cucumber Ribbon Salad (V) (GF) (DF) 1,500 VT Cucumber, Mint, Walnuts, Red Grape, Toasted Nori, Rice Wine Dressing Caesar Salad (GF*) 1,800 VT Cos Lettuce, Anchovies, Bacon Wafer, Ciabatta, Grana Padano + Add Poached Chicken 600 VT</p>",
                     layoutId: 1
                 },
                 {
                     name: "DRINK MENU",
-                    title: "DRINK MENU",
-                    description: "DRINK MENU",
+                    title: "<p>DRINK MENU</p>",
+                    title_plaintext: "DRINK MENU",
+                    description: "<p>DRINK MENU</p>",
                     layoutId: 1
                 },
                 {
                     name: "SECURITY SERVICES",
-                    title: "SECURITY SERVICES",
+                    title: "<p>SECURITY SERVICES</p>",
+                    title_plaintext: "SECURITY SERVICES",
                     description:
-                        "24/7 PRIVATE SECURITY GUARD PATROL THE PREMISES. PLEASE REFER TO THEM IN A SECURITY EMERGENCY",
+                        "<p>24/7 PRIVATE SECURITY GUARD PATROL THE PREMISES. PLEASE REFER TO THEM IN A SECURITY EMERGENCY</p>",
                     layoutId: 1
                 }
             ],

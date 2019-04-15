@@ -19,6 +19,7 @@ export default gql`
         id: ID!
         name: String
         title: String
+        title_plaintext: String
         description: String
         order: Int
         active: Boolean
