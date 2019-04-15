@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout, getClientIdLocalStorage } from "../auth/auth";
 import "./App.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Loading from "./loading/Loading";
 import "rc-color-picker/assets/index.css";
 import {

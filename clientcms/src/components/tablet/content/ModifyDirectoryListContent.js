@@ -21,6 +21,7 @@ import Dropzone from "react-dropzone";
 import { withRouter } from "react-router-dom";
 import BrowserMedia from "../../../utils/BrowserMedia";
 import ColourSchemePicker from "../../../utils/ColourSchemePicker";
+import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 
@@ -376,7 +377,7 @@ class ModifyDirectoryList extends React.PureComponent {
     }
 
     render() {
-        const { classes } = this.props;
+        const { classes, setFieldValue, values } = this.props;
         const subTitleText = "TITLE";
 
         return (
@@ -398,7 +399,7 @@ class ModifyDirectoryList extends React.PureComponent {
                                 >
                                     {subTitleText}
                                 </div>
-                                <Field
+                                {/* <Field
                                     name="title"
                                     validateOnBlur
                                     validateOnChange
@@ -410,6 +411,12 @@ class ModifyDirectoryList extends React.PureComponent {
                                             root: classes.categoryNameFormHelper
                                         }
                                     }}
+                                /> */}
+                                <TextEditorField
+                                    name="title"
+                                    setFieldValue={setFieldValue}
+                                    initialValue={values.title}
+                                    withPlaintext={true}
                                 />
                             </div>
                             <div style={{ width: "95%" }}>
@@ -420,7 +427,7 @@ class ModifyDirectoryList extends React.PureComponent {
                                 >
                                     TEXT FIELD
                                 </div>
-                                <Field
+                                {/* <Field
                                     name="description"
                                     multiline
                                     fullWidth
@@ -436,6 +443,12 @@ class ModifyDirectoryList extends React.PureComponent {
                                             root: classes.categoryNameFormHelper
                                         }
                                     }}
+                                /> */}
+                                <TextEditorField
+                                    name="description"
+                                    setFieldValue={setFieldValue}
+                                    initialValue={values.description}
+                                    withPlaintext={false}
                                 />
                             </div>
                         </div>

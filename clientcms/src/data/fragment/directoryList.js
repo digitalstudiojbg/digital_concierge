@@ -5,6 +5,7 @@ export const directoryListFragment = gql`
         id
         name
         title
+        title_plaintext
         description
         order
         is_root

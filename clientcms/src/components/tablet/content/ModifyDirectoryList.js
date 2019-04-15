@@ -35,6 +35,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitleHelper from "../../../utils/DialogTitleHelper";
+import { sanitize } from "dompurify";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -58,7 +59,8 @@ const styles = () => ({
         top: 100,
         right: 20,
         backgroundColor: "rgb(33,143,250)",
-        color: "white"
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif"
     },
     buttonCancel: {
         position: "absolute",
@@ -67,7 +69,8 @@ const styles = () => ({
         backgroundColor: "white",
         color: "rgb(33,143,250)",
         border: "2px solid rgb(33,143,250)",
-        fontWeight: 600
+        fontWeight: 600,
+        fontFamily: "Source Sans Pro, sans-serif"
     },
     buttonSaveKeep: {
         width: 150,
@@ -75,7 +78,8 @@ const styles = () => ({
         top: 140,
         right: 20,
         backgroundColor: "rgb(33,143,250)",
-        color: "white"
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif"
     }
 });
 
@@ -172,9 +176,10 @@ const ModifyDirectoryList = props => {
             ? {
                   id: directoryList.id,
                   name: directoryList.name,
-                  title: directoryList.title,
+                  title: sanitize(directoryList.title),
+                  title_plaintext: directoryList.title_plaintext,
                   description: Boolean(directoryList.description)
-                      ? directoryList.description
+                      ? sanitize(directoryList.description)
                       : "",
                   layout_family_id: directoryList.layout.layout_family.id,
                   layout_id: directoryList.layout.id,
@@ -199,6 +204,7 @@ const ModifyDirectoryList = props => {
                   id: null,
                   name: "",
                   title: "",
+                  title_plaintext: "",
                   description: "",
                   order: 0,
                   layout_family_id: Boolean(layout_family_id)
@@ -311,9 +317,10 @@ const ModifyDirectoryList = props => {
                             const {
                                 id,
                                 name,
-                                title,
+                                title: initialTitle,
+                                title_plaintext,
                                 order,
-                                description,
+                                description: initialDescription,
                                 layout_id: layout_idString,
                                 colours: coloursImmutable,
                                 images,
@@ -352,9 +359,10 @@ const ModifyDirectoryList = props => {
                                         )
                                     }),
                                 colours,
-                                title,
+                                title: sanitize(initialTitle),
+                                title_plaintext,
                                 order,
-                                description,
+                                description: sanitize(initialDescription),
                                 sortBy,
                                 orderBy
                             };

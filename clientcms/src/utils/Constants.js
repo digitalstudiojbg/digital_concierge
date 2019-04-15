@@ -58,12 +58,12 @@ export const SORT_BY_ORDER_BY_OPTIONS = [
     {
         text: "Alphabetical order (A-Z)",
         value: 2,
-        actualValue: { sortBy: "title", orderBy: "ASC" }
+        actualValue: { sortBy: "title_plaintext", orderBy: "ASC" }
     },
     {
         text: "Alphabetical order (Z-A)",
         value: 3,
-        actualValue: { sortBy: "title", orderBy: "DESC" }
+        actualValue: { sortBy: "title_plaintext", orderBy: "DESC" }
     }
 ];
 
