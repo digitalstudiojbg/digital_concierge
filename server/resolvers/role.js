@@ -138,7 +138,7 @@ export default {
 
             //Attempt to assign permissions to the role
             try {
-                role.setPermissions(permissionIds);
+                await role.setPermissions(permissionIds);
             } catch (error) {
                 throw new UserInputError(
                     `Unable to assign selected permissions to role.\nError Message: ${
@@ -212,7 +212,7 @@ export default {
 
             // //Attempt to assign permissions to the role
             try {
-                role.setPermissions(permissionIds);
+                await role.setPermissions(permissionIds);
             } catch (error) {
                 throw new UserInputError(
                     `Unable to assign selected permissions to role.\nError Message: ${

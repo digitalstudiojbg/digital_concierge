@@ -56,7 +56,11 @@ export default {
             //Upload and Create image
             let created_media;
             if (image) {
-                const { clientId } = await db.system.findByPk(system_id);
+                const { clientId = "" } =
+                    (await db.system.findByPk(system_id)) || {};
+                if (!Boolean(clientId)) {
+                    throw new UserInputError(`Invalid system ID ${system_id}`);
+                }
                 created_media = await processUploadMedia(
                     image,
                     clientId,
@@ -85,9 +89,9 @@ export default {
             try {
                 await created_dir_list.save();
             } catch (e) {
-                //Delete image if user input is invalid
+                //Delete image if user input is invalid (if user uploaded an image)
                 try {
-                    processDelete(created_media.key);
+                    Boolean(image) && processDelete(created_media.key);
                 } catch (e) {
                     throw new UserInputError(e);
                 }
@@ -192,8 +196,11 @@ export default {
                                 await to_update.removeMedia(to_delete_images);
 
                                 try {
-                                    //Add new image into directory in DB
-                                    await to_update.addMedia(updated_image);
+                                    //Add new image into directory in DB (if user upload a new image)
+                                    Boolean(image) &&
+                                        (await to_update.addMedia(
+                                            updated_image
+                                        ));
                                 } catch (err) {
                                     throw new UserInputError(err);
                                 }

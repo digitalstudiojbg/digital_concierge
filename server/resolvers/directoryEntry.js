@@ -4,13 +4,16 @@ import {
     checkUserClientByDirectoryList,
     checkUserPermissionModifySystem,
     checkUserLogin,
-    asyncForEach
+    asyncForEach,
+    handleCreateActionActivityLog
 } from "../utils/constant";
 
 export default {
     Query: {
         directoryEntry: async (_root, { id }) => {
-            return await db.directory_entry.findByPk(id);
+            const entry = await db.directory_entry.findByPk(id);
+            console.log(Object.keys(entry.__proto__));
+            return entry;
         },
         directoryEntries: async (_root, _input, { user }) => {
             return await db.directory_entry.findAll();
@@ -105,6 +108,217 @@ export default {
                 });
             }
             return { result: true };
+        },
+        createDirectoryEntry: async (
+            _root,
+            {
+                input: {
+                    name,
+                    title,
+                    title_plaintext,
+                    description,
+                    order,
+                    parent_ids,
+                    layout_id,
+                    template_id,
+                    system_id,
+                    image,
+                    media_id,
+                    colours
+                }
+            },
+            { user, clientIp }
+        ) => {
+            await checkUserLogin(user);
+
+            //Upload and Create image
+            let created_media;
+            if (image) {
+                const { clientId = "" } =
+                    (await db.system.findByPk(system_id)) || {};
+                if (!Boolean(clientId)) {
+                    throw new UserInputError(`Invalid system ID ${system_id}`);
+                }
+                created_media = await processUploadMedia(
+                    image,
+                    clientId,
+                    "image"
+                );
+            } else if (media_id) {
+                created_media = await db.media.findByPk(media_id);
+            }
+
+            //Create directory entry
+            let created_dir_entry = db.directory_entry.build({
+                name,
+                title,
+                title_plaintext,
+                description,
+                order,
+                layoutId: layout_id,
+                templateId: template_id,
+                ...processColours(colours)
+            });
+
+            try {
+                await created_dir_entry.save();
+            } catch (e) {
+                //Delete image if user input is invalid (if user uploaded an image)
+                try {
+                    Boolean(image) && processDelete(created_media.key);
+                } catch (e) {
+                    throw new UserInputError(e);
+                }
+                throw new UserInputError(e);
+            }
+
+            try {
+                //Assign media
+                await created_dir_entry.addMedia(created_media);
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Directory Entry ${name} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            try {
+                //Assign Directory Lists
+                await created_dir_entry.addDirectory_lists(parent_ids);
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Directory Entry ${name} status failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleCreateActionActivityLog(
+                created_dir_entry,
+                {
+                    name,
+                    title,
+                    title_plaintext,
+                    description,
+                    order,
+                    parent_ids,
+                    layout_id,
+                    template_id,
+                    system_id,
+                    image,
+                    media_id,
+                    colours
+                },
+                user,
+                clientIp
+            );
+
+            return created_dir_entry;
+        },
+        editDirectoryEntry: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    title,
+                    title_plaintext,
+                    description,
+                    order,
+                    parent_ids,
+                    layout_id,
+                    template_id,
+                    system_id,
+                    image,
+                    media_id,
+                    colours
+                }
+            },
+            { user, clientIp }
+        ) => {
+            await checkUserLogin(user);
+
+            const system = await db.system.findByPk(system_id);
+            //await checkUserPermissionModifySystem(user, system);
+
+            if (!Boolean(system)) {
+                throw new UserInputError(`Invalid system ID ${system_id}`);
+            }
+
+            let updated_image = null;
+            let updated_directory_entry;
+
+            //Check if image update
+            if (image) {
+                updated_image = await processUploadMedia(
+                    image,
+                    system.clientId,
+                    "image"
+                );
+            } else if (media_id) {
+                //If Image was changed from media library
+                updated_image = await db.media.findByPk(media_id);
+            }
+
+            let to_update;
+            //Update directory list in DB
+            try {
+                updated_directory_entry = await db.directory_entry.update(
+                    {
+                        name,
+                        title,
+                        title_plaintext,
+                        description,
+                        order,
+                        layoutId: layout_id,
+                        templateId: template_id,
+                        ...processColours(colours)
+                    },
+                    { where: { id } }
+                );
+                try {
+                    //Get update directory entry from DB
+                    to_update = await db.directory_entry.findByPk(id);
+                    try {
+                        //Set directory list relationship
+                        await to_update.setDirectory_lists(parent_ids);
+                        try {
+                            //Get list of media from update directory entry from DB
+                            const to_delete_images = await to_update.getMedia();
+                            if (Boolean(image) || Boolean(media_id)) {
+                                try {
+                                    //Remove relationship between list and previous image in DB
+                                    await to_update.removeMedia(
+                                        to_delete_images
+                                    );
+
+                                    try {
+                                        //Add new image into directory in DB (if user upload a new image)
+                                        Boolean(image) &&
+                                            (await to_update.addMedia(
+                                                updated_image
+                                            ));
+                                    } catch (err) {
+                                        throw new UserInputError(err);
+                                    }
+                                } catch (err) {
+                                    throw new UserInputError(err);
+                                }
+                            }
+                        } catch (err) {
+                            throw new UserInputError(err);
+                        }
+                    } catch (err) {
+                        throw new UserInputError(err);
+                    }
+                } catch (err) {
+                    throw new UserInputError(err);
+                }
+            } catch (err) {
+                throw new UserInputError(err);
+            }
+            return to_update;
         }
     },
     DirectoryEntry: {

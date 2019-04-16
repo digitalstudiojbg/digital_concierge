@@ -18,8 +18,8 @@ import styled from "styled-components";
 import { Formik, Form } from "formik";
 import { Mutation, withApollo } from "react-apollo";
 import {
-    EDIT_DIRECTORY_LIST,
-    CREATE_DIRECTORY_LIST
+    EDIT_DIRECTORY_ENTRY,
+    CREATE_DIRECTORY_ENTRY
 } from "../../../data/mutation";
 import {
     getDirectoryListBySystem,
@@ -260,7 +260,7 @@ const ModifyDirectoryEntry = props => {
         >
             <Mutation
                 mutation={
-                    has_data ? EDIT_DIRECTORY_LIST() : CREATE_DIRECTORY_LIST()
+                    has_data ? EDIT_DIRECTORY_ENTRY : CREATE_DIRECTORY_ENTRY
                 }
                 refetchQueries={[
                     {
