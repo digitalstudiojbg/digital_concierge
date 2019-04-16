@@ -145,14 +145,14 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
         this.dropZoneRef.current.open();
     }
 
-    componentWillUnmount() {
-        this.props.values.images.forEach(image => {
-            if (!Boolean(image.uploaded) && Boolean(image.preview)) {
-                // Make sure to revoke the preview data uris to avoid memory leaks
-                URL.revokeObjectURL(image.preview);
-            }
-        });
-    }
+    // componentWillUnmount() {
+    //     this.props.values.images.forEach(image => {
+    //         if (!Boolean(image.uploaded) && Boolean(image.preview)) {
+    //             // Make sure to revoke the preview data uris to avoid memory leaks
+    //             URL.revokeObjectURL(image.preview);
+    //         }
+    //     });
+    // }
 
     onDrop(images) {
         this.setState({ imageName: images[0].name }, () => {

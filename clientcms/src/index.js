@@ -10,6 +10,7 @@ import { getAccessToken, isLoggedIn } from "./auth/auth";
 import { API_URL } from "./utils/Constants";
 // import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const authLink = setContext((_, { headers }) => {
     return {
@@ -59,9 +60,19 @@ const client = new ApolloClient({
     resolvers: {}
 });
 
+//MUI Theme
+//Set Material UI Components to use Source Sans Pro as main font
+const theme = createMuiTheme({
+    typography: {
+        fontFamily: "Source Sans Pro, sans-serif"
+    }
+});
+
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <App />
+        <MuiThemeProvider theme={theme}>
+            <App />
+        </MuiThemeProvider>
     </ApolloProvider>,
     document.getElementById("root")
 );

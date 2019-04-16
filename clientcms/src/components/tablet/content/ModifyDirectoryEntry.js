@@ -123,12 +123,6 @@ const ModifyDirectoryEntry = props => {
 
     const system_id = props.match.params.system_id;
 
-    const cancelEdit = () => {
-        props.history.push(
-            SYSTEM_CMS_CONTENT_URL.replace(":system_id", system_id)
-        );
-    };
-
     const { classes } = props;
 
     const {
@@ -158,6 +152,7 @@ const ModifyDirectoryEntry = props => {
                       : "",
                   layout_family_id: directoryEntry.layout.layout_family.id,
                   layout_id: directoryEntry.layout.id,
+                  template_id: directoryEntry.template.id,
                   order: directoryEntry.order,
                   parent_ids: directoryEntry.parent_ids,
                   images:
@@ -180,9 +175,10 @@ const ModifyDirectoryEntry = props => {
                       ? layout_family_id
                       : "",
                   layout_id: Boolean(layout_id) ? layout_id : "",
+                  template_id: "",
                   parent_ids: has_parent_id
                       ? [props.location.state.data.parent_id]
-                      : "",
+                      : [],
                   images: [],
                   colours: [],
                   initial_colours: []
@@ -229,9 +225,20 @@ const ModifyDirectoryEntry = props => {
         }
     };
 
+    const cleanUp = values => {
+        //Do clean up for generated preview images to prevent memory leak
+        values.images.forEach(image => {
+            if (!Boolean(image.uploaded) && Boolean(image.preview)) {
+                // Make sure to revoke the preview data uris to avoid memory leaks
+                URL.revokeObjectURL(image.preview);
+            }
+        });
+    };
+
     const actionAfterSubmission = (values, data) => {
         const { history, match } = props;
         if (toExit) {
+            cleanUp(values);
             history.push(
                 SYSTEM_CMS_CONTENT_URL.replace(
                     ":system_id",
@@ -287,7 +294,8 @@ const ModifyDirectoryEntry = props => {
                                 layout_id: layout_idString,
                                 colours: coloursImmutable,
                                 images,
-                                parent_ids
+                                parent_ids,
+                                template_id
                             } = values;
                             const { match } = props;
 
@@ -307,7 +315,14 @@ const ModifyDirectoryEntry = props => {
                                 }),
                                 name,
                                 layout_id,
-                                system_id: parseInt(match.params.system_id),
+                                template_id: parseInt(
+                                    template_id,
+                                    DECIMAL_RADIX
+                                ),
+                                system_id: parseInt(
+                                    match.params.system_id,
+                                    DECIMAL_RADIX
+                                ),
                                 parent_ids: parent_ids.map(id =>
                                     parseInt(id, DECIMAL_RADIX)
                                 ),
@@ -326,6 +341,9 @@ const ModifyDirectoryEntry = props => {
                                         image: images[0]
                                     };
                                 } else if (images[0].uploaded) {
+                                    console.log(
+                                        "CREATE WITH EXISTING IMAGE FROM LIBRARY"
+                                    );
                                     toSubmit = {
                                         ...toSubmit,
                                         media_id: parseInt(
@@ -337,16 +355,15 @@ const ModifyDirectoryEntry = props => {
 
                                 console.log(toSubmit);
 
-                                /*
                                 action({
                                     variables: { input: { ...toSubmit } }
                                 }).then(({ data }) => {
                                     console.log(data);
                                     actionAfterSubmission(
                                         values,
-                                        data.createDirectoryList //TODO: CHANGE THIS
+                                        data.createDirectoryEntry
                                     );
-                                }); */
+                                });
                             } else if (
                                 images &&
                                 images.length === 1 &&
@@ -383,16 +400,15 @@ const ModifyDirectoryEntry = props => {
                                 }
                                 console.log(toSubmit);
 
-                                /*
                                 action({
                                     variables: { input: { ...toSubmit } }
                                 }).then(({ data }) => {
                                     console.log(data);
                                     actionAfterSubmission(
                                         values,
-                                        data.editDirectoryList //TODO: CHANGE THIS
+                                        data.editDirectoryEntry
                                     );
-                                }); */
+                                });
                             }
                         }}
                     >
@@ -407,6 +423,16 @@ const ModifyDirectoryEntry = props => {
                             const saveAndKeepEditing = () => {
                                 setToExit(false);
                                 submitForm();
+                            };
+
+                            const cancelEdit = () => {
+                                cleanUp(values);
+                                props.history.push(
+                                    SYSTEM_CMS_CONTENT_URL.replace(
+                                        ":system_id",
+                                        system_id
+                                    )
+                                );
                             };
 
                             return (

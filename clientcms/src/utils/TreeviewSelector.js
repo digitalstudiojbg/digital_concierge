@@ -409,30 +409,35 @@ class TreeviewSelector extends React.PureComponent {
             directory[child_directory_lists_key].length > 0;
         return (
             <React.Fragment key={`DIR-LIST-VIEW-${index}-${id}`}>
-                <DirectoryListEntryDiv
-                    selected={selected}
-                    depth={depth}
-                    id={id}
-                    onClick={this.addOrRemoveFromSelected}
-                >
+                <DirectoryListEntryDiv selected={selected} depth={depth}>
                     {has_child ? (
                         this.renderExpandOrCompressIcon(id)
                     ) : (
                         <div style={{ width: approximateButtonSize }} />
                     )}
-                    <DirListIcon
-                        fontSize="large"
-                        className={classes.dirListIcon}
-                        id={id}
-                        onClick={this.addOrRemoveFromSelected}
-                    />
-                    <span
-                        style={{ paddingLeft: 5, fontSize: "1.5em" }}
+                    <div
+                        style={{
+                            flexGrow: 1,
+                            display: "flex",
+                            alignItems: "center"
+                        }}
                         id={id}
                         onClick={this.addOrRemoveFromSelected}
                     >
-                        {name}
-                    </span>
+                        <DirListIcon
+                            fontSize="large"
+                            className={classes.dirListIcon}
+                            id={id}
+                            onClick={this.addOrRemoveFromSelected}
+                        />
+                        <span
+                            style={{ paddingLeft: 5, fontSize: "1.5em" }}
+                            id={id}
+                            onClick={this.addOrRemoveFromSelected}
+                        >
+                            {name}
+                        </span>
+                    </div>
                     {selected && (
                         <span
                             style={{

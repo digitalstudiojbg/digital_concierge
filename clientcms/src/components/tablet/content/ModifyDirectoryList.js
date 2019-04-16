@@ -141,12 +141,6 @@ const ModifyDirectoryList = props => {
 
     const system_id = props.match.params.system_id;
 
-    const cancelEdit = () => {
-        props.history.push(
-            SYSTEM_CMS_CONTENT_URL.replace(":system_id", system_id)
-        );
-    };
-
     const { classes } = props;
 
     const {
@@ -266,9 +260,20 @@ const ModifyDirectoryList = props => {
         }
     };
 
+    const cleanUp = values => {
+        //Do clean up for generated preview images to prevent memory leak
+        values.images.forEach(image => {
+            if (!Boolean(image.uploaded) && Boolean(image.preview)) {
+                // Make sure to revoke the preview data uris to avoid memory leaks
+                URL.revokeObjectURL(image.preview);
+            }
+        });
+    };
+
     const actionAfterSubmission = (values, data) => {
         const { history, match } = props;
         if (toExit) {
+            cleanUp(values);
             history.push(
                 SYSTEM_CMS_CONTENT_URL.replace(
                     ":system_id",
@@ -461,6 +466,16 @@ const ModifyDirectoryList = props => {
                             const saveAndKeepEditing = () => {
                                 setToExit(false);
                                 submitForm();
+                            };
+
+                            const cancelEdit = () => {
+                                cleanUp(values);
+                                props.history.push(
+                                    SYSTEM_CMS_CONTENT_URL.replace(
+                                        ":system_id",
+                                        system_id
+                                    )
+                                );
                             };
 
                             return (
