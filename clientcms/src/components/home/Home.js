@@ -20,6 +20,7 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
     SYSTEM_INDEX_URL,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
+    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     SYSTEM_CMS_LIBRARY
 } from "../../utils/Constants";
 
@@ -43,6 +44,10 @@ const Welcome = lazy(() => import("./Welcome.js"));
 
 const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
+);
+
+const ModifyDirectoryEntry = lazy(() =>
+    import("../tablet/content/ModifyDirectoryEntry")
 );
 
 const Library = lazy(() => import("../tablet/TabletLibrary"));
@@ -186,6 +191,14 @@ const SYSTEM_ROUTES = [
         sidebar: Sidebar,
         header: Header,
         main: ModifyDirectoryList,
+        withProps: {}
+    },
+    {
+        path: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: ModifyDirectoryEntry,
         withProps: {}
     },
     {

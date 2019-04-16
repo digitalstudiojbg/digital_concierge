@@ -4,16 +4,14 @@ import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 // import Typography from "@material-ui/core/Typography";
-import ModifyDirectoryListLayout from "./ModifyDirectoryListLayout";
-import ModifyDirectoryListContent from "./ModifyDirectoryListContent";
+import ModifyDirectoryEntryLayout from "./ModifyDirectoryEntryLayout";
+import ModifyDirectoryEntryContent from "./ModifyDirectoryEntryContent";
 import PropTypes from "prop-types";
 import {
     ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
-    // HEX_COLOUR_REGEX,
     DECIMAL_RADIX,
-    SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-    SORT_BY_ORDER_BY_OPTIONS
+    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
@@ -43,13 +41,7 @@ export const ContainerDivTab = styled.div`
     height: 80vh;
 `;
 const TabContainer = props => {
-    return (
-        // <Typography component="div" style={{ height: "100%" }}>
-        //     {props.children}
-        // </Typography>
-        // <div style={{ width: "100%", height: "100%" }}>{props.children}</div>
-        <ContainerDiv>{props.children}</ContainerDiv>
-    );
+    return <ContainerDiv>{props.children}</ContainerDiv>;
 };
 
 const styles = () => ({
@@ -88,21 +80,11 @@ const lightGreyHeader = "rgb(247,247,247)";
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Required."),
     layout_id: Yup.string().required("Required."),
-    parent_id: Yup.string("Required."),
+    parent_ids: Yup.array()
+        .of(Yup.string())
+        .required("Required"),
+    template_id: Yup.string().required("Required."),
     images: Yup.mixed().required("Required.")
-    // colours: Yup.array()
-    //     .of(
-    //         Yup.object().shape({
-    //             hex: Yup.string()
-    //                 .matches(HEX_COLOUR_REGEX)
-    //                 .required("Please select the correct colour format"),
-    //             alpha: Yup.number()
-    //                 .min(0)
-    //                 .max(100)
-    //                 .required("Please select the correct alpha format")
-    //         })
-    //     )
-    //     .required("Required.")
 });
 
 TabContainer.propTypes = {
@@ -113,7 +95,7 @@ const SlideUpTransition = props => {
     return <Slide direction="up" {...props} />;
 };
 
-const ModifyDirectoryList = props => {
+const ModifyDirectoryEntry = props => {
     const [tab, setTab] = useState(0);
     const [toExit, setToExit] = useState(true);
     const [openDialog, setOpenDialog] = useState(false);
@@ -152,7 +134,7 @@ const ModifyDirectoryList = props => {
     const {
         system: {
             theme: {
-                defaultDirListLayout: {
+                defaultDirEntryLayout: {
                     id: layout_id,
                     layout_family: { id: layout_family_id }
                 }
@@ -163,42 +145,29 @@ const ModifyDirectoryList = props => {
         variables: { id: system_id }
     });
 
-    const directoryList = has_data ? props.location.state.data : null;
-    const { value: sortBy } = has_data
-        ? SORT_BY_ORDER_BY_OPTIONS.find(
-              ({ actualValue: { sortBy, orderBy } }) =>
-                  sortBy === directoryList.sortBy &&
-                  orderBy === directoryList.orderBy
-          )
-        : { value: null };
+    const directoryEntry = has_data ? props.location.state.data : null;
     const initialValues =
-        has_data && directoryList
+        has_data && directoryEntry
             ? {
-                  id: directoryList.id,
-                  name: directoryList.name,
-                  title: sanitize(directoryList.title),
-                  title_plaintext: directoryList.title_plaintext,
-                  description: Boolean(directoryList.description)
-                      ? sanitize(directoryList.description)
+                  id: directoryEntry.id,
+                  name: directoryEntry.name,
+                  title: sanitize(directoryEntry.title),
+                  title_plaintext: directoryEntry.title_plaintext,
+                  description: Boolean(directoryEntry.description)
+                      ? sanitize(directoryEntry.description)
                       : "",
-                  layout_family_id: directoryList.layout.layout_family.id,
-                  layout_id: directoryList.layout.id,
-                  order: directoryList.order,
-                  parent_id:
-                      Boolean(directoryList.parent_id) && !directoryList.is_root //Non-root Directory list
-                          ? directoryList.parent_id
-                          : directoryList.is_root //Root directory list
-                          ? "-1"
-                          : "",
+                  layout_family_id: directoryEntry.layout.layout_family.id,
+                  layout_id: directoryEntry.layout.id,
+                  order: directoryEntry.order,
+                  parent_ids: directoryEntry.parent_ids,
                   images:
-                      directoryList.media &&
-                      Array.isArray(directoryList.media) &&
-                      directoryList.media.length > 0
-                          ? [{ ...directoryList.media[0], uploaded: true }]
+                      directoryEntry.media &&
+                      Array.isArray(directoryEntry.media) &&
+                      directoryEntry.media.length > 0
+                          ? [{ ...directoryEntry.media[0], uploaded: true }]
                           : [],
-                  colours: [...directoryList.colours],
-                  initial_colours: [...directoryList.colours],
-                  sortBy
+                  colours: [...directoryEntry.colours],
+                  initial_colours: [...directoryEntry.colours]
               }
             : {
                   id: null,
@@ -211,20 +180,18 @@ const ModifyDirectoryList = props => {
                       ? layout_family_id
                       : "",
                   layout_id: Boolean(layout_id) ? layout_id : "",
-                  parent_id: has_parent_id
-                      ? props.location.state.data.parent_id
+                  parent_ids: has_parent_id
+                      ? [props.location.state.data.parent_id]
                       : "",
                   images: [],
                   colours: [],
-                  initial_colours: [],
-                  sortBy: 1
+                  initial_colours: []
               };
 
     //Modify data of the directory to remove unnecessary key values item
     //For example child_directory & directory_entries
     const modifyDataBeingSendToEditPage = (values, directory) => {
         if (directory.id && directory.media) {
-            const is_dir_list = true;
             const {
                 name,
                 title: titleUnSanitized,
@@ -233,18 +200,17 @@ const ModifyDirectoryList = props => {
                 layout_family_id,
                 layout_id,
                 order,
-                parent_id,
-                colours,
-                sortBy
+                parent_ids,
+                colours
             } = values;
-            const is_root = values.parent_id === "-1";
+
             const { id, media } = directory;
 
             return {
                 id,
                 name,
                 title: sanitize(titleUnSanitized),
-                title_plaintext: title_plaintext,
+                title_plaintext,
                 description: sanitize(descriptionUnSanitized),
                 layout: {
                     id: layout_id,
@@ -253,13 +219,10 @@ const ModifyDirectoryList = props => {
                     }
                 },
                 order,
-                parent_id,
+                parent_ids,
                 active: true,
                 media,
-                colours: colours.toJS(),
-                is_dir_list,
-                is_root,
-                sortBy
+                colours: colours.toJS()
             };
         } else {
             return null;
@@ -279,7 +242,7 @@ const ModifyDirectoryList = props => {
             //FROM CREATE PAGE NAVIGATE TO MODIFY PAGE AS WELL AS SET UPDATED DATA IN LOCATION
 
             history.push({
-                pathname: SYSTEM_MODIFY_DIRECTORY_LIST_URL.replace(
+                pathname: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL.replace(
                     ":system_id",
                     system_id
                 ),
@@ -292,9 +255,6 @@ const ModifyDirectoryList = props => {
         <div
             style={{
                 width: "100%",
-                // height: "100%",
-                // height: "calc(100vh-80px)",
-                // overflowY: "auto",
                 backgroundColor: lightGreyHeader
             }}
         >
@@ -309,7 +269,6 @@ const ModifyDirectoryList = props => {
                     }
                 ]}
             >
-                {/* {(action, { loading, error }) => ( */}
                 {action => (
                     <Formik
                         initialValues={initialValues}
@@ -328,8 +287,7 @@ const ModifyDirectoryList = props => {
                                 layout_id: layout_idString,
                                 colours: coloursImmutable,
                                 images,
-                                parent_id,
-                                sortBy: sortByIndex
+                                parent_ids
                             } = values;
                             const { match } = props;
 
@@ -341,9 +299,6 @@ const ModifyDirectoryList = props => {
                             const colours = List.isList(coloursImmutable)
                                 ? coloursImmutable.toJS()
                                 : [...coloursImmutable];
-                            const {
-                                actualValue: { sortBy, orderBy }
-                            } = SORT_BY_ORDER_BY_OPTIONS[sortByIndex];
 
                             //https://stackoverflow.com/a/47892178
                             let toSubmit = {
@@ -351,24 +306,16 @@ const ModifyDirectoryList = props => {
                                     id: parseInt(id, DECIMAL_RADIX)
                                 }),
                                 name,
-                                is_root: parent_id === "-1",
                                 layout_id,
                                 system_id: parseInt(match.params.system_id),
-                                ...(Boolean(parent_id) &&
-                                    parent_id !== "-1" && {
-                                        //Make sure parent_id is not equal to -1 because that is the home id, which means we are creating a root directory entry
-                                        parent_id: parseInt(
-                                            parent_id,
-                                            DECIMAL_RADIX
-                                        )
-                                    }),
+                                parent_ids: parent_ids.map(id =>
+                                    parseInt(id, DECIMAL_RADIX)
+                                ),
                                 colours,
                                 title: sanitize(initialTitle),
                                 title_plaintext,
                                 order,
-                                description: sanitize(initialDescription),
-                                sortBy,
-                                orderBy
+                                description: sanitize(initialDescription)
                             };
 
                             if (images && images.length === 1 && !has_data) {
@@ -390,15 +337,16 @@ const ModifyDirectoryList = props => {
 
                                 console.log(toSubmit);
 
+                                /*
                                 action({
                                     variables: { input: { ...toSubmit } }
                                 }).then(({ data }) => {
                                     console.log(data);
                                     actionAfterSubmission(
                                         values,
-                                        data.createDirectoryList
+                                        data.createDirectoryList //TODO: CHANGE THIS
                                     );
-                                });
+                                }); */
                             } else if (
                                 images &&
                                 images.length === 1 &&
@@ -435,15 +383,16 @@ const ModifyDirectoryList = props => {
                                 }
                                 console.log(toSubmit);
 
+                                /*
                                 action({
                                     variables: { input: { ...toSubmit } }
                                 }).then(({ data }) => {
                                     console.log(data);
                                     actionAfterSubmission(
                                         values,
-                                        data.editDirectoryList
+                                        data.editDirectoryList //TODO: CHANGE THIS
                                     );
-                                });
+                                }); */
                             }
                         }}
                     >
@@ -473,7 +422,7 @@ const ModifyDirectoryList = props => {
                                     >
                                         SYSTEM CONTENT:{" "}
                                         {has_data ? "MODIFY" : "ADD"} DIRECTORY
-                                        LIST
+                                        ENTRY
                                     </div>
                                     <Paper
                                         square
@@ -530,7 +479,7 @@ const ModifyDirectoryList = props => {
                                         )}
                                         {tab === 1 && (
                                             <TabContainer>
-                                                <ModifyDirectoryListLayout
+                                                <ModifyDirectoryEntryLayout
                                                     values={values}
                                                     errors={errors}
                                                     isSubmitting={isSubmitting}
@@ -542,7 +491,7 @@ const ModifyDirectoryList = props => {
                                         )}
                                         {tab === 2 && (
                                             <TabContainer>
-                                                <ModifyDirectoryListContent
+                                                <ModifyDirectoryEntryContent
                                                     values={values}
                                                     errors={errors}
                                                     isSubmitting={isSubmitting}
@@ -619,5 +568,4 @@ const ModifyDirectoryList = props => {
     );
 };
 
-export default withApollo(withStyles(styles)(ModifyDirectoryList));
-// export default ModifyDirectoryList;
+export default withApollo(withStyles(styles)(ModifyDirectoryEntry));

@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { Query } from "react-apollo";
 import {
     getLayoutFamilyList,
-    getLayoutFamilyDetailFilter
+    getLayoutFamilyDetailFilter,
+    getTemplateListFromType
 } from "../data/query";
 import Loading from "../components/loading/Loading";
 import Radio from "@material-ui/core/Radio";
@@ -22,6 +23,10 @@ const ContainerDiv = styled.div`
 const InnerContainerDiv = styled.div`
     width: 100%;
     height: 100%;
+`;
+
+const InnerContainerDivWithTemplate = styled(InnerContainerDiv)`
+    display: flex;
 `;
 
 const LayoutOptionsDiv = styled.div`
@@ -69,13 +74,16 @@ const styles = () => ({
 });
 
 const LayoutPicker = ({
-    whichLayout,
+    whichLayoutFamily,
     values,
     setFieldValue,
     layoutFamilyFieldName,
     layoutFieldName,
     classes,
-    layoutType
+    layoutType,
+    withTemplate,
+    templateType,
+    templateFieldName
 }) => {
     // const [selectedFamily, setSelectedFamily] = useState(null);
     // const [selectedLayout, setSelectedLayout] = useState(null);
@@ -130,7 +138,7 @@ const LayoutPicker = ({
         return (
             <InnerContainerDiv>
                 <div style={{ width: "30%" }}>
-                    <InputLabel>Family</InputLabel>
+                    <InputLabel>FAMILY</InputLabel>
                     <Field
                         name={layoutFamilyFieldName}
                         component={Select}
@@ -154,9 +162,9 @@ const LayoutPicker = ({
 
     const renderLayoutFamily = layoutFamily => {
         const layouts =
-            Boolean(layoutFamily.layouts) &&
-            Array.isArray(Boolean.layoutFamilies.layouts)
-                ? layoutFamily.layouts
+            Boolean(layoutFamily.layoutsByType) &&
+            Array.isArray(layoutFamily.layoutsByType)
+                ? layoutFamily.layoutsByType
                 : [];
         return (
             <InnerContainerDiv>
@@ -165,9 +173,83 @@ const LayoutPicker = ({
         );
     };
 
+    const renderAllLayoutFamiliesWithTemplates = (
+        layoutFamilies,
+        templates
+    ) => {
+        const layoutFamilyId = values[layoutFamilyFieldName];
+
+        const familyData = Boolean(layoutFamilyId)
+            ? layoutFamilies.find(({ id }) => id === layoutFamilyId)
+            : null;
+
+        const { layoutsByType = [] } = familyData || {};
+
+        const templateId = values[templateFieldName];
+
+        const templateData = Boolean(templateId)
+            ? templates.find(({ id }) => id === templateId)
+            : null;
+
+        const { layouts: layoutsInTemplate = [] } = templateData || {};
+
+        const layoutIdsInTemplate = layoutsInTemplate.map(({ id }) => id);
+
+        const layouts =
+            layoutIdsInTemplate.length > 0
+                ? layoutsByType.filter(({ id }) =>
+                      layoutIdsInTemplate.includes(id)
+                  )
+                : [];
+
+        return (
+            <InnerContainerDiv>
+                <div style={{ width: "100%", display: "flex" }}>
+                    <div style={{ flexBasis: "30%" }}>
+                        <InputLabel>FAMILY</InputLabel>
+                        <Field
+                            name={layoutFamilyFieldName}
+                            component={Select}
+                            disabled={layoutFamilies.length < 1}
+                            fullWidth={true}
+                        >
+                            {layoutFamilies.map(({ id, name }, index) => (
+                                <MenuItem
+                                    key={`ITEM-${name}-${id}-${index}`}
+                                    value={id}
+                                >
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Field>
+                    </div>
+                    <div style={{ flexBasis: "30%", paddingLeft: 10 }}>
+                        <InputLabel>ENTRY TEMPLATE TYPE</InputLabel>
+                        <Field
+                            name={templateFieldName}
+                            component={Select}
+                            disabled={templates.length < 1}
+                            fullWidth={true}
+                        >
+                            {templates.map(({ id, name }, index) => (
+                                <MenuItem
+                                    key={`TEMPLATE-${name}-${id}-${index}`}
+                                    value={id}
+                                >
+                                    {name}
+                                </MenuItem>
+                            ))}
+                        </Field>
+                    </div>
+                </div>
+                {layouts.length > 0 && renderLayoutOptions(layouts)}
+            </InnerContainerDiv>
+        );
+    };
+
     return (
         <ContainerDiv>
-            {whichLayout === "all" ? (
+            {whichLayoutFamily === "all" ? (
                 <Query
                     query={getLayoutFamilyList}
                     variables={{ typeName: layoutType }}
@@ -175,13 +257,42 @@ const LayoutPicker = ({
                     {({ loading, error, data: { layoutFamilies } }) => {
                         if (loading) return <Loading loadingData />;
                         if (error) return `Error: ${error.message}`;
-                        return renderAllLayoutFamilies(layoutFamilies);
+                        if (!withTemplate) {
+                            return renderAllLayoutFamilies(layoutFamilies);
+                        } else {
+                            return (
+                                <Query
+                                    query={getTemplateListFromType}
+                                    variables={{ typeName: templateType }}
+                                >
+                                    {({
+                                        loading: loadingTemplate,
+                                        error: errorTemplate,
+                                        data: { templatesByType: templates }
+                                    }) => {
+                                        if (loadingTemplate)
+                                            return <Loading loadingData />;
+                                        if (errorTemplate)
+                                            return `Error ${
+                                                errorTemplate.message
+                                            }`;
+                                        return renderAllLayoutFamiliesWithTemplates(
+                                            layoutFamilies,
+                                            templates
+                                        );
+                                    }}
+                                </Query>
+                            );
+                        }
                     }}
                 </Query>
             ) : (
                 <Query
                     query={getLayoutFamilyDetailFilter}
-                    variables={{ name: whichLayout, typeName: layoutType }}
+                    variables={{
+                        name: whichLayoutFamily,
+                        typeName: layoutType
+                    }}
                 >
                     {({
                         loading,
@@ -199,17 +310,22 @@ const LayoutPicker = ({
 };
 
 LayoutPicker.defaultProps = {
-    whichLayout: "all",
+    whichLayoutFamily: "all",
     layoutFamilyFieldName: "layout_family_id",
-    layoutFieldName: "layout_id"
+    layoutFieldName: "layout_id",
+    templateFieldName: "template_id"
 };
 
 LayoutPicker.propTypes = {
-    whichLayout: PropTypes.string,
+    values: PropTypes.object.isRequired,
+    whichLayoutFamily: PropTypes.string,
     layoutFamilyFieldName: PropTypes.string,
     layoutFieldName: PropTypes.string,
     setFieldValue: PropTypes.func.isRequired,
-    layoutType: PropTypes.string.isRequired
+    layoutType: PropTypes.string.isRequired,
+    withTemplate: PropTypes.bool.isRequired,
+    templateType: PropTypes.string,
+    templateFieldName: PropTypes.string
 };
 
 export default withStyles(styles)(LayoutPicker);

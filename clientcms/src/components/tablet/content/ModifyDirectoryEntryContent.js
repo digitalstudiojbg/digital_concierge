@@ -73,7 +73,7 @@ function SlideUpTransition(props) {
     return <Slide direction="up" {...props} />;
 }
 
-class ModifyDirectoryListContent extends React.PureComponent {
+class ModifyDirectoryEntryContent extends React.PureComponent {
     constructor(props) {
         super(props);
         // const has_data =
@@ -168,46 +168,9 @@ class ModifyDirectoryListContent extends React.PureComponent {
                 false
             );
         });
-
-        // this.setState(
-        //     {
-        //         images: images.map(file =>
-        //             Object.assign(file, {
-        //                 preview: URL.createObjectURL(file),
-        //                 uploaded: false,
-        //                 changed: true
-        //             })
-        //         ),
-        //         imageName: images[0].name
-        //     },
-        //     () => {
-        //         this.props.setFieldValue(
-        //             "images",
-        //             [...this.state.images],
-        //             false
-        //         );
-        //     }
-        // );
     }
 
     mediaSelectImage(images) {
-        // this.setState(
-        //     {
-        //         images: images.map(image => ({
-        //             ...image,
-        //             uploaded: true,
-        //             changed: true
-        //         })),
-        //         imageName: images[0].name
-        //     },
-        //     () => {
-        //         this.props.setFieldValue(
-        //             "images",
-        //             [...this.state.images],
-        //             false
-        //         );
-        //     }
-        // );
         this.setState({ imageName: images[0].name }, () => {
             this.props.setFieldValue(
                 "images",
@@ -352,8 +315,6 @@ class ModifyDirectoryListContent extends React.PureComponent {
 
     renderColourSchemePicker() {
         const { setFieldValue, values } = this.props;
-        // const is_create = !Boolean(values.id);
-        // const initialColours = !is_create ? location.state.data.colours : [];
         const { colours, initial_colours } = values;
         const handleOnChange = colours =>
             setFieldValue("colours", colours, false);
@@ -399,19 +360,6 @@ class ModifyDirectoryListContent extends React.PureComponent {
                                 >
                                     {subTitleText}
                                 </div>
-                                {/* <Field
-                                    name="title"
-                                    validateOnBlur
-                                    validateOnChange
-                                    variant="outlined"
-                                    component={TextField}
-                                    fullWidth
-                                    FormHelperTextProps={{
-                                        classes: {
-                                            root: classes.categoryNameFormHelper
-                                        }
-                                    }}
-                                /> */}
                                 <TextEditorField
                                     name="title"
                                     setFieldValue={setFieldValue}
@@ -427,23 +375,6 @@ class ModifyDirectoryListContent extends React.PureComponent {
                                 >
                                     TEXT FIELD
                                 </div>
-                                {/* <Field
-                                    name="description"
-                                    multiline
-                                    fullWidth
-                                    rows="3"
-                                    margin="normal"
-                                    validateOnBlur
-                                    validateOnChange
-                                    variant="outlined"
-                                    component={TextField}
-                                    className={classes.descriptionTextField}
-                                    FormHelperTextProps={{
-                                        classes: {
-                                            root: classes.categoryNameFormHelper
-                                        }
-                                    }}
-                                /> */}
                                 <TextEditorField
                                     name="description"
                                     setFieldValue={setFieldValue}
@@ -493,7 +424,7 @@ class ModifyDirectoryListContent extends React.PureComponent {
                             {this.state.whichDialog === "image" && (
                                 <p>
                                     PLEASE CONFIRM IF YOU WANT TO REMOVE
-                                    DIRECTORY LIST IMAGE.
+                                    DIRECTORY ENTRY IMAGE.
                                 </p>
                             )}
                             {this.state.whichDialog === "cancel" && (
@@ -541,10 +472,10 @@ class ModifyDirectoryListContent extends React.PureComponent {
     }
 }
 
-ModifyDirectoryListContent.defaultProps = {};
+ModifyDirectoryEntryContent.defaultProps = {};
 
-ModifyDirectoryListContent.propTypes = {};
+ModifyDirectoryEntryContent.propTypes = {};
 
 export default withApollo(
-    withRouter(withStyles(styles)(ModifyDirectoryListContent))
+    withRouter(withStyles(styles)(ModifyDirectoryEntryContent))
 );

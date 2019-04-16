@@ -9,6 +9,10 @@ export const getTemplateListFromType = gql`
                 id
                 name
             }
+            layouts {
+                id
+                name
+            }
         }
     }
 `;

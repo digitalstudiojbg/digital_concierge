@@ -11,7 +11,9 @@ import BrowserMedia from "../../utils/BrowserMedia";
 import { Query } from "react-apollo";
 import { getDirectoryListBySystem } from "../../data/query";
 import TreeviewSelector from "../../utils/TreeviewSelector";
-import ColourSchemePicker from "../../utils/ColourSchemePicker";
+// import ColourSchemePicker from "../../utils/ColourSchemePicker";
+// import { Formik } from "formik";
+// import LayoutPicker from "../../utils/LayoutPicker";
 
 class TabletDashboard extends Component {
     render() {
@@ -78,8 +80,24 @@ class TabletDashboard extends Component {
                                         data={modifiedData}
                                         selectAmount="multiple"
                                     />
-
-                                    <ColourSchemePicker />
+                                    {/* <ColourSchemePicker /> */}
+                                    {/* <Formik
+                                        initialValues={{
+                                            layout_family_id: null,
+                                            layout_id: null,
+                                            template_id: "1"
+                                        }}
+                                        render={({ values, setFieldValue }) => (
+                                            <LayoutPicker
+                                                whichLayoutFamily="all"
+                                                setFieldValue={setFieldValue}
+                                                layoutType="entry"
+                                                withTemplate={true}
+                                                values={values}
+                                                templateType="entry"
+                                            />
+                                        )}
+                                    /> */}
                                 </div>
                             );
                         }}

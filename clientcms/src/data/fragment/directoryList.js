@@ -38,6 +38,10 @@ export const directoryListFragment = gql`
         directory_entries {
             id
             name
+            title
+            title_plaintext
+            description
+            order
             active
             colours
             media {
@@ -45,6 +49,22 @@ export const directoryListFragment = gql`
                 name
                 path
                 type
+            }
+            layout {
+                id
+                name
+                layout_family {
+                    id
+                    name
+                }
+            }
+            template {
+                id
+                name
+                validations {
+                    id
+                    name
+                }
             }
         }
     }

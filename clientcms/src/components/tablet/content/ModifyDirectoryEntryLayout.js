@@ -7,12 +7,8 @@ import { TextField } from "formik-material-ui";
 import styled from "styled-components";
 import { getDirectoryListBySystem } from "../../../data/query";
 import Loading from "../../loading/Loading";
-import {
-    modifyDirectoryListData,
-    SORT_BY_ORDER_BY_OPTIONS
-} from "../../../utils/Constants";
+import { modifyDirectoryListData } from "../../../utils/Constants";
 import TreeviewSelector from "../../../utils/TreeviewSelector";
-import { Dropdown } from "semantic-ui-react";
 
 const SubtitleDiv = styled.div`
     font-size: 1.5em;
@@ -20,7 +16,7 @@ const SubtitleDiv = styled.div`
     padding-bottom: 20px;
 `;
 
-export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
+const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
     const { params } = match || {};
     const { system_id = "" } = params;
 
@@ -29,12 +25,9 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
             Array.isArray(selected_directories) &&
             selected_directories.length > 0
         ) {
-            setFieldValue("parent_id", selected_directories[0], false);
+            setFieldValue("parent_ids", [...selected_directories], false);
         }
     };
-
-    const updateSortByDropdown = (event, { value }) =>
-        setFieldValue("sortBy", value, false);
 
     return (
         <div
@@ -58,7 +51,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     <div style={{ width: "80%" }}>
                         <Field
                             name="name"
-                            label="DIRECTORY LIST NAME"
+                            label="DIRECTORY ENTRY NAME"
                             required={true}
                             type="text"
                             component={TextField}
@@ -81,26 +74,6 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                         />
                     </div>
                 </div>
-                <div style={{ flexBasis: "40%" }}>
-                    <div style={{ width: "80%" }}>
-                        <div
-                            style={{
-                                fontSize: "1em",
-                                color: "rgb(137,137,137)"
-                            }}
-                        >
-                            SORT BY
-                        </div>
-                        <Dropdown
-                            value={values.sortBy}
-                            placeholder="Select Sort By"
-                            fluid
-                            selection
-                            options={SORT_BY_ORDER_BY_OPTIONS}
-                            onChange={updateSortByDropdown}
-                        />
-                    </div>
-                </div>
             </div>
             <div style={{ width: "80%", height: "40%" }}>
                 <Field name="parent_id">
@@ -116,22 +89,8 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                 if (error) return `Error! ${error.message}`;
                                 const modifiedData = modifyDirectoryListData(
                                     data.directoryLists_by_system,
-                                    true
+                                    false
                                 );
-                                // if (
-                                //     !Boolean(values.parent_id) &&
-                                //     modifiedData.length > 0
-                                // ) {
-                                //     return (
-                                //         <TreeviewSelector
-                                //             data={modifiedData}
-                                //             updateSelectedDirectory={
-                                //                 updateSelectedDirectory
-                                //             }
-                                //             selectAmount="single"
-                                //         />
-                                //     );
-                                // } else
                                 if (modifiedData.length > 0) {
                                     return (
                                         <TreeviewSelector
@@ -139,8 +98,8 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                             updateSelectedDirectory={
                                                 updateSelectedDirectory
                                             }
-                                            selectAmount="single"
-                                            selectedValue={values.parent_id}
+                                            selectAmount="multiple"
+                                            selectedValues={values.parent_ids}
                                         />
                                     );
                                 } else {
@@ -156,12 +115,13 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                 <LayoutPicker
                     values={values}
                     setFieldValue={setFieldValue}
-                    layoutType="list"
-                    withTemplate={false}
+                    layoutType="entry"
+                    withTemplate={true}
+                    templateType="entry"
                 />
             </div>
         </div>
     );
 };
 
-export default withRouter(ModifyDirectoryListLayout);
+export default withRouter(ModifyDirectoryEntryLayout);

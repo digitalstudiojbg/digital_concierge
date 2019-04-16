@@ -76,6 +76,11 @@ export const getSystemDetail = gql`
                     mobile
                     email
                 }
+                palettes {
+                    id
+                    name
+                    colours
+                }
             }
             layouts {
                 id

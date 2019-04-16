@@ -1014,17 +1014,15 @@ class TreeView extends React.PureComponent {
                                     />
                                 )}
                                 <span
-                                    onClick={
+                                    onClick={this.navigateToEditPage.bind(
+                                        this,
                                         directory.is_dir_list
-                                            ? this.navigateToEditPage.bind(
-                                                  this,
-                                                  SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-                                                  this.modifyDataBeingSendToEditPage(
-                                                      directory
-                                                  )
-                                              )
-                                            : () => console.log(directory.name) //TODO: NAVIGATE TO DIRECTORY ENTRY LIST
-                                    }
+                                            ? SYSTEM_MODIFY_DIRECTORY_LIST_URL
+                                            : SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+                                        this.modifyDataBeingSendToEditPage(
+                                            directory
+                                        )
+                                    )}
                                 >
                                     {directory.name}
                                 </span>
@@ -1249,7 +1247,7 @@ class TreeView extends React.PureComponent {
             edit_list_url,
             edit_entry_url,
             create_list_url,
-            //create_entry_url,
+            create_entry_url,
             history,
             match
         } = this.props;
@@ -1285,6 +1283,9 @@ class TreeView extends React.PureComponent {
                 break;
             case "create_dir_list":
                 pathname = create_list_url;
+                break;
+            case "create_dir_entry":
+                pathname = create_entry_url;
                 break;
             default:
                 return this.setState({ anchorEl: null });
@@ -1562,11 +1563,11 @@ class TreeView extends React.PureComponent {
     modifyDataBeingSendToEditPage(directory) {
         if (directory.id) {
             const { is_dir_list, is_root = false } = directory;
+            const {
+                child_directory_lists_key,
+                directory_entries_key
+            } = this.props;
             if (is_dir_list) {
-                const {
-                    child_directory_lists_key,
-                    directory_entries_key
-                } = this.props;
                 const {
                     [child_directory_lists_key]: _unused_child_category_value,
                     [directory_entries_key]: _unused_directory_entries_value,
@@ -1580,13 +1581,25 @@ class TreeView extends React.PureComponent {
                           parent_id: this.getParentItem(directory.id)[0]
                       };
             } else {
+                const { dirListOnlyDataTree } = this.state;
                 const { hash_id = "", ...others } = directory;
-                const hash_id_array = hash_id.split("-");
-                const parent_id =
-                    hash_id_array.length > 1
-                        ? hash_id_array[hash_id_array.length - 2]
-                        : null;
-                return { ...others, parent_id };
+                // const hash_id_array = hash_id.split("-");
+                //Get all directory list IDs that this directory entry is a descendant of
+                const parent_ids = dirListOnlyDataTree
+                    .filter(dirList => {
+                        if (
+                            Array.isArray(dirList[directory_entries_key]) &&
+                            dirList[directory_entries_key].length > 0
+                        ) {
+                            return dirList[directory_entries_key]
+                                .map(({ id }) => id)
+                                .includes(directory.id);
+                        } else {
+                            return false;
+                        }
+                    })
+                    .map(({ id }) => id);
+                return { ...others, parent_ids };
             }
         } else {
             return null;
@@ -1660,6 +1673,11 @@ class TreeView extends React.PureComponent {
                     <Button
                         variant="outlined"
                         className={classes.buttonAddEntry}
+                        onClick={this.navigateToEditPage.bind(
+                            this,
+                            SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+                            null
+                        )}
                     >
                         ADD DIRECTORY ENTRY
                     </Button>
