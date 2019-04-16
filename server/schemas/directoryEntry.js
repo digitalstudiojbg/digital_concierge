@@ -38,6 +38,7 @@ export default gql`
         updatedAt: DateTime
         directoryLists: [DirectoryList]
         layout: Layout
+        template: Template
         media: [Media]
     }
 

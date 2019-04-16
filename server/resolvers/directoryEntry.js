@@ -148,6 +148,7 @@ export default {
             { hex: colour3Hex, alpha: colour3Alpha },
             { hex: colour4Hex, alpha: colour4Alpha },
             { hex: colour5Hex, alpha: colour5Alpha }
-        ]
+        ],
+        template: async de => await db.template.findByPk(de.templateId)
     }
 };

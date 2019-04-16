@@ -472,3 +472,5 @@ node_modules/.bin/sequelize model:generate --name palette --attributes name:stri
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-client-and-palette
 
 node_modules/.bin/sequelize seed:generate --name palette
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-directory_entry
