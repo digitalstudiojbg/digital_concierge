@@ -25,10 +25,6 @@ const InnerContainerDiv = styled.div`
     height: 100%;
 `;
 
-const InnerContainerDivWithTemplate = styled(InnerContainerDiv)`
-    display: flex;
-`;
-
 const LayoutOptionsDiv = styled.div`
     width: 100%;
     height: 70%;
