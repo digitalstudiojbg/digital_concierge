@@ -379,6 +379,9 @@ const ModifyDirectoryList = props => {
                                         image: images[0]
                                     };
                                 } else if (images[0].uploaded) {
+                                    console.log(
+                                        "CREATE WITH EXISTING IMAGE FROM LIBRARY"
+                                    );
                                     toSubmit = {
                                         ...toSubmit,
                                         media_id: parseInt(
