@@ -96,7 +96,9 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                             placeholder="Select Sort By"
                             fluid
                             selection
-                            options={SORT_BY_ORDER_BY_OPTIONS}
+                            options={SORT_BY_ORDER_BY_OPTIONS.map(
+                                ({ text, value }) => ({ text, value })
+                            )}
                             onChange={updateSortByDropdown}
                         />
                     </div>

@@ -64,6 +64,7 @@ const client = new ApolloClient({
 //Set Material UI Components to use Source Sans Pro as main font
 const theme = createMuiTheme({
     typography: {
+        useNextVariants: true, //https://material-ui.com/style/typography/#migration-to-typography-v2
         fontFamily: "Source Sans Pro, sans-serif"
     }
 });
