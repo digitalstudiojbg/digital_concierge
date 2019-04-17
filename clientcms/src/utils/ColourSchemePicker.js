@@ -398,7 +398,8 @@ export const ColourSchemePicker = ({
                                                 palettes={palettes}
                                                 closeDialog={closeDialog}
                                             />
-                                        ) : openDialog.which === "create" ? (
+                                        ) : openDialog.which === "create" &&
+                                          !createButtonIsDisabled ? (
                                             <ModalCreatePalette
                                                 currentColours={colours}
                                                 closeDialog={closeDialog}
