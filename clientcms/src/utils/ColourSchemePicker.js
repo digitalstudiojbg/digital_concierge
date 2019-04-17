@@ -230,6 +230,14 @@ export const ColourSchemePicker = ({
                         : INITIAL_VALUE_COLOURS;
                 // console.log("System Colours: ", immutableSystemTheme);
 
+                const immutablePalettes = fromJS(
+                    palettes.map(({ colours }) => colours)
+                );
+
+                const createButtonIsDisabled =
+                    colours.equals(immutableSystemTheme) ||
+                    immutablePalettes.includes(colours);
+
                 const setSameAsSystemTheme = () => {
                     // console.log("Colours before update: ", colours);
                     if (colours.equals(immutableSystemTheme)) {
@@ -262,7 +270,7 @@ export const ColourSchemePicker = ({
                             className={classes.saveCurrentThemeButton}
                             fullWidth={true}
                             onClick={openCreateDialog}
-                            disabled={colours.equals(immutableSystemTheme)}
+                            disabled={createButtonIsDisabled}
                         >
                             SAVE CURRENT PALETTE
                         </Button>
