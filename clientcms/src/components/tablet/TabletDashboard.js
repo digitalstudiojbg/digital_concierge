@@ -79,6 +79,7 @@ class TabletDashboard extends Component {
                                     <TreeviewSelector
                                         data={modifiedData}
                                         selectAmount="multiple"
+                                        directoryType="entry"
                                     />
                                     {/* <ColourSchemePicker /> */}
                                     {/* <Formik

@@ -82,7 +82,11 @@ const DirectoryListEntryDiv = styled.div`
     width: 100%;
     flex-grow: 1;
     background-color: ${props =>
-        props.selected ? "rgb(144,199,253)" : "white"};
+        props.selected && !props.disabled
+            ? "rgb(144,199,253)"
+            : props.disabled && !props.selected
+            ? "gray"
+            : "white"};
     border-bottom: 1px solid rgb(226, 226, 226);
     padding-left: ${props => props.depth * paddingSize + 10}px;
     padding-top: 10px;
@@ -109,7 +113,8 @@ class TreeviewSelector extends React.PureComponent {
             selected_dir_lists: [], //Set selected directory list initial value
             dataTree: dataTree.filter(({ is_dir_list }) => is_dir_list),
             searchQuery: "",
-            showListItems: false
+            showListItems: false,
+            cannotSelect: []
         };
 
         this.addOrRemoveFromSelected = this.addOrRemoveFromSelected.bind(this);
@@ -117,7 +122,15 @@ class TreeviewSelector extends React.PureComponent {
     }
 
     componentDidMount() {
-        const { selectAmount, selectedValue, selectedValues } = this.props;
+        const {
+            selectAmount,
+            selectedValue,
+            selectedValues,
+            directoryType,
+            child_directory_lists_key,
+            directory_entries_key
+        } = this.props;
+        const { dataTree } = this.state;
 
         let selected_dir_lists = null;
         let expanded = [];
@@ -133,11 +146,34 @@ class TreeviewSelector extends React.PureComponent {
             expanded = getAllUniqueItems(expanded).slice();
         }
 
+        //Set the directory lists that cannot be selected
+        //If directory type is a list, then we cannot insert into a directory list that already has directory entries as the descendant
+        //If directory type is an entry, then we cannot insert into a directory list that already has directory lists as the descendant
+        const keyToAvoid =
+            directoryType === "list"
+                ? directory_entries_key
+                : directoryType === "entry"
+                ? child_directory_lists_key
+                : "";
+
+        const cannotSelect = dataTree
+            .filter(
+                directory =>
+                    Array.isArray(directory[keyToAvoid]) &&
+                    directory[keyToAvoid].length > 0
+            )
+            .map(({ id }) => id);
+
         //Setting state
         if (Boolean(selected_dir_lists)) {
             this.setState({
                 selected_dir_lists,
-                expanded
+                expanded,
+                cannotSelect
+            });
+        } else {
+            this.setState({
+                cannotSelect
             });
         }
     }
@@ -371,6 +407,8 @@ class TreeviewSelector extends React.PureComponent {
         }
     }
 
+    doNothing = event => event.preventDefault();
+
     //Render expand or minimise icon on a directory list based on whether it is expanded or minimised
     renderExpandOrCompressIcon(dir_list_id) {
         const { expanded } = this.state;
@@ -399,17 +437,22 @@ class TreeviewSelector extends React.PureComponent {
     }
 
     renderDirectory(directory, index) {
-        const { selected_dir_lists, expanded } = this.state;
+        const { selected_dir_lists, expanded, cannotSelect } = this.state;
         const { id, name, depth } = directory;
         const { child_directory_lists_key, classes } = this.props;
-        const selected = selected_dir_lists.includes(id);
+        const selected = selected_dir_lists.includes(id); //Check if the directory list is currently selected
+        const disabled = cannotSelect.includes(id); //Check if the directory list cannot be selected
         const is_expanded = expanded.includes(id); //Check if the directory list is expanded or not
         const has_child =
             directory[child_directory_lists_key] &&
             directory[child_directory_lists_key].length > 0;
         return (
             <React.Fragment key={`DIR-LIST-VIEW-${index}-${id}`}>
-                <DirectoryListEntryDiv selected={selected} depth={depth}>
+                <DirectoryListEntryDiv
+                    selected={selected}
+                    depth={depth}
+                    disabled={disabled}
+                >
                     {has_child ? (
                         this.renderExpandOrCompressIcon(id)
                     ) : (
@@ -422,18 +465,30 @@ class TreeviewSelector extends React.PureComponent {
                             alignItems: "center"
                         }}
                         id={id}
-                        onClick={this.addOrRemoveFromSelected}
+                        onClick={
+                            disabled
+                                ? this.doNothing
+                                : this.addOrRemoveFromSelected
+                        }
                     >
                         <DirListIcon
                             fontSize="large"
                             className={classes.dirListIcon}
                             id={id}
-                            onClick={this.addOrRemoveFromSelected}
+                            onClick={
+                                disabled
+                                    ? this.doNothing
+                                    : this.addOrRemoveFromSelected
+                            }
                         />
                         <span
                             style={{ paddingLeft: 5, fontSize: "1.5em" }}
                             id={id}
-                            onClick={this.addOrRemoveFromSelected}
+                            onClick={
+                                disabled
+                                    ? this.doNothing
+                                    : this.addOrRemoveFromSelected
+                            }
                         >
                             {name}
                         </span>
@@ -564,13 +619,14 @@ TreeviewSelector.defaultProps = {
 };
 
 TreeviewSelector.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.object),
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
     updateSelectedDirectory: PropTypes.func,
-    selectAmount: PropTypes.oneOf(["single", "multiple"]),
+    selectAmount: PropTypes.oneOf(["single", "multiple"]).isRequired,
     child_directory_lists_key: PropTypes.string,
     directory_entries_key: PropTypes.string,
     selectedValue: PropTypes.string,
-    selectedValues: PropTypes.arrayOf(PropTypes.string)
+    selectedValues: PropTypes.arrayOf(PropTypes.string),
+    directoryType: PropTypes.oneOf(["list", "entry"]).isRequired
 };
 
 export default withStyles(styles)(TreeviewSelector);

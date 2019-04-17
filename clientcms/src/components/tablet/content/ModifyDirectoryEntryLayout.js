@@ -89,7 +89,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                                 if (error) return `Error! ${error.message}`;
                                 const modifiedData = modifyDirectoryListData(
                                     data.directoryLists_by_system,
-                                    false
+                                    true
                                 );
                                 if (modifiedData.length > 0) {
                                     return (
@@ -100,6 +100,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                                             }
                                             selectAmount="multiple"
                                             selectedValues={values.parent_ids}
+                                            directoryType="entry"
                                         />
                                     );
                                 } else {

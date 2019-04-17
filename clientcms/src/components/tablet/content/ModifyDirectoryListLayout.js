@@ -141,6 +141,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                             }
                                             selectAmount="single"
                                             selectedValue={values.parent_id}
+                                            directoryType="list"
                                         />
                                     );
                                 } else {
