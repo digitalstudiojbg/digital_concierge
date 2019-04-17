@@ -12,7 +12,7 @@ body {
 }
 
 .demo-editor {
-    height: 275px;
+    /* height: 275px; */
     border: 1px solid black;
     padding: 5px;
     border-radius: 2px;
