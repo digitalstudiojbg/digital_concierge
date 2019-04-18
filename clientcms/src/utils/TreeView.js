@@ -88,7 +88,8 @@ const styles = () => ({
     },
     headerTitleCol: {
         color: "rgb(131,134,166)",
-        width: "80%"
+        width: "80%",
+        paddingLeft: 10
     },
     tableEntryRow: {
         backgroundColor: "white",
@@ -102,7 +103,8 @@ const styles = () => ({
     tableEntryTitleCol: {
         color: "rgb(89,89,89)",
         width: "80%",
-        fontSize: "1.3em"
+        fontSize: "1.3em",
+        paddingLeft: 10
     },
     tableCheckboxCol: {
         width: "5%"
@@ -893,13 +895,11 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
+                        <TableCell padding="checkbox">
+                            {this.renderExpandOrCompressIcon(directory.id)}
+                        </TableCell>
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <div style={{ marginRight: 5 }}>
-                                    {this.renderExpandOrCompressIcon(
-                                        directory.id
-                                    )}
-                                </div>
                                 <DirListIcon className={classes.dirIconStyle} />
                                 <span
                                     onClick={this.navigateToEditPage.bind(
@@ -992,6 +992,7 @@ class TreeView extends React.PureComponent {
                     key={`${directory.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
+                    <TableCell padding="checkbox" />
                     <TableCell className={classes.tableEntryTitleCol}>
                         <TreeEntry paddingSize={calculatedPaddingSize}>
                             <div
@@ -1131,6 +1132,7 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
+                            <TableCell padding="checkbox" />
                             <TableCell className={classes.headerTitleCol}>
                                 TITLE
                             </TableCell>
