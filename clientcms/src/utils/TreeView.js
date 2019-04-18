@@ -1606,6 +1606,30 @@ class TreeView extends React.PureComponent {
         }
     }
 
+    allowToRenderAddDirListContextMenu() {
+        const { anchorElId, dirListOnlyDataTree } = this.state;
+        const { directory_entries_key } = this.props;
+        const dirListId = anchorElId.split("-")[1];
+        const dirList = dirListOnlyDataTree.find(({ id }) => id === dirListId);
+        return (
+            Boolean(dirList) &&
+            Array.isArray(dirList[directory_entries_key]) &&
+            dirList[directory_entries_key].length === 0
+        );
+    }
+
+    allowToRenderAddDirEntryContextMenu() {
+        const { anchorElId, dirListOnlyDataTree } = this.state;
+        const { child_directory_lists_key } = this.props;
+        const dirListId = anchorElId.split("-")[1];
+        const dirList = dirListOnlyDataTree.find(({ id }) => id === dirListId);
+        return (
+            Boolean(dirList) &&
+            Array.isArray(dirList[child_directory_lists_key]) &&
+            dirList[child_directory_lists_key].length === 0
+        );
+    }
+
     render() {
         const { classes, data, match } = this.props;
         const {
@@ -1800,11 +1824,17 @@ class TreeView extends React.PureComponent {
                                                 >
                                                     DELETE
                                                 </MenuItem>
-                                                {/* ONLY SHOW ADD NEW FOR DIR LIST ONLY */}
+                                                {/* 
+                                                    ONLY SHOW MENU ITEM "ADD NEW ..."  FOR DIRECTORY LIST ONLY AS WELL AS CHECKING
+                                                    TO ENSURE THAT USER CANNOT CREATE A NEW DIRECTORY LIST INSIDE A DIRECTORY LIST 
+                                                    THAT ALREADY HAS DIRECTORY ENTRIES AS ITS DESCENDANTS AND VICE-VERSA USER CANNOT
+                                                    CREATE A NEW DIRECTORY ENTRY INSIDE A DIRECTORY LIST THAT ALREADY HAS DIRECTORY 
+                                                    LISTS AS ITS DESCENDANTS
+                                                */}
                                                 {anchorElId.includes(
                                                     HEADER_KEY_DIR_LIST
-                                                ) && (
-                                                    <React.Fragment>
+                                                ) &&
+                                                    this.allowToRenderAddDirListContextMenu() && (
                                                         <MenuItem
                                                             className={
                                                                 classes.menuItemStyle
@@ -1816,6 +1846,11 @@ class TreeView extends React.PureComponent {
                                                         >
                                                             ADD DIR LIST
                                                         </MenuItem>
+                                                    )}
+                                                {anchorElId.includes(
+                                                    HEADER_KEY_DIR_LIST
+                                                ) &&
+                                                    this.allowToRenderAddDirEntryContextMenu() && (
                                                         <MenuItem
                                                             className={
                                                                 classes.menuItemStyle
@@ -1827,8 +1862,7 @@ class TreeView extends React.PureComponent {
                                                         >
                                                             ADD DIR ENTRY
                                                         </MenuItem>
-                                                    </React.Fragment>
-                                                )}
+                                                    )}
                                             </Menu>
                                         </React.Fragment>
                                     );
