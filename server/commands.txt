@@ -474,3 +474,5 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize seed:generate --name palette
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-directory_entry
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-start

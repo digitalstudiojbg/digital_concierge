@@ -24,6 +24,8 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         template.hasMany(models.directory_list);
+        template.hasMany(models.directory_entry);
+        template.hasMany(models.start);
     };
     return template;
 };

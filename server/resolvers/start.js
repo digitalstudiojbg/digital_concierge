@@ -29,6 +29,27 @@ export default {
                         where: { id: start.id }
                     }
                 ]
-            })
+            }),
+        template: async start => await db.template.findByPk(start.templateId),
+        colours: ({
+            colour1Hex,
+            colour1Alpha,
+            colour2Hex,
+            colour2Alpha,
+            colour3Hex,
+            colour3Alpha,
+            colour4Hex,
+            colour4Alpha,
+            colour5Hex,
+            colour5Alpha
+        }) => [
+            { hex: colour1Hex, alpha: colour1Alpha },
+            { hex: colour2Hex, alpha: colour2Alpha },
+            { hex: colour3Hex, alpha: colour3Alpha },
+            { hex: colour4Hex, alpha: colour4Alpha },
+            { hex: colour5Hex, alpha: colour5Alpha }
+        ],
+        logo: async start => await db.media.findByPk(start.logoMediaId),
+        header: async start => await db.media.findByPk(start.headerMediaId)
     }
 };

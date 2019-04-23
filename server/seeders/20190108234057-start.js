@@ -1,24 +1,26 @@
 "use strict";
 
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up: queryInterface => {
         return queryInterface.bulkInsert(
             "starts",
             [
                 {
-                    name: "JBG START PAGE",
+                    description: "<p>WELCOME TO JBG</p>",
+                    button_text: "<p>EXPLORE</p>",
                     layoutId: 1
                 },
 
                 {
-                    name: "HOLIDAY INN START PAGE",
+                    description: "<p>WELCOME TO HOLIDAY INN RESORT VANUATU</p>",
+                    button_text: "<p>EXPLORE</p>",
                     layoutId: 1
                 }
             ],
             {}
         );
     },
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.bulkDelete("starts", null, {});
     }
 };
