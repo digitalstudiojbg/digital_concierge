@@ -874,7 +874,55 @@ class TreeView extends React.PureComponent {
             directory_entries_key,
             classes
         } = this.props;
-        if (
+        if (directory.id === "-1") {
+            //Rendering home section
+            const { expanded } = this.state;
+            const is_expanded = expanded.indexOf(directory.id) !== -1; //Check if the directory list is expanded or not
+            const toLoop = directory[child_directory_lists_key]; //Home can only have directory Lists cannot contain directory entries at all
+            return (
+                /*Rendering the row*/
+                <React.Fragment key={`${directory.id}-${index}`}>
+                    <TableRow className={classes.tableEntryRow}>
+                        <TableCell padding="checkbox">
+                            {this.renderExpandOrCompressIcon(directory.id)}
+                        </TableCell>
+                        <TableCell className={classes.tableEntryTitleCol}>
+                            <TreeEntry paddingSize={calculatedPaddingSize}>
+                                <DirListIcon className={classes.dirIconStyle} />
+                                <span>{directory.name}</span>
+                            </TreeEntry>
+                        </TableCell>
+                        <TableCell>
+                            {/* TODO: ADD NAVIGATE TO EDIT HOME FUNCTIONALITY */}
+                            <EditIcon disabled />
+                        </TableCell>
+                        <TableCell>
+                            <CheckIcon />
+                        </TableCell>
+                        <TableCell>
+                            <MoreHorizontalIcon
+                                id={`dir_list-${directory.id}`}
+                                onClick={this.handleOpenOptions}
+                            />
+                        </TableCell>
+                        <TableCell
+                            padding="checkbox"
+                            className={classes.tableCheckboxCol}
+                        >
+                            <Checkbox disabled={true} />
+                        </TableCell>
+                    </TableRow>
+                    {is_expanded &&
+                        toLoop.map((child_directory_item, index_directory) => {
+                            //We do recursion here
+                            return this.renderDirectory(
+                                child_directory_item,
+                                index_directory
+                            );
+                        })}
+                </React.Fragment>
+            );
+        } else if (
             (directory[child_directory_lists_key] &&
                 directory[child_directory_lists_key].length > 0) ||
             (directory[directory_entries_key] &&
@@ -1119,7 +1167,8 @@ class TreeView extends React.PureComponent {
 
         if (data && data.length > 0) {
             // const allItemsLength = this.totalLength(data);
-            const allItemsLength = dataTree.length;
+            const allItemsLength = dataTree.filter(({ id }) => id !== "-1")
+                .length;
 
             let allExpanded = true;
             for (let tree of dataTree) {
@@ -1179,7 +1228,8 @@ class TreeView extends React.PureComponent {
                                                     selected_dir_lists: dataTree
                                                         .filter(
                                                             item =>
-                                                                item.is_dir_list
+                                                                item.is_dir_list &&
+                                                                item.id !== "-1"
                                                         )
                                                         .map(item => item.id),
                                                     selected_dir_entries: dataTree
@@ -1270,11 +1320,13 @@ class TreeView extends React.PureComponent {
         const dataToSend = this.modifyDataBeingSendToEditPage(directory);
         switch (action) {
             case "preview":
+                //TODO: ADD NAVIGATE TO PREVIEW HOME
                 pathname = directory.is_dir_list
                     ? preview_list_url
                     : preview_entry_url;
                 break;
             case "edit":
+                //TODO: ADD NAVIGATE TO EDIT HOME
                 pathname = directory.is_dir_list
                     ? edit_list_url
                     : edit_entry_url;
@@ -1610,14 +1662,21 @@ class TreeView extends React.PureComponent {
 
     allowToRenderAddDirListContextMenu() {
         const { anchorElId, dirListOnlyDataTree } = this.state;
-        const { directory_entries_key } = this.props;
-        const dirListId = anchorElId.split("-")[1];
-        const dirList = dirListOnlyDataTree.find(({ id }) => id === dirListId);
-        return (
-            Boolean(dirList) &&
-            Array.isArray(dirList[directory_entries_key]) &&
-            dirList[directory_entries_key].length === 0
-        );
+        if (anchorElId === "dir_list--1") {
+            //Accounting for HOME Directory List
+            return true;
+        } else {
+            const { directory_entries_key } = this.props;
+            const dirListId = anchorElId.split("-")[1];
+            const dirList = dirListOnlyDataTree.find(
+                ({ id }) => id === dirListId
+            );
+            return (
+                Boolean(dirList) &&
+                Array.isArray(dirList[directory_entries_key]) &&
+                dirList[directory_entries_key].length === 0
+            );
+        }
     }
 
     allowToRenderAddDirEntryContextMenu() {
@@ -1814,18 +1873,21 @@ class TreeView extends React.PureComponent {
                                                 >
                                                     EDIT
                                                 </MenuItem>
-                                                <MenuItem
-                                                    className={
-                                                        classes.menuItemStyle
-                                                    }
-                                                    onClick={this.handleCloseOptionsAndNavigate.bind(
-                                                        this,
-                                                        "delete",
-                                                        action
-                                                    )}
-                                                >
-                                                    DELETE
-                                                </MenuItem>
+                                                {anchorElId !==
+                                                    "dir_list--1" && (
+                                                    <MenuItem
+                                                        className={
+                                                            classes.menuItemStyle
+                                                        }
+                                                        onClick={this.handleCloseOptionsAndNavigate.bind(
+                                                            this,
+                                                            "delete",
+                                                            action
+                                                        )}
+                                                    >
+                                                        DELETE
+                                                    </MenuItem>
+                                                )}
                                                 {/* 
                                                     ONLY SHOW MENU ITEM "ADD NEW ..."  FOR DIRECTORY LIST ONLY AS WELL AS CHECKING
                                                     TO ENSURE THAT USER CANNOT CREATE A NEW DIRECTORY LIST INSIDE A DIRECTORY LIST 

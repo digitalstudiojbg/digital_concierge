@@ -39,7 +39,7 @@ const TabletContent = ({ history, match, classes }) => {
                 console.log(data);
                 const modifiedData = modifyDirectoryListData(
                     data.directoryLists_by_system,
-                    false
+                    true
                 );
                 console.log(modifiedData);
 
