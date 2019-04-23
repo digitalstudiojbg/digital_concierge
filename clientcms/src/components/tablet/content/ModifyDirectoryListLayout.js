@@ -161,6 +161,7 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     setFieldValue={setFieldValue}
                     layoutType="list"
                     withTemplate={false}
+                    layoutListDirection="horizontal"
                 />
             </div>
         </div>

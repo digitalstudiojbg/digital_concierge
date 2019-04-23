@@ -20,7 +20,7 @@ export const ModifyStartLayout = ({ values, setFieldValue }) => {
         >
             <div
                 style={{
-                    width: "50%",
+                    width: "35%",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column"
@@ -34,6 +34,7 @@ export const ModifyStartLayout = ({ values, setFieldValue }) => {
                         layoutType="start"
                         withTemplate={false}
                         layoutListDirection="vertical"
+                        dropDownWidth={100}
                     />
                 </div>
                 >

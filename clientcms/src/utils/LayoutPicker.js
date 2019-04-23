@@ -25,7 +25,7 @@ const InnerContainerDiv = styled.div`
     height: 100%;
 `;
 
-const LayoutOptionsDiv = styled.div`
+const LayoutOptionsDivHorizontal = styled.div`
     width: 100%;
     height: 70%;
     border: 2px solid rgb(196, 196, 196);
@@ -34,7 +34,16 @@ const LayoutOptionsDiv = styled.div`
     flex-wrap: wrap;
 `;
 
-const LayoutEntryDiv = styled.div`
+const LayoutOptionsDivVertical = styled.div`
+    width: 100%;
+    height: 70%;
+    border: 2px solid rgb(196, 196, 196);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+`;
+
+const LayoutEntryDivHorizontal = styled.div`
     flex-basis: 20%;
     padding: 20px;
     height: 100%;
@@ -43,11 +52,27 @@ const LayoutEntryDiv = styled.div`
     justify-content: center;
 `;
 
-const LayoutLabelDiv = styled.div`
+const LayoutEntryDivVertical = styled.div`
+    width: 100%;
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
+const LayoutLabelDivHorizontal = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const LayoutLabelDivVertical = styled.div`
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 const LayoutImageDiv = styled.div`
@@ -58,6 +83,10 @@ const LayoutImageDiv = styled.div`
     background-repeat: no-repeat;
     background-size: contain;
     background-color: white;
+`;
+
+const LayoutImageDivVertical = styled(LayoutImageDiv)`
+    height: 90%;
 `;
 
 const styles = () => ({
@@ -79,7 +108,9 @@ const LayoutPicker = ({
     layoutType,
     withTemplate,
     templateType,
-    templateFieldName
+    templateFieldName,
+    layoutListDirection,
+    dropDownWidth
 }) => {
     // const [selectedFamily, setSelectedFamily] = useState(null);
     // const [selectedLayout, setSelectedLayout] = useState(null);
@@ -93,27 +124,55 @@ const LayoutPicker = ({
         setFieldValue(layoutFieldName, event.target.value, false);
     };
 
-    const renderLayoutOptions = layouts => (
-        <LayoutOptionsDiv>
-            {layouts.map(({ id, name, media: { path } }, index) => (
-                <LayoutEntryDiv key={`LAYOUT-${id}-${index}`}>
-                    <LayoutImageDiv imageUrl={path} />
-                    <LayoutLabelDiv>
-                        <Radio
-                            value={id}
-                            checked={values[layoutFieldName] === id}
-                            onChange={updateLayout}
-                            classes={{
-                                root: classes.radio,
-                                checked: classes.checked
-                            }}
-                        />
-                        <div>{name}</div>
-                    </LayoutLabelDiv>
-                </LayoutEntryDiv>
-            ))}
-        </LayoutOptionsDiv>
-    );
+    const renderLayoutOptions = layouts => {
+        if (layoutListDirection === "horizontal") {
+            return (
+                <LayoutOptionsDivHorizontal>
+                    {layouts.map(({ id, name, media: { path } }, index) => (
+                        <LayoutEntryDivHorizontal key={`LAYOUT-${id}-${index}`}>
+                            <LayoutImageDiv imageUrl={path} />
+                            <LayoutLabelDivHorizontal>
+                                <Radio
+                                    value={id}
+                                    checked={values[layoutFieldName] === id}
+                                    onChange={updateLayout}
+                                    classes={{
+                                        root: classes.radio,
+                                        checked: classes.checked
+                                    }}
+                                />
+                                <div>{name}</div>
+                            </LayoutLabelDivHorizontal>
+                        </LayoutEntryDivHorizontal>
+                    ))}
+                </LayoutOptionsDivHorizontal>
+            );
+        } else if (layoutListDirection === "vertical") {
+            return (
+                <LayoutOptionsDivVertical>
+                    {layouts.map(({ id, name, media: { path } }, index) => (
+                        <LayoutEntryDivVertical key={`LAYOUT-${id}-${index}`}>
+                            <LayoutLabelDivVertical>
+                                <Radio
+                                    value={id}
+                                    checked={values[layoutFieldName] === id}
+                                    onChange={updateLayout}
+                                    classes={{
+                                        root: classes.radio,
+                                        checked: classes.checked
+                                    }}
+                                />
+                                <div>{name}</div>
+                            </LayoutLabelDivVertical>
+                            <LayoutImageDivVertical imageUrl={path} />
+                        </LayoutEntryDivVertical>
+                    ))}
+                </LayoutOptionsDivVertical>
+            );
+        } else {
+            return <React.Fragment />;
+        }
+    };
 
     const renderAllLayoutFamilies = layoutFamilies => {
         // const LAYOUT_FAMILY_OPTIONS = layoutFamilies.map(item => ({
@@ -133,7 +192,7 @@ const LayoutPicker = ({
 
         return (
             <InnerContainerDiv>
-                <div style={{ width: "30%" }}>
+                <div style={{ width: `${dropDownWidth}%` }}>
                     <InputLabel>FAMILY</InputLabel>
                     <Field
                         name={layoutFamilyFieldName}
@@ -201,7 +260,7 @@ const LayoutPicker = ({
         return (
             <InnerContainerDiv>
                 <div style={{ width: "100%", display: "flex" }}>
-                    <div style={{ flexBasis: "30%" }}>
+                    <div style={{ flexBasis: `${dropDownWidth}%` }}>
                         <InputLabel>FAMILY</InputLabel>
                         <Field
                             name={layoutFamilyFieldName}
@@ -309,7 +368,8 @@ LayoutPicker.defaultProps = {
     whichLayoutFamily: "all",
     layoutFamilyFieldName: "layout_family_id",
     layoutFieldName: "layout_id",
-    templateFieldName: "template_id"
+    templateFieldName: "template_id",
+    dropDownWidth: 30
 };
 
 LayoutPicker.propTypes = {
@@ -321,7 +381,9 @@ LayoutPicker.propTypes = {
     layoutType: PropTypes.string.isRequired,
     withTemplate: PropTypes.bool.isRequired,
     templateType: PropTypes.string,
-    templateFieldName: PropTypes.string
+    templateFieldName: PropTypes.string,
+    layoutListDirection: PropTypes.oneOf(["horizontal", "vertical"]).isRequired,
+    dropDownWidth: PropTypes.number
 };
 
 export default withStyles(styles)(LayoutPicker);

@@ -119,6 +119,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                     layoutType="entry"
                     withTemplate={true}
                     templateType="entry"
+                    layoutListDirection="horizontal"
                 />
             </div>
         </div>
