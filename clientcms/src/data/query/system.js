@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { themeDetailFragment } from "../fragment";
+import { themeDetailFragment, startDetailFragment } from "../fragment";
 
 export const getSystemsFromUser = gql`
     query get_systems_by_user {
@@ -88,7 +88,27 @@ export const getSystemDetail = gql`
             }
             start {
                 id
-                name
+                description
+                button_text
+                header {
+                    id
+                    path
+                    type
+                }
+                logo {
+                    id
+                    path
+                    name
+                }
+                template {
+                    id
+                    name
+                }
+                layout {
+                    id
+                    name
+                }
+                colours
             }
             home {
                 id
@@ -132,4 +152,19 @@ export const getSystemThemeAndPalettes = gql`
         }
     }
     ${themeDetailFragment}
+`;
+
+export const getSystemStart = gql`
+    query getSystemStart($id: ID!) {
+        system(id: $id) {
+            id
+            start {
+                ...startDetail
+            }
+            client {
+                id
+            }
+        }
+    }
+    ${startDetailFragment}
 `;

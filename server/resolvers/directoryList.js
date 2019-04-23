@@ -90,11 +90,11 @@ export default {
                 await created_dir_list.save();
             } catch (e) {
                 //Delete image if user input is invalid (if user uploaded an image)
-                try {
-                    Boolean(image) && processDelete(created_media.key);
-                } catch (e) {
-                    throw new UserInputError(e);
-                }
+                // try {
+                //     Boolean(image) && processDelete(created_media.key);
+                // } catch (e) {
+                //     throw new UserInputError(e);
+                // }
                 throw new UserInputError(e);
             }
 

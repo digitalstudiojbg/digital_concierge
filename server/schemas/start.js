@@ -6,6 +6,11 @@ export default gql`
         starts: [Start]
     }
 
+    extend type Mutation {
+        createStart(input: CreateStartInput): Start
+        editStart(input: UpdateStartInput): Start
+    }
+
     type Start {
         id: ID!
         description: String
@@ -31,5 +36,32 @@ export default gql`
         template: Template
         systems: [System]
         media: [Media]
+    }
+
+    input CreateStartInput {
+        description: String
+        button_text: String
+        logo: Upload
+        logoMediaId: Int
+        header: Upload
+        headerMediaId: Int
+        colours: [ColourThemeInput]!
+        layoutId: Int!
+        templateId: Int
+        clientId: ID!
+    }
+
+    input UpdateStartInput {
+        id: ID!
+        description: String
+        button_text: String
+        logo: Upload
+        logoMediaId: Int
+        header: Upload
+        headerMediaId: Int
+        colours: [ColourThemeInput]!
+        layoutId: Int!
+        templateId: Int
+        clientId: ID!
     }
 `;

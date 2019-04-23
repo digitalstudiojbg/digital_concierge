@@ -11,6 +11,8 @@ import BrowserMedia from "../../utils/BrowserMedia";
 import { Query } from "react-apollo";
 import { getDirectoryListBySystem } from "../../data/query";
 import TreeviewSelector from "../../utils/TreeviewSelector";
+import { getSystemStart } from "../../data/query/system";
+import ReactJson from "react-json-view";
 // import ColourSchemePicker from "../../utils/ColourSchemePicker";
 // import { Formik } from "formik";
 // import LayoutPicker from "../../utils/LayoutPicker";
@@ -45,6 +47,24 @@ class TabletDashboard extends Component {
                     />
                     <br />
                     <br />
+                    <Query query={getSystemStart} variables={{ id: system_id }}>
+                        {({ loading, error, data: { system } }) => {
+                            if (loading) return <React.Fragment />;
+                            if (error)
+                                return (
+                                    <React.Fragment>
+                                        {error.message}
+                                    </React.Fragment>
+                                );
+                            return (
+                                <ReactJson
+                                    src={system}
+                                    theme="monokai"
+                                    collapsed={true}
+                                />
+                            );
+                        }}
+                    </Query>
                 </div>
                 <div style={{ flexBasis: "75%" }}>
                     <Query
