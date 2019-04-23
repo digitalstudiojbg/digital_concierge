@@ -24,6 +24,10 @@ export const startDetailFragment = gql`
         layout {
             id
             name
+            layout_family {
+                id
+                name
+            }
         }
         colours
     }

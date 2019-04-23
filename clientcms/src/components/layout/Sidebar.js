@@ -270,6 +270,10 @@ class Sidebar extends Component {
                     urlPath = SYSTEM_CMS_CONTENT_URL;
                     expandContent = true;
                     break;
+                case SYSTEM_MODIFY_START_URL.replace(":system_id", system_id):
+                    urlPath = SYSTEM_MODIFY_START_URL;
+                    expandContent = true;
+                    break;
                 default:
                     urlPath = SYSTEM_CMS_INDEX_URL;
             }

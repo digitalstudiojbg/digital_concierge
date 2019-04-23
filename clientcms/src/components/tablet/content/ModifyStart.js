@@ -20,8 +20,13 @@ import {
 import * as Yup from "yup";
 import { List } from "immutable";
 import { sanitize } from "dompurify";
-import { getSystemStart, getSystemDetail } from "../../../data/query/system";
+import {
+    getSystemStart,
+    getSystemDetail,
+    getSystemThemeAndPalettes
+} from "../../../data/query/system";
 import { isEmpty } from "lodash";
+import ModifyStartLayout from "./ModifyStartLayout";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -86,6 +91,20 @@ const ModifyStart = props => {
         variables: { id: system_id }
     });
 
+    const {
+        system: {
+            theme: {
+                defaultStartLayout: {
+                    id: layout_id,
+                    layout_family: { id: layout_family_id }
+                }
+            }
+        }
+    } = props.client.readQuery({
+        query: getSystemThemeAndPalettes,
+        variables: { id: system_id }
+    });
+
     //Used to determine whether this is going to be a create or edit page
     const has_data =
         Boolean(system) && Boolean(system.start) && !isEmpty(system.start);
@@ -105,6 +124,7 @@ const ModifyStart = props => {
                   start.logo && !isEmpty(start.logo)
                       ? [{ ...start.logo, uploaded: true }]
                       : [],
+              layout_family_id: start.layout.layout_family.id,
               layout_id: start.layout && start.layout.id ? start.layout.id : "",
               colours: [...start.colours],
               initial_colours: [...start.colours]
@@ -115,7 +135,8 @@ const ModifyStart = props => {
               button_text: "",
               headers: [],
               logos: [],
-              layout_id: "",
+              layout_family_id,
+              layout_id,
               colours: [],
               initial_colours: []
           };
@@ -380,8 +401,14 @@ const ModifyStart = props => {
                                         )}
                                         {tab === 1 && (
                                             <TabContainer>
-                                                {/*TODO: CHANGE THIS*/}
-                                                <React.Fragment />
+                                                <ModifyStartLayout
+                                                    values={values}
+                                                    errors={errors}
+                                                    isSubmitting={isSubmitting}
+                                                    setFieldValue={
+                                                        setFieldValue
+                                                    }
+                                                />
                                             </TabContainer>
                                         )}
                                         {tab === 2 && (
