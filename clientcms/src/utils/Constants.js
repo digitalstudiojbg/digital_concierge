@@ -32,6 +32,8 @@ export const SYSTEM_MODIFY_DIRECTORY_LIST_URL =
     SYSTEM_INDEX_URL + "/content/modify_directory_list";
 export const SYSTEM_MODIFY_DIRECTORY_ENTRY_URL =
     SYSTEM_INDEX_URL + "/content/modify_directory_entry";
+export const SYSTEM_MODIFY_START_URL =
+    SYSTEM_INDEX_URL + "/content/modify_start";
 export const SYSTEM_CMS_LIBRARY = SYSTEM_INDEX_URL + "/library";
 export const SYSTEM_CMS_PROMOTION = SYSTEM_INDEX_URL + "/promotion";
 export const SYSTEM_CMS_DEVICES = SYSTEM_INDEX_URL + "/devices";

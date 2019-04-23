@@ -5,6 +5,7 @@ import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
     SYSTEM_CMS_LANDINGPAGE_URL,
+    SYSTEM_MODIFY_START_URL,
     SYSTEM_CMS_HOME_URL,
     // TOUCHSCREEN_CMS_INDEX_URL,
     SYSTEM_CMS_CONTENT_URL,
@@ -81,7 +82,7 @@ const SIDEBAR_ITEMS = [
         paddingLeft: "30px",
         expandItems: [
             {
-                name: SYSTEM_CMS_LANDINGPAGE_URL,
+                name: SYSTEM_MODIFY_START_URL,
                 displayName: "Start",
                 icon: Stars,
                 paddingLeft: "60px"

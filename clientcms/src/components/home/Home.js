@@ -21,7 +21,8 @@ import {
     SYSTEM_INDEX_URL,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY,
+    SYSTEM_MODIFY_START_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -49,6 +50,8 @@ const ModifyDirectoryList = lazy(() =>
 const ModifyDirectoryEntry = lazy(() =>
     import("../tablet/content/ModifyDirectoryEntry")
 );
+
+const ModifyStart = lazy(() => import("../tablet/content/ModifyStart"));
 
 const Library = lazy(() => import("../tablet/TabletLibrary"));
 
@@ -199,6 +202,14 @@ const SYSTEM_ROUTES = [
         sidebar: Sidebar,
         header: Header,
         main: ModifyDirectoryEntry,
+        withProps: {}
+    },
+    {
+        path: SYSTEM_MODIFY_START_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: ModifyStart,
         withProps: {}
     },
     {
