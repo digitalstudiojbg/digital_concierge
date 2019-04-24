@@ -46,8 +46,9 @@ export default gql`
         header: Upload
         headerMediaId: Int
         colours: [ColourThemeInput]!
-        layoutId: Int!
-        templateId: Int
+        layoutId: ID!
+        templateId: ID
+        systemId: ID!
         clientId: ID!
     }
 
@@ -60,8 +61,8 @@ export default gql`
         header: Upload
         headerMediaId: Int
         colours: [ColourThemeInput]!
-        layoutId: Int!
-        templateId: Int
+        layoutId: ID!
+        templateId: ID
         clientId: ID!
     }
 `;

@@ -10,7 +10,9 @@ import { UserInputError } from "apollo-server-express";
 export default {
     Query: {
         start: async (_root, { id }) => {
-            return await db.start.findByPk(id);
+            const start = await db.start.findByPk(id);
+            console.log(Object.keys(start.__proto__));
+            return start;
         },
         starts: async (_root, _input, { user }) => {
             return await db.start.findAll();
@@ -20,22 +22,24 @@ export default {
         createStart: async (
             _root,
             {
-                description,
-                button_text,
-                logo,
-                logoMediaId,
-                header,
-                headerMediaId,
-                colours,
-                layoutId,
-                templateId,
-                clientId
+                input: {
+                    description,
+                    button_text,
+                    logo,
+                    logoMediaId,
+                    header,
+                    headerMediaId,
+                    colours,
+                    layoutId,
+                    templateId,
+                    clientId,
+                    systemId
+                }
             },
             { user, clientIp }
         ) => {
             //Handle upload logo file here
-            let logo_media,
-                header_media = null;
+            let logo_media = null;
             if (Boolean(logo) && !Boolean(logoMediaId)) {
                 logo_media = await processUploadMedia(logo, clientId, "image");
             } else if (logoMediaId) {
@@ -46,6 +50,7 @@ export default {
             }
 
             //Handle upload header file here
+            let header_media = null;
             if (Boolean(header) && !Boolean(headerMediaId)) {
                 header_media = await processUploadMedia(
                     header,
@@ -66,13 +71,40 @@ export default {
                 headerMediaId: header_media.id,
                 ...processColours(colours),
                 layoutId,
-                templateId
+                ...(templateId && { templateId })
             });
 
             try {
                 await start.save();
             } catch (e) {
                 throw new UserInputError(e);
+            }
+
+            //Assign system ID the created start
+            const system = db.system.findByPk(systemId);
+
+            if (!system) {
+                throw new UserInputError(
+                    `Unable to find system ID: ${systemId}`
+                );
+            }
+
+            start = await db.start.findByPk(start.id);
+
+            try {
+                await db.system.update(
+                    {
+                        startId: start.id
+                    },
+                    { where: { id: systemId } }
+                );
+            } catch (e) {
+                throw new UserInputError(
+                    `Unable to set start ID ${
+                        start.id
+                    } to system ID ${systemId}: `,
+                    e
+                );
             }
 
             handleCreateActionActivityLog(
@@ -84,7 +116,8 @@ export default {
                     headerMediaId: header_media.id,
                     ...processColours(colours),
                     layoutId,
-                    templateId
+                    templateId,
+                    systemId
                 },
                 user,
                 clientIp
@@ -95,17 +128,19 @@ export default {
         editStart: async (
             _root,
             {
-                id,
-                description,
-                button_text,
-                logo,
-                logoMediaId,
-                header,
-                headerMediaId,
-                colours,
-                layoutId,
-                templateId,
-                clientId
+                input: {
+                    id,
+                    description,
+                    button_text,
+                    logo,
+                    logoMediaId,
+                    header,
+                    headerMediaId,
+                    colours,
+                    layoutId,
+                    templateId,
+                    clientId
+                }
             },
             { user, clientIp }
         ) => {
@@ -140,18 +175,20 @@ export default {
                 throw new UserInputError(`Invalid header image`);
             }
 
-            start = db.start.update({
-                ...(description && { description }),
-                ...(button_text && { button_text }),
-                logoMediaId: logo_media.id,
-                headerMediaId: header_media.id,
-                ...processColours(colours),
-                layoutId,
-                templateId
-            });
-
+            let start = null;
             try {
-                await start.save();
+                start = await db.start.update(
+                    {
+                        ...(description && { description }),
+                        ...(button_text && { button_text }),
+                        logoMediaId: logo_media.id,
+                        headerMediaId: header_media.id,
+                        ...processColours(colours),
+                        layoutId,
+                        ...(templateId && { templateId })
+                    },
+                    { where: { id } }
+                );
             } catch (e) {
                 throw new UserInputError(e);
             }
