@@ -1666,28 +1666,38 @@ class TreeView extends React.PureComponent {
             //Accounting for HOME Directory List
             return true;
         } else {
-            const { directory_entries_key } = this.props;
+            const { directory_entries_key, max_depth } = this.props;
             const dirListId = anchorElId.split("-")[1];
             const dirList = dirListOnlyDataTree.find(
                 ({ id }) => id === dirListId
             );
             return (
+                //Dir list does not have a child directory entry
                 Boolean(dirList) &&
                 Array.isArray(dirList[directory_entries_key]) &&
-                dirList[directory_entries_key].length === 0
+                dirList[directory_entries_key].length === 0 && //AND
+                //Dir list has not reached the maximum depth
+                Boolean(dirList.depth) &&
+                dirList.depth !== max_depth
             );
         }
     }
 
     allowToRenderAddDirEntryContextMenu() {
         const { anchorElId, dirListOnlyDataTree } = this.state;
-        const { child_directory_lists_key } = this.props;
+        const { child_directory_lists_key, max_depth } = this.props;
         const dirListId = anchorElId.split("-")[1];
         const dirList = dirListOnlyDataTree.find(({ id }) => id === dirListId);
+
         return (
-            Boolean(dirList) &&
-            Array.isArray(dirList[child_directory_lists_key]) &&
-            dirList[child_directory_lists_key].length === 0
+            //Dir list does not have a child directory list
+            (Boolean(dirList) &&
+                Array.isArray(dirList[child_directory_lists_key]) &&
+                dirList[child_directory_lists_key].length === 0) || //OR
+            //Dir list has reached the maximum depth and only entries can be added as its children
+            (Boolean(dirList) &&
+                Boolean(dirList.depth) &&
+                dirList.depth === max_depth)
         );
     }
 
@@ -2059,7 +2069,8 @@ TreeView.defaultProps = {
     edit_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     edit_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     create_list_url: SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-    create_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
+    create_entry_url: SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    max_depth: 5
 };
 
 TreeView.propTypes = {
@@ -2078,7 +2089,8 @@ TreeView.propTypes = {
     edit_list_url: PropTypes.string,
     edit_entry_url: PropTypes.string,
     create_list_url: PropTypes.string,
-    create_entry_url: PropTypes.string
+    create_entry_url: PropTypes.string,
+    max_depth: PropTypes.number
 };
 
 export default withRouter(withStyles(styles)(TreeView));

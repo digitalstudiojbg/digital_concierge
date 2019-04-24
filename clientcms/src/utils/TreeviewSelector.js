@@ -128,7 +128,8 @@ class TreeviewSelector extends React.PureComponent {
             selectedValues,
             directoryType,
             child_directory_lists_key,
-            directory_entries_key
+            directory_entries_key,
+            max_depth
         } = this.props;
         const { dataTree } = this.state;
 
@@ -156,7 +157,7 @@ class TreeviewSelector extends React.PureComponent {
                 ? child_directory_lists_key
                 : "";
 
-        const cannotSelect = dataTree
+        const cannotSelectFromKey = dataTree
             .filter(
                 directory =>
                     Array.isArray(directory[keyToAvoid]) &&
@@ -164,6 +165,22 @@ class TreeviewSelector extends React.PureComponent {
             )
             .map(({ id }) => id);
 
+        //If Directory Type is a list, then we cannot add to a directory list that already has reached the maximum depth
+        //If Directory Type is a entry, then it is okay to be put under the maximum depth
+        const cannotSelectFromDepth =
+            directoryType === "list"
+                ? dataTree
+                      .filter(({ depth }) => depth === max_depth)
+                      .map(({ id }) => id)
+                : [];
+
+        const cannotSelect =
+            cannotSelectFromDepth.length === 0
+                ? cannotSelectFromKey.slice()
+                : getAllUniqueItems([
+                      ...cannotSelectFromKey,
+                      ...cannotSelectFromDepth
+                  ]);
         //Setting state
         if (Boolean(selected_dir_lists)) {
             this.setState({
@@ -316,11 +333,15 @@ class TreeviewSelector extends React.PureComponent {
         const {
             selected_dir_lists,
             expanded: expandedOriginal,
-            dataTree
+            dataTree,
+            cannotSelect
         } = this.state;
 
-        if (!selected_dir_lists.includes(dir_list_id)) {
-            //Not inside selected list
+        if (
+            !selected_dir_lists.includes(dir_list_id) &&
+            !cannotSelect.includes(dir_list_id)
+        ) {
+            //Not inside selected list AND Not inside un-select-able array of directory lists
             this.addToSelected(dir_list_id);
             const expanded = [
                 ...expandedOriginal,
@@ -615,7 +636,8 @@ class TreeviewSelector extends React.PureComponent {
 
 TreeviewSelector.defaultProps = {
     child_directory_lists_key: "child_directory_lists",
-    directory_entries_key: "directory_entries"
+    directory_entries_key: "directory_entries",
+    max_depth: 5
 };
 
 TreeviewSelector.propTypes = {
@@ -626,7 +648,8 @@ TreeviewSelector.propTypes = {
     directory_entries_key: PropTypes.string,
     selectedValue: PropTypes.string,
     selectedValues: PropTypes.arrayOf(PropTypes.string),
-    directoryType: PropTypes.oneOf(["list", "entry"]).isRequired
+    directoryType: PropTypes.oneOf(["list", "entry"]).isRequired,
+    max_depth: PropTypes.number
 };
 
 export default withStyles(styles)(TreeviewSelector);
