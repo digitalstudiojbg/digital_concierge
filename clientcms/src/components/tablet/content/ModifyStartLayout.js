@@ -1,5 +1,4 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import LayoutPicker from "../../../utils/LayoutPicker";
 import styled from "styled-components";
 
@@ -43,4 +42,4 @@ export const ModifyStartLayout = ({ values, setFieldValue }) => {
     );
 };
 
-export default withRouter(ModifyStartLayout);
+export default ModifyStartLayout;

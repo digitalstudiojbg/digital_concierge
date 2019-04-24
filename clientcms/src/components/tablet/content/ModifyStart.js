@@ -27,6 +27,7 @@ import {
 } from "../../../data/query/system";
 import { isEmpty } from "lodash";
 import ModifyStartLayout from "./ModifyStartLayout";
+import ModifyStartContent from "./ModifyStartContent";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -413,8 +414,14 @@ const ModifyStart = props => {
                                         )}
                                         {tab === 2 && (
                                             <TabContainer>
-                                                {/*TODO: CHANGE THIS*/}
-                                                <React.Fragment />
+                                                <ModifyStartContent
+                                                    values={values}
+                                                    errors={errors}
+                                                    isSubmitting={isSubmitting}
+                                                    setFieldValue={
+                                                        setFieldValue
+                                                    }
+                                                />
                                             </TabContainer>
                                         )}
                                     </ContainerDivTab>
