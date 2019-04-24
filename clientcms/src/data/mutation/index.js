@@ -20,6 +20,7 @@ import { CREATE_PAYMENT } from "./payment";
 import { CREATE_ROLE } from "./role";
 import { CREATE_PALETTE } from "./palette";
 import { CREATE_DIRECTORY_ENTRY, EDIT_DIRECTORY_ENTRY } from "./directoryEntry";
+import { CREATE_START, EDIT_START } from "./start";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -43,5 +44,7 @@ export {
     DELETE_USER,
     CREATE_PALETTE,
     CREATE_DIRECTORY_ENTRY,
-    EDIT_DIRECTORY_ENTRY
+    EDIT_DIRECTORY_ENTRY,
+    CREATE_START,
+    EDIT_START
 };

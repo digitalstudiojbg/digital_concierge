@@ -7,16 +7,14 @@ import PropTypes from "prop-types";
 import {
     ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
-    DECIMAL_RADIX
+    DECIMAL_RADIX,
+    SYSTEM_MODIFY_START_URL
 } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { Formik, Form } from "formik";
 import { Mutation, withApollo } from "react-apollo";
-import {
-    EDIT_DIRECTORY_ENTRY,
-    CREATE_DIRECTORY_ENTRY
-} from "../../../data/mutation";
+import { CREATE_START, EDIT_START } from "../../../data/mutation";
 import * as Yup from "yup";
 import { List } from "immutable";
 import { sanitize } from "dompurify";
@@ -62,13 +60,10 @@ const styles = () => ({
 const lightGreyHeader = "rgb(247,247,247)";
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string().required("Required."),
+    description: Yup.string(),
     layout_id: Yup.string().required("Required."),
-    parent_ids: Yup.array()
-        .of(Yup.string())
-        .required("Required"),
-    template_id: Yup.string().required("Required."),
-    images: Yup.mixed().required("Required.")
+    headers: Yup.mixed().required("Required."),
+    logos: Yup.mixed().required("Required.")
 });
 
 TabContainer.propTypes = {
@@ -159,17 +154,20 @@ const ModifyStart = props => {
     };
 
     const actionAfterSubmission = (values, data) => {
-        const { history, match } = props;
+        // const { history, match } = props;
+
+        cleanUp(values);
         if (toExit) {
-            cleanUp(values);
-            history.push(
-                //TODO: CHANGE THIS
-                SYSTEM_CMS_CONTENT_URL.replace(
-                    ":system_id",
-                    parseInt(match.params.system_id)
-                )
-            );
+            setTab(0);
         }
+        // history.push(
+        //     SYSTEM_MODIFY_START_URL.replace(
+        //         ":system_id",
+        //         parseInt(match.params.system_id)
+        //     )
+        // );
+
+        console.log("Data received: ", data);
     };
 
     return (
@@ -180,9 +178,7 @@ const ModifyStart = props => {
             }}
         >
             <Mutation
-                mutation={
-                    has_data ? EDIT_DIRECTORY_ENTRY : CREATE_DIRECTORY_ENTRY //TODO: CHANGE THIS!
-                }
+                mutation={has_data ? EDIT_START : CREATE_START}
                 refetchQueries={[
                     {
                         query: getSystemDetail,
@@ -196,140 +192,91 @@ const ModifyStart = props => {
                         validationSchema={validationSchema}
                         onSubmit={(values, { setSubmitting }) => {
                             setSubmitting(true);
-                            console.log(values);
+                            // console.log(values);
 
-                            //TODO: CHANGE THIS!
-                            /*
                             const {
                                 id,
-                                name,
-                                title: initialTitle,
-                                title_plaintext,
-                                order,
-                                description: initialDescription,
-                                layout_id: layout_idString,
-                                colours: coloursImmutable,
-                                images,
-                                parent_ids,
-                                template_id
+                                description,
+                                button_text,
+                                headers,
+                                logos,
+                                layout_id: layoutId,
+                                colours: coloursImmutable
                             } = values;
-                            const { match } = props;
 
-                            const has_data = Boolean(id);
-                            const layout_id = parseInt(
-                                layout_idString,
-                                DECIMAL_RADIX
-                            );
                             const colours = List.isList(coloursImmutable)
                                 ? coloursImmutable.toJS()
                                 : [...coloursImmutable];
 
                             //https://stackoverflow.com/a/47892178
-                            let toSubmit = {
+                            const toSubmit = {
                                 ...(Boolean(id) && {
                                     id: parseInt(id, DECIMAL_RADIX)
                                 }),
-                                name,
-                                layout_id,
-                                template_id: parseInt(
-                                    template_id,
-                                    DECIMAL_RADIX
-                                ),
-                                system_id: parseInt(
-                                    match.params.system_id,
-                                    DECIMAL_RADIX
-                                ),
-                                parent_ids: parent_ids.map(id =>
-                                    parseInt(id, DECIMAL_RADIX)
-                                ),
+
+                                description: sanitize(description),
+                                button_text: sanitize(button_text),
+
+                                //Header image has not been uploaded
+                                ...(Array.isArray(headers) &&
+                                    headers.length === 1 &&
+                                    !headers[0].uploaded && {
+                                        header: headers[0]
+                                    }),
+
+                                //Header image has been uploaded and image changed
+                                ...(Array.isArray(headers) &&
+                                    headers.length === 1 &&
+                                    headers[0].uploaded &&
+                                    headers[0].changed && {
+                                        headerMediaId: parseInt(
+                                            headers[0].id,
+                                            DECIMAL_RADIX
+                                        )
+                                    }),
+
+                                //Logo image has not been uploaded
+                                ...(Array.isArray(logos) &&
+                                    logos.length === 1 &&
+                                    !logos[0].uploaded && {
+                                        logo: logos[0]
+                                    }),
+
+                                //Logo image has been uploaded and image changed
+                                ...(Array.isArray(logos) &&
+                                    logos.length === 1 &&
+                                    logos[0].uploaded &&
+                                    logos[0].changed && {
+                                        logoMediaId: parseInt(
+                                            logos[0].id,
+                                            DECIMAL_RADIX
+                                        )
+                                    }),
                                 colours,
-                                title: sanitize(initialTitle),
-                                title_plaintext,
-                                order,
-                                description: sanitize(initialDescription)
+                                layoutId,
+                                ...(!has_data && { systemId: system_id }),
+                                clientId: system.client.id
                             };
 
-                            if (images && images.length === 1 && !has_data) {
-                                if (!images[0].uploaded) {
-                                    console.log("CREATE WITH UPLOAD IMAGE");
-                                    toSubmit = {
-                                        ...toSubmit,
-                                        image: images[0]
-                                    };
-                                } else if (images[0].uploaded) {
-                                    console.log(
-                                        "CREATE WITH EXISTING IMAGE FROM LIBRARY"
-                                    );
-                                    toSubmit = {
-                                        ...toSubmit,
-                                        media_id: parseInt(
-                                            images[0].id,
-                                            DECIMAL_RADIX
-                                        )
-                                    };
-                                }
+                            console.log(toSubmit);
 
-                                console.log(toSubmit);
-
-                                action({
-                                    variables: { input: { ...toSubmit } }
-                                }).then(({ data }) => {
-                                    console.log(data);
-                                    actionAfterSubmission(
-                                        values,
-                                        data.createDirectoryEntry
-                                    );
-                                });
-                            } else if (
-                                images &&
-                                images.length === 1 &&
-                                has_data
-                            ) {
-                                console.log(images[0]);
-                                if (!images[0].uploaded) {
-                                    //If user upload another image
-                                    console.log("UPDATE WITH NEW IMAGE");
-
-                                    toSubmit = {
-                                        ...toSubmit,
-                                        image: images[0]
-                                    };
-                                } else if (
-                                    images[0].uploaded &&
-                                    images[0].changed
-                                ) {
-                                    console.log(
-                                        "UPDATE WITH EXISTING IMAGE FROM LIBRARY"
-                                    );
-
-                                    toSubmit = {
-                                        ...toSubmit,
-                                        media_id: parseInt(
-                                            images[0].id,
-                                            DECIMAL_RADIX
-                                        )
-                                    };
-                                } else {
-                                    console.log(
-                                        "UPDATE WITHOUT CHANGING IMAGE"
-                                    );
-                                }
-                                console.log(toSubmit);
-
-                                action({
-                                    variables: { input: { ...toSubmit } }
-                                }).then(({ data }) => {
-                                    console.log(data);
-                                    actionAfterSubmission(
-                                        values,
-                                        data.editDirectoryEntry
-                                    );
-                                });
-                            } */
+                            action({
+                                variables: { input: { ...toSubmit } }
+                            }).then(({ data }) => {
+                                console.log(data);
+                                actionAfterSubmission(
+                                    values,
+                                    Boolean(data) && Boolean(data.createStart)
+                                        ? data.createStart
+                                        : Boolean(data) &&
+                                          Boolean(data.editStart)
+                                        ? data.editStart
+                                        : null
+                                );
+                            });
                         }}
                     >
                         {({
-                            dirty,
                             isSubmitting,
                             errors,
                             values,

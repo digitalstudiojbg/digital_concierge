@@ -157,9 +157,6 @@ export default {
             } else if (logoMediaId) {
                 logo_media = await db.media.findByPk(logoMediaId);
             }
-            if (!logo_media) {
-                throw new UserInputError(`Invalid logo image`);
-            }
 
             //Handle upload header file here
             if (Boolean(header) && !Boolean(headerMediaId)) {
@@ -171,18 +168,14 @@ export default {
             } else if (headerMediaId) {
                 header_media = await db.media.findByPk(headerMediaId);
             }
-            if (!header_media) {
-                throw new UserInputError(`Invalid header image`);
-            }
 
-            let start = null;
             try {
-                start = await db.start.update(
+                await db.start.update(
                     {
                         ...(description && { description }),
                         ...(button_text && { button_text }),
-                        logoMediaId: logo_media.id,
-                        headerMediaId: header_media.id,
+                        ...(logo_media && { logoMediaId: logo_media.id }),
+                        ...(header_media && { headerMediaId: header_media.id }),
                         ...processColours(colours),
                         layoutId,
                         ...(templateId && { templateId })
@@ -198,11 +191,11 @@ export default {
                 {
                     ...(description && { description }),
                     ...(button_text && { button_text }),
-                    logoMediaId: logo_media.id,
-                    headerMediaId: header_media.id,
+                    ...(logo_media && { logoMediaId: logo_media.id }),
+                    ...(header_media && { headerMediaId: header_media.id }),
                     ...processColours(colours),
                     layoutId,
-                    templateId
+                    ...(templateId && { templateId })
                 },
                 user,
                 clientIp
