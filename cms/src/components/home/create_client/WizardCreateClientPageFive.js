@@ -1,22 +1,18 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query, withApollo } from "react-apollo";
 import {
     systemsByClientQuery,
-    getLayoutListFromType
+    getLayoutListFromType,
+    getNewCreatedClientId
 } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import SetupClientThemeAndLayout from "./five/SetupClientThemeAndLayout";
-import gql from "graphql-tag";
 
 export const WizardCreateClientPageFive = ({ next, client }) => {
     let clientId = null;
     try {
         clientId = client.readQuery({
-            query: gql`
-                {
-                    new_create_client_id @client
-                }
-            `
+            query: getNewCreatedClientId
         }).new_create_client_id;
     } catch (error) {
         console.log(error);
@@ -159,4 +155,4 @@ export const WizardCreateClientPageFive = ({ next, client }) => {
     );
 };
 
-export default WizardCreateClientPageFive;
+export default withApollo(WizardCreateClientPageFive);

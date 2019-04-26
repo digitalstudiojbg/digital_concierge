@@ -312,29 +312,6 @@ class SetupClientThemeAndLayout extends React.Component {
         });
     }
 
-    getLayoutOptions = which => {
-        const {
-            layoutsStart = [],
-            layoutsHome = [],
-            layoutsList = [],
-            layoutsEntry = []
-        } = this.props;
-        const layouts =
-            which === "start"
-                ? layoutsStart
-                : which === "home"
-                ? layoutsHome
-                : "list"
-                ? layoutsList
-                : layoutsEntry;
-        return layouts.map(item => ({ text: item.name, value: item.id }));
-    };
-
-    getLayoutItem = layoutId => {
-        // const { layouts = [] } = this.props;
-        return this.layouts.find(({ id }) => id === layoutId) || {};
-    };
-
     getLayoutMedia = layoutId => {
         // const { layouts = [] } = this.props;
         const { media } = this.layouts.find(({ id }) => id === layoutId) || {};
@@ -450,7 +427,14 @@ class SetupClientThemeAndLayout extends React.Component {
                     if (mutationError) return `Error! ${mutationError.message}`;
 
                     const { systemIndex, systemThemes, error } = this.state;
-                    const { systems, classes } = this.props;
+                    const {
+                        systems,
+                        classes,
+                        layoutsStart = [],
+                        layoutsHome = [],
+                        layoutsList = [],
+                        layoutsEntry = []
+                    } = this.props;
                     const values = Boolean(systemThemes)
                         ? systemThemes.get(systemIndex)
                         : Map();
@@ -459,10 +443,22 @@ class SetupClientThemeAndLayout extends React.Component {
                         : List();
 
                     const { id: systemId } = systems[systemIndex] || {};
-                    const START_LAYOUT_OPTIONS = this.getLayoutOptions("start");
-                    const HOME_LAYOUT_OPTIONS = this.getLayoutOptions("home");
-                    const LIST_LAYOUT_OPTIONS = this.getLayoutOptions("list");
-                    const ENTRY_LAYOUT_OPTIONS = this.getLayoutOptions("entry");
+                    const START_LAYOUT_OPTIONS = layoutsStart.map(item => ({
+                        text: item.name,
+                        value: item.id
+                    }));
+                    const HOME_LAYOUT_OPTIONS = layoutsHome.map(item => ({
+                        text: item.name,
+                        value: item.id
+                    }));
+                    const LIST_LAYOUT_OPTIONS = layoutsList.map(item => ({
+                        text: item.name,
+                        value: item.id
+                    }));
+                    const ENTRY_LAYOUT_OPTIONS = layoutsEntry.map(item => ({
+                        text: item.name,
+                        value: item.id
+                    }));
                     // const currentDefaultStartLayout =
                     //     values.get("defaultStartLayout") || Map();
                     // const currentDefaultHomeLayout =
