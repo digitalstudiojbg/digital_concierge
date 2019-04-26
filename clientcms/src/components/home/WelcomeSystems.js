@@ -127,6 +127,7 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
                         style={system_entry_style}
                         key={`${id}-${index}`}
                         target="_blank"
+                        rel="noopener noreferrer"
                         to={SYSTEM_INDEX_URL.replace(":system_id", id)}
                     >
                         <div>{name}</div>

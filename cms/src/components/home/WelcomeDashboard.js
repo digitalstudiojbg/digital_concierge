@@ -133,6 +133,7 @@ export const WelcomeDashboard = ({ classes }) => (
                                                 client.id
                                             }
                                             target="_blank"
+                                            rel="noopener noreferrer"
                                         >
                                             <CardMedia
                                                 component="img"
