@@ -806,6 +806,10 @@ class TreeView extends React.PureComponent {
                 });
             }
         });
+
+        //Remove any HOME ID -1 from directory List ID List
+        toUpdateDirListIds = toUpdateDirListIds.filter(id => id !== -1);
+
         action({
             variables: {
                 directoryEntryIdList: toUpdateDirEntryIds,
