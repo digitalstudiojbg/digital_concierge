@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         template.hasMany(models.directory_list);
         template.hasMany(models.directory_entry);
         template.hasMany(models.start);
+        template.hasMany(models.home);
     };
     return template;
 };

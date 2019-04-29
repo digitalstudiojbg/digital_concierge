@@ -112,7 +112,27 @@ export const getSystemDetail = gql`
             }
             home {
                 id
-                name
+                description
+                button_text
+                header {
+                    id
+                    path
+                    type
+                }
+                logo {
+                    id
+                    path
+                    name
+                }
+                template {
+                    id
+                    name
+                }
+                layout {
+                    id
+                    name
+                }
+                colours
             }
             device_type {
                 id
