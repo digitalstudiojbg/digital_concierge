@@ -32,7 +32,6 @@ const QueryHOC = ({ ...props }) => (
             if (loading) return <Loading loadingData />;
             if (error) return "Error message: " + error.message;
             const combinedProps = { ...props, layouts };
-            console.log("LAYOUTS ", layouts);
             return <ModifyHomeContent {...combinedProps} />;
         }}
     </Query>

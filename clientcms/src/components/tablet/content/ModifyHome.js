@@ -82,8 +82,6 @@ const ModifyHome = props => {
         variables: { id: system_id }
     });
 
-    console.log("SYSTEM IS: ", system);
-
     const {
         system: {
             theme: {
@@ -131,8 +129,6 @@ const ModifyHome = props => {
               colours: [],
               initial_colours: []
           };
-
-    console.log("INITIAL: ", initialValues);
 
     const cleanUp = values => {
         //Do clean up for generated preview images to prevent memory leak
