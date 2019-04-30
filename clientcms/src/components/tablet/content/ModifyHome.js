@@ -146,15 +146,19 @@ const ModifyHome = props => {
         });
     };
 
-    const actionAfterSubmission = (values, data) => {
+    const actionAfterSubmission = (values, data, setFieldValue) => {
         // const { history, match } = props;
-
+        console.log("Data received: ", data);
         cleanUp(values);
+
+        if (!Boolean(values.id)) {
+            //Set ID if values.id is undefined
+            setFieldValue("id", data.id);
+        }
+
         if (toExit) {
             setTab(0);
         }
-
-        console.log("Data received: ", data);
     };
 
     return (
@@ -177,7 +181,10 @@ const ModifyHome = props => {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(
+                            values,
+                            { setSubmitting, setFieldValue }
+                        ) => {
                             setSubmitting(true);
                             // console.log(values);
 
@@ -256,7 +263,8 @@ const ModifyHome = props => {
                                         : Boolean(data) &&
                                           Boolean(data.editHome)
                                         ? data.editHome
-                                        : null
+                                        : null,
+                                    setFieldValue
                                 );
                             });
                         }}

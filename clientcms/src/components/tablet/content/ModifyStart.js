@@ -153,10 +153,17 @@ const ModifyStart = props => {
         });
     };
 
-    const actionAfterSubmission = (values, data) => {
+    const actionAfterSubmission = (values, data, setFieldValue) => {
         // const { history, match } = props;
 
+        console.log("Data received: ", data);
         cleanUp(values);
+
+        if (!Boolean(values.id)) {
+            //Set ID if values.id is undefined
+            setFieldValue("id", data.id);
+        }
+
         if (toExit) {
             setTab(0);
         }
@@ -190,7 +197,10 @@ const ModifyStart = props => {
                     <Formik
                         initialValues={initialValues}
                         validationSchema={validationSchema}
-                        onSubmit={(values, { setSubmitting }) => {
+                        onSubmit={(
+                            values,
+                            { setSubmitting, setFieldValue }
+                        ) => {
                             setSubmitting(true);
                             // console.log(values);
 
@@ -271,7 +281,8 @@ const ModifyStart = props => {
                                         : Boolean(data) &&
                                           Boolean(data.editStart)
                                         ? data.editStart
-                                        : null
+                                        : null,
+                                    setFieldValue
                                 );
                             });
                         }}
