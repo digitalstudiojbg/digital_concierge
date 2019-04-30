@@ -11,9 +11,6 @@ module.exports = {
             description: {
                 type: Sequelize.TEXT
             },
-            button_text: {
-                type: Sequelize.TEXT
-            },
             logoMediaId: {
                 type: Sequelize.INTEGER
             },

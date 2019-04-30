@@ -4,7 +4,6 @@ module.exports = (sequelize, DataTypes) => {
         "home",
         {
             description: DataTypes.TEXT,
-            button_text: DataTypes.TEXT,
             logoMediaId: DataTypes.INTEGER,
             headerMediaId: DataTypes.INTEGER,
             colour1Hex: {

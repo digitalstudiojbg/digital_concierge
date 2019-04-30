@@ -14,7 +14,6 @@ export default gql`
     type Home {
         id: ID!
         description: String
-        button_text: String
         logoMediaId: Int
         logo: Media
         headerMediaId: Int
@@ -40,7 +39,6 @@ export default gql`
 
     input CreateHomeInput {
         description: String
-        button_text: String
         logo: Upload
         logoMediaId: Int
         header: Upload
@@ -55,7 +53,6 @@ export default gql`
     input UpdateHomeInput {
         id: ID!
         description: String
-        button_text: String
         logo: Upload
         logoMediaId: Int
         header: Upload

@@ -15,7 +15,6 @@ export default {
             {
                 input: {
                     description,
-                    button_text,
                     logo,
                     logoMediaId,
                     header,
@@ -57,7 +56,6 @@ export default {
 
             let home = db.home.build({
                 ...(description && { description }),
-                ...(button_text && { button_text }),
                 logoMediaId: logo_media.id,
                 headerMediaId: header_media.id,
                 ...processColours(colours),
@@ -102,7 +100,6 @@ export default {
                 home,
                 {
                     ...(description && { description }),
-                    ...(button_text && { button_text }),
                     logoMediaId: logo_media.id,
                     headerMediaId: header_media.id,
                     ...processColours(colours),
@@ -122,7 +119,6 @@ export default {
                 input: {
                     id,
                     description,
-                    button_text,
                     logo,
                     logoMediaId,
                     header,
@@ -164,7 +160,6 @@ export default {
                 await db.home.update(
                     {
                         ...(description && { description }),
-                        ...(button_text && { button_text }),
                         ...(logo_media && { logoMediaId: logo_media.id }),
                         ...(header_media && { headerMediaId: header_media.id }),
                         ...processColours(colours),
@@ -181,7 +176,6 @@ export default {
                 home,
                 {
                     ...(description && { description }),
-                    ...(button_text && { button_text }),
                     ...(logo_media && { logoMediaId: logo_media.id }),
                     ...(header_media && { headerMediaId: header_media.id }),
                     ...processColours(colours),
