@@ -57,13 +57,23 @@ module.exports = {
                     clientId: 2,
                     first_phone_number: "0425872504",
                     position: "Graphics Designer"
+                },
+                {
+                    name: "Jaleh Pedram",
+                    email: "jaleh@johnbatman.com.au",
+                    password: hash,
+                    active: true,
+                    mediumId: 2,
+                    clientId: 2,
+                    first_phone_number: "0425872504",
+                    position: "Front End Developer"
                 }
             ],
             {}
         );
     },
 
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.bulkDelete("users", null, {});
     }
 };
