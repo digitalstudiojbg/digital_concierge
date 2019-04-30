@@ -1,5 +1,9 @@
 import gql from "graphql-tag";
-import { themeDetailFragment, startDetailFragment } from "../fragment";
+import {
+    themeDetailFragment,
+    startDetailFragment,
+    homeDetailFragment
+} from "../fragment";
 
 export const getSystemsFromUser = gql`
     query get_systems_by_user {
@@ -87,52 +91,10 @@ export const getSystemDetail = gql`
                 name
             }
             start {
-                id
-                description
-                button_text
-                header {
-                    id
-                    path
-                    type
-                }
-                logo {
-                    id
-                    path
-                    name
-                }
-                template {
-                    id
-                    name
-                }
-                layout {
-                    id
-                    name
-                }
-                colours
+                ...startDetail
             }
             home {
-                id
-                description
-                button_text
-                header {
-                    id
-                    path
-                    type
-                }
-                logo {
-                    id
-                    path
-                    name
-                }
-                template {
-                    id
-                    name
-                }
-                layout {
-                    id
-                    name
-                }
-                colours
+                ...homeDetail
             }
             device_type {
                 id
@@ -152,6 +114,8 @@ export const getSystemDetail = gql`
         }
     }
     ${themeDetailFragment}
+    ${startDetailFragment}
+    ${homeDetailFragment}
 `;
 
 export const getSystemThemeAndPalettes = gql`
@@ -187,4 +151,19 @@ export const getSystemStart = gql`
         }
     }
     ${startDetailFragment}
+`;
+
+export const getSystemHome = gql`
+    query getSystemHome($id: ID!) {
+        system(id: $id) {
+            id
+            home {
+                ...homeDetail
+            }
+            client {
+                id
+            }
+        }
+    }
+    ${homeDetailFragment}
 `;

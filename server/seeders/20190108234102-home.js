@@ -7,12 +7,12 @@ module.exports = {
             [
                 {
                     description: "<p>WELCOME TO JBG</p>",
-                    layoutId: 16
+                    layoutId: 4
                 },
 
                 {
                     description: "<p>WELCOME TO HOLIDAY INN RESORT VANUATU</p>",
-                    layoutId: 16
+                    layoutId: 4
                 }
             ],
             {}

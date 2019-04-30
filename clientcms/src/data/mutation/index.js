@@ -21,6 +21,7 @@ import { CREATE_ROLE } from "./role";
 import { CREATE_PALETTE } from "./palette";
 import { CREATE_DIRECTORY_ENTRY, EDIT_DIRECTORY_ENTRY } from "./directoryEntry";
 import { CREATE_START, EDIT_START } from "./start";
+import { CREATE_HOME, EDIT_HOME } from "./home";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -46,5 +47,7 @@ export {
     CREATE_DIRECTORY_ENTRY,
     EDIT_DIRECTORY_ENTRY,
     CREATE_START,
-    EDIT_START
+    EDIT_START,
+    CREATE_HOME,
+    EDIT_HOME
 };

@@ -6,6 +6,7 @@ import {
     SYSTEM_CMS_INDEX_URL,
     SYSTEM_CMS_LANDINGPAGE_URL,
     SYSTEM_MODIFY_START_URL,
+    SYSTEM_MODIFY_HOME_URL,
     SYSTEM_CMS_HOME_URL,
     // TOUCHSCREEN_CMS_INDEX_URL,
     SYSTEM_CMS_CONTENT_URL,
@@ -88,7 +89,7 @@ const SIDEBAR_ITEMS = [
                 paddingLeft: "60px"
             },
             {
-                name: SYSTEM_CMS_HOME_URL,
+                name: SYSTEM_MODIFY_HOME_URL,
                 displayName: "Home",
                 icon: BookmarkBorder,
                 paddingLeft: "60px"
@@ -272,6 +273,10 @@ class Sidebar extends Component {
                     break;
                 case SYSTEM_MODIFY_START_URL.replace(":system_id", system_id):
                     urlPath = SYSTEM_MODIFY_START_URL;
+                    expandContent = true;
+                    break;
+                case SYSTEM_MODIFY_HOME_URL.replace(":system_id", system_id):
+                    urlPath = SYSTEM_MODIFY_HOME_URL;
                     expandContent = true;
                     break;
                 default:
