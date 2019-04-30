@@ -146,7 +146,12 @@ const ModifyHome = props => {
         });
     };
 
-    const actionAfterSubmission = (values, data, setFieldValue) => {
+    const actionAfterSubmission = (
+        values,
+        data,
+        setFieldValue,
+        setSubmitting
+    ) => {
         // const { history, match } = props;
         console.log("Data received: ", data);
         cleanUp(values);
@@ -156,9 +161,22 @@ const ModifyHome = props => {
             setFieldValue("id", data.id);
         }
 
+        //Update header images
+        if (Boolean(data.header) && !isEmpty(data.header)) {
+            setFieldValue("headers", [{ ...data.header, uploaded: true }]);
+        }
+
+        //Update logo images
+        if (Boolean(data.logo) && !isEmpty(data.logo)) {
+            setFieldValue("logos", [{ ...data.logo, uploaded: true }]);
+        }
+
         if (toExit) {
             setTab(0);
         }
+
+        //Set Submitting to false
+        setSubmitting(false);
     };
 
     return (
@@ -264,7 +282,8 @@ const ModifyHome = props => {
                                           Boolean(data.editHome)
                                         ? data.editHome
                                         : null,
-                                    setFieldValue
+                                    setFieldValue,
+                                    setSubmitting
                                 );
                             });
                         }}
