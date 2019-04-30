@@ -43,6 +43,11 @@ module.exports = {
                     notEmpty: true
                 },
                 defaultValue: true
+            },
+            checkout_date: {
+                allowNull: false,
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.literal("NOW()")
             }
         });
     },

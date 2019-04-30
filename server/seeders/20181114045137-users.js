@@ -67,6 +67,16 @@ module.exports = {
                     clientId: 2,
                     first_phone_number: "0425872504",
                     position: "Front End Developer"
+                },
+                {
+                    name: "Sample User",
+                    email: "sample@sampleVenue.com.au",
+                    password: hash,
+                    active: true,
+                    mediumId: 2,
+                    clientId: 3,
+                    first_phone_number: "0425872504",
+                    position: "Sample CEO"
                 }
             ],
             {}

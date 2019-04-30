@@ -19,7 +19,7 @@ module.exports = {
                     phone: "++61 9879 8588",
                     mobile: "+61 425 872 499",
                     email: "jarrod@johnbatman.com.au",
-                    clientId: 2
+                    clientId: 3
                 },
                 {
                     name: "Yijie Shen",
@@ -27,7 +27,7 @@ module.exports = {
                     phone: "++61 9879 8588",
                     mobile: "+61 425 872 498",
                     email: "nealshen@johnbatman.com.au",
-                    clientId: 2
+                    clientId: 3
                 }
             ],
             {}

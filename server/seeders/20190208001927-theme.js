@@ -7,7 +7,7 @@ module.exports = {
             [
                 {
                     companyLogo:
-                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/jbg_logo.png",
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/sample.jpg",
                     headerFont: "Source Sans Pro Black",
                     subHeaderFont: "Source Sans Pro Black",
                     bodyFont: "Source Sans Pro Black",
@@ -30,7 +30,7 @@ module.exports = {
                 },
                 {
                     companyLogo:
-                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/jbg_logo.png",
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/sample.jpg",
                     headerFont: "Source Sans Pro Black",
                     subHeaderFont: "Source Sans Pro Black",
                     bodyFont: "Source Sans Pro Black",

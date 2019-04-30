@@ -6,17 +6,17 @@ module.exports = {
             "rooms",
             [
                 {
-                    name: "JBG LOBBY",
-                    clientId: 2
+                    name: "SAMPLE LOBBY",
+                    clientId: 3
                 },
 
                 {
-                    name: "JBG ROOM 1",
-                    clientId: 2
+                    name: "SAMPLE ROOM 1",
+                    clientId: 3
                 },
                 {
-                    name: "JBG ROOM 2",
-                    clientId: 2
+                    name: "SAMPLE ROOM 2",
+                    clientId: 3
                 },
                 {
                     name: "HOLIDAY INN LOBBY",

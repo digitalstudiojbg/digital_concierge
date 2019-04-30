@@ -17,6 +17,13 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            checkout_date: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             }
         },
         {}

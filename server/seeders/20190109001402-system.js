@@ -6,9 +6,9 @@ module.exports = {
             "systems",
             [
                 {
-                    name: "JOHN BATMAN GROUP TABLET SYSTEM",
+                    name: "SAMPLE VENUE TABLET SYSTEM",
                     numberOfDevices: 100,
-                    clientId: 2,
+                    clientId: 3,
                     startId: 1,
                     homeId: 1,
                     justBrilliantGuideId: 1,
@@ -16,9 +16,9 @@ module.exports = {
                     systemTypeId: 1
                 },
                 {
-                    name: "JOHN BATMAN GROUP TOUCH SCREEN SYSTEM",
+                    name: "SAMPLE VENUE TOUCH SCREEN SYSTEM",
                     numberOfDevices: 2,
-                    clientId: 2,
+                    clientId: 3,
                     startId: 1,
                     homeId: 1,
                     justBrilliantGuideId: 1,

@@ -10,6 +10,8 @@ import {
     processDelete
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 export default {
     Query: {
@@ -17,7 +19,10 @@ export default {
             return await db.client.findByPk(id);
         },
         clients: async (_root, _input, { user }) => {
-            return await db.client.findAll();
+            return await db.client.findAll({
+                //CLIENT NOT EQUAL TO JOHN BATMAN GROUP
+                where: { name: { [Op.notLike]: "JOHN BATMAN GROUP" } }
+            });
         },
         clientByUser: async (_root, _input, { user }) =>
             await db.client.findByPk(user.clientId)

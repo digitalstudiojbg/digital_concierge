@@ -326,6 +326,15 @@ module.exports = {
                     clientId: 1,
                     key: "cms_users/DIVING-HEADERIMAGE.png",
                     size: Math.random() * 50000
+                },
+                {
+                    name: "sample.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/sample.jpg",
+                    type: "image",
+                    clientId: 3,
+                    key: "cms_users/sample.jpg",
+                    size: Math.random() * 50000
                 }
             ],
             {}

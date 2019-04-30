@@ -23,7 +23,7 @@ module.exports = {
                     expire_date: nextYear,
                     auto_renewal: true,
                     licenseTypeId: 2,
-                    clientId: 2
+                    clientId: 3
                 }
             ],
             {}

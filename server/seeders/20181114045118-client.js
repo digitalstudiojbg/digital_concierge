@@ -40,6 +40,24 @@ module.exports = {
                     number_of_users: 5,
                     avatar:
                         "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/jbg_logo.png"
+                },
+                {
+                    name: "SAMPLE VENUE",
+                    full_company_name: "SAMPLE VENUE PTY LTD",
+                    nature_of_business: "HOSPITALITY SUPPLIER",
+                    venue_address: "1234 Sample Street",
+                    venue_city: "Sample City",
+                    venue_zip_code: "1234",
+                    postal_address: "1234 Sample Street",
+                    postal_city: "Sample City",
+                    postal_zip_code: "1234",
+                    venueStateId: 7,
+                    postalStateId: 7,
+                    phone: "+61 9879 8588",
+                    email: "info@sample.com.au",
+                    number_of_users: 5,
+                    avatar:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/sample.jpg"
                 }
             ],
             {}

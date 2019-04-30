@@ -6,22 +6,22 @@ module.exports = {
             "devices",
             [
                 {
-                    number: "JBG TOUCH SCREEN #1",
+                    number: "SAMPLE TOUCH SCREEN #1",
                     roomId: 1,
-                    clientId: 2,
+                    clientId: 3,
                     systemId: 1
                 },
 
                 {
-                    number: "JBG TABLET #1",
+                    number: "SAMPLE TABLET #1",
                     roomId: 2,
-                    clientId: 2,
+                    clientId: 3,
                     systemId: 2
                 },
                 {
-                    number: "JBG TABLET #1",
+                    number: "SAMPLE TABLET #1",
                     roomId: 3,
-                    clientId: 2,
+                    clientId: 3,
                     systemId: 2
                 },
                 {

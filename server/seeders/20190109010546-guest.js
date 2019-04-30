@@ -1,34 +1,34 @@
 "use strict";
 
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up: queryInterface => {
         return queryInterface.bulkInsert(
             "guests",
             [
                 {
-                    firstname: "Yijie",
-                    lastname: "Shen",
-                    email: "nealshen@johnbatman.com.au",
-                    clientId: 2
+                    firstname: "Sample",
+                    lastname: "Guest 1",
+                    email: "sample1@sampleVenue.com.au",
+                    clientId: 3
                 },
 
                 {
-                    firstname: "Calum",
-                    lastname: "Beech",
-                    email: "calum@johnbatman.com.au",
-                    clientId: 2
+                    firstname: "Sample",
+                    lastname: "Guest 2",
+                    email: "sample2@sampleVenue.com.au",
+                    clientId: 3
                 },
                 {
-                    firstname: "Jonathan",
-                    lastname: "Wongsodihardjo",
-                    email: "jonathan@johnbatman.com.au",
-                    clientId: 2
+                    firstname: "Sample",
+                    lastname: "Guest 3",
+                    email: "sample3@sampleVenue.com.au",
+                    clientId: 3
                 },
                 {
-                    firstname: "Laura",
-                    lastname: "Morina",
-                    email: "laura@johnbatman.com.au",
-                    clientId: 2
+                    firstname: "Sample",
+                    lastname: "Guest 4",
+                    email: "sample4@sampleVenue.com.au",
+                    clientId: 3
                 },
                 {
                     firstname: "Douglas",
@@ -46,7 +46,7 @@ module.exports = {
             {}
         );
     },
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.bulkDelete("guests", null, {});
     }
 };
