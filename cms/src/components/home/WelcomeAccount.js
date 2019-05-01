@@ -351,7 +351,7 @@ class WelcomeAccount extends React.Component {
             name = "",
             full_company_name = "",
             nature_of_business = "",
-            address = "",
+            venue_address: address = "",
             postal_address = "",
             phone = "",
             email = "",

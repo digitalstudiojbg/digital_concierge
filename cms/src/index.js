@@ -8,7 +8,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "apollo-link-context";
 import { getAccessToken, isLoggedIn } from "./auth/auth";
 import { API_URL } from "./utils/Constants";
-import { withClientState } from "apollo-link-state";
+// import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
 
 const authLink = setContext((_, { headers }) => {
@@ -23,18 +23,18 @@ const authLink = setContext((_, { headers }) => {
 const cache = new InMemoryCache({
     dataIdFromObject: object => {
         switch (object.__typename) {
-            case "TB_Directory":
+            case "User":
                 return Math.random();
             default:
                 return defaultDataIdFromObject(object);
         }
     }
 });
-const stateLink = withClientState({
-    cache,
-    resolvers: {},
-    defaults: {}
-});
+// const stateLink = withClientState({
+//     cache,
+//     resolvers: {},
+//     defaults: {}
+// });
 
 /**
  * https://kamranicus.com/posts/2018-03-06-graphql-apollo-object-caching
@@ -43,16 +43,17 @@ const stateLink = withClientState({
 const client = new ApolloClient({
     cache,
     link: ApolloLink.from([
-        stateLink,
+        // stateLink,
         authLink,
         createUploadLink({
             uri: `${API_URL}/graphql`
         })
     ]),
-    clientState: {
-        defaults: { currentSystem: true },
-        resolvers: {}
-    }
+    // clientState: {
+    //     defaults: { currentSystem: true },
+    //     resolvers: {}
+    // }
+    resolvers: {}
 });
 
 ReactDOM.render(
