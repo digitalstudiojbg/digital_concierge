@@ -5,6 +5,12 @@ export const getJustBrilliantGuideList = gql`
         justBrilliantGuides {
             id
             name
+            media {
+                id
+                name
+                path
+                type
+            }
         }
     }
 `;

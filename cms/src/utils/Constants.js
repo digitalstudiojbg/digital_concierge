@@ -177,3 +177,13 @@ export const bytesToKb = size => size / 1024;
 
 //https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation/8027444
 export const HEX_COLOUR_REGEX = /^#[0-9A-F]{6}$/i;
+
+export const LayoutImageDiv = styled.div`
+    width: ${props => props.width};
+    height: ${props => props.height};
+    background-image: url(${props => props.imageUrl});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: white;
+`;

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
+// import { LayoutImageDiv } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -16,6 +17,20 @@ const HeaderDiv = styled.div`
     width: 100%;
     height: 10%;
     display: flex;
+`;
+
+const PublicationListContainerDiv = styled.div`
+    width: 100%;
+    height: 80%;
+    overflow-x: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+`;
+
+const PublicationEntryContainerDiv = styled.div`
+    width: 20%;
+    height: 100%;
 `;
 
 const styles = theme => ({
@@ -65,6 +80,25 @@ const PublicationList = ({ data: { publications }, classes }) => {
         </Paper>
     );
 
+    const renderPublicationList = () => {
+        const toLoop =
+            search.length > 0
+                ? publications.filter(({ name }) =>
+                      name.toLowerCase().includes(search.toLowerCase())
+                  )
+                : publications;
+        return (
+            <PublicationListContainerDiv>
+                {toLoop.map(({ id, name, media: [{ path }] }, index) => (
+                    <PublicationEntryContainerDiv key={`PUB-${index}-${id}`}>
+                        <img src={path} alt={name} style={{ height: "80%" }} />
+                        {name}
+                    </PublicationEntryContainerDiv>
+                ))}
+            </PublicationListContainerDiv>
+        );
+    };
+
     return (
         <ContainerDiv>
             <HeaderDiv>
@@ -79,7 +113,7 @@ const PublicationList = ({ data: { publications }, classes }) => {
                     </Button>
                 </div>
             </HeaderDiv>
-            <div>PUBLICATION LIST {publications.length}</div>
+            {renderPublicationList()}
         </ContainerDiv>
     );
 };
