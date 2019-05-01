@@ -3,7 +3,8 @@ import "./Welcome.css";
 import { getCurrentUserQuery as query } from "../../data/query";
 import { withApollo } from "react-apollo";
 import styled from "styled-components";
-import { withStyles } from "@material-ui/core/styles";
+// import { withStyles } from "@material-ui/core/styles";
+import { WELCOME_URL } from "../../utils/Constants";
 // import { Query } from "react-apollo";
 // import { gql } from "apollo-boost";
 
@@ -65,33 +66,35 @@ const SidebarNormal = styled.div`
     font-size: 1.5em;
 `;
 
-const styles = () => ({
-    sidebarButtonSelected: {
-        background: "rgb(113, 113, 113)",
-        color: "white",
-        fontWeight: 700,
-        borderRadius: 10,
-        marginTop: 20
-    },
-    sidebarButtonNormal: {
-        background: "white",
-        color: "black",
-        fontWeight: 700,
-        borderRadius: 10,
-        marginTop: 20
-    }
-});
+// const styles = () => ({
+//     sidebarButtonSelected: {
+//         background: "rgb(113, 113, 113)",
+//         color: "white",
+//         fontWeight: 700,
+//         borderRadius: 10,
+//         marginTop: 20
+//     },
+//     sidebarButtonNormal: {
+//         background: "white",
+//         color: "black",
+//         fontWeight: 700,
+//         borderRadius: 10,
+//         marginTop: 20
+//     }
+// });
 
 // const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
 const WelcomeAccount = lazy(() => import("./WelcomeAccount"));
 const WelcomeDashboard = lazy(() => import("./WelcomeDashboard"));
 const WelcomeClients = lazy(() => import("./WelcomeClients"));
+const WelcomeGuide = lazy(() => import("./WelcomeGuide"));
 
 class Welcome extends Component {
     sidebarButtons = [
         { id: "dashboard", name: "DASHBOARD", component: WelcomeDashboard },
         // { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
         { id: "clients", name: "CLIENTS", component: WelcomeClients },
+        { id: "guide", name: "JUST BRILLIANT GUIDES", component: WelcomeGuide },
         { id: "account", name: "ACCOUNT", component: WelcomeAccount }
         // { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },
         // { id: "users", name: "USERS & ROLES", component: WelcomeSystems },
@@ -101,8 +104,17 @@ class Welcome extends Component {
         selected: "dashboard"
     };
 
+    componentDidMount() {
+        const { match } = this.props;
+        if (match && match.params && match.params.which) {
+            this.setState({ selected: match.params.which });
+        }
+    }
+
     clickSidebarButton(selected) {
-        this.setState({ selected });
+        this.setState({ selected }, () => {
+            this.props.history.push(WELCOME_URL + "/" + selected);
+        });
     }
 
     renderSidebarButtons() {
@@ -213,4 +225,5 @@ class Welcome extends Component {
     }
 }
 
-export default withApollo(withStyles(styles)(Welcome));
+// export default withApollo(withStyles(styles)(Welcome));
+export default withApollo(Welcome);

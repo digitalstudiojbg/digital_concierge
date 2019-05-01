@@ -12,7 +12,8 @@ import {
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL,
-    SYSTEM_INDEX_URL
+    SYSTEM_INDEX_URL,
+    WELCOME_URL_ROUTER
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
 
@@ -21,6 +22,10 @@ const Home = lazy(() => import("./home/Home"));
 const routes = [
     {
         path: WELCOME_URL,
+        component: Home
+    },
+    {
+        path: WELCOME_URL_ROUTER,
         component: Home
     },
     {

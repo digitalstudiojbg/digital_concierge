@@ -20,7 +20,8 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY,
+    WELCOME_URL_ROUTER
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -61,6 +62,13 @@ import Welcome from "./Welcome.js";*/
 const routes = [
     {
         path: WELCOME_URL,
+        exact: true,
+        header: Header,
+        main: Welcome,
+        withProps: {}
+    },
+    {
+        path: WELCOME_URL_ROUTER,
         exact: true,
         header: Header,
         main: Welcome,

@@ -22,6 +22,7 @@ import { getSystemTypes } from "./systemType";
 import { getFeatures } from "./feature";
 import { getFeaturesByCategories } from "./featureCategory";
 import { getContractByClientId } from "./contract";
+import { getJustBrilliantGuideList } from "./justBrilliantGuide";
 
 export {
     getCurrentUserQuery,
@@ -46,5 +47,6 @@ export {
     getFeaturesByCategories,
     systemsByClientQuery,
     getContractByClientId,
-    getLayoutListFromType
+    getLayoutListFromType,
+    getJustBrilliantGuideList
 };
