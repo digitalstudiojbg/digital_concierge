@@ -23,7 +23,7 @@ export const DECIMAL_RADIX = 10;
 export const LOGIN_URL = "/login";
 export const WELCOME_URL = "/main";
 export const WELCOME_URL_ROUTER = "/main/:which";
-export const CREATE_NEW_CLIENT = WELCOME_URL + "/new_client";
+export const CREATE_NEW_CLIENT = "/create_new_client";
 
 export const SYSTEM_INDEX_URL = "/system/:system_id";
 export const SYSTEM_CMS_INDEX_URL = SYSTEM_INDEX_URL + "/cms";

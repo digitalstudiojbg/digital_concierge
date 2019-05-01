@@ -2,7 +2,7 @@ import React from "react";
 import { Query } from "react-apollo";
 import { getJustBrilliantGuideList } from "../../data/query";
 import Loading from "../loading/Loading";
-import Guide from "../guide";
+import Guide from "../guide/main/JustBrilliantGuideMain";
 
 export const WelcomeGuide = () => (
     <Query query={getJustBrilliantGuideList}>
@@ -10,7 +10,9 @@ export const WelcomeGuide = () => (
             if (loading) return <Loading loadingData />;
             if (error)
                 return <React.Fragment>Error! {error.message}</React.Fragment>;
-            return <Guide data={guidesList} />;
+            return (
+                <Guide data={{ publications: guidesList, businesses: [] }} />
+            );
         }}
     </Query>
 );
