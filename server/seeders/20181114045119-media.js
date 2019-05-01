@@ -335,6 +335,87 @@ module.exports = {
                     clientId: 3,
                     key: "cms_users/sample.jpg",
                     size: Math.random() * 50000
+                },
+                {
+                    name: "Vanuatu_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Vanuatu_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Vanuatu_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Mildura_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Mildura_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Mildura_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Bass_Coast_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Bass_Coast_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Bass_Coast_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Port_Augusta_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Port_Augusta_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Port_Augusta_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Mt_Gambier_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Mt_Gambier_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Mt_Gambier_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Margaret_River_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Margaret_River_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Margaret_River_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Kununurra_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Kununurra_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Kununurra_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Kangaroo_Island_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Kangaroo_Island_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Kangaroo_Island_AIF.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Coffs_Harbour_AIF.jpg",
+                    path:
+                        "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_users/Coffs_Harbour_AIF.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/Coffs_Harbour_AIF.jpg",
+                    size: Math.random() * 50000
                 }
             ],
             {}

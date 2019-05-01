@@ -16,5 +16,6 @@ export default gql`
         systems: [System]
         jbg_maps: [JbgMap]
         jbg_directory_lists: [JbgDirectoryList]
+        media: [Media]
     }
 `;

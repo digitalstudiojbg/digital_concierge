@@ -478,3 +478,7 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-start
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-home
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-just_brilliant_guide-and-media
+
+node_modules/.bin/sequelize seed:generate --name just_brilliant_guides_media

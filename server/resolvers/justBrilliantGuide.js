@@ -38,6 +38,15 @@ export default {
                         where: { id: jbg.id }
                     }
                 ]
+            }),
+        media: async jbg =>
+            await db.media.findAll({
+                include: [
+                    {
+                        model: db.just_brilliant_guide,
+                        where: { id: jbg.id }
+                    }
+                ]
             })
     }
 };

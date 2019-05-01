@@ -78,6 +78,9 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: { allowNull: false }
         });
         media.hasMany(models.user);
+        media.belongsToMany(models.just_brilliant_guide, {
+            through: "just_brilliant_guides_media"
+        });
     };
     return media;
 };
