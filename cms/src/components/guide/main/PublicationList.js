@@ -6,11 +6,13 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
-// import { LayoutImageDiv } from "../../../utils/Constants";
+import MoreIcon from "@material-ui/icons/MoreHoriz";
+import dayJs from "dayjs";
 
 const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
+    padding-left: 20px;
 `;
 
 const HeaderDiv = styled.div`
@@ -31,6 +33,42 @@ const PublicationListContainerDiv = styled.div`
 const PublicationEntryContainerDiv = styled.div`
     width: 20%;
     height: 100%;
+    background-color: white;
+    border: 1px solid rgb(220, 220, 220);
+    margin-right: 20px;
+`;
+
+const PublicationMoreIconContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const PublicationImageContainerDiv = styled.div`
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    padding-right: 10px;
+`;
+
+const PublicationNameContainerDiv = styled.div`
+    margin-top: -20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    font-size: 1.5em;
+    font-weight: 700;
+    border-bottom: 2px solid black;
+    color: black;
+`;
+
+const PublicationUpdatedContainerDiv = styled.div`
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    color: rgb(157, 157, 157);
 `;
 
 const styles = theme => ({
@@ -80,6 +118,13 @@ const PublicationList = ({ data: { publications }, classes }) => {
         </Paper>
     );
 
+    const handleClickMore = id => _event => {
+        console.log("Clicked Publication: ", id);
+        //TODO: ADD EVENT HANDLER HERE
+    };
+
+    const formatDate = dateValue => dayJs(dateValue).format("D MMM YYYY");
+
     const renderPublicationList = () => {
         const toLoop =
             search.length > 0
@@ -89,12 +134,34 @@ const PublicationList = ({ data: { publications }, classes }) => {
                 : publications;
         return (
             <PublicationListContainerDiv>
-                {toLoop.map(({ id, name, media: [{ path }] }, index) => (
-                    <PublicationEntryContainerDiv key={`PUB-${index}-${id}`}>
-                        <img src={path} alt={name} style={{ height: "80%" }} />
-                        {name}
-                    </PublicationEntryContainerDiv>
-                ))}
+                {toLoop.map(
+                    ({ id, name, updatedAt, media: [{ path }] }, index) => (
+                        <PublicationEntryContainerDiv
+                            key={`PUB-${index}-${id}`}
+                        >
+                            <PublicationMoreIconContainerDiv>
+                                <IconButton onClick={handleClickMore(id)}>
+                                    <MoreIcon />
+                                </IconButton>
+                            </PublicationMoreIconContainerDiv>
+                            <PublicationImageContainerDiv>
+                                <img
+                                    src={path}
+                                    alt={name}
+                                    style={{
+                                        height: "90%"
+                                    }}
+                                />
+                            </PublicationImageContainerDiv>
+                            <PublicationNameContainerDiv>
+                                {name}
+                            </PublicationNameContainerDiv>
+                            <PublicationUpdatedContainerDiv>
+                                Last updated: {formatDate(updatedAt)}
+                            </PublicationUpdatedContainerDiv>
+                        </PublicationEntryContainerDiv>
+                    )
+                )}
             </PublicationListContainerDiv>
         );
     };

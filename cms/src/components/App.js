@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
@@ -21,10 +21,6 @@ import "rc-color-picker/assets/index.css";
 const Home = lazy(() => import("./home/Home"));
 
 const routes = [
-    {
-        path: WELCOME_URL,
-        component: Home
-    },
     {
         path: WELCOME_URL_ROUTER,
         component: Home
@@ -55,7 +51,7 @@ class App extends Component {
 
     handleLogin() {
         this.setState({ loggedIn: true });
-        this.router.history.push(WELCOME_URL);
+        this.router.history.push(WELCOME_URL + "/dashboard");
     }
 
     handleLogout() {

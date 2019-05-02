@@ -5,6 +5,7 @@ export const getJustBrilliantGuideList = gql`
         justBrilliantGuides {
             id
             name
+            updatedAt
             media {
                 id
                 name

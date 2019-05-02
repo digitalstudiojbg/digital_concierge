@@ -11,7 +11,7 @@ import styled from "styled-components";
 export const ContainerDivTab = styled.div`
     width: 100%;
     overflow-y: auto;
-    height: 80vh;
+    height: 77vh;
 `;
 const TabContainer = props => {
     return <ContainerDiv>{props.children}</ContainerDiv>;

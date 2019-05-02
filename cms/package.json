@@ -9,7 +9,7 @@
         "apollo-boost": "^0.3.1",
         "apollo-link-context": "^1.0.15",
         "apollo-upload-client": "^10.0.0",
-        "dayjs": "^1.8.0",
+        "dayjs": "^1.8.13",
         "dompurify": "^1.0.10",
         "draft-js": "^0.10.5",
         "draftjs-to-html": "^0.8.4",
