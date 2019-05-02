@@ -482,3 +482,39 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-just_brilliant_guide-and-media
 
 node_modules/.bin/sequelize seed:generate --name just_brilliant_guides_media
+
+node_modules/.bin/sequelize model:generate --name jbg_layout_family --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_layout_type --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_layout --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-jbg_layout
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_layout_family-and-jbg_layout
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_layout_type-and-jbg_layout
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout_family
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout_type
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout
+
+node_modules/.bin/sequelize model:generate --name jbg_template_type --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_template --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_template_type-and-jbg_template
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_layout-and-jbg_template
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_template-and-validation
+
+node_modules/.bin/sequelize seed:generate --name jbg_template_type
+
+node_modules/.bin/sequelize seed:generate --name jbg_template
+
+node_modules/.bin/sequelize seed:generate --name jbg_layouts_jbg_templates
+
+node_modules/.bin/sequelize seed:generate --name jbg_templates_validations

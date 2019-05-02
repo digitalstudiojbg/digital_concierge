@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
         validation.belongsToMany(models.template, {
             through: "templates_validations"
         });
+        validation.belongsToMany(models.jbg_template, {
+            through: "jbg_templates_validations"
+        });
     };
     return validation;
 };
