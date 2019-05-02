@@ -14,7 +14,9 @@ import {
     API_URL,
     SYSTEM_INDEX_URL,
     WELCOME_URL_ROUTER,
-    CREATE_NEW_CLIENT
+    CREATE_NEW_CLIENT,
+    GUIDE_CREATE_NEW_URL,
+    GUIDE_MAIN_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
 
@@ -39,6 +41,14 @@ const routes = [
     },
     {
         path: CREATE_NEW_CLIENT,
+        component: Home
+    },
+    {
+        path: GUIDE_MAIN_URL,
+        component: Home
+    },
+    {
+        path: GUIDE_CREATE_NEW_URL,
         component: Home
     }
 ];

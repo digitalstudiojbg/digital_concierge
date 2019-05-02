@@ -8,6 +8,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import MoreIcon from "@material-ui/icons/MoreHoriz";
 import dayJs from "dayjs";
+import { withRouter } from "react-router-dom";
+import { GUIDE_MAIN_URL } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -99,7 +101,7 @@ const styles = theme => ({
     }
 });
 
-const PublicationList = ({ data: { publications }, classes }) => {
+const PublicationList = ({ data: { publications }, classes, history }) => {
     const [search, setSearch] = useState("");
 
     const handleSearch = event => setSearch(event.target.value);
@@ -125,6 +127,10 @@ const PublicationList = ({ data: { publications }, classes }) => {
 
     const formatDate = dateValue => dayJs(dateValue).format("D MMM YYYY");
 
+    const handleClickPublication = id => _event => {
+        history.push(GUIDE_MAIN_URL.replace(":pub_id", id));
+    };
+
     const renderPublicationList = () => {
         const toLoop =
             search.length > 0
@@ -132,6 +138,7 @@ const PublicationList = ({ data: { publications }, classes }) => {
                       name.toLowerCase().includes(search.toLowerCase())
                   )
                 : publications;
+
         return (
             <PublicationListContainerDiv>
                 {toLoop.map(
@@ -144,7 +151,9 @@ const PublicationList = ({ data: { publications }, classes }) => {
                                     <MoreIcon />
                                 </IconButton>
                             </PublicationMoreIconContainerDiv>
-                            <PublicationImageContainerDiv>
+                            <PublicationImageContainerDiv
+                                onClick={handleClickPublication(id)}
+                            >
                                 <img
                                     src={path}
                                     alt={name}
@@ -185,4 +194,4 @@ const PublicationList = ({ data: { publications }, classes }) => {
     );
 };
 
-export default withStyles(styles)(PublicationList);
+export default withRouter(withStyles(styles)(PublicationList));

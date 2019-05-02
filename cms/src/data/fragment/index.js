@@ -1,2 +1,3 @@
 import { directoryListFragment } from "./directoryList";
-export { directoryListFragment };
+import { justBrilliantGuideDetailFragment } from "./justBrilliantGuide";
+export { directoryListFragment, justBrilliantGuideDetailFragment };

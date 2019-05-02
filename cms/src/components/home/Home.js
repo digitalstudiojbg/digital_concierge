@@ -21,7 +21,8 @@ import {
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
     SYSTEM_CMS_LIBRARY,
-    WELCOME_URL_ROUTER
+    WELCOME_URL_ROUTER,
+    GUIDE_MAIN_URL
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -45,6 +46,10 @@ const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
 );
 const CreateClient = lazy(() => import("./create_client"));
+
+const JustBrilliantGuideDetail = lazy(() =>
+    import("../guide/detail/JustBrilliantGuideDetail")
+);
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
@@ -183,6 +188,13 @@ const routes = [
         header: Header,
         sidebar: Sidebar,
         main: Library,
+        withProps: {}
+    },
+    {
+        path: GUIDE_MAIN_URL,
+        exact: true,
+        header: Header,
+        main: JustBrilliantGuideDetail,
         withProps: {}
     }
 ];
