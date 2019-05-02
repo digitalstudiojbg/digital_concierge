@@ -47,6 +47,26 @@ export default {
                         where: { id: jbg.id }
                     }
                 ]
-            })
+            }),
+        welcomeFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.welcomeFamilyId),
+        featureFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.featureFamilyId),
+        informationFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.informationFamilyId),
+        mapFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.mapFamilyId),
+        galleryFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.galleryFamilyId),
+        marketFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.marketFamilyId),
+        foodFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.foodFamilyId),
+        attractionFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.attractionFamilyId),
+        eventFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.eventFamilyId),
+        essentialFamily: async jbg =>
+            await db.jbg_layout_family.findByPk(jbg.essentialFamilyId)
     }
 };

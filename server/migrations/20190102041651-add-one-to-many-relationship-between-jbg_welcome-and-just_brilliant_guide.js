@@ -7,7 +7,7 @@ module.exports = {
             "jbgWelcomeId", // name of the key we're adding
             {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references: {
                     model: "jbg_welcomes", // name of Target table
                     key: "id" // key in Target table that we're referencing
@@ -18,7 +18,7 @@ module.exports = {
         );
     },
 
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.removeColumn(
             "just_brilliant_guides", // name of Source table
             "jbgWelcomeId" // key we want to remove

@@ -9,7 +9,26 @@ export default gql`
     type JustBrilliantGuide {
         id: ID!
         name: String
-        location: String
+        welcomeFamilyId: Int
+        welcomeFamily: JBGLayoutFamily
+        featureFamilyId: Int
+        featureFamily: JBGLayoutFamily
+        informationFamilyId: Int
+        informationFamily: JBGLayoutFamily
+        mapFamilyId: Int
+        mapFamily: JBGLayoutFamily
+        galleryFamilyId: Int
+        galleryFamily: JBGLayoutFamily
+        marketFamilyId: Int
+        marketFamily: JBGLayoutFamily
+        foodFamilyId: Int
+        foodFamily: JBGLayoutFamily
+        attractionFamilyId: Int
+        attractionFamily: JBGLayoutFamily
+        eventFamilyId: Int
+        eventFamily: JBGLayoutFamily
+        essentialFamilyId: Int
+        essentialFamily: JBGLayoutFamily
         createdAt: DateTime
         updatedAt: DateTime
         jbg_welcome: JbgWelcome
