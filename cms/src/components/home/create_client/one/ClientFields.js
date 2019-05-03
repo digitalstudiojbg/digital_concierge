@@ -4,24 +4,24 @@ export default [
             name: "name",
             label: "Client Name",
             required: true,
-            flexBasis: "30%",
-            marginRight: "10px",
+            flexBasis: "20%",
+            marginRight: "80%",
             type: "text"
         },
         {
             name: "full_company_name",
             label: "Full Client Name",
             required: false,
-            flexBasis: "30%",
-            marginRight: "10px",
+            flexBasis: "45%",
+            marginRight: "5%",
             type: "text"
         },
         {
             name: "nature_of_business",
             label: "Nature of Business",
             required: true,
-            flexBasis: "30%",
-            marginRight: "0px",
+            flexBasis: "45%",
+            marginRight: "5%",
             type: "text"
         }
     ],
@@ -31,7 +31,7 @@ export default [
             label: "Venue Phone Number",
             required: true,
             flexBasis: "45%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "text"
         },
         {
@@ -39,7 +39,7 @@ export default [
             label: "Business Email",
             required: true,
             flexBasis: "45%",
-            marginRight: "0px",
+            marginRight: "5%",
             type: "text"
         }
     ],
@@ -49,7 +49,7 @@ export default [
             label: "Venue Address",
             required: true,
             flexBasis: "45%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "text"
         },
         {
@@ -57,7 +57,7 @@ export default [
             label: "Postal Address",
             required: false,
             flexBasis: "45%",
-            marginRight: "0px",
+            marginRight: "5%",
             type: "text"
         }
     ],
@@ -67,7 +67,7 @@ export default [
             label: "City",
             required: true,
             flexBasis: "20%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "text"
         },
         {
@@ -75,7 +75,7 @@ export default [
             label: "Zip Code",
             required: true,
             flexBasis: "20%",
-            marginRight: "30px",
+            marginRight: "5%",
             type: "text"
         },
         {
@@ -83,7 +83,7 @@ export default [
             label: "City",
             required: true,
             flexBasis: "20%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "text"
         },
         {
@@ -91,7 +91,7 @@ export default [
             label: "Zip Code",
             required: true,
             flexBasis: "20%",
-            marginRight: "0px",
+            marginRight: "5%",
             type: "text"
         }
     ],
@@ -101,7 +101,7 @@ export default [
             label: "Country",
             required: true,
             flexBasis: "45%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "select",
             select_id: "select-1"
         },
@@ -110,7 +110,7 @@ export default [
             label: "Country",
             required: true,
             flexBasis: "45%",
-            marginRight: "0px",
+            marginRight: "5%",
             type: "select",
             select_id: "select-2"
         }
@@ -121,7 +121,7 @@ export default [
             label: "State / Province (If Applicable)",
             required: true,
             flexBasis: "45%",
-            marginRight: "10px",
+            marginRight: "5%",
             type: "select",
             select_id: "select-3"
         },
@@ -130,7 +130,7 @@ export default [
             label: "State / Province (If Applicable)",
             required: true,
             flexBasis: "45%",
-            marginRight: "0px",
+            marginRight: "5%",
             type: "select",
             select_id: "select-4"
         }
