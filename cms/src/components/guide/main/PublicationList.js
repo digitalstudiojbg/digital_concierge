@@ -37,6 +37,7 @@ const PublicationEntryContainerDiv = styled.div`
     height: 100%;
     background-color: white;
     border: 1px solid rgb(220, 220, 220);
+    box-shadow: 0px 1px 3px #000000;
     margin-right: 20px;
 `;
 
@@ -78,7 +79,8 @@ const styles = theme => ({
         padding: "2px 4px",
         display: "flex",
         alignItems: "center",
-        width: "40%"
+        width: "40%",
+        border: "1px solid rgba(221, 221, 221)"
     },
     input: {
         marginLeft: 8,
@@ -94,8 +96,8 @@ const styles = theme => ({
     },
     addButton: {
         margin: theme.spacing.unit,
-        color: "rgb(134,195,247)",
-        border: "1px solid rgb(134,195,247)",
+        color: "#2699FB",
+        border: "1px solid #2699FB",
         width: "100%",
         backgroundColor: "white"
     }

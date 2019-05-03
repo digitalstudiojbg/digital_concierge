@@ -4,6 +4,7 @@ import { getCurrentUserQuery } from "../../data/query";
 import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
+import SidebarNew from "../layout/SidebarNew";
 import PrivateRoute from "../auth/PrivateRoute";
 import {
     WELCOME_URL,
@@ -194,6 +195,9 @@ const routes = [
         path: GUIDE_MAIN_URL,
         exact: true,
         header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
         main: JustBrilliantGuideDetail,
         withProps: {}
     }
