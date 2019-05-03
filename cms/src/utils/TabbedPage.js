@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import { ContainerDiv } from "./Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -35,6 +36,16 @@ const styles = () => ({
         backgroundColor: "rgb(33,143,250)",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif"
+    },
+    buttonCancel: {
+        position: "absolute",
+        top: 140,
+        right: 180,
+        backgroundColor: "white",
+        color: "rgb(33,143,250)",
+        border: "2px solid rgb(33,143,250)",
+        fontWeight: 600,
+        fontFamily: "Source Sans Pro, sans-serif"
     }
 });
 
@@ -44,103 +55,145 @@ TabContainer.propTypes = {
     children: PropTypes.node.isRequired
 };
 
-const TabbedPage = ({
-    classes,
-    title,
-    data,
-    onClickExit,
-    onClickStay,
-    tabs
-}) => {
-    const [tab, setTab] = useState(0);
+class TabbedPage extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    state = {
+        tab: 0
+    };
+    childComponentsRefs = null;
 
-    const handleChange = (_event, value) => {
-        setTab(value);
+    componentDidMount() {
+        const { tabs } = this.props;
+        this.childComponentsRefs = tabs.map(() => React.createRef());
+    }
+
+    handleChange = (_event, tab) => {
+        this.setState({ tab });
     };
 
-    const CurrentComponent = tabs[tab].component;
-    const shouldRenderButtons = tabs[tab].withButtons;
+    submitAction = () => {
+        const { tab } = this.state;
+        console.log(this.childComponentsRefs[tab]);
+        this.childComponentsRefs[tab] &&
+            this.childComponentsRefs[tab].submitForm();
+    };
 
-    return (
-        <div
-            style={{
-                width: "100%",
-                backgroundColor: lightGreyHeader
-            }}
-        >
+    submitExitAction = () => {
+        const { history, exitUrl } = this.props;
+        const { tab } = this.state;
+        this.childComponentsRefs[tab] &&
+            this.childComponentsRefs[tab].submitForm();
+        history.push(exitUrl);
+    };
+
+    submitCancelAction = () => {
+        const { history, cancelUrl } = this.props;
+        history.push(cancelUrl);
+    };
+
+    render() {
+        const { classes, title, data, tabs } = this.props;
+        const { tab } = this.state;
+        const CurrentComponent = tabs[tab].component;
+        const shouldRenderButtons = tabs[tab].withButtons;
+        const shouldRenderCancelButton = tabs[tab].withCancel;
+
+        return (
             <div
                 style={{
-                    height: 60,
-                    fontSize: "2em",
-                    fontWeight: 700,
-                    paddingTop: 20,
-                    paddingBottom: 20
+                    width: "100%",
+                    backgroundColor: lightGreyHeader
                 }}
             >
-                {title}
-            </div>
-            <Paper
-                square
-                style={{
-                    backgroundColor: lightGreyHeader,
-                    boxShadow: "none",
-                    borderBottom: "2px solid rgb(217,217,217)"
-                }}
-            >
-                <Tabs
-                    value={tab}
-                    TabIndicatorProps={{
-                        style: {
-                            backgroundColor: "rgb(57,154,249)"
-                        }
+                <div
+                    style={{
+                        height: 60,
+                        fontSize: "2em",
+                        fontWeight: 700,
+                        paddingTop: 20,
+                        paddingBottom: 20
                     }}
-                    onChange={handleChange}
                 >
-                    {tabs.map(({ name }, index) => (
-                        <Tab label={name} key={`TAB-${title}-${index}`} />
-                    ))}
-                </Tabs>
-            </Paper>
-            {onClickExit && onClickStay && shouldRenderButtons && (
-                <React.Fragment>
-                    <Button
-                        variant="outlined"
-                        className={classes.buttonSaveExit}
-                        onClick={onClickExit}
+                    {title}
+                </div>
+                <Paper
+                    square
+                    style={{
+                        backgroundColor: lightGreyHeader,
+                        boxShadow: "none",
+                        borderBottom: "2px solid rgb(217,217,217)"
+                    }}
+                >
+                    <Tabs
+                        value={tab}
+                        TabIndicatorProps={{
+                            style: {
+                                backgroundColor: "rgb(57,154,249)"
+                            }
+                        }}
+                        onChange={this.handleChange}
                     >
-                        SAVE & EXIT
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        className={classes.buttonSaveKeep}
-                        onClick={onClickStay}
-                    >
-                        SAVE & KEEP EDITING
-                    </Button>
-                </React.Fragment>
-            )}
-            <ContainerDivTab>
-                <TabContainer>
-                    <CurrentComponent data={data} />
-                </TabContainer>
-            </ContainerDivTab>
-        </div>
-    );
-};
+                        {tabs.map(({ name }, index) => (
+                            <Tab label={name} key={`TAB-${title}-${index}`} />
+                        ))}
+                    </Tabs>
+                </Paper>
+                {shouldRenderButtons && (
+                    <React.Fragment>
+                        <Button
+                            variant="outlined"
+                            className={classes.buttonSaveExit}
+                            onClick={this.submitExitAction}
+                        >
+                            SAVE & EXIT
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            className={classes.buttonSaveKeep}
+                            onClick={this.submitAction}
+                        >
+                            SAVE & KEEP EDITING
+                        </Button>
+                        {shouldRenderCancelButton && (
+                            <Button
+                                variant="outlined"
+                                className={classes.buttonCancel}
+                                onClick={this.submitCancelAction}
+                            >
+                                CANCEL
+                            </Button>
+                        )}
+                    </React.Fragment>
+                )}
+                <ContainerDivTab>
+                    <TabContainer>
+                        <CurrentComponent
+                            data={data}
+                            onRef={ref => (this.childComponentsRefs[tab] = ref)}
+                        />
+                    </TabContainer>
+                </ContainerDivTab>
+            </div>
+        );
+    }
+}
 
 TabbedPage.propTypes = {
     classes: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
     data: PropTypes.any,
-    onClickExit: PropTypes.func,
-    onClickStay: PropTypes.func,
+    exitUrl: PropTypes.string,
+    cancelUrl: PropTypes.func,
     tabs: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,
             component: PropTypes.any.isRequired,
-            withButtons: PropTypes.bool.isRequired
+            withButtons: PropTypes.bool.isRequired,
+            withCancel: PropTypes.bool.isRequired
         })
     )
 };
 
-export default withStyles(styles)(TabbedPage);
+export default withRouter(withStyles(styles)(TabbedPage));

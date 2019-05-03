@@ -22,7 +22,11 @@ import { getSystemTypes } from "./systemType";
 import { getFeatures } from "./feature";
 import { getFeaturesByCategories } from "./featureCategory";
 import { getContractByClientId } from "./contract";
-import { getJustBrilliantGuideList } from "./justBrilliantGuide";
+import {
+    getJustBrilliantGuideList,
+    getJustBrilliantGuideDetail
+} from "./justBrilliantGuide";
+import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
 
 export {
     getCurrentUserQuery,
@@ -48,5 +52,7 @@ export {
     systemsByClientQuery,
     getContractByClientId,
     getLayoutListFromType,
-    getJustBrilliantGuideList
+    getJustBrilliantGuideList,
+    getJustBrilliantGuideDetail,
+    getJbgLayoutFamilyList
 };

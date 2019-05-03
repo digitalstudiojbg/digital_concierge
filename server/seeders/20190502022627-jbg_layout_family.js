@@ -6,10 +6,12 @@ module.exports = {
             "jbg_layout_families",
             [
                 {
-                    name: "TROPICAL"
+                    name: "TROPICAL",
+                    mediumId: 1
                 },
                 {
-                    name: "MINIMALIST"
+                    name: "MINIMALIST",
+                    mediumId: 1
                 }
             ],
             {}

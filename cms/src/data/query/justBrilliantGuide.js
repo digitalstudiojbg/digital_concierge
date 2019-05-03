@@ -9,3 +9,12 @@ export const getJustBrilliantGuideList = gql`
     }
     ${justBrilliantGuideDetailFragment}
 `;
+
+export const getJustBrilliantGuideDetail = gql`
+    query getJustBrilliantGuideDetail($id: ID!) {
+        justBrilliantGuide(id: $id) {
+            ...justBrilliantGuideDetail
+        }
+    }
+    ${justBrilliantGuideDetailFragment}
+`;

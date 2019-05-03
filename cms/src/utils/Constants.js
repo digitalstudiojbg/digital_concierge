@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 import FileSaver from "file-saver";
+import Slide from "@material-ui/core/Slide";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -191,3 +193,7 @@ export const LayoutImageDiv = styled.div`
     background-size: contain;
     background-color: white;
 `;
+
+export const SlideUpTransition = props => {
+    return <Slide direction="up" {...props} />;
+};

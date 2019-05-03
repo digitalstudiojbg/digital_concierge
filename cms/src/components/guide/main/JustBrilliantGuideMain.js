@@ -12,11 +12,13 @@ const JustBrilliantGuideMain = ({ data }) => {
                 {
                     name: "Publications",
                     withButtons: false,
+                    withCancel: false,
                     component: PublicationList
                 },
                 {
                     name: "Advertisers",
                     withButtons: false,
+                    withCancel: false,
                     component: MainAdvertiserList
                 }
             ]}

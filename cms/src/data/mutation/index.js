@@ -24,6 +24,7 @@ import {
     DUPLICATE_ROLES
 } from "./role";
 import { CREATE_SYSTEM } from "./system";
+import { CREATE_GUIDE, EDIT_GUIDE } from "./justBrilliantGuide";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -45,5 +46,7 @@ export {
     UPDATE_ROLE,
     DELETE_ROLES,
     DUPLICATE_ROLES,
-    CREATE_SYSTEM
+    CREATE_SYSTEM,
+    CREATE_GUIDE,
+    EDIT_GUIDE
 };

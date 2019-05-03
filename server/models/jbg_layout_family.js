@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     );
     jbg_layout_family.associate = function(models) {
         jbg_layout_family.hasMany(models.jbg_layout);
+        jbg_layout_family.belongsTo(models.media, {
+            foreignKey: { allowNull: false }
+        });
     };
     return jbg_layout_family;
 };

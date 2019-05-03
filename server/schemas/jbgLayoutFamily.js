@@ -11,6 +11,7 @@ export default gql`
         id: ID!
         name: String
         jbg_layouts: [JBGLayout]
+        media: Media
         jbgLayoutsByType(typeName: String!): [JBGLayout]
         createdAt: DateTime
         updatedAt: DateTime

@@ -56,6 +56,7 @@ export default {
             } else {
                 return [];
             }
-        }
+        },
+        media: async ({ mediumId }) => await db.media.findByPk(mediumId)
     }
 };

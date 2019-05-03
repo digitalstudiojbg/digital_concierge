@@ -47,5 +47,9 @@ export const justBrilliantGuideDetailFragment = gql`
             id
             name
         }
+        essentialFamily {
+            id
+            name
+        }
     }
 `;

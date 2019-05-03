@@ -518,3 +518,5 @@ node_modules/.bin/sequelize seed:generate --name jbg_template
 node_modules/.bin/sequelize seed:generate --name jbg_layouts_jbg_templates
 
 node_modules/.bin/sequelize seed:generate --name jbg_templates_validations
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-jbg_layout_family

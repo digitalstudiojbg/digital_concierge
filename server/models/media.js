@@ -81,6 +81,8 @@ module.exports = (sequelize, DataTypes) => {
         media.belongsToMany(models.just_brilliant_guide, {
             through: "just_brilliant_guides_media"
         });
+        media.hasMany(models.jbg_layout_family);
+        media.hasMany(models.jbg_layout);
     };
     return media;
 };

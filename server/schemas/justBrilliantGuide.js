@@ -6,6 +6,15 @@ export default gql`
         justBrilliantGuides: [JustBrilliantGuide]
     }
 
+    extend type Mutation {
+        createJustBrilliantGuide(
+            input: CreateJustBrilliantGuideInput
+        ): JustBrilliantGuide
+        editJustBrilliantGuide(
+            input: UpdateJustBrilliantGuideInput
+        ): JustBrilliantGuide
+    }
+
     type JustBrilliantGuide {
         id: ID!
         name: String
@@ -36,5 +45,37 @@ export default gql`
         jbg_maps: [JbgMap]
         jbg_directory_lists: [JbgDirectoryList]
         media: [Media]
+    }
+
+    input CreateJustBrilliantGuideInput {
+        id: ID!
+        name: String!
+        welcomeFamilyId: Int!
+        featureFamilyId: Int!
+        informationFamilyId: Int!
+        mapFamilyId: Int!
+        galleryFamilyId: Int!
+        marketFamilyId: Int!
+        foodFamilyId: Int!
+        attractionFamilyId: Int!
+        eventFamilyId: Int!
+        essentialFamilyId: Int!
+        image: Upload!
+    }
+
+    input UpdateJustBrilliantGuideInput {
+        id: ID!
+        name: String!
+        welcomeFamilyId: Int
+        featureFamilyId: Int
+        informationFamilyId: Int
+        mapFamilyId: Int
+        galleryFamilyId: Int
+        marketFamilyId: Int
+        foodFamilyId: Int
+        attractionFamilyId: Int
+        eventFamilyId: Int
+        essentialFamilyId: Int
+        image: Upload
     }
 `;

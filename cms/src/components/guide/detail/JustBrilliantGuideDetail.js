@@ -1,5 +1,6 @@
 import React from "react";
 import TabbedPage from "../../../utils/TabbedPage";
+import ModifyPublication from "./ModifyPublication";
 
 export const JustBrilliantGuideDetail = ({ match }) => {
     const { params } = match || {};
@@ -13,16 +14,19 @@ export const JustBrilliantGuideDetail = ({ match }) => {
                     {
                         name: "General",
                         withButtons: true,
-                        component: () => <div>PUBLICATION DETAILS</div>
+                        withCancel: false,
+                        component: ModifyPublication
                     },
                     {
                         name: "Advertising",
                         withButtons: false,
+                        withCancel: false,
                         component: () => <div>ADVERTISER LIST</div>
                     },
                     {
                         name: "Editorial",
                         withButtons: false,
+                        withCancel: false,
                         component: () => <div>Editorial LIST</div>
                     }
                 ]}
