@@ -197,3 +197,5 @@ export const LayoutImageDiv = styled.div`
 export const SlideUpTransition = props => {
     return <Slide direction="up" {...props} />;
 };
+
+export const digitsOnly = value => new RegExp("/^d+$/").test(value);

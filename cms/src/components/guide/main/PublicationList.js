@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MoreIcon from "@material-ui/icons/MoreHoriz";
 import dayJs from "dayjs";
 import { withRouter } from "react-router-dom";
-import { GUIDE_MAIN_URL } from "../../../utils/Constants";
+import { GUIDE_MAIN_URL, GUIDE_CREATE_NEW_URL } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -177,6 +177,9 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         );
     };
 
+    const navigateToCreatePublication = () =>
+        history.push(GUIDE_CREATE_NEW_URL);
+
     return (
         <ContainerDiv>
             <HeaderDiv>
@@ -186,6 +189,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                         variant="outlined"
                         component="span"
                         className={classes.addButton}
+                        onClick={navigateToCreatePublication}
                     >
                         Add Publication
                     </Button>

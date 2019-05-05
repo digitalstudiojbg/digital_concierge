@@ -46,10 +46,6 @@ const routes = [
     {
         path: GUIDE_MAIN_URL,
         component: Home
-    },
-    {
-        path: GUIDE_CREATE_NEW_URL,
-        component: Home
     }
 ];
 

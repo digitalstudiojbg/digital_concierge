@@ -203,53 +203,55 @@ class ModifyPublication extends React.Component {
 
     prepareInitialValues = () => {
         const { has_data, data } = this.props;
-        const {
-            name,
-            welcomeFamily: { id: welcomeFamilyId },
-            featureFamily: { id: featureFamilyId },
-            informationFamily: { id: informationFamilyId },
-            mapFamily: { id: mapFamilyId },
-            galleryFamily: { id: galleryFamilyId },
-            marketFamily: { id: marketFamilyId },
-            foodFamily: { id: foodFamilyId },
-            attractionFamily: { id: attractionFamilyId },
-            eventFamily: { id: eventFamilyId },
-            essentialFamily: { id: essentialFamilyId },
-            media: [{ name: image_name, path: image_preview }]
-        } = data;
-        return has_data
-            ? {
-                  name,
-                  welcomeFamilyId,
-                  featureFamilyId,
-                  informationFamilyId,
-                  mapFamilyId,
-                  galleryFamilyId,
-                  marketFamilyId,
-                  foodFamilyId,
-                  attractionFamilyId,
-                  eventFamilyId,
-                  essentialFamilyId,
-                  image_preview,
-                  image_name,
-                  image: null
-              }
-            : {
-                  name: "",
-                  welcomeFamilyId: "",
-                  featureFamilyId: "",
-                  informationFamilyId: "",
-                  mapFamilyId: "",
-                  galleryFamilyId: "",
-                  marketFamilyId: "",
-                  foodFamilyId: "",
-                  attractionFamilyId: "",
-                  eventFamilyId: "",
-                  essentialFamilyId: "",
-                  image_preview: null,
-                  image_name: null,
-                  image: null
-              };
+        if (has_data && data) {
+            const {
+                name,
+                welcomeFamily: { id: welcomeFamilyId },
+                featureFamily: { id: featureFamilyId },
+                informationFamily: { id: informationFamilyId },
+                mapFamily: { id: mapFamilyId },
+                galleryFamily: { id: galleryFamilyId },
+                marketFamily: { id: marketFamilyId },
+                foodFamily: { id: foodFamilyId },
+                attractionFamily: { id: attractionFamilyId },
+                eventFamily: { id: eventFamilyId },
+                essentialFamily: { id: essentialFamilyId },
+                media: [{ name: image_name, path: image_preview }]
+            } = data;
+            return {
+                name,
+                welcomeFamilyId,
+                featureFamilyId,
+                informationFamilyId,
+                mapFamilyId,
+                galleryFamilyId,
+                marketFamilyId,
+                foodFamilyId,
+                attractionFamilyId,
+                eventFamilyId,
+                essentialFamilyId,
+                image_preview,
+                image_name,
+                image: null
+            };
+        } else {
+            return {
+                name: "",
+                welcomeFamilyId: "",
+                featureFamilyId: "",
+                informationFamilyId: "",
+                mapFamilyId: "",
+                galleryFamilyId: "",
+                marketFamilyId: "",
+                foodFamilyId: "",
+                attractionFamilyId: "",
+                eventFamilyId: "",
+                essentialFamilyId: "",
+                image_preview: null,
+                image_name: null,
+                image: null
+            };
+        }
     };
 
     componentWillUnmount() {
@@ -296,7 +298,12 @@ class ModifyPublication extends React.Component {
                         display: "flex"
                     }}
                 >
-                    <div style={{ width: "50%", marginRight: 20 }}>
+                    <div
+                        style={{
+                            width: Boolean(imageUrl) ? "50%" : "100%",
+                            marginRight: 20
+                        }}
+                    >
                         <Field
                             name={name}
                             component={Select}
@@ -314,20 +321,20 @@ class ModifyPublication extends React.Component {
                             ))}
                         </Field>
                     </div>
-                    <div
-                        style={{
-                            width: "30%",
-                            border: "1px solid rgba(112, 112, 112, 1)"
-                        }}
-                    >
-                        {Boolean(imageUrl) && (
+                    {Boolean(imageUrl) && (
+                        <div
+                            style={{
+                                width: "30%",
+                                border: "1px solid rgba(112, 112, 112, 1)"
+                            }}
+                        >
                             <img
                                 style={{ width: "100%" }}
                                 src={imageUrl}
                                 alt={label}
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </React.Fragment>
         );
