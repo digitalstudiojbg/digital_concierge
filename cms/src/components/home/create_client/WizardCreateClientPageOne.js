@@ -31,6 +31,7 @@ const SectionDiv = styled.div`
     display: flex;
     flex-direction: column;
     padding: 30px;
+    border-right: 1px solid #DDDDDD; 
 `;
 
 const ClientFieldContainerDiv = styled.div`
@@ -38,7 +39,6 @@ const ClientFieldContainerDiv = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-bottom: 20px;
 `;
 
 const ClientFieldDiv = styled.div`
@@ -54,7 +54,7 @@ const FieldContainerDiv = styled.div`
 
 const FieldDiv = styled.div`
     width: 100%;
-    padding: 0px 0 10px 0px;
+    padding: 0px;
     
 `;
 const FieldLabel = styled.label`
@@ -66,7 +66,7 @@ const SubFieldContainerDiv = styled.div`
     width : 100%;
     flex-basis: ${props => props.flexBasis};
     margin-right: ${props => props.marginRight};
-    float:left;
+    padding-top: 10px;
 `;
 
 const SectionHeader = styled.h4`
@@ -373,7 +373,7 @@ class WizardCreateClientPageOne extends React.Component {
                                 return (
                                     <Form>
                                         <ContainerDiv>
-                                            <SectionDiv width="50%">
+                                            <SectionDiv style={{ width: "50%"}}>
                                                 <SectionHeader >Client Info</SectionHeader>
                                                 
                                                 {CLIENT_FIELDS.map(
@@ -405,25 +405,24 @@ class WizardCreateClientPageOne extends React.Component {
                                                                             }
                                                                             marginRight={
                                                                                 marginRight
-                                                                            }  
+                                                                            } 
+                                                                          
                                                                         >
                                                                             <FieldLabel>{label}</FieldLabel>  
-                                                                            <ClientFieldDiv>
-                                                                       
-
-                                                                                {this.selectRenderMethod(
-                                                                                    type,
-                                                                                    {
-                                                                                        name,
-                                                                                       // label,
-                                                                                        required,
-                                                                                        select_id
-                                                                                    },
-                                                                                    countries,
-                                                                                    values
-                                                                                    // setFieldValue
-                                                                                )}
-                                                                            </ClientFieldDiv>
+                                                                                <ClientFieldDiv>
+                                                                                    {this.selectRenderMethod(
+                                                                                        type,
+                                                                                        {
+                                                                                            name,
+                                                                                        // label,
+                                                                                            required,
+                                                                                            select_id
+                                                                                        },
+                                                                                        countries,
+                                                                                        values
+                                                                                        // setFieldValue
+                                                                                    )}
+                                                                                </ClientFieldDiv>
                                                                             </SubFieldContainerDiv>
                                                                     
                                                                     )
@@ -434,7 +433,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                 )}
                                             </SectionDiv>
                                             <SectionDiv width="25%">
-                                            <SectionHeader >Key Contact</SectionHeader>
+                                            <SectionHeader >Key User</SectionHeader>
                                                 <FieldContainerDiv>
                                                     {CONTACT_FIELDS.map(
                                                         (
@@ -454,7 +453,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                                 {renderTextField(
                                                                     name,
                                                                   //  label,
-                                                                    required,
+                                                                  //  required,
                                                                     type
                                                                 )}
                                                             </FieldDiv>
@@ -463,12 +462,9 @@ class WizardCreateClientPageOne extends React.Component {
                                                     )}
                                                 </FieldContainerDiv>
                                             </SectionDiv>
-                                            <SectionDiv
-                                                width="25%"
-                                                height="500px"
-                                            >
+                                            <SectionDiv style={{ width: "25%" , border: "0px" }}>
                                                 <SectionHeader >Client Profile Image</SectionHeader>
-                                                <div style={{ height: 100 }}>
+                                                <div style={{ height: "50%", borderBottom: "1px solid #DDDDDD"}}>
                                                     <FieldContainerDiv>
                                                         <SubFieldContainerDiv > 
                                                             <FieldLabel>File Name</FieldLabel>
@@ -513,7 +509,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                             >
                                                                 <label htmlFor="upload-client-image">
                                                                     <Button
-                                                                        
+                                                                        style={{color:"#2699FB", width:"150px", border:"2px solid #2699FB", padding: "7%", margin:"10px 0"}}
                                                                         variant="outlined"
                                                                         component="span"
                                                                         className={
@@ -524,9 +520,24 @@ class WizardCreateClientPageOne extends React.Component {
                                                                     </Button>
                                                                 </label>
                                                             </div>
-                                                        </FieldDiv>
-                                                    </FieldContainerDiv>
+                                                    
+                                                    </FieldDiv>
+                                                </FieldContainerDiv>
                                                 </div>
+                                                <div style={{marginTop: "10%"}}>
+                                                            <SectionHeader >Just Brilliant Guides</SectionHeader>
+                                                            <div>
+
+
+                                                            </div>
+                                             
+                                                </div>
+                                                </SectionDiv>
+                                               
+                                        </ContainerDiv>
+
+
+                                        <SectionDiv style={{ width: "100%" ,height: "100px", border: "0px" }}>
                                                 <div
                                                     style={{
                                                         flex: 1,
@@ -538,6 +549,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                     }}
                                                 >
                                                     <Button
+                                                        style={{ width: "20%" , color: "white", background: "#2699FB", border: "30px solid #313131"}}
                                                         type="submit"
                                                         variant="contained"
                                                         color="primary"
@@ -554,8 +566,8 @@ class WizardCreateClientPageOne extends React.Component {
                                                         Confirm & Continue
                                                     </Button>
                                                 </div>
-                                            </SectionDiv>
-                                        </ContainerDiv>
+                                                </SectionDiv>
+
                                     </Form>
                                 );
                             }}

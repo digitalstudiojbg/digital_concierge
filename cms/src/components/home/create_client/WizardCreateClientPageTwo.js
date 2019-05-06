@@ -41,10 +41,28 @@ const BrowseButton = styled.label`
         font-weight: bold;
     }
 `;
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699FB;
+`;
 
 const FiledContainer = styled.div`
     padding-bottom: 20px;
 `;
+
+const FieldLabel = styled.label`
+    font-size: 10px;
+    color:black;
+`;
+
+
+const SubFieldContainerDiv = styled.div`
+    width : 100%;
+    flex-basis: ${props => props.flexBasis};
+    margin-right: ${props => props.marginRight};
+    padding-top: 10px;
+`;
+
 
 const LICENSE_DATE_FIELD = [
     {
@@ -197,19 +215,24 @@ class WizardCreateClientPageTwo extends React.Component {
 
         return (
             <div style={{ width: "33%", padding: "20px 20px 20px 0" }}>
-                <h1>License</h1>
+                
+                <SectionHeader> License</SectionHeader>
                 <FiledContainer>
-                    <Field
+                    <SubFieldContainerDiv>
+                    
+                     <Field
                         name="license_key"
                         label="LICENSE KEY"
                         required={true}
                         type="text"
                         component={LicenseKeyTextField}
                         variant="outlined"
-                        fullWidth={true}
+                       fullWidth={true}
                     />
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
+                    <SubFieldContainerDiv>
                     {licenseTypes.length > 0 &&
                         this.selectRenderMethod({
                             name: "license_type",
@@ -218,19 +241,24 @@ class WizardCreateClientPageTwo extends React.Component {
                             type: "select",
                             optionList: licenseTypes
                         })}
+                        </SubFieldContainerDiv>
                 </FiledContainer>
                 {LICENSE_DATE_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
+                        <SubFieldContainerDiv>
+
                         {this.selectRenderMethod({
                             name,
                             label,
                             required,
                             type
                         })}
+                        </SubFieldContainerDiv>
                     </FiledContainer>
                 ))}
                 <div>
                     <FormControlLabel
+            
                         control={
                             <Field
                                 id="auto_renewal"
@@ -253,7 +281,7 @@ class WizardCreateClientPageTwo extends React.Component {
     renderAgreementForm() {
         return (
             <div style={{ width: "33%", padding: "20px" }}>
-                <h1>Agreement</h1>
+                <SectionHeader>Agreement</SectionHeader>
                 <FiledContainer>
                     {this.selectRenderMethod({
                         name: "agreement_number",
@@ -313,7 +341,7 @@ class WizardCreateClientPageTwo extends React.Component {
 
         return (
             <div style={{ width: "33%", padding: "20px 0px 20px 20px" }}>
-                <h1>Payment</h1>
+                <SectionHeader>Payment</SectionHeader>
                 {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
                         {this.selectRenderMethod({
