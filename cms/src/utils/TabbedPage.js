@@ -187,7 +187,7 @@ TabbedPage.propTypes = {
     title: PropTypes.string.isRequired,
     data: PropTypes.any,
     exitUrl: PropTypes.string,
-    cancelUrl: PropTypes.func,
+    cancelUrl: PropTypes.string,
     tabs: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string.isRequired,

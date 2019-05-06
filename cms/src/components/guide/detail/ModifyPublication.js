@@ -416,7 +416,7 @@ class ModifyPublication extends React.Component {
         );
     };
 
-    actionAfterSubmission = data => {
+    actionAfterSubmission = (data, setFieldValue) => {
         const { has_data } = this.props;
         console.log("Received data: ", data);
         if (!has_data && Boolean(data) && Boolean(data.id)) {
@@ -426,9 +426,23 @@ class ModifyPublication extends React.Component {
                     GUIDE_MAIN_URL.replace(":pub_id", data.id)
                 );
         }
+        if (
+            has_data &&
+            Boolean(data) &&
+            Boolean(data.media) &&
+            Boolean(data.media.name) &&
+            Boolean(data.media.path)
+        ) {
+            const { name, path } = data;
+            setFieldValue("image_preview", path);
+            setFieldValue("image_name", name);
+        }
+
+        // console.log("About to resolve");
+        // resolve(data);
     };
 
-    handleSubmit = values => {
+    handleSubmit = (values, { setFieldValue }) => {
         const { action, has_data } = this.props;
         if (!has_data && !Boolean(this.imageUploaderRef.state.file)) {
             this.setState({ imageError: true });
@@ -453,7 +467,7 @@ class ModifyPublication extends React.Component {
                     : !isEmpty(data) && !isEmpty(data.editJustBrilliantGuide)
                     ? data.editJustBrilliantGuide
                     : null;
-            this.actionAfterSubmission(returnedData);
+            this.actionAfterSubmission(returnedData, setFieldValue);
         });
     };
 
