@@ -447,7 +447,7 @@ class ModifyPublication extends React.Component {
     };
 
     handleSubmit = (values, { setFieldValue }) => {
-        const { action, has_data, setIsComplete } = this.props;
+        const { action, has_data } = this.props;
         if (!has_data && !Boolean(this.imageUploaderRef.state.file)) {
             this.setState({ imageError: true });
             return undefined;
