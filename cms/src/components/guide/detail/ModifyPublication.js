@@ -15,11 +15,12 @@ import { CREATE_GUIDE, EDIT_GUIDE } from "../../../data/mutation";
 import Loading from "../../loading/Loading";
 import * as Yup from "yup";
 import { mapValues, isEmpty } from "lodash";
-import { DECIMAL_RADIX } from "../../../utils/Constants";
+import { DECIMAL_RADIX, GUIDE_MAIN_URL } from "../../../utils/Constants";
+import { withRouter } from "react-router-dom";
 
 class ModifyPublicationHOC extends React.Component {
     render() {
-        const { onRef } = this.props;
+        const { onRef, history } = this.props;
         const { pub_id } = this.props.data;
         return (
             <Query query={getJbgLayoutFamilyList}>
@@ -68,6 +69,12 @@ class ModifyPublicationHOC extends React.Component {
                                                 refetchQueries={[
                                                     {
                                                         query: getJustBrilliantGuideList
+                                                    },
+                                                    {
+                                                        query: getJustBrilliantGuideDetail,
+                                                        variables: {
+                                                            id: pub_id
+                                                        }
                                                     }
                                                 ]}
                                             >
@@ -135,6 +142,7 @@ class ModifyPublicationHOC extends React.Component {
                                                 }
                                                 action={action}
                                                 onRef={onRef}
+                                                history={history}
                                             />
                                         );
                                     }}
@@ -251,6 +259,10 @@ const validationSchema = (isCreate, layoutFamiliesIds) =>
     });
 
 class ModifyPublication extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
     state = {
         imageError: false
     };
@@ -404,68 +416,53 @@ class ModifyPublication extends React.Component {
         );
     };
 
-    actionAfterSubmission = (data, setFieldValue) => {
+    actionAfterSubmission = data => {
         const { has_data } = this.props;
         console.log("Received data: ", data);
-        if (!has_data && Boolean(data)) {
-            //Need to set media and id values in formik if creating publication
-            const {
-                id,
-                media: { name, path }
-            } = data;
-            setFieldValue("id", id);
-            setFieldValue("image_name", name);
-            setFieldValue("image_preview", path);
+        if (!has_data && Boolean(data) && Boolean(data.id)) {
+            //Need to redirect if we create publication and want to still keep editing
+            this.props.history &&
+                this.props.history.push(
+                    GUIDE_MAIN_URL.replace(":pub_id", data.id)
+                );
         }
     };
 
+    handleSubmit = values => {
+        const { action, has_data } = this.props;
+        if (!has_data && !Boolean(this.imageUploaderRef.state.file)) {
+            this.setState({ imageError: true });
+            return undefined;
+        }
+        const { id, name, image_name, image_preview, ...others } = values;
+        let toSubmit = {
+            ...(Boolean(id) && { id }),
+            name,
+            ...mapValues(others, familyId => parseInt(familyId, DECIMAL_RADIX)),
+            ...(Boolean(this.imageUploaderRef.state.file) && {
+                image: this.imageUploaderRef.state.file
+            })
+        };
+
+        console.log("To Submit ", toSubmit);
+
+        action({ variables: { input: { ...toSubmit } } }).then(({ data }) => {
+            const returnedData =
+                !isEmpty(data) && !isEmpty(data.createJustBrilliantGuide)
+                    ? data.createJustBrilliantGuide
+                    : !isEmpty(data) && !isEmpty(data.editJustBrilliantGuide)
+                    ? data.editJustBrilliantGuide
+                    : null;
+            this.actionAfterSubmission(returnedData);
+        });
+    };
+
     render() {
-        const { onRef, has_data, layoutFamilies, action } = this.props;
+        const { onRef, has_data, layoutFamilies } = this.props;
         const { imageError } = this.state;
         return (
             <Formik
-                onSubmit={(values, { setFieldValue }) => {
-                    if (
-                        !has_data &&
-                        !Boolean(this.imageUploaderRef.state.file)
-                    ) {
-                        this.setState({ imageError: true });
-                        return undefined;
-                    }
-                    const {
-                        id,
-                        name,
-                        image_name,
-                        image_preview,
-                        ...others
-                    } = values;
-                    let toSubmit = {
-                        ...(Boolean(id) && { id }),
-                        name,
-                        ...mapValues(others, familyId =>
-                            parseInt(familyId, DECIMAL_RADIX)
-                        )
-                    };
-
-                    console.log("To Submit ", toSubmit);
-
-                    action({ variables: { input: { ...toSubmit } } }).then(
-                        ({ data }) => {
-                            const returnedData =
-                                !isEmpty(data) &&
-                                !isEmpty(data.createJustBrilliantGuide)
-                                    ? data.createJustBrilliantGuide
-                                    : !isEmpty(data) &&
-                                      !isEmpty(data.editJustBrilliantGuide)
-                                    ? data.editJustBrilliantGuide
-                                    : null;
-                            this.actionAfterSubmission(
-                                returnedData,
-                                setFieldValue
-                            );
-                        }
-                    );
-                }}
+                onSubmit={this.handleSubmit}
                 ref={onRef}
                 initialValues={this.prepareInitialValues()}
                 validationSchema={validationSchema(
@@ -572,7 +569,8 @@ ModifyPublication.propTypes = {
         })
     ).isRequired,
     action: PropTypes.func.isRequired,
-    onRef: PropTypes.func.isRequired
+    onRef: PropTypes.func.isRequired,
+    history: PropTypes.object
 };
 
-export default ModifyPublicationHOC;
+export default withRouter(ModifyPublicationHOC);

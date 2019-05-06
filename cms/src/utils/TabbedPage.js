@@ -56,20 +56,16 @@ TabContainer.propTypes = {
 };
 
 class TabbedPage extends React.Component {
+    childComponentsRefs = null;
     constructor(props) {
         super(props);
-    }
-    state = {
-        tab: 0
-    };
-    childComponentsRefs = null;
-
-    componentDidMount() {
-        const { tabs } = this.props;
+        const { tabs } = props;
         this.childComponentsRefs = tabs.map(() => React.createRef());
+        this.state = { tab: 0 };
     }
 
     handleChange = (_event, tab) => {
+        console.log(this.childComponentsRefs);
         this.setState({ tab });
     };
 
@@ -84,13 +80,14 @@ class TabbedPage extends React.Component {
         const { history, exitUrl } = this.props;
         const { tab } = this.state;
         this.childComponentsRefs[tab] &&
-            this.childComponentsRefs[tab].submitForm();
-        history.push(exitUrl);
+            this.childComponentsRefs[tab]
+                .submitForm()
+                .then(() => Boolean(exitUrl) && history.push(exitUrl));
     };
 
     submitCancelAction = () => {
         const { history, cancelUrl } = this.props;
-        history.push(cancelUrl);
+        Boolean(cancelUrl) && history.push(cancelUrl);
     };
 
     render() {
@@ -169,10 +166,15 @@ class TabbedPage extends React.Component {
                 )}
                 <ContainerDivTab>
                     <TabContainer>
-                        <CurrentComponent
-                            data={data}
-                            onRef={ref => (this.childComponentsRefs[tab] = ref)}
-                        />
+                        {Array.isArray(this.childComponentsRefs) &&
+                            this.childComponentsRefs.length > 0 && (
+                                <CurrentComponent
+                                    data={data}
+                                    onRef={ref =>
+                                        (this.childComponentsRefs[tab] = ref)
+                                    }
+                                />
+                            )}
                     </TabContainer>
                 </ContainerDivTab>
             </div>

@@ -48,7 +48,6 @@ export default gql`
     }
 
     input CreateJustBrilliantGuideInput {
-        id: ID!
         name: String!
         welcomeFamilyId: Int!
         featureFamilyId: Int!
@@ -66,16 +65,16 @@ export default gql`
     input UpdateJustBrilliantGuideInput {
         id: ID!
         name: String!
-        welcomeFamilyId: Int
-        featureFamilyId: Int
-        informationFamilyId: Int
-        mapFamilyId: Int
-        galleryFamilyId: Int
-        marketFamilyId: Int
-        foodFamilyId: Int
-        attractionFamilyId: Int
-        eventFamilyId: Int
-        essentialFamilyId: Int
+        welcomeFamilyId: Int!
+        featureFamilyId: Int!
+        informationFamilyId: Int!
+        mapFamilyId: Int!
+        galleryFamilyId: Int!
+        marketFamilyId: Int!
+        foodFamilyId: Int!
+        attractionFamilyId: Int!
+        eventFamilyId: Int!
+        essentialFamilyId: Int!
         image: Upload
     }
 `;

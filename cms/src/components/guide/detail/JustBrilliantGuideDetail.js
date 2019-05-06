@@ -1,6 +1,7 @@
 import React from "react";
 import TabbedPage from "../../../utils/TabbedPage";
 import ModifyPublication from "./ModifyPublication";
+import { WELCOME_URL } from "../../../utils/Constants";
 
 export const JustBrilliantGuideDetail = ({ match }) => {
     const { params } = match || {};
@@ -9,7 +10,7 @@ export const JustBrilliantGuideDetail = ({ match }) => {
         {
             name: "General",
             withButtons: true,
-            withCancel: false,
+            withCancel: true,
             component: ModifyPublication
         },
         {
@@ -36,6 +37,8 @@ export const JustBrilliantGuideDetail = ({ match }) => {
                         ? tabs.slice(0, 1) //Only take the first item in the list if creating new publication
                         : [...tabs]
                 }
+                exitUrl={WELCOME_URL + "/guide"}
+                cancelUrl={WELCOME_URL + "/guide"}
             />
         </div>
     );

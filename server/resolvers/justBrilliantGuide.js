@@ -1,4 +1,12 @@
 import db from "../models";
+import {
+    checkUserLogin,
+    checkUserJBG,
+    processUploadMedia,
+    handleCreateActionActivityLog,
+    handleUpdateActionActivityLog
+} from "../utils/constant";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -7,6 +15,208 @@ export default {
         },
         justBrilliantGuides: async (_root, _input, { user }) => {
             return await db.just_brilliant_guide.findAll();
+        }
+    },
+    Mutation: {
+        createJustBrilliantGuide: async (
+            _root,
+            {
+                input: {
+                    name,
+                    welcomeFamilyId,
+                    featureFamilyId,
+                    informationFamilyId,
+                    mapFamilyId,
+                    galleryFamilyId,
+                    marketFamilyId,
+                    foodFamilyId,
+                    attractionFamilyId,
+                    eventFamilyId,
+                    essentialFamilyId,
+                    image
+                }
+            },
+            { user, clientIp }
+        ) => {
+            await checkUserLogin(user);
+            await checkUserJBG(user);
+
+            //Handle upload image
+            const uploaded = await processUploadMedia(
+                image,
+                user.clientId,
+                "image"
+            );
+
+            //Create just brilliant guide
+            let created = db.just_brilliant_guide.build({
+                name,
+                welcomeFamilyId,
+                featureFamilyId,
+                informationFamilyId,
+                mapFamilyId,
+                galleryFamilyId,
+                marketFamilyId,
+                foodFamilyId,
+                attractionFamilyId,
+                eventFamilyId,
+                essentialFamilyId
+            });
+
+            try {
+                await created.save();
+            } catch (e) {
+                throw new UserInputError(e);
+            }
+
+            try {
+                //Assign media
+                await created.addMedia(uploaded);
+            } catch (error) {
+                throw new UserInputError(
+                    `Assign publication ${name} to image failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Activity Log
+            handleCreateActionActivityLog(
+                created,
+                {
+                    name,
+                    welcomeFamilyId,
+                    featureFamilyId,
+                    informationFamilyId,
+                    mapFamilyId,
+                    galleryFamilyId,
+                    marketFamilyId,
+                    foodFamilyId,
+                    attractionFamilyId,
+                    eventFamilyId,
+                    essentialFamilyId,
+                    mediaId: uploaded.id
+                },
+                user,
+                clientIp
+            );
+
+            return created;
+        },
+        editJustBrilliantGuide: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    welcomeFamilyId,
+                    featureFamilyId,
+                    informationFamilyId,
+                    mapFamilyId,
+                    galleryFamilyId,
+                    marketFamilyId,
+                    foodFamilyId,
+                    attractionFamilyId,
+                    eventFamilyId,
+                    essentialFamilyId,
+                    image = null
+                }
+            },
+            { user, clientIp }
+        ) => {
+            await checkUserLogin(user);
+            await checkUserJBG(user);
+
+            if (!(await db.just_brilliant_guide.findByPk(id))) {
+                //Check if guide exists in the first place
+                throw new UserInputError(
+                    `Just Brilliant Guide ID ${id} does not exist`
+                );
+            }
+
+            try {
+                await db.just_brilliant_guide.update(
+                    {
+                        name,
+                        welcomeFamilyId,
+                        featureFamilyId,
+                        informationFamilyId,
+                        mapFamilyId,
+                        galleryFamilyId,
+                        marketFamilyId,
+                        foodFamilyId,
+                        attractionFamilyId,
+                        eventFamilyId,
+                        essentialFamilyId
+                    },
+                    { where: { id } }
+                );
+            } catch (error) {
+                throw new UserInputError("Error updating guide: ", error);
+            }
+
+            const updated = await db.just_brilliant_guide.findByPk(id);
+            let uploaded = null;
+
+            //Delete previous images
+            try {
+                const to_delete_images = await updated.getMedia();
+
+                if (Boolean(image)) {
+                    try {
+                        //Remove relationship between list and previous image in DB
+                        await updated.removeMedia(to_delete_images);
+                    } catch (errorRemoveMedia) {
+                        throw new UserInputError(
+                            "Error removing previous media relationship ",
+                            errorRemoveMedia
+                        );
+                    }
+
+                    try {
+                        //Handle upload image
+                        uploaded =
+                            Boolean(image) &&
+                            (await processUploadMedia(
+                                image,
+                                user.clientId,
+                                "image"
+                            ));
+
+                        Boolean(uploaded) && (await updated.addMedia(uploaded));
+                    } catch (errorUploadMedia) {
+                        throw new UserInputError(
+                            "Error uploading & assigning media ",
+                            errorUploadMedia
+                        );
+                    }
+                }
+            } catch (error) {
+                throw new UserInputError(error);
+            }
+
+            handleUpdateActionActivityLog(
+                updated,
+                {
+                    id,
+                    name,
+                    welcomeFamilyId,
+                    featureFamilyId,
+                    informationFamilyId,
+                    mapFamilyId,
+                    galleryFamilyId,
+                    marketFamilyId,
+                    foodFamilyId,
+                    attractionFamilyId,
+                    eventFamilyId,
+                    essentialFamilyId,
+                    ...(Boolean(image) && { mediaId: uploaded.id })
+                },
+                user,
+                clientIp
+            );
+
+            return updated;
         }
     },
     JustBrilliantGuide: {

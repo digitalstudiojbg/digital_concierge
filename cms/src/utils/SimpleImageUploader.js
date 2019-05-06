@@ -17,7 +17,6 @@ const FieldContainerDiv = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 `;
 
 const FieldDiv = styled.div`
@@ -78,7 +77,7 @@ class SimpleImageUploader extends React.Component {
     };
 
     render() {
-        const { classes, previewUrl, previewName } = this.props;
+        const { classes, previewUrl, previewName, labelFontSize } = this.props;
         const { openDialog } = this.state;
 
         //Always prioritise internal state over props
@@ -92,15 +91,22 @@ class SimpleImageUploader extends React.Component {
         //Always prioritise internal state over props
         const filename = Boolean(name) ? name : previewName;
 
+        const FormLabelDiv = styled.div`
+            color: rgb(92, 92, 92);
+            font-size: ${props => props.labelFontSize};
+        `;
+
         return (
             <FieldContainerDiv>
+                <FormLabelDiv labelFontSize={labelFontSize}>
+                    FILE NAME
+                </FormLabelDiv>
                 <div style={{ width: "100%", display: "flex" }}>
                     <div style={{ width: "90%", paddingRight: 10 }}>
                         <TextField
                             value={filename}
                             disabled={true}
                             fullWidth={true}
-                            label="File Name"
                             variant="outlined"
                         />
                     </div>
@@ -174,10 +180,15 @@ class SimpleImageUploader extends React.Component {
     }
 }
 
+SimpleImageUploader.defaultProps = {
+    labelFontSize: "0.8em"
+};
+
 SimpleImageUploader.propTypes = {
     onRef: PropTypes.func.isRequired,
     previewUrl: PropTypes.string,
-    previewName: PropTypes.string
+    previewName: PropTypes.string,
+    labelFontSize: PropTypes.string
 };
 
 export default withStyles(styles)(SimpleImageUploader);
