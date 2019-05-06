@@ -27,6 +27,7 @@ import {
     getJustBrilliantGuideDetail
 } from "./justBrilliantGuide";
 import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
+import { getTabbedPageComplete } from "./misc";
 
 export {
     getCurrentUserQuery,
@@ -54,5 +55,6 @@ export {
     getLayoutListFromType,
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
-    getJbgLayoutFamilyList
+    getJbgLayoutFamilyList,
+    getTabbedPageComplete
 };

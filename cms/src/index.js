@@ -56,6 +56,13 @@ const client = new ApolloClient({
     resolvers: {}
 });
 
+//Default values
+cache.writeData({
+    data: {
+        tabbed_page_complete: false
+    }
+});
+
 ReactDOM.render(
     <ApolloProvider client={client}>
         <App />

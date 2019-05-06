@@ -20,8 +20,8 @@ import { withRouter } from "react-router-dom";
 
 class ModifyPublicationHOC extends React.Component {
     render() {
-        const { onRef, history } = this.props;
-        const { pub_id } = this.props.data;
+        const { onRef, history, setIsComplete, data } = this.props;
+        const { pub_id } = data;
         return (
             <Query query={getJbgLayoutFamilyList}>
                 {({
@@ -109,6 +109,9 @@ class ModifyPublicationHOC extends React.Component {
                                                             }
                                                             action={action}
                                                             onRef={onRef}
+                                                            setIsComplete={
+                                                                setIsComplete
+                                                            }
                                                         />
                                                     );
                                                 }}
@@ -143,6 +146,7 @@ class ModifyPublicationHOC extends React.Component {
                                                 action={action}
                                                 onRef={onRef}
                                                 history={history}
+                                                setIsComplete={setIsComplete}
                                             />
                                         );
                                     }}
@@ -417,7 +421,7 @@ class ModifyPublication extends React.Component {
     };
 
     actionAfterSubmission = (data, setFieldValue) => {
-        const { has_data } = this.props;
+        const { has_data, setIsComplete } = this.props;
         console.log("Received data: ", data);
         if (!has_data && Boolean(data) && Boolean(data.id)) {
             //Need to redirect if we create publication and want to still keep editing
@@ -438,12 +442,12 @@ class ModifyPublication extends React.Component {
             setFieldValue("image_name", name);
         }
 
-        // console.log("About to resolve");
-        // resolve(data);
+        //Tell Tabbed Page HOC that submission is finished
+        setIsComplete();
     };
 
     handleSubmit = (values, { setFieldValue }) => {
-        const { action, has_data } = this.props;
+        const { action, has_data, setIsComplete } = this.props;
         if (!has_data && !Boolean(this.imageUploaderRef.state.file)) {
             this.setState({ imageError: true });
             return undefined;
@@ -584,7 +588,8 @@ ModifyPublication.propTypes = {
     ).isRequired,
     action: PropTypes.func.isRequired,
     onRef: PropTypes.func.isRequired,
-    history: PropTypes.object
+    history: PropTypes.object,
+    setIsComplete: PropTypes.func.isRequired
 };
 
 export default withRouter(ModifyPublicationHOC);

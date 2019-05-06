@@ -8,6 +8,8 @@ import { ContainerDiv } from "./Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import { withApollo, compose, graphql } from "react-apollo";
+import { getTabbedPageComplete } from "../data/query";
 
 export const ContainerDivTab = styled.div`
     width: 100%;
@@ -61,7 +63,8 @@ class TabbedPage extends React.Component {
         super(props);
         const { tabs } = props;
         this.childComponentsRefs = tabs.map(() => React.createRef());
-        this.state = { tab: 0 };
+        this.state = { tab: 0, exit: false };
+        this.setIsComplete = this.setIsComplete.bind(this);
     }
 
     handleChange = (_event, tab) => {
@@ -77,18 +80,65 @@ class TabbedPage extends React.Component {
     };
 
     submitExitAction = () => {
-        const { history, exitUrl } = this.props;
         const { tab } = this.state;
-        this.childComponentsRefs[tab] &&
-            this.childComponentsRefs[tab]
-                .submitForm()
-                .then(() => Boolean(exitUrl) && history.push(exitUrl));
+        this.setState({ exit: true }, () => {
+            this.childComponentsRefs[tab] &&
+                this.childComponentsRefs[tab].submitForm();
+        });
     };
 
     submitCancelAction = () => {
         const { history, cancelUrl } = this.props;
         Boolean(cancelUrl) && history.push(cancelUrl);
     };
+
+    exitAction = () => {
+        const { history, exitUrl } = this.props;
+        Boolean(exitUrl) && history.push(exitUrl);
+    };
+
+    resetIsComplete() {
+        const { client } = this.props;
+        client.writeData({
+            data: {
+                tabbed_page_complete: false
+            }
+        });
+    }
+
+    setIsComplete() {
+        const { client } = this.props;
+        client.writeData({
+            data: {
+                tabbed_page_complete: true
+            }
+        });
+    }
+
+    componentDidUpdate(prevProps) {
+        const {
+            tabbed_page_complete: current_tabbed_page_complete
+        } = this.props.isComplete;
+        const {
+            tabbed_page_complete: prev_tabbed_page_complete
+        } = prevProps.isComplete;
+        const { exit } = this.state;
+        if (prev_tabbed_page_complete !== current_tabbed_page_complete) {
+            //From false to true
+            if (
+                !prev_tabbed_page_complete &&
+                current_tabbed_page_complete &&
+                exit
+            ) {
+                this.exitAction();
+            }
+            this.resetIsComplete();
+        }
+    }
+
+    componentWillUnmount() {
+        this.resetIsComplete();
+    }
 
     render() {
         const { classes, title, data, tabs } = this.props;
@@ -172,7 +222,8 @@ class TabbedPage extends React.Component {
                                     data={data}
                                     onRef={ref =>
                                         (this.childComponentsRefs[tab] = ref)
-                                    }
+                                    } //This props is to be linked to the Formik ref prop
+                                    setIsComplete={this.setIsComplete} //This prop is to tell that the form has finished submission
                                 />
                             )}
                     </TabContainer>
@@ -198,4 +249,9 @@ TabbedPage.propTypes = {
     )
 };
 
-export default withRouter(withStyles(styles)(TabbedPage));
+export default compose(
+    withApollo,
+    withRouter,
+    withStyles(styles),
+    graphql(getTabbedPageComplete, { name: "isComplete" })
+)(TabbedPage);
