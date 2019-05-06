@@ -13,6 +13,9 @@ import {
 } from "../../../data/query";
 import { CREATE_GUIDE, EDIT_GUIDE } from "../../../data/mutation";
 import Loading from "../../loading/Loading";
+import * as Yup from "yup";
+import { mapValues, isEmpty } from "lodash";
+import { DECIMAL_RADIX } from "../../../utils/Constants";
 
 class ModifyPublicationHOC extends React.Component {
     render() {
@@ -190,21 +193,82 @@ const FormLabelDiv = styled.div`
     font-size: 0.8em;
 `;
 
+//Yup validation schema
+const requiredErrorMessage = "Required";
+const validationSchema = (isCreate, layoutFamiliesIds) =>
+    Yup.object().shape({
+        name: Yup.string().required(requiredErrorMessage),
+        welcomeFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        featureFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        informationFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        mapFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        galleryFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        marketFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        foodFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        attractionFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        eventFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds),
+        essentialFamilyId: isCreate
+            ? Yup.string()
+                  .oneOf(layoutFamiliesIds)
+                  .required(requiredErrorMessage)
+            : Yup.string().oneOf(layoutFamiliesIds)
+    });
+
 class ModifyPublication extends React.Component {
-    imageUploaderRef = React.createRef();
-    logImageFilename = () => {
-        if (this.imageUploaderRef.state.file) {
-            console.log("filename: ", this.imageUploaderRef.state.file.name);
-        } else {
-            console.log("No File");
-        }
+    state = {
+        imageError: false
     };
-    logRef = () => console.log("Ref ", this.imageUploaderRef);
+    imageUploaderRef = React.createRef();
+    // logImageFilename = () => {
+    //     if (this.imageUploaderRef.state.file) {
+    //         console.log("filename: ", this.imageUploaderRef.state.file.name);
+    //     } else {
+    //         console.log("No File");
+    //     }
+    // };
+    // logRef = () => console.log("Ref ", this.imageUploaderRef);
 
     prepareInitialValues = () => {
         const { has_data, data } = this.props;
         if (has_data && data) {
             const {
+                id,
                 name,
                 welcomeFamily: { id: welcomeFamilyId },
                 featureFamily: { id: featureFamilyId },
@@ -219,6 +283,7 @@ class ModifyPublication extends React.Component {
                 media: [{ name: image_name, path: image_preview }]
             } = data;
             return {
+                id,
                 name,
                 welcomeFamilyId,
                 featureFamilyId,
@@ -231,11 +296,11 @@ class ModifyPublication extends React.Component {
                 eventFamilyId,
                 essentialFamilyId,
                 image_preview,
-                image_name,
-                image: null
+                image_name
             };
         } else {
             return {
+                id: null,
                 name: "",
                 welcomeFamilyId: "",
                 featureFamilyId: "",
@@ -248,8 +313,7 @@ class ModifyPublication extends React.Component {
                 eventFamilyId: "",
                 essentialFamilyId: "",
                 image_preview: null,
-                image_name: null,
-                image: null
+                image_name: null
             };
         }
     };
@@ -300,7 +364,7 @@ class ModifyPublication extends React.Component {
                 >
                     <div
                         style={{
-                            width: Boolean(imageUrl) ? "50%" : "100%",
+                            width: Boolean(imageUrl) ? "60%" : "100%",
                             marginRight: 20
                         }}
                     >
@@ -340,13 +404,74 @@ class ModifyPublication extends React.Component {
         );
     };
 
+    actionAfterSubmission = (data, setFieldValue) => {
+        const { has_data } = this.props;
+        console.log("Received data: ", data);
+        if (!has_data && Boolean(data)) {
+            //Need to set media and id values in formik if creating publication
+            const {
+                id,
+                media: { name, path }
+            } = data;
+            setFieldValue("id", id);
+            setFieldValue("image_name", name);
+            setFieldValue("image_preview", path);
+        }
+    };
+
     render() {
-        const { onRef } = this.props;
+        const { onRef, has_data, layoutFamilies, action } = this.props;
+        const { imageError } = this.state;
         return (
             <Formik
-                onSubmit={() => alert("Submit Formik")}
+                onSubmit={(values, { setFieldValue }) => {
+                    if (
+                        !has_data &&
+                        !Boolean(this.imageUploaderRef.state.file)
+                    ) {
+                        this.setState({ imageError: true });
+                        return undefined;
+                    }
+                    const {
+                        id,
+                        name,
+                        image_name,
+                        image_preview,
+                        ...others
+                    } = values;
+                    let toSubmit = {
+                        ...(Boolean(id) && { id }),
+                        name,
+                        ...mapValues(others, familyId =>
+                            parseInt(familyId, DECIMAL_RADIX)
+                        )
+                    };
+
+                    console.log("To Submit ", toSubmit);
+
+                    action({ variables: { input: { ...toSubmit } } }).then(
+                        ({ data }) => {
+                            const returnedData =
+                                !isEmpty(data) &&
+                                !isEmpty(data.createJustBrilliantGuide)
+                                    ? data.createJustBrilliantGuide
+                                    : !isEmpty(data) &&
+                                      !isEmpty(data.editJustBrilliantGuide)
+                                    ? data.editJustBrilliantGuide
+                                    : null;
+                            this.actionAfterSubmission(
+                                returnedData,
+                                setFieldValue
+                            );
+                        }
+                    );
+                }}
                 ref={onRef}
                 initialValues={this.prepareInitialValues()}
+                validationSchema={validationSchema(
+                    !has_data,
+                    layoutFamilies.map(({ id }) => id)
+                )}
             >
                 {({ values }) => (
                     <Form>
@@ -364,7 +489,14 @@ class ModifyPublication extends React.Component {
                                     variant="outlined"
                                     fullWidth={true}
                                 />
-                                <div style={{ paddingTop: 20 }}>
+                                <div
+                                    style={{
+                                        marginTop: 20,
+                                        border: imageError
+                                            ? "1px solid red"
+                                            : "none"
+                                    }}
+                                >
                                     <SimpleImageUploader
                                         onRef={ref =>
                                             (this.imageUploaderRef = ref)
@@ -372,6 +504,15 @@ class ModifyPublication extends React.Component {
                                         previewUrl={values.image_preview}
                                         previewName={values.image_name}
                                     />
+                                    {imageError && (
+                                        <p
+                                            style={{
+                                                color: "red"
+                                            }}
+                                        >
+                                            Required.
+                                        </p>
+                                    )}
                                 </div>
                             </FirstSectionContainerDiv>
                             <SecondSectionContainerDiv>

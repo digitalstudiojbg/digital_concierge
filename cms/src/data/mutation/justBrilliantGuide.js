@@ -6,6 +6,7 @@ export const CREATE_GUIDE = gql`
             id
             media {
                 id
+                name
                 path
             }
         }
@@ -18,6 +19,7 @@ export const EDIT_GUIDE = gql`
             id
             media {
                 id
+                name
                 path
             }
         }
