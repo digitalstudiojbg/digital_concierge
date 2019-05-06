@@ -85,9 +85,19 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
+                                    <React.Fragment>
+                                        {isLoggedIn() ? (
+                                            <Redirect
+                                                to={`${WELCOME_URL}/dashboard`}
+                                            />
+                                        ) : (
+                                            <Login
+                                                onLogin={this.handleLogin.bind(
+                                                    this
+                                                )}
+                                            />
+                                        )}
+                                    </React.Fragment>
                                 )}
                             />
                             <Route

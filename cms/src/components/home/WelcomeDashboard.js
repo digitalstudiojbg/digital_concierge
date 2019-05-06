@@ -10,8 +10,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { Link } from "react-router-dom";
 import {
     CREATE_NEW_CLIENT,
-    WELCOME_URL,
-    CLIENT_CMS_URL
+    CLIENT_CMS_URL,
+    WELCOME_URL_CLIENT
 } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
@@ -128,7 +128,7 @@ export const WelcomeDashboard = ({ classes }) => (
                                         <a
                                             href={
                                                 CLIENT_CMS_URL +
-                                                WELCOME_URL +
+                                                WELCOME_URL_CLIENT +
                                                 "/" +
                                                 client.id
                                             }

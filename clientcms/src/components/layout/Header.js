@@ -3,7 +3,8 @@ import {
     COLOR_JBG_PURPLE,
     SYSTEM_CMS_INDEX_URL,
     // TOUCHSCREEN_CMS_INDEX_URL,
-    LOGIN_URL
+    LOGIN_URL,
+    PORTAL_URL
 } from "../../utils/Constants";
 import { withRouter } from "react-router";
 import { getCurrentUserQuery as query } from "../../data/query";
@@ -21,6 +22,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import PersonIcon from "@material-ui/icons/Person";
 import PowerIcon from "@material-ui/icons/PowerSettingsNew";
 import { logout } from "../../auth/auth";
+import HomeIcon from "@material-ui/icons/HomeOutlined";
 
 const styles = theme => ({
     button: {
@@ -32,6 +34,9 @@ const styles = theme => ({
     },
     icon: {
         marginRight: -5
+    },
+    homeIcon: {
+        marginRight: 10
     }
 });
 
@@ -84,6 +89,10 @@ class Header extends Component {
         this.props.history.push(LOGIN_URL);
     };
 
+    handleNavigateToPortalCMS = () => {
+        window.location.replace(PORTAL_URL);
+    };
+
     render() {
         const { client, match, classes } = this.props;
         const { getCurrentUser: user } = client.readQuery({
@@ -95,6 +104,10 @@ class Header extends Component {
 
         const { name = "" /*has_tablet = false, has_touchscreen = false*/ } =
             user.venue || {};
+
+        const {
+            client: { name: clientName = "" }
+        } = user;
 
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
@@ -109,7 +122,8 @@ class Header extends Component {
                             width: 350,
                             fontSize: "2em",
                             paddingLeft: 30,
-                            fontWeight: 700
+                            fontWeight: 700,
+                            textAlign: "center"
                         }}
                     >
                         {/* {has_tablet && has_touchscreen && (
@@ -156,6 +170,12 @@ class Header extends Component {
                     }}
                 >
                     <WelcomeUserDetailContainerDiv>
+                        {clientName.toUpperCase() === "JOHN BATMAN GROUP" && (
+                            <HomeIcon
+                                className={classes.homeIcon}
+                                onClick={this.handleNavigateToPortalCMS}
+                            />
+                        )}
                         <div
                             style={{
                                 paddingLeft: "1vw",

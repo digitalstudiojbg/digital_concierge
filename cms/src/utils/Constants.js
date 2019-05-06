@@ -24,6 +24,7 @@ export const DECIMAL_RADIX = 10;
 //URL Constants
 export const LOGIN_URL = "/login";
 export const WELCOME_URL = "/main";
+export const WELCOME_URL_CLIENT = "/welcome";
 export const WELCOME_URL_ROUTER = "/main/:which";
 export const CREATE_NEW_CLIENT = "/create_new_client";
 
