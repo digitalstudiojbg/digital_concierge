@@ -68,13 +68,13 @@ class TabbedPage extends React.Component {
     }
 
     handleChange = (_event, tab) => {
-        console.log(this.childComponentsRefs);
+        // console.log(this.childComponentsRefs);
         this.setState({ tab });
     };
 
     submitAction = () => {
         const { tab } = this.state;
-        console.log(this.childComponentsRefs[tab]);
+        // console.log(this.childComponentsRefs[tab]);
         this.childComponentsRefs[tab] &&
             this.childComponentsRefs[tab].submitForm();
     };
