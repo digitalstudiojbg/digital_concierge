@@ -28,20 +28,21 @@ import {
 import styled from "styled-components";
 
 const BrowseButton = styled.label`
-    border: 3px solid rgb(64, 84, 178);
+    border: 3px solid #2699FB;
     display: inline-block;
-    width: 100%;
+    width: 40%;
+    margin-left:60%;
     text-align: center;
     cursor: pointer;
-    padding: 5px;
+    padding: 8px;
     font-size: 1.3em;
-    color: rgb(64, 84, 178);
+    color: #2699FB;
     border-radius: 5px;
     &:hover {
         font-weight: bold;
     }
 `;
-const SectionHeader = styled.h4`
+const SectionHeader = styled.h3`
     text-align: left;
     color: #2699FB;
 `;
@@ -52,7 +53,7 @@ const FiledContainer = styled.div`
 
 const FieldLabel = styled.label`
     font-size: 10px;
-    color:black;
+    color:#5C5C5C;
 `;
 
 
@@ -60,7 +61,7 @@ const SubFieldContainerDiv = styled.div`
     width : 100%;
     flex-basis: ${props => props.flexBasis};
     margin-right: ${props => props.marginRight};
-    padding-top: 10px;
+   // padding-top: 10px;
 `;
 
 
@@ -123,6 +124,8 @@ const PAYMENT_DATE_FIELD = [
         type: "date"
     }
 ];
+
+
 
 const LicenseKeyTextField = props => (
     <MuiTextField
@@ -214,29 +217,30 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getLicenseTypes: { licenseTypes = {} } = {} } = this.props;
 
         return (
-            <div style={{ width: "33%", padding: "20px 20px 20px 0" }}>
+            <div style={{ width: "33%", padding: "3% 3% 3% 0" ,borderRight: "1px solid #DDDDDD" }}>
                 
                 <SectionHeader> License</SectionHeader>
                 <FiledContainer>
                     <SubFieldContainerDiv>
-                    
-                     <Field
-                        name="license_key"
-                        label="LICENSE KEY"
-                        required={true}
-                        type="text"
-                        component={LicenseKeyTextField}
-                        variant="outlined"
-                       fullWidth={true}
-                    />
+                        <FieldLabel>LICENSE KEY</FieldLabel>
+                        <Field
+                            name="license_key"
+                        //    label="LICENSE KEY"
+                            required={true}
+                            type="text"
+                            component={LicenseKeyTextField}
+                            variant="outlined"
+                        fullWidth={true}
+                        />
                     </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
                     <SubFieldContainerDiv>
+                    <FieldLabel>LICENSE TYPE</FieldLabel>
                     {licenseTypes.length > 0 &&
                         this.selectRenderMethod({
                             name: "license_type",
-                            label: "LICENSE TYPE",
+                         //   label: "LICENSE TYPE",
                             required: true,
                             type: "select",
                             optionList: licenseTypes
@@ -246,13 +250,13 @@ class WizardCreateClientPageTwo extends React.Component {
                 {LICENSE_DATE_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
                         <SubFieldContainerDiv>
-
-                        {this.selectRenderMethod({
-                            name,
-                            label,
-                            required,
-                            type
-                        })}
+                            <FieldLabel>{label}</FieldLabel>
+                            {this.selectRenderMethod({
+                                name,
+                            // label,
+                                required,
+                                type
+                            })}
                         </SubFieldContainerDiv>
                     </FiledContainer>
                 ))}
@@ -266,6 +270,7 @@ class WizardCreateClientPageTwo extends React.Component {
                                 label="Automatic Renewal"
                                 required={true}
                                 color="primary"
+                                background-color="#2699FB"
                                 component={Checkbox}
                                 variant="outlined"
                                 fullWidth={true}
@@ -280,21 +285,26 @@ class WizardCreateClientPageTwo extends React.Component {
 
     renderAgreementForm() {
         return (
-            <div style={{ width: "33%", padding: "20px" }}>
+            <div style={{ width: "33%", padding: "3%" ,borderRight: "1px solid #DDDDDD"  }}>
                 <SectionHeader>Agreement</SectionHeader>
                 <FiledContainer>
+                 <FieldLabel>AGREEMENT NUMBER</FieldLabel>
                     {this.selectRenderMethod({
                         name: "agreement_number",
-                        label: "AGREEMENT NUMBER",
+                       // label: "AGREEMENT NUMBER",
                         required: true,
-                        type: "text"
+                        type: "text",
+                        
                     })}
                 </FiledContainer>
                 {AGREEMENT_DATE_FIELD.map(({ name, label, required, type }) => (
+
+
                     <FiledContainer>
+                        <FieldLabel>{label}</FieldLabel>
                         {this.selectRenderMethod({
                             name,
-                            label,
+                         //   label,
                             required,
                             type
                         })}
@@ -340,36 +350,45 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getCurrencyList: { currencies = {} } = {} } = this.props;
 
         return (
-            <div style={{ width: "33%", padding: "20px 0px 20px 20px" }}>
+            <div style={{ width: "33%", padding: "3% 0 3% 3%" }}>
                 <SectionHeader>Payment</SectionHeader>
                 {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
-                        {this.selectRenderMethod({
-                            name,
-                            label,
-                            required,
-                            type
-                        })}
+                        <SubFieldContainerDiv>
+                            <FieldLabel>{label}</FieldLabel>
+                            {this.selectRenderMethod({
+                                name,
+                                label,
+                                required,
+                                type
+                            })}
+                        </SubFieldContainerDiv>
                     </FiledContainer>
                 ))}
                 <FiledContainer>
-                    {currencies.length > 0 &&
-                        this.selectRenderMethod({
-                            name: "currency",
-                            label: "CURRENCY",
-                            required: true,
-                            type: "select",
-                            optionList: currencies
-                        })}
+                    <SubFieldContainerDiv>
+                        <FieldLabel>CURRENCY</FieldLabel>
+                        {currencies.length > 0 &&
+                            this.selectRenderMethod({
+                                name: "currency",
+                            //  label: "CURRENCY",
+                                required: true,
+                                type: "select",
+                                optionList: currencies
+                            })}
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 {PAYMENT_DATE_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
-                        {this.selectRenderMethod({
-                            name,
-                            label,
-                            required,
-                            type
-                        })}
+                        <SubFieldContainerDiv>
+                            <FieldLabel>{label}</FieldLabel>
+                            {this.selectRenderMethod({
+                                name,
+                               // label,
+                                required,
+                                type
+                            })}
+                        </SubFieldContainerDiv>
                     </FiledContainer>
                 ))}
                 <div
@@ -415,19 +434,20 @@ class WizardCreateClientPageTwo extends React.Component {
 
         if (licenseTypes.length < 0 && currencies.length < 0)
             return <Loading />;
+        // let new_create_client_id= 1;  
         let new_create_client_id;
-        try {
+         try {
             new_create_client_id = client.readQuery({
-                query: getNewCreatedClientId
-            }).new_create_client_id;
-        } catch {
-            return (
-                <React.Fragment>
-                    <h1>Can't Find ClientId From Step 1</h1>
-                    <Loading />
-                </React.Fragment>
-            );
-        }
+                 query: getNewCreatedClientId
+             }).new_create_client_id;
+            } catch {
+             return (
+                 <React.Fragment>
+                     <h1>Can't Find ClientId From Step 1</h1>
+                     <Loading />
+                 </React.Fragment>
+             );
+         }
 
         return (
             <Formik
@@ -483,7 +503,8 @@ class WizardCreateClientPageTwo extends React.Component {
                                     file: this.state.client_image,
                                     agreement_date,
                                     renewal_date,
-                                    clientId: new_create_client_id
+                                
+                                   clientId: new_create_client_id
                                 }
                             }
                         });
