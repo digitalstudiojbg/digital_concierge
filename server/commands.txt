@@ -520,3 +520,11 @@ node_modules/.bin/sequelize seed:generate --name jbg_layouts_jbg_templates
 node_modules/.bin/sequelize seed:generate --name jbg_templates_validations
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-jbg_layout_family
+
+node_modules/.bin/sequelize model:generate --name advertiser --attributes name:string,nature_of_business:string,address:string,city:string,zip_code:string,postal_address:string,postal_city:string,postal_zip_code:string,phone:string,email:string,active:boolean
+
+node_modules/.bin/sequelize model:generate --name article --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name artwork_size --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name advertising --attributes agreement_number:string,agreement_date:date,agreement_file:string,agreement_file_key:string,period_month:integer,commence_date:date,expire_date:date,artwork_supply_date:date,active:boolean
