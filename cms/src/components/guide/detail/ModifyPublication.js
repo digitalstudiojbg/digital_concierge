@@ -59,10 +59,8 @@ class ModifyPublicationHOC extends React.Component {
                                                     Error!: {errorQuery.message}
                                                 </React.Fragment>
                                             );
-                                        const {
-                                            __typename,
-                                            ...data
-                                        } = dataBefore;
+                                        const { __typename, ...data } =
+                                            dataBefore || {};
                                         return (
                                             <Mutation
                                                 mutation={EDIT_GUIDE}
@@ -205,6 +203,13 @@ const FormLabelDiv = styled.div`
     font-size: 0.8em;
 `;
 
+const FormHelperError = styled.p`
+    margin-top: 8px;
+    font-size: 0.75rem;
+    line-height: 1em;
+    color: #f44336;
+`;
+
 //Yup validation schema
 const requiredErrorMessage = "Required";
 const validationSchema = (isCreate, layoutFamiliesIds) =>
@@ -282,7 +287,7 @@ class ModifyPublication extends React.Component {
 
     prepareInitialValues = () => {
         const { has_data, data } = this.props;
-        if (has_data && data) {
+        if (has_data && !isEmpty(data)) {
             const {
                 id,
                 name,
@@ -360,13 +365,18 @@ class ModifyPublication extends React.Component {
         }
     ];
 
-    renderLayoutFamilyDropdown = (item, values) => {
+    renderLayoutFamilyDropdown = (item, values, errors) => {
         const { layoutFamilies } = this.props;
         const { name, label } = item;
         const foundItem = Boolean(values[name])
             ? layoutFamilies.find(({ id }) => id === values[name])
             : null;
-        const imageUrl = Boolean(foundItem) ? foundItem.media.path : null;
+        const imageUrl =
+            Boolean(foundItem) &&
+            !isEmpty(foundItem.media) &&
+            foundItem.media.path
+                ? foundItem.media.path
+                : null;
 
         return (
             <React.Fragment>
@@ -389,7 +399,13 @@ class ModifyPublication extends React.Component {
                             component={Select}
                             disabled={layoutFamilies.length < 1}
                             fullWidth={true}
-                            input={<OutlinedInput labelWidth={0} />}
+                            input={
+                                <OutlinedInput
+                                    labelWidth={0}
+                                    name={name}
+                                    error={!isEmpty(errors) && errors[name]}
+                                />
+                            }
                         >
                             {layoutFamilies.map(({ id, name }, index) => (
                                 <MenuItem
@@ -400,6 +416,9 @@ class ModifyPublication extends React.Component {
                                 </MenuItem>
                             ))}
                         </Field>
+                        {!isEmpty(errors) && errors[name] && (
+                            <FormHelperError>{errors[name]}</FormHelperError>
+                        )}
                     </div>
                     {Boolean(imageUrl) && (
                         <div
@@ -420,33 +439,22 @@ class ModifyPublication extends React.Component {
         );
     };
 
-    actionAfterSubmission = (data, setFieldValue) => {
+    actionAfterSubmission = data => {
         const { has_data, setIsComplete } = this.props;
         console.log("Received data: ", data);
-        if (!has_data && Boolean(data) && Boolean(data.id)) {
+        if (!has_data && !isEmpty(data) && Boolean(data.id)) {
             //Need to redirect if we create publication and want to still keep editing
             this.props.history &&
                 this.props.history.push(
                     GUIDE_MAIN_URL.replace(":pub_id", data.id)
                 );
         }
-        if (
-            has_data &&
-            Boolean(data) &&
-            Boolean(data.media) &&
-            Boolean(data.media.name) &&
-            Boolean(data.media.path)
-        ) {
-            const { name, path } = data;
-            setFieldValue("image_preview", path);
-            setFieldValue("image_name", name);
-        }
 
         //Tell Tabbed Page HOC that submission is finished
         setIsComplete();
     };
 
-    handleSubmit = (values, { setFieldValue }) => {
+    handleSubmit = values => {
         const { action, has_data } = this.props;
         if (!has_data && !Boolean(this.imageUploaderRef.state.file)) {
             this.setState({ imageError: true });
@@ -471,7 +479,7 @@ class ModifyPublication extends React.Component {
                     : !isEmpty(data) && !isEmpty(data.editJustBrilliantGuide)
                     ? data.editJustBrilliantGuide
                     : null;
-            this.actionAfterSubmission(returnedData, setFieldValue);
+            this.actionAfterSubmission(returnedData);
         });
     };
 
@@ -487,8 +495,9 @@ class ModifyPublication extends React.Component {
                     !has_data,
                     layoutFamilies.map(({ id }) => id)
                 )}
+                enableReinitialize={true}
             >
-                {({ values }) => (
+                {({ values, errors }) => (
                     <Form>
                         <ContainerDiv>
                             <FirstSectionContainerDiv>
@@ -545,7 +554,8 @@ class ModifyPublication extends React.Component {
                                                 >
                                                     {this.renderLayoutFamilyDropdown(
                                                         item,
-                                                        values
+                                                        values,
+                                                        errors
                                                     )}
                                                 </React.Fragment>
                                             )
@@ -561,7 +571,8 @@ class ModifyPublication extends React.Component {
                                                 >
                                                     {this.renderLayoutFamilyDropdown(
                                                         item,
-                                                        values
+                                                        values,
+                                                        errors
                                                     )}
                                                 </React.Fragment>
                                             )
