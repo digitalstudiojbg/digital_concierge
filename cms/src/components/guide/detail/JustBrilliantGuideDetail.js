@@ -39,6 +39,7 @@ export const JustBrilliantGuideDetail = ({ match }) => {
                 }
                 exitUrl={WELCOME_URL + "/guide"}
                 cancelUrl={WELCOME_URL + "/guide"}
+                tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             />
         </div>
     );

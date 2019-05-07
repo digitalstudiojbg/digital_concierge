@@ -1,8 +1,5 @@
 import React from "react";
-import Tabs from "@material-ui/core/Tabs";
-import Paper from "@material-ui/core/Paper";
-import Tab from "@material-ui/core/Tab";
-import Button from "@material-ui/core/Button";
+import { Tabs, Tab, Paper, Button, Tooltip } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { ContainerDiv } from "./Constants";
 import { withStyles } from "@material-ui/core/styles";
@@ -10,12 +7,27 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { withApollo, compose, graphql } from "react-apollo";
 import { getTabbedPageComplete } from "../data/query";
+import InfoIcon from "@material-ui/icons/Info";
 
-export const ContainerDivTab = styled.div`
+const ContainerDivTab = styled.div`
     width: 100%;
     overflow-y: auto;
     height: 77vh;
 `;
+
+const StyledTooltip = styled(props => (
+    <Tooltip
+        classes={{ popper: props.className, tooltip: "tooltip" }}
+        {...props}
+    />
+))`
+    & .tooltip {
+        // background-color: papayawhip;
+        // color: #000;
+        font-size: ${props => props.fontSize};
+    }
+`;
+
 const TabContainer = props => {
     return <ContainerDiv>{props.children}</ContainerDiv>;
 };
@@ -141,7 +153,15 @@ class TabbedPage extends React.Component {
     }
 
     render() {
-        const { classes, title, data, tabs } = this.props;
+        const {
+            classes,
+            title,
+            data,
+            tabs,
+            tooltipText,
+            tooltipColor,
+            tooltipFontSize
+        } = this.props;
         const { tab } = this.state;
         const CurrentComponent = tabs[tab].component;
         const shouldRenderButtons = tabs[tab].withButtons;
@@ -160,10 +180,26 @@ class TabbedPage extends React.Component {
                         fontSize: "2em",
                         fontWeight: 700,
                         paddingTop: 20,
-                        paddingBottom: 20
+                        paddingBottom: 20,
+                        display: "flex"
                     }}
                 >
                     {title}
+                    {Boolean(tooltipText) && (
+                        <div style={{ paddingLeft: 10 }}>
+                            <StyledTooltip
+                                // classes={{ tooltip: classes.tooltip }}
+                                title={tooltipText}
+                                placement="bottom"
+                                fontSize={tooltipFontSize}
+                            >
+                                <InfoIcon
+                                    style={{ color: tooltipColor }}
+                                    fontSize="small"
+                                />
+                            </StyledTooltip>
+                        </div>
+                    )}
                 </div>
                 <Paper
                     square
@@ -233,6 +269,11 @@ class TabbedPage extends React.Component {
     }
 }
 
+TabbedPage.defaultProps = {
+    tooltipColor: "rgb(38, 153, 251)",
+    tooltipFontSize: "0.8em"
+};
+
 TabbedPage.propTypes = {
     classes: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
@@ -246,7 +287,10 @@ TabbedPage.propTypes = {
             withButtons: PropTypes.bool.isRequired,
             withCancel: PropTypes.bool.isRequired
         })
-    )
+    ),
+    tooltipColor: PropTypes.string,
+    tooltipFontSize: PropTypes.string,
+    tooltipText: PropTypes.string
 };
 
 export default compose(
