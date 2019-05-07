@@ -32,7 +32,7 @@ const CancelButtonContainer = styled.div`
 
 const styles = theme => ({
     root: {
-        width: "80%",
+        width: "90%",
         marginLeft: "auto",
         marginRight: "auto"
     },

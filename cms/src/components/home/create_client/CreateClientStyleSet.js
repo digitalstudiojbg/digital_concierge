@@ -13,7 +13,7 @@ width: ${props => props.width};
 height: ${props => (Boolean(props.height) ? props.height : "100%")};
 display: flex;
 flex-direction: column;
-padding: 30px;
+padding:0 4%;
 border-right: 1px solid #DDDDDD; 
 `;
 
@@ -60,12 +60,12 @@ color: #2699FB;
 export const BrowseButton = styled.label`
     border: 3px solid #2699FB;
     display: inline-block;
-    width: 10% 0;
+    width: 40%;
     margin-left:60%;
     text-align: center;
     cursor: pointer;
-    padding: 8px;
-    font-size: 1.3em;
+    padding: 10px 5px;
+    font-size: 14px
     color: #2699FB;
     border-radius: 5px;
     variant: outlined;
@@ -76,15 +76,16 @@ export const BrowseButton = styled.label`
 `;
 
 export const FiledContainer = styled.div`
-    padding-bottom: 20px;
+  //  padding-bottom: 20px;
 `;
 
 export const ContinueButton = styled.button`
 type: submit;
 width:  25%;
-padding: 2% 1%;
+padding: 15px 5px;
 color: white;
 background: #2699FB;
 border: 20px solid #313131;
 `;
+
 

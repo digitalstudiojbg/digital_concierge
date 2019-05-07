@@ -27,42 +27,17 @@ import {
 } from "../../../data/mutation";
 import styled from "styled-components";
 
-const BrowseButton = styled.label`
-    border: 3px solid #2699FB;
-    display: inline-block;
-    width: 40%;
-    margin-left:60%;
-    text-align: center;
-    cursor: pointer;
-    padding: 8px;
-    font-size: 1.3em;
-    color: #2699FB;
-    border-radius: 5px;
-    &:hover {
-        font-weight: bold;
-    }
-`;
-const SectionHeader = styled.h3`
-    text-align: left;
-    color: #2699FB;
-`;
+import {
+    SectionDiv,
+    BrowseButton,
+    SectionHeader,
+    FiledContainer,
+    FieldLabel,
+    SubFieldContainerDiv,
+    ContinueButton
+    } from "./CreateClientStyleSet";
 
-const FiledContainer = styled.div`
-    padding-bottom: 20px;
-`;
-
-const FieldLabel = styled.label`
-    font-size: 10px;
-    color:#5C5C5C;
-`;
-
-
-const SubFieldContainerDiv = styled.div`
-    width : 100%;
-    flex-basis: ${props => props.flexBasis};
-    margin-right: ${props => props.marginRight};
-   // padding-top: 10px;
-`;
+import pagesStyle from "./pagesStyle.css";
 
 
 const LICENSE_DATE_FIELD = [
@@ -217,7 +192,7 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getLicenseTypes: { licenseTypes = {} } = {} } = this.props;
 
         return (
-            <div style={{ width: "33%", padding: "3% 3% 3% 0" ,borderRight: "1px solid #DDDDDD" }}>
+            <SectionDiv style={{width:"33%", height:"500px"}}>
                 
                 <SectionHeader> License</SectionHeader>
                 <FiledContainer>
@@ -265,12 +240,12 @@ class WizardCreateClientPageTwo extends React.Component {
             
                         control={
                             <Field
+                                style={{color: "#2699FB"}}
                                 id="auto_renewal"
                                 name="auto_renewal"
                                 label="Automatic Renewal"
                                 required={true}
-                                color="primary"
-                                background-color="#2699FB"
+                              //  color=primary
                                 component={Checkbox}
                                 variant="outlined"
                                 fullWidth={true}
@@ -279,38 +254,46 @@ class WizardCreateClientPageTwo extends React.Component {
                         label="AUTOMATIC RENEWAL"
                     />
                 </div>
-            </div>
+            </SectionDiv >
         );
     }
 
     renderAgreementForm() {
         return (
-            <div style={{ width: "33%", padding: "3%" ,borderRight: "1px solid #DDDDDD"  }}>
+            <SectionDiv style={{width:"33%", height:"500px"}}>
+                
                 <SectionHeader>Agreement</SectionHeader>
                 <FiledContainer>
-                 <FieldLabel>AGREEMENT NUMBER</FieldLabel>
-                    {this.selectRenderMethod({
-                        name: "agreement_number",
-                       // label: "AGREEMENT NUMBER",
-                        required: true,
-                        type: "text",
-                        
-                    })}
+                    <SubFieldContainerDiv>
+                        <FieldLabel>AGREEMENT NUMBER</FieldLabel>
+                            {this.selectRenderMethod({
+                                name: "agreement_number",
+                            // label: "AGREEMENT NUMBER",
+                                required: true,
+                                type: "text",
+                                
+                            })}
+                    </SubFieldContainerDiv>
                 </FiledContainer>
+              
                 {AGREEMENT_DATE_FIELD.map(({ name, label, required, type }) => (
 
 
                     <FiledContainer>
-                        <FieldLabel>{label}</FieldLabel>
-                        {this.selectRenderMethod({
-                            name,
-                         //   label,
-                            required,
-                            type
-                        })}
+                        <SubFieldContainerDiv>
+                            <FieldLabel>{label}</FieldLabel>
+                            {this.selectRenderMethod({
+                                name,
+                            //   label,
+                                required,
+                                type
+                            })}
+                        </SubFieldContainerDiv>
                     </FiledContainer>
                 ))}
                 <FiledContainer>
+                 <SubFieldContainerDiv>
+                    <FieldLabel>Upload Agreement</FieldLabel>
                     <MuiTextField
                         value={
                             this.state.client_image
@@ -319,12 +302,13 @@ class WizardCreateClientPageTwo extends React.Component {
                         }
                         disabled={true}
                         fullWidth={true}
-                        label="File Name"
+                     //   label="File Name"
                         variant="outlined"
                     />
+                </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
-                    <BrowseButton>
+                    <BrowseButton style={{marginTop: "10px"}}>
                         <input
                             accept="image/*, application/pdf"
                             style={{ display: "none" }}
@@ -341,7 +325,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         BROWSE
                     </BrowseButton>
                 </FiledContainer>
-            </div>
+            </SectionDiv >
         );
     }
 
@@ -350,20 +334,23 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getCurrencyList: { currencies = {} } = {} } = this.props;
 
         return (
-            <div style={{ width: "33%", padding: "3% 0 3% 3%" }}>
+            
+            <SectionDiv style={{width:"33%", height:"500px", borderRight:"0"}}>
                 <SectionHeader>Payment</SectionHeader>
                 {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
-                    <FiledContainer>
-                        <SubFieldContainerDiv>
-                            <FieldLabel>{label}</FieldLabel>
-                            {this.selectRenderMethod({
-                                name,
-                                label,
-                                required,
-                                type
-                            })}
-                        </SubFieldContainerDiv>
-                    </FiledContainer>
+                    <SubFieldContainerDiv>
+                        <FiledContainer>
+                            
+                                <FieldLabel>{label}</FieldLabel>
+                                {this.selectRenderMethod({
+                                    name,
+                                //  label,
+                                    required,
+                                    type
+                                })}
+                        
+                        </FiledContainer>
+                     </SubFieldContainerDiv>
                 ))}
                 <FiledContainer>
                     <SubFieldContainerDiv>
@@ -392,14 +379,15 @@ class WizardCreateClientPageTwo extends React.Component {
                     </FiledContainer>
                 ))}
                 <div
-                    style={{
-                        paddingBottom: "20px",
-                        display: "flex",
-                        justifyContent: "flex-end"
-                    }}
+                    // style={{
+                    //     paddingBottom: "20px",
+                    //     display: "flex",
+                    //     justifyContent: "flex-end"
+                    // }}
                 >
-                    <Button
-                        type="submit"
+                    <ContinueButton
+                    style={{width:"90%" , margin:"100px 0 0 40px"}}
+                      //  type="submit"
                         variant="contained"
                         color="primary"
                         disabled={
@@ -410,9 +398,10 @@ class WizardCreateClientPageTwo extends React.Component {
                         }
                     >
                         CONFIRM & CONTINUE
-                    </Button>
+                    </ContinueButton>
                 </div>
-            </div>
+             </SectionDiv>
+            
         );
     }
 

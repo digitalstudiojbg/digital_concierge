@@ -10,7 +10,7 @@ input:active {
     outline: none !important;
     border:1px solid #2699FB !important;
 }
-.MuiSelect-selectMenu-225{
+.MuiSelect-selectMenu-225 , .MuiSelect-selectMenu-399{
     appearance: none !important; 
     -webkit-appearance: none !important; 
     -moz-appearance:none !important; 
@@ -34,3 +34,6 @@ input:active {
     margin: 0% !important;
 }
 
+.MuiPrivateSwitchBase-input-214{
+color: #2699FB !important;
+}
