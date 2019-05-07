@@ -517,7 +517,7 @@ class ModifyPublication extends React.Component {
                                     style={{
                                         marginTop: 20,
                                         border: imageError
-                                            ? "1px solid red"
+                                            ? "1px solid #f44336"
                                             : "none"
                                     }}
                                 >
@@ -531,7 +531,7 @@ class ModifyPublication extends React.Component {
                                     {imageError && (
                                         <p
                                             style={{
-                                                color: "red"
+                                                color: "#f44336"
                                             }}
                                         >
                                             Required.
