@@ -464,7 +464,7 @@ class ModifyPublication extends React.Component {
     };
 
     render() {
-        const { onRef, has_data, layoutFamilies } = this.props;
+        const { onRef, layoutFamilies } = this.props;
         const { imageError } = this.state;
         return (
             <Formik
