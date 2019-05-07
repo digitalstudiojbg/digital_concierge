@@ -212,59 +212,39 @@ const FormHelperError = styled.p`
 
 //Yup validation schema
 const requiredErrorMessage = "Required";
-const validationSchema = (isCreate, layoutFamiliesIds) =>
+const validationSchema = layoutFamiliesIds =>
     Yup.object().shape({
         name: Yup.string().required(requiredErrorMessage),
-        welcomeFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        featureFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        informationFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        mapFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        galleryFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        marketFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        foodFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        attractionFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        eventFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds),
-        essentialFamilyId: isCreate
-            ? Yup.string()
-                  .oneOf(layoutFamiliesIds)
-                  .required(requiredErrorMessage)
-            : Yup.string().oneOf(layoutFamiliesIds)
+        welcomeFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        featureFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        informationFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        mapFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        galleryFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        marketFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        foodFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        attractionFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        eventFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage),
+        essentialFamilyId: Yup.string()
+            .oneOf(layoutFamiliesIds)
+            .required(requiredErrorMessage)
     });
 
 class ModifyPublication extends React.Component {
@@ -492,7 +472,6 @@ class ModifyPublication extends React.Component {
                 ref={onRef}
                 initialValues={this.prepareInitialValues()}
                 validationSchema={validationSchema(
-                    !has_data,
                     layoutFamilies.map(({ id }) => id)
                 )}
                 enableReinitialize={true}
