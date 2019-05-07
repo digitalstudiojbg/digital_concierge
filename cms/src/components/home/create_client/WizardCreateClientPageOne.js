@@ -18,61 +18,22 @@ import CONTACT_FIELDS from "./one/ContactFields";
 import ValidationSchema from "./one/PageOneValidationSchema";
 import { CREATE_CLIENT, CREATE_USER } from "../../../data/mutation";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
+import pagesStyle from "./pagesStyle.css";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
+import {
+    ContainerDiv,
+     SectionDiv, 
+     ClientFieldContainerDiv, 
+     ClientFieldDiv, 
+     FieldContainerDiv,
+     FieldDiv, 
+     FieldLabel,
+     SubFieldContainerDiv,
+     SectionHeader,
+     ContinueButton
+    } from "./CreateClientStyleSet";
 
-const SectionDiv = styled.div`
-    width: ${props => props.width};
-    height: ${props => (Boolean(props.height) ? props.height : "100%")};
-    display: flex;
-    flex-direction: column;
-    padding: 30px;
-    border-right: 1px solid #DDDDDD; 
-`;
 
-const ClientFieldContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-`;
-
-const ClientFieldDiv = styled.div`
-    padding :0;
-`;
-
-const FieldContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const FieldDiv = styled.div`
-    width: 100%;
-    padding: 0px;
-    
-`;
-const FieldLabel = styled.label`
-    font-size: 10px;
-    color:black;
-`;
-
-const SubFieldContainerDiv = styled.div`
-    width : 100%;
-    flex-basis: ${props => props.flexBasis};
-    margin-right: ${props => props.marginRight};
-    padding-top: 10px;
-`;
-
-const SectionHeader = styled.h4`
-    text-align: left;
-    color: #2699FB;
-`;
 
 const renderTextField = (name, label, required, type) => (
     // <Field
@@ -373,7 +334,7 @@ class WizardCreateClientPageOne extends React.Component {
                                 return (
                                     <Form>
                                         <ContainerDiv>
-                                            <SectionDiv style={{ width: "50%"}}>
+                                            <SectionDiv style={{ width: "50%" , paddingRight: "5px"}}>
                                                 <SectionHeader >Client Info</SectionHeader>
                                                 
                                                 {CLIENT_FIELDS.map(
@@ -454,7 +415,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                                     name,
                                                                   //  label,
                                                                   //  required,
-                                                                    type
+                                                                  //  type
                                                                 )}
                                                             </FieldDiv>
                                                           </SubFieldContainerDiv >
@@ -537,7 +498,7 @@ class WizardCreateClientPageOne extends React.Component {
                                         </ContainerDiv>
 
 
-                                        <SectionDiv style={{ width: "100%" ,height: "100px", border: "0px" }}>
+                                        <SectionDiv style={{ width: "100%" ,height: "100px", border: "0px" , padding:"0px"}}>
                                                 <div
                                                     style={{
                                                         flex: 1,
@@ -548,9 +509,9 @@ class WizardCreateClientPageOne extends React.Component {
                                                         alignItems: "flex-end"
                                                     }}
                                                 >
-                                                    <Button
-                                                        style={{ width: "20%" , color: "white", background: "#2699FB", border: "30px solid #313131"}}
-                                                        type="submit"
+                                                    <ContinueButton
+                                                       // style={{ width: "20%" , color: "white", background: "#2699FB", border: "30px solid #313131"}}
+                                                       // type="submit"
                                                         variant="contained"
                                                         color="primary"
                                                         disabled={
@@ -564,7 +525,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                         }
                                                     >
                                                         Confirm & Continue
-                                                    </Button>
+                                                    </ContinueButton>
                                                 </div>
                                                 </SectionDiv>
 
