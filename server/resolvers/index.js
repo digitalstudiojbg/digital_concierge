@@ -51,6 +51,10 @@ import jbgFamilyLayout_resolver from "./jbgLayoutFamily";
 import jbgLayoutType_resolver from "./jbgLayoutType";
 import jbgTemplate_resolver from "./jbgTemplate";
 import jbgTemplateType_resolver from "./jbgTemplateType";
+import artworkSize_resolver from "./artworkSize";
+import article_resolver from "./article";
+import advertiser_resolver from "./advertiser";
+import advertising_resolver from "./advertising";
 
 export default [
     user_resolver,
@@ -105,5 +109,9 @@ export default [
     jbgFamilyLayout_resolver,
     jbgLayoutType_resolver,
     jbgTemplate_resolver,
-    jbgTemplateType_resolver
+    jbgTemplateType_resolver,
+    artworkSize_resolver,
+    article_resolver,
+    advertiser_resolver,
+    advertising_resolver
 ];

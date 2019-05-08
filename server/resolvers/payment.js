@@ -53,6 +53,8 @@ export default {
         },
         client: async payment => {
             return await db.client.findByPk(payment.clientId);
-        }
+        },
+        advertising: async payment =>
+            await db.advertising.findByPk(payment.advertisingId)
     }
 };
