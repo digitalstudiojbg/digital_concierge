@@ -356,3 +356,5 @@ export const processColours = colours => {
         colour5Alpha
     };
 };
+
+export const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));

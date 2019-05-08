@@ -97,6 +97,8 @@ module.exports = (sequelize, DataTypes) => {
         just_brilliant_guide.belongsToMany(models.media, {
             through: "just_brilliant_guides_media"
         });
+        just_brilliant_guide.hasMany(models.advertiser);
+        just_brilliant_guide.hasMany(models.article);
     };
     return just_brilliant_guide;
 };

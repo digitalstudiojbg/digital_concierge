@@ -83,6 +83,7 @@ module.exports = (sequelize, DataTypes) => {
         });
         media.hasMany(models.jbg_layout_family);
         media.hasMany(models.jbg_layout);
+        media.hasMany(models.advertising);
     };
     return media;
 };

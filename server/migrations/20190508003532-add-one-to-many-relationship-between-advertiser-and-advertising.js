@@ -3,13 +3,13 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.addColumn(
-            "payments", // name of Source table
-            "clientId", // name of the key we're adding
+            "advertising", // name of Source table
+            "advertiserId", // name of the key we're adding
             {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
                 references: {
-                    model: "clients", // name of Target table
+                    model: "advertisers", // name of Target table
                     key: "id" // key in Target table that we're referencing
                 },
                 onUpdate: "CASCADE",
@@ -20,8 +20,8 @@ module.exports = {
 
     down: (queryInterface, _Sequelize) => {
         return queryInterface.removeColumn(
-            "payments", // name of Source table
-            "clientId" // key we want to remove
+            "advertising", // name of Source table
+            "advertiserId" // key we want to remove
         );
     }
 };

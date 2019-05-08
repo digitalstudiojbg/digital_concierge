@@ -528,3 +528,33 @@ node_modules/.bin/sequelize model:generate --name article --attributes name:stri
 node_modules/.bin/sequelize model:generate --name artwork_size --attributes name:string
 
 node_modules/.bin/sequelize model:generate --name advertising --attributes agreement_number:string,agreement_date:date,agreement_file:string,agreement_file_key:string,period_month:integer,commence_date:date,expire_date:date,artwork_supply_date:date,active:boolean
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-state-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-postal-state-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-just_brilliant_guide-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-just_brilliant_guide-and-article
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-advertising
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-advertiser-and-advertising
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-advertising-and-payment
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-artwork_size-and-advertising
+
+node_modules/.bin/sequelize seed:generate --name artwork_size
+
+node_modules/.bin/sequelize seed:generate --name advertiser
+
+node_modules/.bin/sequelize seed:generate --name article
+
+node_modules/.bin/sequelize seed:generate --name advertising
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-advertising-and-article
+
+node_modules/.bin/sequelize seed:generate --name advertising_articles
+
+node_modules/.bin/sequelize db:seed --seed 20190508005109-advertising
