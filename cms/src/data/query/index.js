@@ -28,6 +28,7 @@ import {
 } from "./justBrilliantGuide";
 import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
 import { getTabbedPageComplete } from "./misc";
+import { getAdvertiserList, getAdvertiserFromPublication } from "./advertiser";
 
 export {
     getCurrentUserQuery,
@@ -56,5 +57,7 @@ export {
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
     getJbgLayoutFamilyList,
-    getTabbedPageComplete
+    getTabbedPageComplete,
+    getAdvertiserList,
+    getAdvertiserFromPublication
 };

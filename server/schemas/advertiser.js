@@ -4,7 +4,7 @@ export default gql`
     extend type Query {
         advertiser(id: ID!): Advertiser
         advertisers: [Advertiser]
-        advertisersByPublication(id: ID!): Advertiser
+        advertisersByPublication(id: ID!): [Advertiser]
     }
 
     type Advertiser {

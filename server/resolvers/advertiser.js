@@ -4,7 +4,11 @@ export default {
     Query: {
         advertiser: async (_root, { id }) => await db.advertiser.findByPk(id),
         advertisers: async (_root, _input, { user }) =>
-            await db.advertiser.findAll()
+            await db.advertiser.findAll(),
+        advertisersByPublication: async (_root, { id }) =>
+            await db.advertiser.findAll({
+                where: { justBrilliantGuideId: id }
+            })
     },
     Advertiser: {
         state: async advertiser => await db.state.findByPk(advertiser.stateId),

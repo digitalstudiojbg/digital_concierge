@@ -1,6 +1,7 @@
 import React from "react";
 import TabbedPage from "../../../utils/TabbedPage";
 import ModifyPublication from "./ModifyPublication";
+import DetailAdvertiserList from "./DetailAdvertiserList";
 import { WELCOME_URL } from "../../../utils/Constants";
 
 export const JustBrilliantGuideDetail = ({ match }) => {
@@ -17,7 +18,7 @@ export const JustBrilliantGuideDetail = ({ match }) => {
             name: "Advertising",
             withButtons: false,
             withCancel: false,
-            component: () => <div>ADVERTISER LIST</div>
+            component: DetailAdvertiserList
         },
         {
             name: "Editorial",
