@@ -89,3 +89,62 @@ border: 20px solid #313131;
 `;
 
 
+//----page3----
+
+export const SectionDivContainer = styled.div`
+    width: 50%;
+    height: 100%;
+    padding: 10px;
+`;
+
+export const DepartmentSectionDiv = styled.div`
+    width: 100%;
+    height: 30%;
+    display: flex;
+`;
+
+export const RoleSectionDiv = styled.div`
+    width: 100%;
+    height: 60%;
+    display: flex;
+`;
+
+export const RolePermissionContainerDiv = styled.div`
+    width: 100%;
+    height: 500px;
+    overflow-y: scroll;
+    border: 1px solid black;
+`;
+
+export const EachRolePermissionContainerDiv = styled.div`
+    width: 100%;
+    height: 50%;
+    display: flex;
+    padding: 10px;
+`;
+export const EachRoleContainerDiv = styled.div`
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+`;
+export const AllPermissionContainerDiv = styled.div`
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 5px;
+`;
+export const AllPermissionFooterContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: blue;
+`;
+export const PermissionFooterEntryDiv = styled.span`
+    width: 45%;
+    display: flex;
+    margin-right: 5px;
+    justify-content: center;
+    border: 1px solid blue;
+`;

@@ -19,7 +19,7 @@ import CONTACT_FIELDS from "./one/ContactFields";
 import ValidationSchema from "./one/PageOneValidationSchema";
 import { CREATE_CLIENT, CREATE_USER } from "../../../data/mutation";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
-import pagesStyle from "./pagesStyle.css";
+
 
 import {
     ContainerDiv,
@@ -154,7 +154,11 @@ const styles = theme => ({
         color: "blue",
         border: "1px solid blue",
         width: "100%"
+    },
+    bootstrapInput: {
+        padding: "0px"
     }
+
 });
 
 class WizardCreateClientPageOne extends React.Component {
@@ -166,11 +170,13 @@ class WizardCreateClientPageOne extends React.Component {
         this.updateClientImage = this.updateClientImage.bind(this);
     }
 
+ 
     selectRenderMethod(
         type,
         field_data,
         items = [],
-        values = {}
+        values = {},
+
         // setFieldValue = null
     ) {
         const { classes } = this.props;
@@ -195,7 +201,7 @@ class WizardCreateClientPageOne extends React.Component {
         }
     }
 
-    selectItemsForRendering(name, values, countries) {
+    selectItemsForRendering(name, values, countries, ) {
         switch (name) {
             case "country_id":
             case "postal_country_id":
@@ -339,7 +345,7 @@ class WizardCreateClientPageOne extends React.Component {
                                 return (
                                     <Form>
                                         <ContainerDiv>
-                                            <SectionDiv style={{ width: "50%" , paddingRight: "5px"}}>
+                                            <SectionDiv style={{ width: "50%" , paddingRight: "30px"}}>
                                                 <SectionHeader >Client Info</SectionHeader>
                                                 
                                                 {CLIENT_FIELDS.map(
@@ -347,6 +353,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                         return (
                                                             <ClientFieldContainerDiv
                                                                 key={`FIELD-CONTAINER-${index}`}
+                                                                classes
                                                             >
                                                             
                                                                 {fields_array.map(
@@ -385,7 +392,8 @@ class WizardCreateClientPageOne extends React.Component {
                                                                                             select_id
                                                                                         },
                                                                                         countries,
-                                                                                        values
+                                                                                        values,
+
                                                                                         // setFieldValue
                                                                                     )}
                                                                                 </ClientFieldDiv>
@@ -443,6 +451,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                                     fullWidth={true}
                                                                    // label="File Name"
                                                                     variant="outlined"
+
                                                                  />
                                                             </FieldDiv>
                                                         </SubFieldContainerDiv > 
