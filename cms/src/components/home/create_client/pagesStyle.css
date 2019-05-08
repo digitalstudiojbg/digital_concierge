@@ -1,31 +1,7 @@
-input{
+/* input{
    padding: 10px !important; 
 }
-input:focus {
-    outline: none !important;
-    border:1px solid #2699FB !important;
-    outline-color: #2699FB !important;
-}
-input:active {
-    outline: none !important;
-    border:1px solid #2699FB !important;
-}
-.MuiSelect-selectMenu-225 , .MuiSelect-selectMenu-399{
-    appearance: none !important; 
-    -webkit-appearance: none !important; 
-    -moz-appearance:none !important; 
 
-    padding: 10px !important;
-    margin: 0% !important;
-    outline: 0px !important;
-  
-    border: 1px solid #9D9D9D!important; 
-    background: #ffffff !important; 
-    
-    border-radius: 5px !important; 
-    -webkit-border-radius: 5px !important;
-    -moz-border-radius: 5px !important; 
-}
 
 .MuiInputBase-root-184{
     margin-top: 0% !important;
@@ -37,3 +13,4 @@ input:active {
 .MuiPrivateSwitchBase-input-214{
 color: #2699FB !important;
 }
+ */

@@ -6,6 +6,7 @@ import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -32,6 +33,7 @@ import {
      SectionHeader,
      ContinueButton
     } from "./CreateClientStyleSet";
+
 
 
 
@@ -124,6 +126,9 @@ const renderSelectField = (
             name={name}
             component={Select}
             disabled={items.length < 1}
+            input={
+                <OutlinedInput />
+            }
         >
             <MenuItem value="null" disabled>
                 {label}
