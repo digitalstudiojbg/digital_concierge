@@ -24,6 +24,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Checkbox from "@material-ui/core/Checkbox";
 import { Set } from "immutable";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
@@ -41,73 +42,25 @@ import PageThreeRoleModal from "./three/PageThreeRoleModal";
 import PageThreeDeleteModal from "./three/PageThreeDeleteModal";
 import PageThreeDuplicateModal from "./three/PageThreeDuplicateModal";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
 
-const SectionDivContainer = styled.div`
-    width: 50%;
-    height: 100%;
-    padding: 10px;
-`;
-
-const DepartmentSectionDiv = styled.div`
-    width: 100%;
-    height: 30%;
-    display: flex;
-`;
-
-const RoleSectionDiv = styled.div`
-    width: 100%;
-    height: 60%;
-    display: flex;
-`;
-
-const RolePermissionContainerDiv = styled.div`
-    width: 100%;
-    height: 500px;
-    overflow-y: scroll;
-    border: 1px solid black;
-`;
-
-const EachRolePermissionContainerDiv = styled.div`
-    width: 100%;
-    height: 50%;
-    display: flex;
-    padding: 10px;
-`;
-
-const EachRoleContainerDiv = styled.div`
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-`;
-
-const AllPermissionContainerDiv = styled.div`
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    padding: 5px;
-`;
-
-const AllPermissionFooterContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    color: blue;
-`;
-
-const PermissionFooterEntryDiv = styled.span`
-    width: 45%;
-    display: flex;
-    margin-right: 5px;
-    justify-content: center;
-    border: 1px solid blue;
-`;
+import {
+    ContainerDiv,
+    SectionDiv,
+    SectionDivContainer,
+    DepartmentSectionDiv,
+    RoleSectionDiv,
+    RolePermissionContainerDiv,
+    EachRolePermissionContainerDiv,
+    EachRoleContainerDiv,
+    AllPermissionContainerDiv,
+    AllPermissionFooterContainerDiv,
+    PermissionFooterEntryDiv,
+    SubFieldContainerDiv,
+    FieldLabel,
+    NormalButton,
+    ContinueButton
+    } from "./CreateClientStyleSet";
+    
 
 class WizardCreateClientPageThree extends React.Component {
     constructor(props) {
@@ -457,7 +410,9 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
+       // let clientId = 1;
         let clientId = null;
+        
         try {
             console.log("-------------");
 
@@ -491,9 +446,10 @@ class WizardCreateClientPageThree extends React.Component {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
                     return (
-                        <ContainerDiv>
-                            <SectionDivContainer>
-                                Department
+                        <ContainerDiv >
+                            <SectionDivContainer style={{ borderRight:"1px solid #9D9D9D", paddingRight:"0" }}>
+                               
+                                <label style={{color:"#2699FB", fontSize:"16px"}}>Department</label>
                                 <Mutation
                                     mutation={CREATE_DEPARTMENT()}
                                     refetchQueries={[
@@ -503,6 +459,7 @@ class WizardCreateClientPageThree extends React.Component {
                                         }
                                     ]}
                                 >
+                                
                                     {(
                                         addANewDepartment,
                                         { loading, error }
@@ -554,7 +511,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     height:
                                                                         "100%",
                                                                     paddingTop: 10,
-                                                                    paddingBottom: 10
+                                                                    paddingBottom: 20
                                                                 }}
                                                             >
                                                                 <Field
@@ -587,7 +544,8 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         "row-reverse"
                                                                 }}
                                                             >
-                                                                <Button
+                                                           
+                                                                <NormalButton
                                                                     type="submit"
                                                                     variant="contained"
                                                                     color="primary"
@@ -608,8 +566,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 >
                                                                     Add
                                                                     Department
-                                                                </Button>
+                                                                </NormalButton>
                                                             </div>
+                                                            
                                                         </DepartmentSectionDiv>
                                                     </Form>
                                                 )}
@@ -617,16 +576,20 @@ class WizardCreateClientPageThree extends React.Component {
                                         );
                                     }}
                                 </Mutation>
-                                Role
-                                <Mutation
-                                    mutation={CREATE_ROLE}
-                                    refetchQueries={[
-                                        {
-                                            query: getRoleList,
-                                            variables: { clientId }
-                                        }
-                                    ]}
-                                >
+                                
+                                <SectionDiv style={{paddingLeft:"0", borderRight:"0px", borderTop:"1px solid #9D9D9D"}}>
+                                    <label style={{color:"#2699FB", fontSize:"16px", marginTop :"20px", }}>Role </label>
+                                    <Mutation
+                                        mutation={CREATE_ROLE}
+                                        refetchQueries={[
+                                            {
+                                                query: getRoleList,
+                                                variables: { clientId }
+                                            }
+
+                                        ]}
+                                    >
+                                
                                     {(addANewRole, { loading, error }) => {
                                         if (loading)
                                             return (
@@ -637,6 +600,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                         "rgba(0, 0, 0, 0.87)"
                                                     }
                                                     loading={loading}
+                                                    input={
+                                                        <OutlinedInput />
+                                                    }
                                                 />
                                             );
                                         if (error)
@@ -696,11 +662,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                     <Form>
                                                         <RoleSectionDiv>
                                                             <div
+                                                          
                                                                 style={{
                                                                     width:
                                                                         "35%",
-                                                                    paddingTop: 10,
-                                                                    paddingBottom: 10
+                                                                        paddingRight :10,
+                                                              
                                                                 }}
                                                             >
                                                                 <div
@@ -713,15 +680,21 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             true
                                                                         }
                                                                     >
-                                                                        <InputLabel htmlFor="simple-department-picker">
+                                                                    <FieldLabel >Department</FieldLabel>
+                                                                        {/* <InputLabel 
+                                                                            htmlFor="simple-department-picker" 
+                                                                        >
                                                                             {Boolean(
                                                                                 this
                                                                                     .state
                                                                                     .department_id
                                                                             )
                                                                                 ? ""
-                                                                                : "Department"}
-                                                                        </InputLabel>
+                                                                                : "Department"
+                                                             
+                                                                                }
+                                                                        
+                                                                        </InputLabel> */}
                                                                         {/* <InputLabel htmlFor="simple-department-picker">
                                                                             Department
                                                                         </InputLabel> */}
@@ -739,6 +712,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             disabled={
                                                                                 departments.length <
                                                                                 1
+                                                                            }
+                                                                            input={
+                                                                                <OutlinedInput />
                                                                             }
                                                                         >
                                                                             <MenuItem
@@ -770,9 +746,11 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         </Select>
                                                                     </FormControl>
                                                                 </div>
+
+                                                                <FieldLabel>Role Name</FieldLabel>
                                                                 <Field
                                                                     name="name"
-                                                                    label="Role Name"
+                                                                   // label="Role Name"
                                                                     required={
                                                                         true
                                                                     }
@@ -844,10 +822,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             "flex-end"
                                                                     }}
                                                                 >
-                                                                    <Button
+                                                                    <NormalButton
                                                                         type="submit"
                                                                         variant="contained"
-                                                                        color="primary"
+                                                                      //  color="primary"
                                                                         disabled={
                                                                             isSubmitting ||
                                                                             Object.keys(
@@ -858,7 +836,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         }
                                                                     >
                                                                         Add Role
-                                                                    </Button>
+                                                                  </NormalButton>
                                                                 </div>
                                                             </div>
                                                         </RoleSectionDiv>
@@ -868,6 +846,7 @@ class WizardCreateClientPageThree extends React.Component {
                                         );
                                     }}
                                 </Mutation>
+                              </SectionDiv>
                             </SectionDivContainer>
                             <Query query={getRoleList} variables={{ clientId }}>
                                 {({
@@ -888,10 +867,12 @@ class WizardCreateClientPageThree extends React.Component {
                                         return `Error! ${errorRoles.message}`;
                                     // console.log(roleList);
                                     return (
-                                        <SectionDivContainer>
-                                            <div
+                                        <SectionDivContainer  style={{padding: "0 0  0 3%"}}>
+                                             <div 
+                                            
                                                 style={{
-                                                    width: "100%",
+                                                    width: "90%",
+                                                   // padding: "5%",
                                                     display: "flex"
                                                 }}
                                             >
@@ -903,7 +884,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                         fontSize: "1.5em"
                                                     }}
                                                 >
-                                                    STRUCTURE TABLE
+                                                    <h6 style={{fontSize:"12px"}}>STRUCTURE TABLE</h6>
                                                 </div>
                                                 <div
                                                     style={{
@@ -951,7 +932,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                         <DeleteIcon fontSize="large" />
                                                     </IconButton>
                                                 </div>
-                                            </div>
+                                            </div >
 
                                             {/* <ReactTable
                                                 defaultPageSize={10}
@@ -1159,10 +1140,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                     />
                                                 )}
 
-                                            <Table>
+                                            <Table style={{padding:"5%", border:"1px solid #9D9D9D", borderRadius:"5px !important"}}>
                                                 <TableHead>
-                                                    <TableRow>
-                                                        <TableCell padding="checkbox">
+                                                    <TableRow style={{borderBottom:"2px solid #5C5C5C"}}>
+                                                        {/* <TableCell padding="checkbox">
                                                             <Checkbox
                                                                 indeterminate={
                                                                     selected_roles.size >
@@ -1203,7 +1184,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     }
                                                                 }}
                                                             />
-                                                        </TableCell>
+                                                        </TableCell> */}
                                                         <TableCell>
                                                             ROLE
                                                         </TableCell>
@@ -1221,9 +1202,11 @@ class WizardCreateClientPageThree extends React.Component {
                                                             key={`TABLE-ROW-${
                                                                 role.id
                                                             }`}
+                                                            
                                                         >
                                                             <TableCell>
                                                                 <Checkbox
+                                                                style={{padding:"0"}}
                                                                     id={role.id}
                                                                     checked={this.state.selected_roles.includes(
                                                                         role.id
@@ -1311,7 +1294,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                     DELETE
                                                 </MenuItem>
                                             </Menu>
-                                            <div
+                                            <SectionDiv 
                                                 style={{
                                                     width: "100%",
                                                     display: "flex",
@@ -1319,7 +1302,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                     paddingTop: 50
                                                 }}
                                             >
-                                                <Button
+                                                <ContinueButton
+                                                 style={{
+                                                    width: "50%", marginLeft:"50%"}}
                                                     variant="contained"
                                                     color="primary"
                                                     onClick={() =>
@@ -1328,8 +1313,8 @@ class WizardCreateClientPageThree extends React.Component {
                                                     }
                                                 >
                                                     CONFIRM & CONTINUE
-                                                </Button>
-                                            </div>
+                                                </ContinueButton>
+                                            </SectionDiv >
                                         </SectionDivContainer>
                                     );
                                 }}

@@ -74,6 +74,23 @@ export const BrowseButton = styled.label`
         font-weight: bold;
     }
 `;
+export const NormalButton = styled.button`
+    border: 3px solid #2699FB;
+    display: inline-block;
+    width: 40%;
+    margin-left:60%;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 5px;
+    font-size: 14px
+    color: #2699FB;
+    border-radius: 5px;
+    variant: outlined;
+    component: span;
+    &:hover {
+        font-weight: bold;
+    }
+`;
 
 export const FiledContainer = styled.div`
   //  padding-bottom: 20px;
