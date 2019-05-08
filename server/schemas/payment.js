@@ -29,5 +29,6 @@ export default gql`
         updatedAt: DateTime
         currency: Currency
         client: Client
+        advertising: Advertising
     }
 `;
