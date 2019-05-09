@@ -1,4 +1,4 @@
-import React from "react";
+                                        import React from "react";
 import styled from "styled-components";
 import { Query, withApollo, Mutation, gql } from "react-apollo";
 import Loading from "../../loading/Loading";
@@ -19,6 +19,9 @@ import {
 } from "../../../data/mutation";
 import { ClipLoader } from "react-spinners";
 import FormControl from "@material-ui/core/FormControl";
+
+import {withStyles} from '@material-ui/core/styles';
+
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import Menu from "@material-ui/core/Menu";
@@ -61,7 +64,15 @@ import {
     ContinueButton
     } from "./CreateClientStyleSet";
     
-
+    const styles = theme => ({
+        mylabel: {
+          fontSize: '10px'
+        },
+        inputPdding:{
+            padding: '0px'
+        }
+      });
+      
 class WizardCreateClientPageThree extends React.Component {
     constructor(props) {
         super(props);
@@ -72,7 +83,8 @@ class WizardCreateClientPageThree extends React.Component {
             whichModal: "",
             selected_roles: Set(),
             anchorEl: null,
-            editRole: null
+            editRole: null,
+            
         };
         this.handleChangeDepartment = this.handleChangeDepartment.bind(this);
         this.handleChangePermissionCheckbox = this.handleChangePermissionCheckbox.bind(
@@ -192,6 +204,7 @@ class WizardCreateClientPageThree extends React.Component {
         addRoleAction,
         editRoleAction
     ) {
+        const { classes } = this.props;
         return (
             <Query query={getPermissionCategoryList}>
                 {({ loading, error, data: { permissionCategories } }) => {
@@ -235,7 +248,9 @@ class WizardCreateClientPageThree extends React.Component {
                                     <FormControlLabel
                                         control={
                                             <Checkbox
+                                                style={{color:"#2699FB"}}
                                                 checked={
+                                                    
                                                     selected_checkboxes.size ===
                                                     allPermissionsLength
                                                 }
@@ -283,7 +298,9 @@ class WizardCreateClientPageThree extends React.Component {
                                     />
                                 </div>
                             </div>
+                           
                             {permissionCategories.map(
+                              
                                 (
                                     {
                                         id: categoryId,
@@ -295,22 +312,34 @@ class WizardCreateClientPageThree extends React.Component {
                                     <EachRolePermissionContainerDiv
                                         key={`CATEGORY-${categoryId}-${categoryIndex}`}
                                     >
-                                        <EachRoleContainerDiv>
+                                        <EachRoleContainerDiv style={{ fontSize:"10px"}}>
                                             {categoryName}
                                         </EachRoleContainerDiv>
                                         <AllPermissionContainerDiv>
+                                        
                                             {permissions.map(
                                                 (
                                                     {
                                                         id: permissionId,
-                                                        name: permissionName
+                                                        name: permissionName,
+                                                       
                                                     },
                                                     permissionIndex
+                                                    
                                                 ) => (
                                                     <FormControlLabel
+                                                        style={{padding:"0", margin:"0", fontSize:"5px"}}
+                                                        // className={
+                                                        //     classes.mylabel
+                                                        // }
+                                                        classes={{
+                                                            label: classes.mylabel
+                                                        }}
+                                                  
                                                         key={`PERMISSION-${permissionId}-${permissionIndex}`}
                                                         control={
                                                             <Checkbox
+                                                                style={{padding:"3px 0", color:"#2699FB",Label:{fontSize:"10px"}}}
                                                                 id={
                                                                     permissionId
                                                                 }
@@ -329,6 +358,7 @@ class WizardCreateClientPageThree extends React.Component {
                                             )}
                                             <AllPermissionFooterContainerDiv>
                                                 <PermissionFooterEntryDiv
+                                                    style={{border:"0"}}
                                                     onClick={() => {
                                                         const {
                                                             selected_checkboxes
@@ -343,9 +373,10 @@ class WizardCreateClientPageThree extends React.Component {
                                                         });
                                                     }}
                                                 >
-                                                    SELECT ALL
+                                                   <label style={{color:"#2699FB", fontSize:"10px"}}> SELECT ALL </label>
                                                 </PermissionFooterEntryDiv>
                                                 <PermissionFooterEntryDiv
+                                                    style={{border:"0"}}
                                                     onClick={() => {
                                                         const {
                                                             selected_checkboxes
@@ -360,7 +391,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                         });
                                                     }}
                                                 >
-                                                    UNSELECT ALL
+                                                   <label style={{color:"#2699FB", fontSize:"10px"}}>  UNSELECT ALL</label>
                                                 </PermissionFooterEntryDiv>
                                             </AllPermissionFooterContainerDiv>
                                         </AllPermissionContainerDiv>
@@ -410,8 +441,8 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-       // let clientId = 1;
-        let clientId = null;
+        //let clientId = 1;
+         let clientId = null;
         
         try {
             console.log("-------------");
@@ -433,6 +464,7 @@ class WizardCreateClientPageThree extends React.Component {
         }
         // const clientId = "3"; //Testing purposes
         const { selected_roles } = this.state;
+        const { classes } = this.props;
         return (
             <Query
                 query={getDepartmentListByClient}
@@ -448,7 +480,7 @@ class WizardCreateClientPageThree extends React.Component {
                     return (
                         <ContainerDiv >
                             <SectionDivContainer style={{ borderRight:"1px solid #9D9D9D", paddingRight:"0" }}>
-                               
+                            
                                 <label style={{color:"#2699FB", fontSize:"16px"}}>Department</label>
                                 <Mutation
                                     mutation={CREATE_DEPARTMENT()}
@@ -464,6 +496,7 @@ class WizardCreateClientPageThree extends React.Component {
                                         addANewDepartment,
                                         { loading, error }
                                     ) => {
+                                        
                                         if (loading) {
                                             return (
                                                 <ClipLoader
@@ -478,8 +511,11 @@ class WizardCreateClientPageThree extends React.Component {
                                         }
                                         if (error)
                                             return `Error! ${error.message}`;
+
+                                       
                                         return (
                                             <Formik
+                                            
                                                 onSubmit={(
                                                     values,
                                                     { setSubmitting }
@@ -503,7 +539,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                     isSubmitting
                                                 }) => (
                                                     <Form>
+                                                        
                                                         <DepartmentSectionDiv>
+                                                        
                                                             <div
                                                                 style={{
                                                                     width:
@@ -514,7 +552,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     paddingBottom: 20
                                                                 }}
                                                             >
+                                                            
                                                                 <Field
+                                                                  
                                                                     name="name"
                                                                     label="Department Name"
                                                                     required={
@@ -699,6 +739,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             Department
                                                                         </InputLabel> */}
                                                                         <Select
+                                                                            
                                                                             id="simple-department-picker"
                                                                             value={
                                                                                 this
@@ -715,6 +756,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             }
                                                                             input={
                                                                                 <OutlinedInput />
+                                                                             //   <OutlinedInput classes={{input: classes.inputPdding}}/>
                                                                             }
                                                                         >
                                                                             <MenuItem
@@ -732,6 +774,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                                     index
                                                                                 ) => (
                                                                                     <MenuItem
+                                                                                    
                                                                                         key={`DEPARTMENT-${id}-${index}`}
                                                                                         value={
                                                                                             id
@@ -749,6 +792,7 @@ class WizardCreateClientPageThree extends React.Component {
 
                                                                 <FieldLabel>Role Name</FieldLabel>
                                                                 <Field
+                                                                    inputProps={{syle:{padding:0}}}
                                                                     name="name"
                                                                    // label="Role Name"
                                                                     required={
@@ -766,13 +810,14 @@ class WizardCreateClientPageThree extends React.Component {
                                                             </div>
                                                             <div
                                                                 style={{
-                                                                    padding: 10,
+                                                                    paddingLeft:10,
+                                                                    paddingRight:10,                                                          
                                                                     flex: 1,
                                                                     height:
                                                                         "100%"
                                                                 }}
                                                             >
-                                                                ROLE PERMISSIONS
+                                                                <FieldLabel>ROLE PERMISSIONS</FieldLabel>
                                                                 <Mutation
                                                                     mutation={
                                                                         UPDATE_ROLE
@@ -867,7 +912,7 @@ class WizardCreateClientPageThree extends React.Component {
                                         return `Error! ${errorRoles.message}`;
                                     // console.log(roleList);
                                     return (
-                                        <SectionDivContainer  style={{padding: "0 0  0 3%"}}>
+                                        <SectionDivContainer  >
                                              <div 
                                             
                                                 style={{
@@ -1327,4 +1372,13 @@ class WizardCreateClientPageThree extends React.Component {
     }
 }
 
-export default withApollo(WizardCreateClientPageThree);
+export default withApollo(withStyles(styles)(WizardCreateClientPageThree));
+
+//export default (withStyles(styles))(withApollo(WizardCreateClientPageThree));
+
+
+// export default compose(
+//     withApollo,
+//     withStyles(styles),
+// )(WizardCreateClientPageThree);
+        

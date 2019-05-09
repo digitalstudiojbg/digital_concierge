@@ -14,7 +14,7 @@ height: ${props => (Boolean(props.height) ? props.height : "100%")};
 display: flex;
 flex-direction: column;
 padding:0 4%;
-border-right: 1px solid #DDDDDD; 
+// border-right: 1px solid #DDDDDD; 
 `;
 
 export const ClientFieldContainerDiv = styled.div`
@@ -135,22 +135,25 @@ export const RolePermissionContainerDiv = styled.div`
 
 export const EachRolePermissionContainerDiv = styled.div`
     width: 100%;
-    height: 50%;
+    //height: 50%;
     display: flex;
     padding: 10px;
 `;
 export const EachRoleContainerDiv = styled.div`
-    width: 50%;
+    width: 40%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    marginLeft: 0px;
+    padding:0px;
 `;
 export const AllPermissionContainerDiv = styled.div`
-    width: 50%;
+    width: 60%;
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-    padding: 5px;
+    border: 1px solid #9D9D9D;
+    padding: 3px;
+    background-color: #F7F7F7;
 `;
 export const AllPermissionFooterContainerDiv = styled.div`
     width: 100%;
