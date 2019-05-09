@@ -52,6 +52,10 @@ export const SYSTEM_CMS_LIBRARY = SYSTEM_INDEX_URL + "/library";
 export const GUIDE_MAIN_URL = "/guide/:pub_id";
 export const GUIDE_CREATE_NEW_URL = "/guide/new";
 
+//Advertisers URL
+export const ADVERTISER_MAIN_URL = "/advertiser/:advertiser_id";
+export const ADVERTISER_CREATE_NEW_URL = "/create/advertiser";
+
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
 export const MAX_FILE_SIZE = 104857600; //100MB in bytes

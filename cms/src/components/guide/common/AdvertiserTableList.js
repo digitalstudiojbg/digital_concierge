@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
 import {
     MoreHoriz,
     SaveAlt,
@@ -9,8 +10,9 @@ import {
     PrintOutlined,
     DeleteOutlined
 } from "@material-ui/icons";
-import MaterialTable from "material-table";
+import MaterialTable, { MTableToolbar } from "material-table";
 import dayJs from "dayjs";
+import { ADVERTISER_CREATE_NEW_URL } from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -19,10 +21,13 @@ const ContainerDiv = styled.div`
 `;
 
 const HeaderDiv = styled.div`
+    width: 100%;
+    height: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 `;
 
 const TableDiv = styled.div`
@@ -42,24 +47,37 @@ const styles = () => ({
         marginRight: 10,
         borderRadius: 5,
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)"
+        border: "1px solid rgba(112, 112, 112, 1)",
+        height: "50%"
     },
     iconButtonEnd: {
         marginRight: 10,
         borderRadius: 5,
         backgroundColor: "white",
         border: "1px solid rgba(112, 112, 112, 1)",
-        marginRight: 0
+        marginRight: 10
     }
 });
 
 class AdvertiserTableList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.navigateToCreateNewAdvertiserPage = this.navigateToCreateNewAdvertiserPage.bind(
+            this
+        );
+    }
+
+    navigateToCreateNewAdvertiserPage = () => {
+        const { history } = this.props;
+        Boolean(history) && history.push(ADVERTISER_CREATE_NEW_URL);
+    };
+
     headerButtons = [
-        { icon: MoreHoriz },
-        { icon: SaveAlt },
-        { icon: MailOutline },
-        { icon: PrintOutlined },
-        { icon: DeleteOutlined }
+        { icon: MoreHoriz, action: () => alert("More Icon Clicked") },
+        { icon: SaveAlt, action: () => alert("Save Icon Clicked") },
+        { icon: MailOutline, action: () => alert("Mail Icon Clicked") },
+        { icon: PrintOutlined, action: () => alert("Print Icon Clicked") },
+        { icon: DeleteOutlined, action: () => alert("Delete Icon Clicked") }
     ];
 
     formatDate = dateValue => dayJs(dateValue).format("HH:mm DD MMM YYYY");
@@ -87,23 +105,6 @@ class AdvertiserTableList extends React.Component {
         const { classes } = this.props;
         return (
             <ContainerDiv>
-                <HeaderDiv>
-                    <Button className={classes.buttonNewAdvertisement}>
-                        NEW ADVERTISEMENT
-                    </Button>
-                    {this.headerButtons.map(({ icon: ButtonIcon }, index) => (
-                        <IconButton
-                            key={`HEADER-BUTTON-${index}`}
-                            className={
-                                index + 1 === this.headerButtons.length
-                                    ? classes.iconButtonEnd
-                                    : classes.iconButton
-                            }
-                        >
-                            <ButtonIcon />
-                        </IconButton>
-                    ))}
-                </HeaderDiv>
                 <TableDiv>
                     <MaterialTable
                         data={this.modifyAdvertiserList()}
@@ -123,9 +124,70 @@ class AdvertiserTableList extends React.Component {
                                 field: "expire_date"
                             }
                         ]}
-                        title=""
                         options={{
-                            selection: true
+                            selection: true,
+                            searchFieldAlignment: "left",
+                            showTitle: false
+                        }}
+                        components={{
+                            Toolbar: props => {
+                                console.log(props);
+                                return (
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            height: "100%"
+                                        }}
+                                    >
+                                        <div style={{ width: "50%" }}>
+                                            <MTableToolbar {...props} />
+                                        </div>
+                                        <div
+                                            style={{
+                                                width: "80%",
+                                                height: "100%"
+                                            }}
+                                        >
+                                            <HeaderDiv>
+                                                <div style={{ height: "50%" }}>
+                                                    <Button
+                                                        className={
+                                                            classes.buttonNewAdvertisement
+                                                        }
+                                                        onClick={
+                                                            this
+                                                                .navigateToCreateNewAdvertiserPage
+                                                        }
+                                                    >
+                                                        NEW ADVERTISEMENT
+                                                    </Button>
+                                                </div>
+
+                                                {this.headerButtons.map(
+                                                    (
+                                                        {
+                                                            icon: ButtonIcon,
+                                                            action
+                                                        },
+                                                        index
+                                                    ) => (
+                                                        <IconButton
+                                                            key={`HEADER-BUTTON-${index}`}
+                                                            className={
+                                                                classes.iconButton
+                                                            }
+                                                            onClick={action}
+                                                        >
+                                                            <ButtonIcon />
+                                                        </IconButton>
+                                                    )
+                                                )}
+                                            </HeaderDiv>
+                                        </div>
+                                    </div>
+                                );
+                            }
                         }}
                     />
                 </TableDiv>
@@ -134,4 +196,4 @@ class AdvertiserTableList extends React.Component {
     }
 }
 
-export default withStyles(styles)(AdvertiserTableList);
+export default withRouter(withStyles(styles)(AdvertiserTableList));

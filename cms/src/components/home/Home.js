@@ -23,7 +23,9 @@ import {
     CREATE_NEW_CLIENT,
     SYSTEM_CMS_LIBRARY,
     WELCOME_URL_ROUTER,
-    GUIDE_MAIN_URL
+    GUIDE_MAIN_URL,
+    ADVERTISER_CREATE_NEW_URL,
+    ADVERTISER_MAIN_URL
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -52,18 +54,9 @@ const JustBrilliantGuideDetail = lazy(() =>
     import("../guide/detail/JustBrilliantGuideDetail")
 );
 
-/*import TabletDashboard from "../tablet/TabletDashboard";
-import TabletLandingPage from "../tablet/TabletLandingPage";
-import TabletSetting from "../tablet/TabletSetting";
-import TabletContent from "../tablet/TabletContent";
-import TabletCreateContent from "../tablet/content/CreateContent";
-import TabletCreateCategory from "../tablet/content/CreateCategory";
-import TabletCreateDirectory from "../tablet/content/CreateDirectory";
-import ModifyDirectoryList from "../tablet/content/ModifyDirectoryList";
-
-import Touchscreen from "../touchscreen/Touchscreen";
-
-import Welcome from "./Welcome.js";*/
+const CreateNewAdvertiser = lazy(() =>
+    import("../advertiser/create/CreateNewAdvertiser")
+);
 
 const routes = [
     {
@@ -199,6 +192,26 @@ const routes = [
             <SidebarNew selected="guide" history={history} />
         ),
         main: JustBrilliantGuideDetail,
+        withProps: {}
+    },
+    {
+        path: ADVERTISER_MAIN_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: JustBrilliantGuideDetail, //TODO: CHANGE THIS
+        withProps: {}
+    },
+    {
+        path: ADVERTISER_CREATE_NEW_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: CreateNewAdvertiser,
         withProps: {}
     }
 ];
