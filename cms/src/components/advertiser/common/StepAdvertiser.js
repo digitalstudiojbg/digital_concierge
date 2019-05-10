@@ -5,9 +5,10 @@ import Loading from "../../loading/Loading";
 import { getAdvertiserDetail } from "../../../data/query/advertiser";
 import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "../../../data/mutation";
 import styled from "styled-components";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FieldArray } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { OutlinedInput, MenuItem } from "@material-ui/core";
+import { OutlinedInput, MenuItem, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 
 const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
@@ -65,7 +66,7 @@ const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
                                                 </React.Fragment>
                                             );
                                         return (
-                                            <StepAdvertiser
+                                            <StepAdvertiserWithStyles
                                                 data={advertiser}
                                                 has_data={true}
                                                 next={next}
@@ -95,7 +96,7 @@ const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
                                     </React.Fragment>
                                 );
                             return (
-                                <StepAdvertiser
+                                <StepAdvertiserWithStyles
                                     has_data={false}
                                     next={next}
                                     action={action}
@@ -158,15 +159,13 @@ const CLIENT_FIELDS = [
             name: "name",
             label: "Advertiser Name",
             required: true,
-            flexBasis: "30%",
-            marginRight: "10px"
+            paddingRight: "10px"
         },
         {
             name: "nature_of_business",
             label: "Nature of Business",
             required: true,
-            flexBasis: "30%",
-            marginRight: "0px"
+            paddingRight: "0px"
         }
     ],
     [
@@ -174,15 +173,13 @@ const CLIENT_FIELDS = [
             name: "phone",
             label: "Venue Phone Number",
             required: true,
-            flexBasis: "45%",
-            marginRight: "10px"
+            paddingRight: "10px"
         },
         {
             name: "email",
             label: "Business Email",
             required: true,
-            flexBasis: "45%",
-            marginRight: "0px"
+            paddingRight: "0px"
         }
     ],
     [
@@ -190,15 +187,13 @@ const CLIENT_FIELDS = [
             name: "address",
             label: "Address",
             required: true,
-            flexBasis: "45%",
-            marginRight: "10px"
+            paddingRight: "10px"
         },
         {
             name: "postal_address",
             label: "Postal Address",
             required: false,
-            flexBasis: "45%",
-            marginRight: "0px"
+            paddingRight: "0px"
         }
     ],
     [
@@ -206,31 +201,55 @@ const CLIENT_FIELDS = [
             name: "city",
             label: "City",
             required: true,
-            flexBasis: "20%",
-            marginRight: "10px"
+            paddingRight: "10px"
         },
         {
             name: "zip_code",
             label: "Zip Code",
             required: true,
-            flexBasis: "20%",
-            marginRight: "30px"
+            paddingRight: "30px"
         },
         {
             name: "postal_city",
             label: "City",
             required: true,
-            flexBasis: "20%",
-            marginRight: "10px"
+            paddingRight: "10px"
         },
         {
             name: "postal_zip_code",
             label: "Zip Code",
             required: true,
-            flexBasis: "20%",
-            marginRight: "0px"
+            paddingRight: "0px"
         }
     ]
+];
+
+const CONTACT_FIELDS = [
+    {
+        name: "name",
+        label: "Contact Name",
+        required: true
+    },
+    {
+        name: "title",
+        label: "Contact Position",
+        required: true
+    },
+    {
+        name: "phone",
+        label: "Contact Phone Number",
+        required: true
+    },
+    {
+        name: "mobile",
+        label: "Contact Mobile Number",
+        required: true
+    },
+    {
+        name: "email",
+        label: "Contact Email Address",
+        required: true
+    }
 ];
 
 const ContainerDiv = styled.div`
@@ -242,6 +261,14 @@ const SectionDiv = styled.div`
     flex-basis: ${props => props.flexBasis};
     display: flex;
     flex-direction: ${props => props.flexDirection};
+    padding-right: ${props => props.paddingRight};
+`;
+
+const SectionTitleDiv = styled.div`
+    color: rgb(38, 153, 251);
+    font-size: 1.7em;
+    font-weight: 600;
+    padding-bottom: 20px;
 `;
 
 const FieldContainerDiv = styled.div`
@@ -254,7 +281,7 @@ const FieldContainerDiv = styled.div`
 
 const FieldDivEqual = styled.div`
     flex: 1;
-    padding-right: ${props => props.marginRight};
+    padding-right: ${props => props.paddingRight};
 `;
 
 const FieldDiv = styled.div`
@@ -262,10 +289,43 @@ const FieldDiv = styled.div`
     margin-right: ${props => props.marginRight};
 `;
 
-const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
+const ContactEntryContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+`;
+
+const EMPTY_CONTACT = {
+    id: null,
+    email: "",
+    mobile: "",
+    name: "",
+    phone: "",
+    title: ""
+};
+
+const styles = () => ({
+    addContactButton: {
+        color: "#2699FB",
+        border: "1px solid #2699FB",
+        width: "100%",
+        marginBottom: 20
+    }
+});
+
+const StepAdvertiser = ({
+    data,
+    has_data,
+    next,
+    action,
+    countries,
+    classes
+}) => {
     const contacts = has_data
         ? data.contacts.map(({ __typename, ...others }) => ({ ...others }))
-        : [{ name: "", title: "", phone: "", mobile: "", email: "" }];
+        : [EMPTY_CONTACT];
 
     const initialValues = has_data
         ? {
@@ -284,7 +344,8 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
               postalStateId: data.postal_state.id,
               countryId: data.state.country.id,
               postalCountryId: data.postal_state.country.id,
-              contacts
+              contacts,
+              deleteContacts: []
           }
         : {
               name: "",
@@ -306,7 +367,7 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
 
     return (
         <Formik initialValues={initialValues}>
-            {({ values, errors }) => {
+            {({ values, errors, isSubmitting }) => {
                 const selectedCountry = Boolean(values.countryId)
                     ? countries.find(({ id }) => id === values.countryId)
                     : null;
@@ -326,7 +387,14 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
                 return (
                     <Form>
                         <ContainerDiv>
-                            <SectionDiv flexBasis="45%" flexDirection="column">
+                            <SectionDiv
+                                flexBasis="40%"
+                                flexDirection="column"
+                                paddingRight="10px"
+                            >
+                                <SectionTitleDiv>
+                                    Advertiser Information
+                                </SectionTitleDiv>
                                 {CLIENT_FIELDS.map((row_fields, index) => (
                                     <FieldContainerDiv
                                         key={`FIELDS-ROW-${index}`}
@@ -337,14 +405,13 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
                                                     name,
                                                     label,
                                                     required,
-                                                    flexBasis,
-                                                    marginRight
+                                                    paddingRight
                                                 },
                                                 field_index
                                             ) => (
                                                 <FieldDivEqual
                                                     key={`INNER-FIELD=${index}-${field_index}`}
-                                                    marginRight={marginRight}
+                                                    paddingRight={paddingRight}
                                                 >
                                                     {renderTextField(
                                                         name,
@@ -399,6 +466,64 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
                                     </FieldDiv>
                                 </FieldContainerDiv>
                             </SectionDiv>
+                            <SectionDiv
+                                flexBasis="60%"
+                                flexDirection="row"
+                                paddingRight="0px"
+                            >
+                                <FieldArray name="contacts">
+                                    {({ push, remove }) => {
+                                        const addContact = () =>
+                                            push({ ...EMPTY_CONTACT });
+                                        return (
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex"
+                                                }}
+                                            >
+                                                <div
+                                                    style={{
+                                                        flexBasis: "90%",
+                                                        display: "flex"
+                                                    }}
+                                                >
+                                                    {values.contacts.map(
+                                                        (
+                                                            contact,
+                                                            contactIndex
+                                                        ) => (
+                                                            <ContactEntryContainerDiv
+                                                                key={`CONTACT-ENTRY-${contactIndex}`}
+                                                            >
+                                                                <SectionTitleDiv>
+                                                                    CONTACT #
+                                                                    {contactIndex +
+                                                                        1}
+                                                                </SectionTitleDiv>
+                                                            </ContactEntryContainerDiv>
+                                                        )
+                                                    )}
+                                                </div>
+                                                <div
+                                                    style={{ flexBasis: "10%" }}
+                                                >
+                                                    <Button
+                                                        variant="outlined"
+                                                        className={
+                                                            classes.addContactButton
+                                                        }
+                                                        onClick={addContact}
+                                                        disabled={isSubmitting}
+                                                    >
+                                                        ADD ADDITIONAL CONTACT
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        );
+                                    }}
+                                </FieldArray>
+                            </SectionDiv>
                         </ContainerDiv>
                     </Form>
                 );
@@ -406,5 +531,7 @@ const StepAdvertiser = ({ data, has_data, next, action, countries }) => {
         </Formik>
     );
 };
+
+const StepAdvertiserWithStyles = withStyles(styles)(StepAdvertiser);
 
 export default StepAdvertiserHOC;
