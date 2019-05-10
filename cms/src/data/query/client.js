@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { contactDetailFragment } from "../fragment";
 
 export const getClientFromUser = gql`
     query get_client_from_user {
@@ -18,12 +19,7 @@ export const getClientFromUser = gql`
             number_of_users
             avatar
             contacts {
-                id
-                name
-                title
-                phone
-                mobile
-                email
+                ...contactDetail
             }
             active_contract {
                 id
@@ -59,6 +55,7 @@ export const getClientFromUser = gql`
             }
         }
     }
+    ${contactDetailFragment}
 `;
 
 export const getAllClients = gql`
@@ -80,12 +77,7 @@ export const getAllClients = gql`
             number_of_users
             avatar
             contacts {
-                id
-                name
-                title
-                phone
-                mobile
-                email
+                ...contactDetail
             }
             active_contract {
                 id
@@ -129,6 +121,7 @@ export const getAllClients = gql`
             }
         }
     }
+    ${contactDetailFragment}
 `;
 
 export const getClientImageById = gql`

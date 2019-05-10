@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import { advertiserListFragment } from "../fragment";
+import { advertiserListFragment, advertiserDetailFragment } from "../fragment";
 
 export const getAdvertiserFromPublication = gql`
     query getAdvertiserFromPublication($id: ID!) {
@@ -17,4 +17,13 @@ export const getAdvertiserList = gql`
         }
     }
     ${advertiserListFragment}
+`;
+
+export const getAdvertiserDetail = gql`
+    query getAdvertiserDetail($id: ID!) {
+        advertiser(id: $id) {
+            ...advertiserDetail
+        }
+    }
+    ${advertiserDetailFragment}
 `;

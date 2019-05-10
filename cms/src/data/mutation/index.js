@@ -25,6 +25,7 @@ import {
 } from "./role";
 import { CREATE_SYSTEM } from "./system";
 import { CREATE_GUIDE, EDIT_GUIDE } from "./justBrilliantGuide";
+import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "./advertiser";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -48,5 +49,7 @@ export {
     DUPLICATE_ROLES,
     CREATE_SYSTEM,
     CREATE_GUIDE,
-    EDIT_GUIDE
+    EDIT_GUIDE,
+    CREATE_ADVERTISER,
+    EDIT_ADVERTISER
 };

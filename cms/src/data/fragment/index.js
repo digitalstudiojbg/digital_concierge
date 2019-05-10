@@ -1,8 +1,11 @@
 import { directoryListFragment } from "./directoryList";
 import { justBrilliantGuideDetailFragment } from "./justBrilliantGuide";
-import { advertiserListFragment } from "./advertiser";
+import { advertiserListFragment, advertiserDetailFragment } from "./advertiser";
+import { contactDetailFragment } from "./contact";
 export {
     directoryListFragment,
     justBrilliantGuideDetailFragment,
-    advertiserListFragment
+    advertiserListFragment,
+    advertiserDetailFragment,
+    contactDetailFragment
 };

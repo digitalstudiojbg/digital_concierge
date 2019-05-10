@@ -23,6 +23,8 @@ const ContainerDiv = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
 `;
 
 const HeaderContainerDiv = styled.div`
@@ -45,6 +47,7 @@ const HeaderButtonDiv = styled.div`
     height: 60px;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 `;
 
 const ContentContainer = styled.div`
@@ -53,7 +56,9 @@ const ContentContainer = styled.div`
     height: 100%;
 `;
 
-const ModifyAdvertiser = ({ has_data, advertiserId, goBack, exitUrl }) => {
+const ModifyAdvertiser = props => {
+    const { has_data, advertiserId, goBack, exitUrl } = props;
+
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () =>
@@ -83,7 +88,7 @@ const ModifyAdvertiser = ({ has_data, advertiserId, goBack, exitUrl }) => {
             </Stepper>
             <ContentContainer>
                 <Suspense>
-                    <SelectedComponent next={handleNext} />
+                    <SelectedComponent next={handleNext} {...props} />
                 </Suspense>
             </ContentContainer>
         </ContainerDiv>
