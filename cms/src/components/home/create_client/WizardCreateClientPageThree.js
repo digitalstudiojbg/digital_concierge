@@ -445,7 +445,7 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-      //  let clientId = 1;
+       // let clientId = 1;
           let clientId = null;
         
          try {
@@ -927,21 +927,19 @@ class WizardCreateClientPageThree extends React.Component {
                                             
                                                 style={{
                                                     width: "100%",
-                                                   // padding: "5%",
-                                                    display: "flex",
-                                                    paddingLeft:"20%"
+                                                    display: "flex", 
                                                 }}
                                             >
                                                 <div
                                                     style={{
                                                         width: "80%",
-                                                        paddingLeft:"10%",
+                                                        paddingLeft:"3%",
+                                                        paddingTop:"3%",
                                                         display: "flex",
-                                                        alignItems: "center",
-                                                        fontSize: "1.5em"
+                                                       
                                                     }}
                                                 >
-                                                    <h6 style={{fontSize:"12px"}}>STRUCTURE TABLE</h6>
+                                                    <FieldLabel style={{fontSize:"12px"}}>STRUCTURE TABLE</FieldLabel >
                                                 </div>
                                                 <div
                                                     style={{
@@ -1355,12 +1353,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                     width: "100%",
                                                     display: "flex",
                                                     justifyContent: "flex-end",
-                                                    paddingTop: 50
+                                                   // paddingTop: 50
                                                 }}
                                             >
                                                 <ContinueButton
                                                  style={{
-                                                    width: "50%", marginLeft:"50%"}}
+                                                    width: "50%", marginLeft:"50%", marginBottom:"10%"}}
                                                     variant="contained"
                                                     color="primary"
                                                     onClick={() =>

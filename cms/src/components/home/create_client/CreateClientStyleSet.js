@@ -168,3 +168,53 @@ export const PermissionFooterEntryDiv = styled.span`
     justify-content: center;
     border: 1px solid blue;
 `;
+
+//-------page4------
+
+export const FeatureContainer = styled.div`
+    display: flex;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    align-items: center;
+    border-radius: 5px;
+    width: 100%;
+    // &:hover {
+    //     background-color: lightgrey;
+    // }
+`;
+
+export const SelectUnselectButton = styled.p`
+    width: 50%;
+    display: flex;
+    color: #2699FB;
+  padding: 10px 0 0 5px;
+    font-size:10px;
+    cursor: pointer;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+export const EachClientSystemContainer = styled.div`
+    width: 200px;
+    height: 180px;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    position: relative;
+    // &:hover {
+    //     background-color: lightgrey;
+    // }
+`;
+
+export const EachClientSystemContainerSystemText = styled.p`
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+`;
+
+export const EachClientSystemContainerDeviceTypeText = styled.p`
+    margin-bottom: 5px;
+    color: grey;
+    font-size: 12px;
+`;

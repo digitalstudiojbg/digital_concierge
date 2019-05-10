@@ -22,58 +22,43 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import Checkbox from "@material-ui/core/Checkbox";
+import LaunchIcon from "@material-ui/icons/Launch";
+import IconButton from "@material-ui/core/IconButton";
+
 import { Set } from "immutable";
 import validationSchema from "./four/PageFourValidationSchema";
+import {withStyles} from '@material-ui/core/styles';
 
-const FiledContainer = styled.div`
-    padding-bottom: 20px;
-`;
 
-const FeatureContainer = styled.div`
-    display: flex;
-    font-size: 14px;
-    transition: all 0.3s ease-in-out;
-    align-items: center;
-    border-radius: 5px;
-    &:hover {
-        background-color: lightgrey;
-    }
-`;
+import {
+    FiledContainer,
+    FeatureContainer,
+    SelectUnselectButton,
+    EachClientSystemContainer,
+    EachClientSystemContainerSystemText,
+    EachClientSystemContainerDeviceTypeText,
+    SectionHeader,
+    SubFieldContainerDiv,
+    FieldContainerDiv,
+    FieldLabel,
+    ContinueButton,
+    NormalButton 
 
-const SelectUnselectButton = styled.p`
-    color: blue;
-    cursor: pointer;
-    margin-bottom: 0;
-    &:hover {
-        font-weight: bold;
-    }
-`;
+    } from "./CreateClientStyleSet";
+    
 
-const EachClientSystemContainer = styled.div`
-    width: 200px;
-    height: 180px;
-    margin: 5px;
-    padding: 5px;
-    border: 1px solid black;
-    position: relative;
-    &:hover {
-        background-color: lightgrey;
-    }
-`;
-
-const EachClientSystemContainerSystemText = styled.p`
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 14px;
-`;
-
-const EachClientSystemContainerDeviceTypeText = styled.p`
-    margin-bottom: 5px;
-    color: grey;
-    font-size: 12px;
-`;
+    const styles = theme => ({
+        mylabel: {
+          fontSize: '10px',
+          color: '#5C5C5C'
+        },
+        inputPdding:{
+            padding: '0px'
+        }
+      });
 
 const renderSelectField = ({ name: nameValue, label, optionList }) => {
     return (
@@ -84,6 +69,9 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
+                input={
+                    <OutlinedInput />
+                }
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -130,57 +118,69 @@ class WizardCreateClientPageFour extends React.Component {
         return (
             <div
                 style={{
-                    width: "33%",
+                    width: "20%",
+                  //  marginright:"10%",
                     padding: "20px 20px 20px 0"
                 }}
             >
-                <h1>Add System</h1>
+                <SectionHeader>Add System</SectionHeader>
                 <FiledContainer>
-                    <Field
-                        name="name"
-                        label="SYSTEM NAME"
-                        required={true}
-                        type="text"
-                        component={TextField}
-                        variant="outlined"
-                        fullWidth={true}
-                    />
+                    
+                    <SubFieldContainerDiv>
+                        <FieldLabel>SYSTEM NAME</FieldLabel>
+                        <Field
+                            name="name"
+                         //   label="SYSTEM NAME"
+                            required={true}
+                            type="text"
+                            component={TextField}
+                            variant="outlined"
+                            fullWidth={true}
+                        />
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
-                    {systemTypes.length > 0 &&
-                        renderSelectField({
-                            name: "system_type",
-                            label: "SYSTEM TYPE",
-                            optionList: systemTypes
-                        })}
+                    <SubFieldContainerDiv>
+                            <FieldLabel>SYSTEM TYPE</FieldLabel>
+                            {systemTypes.length > 0 &&
+                                renderSelectField({
+                                    name: "system_type",
+                                // label: "SYSTEM TYPE",
+                                    optionList: systemTypes,
+                             
+                            })}
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
                     <div
                         style={{
                             display: "flex",
                             justifyContent: "space-around",
-                            alignItems: "center"
+                            alignItems: "center",
+                            display:"inline-block",
+                            marginTop:"7px"
                         }}
                     >
-                        <p style={{ fontSize: "14px", fontFamily: "Roboto" }}>
+                        <p style={{ fontSize: "12px", fontFamily: "Roboto" , display:"inline-block", marginRight:"20px"}}>
                             AIF
                         </p>
                         <Field
                             name="aif_boolean"
                             label="AIF"
                             required={true}
-                            color="primary"
+                           // color="primary"
                             component={RadioGroup}
                             variant="outlined"
+                            style={{display:"inline-block"}}
                         >
                             <FormControlLabel
                                 value="yes"
-                                control={<Radio color="primary" />}
+                                control={<Radio color="Black"/>}
                                 label="Yes"
                             />
                             <FormControlLabel
                                 value="no"
-                                control={<Radio color="primary" />}
+                                control={<Radio color="Black" />}
                                 label="No"
                             />
                         </Field>
@@ -188,23 +188,29 @@ class WizardCreateClientPageFour extends React.Component {
                 </FiledContainer>
 
                 <FiledContainer>
+                <SubFieldContainerDiv>
+                    <FieldLabel>DEVICE TYPE</FieldLabel>
                     {deviceTypes.length > 0 &&
                         renderSelectField({
                             name: "device_type",
-                            label: "DEVICE TYPE",
+                         //   label: "DEVICE TYPE",
                             optionList: deviceTypes
                         })}
+                        </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
+                <SubFieldContainerDiv>
+                    <FieldLabel>NUMBER OF DEVICES</FieldLabel>
                     <Field
                         name="numberOfDevices"
-                        label="NUMBER OF DEVICES"
+                     //   label="NUMBER OF DEVICES"
                         required={true}
                         type="text"
                         component={TextField}
                         variant="outlined"
                         fullWidth={true}
                     />
+                    </SubFieldContainerDiv>
                 </FiledContainer>
             </div>
         );
@@ -220,18 +226,20 @@ class WizardCreateClientPageFour extends React.Component {
         return (
             <div
                 style={{
-                    width: "33%",
-                    padding: "20px 20px 20px 0"
+                    width: "37%",
+                    padding: "20px",
+                    borderLeft:"1px solid #DDDDDD",
                 }}
             >
-                <h1>All Client System</h1>
+                <SectionHeader>All Client System</SectionHeader>
                 <div
                     style={{
                         display: "flex",
                         flexWrap: "wrap",
                         justifyContent: "center",
                         overflow: "auto",
-                        height: "60vh"
+                        height: "70vh",
+                        
                     }}
                 >
                     {systemsByClient.length > 0 &&
@@ -273,10 +281,12 @@ class WizardCreateClientPageFour extends React.Component {
                         width: "100%",
                         paddingBottom: "20px",
                         display: "flex",
-                        justifyContent: "flex-end"
+                        justifyContent: "flex-end",
+                        marginTop:"20%"
                     }}
                 >
-                    <Button
+                    <ContinueButton
+                        style={{width:"60%"}}
                         variant="contained"
                         color="primary"
                         disabled={systemsByClient.length <= 0}
@@ -285,7 +295,7 @@ class WizardCreateClientPageFour extends React.Component {
                         }}
                     >
                         CONFIRM & CONTINUE
-                    </Button>
+                    </ContinueButton>
                 </div>
             </div>
         );
@@ -312,27 +322,72 @@ class WizardCreateClientPageFour extends React.Component {
             getFeaturesByCategories: { featureCategories = {} } = {}
         } = this.props;
         const { selected_checkboxes } = this.state;
+        const { classes } = this.props;
         return (
+            
             <div
                 style={{
-                    width: "33%",
-                    padding: "20px 20px 20px 0"
+                    width: "30%",
+                    padding: "20px",
+                    marginRight:"2%",
+                    marginLeft:"8%",
+                    marginTop:"3%"
                 }}
             >
-                <h1>Features</h1>
+                <FieldLabel >FEATURES REQUIRED</FieldLabel >
+                <FieldContainerDiv
+                 style={{
+                    border:"1px solid #9D9D9D",
+                    overflowY:"scroll",
+                    height:"430px"
+                }}
+                >
                 <div
                     style={{
                         display: "flex",
-                        fontSize: "14px"
+                        fontSize: "10px",
+                        padding:"10px",
+                        width:"100%",
                     }}
                 >
-                    <div style={{ width: "30%" }} />
-                    <div style={{ width: "70%", paddingLeft: "10px" }}>
+                    <div style={{ width: "40%" }} >
+                    
+                        {/* <div
+                                    style={{
+                                        width: "100%",
+                                        display: "flex",
+                                    //   paddingTop:"0",
+                                        padding: 10
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            width: "40%",
+                                            height: "100%",
+                                        
+                                        }}
+                                    >
+                                        <IconButton
+                                            style={{ margin:"0px", padding:"0px" }}
+                                            aria-label="Expand"
+                                            onClick={this.handleOpenRoleModal}
+                                        >
+                                            <LaunchIcon fontSize="large"   />
+                                        </IconButton>
+                           </div> */}
+                    
+                    </div>
+                    <div style={{ width: "60%", paddingLeft: "13px" }}>
+
                         <FormControlLabel
+                            classes={{
+                                label: classes.mylabel
+                            }}
                             name="all_features"
                             control={
                                 <Checkbox
-                                    color="primary"
+                                    style={{color:"#2699FB", padding:"0"}}
+                                  //  color="primary"
                                     checked={
                                         selected_checkboxes.size ===
                                             this.getAllFeatureId().length &&
@@ -371,23 +426,23 @@ class WizardCreateClientPageFour extends React.Component {
 
                         return (
                             <FeatureContainer key={index}>
-                                <div style={{ width: "30%" }}>
-                                    <p
-                                        style={{
-                                            /*textOverflow: "ellipsis",
-                                            overflow: "hidden",
-                                            whiteSpace: "nowrap",
-                                            width: "100%"*/
-                                            textAlign: "center"
-                                        }}
-                                    >
+                                <div style={{ width: "40%" , paddingLeft:"10px", height:"5%", marginBottom:"50%"}}>
+                                    <FieldLabel >
                                         {eachCategory.name}
-                                    </p>
+                                    </FieldLabel >
                                 </div>
                                 <div
                                     style={{
-                                        width: "70%",
-                                        paddingLeft: "10px"
+                                        width: "60%",
+                                        border:"1px solid #9D9D9D",
+                                        padding:"2% 0 0 5%",
+                                        // paddingBottom:"0",
+                                        // paddingLeft:"5%",
+                                        // paddingTop:"2%",
+                                     
+                                        marginBottom:"5%",
+                                      marginRight:"5%",
+                                        backgroundColor:"#F7F7F7"
                                     }}
                                 >
                                     <ul style={{ listStyleType: "none" }}>
@@ -396,9 +451,13 @@ class WizardCreateClientPageFour extends React.Component {
                                                 return (
                                                     <li key={index}>
                                                         <FormControlLabel
+                                                             classes={{
+                                                                  label: classes.mylabel
+                                                              }}
                                                             control={
                                                                 <Checkbox
-                                                                    color="primary"
+                                                                    style={{color:"#2699FB", padding:"0"}}
+                                                                   // color="primary"
                                                                     checked={selected_checkboxes.includes(
                                                                         id
                                                                     )}
@@ -448,6 +507,7 @@ class WizardCreateClientPageFour extends React.Component {
                             </FeatureContainer>
                         );
                     })}
+                </FieldContainerDiv> 
                 <div
                     style={{
                         width: "100%",
@@ -456,7 +516,7 @@ class WizardCreateClientPageFour extends React.Component {
                         justifyContent: "flex-end"
                     }}
                 >
-                    <Button
+                    <NormalButton 
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -467,12 +527,14 @@ class WizardCreateClientPageFour extends React.Component {
                         }
                     >
                         ADD SYSTEM
-                    </Button>
+                    </NormalButton >
                 </div>
+                
             </div>
+        
         );
     }
-
+    
     render() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
@@ -484,7 +546,9 @@ class WizardCreateClientPageFour extends React.Component {
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
 
-        let new_create_client_id;
+      // let new_create_client_id =1 ;
+      let new_create_client_id;
+
         try {
             new_create_client_id = client.readQuery({
                 query: getNewCreatedClientId
@@ -628,6 +692,7 @@ class WizardCreateClientPageFour extends React.Component {
 
 export default compose(
     withApollo,
+    withStyles(styles),
     graphql(getDeviceTypes, { name: "getDeviceTypes" }),
     graphql(getSystemTypes, { name: "getSystemTypes" }),
     graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
@@ -642,3 +707,4 @@ export default compose(
         name: "systemsByClient"
     })
 )(WizardCreateClientPageFour);
+
