@@ -137,6 +137,9 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
+                input={
+                    <OutlinedInput/>
+                }
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -173,16 +176,19 @@ class WizardCreateClientPageTwo extends React.Component {
         this.fileInput = React.createRef();
     }
 
-    selectRenderMethod({ name, label, required, type, optionList = {} }) {
+    selectRenderMethod({ name, label, required, type, optionList = {}
+}) {
         switch (type) {
             case "date":
             case "text":
-                return renderDateField({ name, label, required, type });
+                return renderDateField({ name, label, required, type
+                    });
             case "select":
                 return renderSelectField({
                     name,
                     label,
-                    optionList
+                    optionList,
+            
                 });
             default:
                 return <React.Fragment />;
@@ -219,7 +225,8 @@ class WizardCreateClientPageTwo extends React.Component {
                          //   label: "LICENSE TYPE",
                             required: true,
                             type: "select",
-                            optionList: licenseTypes
+                            optionList: licenseTypes,
+                  
                         })}
                         </SubFieldContainerDiv>
                 </FiledContainer>

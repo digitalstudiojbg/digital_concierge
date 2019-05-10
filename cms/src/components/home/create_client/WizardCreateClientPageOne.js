@@ -155,9 +155,9 @@ const styles = theme => ({
         border: "1px solid blue",
         width: "100%"
     },
-    bootstrapInput: {
-        padding: "0px"
-    }
+    // bootstrapInput: {
+    //     padding: "0px"
+    // }
 
 });
 
@@ -406,9 +406,9 @@ class WizardCreateClientPageOne extends React.Component {
                                                     }
                                                 )}
                                             </SectionDiv>
-                                            <SectionDiv width="25%">
+                                            <SectionDiv  style={{ borderRight:"1px solid #DDDDDD" ,borderLeft:"1px solid #DDDDDD", width:"25%"}}>
                                             <SectionHeader >Key User</SectionHeader>
-                                                <FieldContainerDiv>
+                                                <FieldContainerDiv style={{marginBottom:"8%"}}>
                                                     {CONTACT_FIELDS.map(
                                                         (
                                                             {
@@ -438,7 +438,7 @@ class WizardCreateClientPageOne extends React.Component {
                                             </SectionDiv>
                                             <SectionDiv style={{ width: "25%" , border: "0px" }}>
                                                 <SectionHeader >Client Profile Image</SectionHeader>
-                                                <div style={{ height: "50%", borderBottom: "1px solid #DDDDDD"}}>
+                                                <div style={{ height: "50%"}}>
                                                     <FieldContainerDiv>
                                                         <SubFieldContainerDiv > 
                                                             <FieldLabel>File Name</FieldLabel>
@@ -499,14 +499,14 @@ class WizardCreateClientPageOne extends React.Component {
                                                     </FieldDiv>
                                                 </FieldContainerDiv>
                                                 </div>
-                                                <div style={{marginTop: "10%"}}>
+                                                {/* <div style={{marginTop: "10%"}}>
                                                             <SectionHeader >Just Brilliant Guides</SectionHeader>
                                                             <div>
 
 
                                                             </div>
                                              
-                                                </div>
+                                                </div> */}
                                                 </SectionDiv>
                                                
                                         </ContainerDiv>

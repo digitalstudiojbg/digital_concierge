@@ -221,34 +221,38 @@ class WizardCreateClientPageThree extends React.Component {
                                 style={{
                                     width: "100%",
                                     display: "flex",
+                                 //   paddingTop:"0",
                                     padding: 10
                                 }}
                             >
                                 <div
                                     style={{
-                                        width: "50%",
+                                        width: "40%",
                                         height: "100%",
-                                        padding: 5
+                                       
                                     }}
                                 >
                                     <IconButton
+                                        style={{ margin:"0px", padding:"0px" }}
                                         aria-label="Expand"
                                         onClick={this.handleOpenRoleModal}
                                     >
-                                        <LaunchIcon fontSize="large" />
+                                        <LaunchIcon fontSize="large"   />
                                     </IconButton>
                                 </div>
                                 <div
                                     style={{
-                                        width: "50%",
+                                        width: "60%",
                                         height: "100%",
-                                        padding: 5
+                                        paddingLeft:"5%",
+                                        paddingTop:"2%"
+                                       // padding: 5
                                     }}
                                 >
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                style={{color:"#2699FB"}}
+                                                style={{color:"#2699FB", padding:"0"}}
                                                 checked={
                                                     
                                                     selected_checkboxes.size ===
@@ -441,10 +445,10 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        //let clientId = 1;
-         let clientId = null;
+      //  let clientId = 1;
+          let clientId = null;
         
-        try {
+         try {
             console.log("-------------");
 
             clientId = this.props.client.readQuery({
@@ -617,7 +621,7 @@ class WizardCreateClientPageThree extends React.Component {
                                     }}
                                 </Mutation>
                                 
-                                <SectionDiv style={{paddingLeft:"0", borderRight:"0px", borderTop:"1px solid #9D9D9D"}}>
+                                <SectionDiv style={{paddingLeft:"0", paddingRight:"3%", borderRight:"0px", borderTop:"1px solid #9D9D9D"}}>
                                     <label style={{color:"#2699FB", fontSize:"16px", marginTop :"20px", }}>Role </label>
                                     <Mutation
                                         mutation={CREATE_ROLE}
@@ -810,8 +814,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                             </div>
                                                             <div
                                                                 style={{
+                                                                    width:"65%",
                                                                     paddingLeft:10,
-                                                                    paddingRight:10,                                                          
+                                                                   // paddingRight:10,                                                          
                                                                     flex: 1,
                                                                     height:
                                                                         "100%"
@@ -912,18 +917,25 @@ class WizardCreateClientPageThree extends React.Component {
                                         return `Error! ${errorRoles.message}`;
                                     // console.log(roleList);
                                     return (
-                                        <SectionDivContainer  >
+                                        <SectionDivContainer         
+                                            
+                                        style={{
+                                            paddingLeft:"20px",
+                                            paddingRight:"0"
+                                        }} >
                                              <div 
                                             
                                                 style={{
-                                                    width: "90%",
+                                                    width: "100%",
                                                    // padding: "5%",
-                                                    display: "flex"
+                                                    display: "flex",
+                                                    paddingLeft:"20%"
                                                 }}
                                             >
                                                 <div
                                                     style={{
                                                         width: "80%",
+                                                        paddingLeft:"10%",
                                                         display: "flex",
                                                         alignItems: "center",
                                                         fontSize: "1.5em"
@@ -1185,9 +1197,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                     />
                                                 )}
 
-                                            <Table style={{padding:"5%", border:"1px solid #9D9D9D", borderRadius:"5px !important"}}>
+                                            <Table style={{border:"1px solid #9D9D9D"}}>
                                                 <TableHead>
-                                                    <TableRow style={{borderBottom:"2px solid #5C5C5C"}}>
+                                                    <TableRow style={{borderBottom:"2px solid #5C5C5C", width:"100%"}}>
                                                         {/* <TableCell padding="checkbox">
                                                             <Checkbox
                                                                 indeterminate={
@@ -1230,13 +1242,13 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 }}
                                                             />
                                                         </TableCell> */}
-                                                        <TableCell>
+                                                        <TableCell style={{width:"40%"}}>
                                                             ROLE
                                                         </TableCell>
-                                                        <TableCell>
+                                                        <TableCell style={{width:"40%"}}>
                                                             DEPARTMENT
                                                         </TableCell>
-                                                        <TableCell>
+                                                        <TableCell style={{width:"20%"}}>
                                                             ACTIONS
                                                         </TableCell>
                                                     </TableRow>
@@ -1251,7 +1263,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                         >
                                                             <TableCell>
                                                                 <Checkbox
-                                                                style={{padding:"0"}}
+                                                                    style={{padding:"0", marginRight:"10px", color:"#707070"}}
                                                                     id={role.id}
                                                                     checked={this.state.selected_roles.includes(
                                                                         role.id
@@ -1261,8 +1273,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             .handleChangeSelectedRoles
                                                                     }
                                                                 />
-                                                            </TableCell>
-                                                            <TableCell>
+                                                            
                                                                 {role.name}
                                                             </TableCell>
                                                             <TableCell>
