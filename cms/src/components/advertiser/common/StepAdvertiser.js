@@ -7,7 +7,8 @@ import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "../../../data/mutation";
 import styled from "styled-components";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { OutlinedInput, MenuItem, Button } from "@material-ui/core";
+import { OutlinedInput, MenuItem, Button, IconButton } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 
@@ -112,15 +113,17 @@ const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
 );
 
 const renderTextField = (name, label, required) => (
-    <Field
-        name={name}
-        label={label}
-        required={required}
-        type="text"
-        component={TextField}
-        variant="outlined"
-        fullWidth={true}
-    />
+    <div style={{ width: "100%" }}>
+        <FormLabelDiv>{label}</FormLabelDiv>
+        <Field
+            name={name}
+            required={required}
+            type="text"
+            component={TextField}
+            variant="outlined"
+            fullWidth={true}
+        />
+    </div>
 );
 
 const FormLabelDiv = styled.div`
@@ -367,7 +370,7 @@ const StepAdvertiser = ({
 
     return (
         <Formik initialValues={initialValues}>
-            {({ values, errors, isSubmitting }) => {
+            {({ values, errors, isSubmitting, setFieldValue }) => {
                 const selectedCountry = Boolean(values.countryId)
                     ? countries.find(({ id }) => id === values.countryId)
                     : null;
@@ -484,7 +487,7 @@ const StepAdvertiser = ({
                                             >
                                                 <div
                                                     style={{
-                                                        flexBasis: "90%",
+                                                        flexBasis: "80%",
                                                         display: "flex"
                                                     }}
                                                 >
@@ -492,21 +495,81 @@ const StepAdvertiser = ({
                                                         (
                                                             contact,
                                                             contactIndex
-                                                        ) => (
-                                                            <ContactEntryContainerDiv
-                                                                key={`CONTACT-ENTRY-${contactIndex}`}
-                                                            >
-                                                                <SectionTitleDiv>
-                                                                    CONTACT #
-                                                                    {contactIndex +
-                                                                        1}
-                                                                </SectionTitleDiv>
-                                                            </ContactEntryContainerDiv>
-                                                        )
+                                                        ) => {
+                                                            const deleteContact = index => event => {
+                                                                if (
+                                                                    Boolean(
+                                                                        values
+                                                                            .contacts[
+                                                                            index
+                                                                        ].id
+                                                                    )
+                                                                ) {
+                                                                    setFieldValue(
+                                                                        "deleteContacts",
+                                                                        [
+                                                                            ...values.deleteContacts,
+                                                                            values
+                                                                                .contacts[
+                                                                                index
+                                                                            ]
+                                                                        ]
+                                                                    );
+                                                                }
+                                                                remove(index);
+                                                            };
+
+                                                            return (
+                                                                <ContactEntryContainerDiv
+                                                                    key={`CONTACT-ENTRY-${contactIndex}`}
+                                                                >
+                                                                    <SectionTitleDiv>
+                                                                        CONTACT
+                                                                        #
+                                                                        {contactIndex +
+                                                                            1}
+                                                                        <IconButton
+                                                                            onClick={deleteContact(
+                                                                                contactIndex
+                                                                            )}
+                                                                        >
+                                                                            <DeleteIcon />
+                                                                        </IconButton>
+                                                                    </SectionTitleDiv>
+                                                                    <div
+                                                                        style={{
+                                                                            width:
+                                                                                "100%"
+                                                                        }}
+                                                                    >
+                                                                        {CONTACT_FIELDS.map(
+                                                                            (
+                                                                                {
+                                                                                    name,
+                                                                                    label,
+                                                                                    required
+                                                                                },
+                                                                                contactFieldIndex
+                                                                            ) => (
+                                                                                <React.Fragment
+                                                                                    key={`CONTACT-FIELD-${contactIndex}-${name}-${contactFieldIndex}`}
+                                                                                >
+                                                                                    {renderTextField(
+                                                                                        `contacts[${contactIndex}].${name}`,
+                                                                                        label,
+                                                                                        required
+                                                                                    )}
+                                                                                </React.Fragment>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                </ContactEntryContainerDiv>
+                                                            );
+                                                        }
                                                     )}
                                                 </div>
                                                 <div
-                                                    style={{ flexBasis: "10%" }}
+                                                    style={{ flexBasis: "20%" }}
                                                 >
                                                     <Button
                                                         variant="outlined"
