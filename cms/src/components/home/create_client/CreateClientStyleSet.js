@@ -55,6 +55,8 @@ padding-top: 10px;
 export const SectionHeader = styled.h4`
 text-align: left;
 color: #2699FB;
+font-size: 20px;
+padding: 0px;
 `;
 
 export const BrowseButton = styled.label`

@@ -4,6 +4,7 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import StepLabel from "@material-ui/core/StepLabel";
+import StepConnector from '@material-ui/core/StepConnector';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
@@ -17,31 +18,36 @@ import { Mutation } from "react-apollo";
 import { CREATE_THEMES } from "../../../../data/mutation";
 import Loading from "../../../loading/Loading";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
+
+import {
+    NormalButton,
+    ContainerDiv,
+    SectionHeader,
+    FieldLabel,
+    ContinueButton
+    } from "../CreateClientStyleSet";
+
+
 
 const ThemeContainerDiv = styled.div`
-    width: 70%;
+    width: 60%;
     height: 100%;
     padding-bottom: 20px;
-    border-right: 1px solid black;
+    border-right: 1px solid #DDDDDD;
 `;
 
 const EntryThemeContainerDiv = styled.div`
-    width: 50%;
+    width: 70%;
     display: flex;
     padding-bottom: 10px;
 `;
 
 const ColourThemeContainerDiv = styled.div`
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: center;
     padding: 10px;
-    border: 2px solid black;
+    border: 2px solid #DDDDDD;
 `;
 
 const EntryThemeDiv = styled.div`
@@ -50,37 +56,38 @@ const EntryThemeDiv = styled.div`
 `;
 
 const LayoutContainerDiv = styled.div`
-    width: 30%;
+    width: 40%;
     height: 100%;
-    padding-left: 10px;
+    padding-left: 5%;
 `;
 
 const LayoutEntryContainerDiv = styled.div`
     width: 100%;
-    height: 100px;
-    margin-bottom: 10px;
-    display: flex;
+    margin-bottom: 10%;
+  
 `;
 
 const LayoutEntryDropdownDiv = styled.div`
-    width: 70%;
-    height: 100%;
+    width: 60%;
+  //  height: 100%;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
 `;
 
 const LayoutEntryPreviewDiv = styled.div`
     flex: 1;
     display: flex;
     align-items: center;
-    border: 1px solid black;
+    border: 1px solid #DDDDDD;
     margin: 5;
 `;
 
 const LayoutEntryPreviewImage = styled.img`
-    width: 100%;
+    width: 50px;
+    height:50px;
+
 `;
 
 const ColourEntryContainerDiv = styled.div`
@@ -88,7 +95,7 @@ const ColourEntryContainerDiv = styled.div`
     height: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: 1px solid black;
+    border: 1px solid #DDDDDD;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
@@ -99,7 +106,7 @@ const ColourEntryContainerDiv = styled.div`
 const ColourEntryDiv = styled.div`
     width: 80px;
     height: 80px;
-    border: 2px solid black;
+    border: 2px solid #DDDDDD;
     margin-bottom: 10px;
     /* background-color: ${props =>
         Boolean(props.color) ? props.colour : "white"}; */
@@ -146,16 +153,18 @@ const styles = theme => ({
     },
     uploadButton: {
         margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%"
+         width: "55%",
+         marginTop:"10%"
     },
-    confirmButton: {
-        margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "50%"
-    }
+    // confirmButton: {
+    //     margin: theme.spacing.unit,
+    //     color: "blue",
+    //     border: "1px solid blue",
+    //     width: "50%"
+    // },
+    icon:{
+        color:"#2699FB !important"
+    } 
 });
 
 class SetupClientThemeAndLayout extends React.Component {
@@ -488,9 +497,10 @@ class SetupClientThemeAndLayout extends React.Component {
                             systems.length > 0 ? (
                                 <React.Fragment>
                                     <ThemeContainerDiv>
-                                        SYSTEMS
-                                        <div style={{ width: "100%" }}>
+                                        <SectionHeader>System</SectionHeader>
+                                        <div style={{ width: "90%" }}>
                                             <Stepper
+                                              
                                                 nonLinear
                                                 activeStep={systemIndex}
                                                 alternativeLabel
@@ -499,13 +509,23 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     ({ id, name }, index) => (
                                                         <Step
                                                             key={`STEP-${id}-${index}`}
+                                                           
                                                         >
+                                                        <StepConnector style={{marginLeft:"45%" ,width:"40%"}}></StepConnector>
                                                             <StepButton
                                                                 onClick={this.handleStep(
                                                                     index
                                                                 )}
                                                             >
+                                                               
                                                                 <StepLabel
+                                                                    style={{fontSize:"15px"}}
+                                                                     StepIconProps={{
+                                                                        classes: {
+                                                                           active: classes.icon,
+                                                                          
+                                                                        }
+                                                                    }}
                                                                     error={
                                                                         Number.isInteger(
                                                                             error.get(
@@ -520,15 +540,17 @@ class SetupClientThemeAndLayout extends React.Component {
                                                                 >
                                                                     {name}
                                                                 </StepLabel>
+                                                                
                                                             </StepButton>
                                                         </Step>
                                                     )
                                                 )}
                                             </Stepper>
                                         </div>
-                                        BRAND ASSETS
+                                        <SectionHeader>Brand Assets</SectionHeader> 
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
+                                                <FieldLabel >Company Logo</FieldLabel>
                                                 <TextField
                                                     value={
                                                         Boolean(
@@ -548,7 +570,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     }
                                                     disabled={true}
                                                     fullWidth={true}
-                                                    label="Company Logo"
+                                                 //   label="Company Logo"
                                                     variant="outlined"
                                                     error={
                                                         currentAttributeError ===
@@ -574,7 +596,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     type="file"
                                                 />
                                                 <label htmlFor="upload-company-logo">
-                                                    <Button
+                                                    <NormalButton 
                                                         variant="outlined"
                                                         component="span"
                                                         className={
@@ -582,16 +604,16 @@ class SetupClientThemeAndLayout extends React.Component {
                                                         }
                                                     >
                                                         Browse
-                                                    </Button>
+                                                    </NormalButton>
                                                 </label>
                                             </EntryThemeDiv>
                                         </EntryThemeContainerDiv>
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
-                                                HEADER FONT
+                                                <FieldLabel >HEADER FONT</FieldLabel>
                                                 <Dropdown
                                                     id="headerDropdown"
-                                                    placeholder="Header Font"
+                                                  //  placeholder="Header Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -608,9 +630,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                             <EntryThemeDiv>
-                                                SUBHEADER FONT
+                                            <FieldLabel >SUBHEADER FONT </FieldLabel >
                                                 <Dropdown
-                                                    placeholder="Subheader Font"
+                                                  //  placeholder="Subheader Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -629,9 +651,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </EntryThemeContainerDiv>
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
-                                                BODY COPY FONT
+                                            <FieldLabel > BODY COPY FONT </FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Body Copy Font"
+                                                   // placeholder="Body Copy Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -648,9 +670,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                             <EntryThemeDiv>
-                                                CAPTION COPY FONT
+                                                <FieldLabel >CAPTION COPY FONT </FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Caption Copy Font"
+                                                   // placeholder="Caption Copy Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -668,7 +690,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                         </EntryThemeContainerDiv>
-                                        COLOUR THEME
+                                        <FieldLabel >COLOUR THEME</FieldLabel>
                                         <ColourThemeContainerDiv>
                                             {Boolean(colours) &&
                                                 colours.size > 0 &&
@@ -728,12 +750,13 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </ColourThemeContainerDiv>
                                     </ThemeContainerDiv>
                                     <LayoutContainerDiv>
-                                        DEFAULT LAYOUT
+                                      <div style={{marginBottom:"20%"}}>
+                                       <SectionHeader>Default Layout</SectionHeader> 
                                         <LayoutEntryContainerDiv>
                                             <LayoutEntryDropdownDiv>
-                                                DEFAULT START LAYOUT
+                                                <FieldLabel>DEFAULT START LAYOUT</FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Default Start Layout"
+                                                   // placeholder="Default Start Layout"
                                                     fluid
                                                     selection
                                                     options={
@@ -784,9 +807,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </LayoutEntryContainerDiv>
                                         <LayoutEntryContainerDiv>
                                             <LayoutEntryDropdownDiv>
-                                                DEFAULT HOME LAYOUT
+                                            <FieldLabel>DEFAULT HOME LAYOUT </FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Default Home Layout"
+                                                  //  placeholder="Default Home Layout"
                                                     fluid
                                                     selection
                                                     options={
@@ -833,9 +856,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </LayoutEntryContainerDiv>
                                         <LayoutEntryContainerDiv>
                                             <LayoutEntryDropdownDiv>
-                                                DEFAULT DIRECTORY LIST LAYOUT
+                                                <FieldLabel>DEFAULT DIRECTORY LIST LAYOUT</FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Default Directory List Layout"
+                                                  //  placeholder="Default Directory List Layout"
                                                     fluid
                                                     selection
                                                     options={
@@ -884,9 +907,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </LayoutEntryContainerDiv>
                                         <LayoutEntryContainerDiv>
                                             <LayoutEntryDropdownDiv>
-                                                DEFAULT DIRECTORY ENTRY LAYOUT
+                                                <FieldLabel> DEFAULT DIRECTORY ENTRY LAYOUT</FieldLabel>
                                                 <Dropdown
-                                                    placeholder="Default Directory Entry Layout"
+                                                  //  placeholder="Default Directory Entry Layout"
                                                     fluid
                                                     selection
                                                     options={
@@ -933,23 +956,27 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 </LayoutEntryPreviewDiv>
                                             )}
                                         </LayoutEntryContainerDiv>
+                                    </div>
                                         <ButtonContainerDiv>
-                                            <Button
+                                            <ContinueButton
+                                                style={{width:"60%"}}
                                                 variant="outlined"
                                                 component="span"
-                                                className={
-                                                    classes.confirmButton
-                                                }
+                                                // className={
+                                                //     classes.confirmButton
+                                                // }
                                                 onClick={() =>
                                                     this.validateAndSubmitData(
                                                         createThemes
                                                     )
                                                 }
                                             >
-                                                CONFIRM & CONTINUE
-                                            </Button>
+                                                CONFIRM & CONTINUE 
+                                            </ContinueButton>
                                         </ButtonContainerDiv>
+                                        
                                     </LayoutContainerDiv>
+                                    
                                 </React.Fragment>
                             ) : (
                                 <React.Fragment>

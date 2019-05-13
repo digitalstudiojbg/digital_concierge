@@ -10,6 +10,7 @@ import SetupClientThemeAndLayout from "./five/SetupClientThemeAndLayout";
 
 export const WizardCreateClientPageFive = ({ next, client }) => {
     let clientId = null;
+  //  let clientId = 1;
     try {
         clientId = client.readQuery({
             query: getNewCreatedClientId

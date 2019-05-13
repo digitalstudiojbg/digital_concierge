@@ -5,6 +5,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
+import StepConnector from '@material-ui/core/StepConnector';
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -34,7 +35,8 @@ const styles = theme => ({
     root: {
         width: "90%",
         marginLeft: "auto",
-        marginRight: "auto"
+        marginRight: "auto",
+      //  backgroundColor: "#F4F4F4"
     },
     button: {
         marginRight: theme.spacing.unit
@@ -42,8 +44,21 @@ const styles = theme => ({
     instructions: {
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit
-    }
+    },
+     icon:{
+         color:"#2699FB !important"
+     } ,
+     activeIcon:{
+         color: "white !important",
+         border:"2px solid #2699FB"
+     }  
+    
 });
+
+
+
+
+
 
 const WizardInitialPage = lazy(() => import("./WizardInitialPage"));
 
@@ -155,15 +170,25 @@ class CreateClient extends Component {
                                 </Button>
                             </CancelButtonContainer>
                         </NewClientSetupTitleContainer>
-                        <Stepper activeStep={activeStep} alternativeLabel>
+                        <Stepper activeStep={activeStep} alternativeLabel style={{marginLeft:"50px"}}>
                             {array_components
                                 .filter(({ inStepper }) => Boolean(inStepper))
                                 .map(({ title }) => {
                                     const props = {};
                                     const labelProps = {};
                                     return (
-                                        <Step key={title} {...props}>
-                                            <StepLabel {...labelProps}>
+                                        <Step key={title} {...props} >
+                                        <StepConnector></StepConnector>
+                                            <StepLabel 
+                                                {...labelProps}
+                                                
+                                                StepIconProps={{
+                                                classes: {
+                                                    completed: classes.icon,
+                                                    active: classes.activeIcon
+                                                }
+                                            }}
+                                            >
                                                 {title}
                                             </StepLabel>
                                         </Step>
