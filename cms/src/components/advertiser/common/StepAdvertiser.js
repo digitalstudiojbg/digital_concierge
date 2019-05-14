@@ -496,14 +496,15 @@ const StepAdvertiser = ({
                                                             contact,
                                                             contactIndex
                                                         ) => {
-                                                            const deleteContact = index => event => {
+                                                            const deleteContact = index => _event => {
                                                                 if (
                                                                     Boolean(
                                                                         values
                                                                             .contacts[
                                                                             index
                                                                         ].id
-                                                                    )
+                                                                    ) &&
+                                                                    has_data
                                                                 ) {
                                                                     setFieldValue(
                                                                         "deleteContacts",
