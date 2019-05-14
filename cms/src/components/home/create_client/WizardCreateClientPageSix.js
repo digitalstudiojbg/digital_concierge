@@ -7,6 +7,10 @@ import Loading from "../../loading/Loading";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import { WELCOME_URL } from "../../../utils/Constants";
+import {
+    ContinueButton
+    } from "./CreateClientStyleSet";
+
 
 class WizardCreateClientPageSix extends React.Component {
     navigateToDashboard = () => {
@@ -19,6 +23,7 @@ class WizardCreateClientPageSix extends React.Component {
         const { getCurrentUser: user } = client.readQuery({ query });
 
         let new_create_client_id;
+      //  let new_create_client_id=1;
         try {
             new_create_client_id = client.readQuery({
                 query: getNewCreatedClientId
@@ -48,13 +53,13 @@ class WizardCreateClientPageSix extends React.Component {
                         justifyContent: "flex-end"
                     }}
                 >
-                    <Button
+                    <ContinueButton
                         variant="contained"
                         color="primary"
                         onClick={this.navigateToDashboard}
                     >
                         Confirm & Complete Setup
-                    </Button>
+                    </ContinueButton>
                 </div>
             </div>
         );

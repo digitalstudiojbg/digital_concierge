@@ -1,3 +1,5 @@
+
+
 import React from "react";
 import styled from "styled-components";
 import { Query, withApollo, compose, graphql } from "react-apollo";
@@ -61,7 +63,9 @@ const renderTextField = (name, label, required, type) => (
     //         />
     //     )}
     // />
+
     <Field
+     //  className={classes.myInput}
         name={name}
         label={label}
         required={required}
@@ -155,11 +159,13 @@ const styles = theme => ({
         border: "1px solid blue",
         width: "100%"
     },
-    // bootstrapInput: {
-    //     padding: "0px"
-    // }
+    myInput: {
+        padding: "0px !important"
+    }
 
 });
+
+
 
 class WizardCreateClientPageOne extends React.Component {
     constructor(props) {
@@ -382,7 +388,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                                           
                                                                         >
                                                                             <FieldLabel>{label}</FieldLabel>  
-                                                                                <ClientFieldDiv>
+                                                                                <ClientFieldDiv >
                                                                                     {this.selectRenderMethod(
                                                                                         type,
                                                                                         {
@@ -422,9 +428,11 @@ class WizardCreateClientPageOne extends React.Component {
                                                           <SubFieldContainerDiv >  
                                                             <FieldLabel>{(label)}</FieldLabel>
                                                             <FieldDiv
+                                                              //  className={classes.myInput}
                                                                 key={`CONTACT-FIELD-${index}`}
                                                             >
                                                                 {renderTextField(
+                                                                    
                                                                     name,
                                                                   //  label,
                                                                   //  required,

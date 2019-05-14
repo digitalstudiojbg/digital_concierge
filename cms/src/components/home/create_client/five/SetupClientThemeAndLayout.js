@@ -20,6 +20,19 @@ import Loading from "../../../loading/Loading";
 
 
 import {
+    ThemeContainerDiv,
+    EntryThemeContainerDiv,
+    ColourThemeContainerDiv,
+    EntryThemeDiv,
+    LayoutContainerDiv,
+    LayoutEntryContainerDiv,
+    LayoutEntryDropdownDiv,
+    LayoutEntryPreviewDiv,
+    LayoutEntryPreviewImage,
+    ColourEntryContainerDiv,
+    ColourEntryDiv,
+    ColourTitleDiv,
+    ButtonContainerDiv,
     NormalButton,
     ContainerDiv,
     SectionHeader,
@@ -29,102 +42,6 @@ import {
 
 
 
-const ThemeContainerDiv = styled.div`
-    width: 60%;
-    height: 100%;
-    padding-bottom: 20px;
-    border-right: 1px solid #DDDDDD;
-`;
-
-const EntryThemeContainerDiv = styled.div`
-    width: 70%;
-    display: flex;
-    padding-bottom: 10px;
-`;
-
-const ColourThemeContainerDiv = styled.div`
-    width: 90%;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    border: 2px solid #DDDDDD;
-`;
-
-const EntryThemeDiv = styled.div`
-    width: 45%;
-    padding-right: 10px;
-`;
-
-const LayoutContainerDiv = styled.div`
-    width: 40%;
-    height: 100%;
-    padding-left: 5%;
-`;
-
-const LayoutEntryContainerDiv = styled.div`
-    width: 100%;
-    margin-bottom: 10%;
-  
-`;
-
-const LayoutEntryDropdownDiv = styled.div`
-    width: 60%;
-  //  height: 100%;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    // justify-content: center;
-`;
-
-const LayoutEntryPreviewDiv = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center;
-    border: 1px solid #DDDDDD;
-    margin: 5;
-`;
-
-const LayoutEntryPreviewImage = styled.img`
-    width: 50px;
-    height:50px;
-
-`;
-
-const ColourEntryContainerDiv = styled.div`
-    width: 150px;
-    height: 150px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: 1px solid #DDDDDD;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const ColourEntryDiv = styled.div`
-    width: 80px;
-    height: 80px;
-    border: 2px solid #DDDDDD;
-    margin-bottom: 10px;
-    /* background-color: ${props =>
-        Boolean(props.color) ? props.colour : "white"}; */
-`;
-
-const ColourTitleDiv = styled.div`
-    width: 90%;
-    border-bottom: 2px solid black;
-    font-weight: 700;
-`;
-
-const ButtonContainerDiv = styled.div`
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-`;
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
 
@@ -154,7 +71,12 @@ const styles = theme => ({
     uploadButton: {
         margin: theme.spacing.unit,
          width: "55%",
-         marginTop:"10%"
+         marginTop:"9%",
+         border: "3px solid #2699FB",
+         padding: "10px 5px",
+         fontSize: "14px",
+         color: "#2699FB"
+
     },
     // confirmButton: {
     //     margin: theme.spacing.unit,
@@ -596,7 +518,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     type="file"
                                                 />
                                                 <label htmlFor="upload-company-logo">
-                                                    <NormalButton 
+                                                    <Button
                                                         variant="outlined"
                                                         component="span"
                                                         className={
@@ -604,7 +526,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                         }
                                                     >
                                                         Browse
-                                                    </NormalButton>
+                                                    </Button>
                                                 </label>
                                             </EntryThemeDiv>
                                         </EntryThemeContainerDiv>
@@ -750,7 +672,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </ColourThemeContainerDiv>
                                     </ThemeContainerDiv>
                                     <LayoutContainerDiv>
-                                      <div style={{marginBottom:"20%"}}>
+                                      <div style={{}}>
                                        <SectionHeader>Default Layout</SectionHeader> 
                                         <LayoutEntryContainerDiv>
                                             <LayoutEntryDropdownDiv>
@@ -839,8 +761,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 //     .get("path")
                                                 values.get("defaultHomeLayout")
                                             ) && (
-                                                <LayoutEntryPreviewDiv>
+                                                <LayoutEntryPreviewDiv >
                                                     <LayoutEntryPreviewImage
+                                                    
                                                         // src={currentDefaultHomeLayout
                                                         //     .get("media")
                                                         //     .get("path")}
@@ -957,6 +880,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                             )}
                                         </LayoutEntryContainerDiv>
                                     </div>
+                                    <div style={{clear:'both', marginBottom:"20%"}}></div>
                                         <ButtonContainerDiv>
                                             <ContinueButton
                                                 style={{width:"60%"}}

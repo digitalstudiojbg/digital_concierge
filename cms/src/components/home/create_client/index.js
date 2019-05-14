@@ -46,13 +46,21 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit
     },
      icon:{
-         color:"#2699FB !important"
+         color:"#2699FB !important",
+         alternativeLabel: {
+            color: "#2699FB !important"
+        },
      } ,
      activeIcon:{
          color: "white !important",
-         border:"2px solid #2699FB"
-     }  
-    
+         border:"2px solid #2699FB",
+         borderRadius: "50%",
+         alternativeLabel: {
+            color: "#2699FB !important"
+        },
+         
+    },
+  
 });
 
 
@@ -178,7 +186,7 @@ class CreateClient extends Component {
                                     const labelProps = {};
                                     return (
                                         <Step key={title} {...props} >
-                                        <StepConnector></StepConnector>
+                                        <StepConnector ></StepConnector>
                                             <StepLabel 
                                                 {...labelProps}
                                                 

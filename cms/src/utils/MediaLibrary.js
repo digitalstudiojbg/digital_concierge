@@ -18,6 +18,17 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
 import { withStyles } from "@material-ui/core/styles";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+
+import {
+    EachMediaSection,
+    PaginationSection,
+    PaginationSectionDot,
+    ImageLinkText,
+    UploadDeleteButton
+    } from "../components/home/create_client/CreateClientStyleSet";
+    
+
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
@@ -36,55 +47,8 @@ const styles = theme => ({
     }
 });
 
-const EachMediaSection = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 10px 0 10px 0;
-    padding: 10px;
-    height: 280px;
-    justify-content: space-between;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-        background-color: #fff0f5;
-    }
-`;
-const PaginationSection = styled.li`
-    display: inline;
-    padding: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-        background-color: lightgrey;
-    }
-`;
 
-const PaginationSectionDot = styled.li`
-    display: inline;
-    padding: 10px;
-`;
 
-const ImageLinkText = styled.a`
-    cursor: pointer;
-    color: blue;
-    &:hover {
-        font-weight: bold;
-    }
-`;
-
-const UploadDeleteButton = styled.label`
-    border: 3px solid rgb(64, 84, 178);
-    display: inline-block;
-    width: 200px;
-    text-align: center;
-    cursor: pointer;
-    padding: 5px;
-    font-size: 1.3em;
-    color: rgb(64, 84, 178);
-    border-radius: 5px;
-    &:hover {
-        font-weight: bold;
-    }
-`;
 
 class MediaLibrary extends React.Component {
     state = {
@@ -137,7 +101,9 @@ class MediaLibrary extends React.Component {
                 <div
                     style={{
                         display: "flex",
-                        paddingBottom: "20px"
+                        justifyContent: "flex-end",
+                        paddingBottom: "3%",
+                       
                     }}
                 >
                     <Mutation
@@ -202,6 +168,7 @@ class MediaLibrary extends React.Component {
                         }}
                     </Mutation>
                     <Mutation
+                        style={{}}
                         mutation={DELETE_FILES}
                         refetchQueries={[
                             {
@@ -215,7 +182,7 @@ class MediaLibrary extends React.Component {
                     >
                         {(deleteFiles, { loading, error }) => {
                             return (
-                                <div style={{ paddingLeft: "25px" }}>
+                                <div style={{ }}>
                                     <UploadDeleteButton
                                         onClick={() => {
                                             this.handleClickOpen();
@@ -368,8 +335,8 @@ class MediaLibrary extends React.Component {
                             );
                         }}
                     </Mutation>
+                
                 </div>
-
                 <Query
                     query={getClientImageById}
                     variables={{ id, limit, offset, sort }}
@@ -427,8 +394,12 @@ class MediaLibrary extends React.Component {
                                     >
                                         <div style={{ paddingRight: "20px" }}>
                                             <Select
+
                                                 className={classes.select}
                                                 value={limit}
+                                                input={
+                                                    <OutlinedInput />
+                                                    }
                                                 onChange={event => {
                                                     this.setState({
                                                         limit:
@@ -462,6 +433,9 @@ class MediaLibrary extends React.Component {
                                         <div style={{ paddingLeft: "20px" }}>
                                             <Select
                                                 className={classes.select}
+                                                input={
+                                                    <OutlinedInput />
+                                                    }
                                                 value={sort}
                                                 onChange={event => {
                                                     this.setState({
@@ -501,10 +475,13 @@ class MediaLibrary extends React.Component {
                                 <div
                                     style={{
                                         display: "flex",
+                                        flex: 1,
                                         overflowY: "scroll",
                                         height: this.props.height,
                                         flexWrap: "wrap",
-                                        alignItems: "center"
+                                        alignItems: "center",
+                                        width:"100%",
+                                        marginTop:"3%"
                                     }}
                                 >
                                     {images.length > 0 &&
@@ -513,7 +490,7 @@ class MediaLibrary extends React.Component {
                                                 <EachMediaSection key={index}>
                                                     <p
                                                         style={{
-                                                            width: "300px",
+                                                            width: "100%",
                                                             overflow: "hidden",
                                                             whiteSpace:
                                                                 "nowrap",
@@ -550,7 +527,7 @@ class MediaLibrary extends React.Component {
                                                     >
                                                         <img
                                                             style={{
-                                                                width: "300px",
+                                                                width: "100%",
                                                                 maxHeight:
                                                                     "200px"
                                                             }}
@@ -726,6 +703,7 @@ class MediaLibrary extends React.Component {
                         );
                     }}
                 </Query>
+                
             </div>
         );
     }
