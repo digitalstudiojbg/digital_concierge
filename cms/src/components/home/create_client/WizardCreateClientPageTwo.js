@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
+import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import {
     TextField,
@@ -15,7 +16,7 @@ import {
     getNewCreatedClientId
 } from "../../../data/query";
 import InputLabel from "@material-ui/core/InputLabel";
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -26,7 +27,6 @@ import {
     CREATE_CONTRACT,
     CREATE_PAYMENT
 } from "../../../data/mutation";
-import styled from "styled-components";
 
 import {
     SectionDiv,
@@ -36,10 +36,13 @@ import {
     FieldLabel,
     SubFieldContainerDiv,
     ContinueButton
-    } from "./CreateClientStyleSet";
+} from "./CreateClientStyleSet";
 
-import pagesStyle from "./pagesStyle.css";
-
+const styles = theme => ({
+    myInput: {
+        padding: "10px"
+    }
+});
 
 const LICENSE_DATE_FIELD = [
     {
@@ -101,8 +104,6 @@ const PAYMENT_DATE_FIELD = [
     }
 ];
 
-
-
 const LicenseKeyTextField = props => (
     <MuiTextField
         {...fieldToTextField(props)}
@@ -137,9 +138,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
-                input={
-                    <OutlinedInput/>
-                }
+                input={<OutlinedInput style={{ height: 38 }} />}
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -176,19 +175,21 @@ class WizardCreateClientPageTwo extends React.Component {
         this.fileInput = React.createRef();
     }
 
-    selectRenderMethod({ name, label, required, type, optionList = {}
-}) {
+    selectRenderMethod({ name, label, required, type, optionList = {} }) {
         switch (type) {
             case "date":
             case "text":
-                return renderDateField({ name, label, required, type
-                    });
+                return renderDateField({
+                    name,
+                    label,
+                    required,
+                    type
+                });
             case "select":
                 return renderSelectField({
                     name,
                     label,
-                    optionList,
-            
+                    optionList
                 });
             default:
                 return <React.Fragment />;
@@ -197,38 +198,39 @@ class WizardCreateClientPageTwo extends React.Component {
 
     renderLicenseForm() {
         const { getLicenseTypes: { licenseTypes = {} } = {} } = this.props;
-
+        const { classes } = this.props;
         return (
-            <SectionDiv style={{width:"33%", height:"500px"}}>
-                
+            <SectionDiv style={{ width: "33%", height: "500px" }}>
                 <SectionHeader> License</SectionHeader>
                 <FiledContainer>
                     <SubFieldContainerDiv>
                         <FieldLabel>LICENSE KEY</FieldLabel>
                         <Field
                             name="license_key"
-                        //    label="LICENSE KEY"
+                            //    label="LICENSE KEY"
                             required={true}
                             type="text"
                             component={LicenseKeyTextField}
                             variant="outlined"
-                        fullWidth={true}
+                            fullWidth={true}
+                            inputProps={{
+                                className: this.props.classes.myInput
+                            }}
                         />
                     </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
                     <SubFieldContainerDiv>
-                    <FieldLabel>LICENSE TYPE</FieldLabel>
-                    {licenseTypes.length > 0 &&
-                        this.selectRenderMethod({
-                            name: "license_type",
-                         //   label: "LICENSE TYPE",
-                            required: true,
-                            type: "select",
-                            optionList: licenseTypes,
-                  
-                        })}
-                        </SubFieldContainerDiv>
+                        <FieldLabel>LICENSE TYPE</FieldLabel>
+                        {licenseTypes.length > 0 &&
+                            this.selectRenderMethod({
+                                name: "license_type",
+                                //   label: "LICENSE TYPE",
+                                required: true,
+                                type: "select",
+                                optionList: licenseTypes
+                            })}
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 {LICENSE_DATE_FIELD.map(({ name, label, required, type }) => (
                     <FiledContainer>
@@ -236,7 +238,7 @@ class WizardCreateClientPageTwo extends React.Component {
                             <FieldLabel>{label}</FieldLabel>
                             {this.selectRenderMethod({
                                 name,
-                            // label,
+                                // label,
                                 required,
                                 type
                             })}
@@ -245,54 +247,52 @@ class WizardCreateClientPageTwo extends React.Component {
                 ))}
                 <div>
                     <FormControlLabel
-            
                         control={
                             <Field
-                                style={{color: "#2699FB"}}
+                                style={{ color: "#2699FB" }}
                                 id="auto_renewal"
                                 name="auto_renewal"
                                 label="Automatic Renewal"
                                 required={true}
-                              //  color=primary
+                                //  color=primary
                                 component={Checkbox}
                                 variant="outlined"
                                 fullWidth={true}
+                                // inputProps={{
+                                //     className: this.props.classes.myInput
+                                // }}
                             />
                         }
                         label="AUTOMATIC RENEWAL"
                     />
                 </div>
-            </SectionDiv >
+            </SectionDiv>
         );
     }
 
     renderAgreementForm() {
         return (
-            <SectionDiv style={{width:"33%", height:"500px"}}>
-                
+            <SectionDiv style={{ width: "33%", height: "500px" }}>
                 <SectionHeader>Agreement</SectionHeader>
                 <FiledContainer>
                     <SubFieldContainerDiv>
                         <FieldLabel>AGREEMENT NUMBER</FieldLabel>
-                            {this.selectRenderMethod({
-                                name: "agreement_number",
+                        {this.selectRenderMethod({
+                            name: "agreement_number",
                             // label: "AGREEMENT NUMBER",
-                                required: true,
-                                type: "text",
-                                
-                            })}
+                            required: true,
+                            type: "text"
+                        })}
                     </SubFieldContainerDiv>
                 </FiledContainer>
-              
+
                 {AGREEMENT_DATE_FIELD.map(({ name, label, required, type }) => (
-
-
                     <FiledContainer>
                         <SubFieldContainerDiv>
                             <FieldLabel>{label}</FieldLabel>
                             {this.selectRenderMethod({
                                 name,
-                            //   label,
+                                //   label,
                                 required,
                                 type
                             })}
@@ -300,23 +300,26 @@ class WizardCreateClientPageTwo extends React.Component {
                     </FiledContainer>
                 ))}
                 <FiledContainer>
-                 <SubFieldContainerDiv>
-                    <FieldLabel>Upload Agreement</FieldLabel>
-                    <MuiTextField
-                        value={
-                            this.state.client_image
-                                ? this.state.client_image.name
-                                : ""
-                        }
-                        disabled={true}
-                        fullWidth={true}
-                     //   label="File Name"
-                        variant="outlined"
-                    />
-                </SubFieldContainerDiv>
+                    <SubFieldContainerDiv>
+                        <FieldLabel>Upload Agreement</FieldLabel>
+                        <MuiTextField
+                            value={
+                                this.state.client_image
+                                    ? this.state.client_image.name
+                                    : ""
+                            }
+                            disabled={true}
+                            fullWidth={true}
+                            //   label="File Name"
+                            variant="outlined"
+                            inputProps={{
+                                className: this.props.classes.myInput
+                            }}
+                        />
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
-                    <BrowseButton style={{marginTop: "10px"}}>
+                    <BrowseButton style={{ marginTop: "10px" }}>
                         <input
                             accept="image/*, application/pdf"
                             style={{ display: "none" }}
@@ -333,7 +336,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         BROWSE
                     </BrowseButton>
                 </FiledContainer>
-            </SectionDiv >
+            </SectionDiv>
         );
     }
 
@@ -342,23 +345,22 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getCurrencyList: { currencies = {} } = {} } = this.props;
 
         return (
-            
-            <SectionDiv style={{width:"33%", height:"500px", borderRight:"0"}}>
+            <SectionDiv
+                style={{ width: "33%", height: "500px", borderRight: "0" }}
+            >
                 <SectionHeader>Payment</SectionHeader>
                 {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
                     <SubFieldContainerDiv>
                         <FiledContainer>
-                            
-                                <FieldLabel>{label}</FieldLabel>
-                                {this.selectRenderMethod({
-                                    name,
+                            <FieldLabel>{label}</FieldLabel>
+                            {this.selectRenderMethod({
+                                name,
                                 //  label,
-                                    required,
-                                    type
-                                })}
-                        
+                                required,
+                                type
+                            })}
                         </FiledContainer>
-                     </SubFieldContainerDiv>
+                    </SubFieldContainerDiv>
                 ))}
                 <FiledContainer>
                     <SubFieldContainerDiv>
@@ -366,7 +368,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         {currencies.length > 0 &&
                             this.selectRenderMethod({
                                 name: "currency",
-                            //  label: "CURRENCY",
+                                //  label: "CURRENCY",
                                 required: true,
                                 type: "select",
                                 optionList: currencies
@@ -379,7 +381,7 @@ class WizardCreateClientPageTwo extends React.Component {
                             <FieldLabel>{label}</FieldLabel>
                             {this.selectRenderMethod({
                                 name,
-                               // label,
+                                // label,
                                 required,
                                 type
                             })}
@@ -387,15 +389,15 @@ class WizardCreateClientPageTwo extends React.Component {
                     </FiledContainer>
                 ))}
                 <div
-                    // style={{
-                    //     paddingBottom: "20px",
-                    //     display: "flex",
-                    //     justifyContent: "flex-end"
-                    // }}
+                // style={{
+                //     paddingBottom: "20px",
+                //     display: "flex",
+                //     justifyContent: "flex-end"
+                // }}
                 >
                     <ContinueButton
-                    style={{width:"90%" , margin:"100px 0 0 40px"}}
-                      //  type="submit"
+                        style={{ width: "90%", margin: "100px 0 0 40px" }}
+                        //  type="submit"
                         variant="contained"
                         color="primary"
                         disabled={
@@ -408,8 +410,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         CONFIRM & CONTINUE
                     </ContinueButton>
                 </div>
-             </SectionDiv>
-            
+            </SectionDiv>
         );
     }
 
@@ -431,20 +432,20 @@ class WizardCreateClientPageTwo extends React.Component {
 
         if (licenseTypes.length < 0 && currencies.length < 0)
             return <Loading />;
-        // let new_create_client_id= 1;  
+        //  let new_create_client_id = 1;
         let new_create_client_id;
-         try {
+        try {
             new_create_client_id = client.readQuery({
-                 query: getNewCreatedClientId
-             }).new_create_client_id;
-            } catch {
-             return (
-                 <React.Fragment>
-                     <h1>Can't Find ClientId From Step 1</h1>
-                     <Loading />
-                 </React.Fragment>
-             );
-         }
+                query: getNewCreatedClientId
+            }).new_create_client_id;
+        } catch {
+            return (
+                <React.Fragment>
+                    <h1>Can't Find ClientId From Step 1</h1>
+                    <Loading />
+                </React.Fragment>
+            );
+        }
 
         return (
             <Formik
@@ -500,8 +501,8 @@ class WizardCreateClientPageTwo extends React.Component {
                                     file: this.state.client_image,
                                     agreement_date,
                                     renewal_date,
-                                
-                                   clientId: new_create_client_id
+
+                                    clientId: new_create_client_id
                                 }
                             }
                         });
@@ -575,6 +576,7 @@ class WizardCreateClientPageTwo extends React.Component {
 
 export default compose(
     withApollo,
+    withStyles(styles),
     graphql(getLicenseTypes, { name: "getLicenseTypes" }),
     graphql(getCurrencyList, { name: "getCurrencyList" }),
     graphql(CREATE_LICENSE(), { name: "createLicense" }),

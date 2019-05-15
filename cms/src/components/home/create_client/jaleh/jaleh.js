@@ -33,89 +33,16 @@ import {
     ContinueButton
 } from "./CreateClientStyleSet";
 
-// const renderTextField = (name, label, required, type, className = null) => (
-//     // <Field
-//     //     name={name}
-//     //     validateOnBlur
-//     //     validateOnChange
-//     //     render={({ field, form }) => (
-//     //         <TextField
-//     //             label={label}
-//     //             fullWidth={true}
-//     //             required={required}
-//     //             variant="outlined"
-//     //             name={field.name}
-//     //             value={field.value}
-//     //             onChange={field.onChange}
-//     //             onBlur={field.onBlur}
-//     //             error={form.errors[field.name] && form.touched[field.name]}
-//     //             helperText={
-//     //                 form.errors[field.name] &&
-//     //                 form.touched[field.name] &&
-//     //                 String(form.errors[field.name])
-//     //             }
-//     //         />
-//     //     )}
-//     // />
-
-//     <Field
-//         //  className={classes.myInput}
-//         name={name}
-//         {...Boolean(label) && { label }}
-//         required={required}
-//         type={type}
-//         component={TextField}
-//         variant="outlined"
-//         fullWidth={true}
-//         //{...Boolean(className) && { className }}
-//     />
-// );
-
-//Bug in rendering material ui select label once value is selected
 const renderSelectField = (
     name,
     select_id,
     label,
     items,
     value,
-    // setFieldValue
-    // changeState
+
     className = ""
 ) => (
-    // <Field
-    //     name={name}
-    //     validateOnBlur={false}
-    //     validateOnChange
-    //     component={Select}
-    //     render={() => (
-    //         <FormControl className={className}>
-    //             <InputLabel htmlFor={`id-${name}`}>{label}</InputLabel>
-    //             <Field
-    //                 name={name}
-    //                 component={Select}
-    //                 inputProps={{
-    //                     name,
-    //                     id: `id-${name}`,
-    //                     required
-    //                 }}
-    //             >
-    //                 <MenuItem value="null" disabled>
-    //                     {label}
-    //                 </MenuItem>
-    // {items.map(({ id, name }, index) => (
-    //     <MenuItem
-    //         key={`ITEM-${name}-${id}-${index}`}
-    //         value={id}
-    //     >
-    //         {name}
-    //     </MenuItem>
-    // ))}
-    //             </Field>
-    //         </FormControl>
-    //     )}
-    // />
-
-    <FormControl fullWidth={true}>
+    <FormControl className={className} fullWidth={true}>
         <InputLabel htmlFor={select_id}>
             {Boolean(value) ? "" : label}
         </InputLabel>
@@ -124,8 +51,7 @@ const renderSelectField = (
             name={name}
             component={Select}
             disabled={items.length < 1}
-            input={<OutlinedInput style={{ padding: "0px" }} />}
-            style={{ height: 38 }}
+            input={<OutlinedInput style={{ padding: "10px" }} />}
         >
             <MenuItem value="null" disabled>
                 {label}
@@ -166,14 +92,7 @@ class WizardCreateClientPageOne extends React.Component {
         this.updateClientImage = this.updateClientImage.bind(this);
     }
 
-    selectRenderMethod(
-        type,
-        field_data,
-        items = [],
-        values = {}
-
-        // setFieldValue = null
-    ) {
+    selectRenderMethod(type, field_data, items = [], values = {}) {
         const { classes } = this.props;
         const { name, label, required, select_id } = field_data;
         switch (type) {
@@ -340,16 +259,7 @@ class WizardCreateClientPageOne extends React.Component {
                                 setSubmitting(false);
                             }}
                         >
-                            {({
-                                // handleSubmit,
-                                // handleChange,
-                                // handleBlur,
-                                values,
-                                errors,
-                                // errors
-                                // setFieldValue,
-                                isSubmitting
-                            }) => {
+                            {({ values, errors, isSubmitting }) => {
                                 return (
                                     <Form>
                                         <ContainerDiv>
@@ -494,12 +404,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                                     }
                                                                     // label="File Name"
                                                                     variant="outlined"
-                                                                    inputProps={{
-                                                                        className: this
-                                                                            .props
-                                                                            .classes
-                                                                            .myInput
-                                                                    }}
                                                                 />
                                                             </FieldDiv>
                                                         </SubFieldContainerDiv>
@@ -557,14 +461,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                         </FieldDiv>
                                                     </FieldContainerDiv>
                                                 </div>
-                                                {/* <div style={{marginTop: "10%"}}>
-                                                            <SectionHeader >Just Brilliant Guides</SectionHeader>
-                                                            <div>
-
-
-                                                            </div>
-                                             
-                                                </div> */}
                                             </SectionDiv>
                                         </ContainerDiv>
 
@@ -586,8 +482,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                 }}
                                             >
                                                 <ContinueButton
-                                                    // style={{ width: "20%" , color: "white", background: "#2699FB", border: "30px solid #313131"}}
-                                                    // type="submit"
                                                     variant="contained"
                                                     color="primary"
                                                     disabled={

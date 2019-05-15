@@ -1,62 +1,60 @@
 import React from "react";
 import styled from "styled-components";
 
-
 export const ContainerDiv = styled.div`
-width: 100%;
-height: 100%;
-display: flex;
+    width: 100%;
+    height: 100%;
+    display: flex;
 `;
 
 export const SectionDiv = styled.div`
-width: ${props => props.width};
-height: ${props => (Boolean(props.height) ? props.height : "100%")};
-display: flex;
-flex-direction: column;
-padding:0 4%;
-// border-right: 1px solid #DDDDDD; 
+    width: ${props => props.width};
+    height: ${props => (Boolean(props.height) ? props.height : "100%")};
+    display: flex;
+    flex-direction: column;
+    padding: 0 4%;
+    // border-right: 1px solid #DDDDDD;
 `;
 
 export const ClientFieldContainerDiv = styled.div`
-width: 100%;
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 `;
 
 export const ClientFieldDiv = styled.div`
-padding :0;
+    padding: 0;
 `;
 
 export const FieldContainerDiv = styled.div`
-width: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 export const FieldDiv = styled.div`
-width: 100%;
-padding: 0px;
-
+    width: 100%;
+    padding: 0px;
 `;
 export const FieldLabel = styled.label`
-font-size: 10px;
-color:#5C5C5C;
+    font-size: 10px;
+    color: #5c5c5c;
 `;
 
 export const SubFieldContainerDiv = styled.div`
-width : 100%;
-flex-basis: ${props => props.flexBasis};
-margin-right: ${props => props.marginRight};
-padding-top: 10px;
+    width: 100%;
+    flex-basis: ${props => props.flexBasis};
+    margin-right: ${props => props.marginRight};
+    padding-top: 10px;
 `;
 
 export const SectionHeader = styled.h4`
-text-align: left;
-color: #2699FB;
-font-size: 20px;
-padding: 0px;
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 0px;
 `;
 
 export const BrowseButton = styled.label`
@@ -90,23 +88,23 @@ export const NormalButton = styled.button`
     variant: outlined;
     component: span;
     &:hover {
-        font-weight: bold;
+       // font-weight: bold;
+       background-color: #EBEBF2;
     }
 `;
 
 export const FiledContainer = styled.div`
-  //  padding-bottom: 20px;
+    //  padding-bottom: 20px;
 `;
 
 export const ContinueButton = styled.button`
-type: submit;
-width:  25%;
-padding: 15px 5px;
-color: white;
-background: #2699FB;
-border: 20px solid #313131;
+    type: submit;
+    width: 25%;
+    padding: 15px 5px;
+    color: white;
+    background: #2699fb;
+    border: 20px solid #313131;
 `;
-
 
 //----page3----
 
@@ -132,7 +130,7 @@ export const RolePermissionContainerDiv = styled.div`
     width: 100%;
     height: 500px;
     overflow-y: scroll;
-    border: 1px solid black;
+    border: 1px solid #9d9d9d;
 `;
 
 export const EachRolePermissionContainerDiv = styled.div`
@@ -146,29 +144,29 @@ export const EachRoleContainerDiv = styled.div`
     height: 100%;
     display: flex;
     justify-content: left;
-    marginLeft: 0px;
-    padding:0px;
+    marginleft: 0px;
+    padding: 0px;
 `;
 export const AllPermissionContainerDiv = styled.div`
     width: 60%;
     display: flex;
     flex-direction: column;
-    border: 1px solid #9D9D9D;
+    border: 1px solid #9d9d9d;
     padding: 3px;
-    background-color: #F7F7F7;
+    background-color: #f7f7f7;
 `;
 export const AllPermissionFooterContainerDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    color: blue;
+    color: #2699fb;
 `;
 export const PermissionFooterEntryDiv = styled.span`
     width: 45%;
     display: flex;
     margin-right: 5px;
     justify-content: center;
-    border: 1px solid blue;
+    // border: 1px solid #2699fb;
 `;
 
 //-------page4------
@@ -188,9 +186,9 @@ export const FeatureContainer = styled.div`
 export const SelectUnselectButton = styled.p`
     width: 50%;
     display: flex;
-    color: #2699FB;
-  padding: 10px 0 0 5px;
-    font-size:10px;
+    color: #2699fb;
+    padding: 10px 0 0 5px;
+    font-size: 10px;
     cursor: pointer;
     &:hover {
         font-weight: bold;
@@ -223,12 +221,11 @@ export const EachClientSystemContainerDeviceTypeText = styled.p`
 
 //---page5- SetupClientThemeAndlayout.js
 
-
 export const ThemeContainerDiv = styled.div`
     width: 60%;
     height: 100%;
     padding-bottom: 20px;
-    border-right: 1px solid #DDDDDD;
+    border-right: 1px solid #dddddd;
 `;
 
 export const EntryThemeContainerDiv = styled.div`
@@ -242,7 +239,7 @@ export const ColourThemeContainerDiv = styled.div`
     display: flex;
     justify-content: center;
     padding: 10px;
-    border: 2px solid #DDDDDD;
+    border: 2px solid #dddddd;
 `;
 
 export const EntryThemeDiv = styled.div`
@@ -259,30 +256,28 @@ export const LayoutContainerDiv = styled.div`
 export const LayoutEntryContainerDiv = styled.div`
     width: 100%;
     margin-bottom: 10%;
-  
 `;
 
 export const LayoutEntryDropdownDiv = styled.div`
     width: 60%;
     height: 120px;
-    float:left;
+    float: left;
     margin-bottom: 1%;
 `;
 
 export const LayoutEntryPreviewDiv = styled.div`
     align-items: center;
-    border: 1px solid #DDDDDD;
-    padding:5px;
-    width:30%;
-    height:100px;
-    float:right;
-    margin-top:20px;
+    border: 1px solid #dddddd;
+    padding: 5px;
+    width: 30%;
+    height: 100px;
+    float: right;
+    margin-top: 20px;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`
-    width:90%;
-    margin:5%;
-
+    width: 90%;
+    margin: 5%;
 `;
 
 export const ColourEntryContainerDiv = styled.div`
@@ -290,8 +285,8 @@ export const ColourEntryContainerDiv = styled.div`
     height: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: 1px solid #DDDDDD;
-  //  margin-right: 10px;
+    border: 1px solid #dddddd;
+    //  margin-right: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -329,7 +324,7 @@ export const EachMediaSection = styled.div`
     margin: 10px 0 0 0;
     padding: 5px;
     height: 240px;
-    width:19%;
+    width: 19%;
     justify-content: space-between;
     transition: all 0.3s ease-in-out;
     &:hover {
@@ -360,16 +355,16 @@ export const ImageLinkText = styled.a`
 `;
 
 export const UploadDeleteButton = styled.label`
-    border: 3px solid #2699FB;
+    border: 3px solid #2699fb;
     display: inline-block;
     width: 200px;
     text-align: center;
     cursor: pointer;
-    padding:15px 5px;
+    padding: 15px 5px;
     font-size: 1.3em;
-    color: #2699FB;
+    color: #2699fb;
     border-radius: 5px;
-    margin:10px;
+    margin: 10px;
     &:hover {
         font-weight: bold;
     }

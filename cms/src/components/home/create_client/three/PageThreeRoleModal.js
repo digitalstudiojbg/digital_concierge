@@ -19,47 +19,17 @@ import { Formik, Field, Form } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import * as Yup from "yup";
 import { DECIMAL_RADIX } from "../../../../utils/Constants";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-`;
-
-const EachRolePermissionContainerDiv = styled.div`
-    width: 100%;
-    height: 50%;
-    display: flex;
-    padding: 10px;
-`;
-
-const EachRoleContainerDiv = styled.div`
-    width: 50%;
-    display: flex;
-    justify-content: center;
-`;
-
-const AllPermissionContainerDiv = styled.div`
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    padding: 5px;
-`;
-
-const AllPermissionFooterContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    color: blue;
-`;
-
-const PermissionFooterEntryDiv = styled.span`
-    width: 45%;
-    display: flex;
-    margin-right: 5px;
-    justify-content: center;
-    border: 1px solid blue;
-`;
+import {
+    ContainerDiv,
+    EachRolePermissionContainerDiv,
+    EachRoleContainerDiv,
+    AllPermissionContainerDiv,
+    AllPermissionFooterContainerDiv,
+    PermissionFooterEntryDiv,
+    FieldLabel
+} from "../CreateClientStyleSet";
 
 const styles = theme => ({
     dialogTitle: {
@@ -69,15 +39,17 @@ const styles = theme => ({
     },
     submitButton: {
         margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%"
+        border: "3px solid #2699FB",
+        color: "#2699FB",
+        width: "30%",
+        marginLeft: "20%"
     },
     cancelButton: {
+        width: "30%",
+        marginRight: "20%",
         margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%"
+        border: "3px solid #2699FB",
+        color: "#2699FB"
     },
     dialogActionRoot: {
         width: "100%",
@@ -237,7 +209,7 @@ export const PageThreeRoleModal = ({
                             CANCEL
                         </Button>
                     </DialogActions>
-                    <DialogContent>
+                    <DialogContent style={{ paddingTop: "3%" }}>
                         <ContainerDiv>
                             <div
                                 style={{
@@ -250,12 +222,13 @@ export const PageThreeRoleModal = ({
                                     fullWidth={true}
                                     error={Boolean(errors.departmentId)}
                                 >
-                                    <InputLabel>DEPARTMENT</InputLabel>
+                                    <FieldLabel>DEPARTMENT</FieldLabel>
                                     <Field
                                         name="departmentId"
                                         component={Select}
                                         disabled={departments.length < 1}
                                         fullWidth={true}
+                                        input={<OutlinedInput />}
                                     >
                                         {departments.map(
                                             ({ id, name }, index) => (
@@ -281,10 +254,11 @@ export const PageThreeRoleModal = ({
                                         paddingTop: 50
                                     }}
                                 >
+                                    <FieldLabel>ROLE NAME</FieldLabel>
                                     <Field
                                         name="name"
                                         component={TextField}
-                                        label="Role Name"
+                                        //   label="Role Name"
                                         required={true}
                                         fullWidth={true}
                                         variant="outlined"
@@ -300,7 +274,7 @@ export const PageThreeRoleModal = ({
                             <div
                                 style={{
                                     flexBasis: "50%",
-                                    borderLeft: "2px solid black",
+                                    borderLeft: "2px solid #DDDDDD",
                                     width: "100%",
                                     height: "100%"
                                 }}
@@ -311,11 +285,11 @@ export const PageThreeRoleModal = ({
                                         display: "flex"
                                     }}
                                 >
-                                    <div style={{ width: "50%" }} />
-                                    <div style={{ width: "50%" }}>
+                                    <div style={{ width: "43%" }} />
+                                    <div style={{ width: "57%" }}>
                                         <div
                                             style={{
-                                                width: "50%",
+                                                width: "100%",
                                                 padding: 5
                                             }}
                                         >
@@ -328,6 +302,15 @@ export const PageThreeRoleModal = ({
                                                 <FormControlLabel
                                                     control={
                                                         <Checkbox
+                                                            style={{
+                                                                color:
+                                                                    "#2699FB",
+                                                                padding: "0",
+                                                                Label: {
+                                                                    fontSize:
+                                                                        "10px"
+                                                                }
+                                                            }}
                                                             checked={
                                                                 permissionIds.length ===
                                                                 permissionsList.length
@@ -387,11 +370,19 @@ export const PageThreeRoleModal = ({
                                     ) => (
                                         <EachRolePermissionContainerDiv
                                             key={`MODAL-CATEGORY-${categoryId}-${categoryIndex}`}
+                                            style={{ widht: "50%" }}
                                         >
-                                            <EachRoleContainerDiv>
+                                            <EachRoleContainerDiv
+                                                style={{ widht: "50%" }}
+                                            >
                                                 {categoryName}
                                             </EachRoleContainerDiv>
-                                            <AllPermissionContainerDiv>
+                                            <AllPermissionContainerDiv
+                                                style={{
+                                                    widht: "50%",
+                                                    fontSize: "12px"
+                                                }}
+                                            >
                                                 {permissions.map(
                                                     (
                                                         {
@@ -401,9 +392,23 @@ export const PageThreeRoleModal = ({
                                                         permissionIndex
                                                     ) => (
                                                         <FormControlLabel
+                                                            style={{
+                                                                padding: "0",
+                                                                margin: "0"
+                                                            }}
                                                             key={`MODAL-PERMISSION-${permissionId}-${permissionIndex}`}
                                                             control={
                                                                 <Checkbox
+                                                                    style={{
+                                                                        color:
+                                                                            "#2699FB",
+                                                                        padding:
+                                                                            "0"
+                                                                        // Label: {
+                                                                        //     fontSize:
+                                                                        //         "10px"
+                                                                        // }
+                                                                    }}
                                                                     id={
                                                                         permissionId
                                                                     }

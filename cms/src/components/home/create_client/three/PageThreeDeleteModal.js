@@ -151,8 +151,21 @@ export const PageThreeDeleteModal = ({
                                     </React.Fragment>
                                 )}
                             </DialogContent>
-                            <DialogActions>
+                            <DialogActions
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginBottom: "5%"
+                                }}
+                            >
                                 <Button
+                                    style={{
+                                        border: "3px solid #2699FB",
+                                        display: "inline-block",
+                                        width: "30%",
+                                        color: "#2699FB",
+                                        borderRadius: "5px"
+                                    }}
                                     variant="outlined"
                                     className={classes.submitButton}
                                     onClick={handleDelete}
@@ -160,6 +173,12 @@ export const PageThreeDeleteModal = ({
                                     YES
                                 </Button>
                                 <Button
+                                    style={{
+                                        border: "3px solid #2699FB",
+                                        display: "inline-block",
+                                        width: "30%",
+                                        color: "#2699FB"
+                                    }}
                                     variant="outlined"
                                     className={classes.cancelButton}
                                     onClick={handleClose}

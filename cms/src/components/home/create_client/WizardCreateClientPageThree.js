@@ -1,4 +1,4 @@
-                                        import React from "react";
+import React from "react";
 import styled from "styled-components";
 import { Query, withApollo, Mutation, gql } from "react-apollo";
 import Loading from "../../loading/Loading";
@@ -20,7 +20,7 @@ import {
 import { ClipLoader } from "react-spinners";
 import FormControl from "@material-ui/core/FormControl";
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -45,7 +45,6 @@ import PageThreeRoleModal from "./three/PageThreeRoleModal";
 import PageThreeDeleteModal from "./three/PageThreeDeleteModal";
 import PageThreeDuplicateModal from "./three/PageThreeDuplicateModal";
 
-
 import {
     ContainerDiv,
     SectionDiv,
@@ -62,17 +61,17 @@ import {
     FieldLabel,
     NormalButton,
     ContinueButton
-    } from "./CreateClientStyleSet";
-    
-    const styles = theme => ({
-        mylabel: {
-          fontSize: '10px'
-        },
-        inputPdding:{
-            padding: '0px'
-        }
-      });
-      
+} from "./CreateClientStyleSet";
+
+const styles = theme => ({
+    mylabel: {
+        fontSize: "10px"
+    },
+    myInput: {
+        padding: "10px"
+    }
+});
+
 class WizardCreateClientPageThree extends React.Component {
     constructor(props) {
         super(props);
@@ -83,8 +82,7 @@ class WizardCreateClientPageThree extends React.Component {
             whichModal: "",
             selected_roles: Set(),
             anchorEl: null,
-            editRole: null,
-            
+            editRole: null
         };
         this.handleChangeDepartment = this.handleChangeDepartment.bind(this);
         this.handleChangePermissionCheckbox = this.handleChangePermissionCheckbox.bind(
@@ -181,7 +179,11 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     handleOpenRoleModal() {
-        this.setState({ modalOpen: true, whichModal: "role", anchorEl: null });
+        this.setState({
+            modalOpen: true,
+            whichModal: "role",
+            anchorEl: null
+        });
     }
 
     handleCloseModal() {
@@ -221,40 +223,44 @@ class WizardCreateClientPageThree extends React.Component {
                                 style={{
                                     width: "100%",
                                     display: "flex",
-                                 //   paddingTop:"0",
+                                    //   paddingTop:"0",
                                     padding: 10
                                 }}
                             >
                                 <div
                                     style={{
                                         width: "40%",
-                                        height: "100%",
-                                       
+                                        height: "100%"
                                     }}
                                 >
                                     <IconButton
-                                        style={{ margin:"0px", padding:"0px" }}
+                                        style={{
+                                            margin: "0px",
+                                            padding: "0px"
+                                        }}
                                         aria-label="Expand"
                                         onClick={this.handleOpenRoleModal}
                                     >
-                                        <LaunchIcon fontSize="large"   />
+                                        <LaunchIcon fontSize="large" />
                                     </IconButton>
                                 </div>
                                 <div
                                     style={{
                                         width: "60%",
                                         height: "100%",
-                                        paddingLeft:"5%",
-                                        paddingTop:"2%"
-                                       // padding: 5
+                                        paddingLeft: "5%",
+                                        paddingTop: "2%"
+                                        // padding: 5
                                     }}
                                 >
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                style={{color:"#2699FB", padding:"0"}}
+                                                style={{
+                                                    color: "#2699FB",
+                                                    padding: "0"
+                                                }}
                                                 checked={
-                                                    
                                                     selected_checkboxes.size ===
                                                     allPermissionsLength
                                                 }
@@ -302,9 +308,8 @@ class WizardCreateClientPageThree extends React.Component {
                                     />
                                 </div>
                             </div>
-                           
+
                             {permissionCategories.map(
-                              
                                 (
                                     {
                                         id: categoryId,
@@ -316,34 +321,46 @@ class WizardCreateClientPageThree extends React.Component {
                                     <EachRolePermissionContainerDiv
                                         key={`CATEGORY-${categoryId}-${categoryIndex}`}
                                     >
-                                        <EachRoleContainerDiv style={{ fontSize:"10px"}}>
+                                        <EachRoleContainerDiv
+                                            style={{ fontSize: "10px" }}
+                                        >
                                             {categoryName}
                                         </EachRoleContainerDiv>
                                         <AllPermissionContainerDiv>
-                                        
                                             {permissions.map(
                                                 (
                                                     {
                                                         id: permissionId,
-                                                        name: permissionName,
-                                                       
+                                                        name: permissionName
                                                     },
                                                     permissionIndex
-                                                    
                                                 ) => (
                                                     <FormControlLabel
-                                                        style={{padding:"0", margin:"0", fontSize:"5px"}}
+                                                        style={{
+                                                            padding: "0",
+                                                            margin: "0",
+                                                            fontSize: "5px"
+                                                        }}
                                                         // className={
                                                         //     classes.mylabel
                                                         // }
                                                         classes={{
-                                                            label: classes.mylabel
+                                                            label:
+                                                                classes.mylabel
                                                         }}
-                                                  
                                                         key={`PERMISSION-${permissionId}-${permissionIndex}`}
                                                         control={
                                                             <Checkbox
-                                                                style={{padding:"3px 0", color:"#2699FB",Label:{fontSize:"10px"}}}
+                                                                style={{
+                                                                    padding:
+                                                                        "3px 0",
+                                                                    color:
+                                                                        "#2699FB",
+                                                                    Label: {
+                                                                        fontSize:
+                                                                            "10px"
+                                                                    }
+                                                                }}
                                                                 id={
                                                                     permissionId
                                                                 }
@@ -362,7 +379,7 @@ class WizardCreateClientPageThree extends React.Component {
                                             )}
                                             <AllPermissionFooterContainerDiv>
                                                 <PermissionFooterEntryDiv
-                                                    style={{border:"0"}}
+                                                    style={{ border: "0" }}
                                                     onClick={() => {
                                                         const {
                                                             selected_checkboxes
@@ -377,10 +394,18 @@ class WizardCreateClientPageThree extends React.Component {
                                                         });
                                                     }}
                                                 >
-                                                   <label style={{color:"#2699FB", fontSize:"10px"}}> SELECT ALL </label>
+                                                    <label
+                                                        style={{
+                                                            color: "#2699FB",
+                                                            fontSize: "10px"
+                                                        }}
+                                                    >
+                                                        {" "}
+                                                        SELECT ALL{" "}
+                                                    </label>
                                                 </PermissionFooterEntryDiv>
                                                 <PermissionFooterEntryDiv
-                                                    style={{border:"0"}}
+                                                    style={{ border: "0" }}
                                                     onClick={() => {
                                                         const {
                                                             selected_checkboxes
@@ -395,7 +420,15 @@ class WizardCreateClientPageThree extends React.Component {
                                                         });
                                                     }}
                                                 >
-                                                   <label style={{color:"#2699FB", fontSize:"10px"}}>  UNSELECT ALL</label>
+                                                    <label
+                                                        style={{
+                                                            color: "#2699FB",
+                                                            fontSize: "10px"
+                                                        }}
+                                                    >
+                                                        {" "}
+                                                        UNSELECT ALL
+                                                    </label>
                                                 </PermissionFooterEntryDiv>
                                             </AllPermissionFooterContainerDiv>
                                         </AllPermissionContainerDiv>
@@ -445,17 +478,15 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-       // let clientId = 1;
-          let clientId = null;
-        
-         try {
-            console.log("-------------");
+        // let clientId = 1;
+        let clientId = null;
 
+        try {
+            console.log("-------------");
             clientId = this.props.client.readQuery({
                 query: getNewCreatedClientId
             }).new_create_client_id;
             console.log(clientId);
-
             console.log("-------------");
         } catch (error) {
             console.log(error);
@@ -482,10 +513,21 @@ class WizardCreateClientPageThree extends React.Component {
                     if (loading) return <Loading loadingData />;
                     if (error) return `Error! ${error.message}`;
                     return (
-                        <ContainerDiv >
-                            <SectionDivContainer style={{ borderRight:"1px solid #9D9D9D", paddingRight:"0" }}>
-                            
-                                <label style={{color:"#2699FB", fontSize:"16px"}}>Department</label>
+                        <ContainerDiv>
+                            <SectionDivContainer
+                                style={{
+                                    borderRight: "1px solid #9D9D9D",
+                                    paddingRight: "0"
+                                }}
+                            >
+                                <label
+                                    style={{
+                                        color: "#2699FB",
+                                        fontSize: "16px"
+                                    }}
+                                >
+                                    Department
+                                </label>
                                 <Mutation
                                     mutation={CREATE_DEPARTMENT()}
                                     refetchQueries={[
@@ -495,12 +537,10 @@ class WizardCreateClientPageThree extends React.Component {
                                         }
                                     ]}
                                 >
-                                
                                     {(
                                         addANewDepartment,
                                         { loading, error }
                                     ) => {
-                                        
                                         if (loading) {
                                             return (
                                                 <ClipLoader
@@ -516,10 +556,8 @@ class WizardCreateClientPageThree extends React.Component {
                                         if (error)
                                             return `Error! ${error.message}`;
 
-                                       
                                         return (
                                             <Formik
-                                            
                                                 onSubmit={(
                                                     values,
                                                     { setSubmitting }
@@ -543,24 +581,20 @@ class WizardCreateClientPageThree extends React.Component {
                                                     isSubmitting
                                                 }) => (
                                                     <Form>
-                                                        
                                                         <DepartmentSectionDiv>
-                                                        
                                                             <div
                                                                 style={{
                                                                     width:
-                                                                        "45%",
+                                                                        "32%",
                                                                     height:
                                                                         "100%",
                                                                     paddingTop: 10,
                                                                     paddingBottom: 20
                                                                 }}
                                                             >
-                                                            
                                                                 <Field
-                                                                  
                                                                     name="name"
-                                                                    label="Department Name"
+                                                                    //   label="Department Name"
                                                                     required={
                                                                         true
                                                                     }
@@ -572,6 +606,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     fullWidth={
                                                                         true
                                                                     }
+                                                                    inputProps={{
+                                                                        className: this
+                                                                            .props
+                                                                            .classes
+                                                                            .myInput
+                                                                    }}
                                                                 />
                                                             </div>
                                                             <div
@@ -588,8 +628,13 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         "row-reverse"
                                                                 }}
                                                             >
-                                                           
                                                                 <NormalButton
+                                                                    style={{
+                                                                        width:
+                                                                            "60%",
+                                                                        marginRight:
+                                                                            "2%"
+                                                                    }}
                                                                     type="submit"
                                                                     variant="contained"
                                                                     color="primary"
@@ -612,7 +657,6 @@ class WizardCreateClientPageThree extends React.Component {
                                                                     Department
                                                                 </NormalButton>
                                                             </div>
-                                                            
                                                         </DepartmentSectionDiv>
                                                     </Form>
                                                 )}
@@ -620,9 +664,24 @@ class WizardCreateClientPageThree extends React.Component {
                                         );
                                     }}
                                 </Mutation>
-                                
-                                <SectionDiv style={{paddingLeft:"0", paddingRight:"3%", borderRight:"0px", borderTop:"1px solid #9D9D9D"}}>
-                                    <label style={{color:"#2699FB", fontSize:"16px", marginTop :"20px", }}>Role </label>
+
+                                <SectionDiv
+                                    style={{
+                                        paddingLeft: "0",
+                                        paddingRight: "3%",
+                                        borderRight: "0px",
+                                        borderTop: "1px solid #9D9D9D"
+                                    }}
+                                >
+                                    <label
+                                        style={{
+                                            color: "#2699FB",
+                                            fontSize: "16px",
+                                            marginTop: "20px"
+                                        }}
+                                    >
+                                        Role{" "}
+                                    </label>
                                     <Mutation
                                         mutation={CREATE_ROLE}
                                         refetchQueries={[
@@ -630,102 +689,101 @@ class WizardCreateClientPageThree extends React.Component {
                                                 query: getRoleList,
                                                 variables: { clientId }
                                             }
-
                                         ]}
                                     >
-                                
-                                    {(addANewRole, { loading, error }) => {
-                                        if (loading)
-                                            return (
-                                                <ClipLoader
-                                                    sizeUnit={"px"}
-                                                    size={24}
-                                                    color={
-                                                        "rgba(0, 0, 0, 0.87)"
-                                                    }
-                                                    loading={loading}
-                                                    input={
-                                                        <OutlinedInput />
-                                                    }
-                                                />
-                                            );
-                                        if (error)
-                                            return `Error! ${error.message}`;
-                                        return (
-                                            <Formik
-                                                onSubmit={(
-                                                    { name },
-                                                    { setSubmitting }
-                                                ) => {
-                                                    const {
-                                                        selected_checkboxes,
-                                                        department_id
-                                                    } = this.state;
-                                                    const input = {
-                                                        name,
-                                                        isStandardRole: false,
-                                                        permissionIds: selected_checkboxes
-                                                            .toJS()
-                                                            .map(item =>
-                                                                parseInt(
-                                                                    item,
-                                                                    DECIMAL_RADIX
-                                                                )
-                                                            ),
-                                                        departmentId: parseInt(
-                                                            department_id,
-                                                            DECIMAL_RADIX
-                                                        ),
-                                                        clientId: parseInt(
-                                                            clientId,
-                                                            DECIMAL_RADIX
-                                                        )
-                                                    };
-                                                    // console.log(input);
-                                                    addANewRole({
-                                                        variables: {
-                                                            input
+                                        {(addANewRole, { loading, error }) => {
+                                            if (loading)
+                                                return (
+                                                    <ClipLoader
+                                                        sizeUnit={"px"}
+                                                        size={24}
+                                                        color={
+                                                            "rgba(0, 0, 0, 0.87)"
                                                         }
-                                                    }).then(() => {
-                                                        setSubmitting(false);
-                                                        this.setState({
-                                                            selected_checkboxes: Set(),
-                                                            department_id: null
+                                                        loading={loading}
+                                                    />
+                                                );
+                                            if (error)
+                                                return `Error! ${
+                                                    error.message
+                                                }`;
+                                            return (
+                                                <Formik
+                                                    onSubmit={(
+                                                        { name },
+                                                        { setSubmitting }
+                                                    ) => {
+                                                        const {
+                                                            selected_checkboxes,
+                                                            department_id
+                                                        } = this.state;
+                                                        const input = {
+                                                            name,
+                                                            isStandardRole: false,
+                                                            permissionIds: selected_checkboxes
+                                                                .toJS()
+                                                                .map(item =>
+                                                                    parseInt(
+                                                                        item,
+                                                                        DECIMAL_RADIX
+                                                                    )
+                                                                ),
+                                                            departmentId: parseInt(
+                                                                department_id,
+                                                                DECIMAL_RADIX
+                                                            ),
+                                                            clientId: parseInt(
+                                                                clientId,
+                                                                DECIMAL_RADIX
+                                                            )
+                                                        };
+                                                        // console.log(input);
+                                                        addANewRole({
+                                                            variables: {
+                                                                input
+                                                            }
+                                                        }).then(() => {
+                                                            setSubmitting(
+                                                                false
+                                                            );
+                                                            this.setState({
+                                                                selected_checkboxes: Set(),
+                                                                department_id: null
+                                                            });
                                                         });
-                                                    });
-                                                }}
-                                                initialValues={{
-                                                    name: "",
-                                                    department: ""
-                                                }}
-                                                render={({
-                                                    errors,
-                                                    values,
-                                                    isSubmitting
-                                                }) => (
-                                                    <Form>
-                                                        <RoleSectionDiv>
-                                                            <div
-                                                          
-                                                                style={{
-                                                                    width:
-                                                                        "35%",
-                                                                        paddingRight :10,
-                                                              
-                                                                }}
-                                                            >
+                                                    }}
+                                                    initialValues={{
+                                                        name: "",
+                                                        department: ""
+                                                    }}
+                                                    render={({
+                                                        errors,
+                                                        values,
+                                                        isSubmitting
+                                                    }) => (
+                                                        <Form>
+                                                            <RoleSectionDiv>
                                                                 <div
                                                                     style={{
-                                                                        paddingBottom: 20
+                                                                        width:
+                                                                            "35%",
+                                                                        paddingRight: 10
                                                                     }}
                                                                 >
-                                                                    <FormControl
-                                                                        fullWidth={
-                                                                            true
-                                                                        }
+                                                                    <div
+                                                                        style={{
+                                                                            paddingBottom: 20
+                                                                        }}
                                                                     >
-                                                                    <FieldLabel >Department</FieldLabel>
-                                                                        {/* <InputLabel 
+                                                                        <FormControl
+                                                                            fullWidth={
+                                                                                true
+                                                                            }
+                                                                        >
+                                                                            <FieldLabel>
+                                                                                Department
+                                                                            </FieldLabel>
+                                                                            {/* <InputLabel 
                                                                             htmlFor="simple-department-picker" 
                                                                         >
                                                                             {Boolean(
@@ -739,164 +797,183 @@ class WizardCreateClientPageThree extends React.Component {
                                                                                 }
                                                                         
                                                                         </InputLabel> */}
-                                                                        {/* <InputLabel htmlFor="simple-department-picker">
+                                                                            {/* <InputLabel htmlFor="simple-department-picker">
                                                                             Department
                                                                         </InputLabel> */}
-                                                                        <Select
-                                                                            
-                                                                            id="simple-department-picker"
-                                                                            value={
-                                                                                this
-                                                                                    .state
-                                                                                    .department_id
-                                                                            }
-                                                                            onChange={
-                                                                                this
-                                                                                    .handleChangeDepartment
-                                                                            }
-                                                                            disabled={
-                                                                                departments.length <
-                                                                                1
-                                                                            }
-                                                                            input={
-                                                                                <OutlinedInput />
-                                                                             //   <OutlinedInput classes={{input: classes.inputPdding}}/>
-                                                                            }
-                                                                        >
-                                                                            <MenuItem
-                                                                                value=""
-                                                                                disabled
+                                                                            <Select
+                                                                                style={{
+                                                                                    height: 38
+                                                                                }}
+                                                                                id="simple-department-picker"
+                                                                                value={
+                                                                                    this
+                                                                                        .state
+                                                                                        .department_id
+                                                                                }
+                                                                                onChange={
+                                                                                    this
+                                                                                        .handleChangeDepartment
+                                                                                }
+                                                                                disabled={
+                                                                                    departments.length <
+                                                                                    1
+                                                                                }
+                                                                                input={
+                                                                                    <OutlinedInput />
+                                                                                    //   <OutlinedInput classes={{input: classes.inputPdding}}/>
+                                                                                }
                                                                             >
-                                                                                Department
-                                                                            </MenuItem>
-                                                                            {departments.map(
-                                                                                (
-                                                                                    {
-                                                                                        id,
-                                                                                        name
-                                                                                    },
-                                                                                    index
-                                                                                ) => (
-                                                                                    <MenuItem
-                                                                                    
-                                                                                        key={`DEPARTMENT-${id}-${index}`}
-                                                                                        value={
-                                                                                            id
-                                                                                        }
-                                                                                    >
+                                                                                <MenuItem
+                                                                                    value=""
+                                                                                    disabled
+                                                                                >
+                                                                                    Department
+                                                                                </MenuItem>
+                                                                                {departments.map(
+                                                                                    (
                                                                                         {
+                                                                                            id,
                                                                                             name
-                                                                                        }
-                                                                                    </MenuItem>
-                                                                                )
-                                                                            )}
-                                                                        </Select>
-                                                                    </FormControl>
-                                                                </div>
+                                                                                        },
+                                                                                        index
+                                                                                    ) => (
+                                                                                        <MenuItem
+                                                                                            key={`DEPARTMENT-${id}-${index}`}
+                                                                                            value={
+                                                                                                id
+                                                                                            }
+                                                                                        >
+                                                                                            {
+                                                                                                name
+                                                                                            }
+                                                                                        </MenuItem>
+                                                                                    )
+                                                                                )}
+                                                                            </Select>
+                                                                        </FormControl>
+                                                                    </div>
 
-                                                                <FieldLabel>Role Name</FieldLabel>
-                                                                <Field
-                                                                    inputProps={{syle:{padding:0}}}
-                                                                    name="name"
-                                                                   // label="Role Name"
-                                                                    required={
-                                                                        true
-                                                                    }
-                                                                    type="text"
-                                                                    component={
-                                                                        TextField
-                                                                    }
-                                                                    variant="outlined"
-                                                                    fullWidth={
-                                                                        true
-                                                                    }
-                                                                />
-                                                            </div>
-                                                            <div
-                                                                style={{
-                                                                    width:"65%",
-                                                                    paddingLeft:10,
-                                                                   // paddingRight:10,                                                          
-                                                                    flex: 1,
-                                                                    height:
-                                                                        "100%"
-                                                                }}
-                                                            >
-                                                                <FieldLabel>ROLE PERMISSIONS</FieldLabel>
-                                                                <Mutation
-                                                                    mutation={
-                                                                        UPDATE_ROLE
-                                                                    }
-                                                                    refetchQueries={[
-                                                                        {
-                                                                            query: getRoleList,
-                                                                            variables: {
-                                                                                clientId
-                                                                            }
+                                                                    <FieldLabel>
+                                                                        Role
+                                                                        Name
+                                                                    </FieldLabel>
+                                                                    <Field
+                                                                        inputProps={{
+                                                                            className: this
+                                                                                .props
+                                                                                .classes
+                                                                                .myInput
+                                                                        }}
+                                                                        // inputProps={{
+                                                                        //     syle: {
+                                                                        //         padding: 0
+                                                                        //     }
+                                                                        // }}
+                                                                        name="name"
+                                                                        // label="Role Name"
+                                                                        required={
+                                                                            true
                                                                         }
-                                                                    ]}
-                                                                >
-                                                                    {(
-                                                                        editARole,
-                                                                        {
-                                                                            loading: loadingEdit,
-                                                                            error: errorEdit
+                                                                        type="text"
+                                                                        component={
+                                                                            TextField
                                                                         }
-                                                                    ) => {
-                                                                        if (
-                                                                            loadingEdit
-                                                                        )
-                                                                            return (
-                                                                                <React.Fragment />
-                                                                            );
-                                                                        if (
-                                                                            errorEdit
-                                                                        )
-                                                                            return `Error message: ${
-                                                                                errorEdit.message
-                                                                            }`;
-                                                                        return this.renderRolePermissionSection(
-                                                                            departments,
-                                                                            clientId,
-                                                                            addANewRole,
-                                                                            editARole
-                                                                        );
-                                                                    }}
-                                                                </Mutation>
+                                                                        variant="outlined"
+                                                                        fullWidth={
+                                                                            true
+                                                                        }
+                                                                    />
+                                                                </div>
                                                                 <div
                                                                     style={{
-                                                                        paddingTop: 10,
-                                                                        display:
-                                                                            "flex",
-                                                                        justifyContent:
-                                                                            "flex-end"
+                                                                        width:
+                                                                            "65%",
+                                                                        paddingLeft: 10,
+                                                                        // paddingRight:10,
+                                                                        flex: 1,
+                                                                        height:
+                                                                            "100%"
                                                                     }}
                                                                 >
-                                                                    <NormalButton
-                                                                        type="submit"
-                                                                        variant="contained"
-                                                                      //  color="primary"
-                                                                        disabled={
-                                                                            isSubmitting ||
-                                                                            Object.keys(
-                                                                                errors
-                                                                            )
-                                                                                .length >
-                                                                                0
+                                                                    <FieldLabel>
+                                                                        ROLE
+                                                                        PERMISSIONS
+                                                                    </FieldLabel>
+                                                                    <Mutation
+                                                                        mutation={
+                                                                            UPDATE_ROLE
                                                                         }
+                                                                        refetchQueries={[
+                                                                            {
+                                                                                query: getRoleList,
+                                                                                variables: {
+                                                                                    clientId
+                                                                                }
+                                                                            }
+                                                                        ]}
                                                                     >
-                                                                        Add Role
-                                                                  </NormalButton>
+                                                                        {(
+                                                                            editARole,
+                                                                            {
+                                                                                loading: loadingEdit,
+                                                                                error: errorEdit
+                                                                            }
+                                                                        ) => {
+                                                                            if (
+                                                                                loadingEdit
+                                                                            )
+                                                                                return (
+                                                                                    <React.Fragment />
+                                                                                );
+                                                                            if (
+                                                                                errorEdit
+                                                                            )
+                                                                                return `Error message: ${
+                                                                                    errorEdit.message
+                                                                                }`;
+                                                                            return this.renderRolePermissionSection(
+                                                                                departments,
+                                                                                clientId,
+                                                                                addANewRole,
+                                                                                editARole
+                                                                            );
+                                                                        }}
+                                                                    </Mutation>
+                                                                    <div
+                                                                        style={{
+                                                                            paddingTop: 10,
+                                                                            display:
+                                                                                "flex",
+                                                                            justifyContent:
+                                                                                "flex-end"
+                                                                        }}
+                                                                    >
+                                                                        <NormalButton
+                                                                            type="submit"
+                                                                            variant="contained"
+                                                                            //  color="primary"
+                                                                            disabled={
+                                                                                isSubmitting ||
+                                                                                Object.keys(
+                                                                                    errors
+                                                                                )
+                                                                                    .length >
+                                                                                    0
+                                                                            }
+                                                                        >
+                                                                            Add
+                                                                            Role
+                                                                        </NormalButton>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </RoleSectionDiv>
-                                                    </Form>
-                                                )}
-                                            />
-                                        );
-                                    }}
-                                </Mutation>
-                              </SectionDiv>
+                                                            </RoleSectionDiv>
+                                                        </Form>
+                                                    )}
+                                                />
+                                            );
+                                        }}
+                                    </Mutation>
+                                </SectionDiv>
                             </SectionDivContainer>
                             <Query query={getRoleList} variables={{ clientId }}>
                                 {({
@@ -917,29 +994,33 @@ class WizardCreateClientPageThree extends React.Component {
                                         return `Error! ${errorRoles.message}`;
                                     // console.log(roleList);
                                     return (
-                                        <SectionDivContainer         
-                                            
-                                        style={{
-                                            paddingLeft:"20px",
-                                            paddingRight:"0"
-                                        }} >
-                                             <div 
-                                            
+                                        <SectionDivContainer
+                                            style={{
+                                                paddingLeft: "20px",
+                                                paddingRight: "0"
+                                            }}
+                                        >
+                                            <div
                                                 style={{
                                                     width: "100%",
-                                                    display: "flex", 
+                                                    display: "flex"
                                                 }}
                                             >
                                                 <div
                                                     style={{
                                                         width: "80%",
-                                                        paddingLeft:"3%",
-                                                        paddingTop:"3%",
-                                                        display: "flex",
-                                                       
+                                                        paddingLeft: "3%",
+                                                        paddingTop: "3%",
+                                                        display: "flex"
                                                     }}
                                                 >
-                                                    <FieldLabel style={{fontSize:"12px"}}>STRUCTURE TABLE</FieldLabel >
+                                                    <FieldLabel
+                                                        style={{
+                                                            fontSize: "12px"
+                                                        }}
+                                                    >
+                                                        STRUCTURE TABLE
+                                                    </FieldLabel>
                                                 </div>
                                                 <div
                                                     style={{
@@ -987,7 +1068,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                         <DeleteIcon fontSize="large" />
                                                     </IconButton>
                                                 </div>
-                                            </div >
+                                            </div>
 
                                             {/* <ReactTable
                                                 defaultPageSize={10}
@@ -1195,9 +1276,19 @@ class WizardCreateClientPageThree extends React.Component {
                                                     />
                                                 )}
 
-                                            <Table style={{border:"1px solid #9D9D9D"}}>
+                                            <Table
+                                                style={{
+                                                    border: "1px solid #9D9D9D"
+                                                }}
+                                            >
                                                 <TableHead>
-                                                    <TableRow style={{borderBottom:"2px solid #5C5C5C", width:"100%"}}>
+                                                    <TableRow
+                                                        style={{
+                                                            borderBottom:
+                                                                "2px solid #5C5C5C",
+                                                            width: "100%"
+                                                        }}
+                                                    >
                                                         {/* <TableCell padding="checkbox">
                                                             <Checkbox
                                                                 indeterminate={
@@ -1240,13 +1331,25 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 }}
                                                             />
                                                         </TableCell> */}
-                                                        <TableCell style={{width:"40%"}}>
+                                                        <TableCell
+                                                            style={{
+                                                                width: "40%"
+                                                            }}
+                                                        >
                                                             ROLE
                                                         </TableCell>
-                                                        <TableCell style={{width:"40%"}}>
+                                                        <TableCell
+                                                            style={{
+                                                                width: "40%"
+                                                            }}
+                                                        >
                                                             DEPARTMENT
                                                         </TableCell>
-                                                        <TableCell style={{width:"20%"}}>
+                                                        <TableCell
+                                                            style={{
+                                                                width: "20%"
+                                                            }}
+                                                        >
                                                             ACTIONS
                                                         </TableCell>
                                                     </TableRow>
@@ -1257,11 +1360,17 @@ class WizardCreateClientPageThree extends React.Component {
                                                             key={`TABLE-ROW-${
                                                                 role.id
                                                             }`}
-                                                            
                                                         >
                                                             <TableCell>
                                                                 <Checkbox
-                                                                    style={{padding:"0", marginRight:"10px", color:"#707070"}}
+                                                                    style={{
+                                                                        padding:
+                                                                            "0",
+                                                                        marginRight:
+                                                                            "10px",
+                                                                        color:
+                                                                            "#707070"
+                                                                    }}
                                                                     id={role.id}
                                                                     checked={this.state.selected_roles.includes(
                                                                         role.id
@@ -1271,7 +1380,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             .handleChangeSelectedRoles
                                                                     }
                                                                 />
-                                                            
+
                                                                 {role.name}
                                                             </TableCell>
                                                             <TableCell>
@@ -1348,17 +1457,20 @@ class WizardCreateClientPageThree extends React.Component {
                                                     DELETE
                                                 </MenuItem>
                                             </Menu>
-                                            <SectionDiv 
+                                            <SectionDiv
                                                 style={{
                                                     width: "100%",
                                                     display: "flex",
-                                                    justifyContent: "flex-end",
-                                                   // paddingTop: 50
+                                                    justifyContent: "flex-end"
+                                                    // paddingTop: 50
                                                 }}
                                             >
                                                 <ContinueButton
-                                                 style={{
-                                                    width: "50%", marginLeft:"50%", marginBottom:"10%"}}
+                                                    style={{
+                                                        width: "50%",
+                                                        marginLeft: "50%",
+                                                        marginBottom: "10%"
+                                                    }}
                                                     variant="contained"
                                                     color="primary"
                                                     onClick={() =>
@@ -1368,7 +1480,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                 >
                                                     CONFIRM & CONTINUE
                                                 </ContinueButton>
-                                            </SectionDiv >
+                                            </SectionDiv>
                                         </SectionDivContainer>
                                     );
                                 }}
@@ -1385,9 +1497,7 @@ export default withApollo(withStyles(styles)(WizardCreateClientPageThree));
 
 //export default (withStyles(styles))(withApollo(WizardCreateClientPageThree));
 
-
 // export default compose(
 //     withApollo,
 //     withStyles(styles),
 // )(WizardCreateClientPageThree);
-        

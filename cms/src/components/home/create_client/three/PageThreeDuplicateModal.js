@@ -150,8 +150,21 @@ export const PageThreeDuplicateModal = ({
                                     </React.Fragment>
                                 )}
                             </DialogContent>
-                            <DialogActions>
+                            <DialogActions
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    marginBottom: "5%"
+                                }}
+                            >
                                 <Button
+                                    style={{
+                                        border: "3px solid #2699FB",
+                                        display: "inline-block",
+                                        width: "30%",
+                                        color: "#2699FB",
+                                        borderRadius: "5px"
+                                    }}
                                     variant="outlined"
                                     className={classes.submitButton}
                                     onClick={handleDuplicate}
@@ -159,6 +172,13 @@ export const PageThreeDuplicateModal = ({
                                     YES
                                 </Button>
                                 <Button
+                                    style={{
+                                        border: "3px solid #2699FB",
+                                        display: "inline-block",
+                                        width: "30%",
+                                        color: "#2699FB",
+                                        borderRadius: "5px"
+                                    }}
                                     variant="outlined"
                                     className={classes.cancelButton}
                                     onClick={handleClose}
