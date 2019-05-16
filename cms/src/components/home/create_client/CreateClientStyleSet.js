@@ -103,6 +103,7 @@ export const ContinueButton = styled.button`
     color: white;
     background: #2699fb;
     border: 20px solid #313131;
+    margin-bottom: 5%;
 `;
 
 //----page3----
@@ -199,7 +200,7 @@ export const EachClientSystemContainer = styled.div`
     height: 180px;
     margin: 5px;
     padding: 5px;
-    border: 1px solid black;
+    border: 1px solid #dddddd;
     position: relative;
     // &:hover {
     //     background-color: lightgrey;

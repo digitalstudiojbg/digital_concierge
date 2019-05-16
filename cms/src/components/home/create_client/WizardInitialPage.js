@@ -20,7 +20,7 @@ const CancelButtonContainerDiv = styled.div`
 
 const ContentContainerDiv = styled.div`
     width: 100%;
-    height: 90%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,7 +28,7 @@ const ContentContainerDiv = styled.div`
 `;
 
 const TitleDiv = styled.div`
-    font-size: 3em;
+    font-size: 30px;
     color: black;
     display: flex;
     align-items: center;
@@ -36,7 +36,7 @@ const TitleDiv = styled.div`
 `;
 
 const HighlightSpan = styled.span`
-    font-size: 2em;
+    font-size: 60px;
     font-weight: 700;
     padding-left: 10px;
 `;
@@ -47,8 +47,13 @@ const StartSetupButtonContainerDiv = styled.div`
 
 const styles = () => ({
     startSetupButton: {
-        height: 50,
-        fontSize: "1.5em"
+        //  height: 50,
+        color: "white",
+        backgroundColor: "#2699FB",
+        fontSize: "20px",
+        padding: "3% 5%",
+        margin: "0 10%",
+        width: "80%"
     }
 });
 
@@ -72,7 +77,7 @@ export const WizardInitialPage = ({ next, history, classes }) => {
                         onClick={next}
                         fullWidth={true}
                         variant="contained"
-                        color="primary"
+                        // color="#2699FB"
                         className={classes.startSetupButton}
                     >
                         START SETUP

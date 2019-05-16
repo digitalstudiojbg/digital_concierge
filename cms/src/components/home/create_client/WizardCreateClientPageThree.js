@@ -478,7 +478,7 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        // let clientId = 1;
+        //let clientId = 1;
         let clientId = null;
 
         try {
@@ -517,6 +517,7 @@ class WizardCreateClientPageThree extends React.Component {
                             <SectionDivContainer
                                 style={{
                                     borderRight: "1px solid #9D9D9D",
+                                    borderRadius: "5px",
                                     paddingRight: "0"
                                 }}
                             >
@@ -997,7 +998,8 @@ class WizardCreateClientPageThree extends React.Component {
                                         <SectionDivContainer
                                             style={{
                                                 paddingLeft: "20px",
-                                                paddingRight: "0"
+                                                paddingRight: "0",
+                                                height: "650px"
                                             }}
                                         >
                                             <div
@@ -1278,7 +1280,9 @@ class WizardCreateClientPageThree extends React.Component {
 
                                             <Table
                                                 style={{
-                                                    border: "1px solid #9D9D9D"
+                                                    dispaly: "flex",
+                                                    border: "1px solid #9D9D9D",
+                                                    borderRadius: "5px"
                                                 }}
                                             >
                                                 <TableHead>

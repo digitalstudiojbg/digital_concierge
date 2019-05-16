@@ -241,72 +241,49 @@ class WizardCreateClientPageFour extends React.Component {
                 }}
             >
                 <SectionHeader>All Client System</SectionHeader>
-                <FiledContainer
-                    style={
-                        {
-                            // display: "flex",
-                            //  flexWrap: "wrap",
-                            // justifyContent: "left",
-                            //  overflow: "auto",
-                            // height: "60vh"
-                        }
-                    }
+                <div
+                    style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        overflow: "auto",
+                        height: "70vh"
+                    }}
                 >
-                    <FieldLabel style={{ marginLeft: "4%" }}>
-                        SYSTEM CREATED
-                    </FieldLabel>
-                    <FiledContainer
-                        style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            flex: "1",
-                            justifyContent: "left",
-                            height: "430px",
-                            width: "96%",
-                            margin: "1% 5% 5%",
-                            overflow: "auto",
-                            padding: "2%",
-                            border: "1px solid #9D9D9D",
-                            borderRadius: "5px",
-
-                            backgroundColor: "white"
-                        }}
-                    >
-                        {systemsByClient.length > 0 &&
-                            systemsByClient.map(
-                                ({ name, system_type, device_type }) => {
-                                    return (
-                                        <EachClientSystemContainer>
-                                            <img
-                                                style={{
-                                                    display: "block",
-                                                    margin: "auto"
-                                                }}
-                                                src={
-                                                    system_type.name.includes(
-                                                        "TABLET"
-                                                    )
-                                                        ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
-                                                        : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
-                                                }
-                                                height=" 80"
-                                            />
-                                            <EachClientSystemContainerSystemText>
-                                                {system_type.name}
-                                            </EachClientSystemContainerSystemText>
-                                            <hr />
-                                            <EachClientSystemContainerSystemText>
-                                                {name}
-                                            </EachClientSystemContainerSystemText>
-                                            <EachClientSystemContainerDeviceTypeText>
-                                                {device_type.name}
-                                            </EachClientSystemContainerDeviceTypeText>
-                                        </EachClientSystemContainer>
-                                    );
-                                }
-                            )}
-                    </FiledContainer>
-                </FiledContainer>
+                    {systemsByClient.length > 0 &&
+                        systemsByClient.map(
+                            ({ name, system_type, device_type }) => {
+                                return (
+                                    <EachClientSystemContainer>
+                                        <img
+                                            style={{
+                                                display: "block",
+                                                margin: "auto"
+                                            }}
+                                            src={
+                                                system_type.name.includes(
+                                                    "TABLET"
+                                                )
+                                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                                            }
+                                            height=" 80"
+                                        />
+                                        <EachClientSystemContainerSystemText>
+                                            {system_type.name}
+                                        </EachClientSystemContainerSystemText>
+                                        <hr />
+                                        <EachClientSystemContainerSystemText>
+                                            {name}
+                                        </EachClientSystemContainerSystemText>
+                                        <EachClientSystemContainerDeviceTypeText>
+                                            {device_type.name}
+                                        </EachClientSystemContainerDeviceTypeText>
+                                    </EachClientSystemContainer>
+                                );
+                            }
+                        )}
+                </div>
                 <div
                     style={{
                         width: "100%",
@@ -317,11 +294,7 @@ class WizardCreateClientPageFour extends React.Component {
                     }}
                 >
                     <ContinueButton
-                        style={{
-                            width: "60%",
-                            marginRight: "5%",
-                            marginTop: "10%"
-                        }}
+                        style={{ width: "60%" }}
                         variant="contained"
                         color="primary"
                         disabled={systemsByClient.length <= 0}
@@ -362,17 +335,16 @@ class WizardCreateClientPageFour extends React.Component {
             <div
                 style={{
                     width: "30%",
-                    padding: "10px 10px 20px 10px",
+                    padding: "20px",
                     marginRight: "2%",
                     marginLeft: "8%",
-                    marginTop: "4%"
+                    marginTop: "3%"
                 }}
             >
                 <FieldLabel>FEATURES REQUIRED</FieldLabel>
                 <FieldContainerDiv
                     style={{
                         border: "1px solid #9D9D9D",
-                        borderRadius: "5px",
                         overflowY: "scroll",
                         height: "430px"
                     }}
@@ -603,7 +575,7 @@ class WizardCreateClientPageFour extends React.Component {
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
 
-        //let new_create_client_id = 1;
+        // let new_create_client_id = 1;
         let new_create_client_id;
 
         try {
@@ -755,11 +727,11 @@ export default compose(
     graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
     graphql(systemsByClientQuery, {
         options: ownProps => ({
-            variables: {
-                id: ownProps.client.readQuery({
-                    query: getNewCreatedClientId
-                }).new_create_client_id
-            }
+            // variables: {
+            //     id: ownProps.client.readQuery({
+            //         query: getNewCreatedClientId
+            //     }).new_create_client_id
+            // }
         }),
         name: "systemsByClient"
     })

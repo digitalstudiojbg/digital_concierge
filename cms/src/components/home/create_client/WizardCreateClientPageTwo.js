@@ -154,7 +154,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
     );
 };
 
-const renderDateField = ({ name, label, required, type, className }) => (
+const renderDateField = ({ name, label, required, type }) => (
     <Field
         id={name}
         name={name}
@@ -164,10 +164,7 @@ const renderDateField = ({ name, label, required, type, className }) => (
         component={TextField}
         variant="outlined"
         fullWidth={true}
-        //  InputBase={<InputBase style={{ height: 38 }} />}
-        // inputProps={{
-        //     className: this.props.classes.myInput
-        // }}
+        input={<InputBase style={{ height: 38 }} />}
     />
 );
 
@@ -277,7 +274,14 @@ class WizardCreateClientPageTwo extends React.Component {
 
     renderAgreementForm() {
         return (
-            <SectionDiv style={{ width: "33%", height: "500px" }}>
+            <SectionDiv
+                style={{
+                    width: "33%",
+                    height: "500px",
+                    borderRight: "1px solid #DDDDDD",
+                    borderLeft: "1px solid #DDDDDD"
+                }}
+            >
                 <SectionHeader>Agreement</SectionHeader>
                 <FiledContainer>
                     <SubFieldContainerDiv>
@@ -401,7 +405,7 @@ class WizardCreateClientPageTwo extends React.Component {
                 // }}
                 >
                     <ContinueButton
-                        style={{ width: "90%", margin: "100px 0 0 40px" }}
+                        style={{ width: "90%", margin: "60px 0 60px 35px" }}
                         //  type="submit"
                         variant="contained"
                         color="primary"
