@@ -30,8 +30,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import { Set } from "immutable";
 import validationSchema from "./four/PageFourValidationSchema";
-import {withStyles} from '@material-ui/core/styles';
-
+import { withStyles } from "@material-ui/core/styles";
 
 import {
     FiledContainer,
@@ -45,21 +44,22 @@ import {
     FieldContainerDiv,
     FieldLabel,
     ContinueButton,
-    NormalButton 
+    NormalButton
+} from "./CreateClientStyleSet";
 
-    } from "./CreateClientStyleSet";
-    
-
-    const styles = theme => ({
-        mylabel: {
-          fontSize: '10px',
-          color: '#5C5C5C'
-        },
-        inputPdding:{
-            padding: '0px'
-        }
-      });
-
+const styles = theme => ({
+    mylabel: {
+        fontSize: "10px",
+        color: "#5C5C5C"
+    },
+    inputPdding: {
+        padding: "0px"
+    },
+    myInput: {
+        padding: "10px"
+    }
+});
+//inputProps={{ className: this.props.classes.myInput }}
 const renderSelectField = ({ name: nameValue, label, optionList }) => {
     return (
         <React.Fragment>
@@ -69,9 +69,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
-                input={
-                    <OutlinedInput />
-                }
+                input={<OutlinedInput style={{ height: 38 }} />}
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -119,35 +117,36 @@ class WizardCreateClientPageFour extends React.Component {
             <div
                 style={{
                     width: "20%",
-                  //  marginright:"10%",
+                    //  marginright:"10%",
                     padding: "20px 20px 20px 0"
                 }}
             >
                 <SectionHeader>Add System</SectionHeader>
                 <FiledContainer>
-                    
                     <SubFieldContainerDiv>
                         <FieldLabel>SYSTEM NAME</FieldLabel>
                         <Field
                             name="name"
-                         //   label="SYSTEM NAME"
+                            //   label="SYSTEM NAME"
                             required={true}
                             type="text"
                             component={TextField}
                             variant="outlined"
                             fullWidth={true}
+                            inputProps={{
+                                className: this.props.classes.myInput
+                            }}
                         />
                     </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
                     <SubFieldContainerDiv>
-                            <FieldLabel>SYSTEM TYPE</FieldLabel>
-                            {systemTypes.length > 0 &&
-                                renderSelectField({
-                                    name: "system_type",
+                        <FieldLabel>SYSTEM TYPE</FieldLabel>
+                        {systemTypes.length > 0 &&
+                            renderSelectField({
+                                name: "system_type",
                                 // label: "SYSTEM TYPE",
-                                    optionList: systemTypes,
-                             
+                                optionList: systemTypes
                             })}
                     </SubFieldContainerDiv>
                 </FiledContainer>
@@ -157,25 +156,32 @@ class WizardCreateClientPageFour extends React.Component {
                             display: "flex",
                             justifyContent: "space-around",
                             alignItems: "center",
-                            display:"inline-block",
-                            marginTop:"7px"
+                            display: "inline-block",
+                            marginTop: "7px"
                         }}
                     >
-                        <p style={{ fontSize: "12px", fontFamily: "Roboto" , display:"inline-block", marginRight:"20px"}}>
+                        <p
+                            style={{
+                                fontSize: "12px",
+                                fontFamily: "Roboto",
+                                display: "inline-block",
+                                marginRight: "20px"
+                            }}
+                        >
                             AIF
                         </p>
                         <Field
                             name="aif_boolean"
                             label="AIF"
                             required={true}
-                           // color="primary"
+                            // color="primary"
                             component={RadioGroup}
                             variant="outlined"
-                            style={{display:"inline-block"}}
+                            style={{ display: "inline-block" }}
                         >
                             <FormControlLabel
                                 value="yes"
-                                control={<Radio color="Black"/>}
+                                control={<Radio color="Black" />}
                                 label="Yes"
                             />
                             <FormControlLabel
@@ -188,28 +194,31 @@ class WizardCreateClientPageFour extends React.Component {
                 </FiledContainer>
 
                 <FiledContainer>
-                <SubFieldContainerDiv>
-                    <FieldLabel>DEVICE TYPE</FieldLabel>
-                    {deviceTypes.length > 0 &&
-                        renderSelectField({
-                            name: "device_type",
-                         //   label: "DEVICE TYPE",
-                            optionList: deviceTypes
-                        })}
-                        </SubFieldContainerDiv>
+                    <SubFieldContainerDiv>
+                        <FieldLabel>DEVICE TYPE</FieldLabel>
+                        {deviceTypes.length > 0 &&
+                            renderSelectField({
+                                name: "device_type",
+                                //   label: "DEVICE TYPE",
+                                optionList: deviceTypes
+                            })}
+                    </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
-                <SubFieldContainerDiv>
-                    <FieldLabel>NUMBER OF DEVICES</FieldLabel>
-                    <Field
-                        name="numberOfDevices"
-                     //   label="NUMBER OF DEVICES"
-                        required={true}
-                        type="text"
-                        component={TextField}
-                        variant="outlined"
-                        fullWidth={true}
-                    />
+                    <SubFieldContainerDiv>
+                        <FieldLabel>NUMBER OF DEVICES</FieldLabel>
+                        <Field
+                            name="numberOfDevices"
+                            //   label="NUMBER OF DEVICES"
+                            required={true}
+                            type="text"
+                            component={TextField}
+                            variant="outlined"
+                            fullWidth={true}
+                            inputProps={{
+                                className: this.props.classes.myInput
+                            }}
+                        />
                     </SubFieldContainerDiv>
                 </FiledContainer>
             </div>
@@ -228,7 +237,7 @@ class WizardCreateClientPageFour extends React.Component {
                 style={{
                     width: "37%",
                     padding: "20px",
-                    borderLeft:"1px solid #DDDDDD",
+                    borderLeft: "1px solid #DDDDDD"
                 }}
             >
                 <SectionHeader>All Client System</SectionHeader>
@@ -238,8 +247,7 @@ class WizardCreateClientPageFour extends React.Component {
                         flexWrap: "wrap",
                         justifyContent: "center",
                         overflow: "auto",
-                        height: "70vh",
-                        
+                        height: "70vh"
                     }}
                 >
                     {systemsByClient.length > 0 &&
@@ -282,11 +290,11 @@ class WizardCreateClientPageFour extends React.Component {
                         paddingBottom: "20px",
                         display: "flex",
                         justifyContent: "flex-end",
-                        marginTop:"20%"
+                        marginTop: "20%"
                     }}
                 >
                     <ContinueButton
-                        style={{width:"60%"}}
+                        style={{ width: "60%" }}
                         variant="contained"
                         color="primary"
                         disabled={systemsByClient.length <= 0}
@@ -324,35 +332,33 @@ class WizardCreateClientPageFour extends React.Component {
         const { selected_checkboxes } = this.state;
         const { classes } = this.props;
         return (
-            
             <div
                 style={{
                     width: "30%",
                     padding: "20px",
-                    marginRight:"2%",
-                    marginLeft:"8%",
-                    marginTop:"3%"
+                    marginRight: "2%",
+                    marginLeft: "8%",
+                    marginTop: "3%"
                 }}
             >
-                <FieldLabel >FEATURES REQUIRED</FieldLabel >
+                <FieldLabel>FEATURES REQUIRED</FieldLabel>
                 <FieldContainerDiv
-                 style={{
-                    border:"1px solid #9D9D9D",
-                    overflowY:"scroll",
-                    height:"430px"
-                }}
-                >
-                <div
                     style={{
-                        display: "flex",
-                        fontSize: "10px",
-                        padding:"10px",
-                        width:"100%",
+                        border: "1px solid #9D9D9D",
+                        overflowY: "scroll",
+                        height: "430px"
                     }}
                 >
-                    <div style={{ width: "40%" }} >
-                    
-                        {/* <div
+                    <div
+                        style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            padding: "10px",
+                            width: "100%"
+                        }}
+                    >
+                        <div style={{ width: "40%" }}>
+                            {/* <div
                                     style={{
                                         width: "100%",
                                         display: "flex",
@@ -375,139 +381,154 @@ class WizardCreateClientPageFour extends React.Component {
                                             <LaunchIcon fontSize="large"   />
                                         </IconButton>
                            </div> */}
-                    
-                    </div>
-                    <div style={{ width: "60%", paddingLeft: "13px" }}>
-
-                        <FormControlLabel
-                            classes={{
-                                label: classes.mylabel
-                            }}
-                            name="all_features"
-                            control={
-                                <Checkbox
-                                    style={{color:"#2699FB", padding:"0"}}
-                                  //  color="primary"
-                                    checked={
-                                        selected_checkboxes.size ===
-                                            this.getAllFeatureId().length &&
-                                        selected_checkboxes.size !== 0
-                                    }
-                                    onChange={() => {
-                                        if (
-                                            selected_checkboxes.size !==
-                                            this.getAllFeatureId().length
-                                        ) {
-                                            this.setState({
-                                                selected_checkboxes: selected_checkboxes.union(
-                                                    this.getAllFeatureId()
-                                                )
-                                            });
-                                        } else {
-                                            this.setState({
-                                                selected_checkboxes: Set()
-                                            });
+                        </div>
+                        <div style={{ width: "60%", paddingLeft: "13px" }}>
+                            <FormControlLabel
+                                classes={{
+                                    label: classes.mylabel
+                                }}
+                                name="all_features"
+                                control={
+                                    <Checkbox
+                                        style={{
+                                            color: "#2699FB",
+                                            padding: "0"
+                                        }}
+                                        //  color="primary"
+                                        checked={
+                                            selected_checkboxes.size ===
+                                                this.getAllFeatureId().length &&
+                                            selected_checkboxes.size !== 0
                                         }
-                                    }}
-                                />
-                            }
-                            label="ALL FEATURES"
-                        />
-                    </div>
-                </div>
-                {featureCategories.length > 0 &&
-                    featureCategories.map((eachCategory, index) => {
-                        let featureIdPerCategory = [];
-
-                        eachCategory.features.length > 0 &&
-                            eachCategory.features.map(({ id }) => {
-                                featureIdPerCategory.push(id);
-                            });
-
-                        return (
-                            <FeatureContainer key={index}>
-                                <div style={{ width: "40%" , paddingLeft:"10px", height:"5%", marginBottom:"50%"}}>
-                                    <FieldLabel >
-                                        {eachCategory.name}
-                                    </FieldLabel >
-                                </div>
-                                <div
-                                    style={{
-                                        width: "60%",
-                                        border:"1px solid #9D9D9D",
-                                        padding:"2% 0 0 5%",
-                                        // paddingBottom:"0",
-                                        // paddingLeft:"5%",
-                                        // paddingTop:"2%",
-                                     
-                                        marginBottom:"5%",
-                                      marginRight:"5%",
-                                        backgroundColor:"#F7F7F7"
-                                    }}
-                                >
-                                    <ul style={{ listStyleType: "none" }}>
-                                        {eachCategory.features.map(
-                                            ({ id, name }, index) => {
-                                                return (
-                                                    <li key={index}>
-                                                        <FormControlLabel
-                                                             classes={{
-                                                                  label: classes.mylabel
-                                                              }}
-                                                            control={
-                                                                <Checkbox
-                                                                    style={{color:"#2699FB", padding:"0"}}
-                                                                   // color="primary"
-                                                                    checked={selected_checkboxes.includes(
-                                                                        id
-                                                                    )}
-                                                                    onChange={this.handleFeatures.bind(
-                                                                        this,
-                                                                        id
-                                                                    )}
-                                                                />
-                                                            }
-                                                            label={name}
-                                                        />
-                                                    </li>
-                                                );
+                                        onChange={() => {
+                                            if (
+                                                selected_checkboxes.size !==
+                                                this.getAllFeatureId().length
+                                            ) {
+                                                this.setState({
+                                                    selected_checkboxes: selected_checkboxes.union(
+                                                        this.getAllFeatureId()
+                                                    )
+                                                });
+                                            } else {
+                                                this.setState({
+                                                    selected_checkboxes: Set()
+                                                });
                                             }
-                                        )}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                justifyContent: "space-around"
-                                            }}
-                                        >
-                                            <SelectUnselectButton
-                                                onClick={() => {
-                                                    this.setState({
-                                                        selected_checkboxes: selected_checkboxes.union(
-                                                            featureIdPerCategory
-                                                        )
-                                                    });
+                                        }}
+                                    />
+                                }
+                                label="ALL FEATURES"
+                            />
+                        </div>
+                    </div>
+                    {featureCategories.length > 0 &&
+                        featureCategories.map((eachCategory, index) => {
+                            let featureIdPerCategory = [];
+
+                            eachCategory.features.length > 0 &&
+                                eachCategory.features.map(({ id }) => {
+                                    featureIdPerCategory.push(id);
+                                });
+
+                            return (
+                                <FeatureContainer key={index}>
+                                    <div
+                                        style={{
+                                            width: "40%",
+                                            paddingLeft: "10px",
+                                            height: "5%",
+                                            marginBottom: "50%"
+                                        }}
+                                    >
+                                        <FieldLabel>
+                                            {eachCategory.name}
+                                        </FieldLabel>
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: "60%",
+                                            border: "1px solid #9D9D9D",
+                                            padding: "2% 0 0 5%",
+                                            // paddingBottom:"0",
+                                            // paddingLeft:"5%",
+                                            // paddingTop:"2%",
+
+                                            marginBottom: "5%",
+                                            marginRight: "5%",
+                                            backgroundColor: "#F7F7F7"
+                                        }}
+                                    >
+                                        <ul style={{ listStyleType: "none" }}>
+                                            {eachCategory.features.map(
+                                                ({ id, name }, index) => {
+                                                    return (
+                                                        <li key={index}>
+                                                            <FormControlLabel
+                                                                classes={{
+                                                                    label:
+                                                                        classes.mylabel
+                                                                }}
+                                                                control={
+                                                                    <Checkbox
+                                                                        style={{
+                                                                            color:
+                                                                                "#2699FB",
+                                                                            padding:
+                                                                                "0"
+                                                                        }}
+                                                                        // color="primary"
+                                                                        checked={selected_checkboxes.includes(
+                                                                            id
+                                                                        )}
+                                                                        onChange={this.handleFeatures.bind(
+                                                                            this,
+                                                                            id
+                                                                        )}
+                                                                    />
+                                                                }
+                                                                label={name}
+                                                            />
+                                                        </li>
+                                                    );
+                                                }
+                                            )}
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    justifyContent:
+                                                        "space-around"
                                                 }}
                                             >
-                                                Select All
-                                            </SelectUnselectButton>
-                                            <SelectUnselectButton
-                                                onClick={() => {
-                                                    this.setState({
-                                                        selected_checkboxes: selected_checkboxes.subtract(
-                                                            featureIdPerCategory
-                                                        )
-                                                    });
-                                                }}
-                                            >
-                                                Unselect All
-                                            </SelectUnselectButton>
-                                        </div>
-                                    </ul>
-                                </div>
-                            </FeatureContainer>
-                        );
-                    })}
-                </FieldContainerDiv> 
+                                                <SelectUnselectButton
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            selected_checkboxes: selected_checkboxes.union(
+                                                                featureIdPerCategory
+                                                            )
+                                                        });
+                                                    }}
+                                                >
+                                                    Select All
+                                                </SelectUnselectButton>
+                                                <SelectUnselectButton
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            selected_checkboxes: selected_checkboxes.subtract(
+                                                                featureIdPerCategory
+                                                            )
+                                                        });
+                                                    }}
+                                                >
+                                                    Unselect All
+                                                </SelectUnselectButton>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                </FeatureContainer>
+                            );
+                        })}
+                </FieldContainerDiv>
                 <div
                     style={{
                         width: "100%",
@@ -516,7 +537,17 @@ class WizardCreateClientPageFour extends React.Component {
                         justifyContent: "flex-end"
                     }}
                 >
-                    <NormalButton 
+                    <Button
+                        style={{
+                            border: "3px solid #2699FB",
+                            width: "40%",
+                            fontSize: "14px",
+                            color: "#2699FB",
+                            backgroundColor: "white",
+                            hover: {
+                                backgroundColor: "#EBEBF2"
+                            }
+                        }}
                         type="submit"
                         variant="contained"
                         color="primary"
@@ -527,14 +558,12 @@ class WizardCreateClientPageFour extends React.Component {
                         }
                     >
                         ADD SYSTEM
-                    </NormalButton >
+                    </Button>
                 </div>
-                
             </div>
-        
         );
     }
-    
+
     render() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
@@ -546,8 +575,8 @@ class WizardCreateClientPageFour extends React.Component {
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
 
-      // let new_create_client_id =1 ;
-      let new_create_client_id;
+        // let new_create_client_id = 1;
+        let new_create_client_id;
 
         try {
             new_create_client_id = client.readQuery({
@@ -698,13 +727,12 @@ export default compose(
     graphql(getFeaturesByCategories, { name: "getFeaturesByCategories" }),
     graphql(systemsByClientQuery, {
         options: ownProps => ({
-            variables: {
-                id: ownProps.client.readQuery({
-                    query: getNewCreatedClientId
-                }).new_create_client_id
-            }
+            // variables: {
+            //     id: ownProps.client.readQuery({
+            //         query: getNewCreatedClientId
+            //     }).new_create_client_id
+            // }
         }),
         name: "systemsByClient"
     })
 )(WizardCreateClientPageFour);
-

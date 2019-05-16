@@ -17,6 +17,7 @@ import {
 } from "../../../data/query";
 import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputBase from "@material-ui/core/InputBase";
 import MenuItem from "@material-ui/core/MenuItem";
 import dayjs from "dayjs";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -153,7 +154,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
     );
 };
 
-const renderDateField = ({ name, label, required, type }) => (
+const renderDateField = ({ name, label, required, type, className }) => (
     <Field
         id={name}
         name={name}
@@ -163,6 +164,10 @@ const renderDateField = ({ name, label, required, type }) => (
         component={TextField}
         variant="outlined"
         fullWidth={true}
+        //  InputBase={<InputBase style={{ height: 38 }} />}
+        // inputProps={{
+        //     className: this.props.classes.myInput
+        // }}
     />
 );
 
@@ -432,7 +437,7 @@ class WizardCreateClientPageTwo extends React.Component {
 
         if (licenseTypes.length < 0 && currencies.length < 0)
             return <Loading />;
-        //  let new_create_client_id = 1;
+        //let new_create_client_id = 1;
         let new_create_client_id;
         try {
             new_create_client_id = client.readQuery({

@@ -26,9 +26,7 @@ import {
     PaginationSectionDot,
     ImageLinkText,
     UploadDeleteButton
-    } from "../components/home/create_client/CreateClientStyleSet";
-    
-
+} from "../components/home/create_client/CreateClientStyleSet";
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
@@ -42,13 +40,11 @@ const styles = theme => ({
         fontSize: "1.2em"
     },
     checkbox: {
-        paddingTop: "0px",
-        paddingBottom: "0px"
+        // paddingTop: "0px",
+        // paddingBottom: "0px"
+        padding: "0 1%"
     }
 });
-
-
-
 
 class MediaLibrary extends React.Component {
     state = {
@@ -102,8 +98,7 @@ class MediaLibrary extends React.Component {
                     style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        paddingBottom: "3%",
-                       
+                        paddingBottom: "3%"
                     }}
                 >
                     <Mutation
@@ -168,7 +163,6 @@ class MediaLibrary extends React.Component {
                         }}
                     </Mutation>
                     <Mutation
-                        style={{}}
                         mutation={DELETE_FILES}
                         refetchQueries={[
                             {
@@ -182,7 +176,7 @@ class MediaLibrary extends React.Component {
                     >
                         {(deleteFiles, { loading, error }) => {
                             return (
-                                <div style={{ }}>
+                                <div style={{}}>
                                     <UploadDeleteButton
                                         onClick={() => {
                                             this.handleClickOpen();
@@ -335,7 +329,6 @@ class MediaLibrary extends React.Component {
                             );
                         }}
                     </Mutation>
-                
                 </div>
                 <Query
                     query={getClientImageById}
@@ -394,12 +387,13 @@ class MediaLibrary extends React.Component {
                                     >
                                         <div style={{ paddingRight: "20px" }}>
                                             <Select
-
                                                 className={classes.select}
                                                 value={limit}
                                                 input={
-                                                    <OutlinedInput />
-                                                    }
+                                                    <OutlinedInput
+                                                        style={{ height: 39 }}
+                                                    />
+                                                }
                                                 onChange={event => {
                                                     this.setState({
                                                         limit:
@@ -434,8 +428,10 @@ class MediaLibrary extends React.Component {
                                             <Select
                                                 className={classes.select}
                                                 input={
-                                                    <OutlinedInput />
-                                                    }
+                                                    <OutlinedInput
+                                                        style={{ height: 39 }}
+                                                    />
+                                                }
                                                 value={sort}
                                                 onChange={event => {
                                                     this.setState({
@@ -480,8 +476,8 @@ class MediaLibrary extends React.Component {
                                         height: this.props.height,
                                         flexWrap: "wrap",
                                         alignItems: "center",
-                                        width:"100%",
-                                        marginTop:"3%"
+                                        width: "100%",
+                                        marginTop: "3%"
                                     }}
                                 >
                                     {images.length > 0 &&
@@ -498,7 +494,7 @@ class MediaLibrary extends React.Component {
                                                                 "ellipsis",
                                                             textAlign: "center",
                                                             fontWeight: "bold",
-                                                            fontSize: "1.1em",
+                                                            fontSize: "14px",
                                                             marginBottom: "0px"
                                                         }}
                                                     >
@@ -551,6 +547,10 @@ class MediaLibrary extends React.Component {
                                                         >
                                                             <div>
                                                                 <ImageLinkText
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "12px"
+                                                                    }}
                                                                     onClick={() => {
                                                                         window.open(
                                                                             image.path
@@ -578,6 +578,10 @@ class MediaLibrary extends React.Component {
                                                                 }}
                                                             >
                                                                 <ImageLinkText
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "12px"
+                                                                    }}
                                                                     onClick={() => {
                                                                         /*downloadFile(
                                                                             image.path,
@@ -592,7 +596,12 @@ class MediaLibrary extends React.Component {
                                                                 </ImageLinkText>
                                                             </div>
                                                             <div>
-                                                                <p>
+                                                                <p
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "12px"
+                                                                    }}
+                                                                >
                                                                     Size:
                                                                     {formatBytes(
                                                                         image.size
@@ -703,7 +712,6 @@ class MediaLibrary extends React.Component {
                         );
                     }}
                 </Query>
-                
             </div>
         );
     }

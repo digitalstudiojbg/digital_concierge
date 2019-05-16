@@ -4,7 +4,7 @@ import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import StepLabel from "@material-ui/core/StepLabel";
-import StepConnector from '@material-ui/core/StepConnector';
+import StepConnector from "@material-ui/core/StepConnector";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
@@ -17,7 +17,6 @@ import { DECIMAL_RADIX } from "../../../../utils/Constants";
 import { Mutation } from "react-apollo";
 import { CREATE_THEMES } from "../../../../data/mutation";
 import Loading from "../../../loading/Loading";
-
 
 import {
     ThemeContainerDiv,
@@ -38,10 +37,7 @@ import {
     SectionHeader,
     FieldLabel,
     ContinueButton
-    } from "../CreateClientStyleSet";
-
-
-
+} from "../CreateClientStyleSet";
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
 
@@ -70,23 +66,20 @@ const styles = theme => ({
     },
     uploadButton: {
         margin: theme.spacing.unit,
-         width: "55%",
-         marginTop:"9%",
-         border: "3px solid #2699FB",
-         padding: "10px 5px",
-         fontSize: "14px",
-         color: "#2699FB"
-
+        width: "55%",
+        marginTop: "7%",
+        border: "3px solid #2699FB",
+        padding: "4px 5px",
+        fontSize: "14px",
+        color: "#2699FB"
     },
-    // confirmButton: {
-    //     margin: theme.spacing.unit,
-    //     color: "blue",
-    //     border: "1px solid blue",
-    //     width: "50%"
-    // },
-    icon:{
-        color:"#2699FB !important"
-    } 
+
+    icon: {
+        color: "#2699FB !important"
+    },
+    myInput: {
+        padding: "10px"
+    }
 });
 
 class SetupClientThemeAndLayout extends React.Component {
@@ -422,7 +415,6 @@ class SetupClientThemeAndLayout extends React.Component {
                                         <SectionHeader>System</SectionHeader>
                                         <div style={{ width: "90%" }}>
                                             <Stepper
-                                              
                                                 nonLinear
                                                 activeStep={systemIndex}
                                                 alternativeLabel
@@ -431,21 +423,28 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     ({ id, name }, index) => (
                                                         <Step
                                                             key={`STEP-${id}-${index}`}
-                                                           
                                                         >
-                                                        <StepConnector style={{marginLeft:"45%" ,width:"40%"}}></StepConnector>
+                                                            <StepConnector
+                                                                style={{
+                                                                    marginLeft:
+                                                                        "45%",
+                                                                    width: "40%"
+                                                                }}
+                                                            />
                                                             <StepButton
                                                                 onClick={this.handleStep(
                                                                     index
                                                                 )}
                                                             >
-                                                               
                                                                 <StepLabel
-                                                                    style={{fontSize:"15px"}}
-                                                                     StepIconProps={{
+                                                                    style={{
+                                                                        fontSize:
+                                                                            "15px"
+                                                                    }}
+                                                                    StepIconProps={{
                                                                         classes: {
-                                                                           active: classes.icon,
-                                                                          
+                                                                            active:
+                                                                                classes.icon
                                                                         }
                                                                     }}
                                                                     error={
@@ -462,18 +461,25 @@ class SetupClientThemeAndLayout extends React.Component {
                                                                 >
                                                                     {name}
                                                                 </StepLabel>
-                                                                
                                                             </StepButton>
                                                         </Step>
                                                     )
                                                 )}
                                             </Stepper>
                                         </div>
-                                        <SectionHeader>Brand Assets</SectionHeader> 
+                                        <SectionHeader>
+                                            Brand Assets
+                                        </SectionHeader>
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
-                                                <FieldLabel >Company Logo</FieldLabel>
+                                                <FieldLabel>
+                                                    Company Logo
+                                                </FieldLabel>
                                                 <TextField
+                                                    inputProps={{
+                                                        className: this.props
+                                                            .classes.myInput
+                                                    }}
                                                     value={
                                                         Boolean(
                                                             values.get(
@@ -492,7 +498,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     }
                                                     disabled={true}
                                                     fullWidth={true}
-                                                 //   label="Company Logo"
+                                                    //   label="Company Logo"
                                                     variant="outlined"
                                                     error={
                                                         currentAttributeError ===
@@ -532,10 +538,12 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </EntryThemeContainerDiv>
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
-                                                <FieldLabel >HEADER FONT</FieldLabel>
+                                                <FieldLabel>
+                                                    HEADER FONT
+                                                </FieldLabel>
                                                 <Dropdown
                                                     id="headerDropdown"
-                                                  //  placeholder="Header Font"
+                                                    //  placeholder="Header Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -552,9 +560,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                             <EntryThemeDiv>
-                                            <FieldLabel >SUBHEADER FONT </FieldLabel >
+                                                <FieldLabel>
+                                                    SUBHEADER FONT{" "}
+                                                </FieldLabel>
                                                 <Dropdown
-                                                  //  placeholder="Subheader Font"
+                                                    //  placeholder="Subheader Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -573,9 +583,12 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </EntryThemeContainerDiv>
                                         <EntryThemeContainerDiv>
                                             <EntryThemeDiv>
-                                            <FieldLabel > BODY COPY FONT </FieldLabel>
+                                                <FieldLabel>
+                                                    {" "}
+                                                    BODY COPY FONT{" "}
+                                                </FieldLabel>
                                                 <Dropdown
-                                                   // placeholder="Body Copy Font"
+                                                    // placeholder="Body Copy Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -592,9 +605,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                             <EntryThemeDiv>
-                                                <FieldLabel >CAPTION COPY FONT </FieldLabel>
+                                                <FieldLabel>
+                                                    CAPTION COPY FONT{" "}
+                                                </FieldLabel>
                                                 <Dropdown
-                                                   // placeholder="Caption Copy Font"
+                                                    // placeholder="Caption Copy Font"
                                                     fluid
                                                     selection
                                                     options={FONT_OPTIONS}
@@ -612,7 +627,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 />
                                             </EntryThemeDiv>
                                         </EntryThemeContainerDiv>
-                                        <FieldLabel >COLOUR THEME</FieldLabel>
+                                        <FieldLabel>COLOUR THEME</FieldLabel>
                                         <ColourThemeContainerDiv>
                                             {Boolean(colours) &&
                                                 colours.size > 0 &&
@@ -672,218 +687,237 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </ColourThemeContainerDiv>
                                     </ThemeContainerDiv>
                                     <LayoutContainerDiv>
-                                      <div style={{}}>
-                                       <SectionHeader>Default Layout</SectionHeader> 
-                                        <LayoutEntryContainerDiv>
-                                            <LayoutEntryDropdownDiv>
-                                                <FieldLabel>DEFAULT START LAYOUT</FieldLabel>
-                                                <Dropdown
-                                                   // placeholder="Default Start Layout"
-                                                    fluid
-                                                    selection
-                                                    options={
-                                                        START_LAYOUT_OPTIONS
-                                                    }
-                                                    onChange={
-                                                        this
-                                                            .updateDefaultStartLayout
-                                                    }
-                                                    // value={
-                                                    //     currentDefaultStartLayout.size > 0
-                                                    //         ? currentDefaultStartLayout.get("id")
-                                                    //         : null
-                                                    // }
-                                                    value={values.get(
-                                                        "defaultStartLayout"
-                                                    )}
-                                                    error={
-                                                        currentAttributeError ===
-                                                        "defaultStartLayout"
-                                                    }
-                                                />
-                                            </LayoutEntryDropdownDiv>
-                                            {Boolean(
-                                                // currentDefaultStartLayout
-                                                //     .get("media")
-                                                //     .get("path")
-                                                Boolean(
-                                                    values.get(
-                                                        "defaultStartLayout"
+                                        <div style={{}}>
+                                            <SectionHeader>
+                                                Default Layout
+                                            </SectionHeader>
+                                            <LayoutEntryContainerDiv>
+                                                <LayoutEntryDropdownDiv>
+                                                    <FieldLabel>
+                                                        DEFAULT START LAYOUT
+                                                    </FieldLabel>
+                                                    <Dropdown
+                                                        // placeholder="Default Start Layout"
+                                                        fluid
+                                                        selection
+                                                        options={
+                                                            START_LAYOUT_OPTIONS
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .updateDefaultStartLayout
+                                                        }
+                                                        // value={
+                                                        //     currentDefaultStartLayout.size > 0
+                                                        //         ? currentDefaultStartLayout.get("id")
+                                                        //         : null
+                                                        // }
+                                                        value={values.get(
+                                                            "defaultStartLayout"
+                                                        )}
+                                                        error={
+                                                            currentAttributeError ===
+                                                            "defaultStartLayout"
+                                                        }
+                                                    />
+                                                </LayoutEntryDropdownDiv>
+                                                {Boolean(
+                                                    // currentDefaultStartLayout
+                                                    //     .get("media")
+                                                    //     .get("path")
+                                                    Boolean(
+                                                        values.get(
+                                                            "defaultStartLayout"
+                                                        )
                                                     )
-                                                )
-                                            ) && (
-                                                <LayoutEntryPreviewDiv>
-                                                    <LayoutEntryPreviewImage
-                                                        // src={currentDefaultStartLayout
-                                                        //     .get("media")
-                                                        //     .get("path")}
-                                                        src={this.getLayoutMedia(
-                                                            values.get(
-                                                                "defaultStartLayout"
-                                                            )
+                                                ) && (
+                                                    <LayoutEntryPreviewDiv>
+                                                        <LayoutEntryPreviewImage
+                                                            // src={currentDefaultStartLayout
+                                                            //     .get("media")
+                                                            //     .get("path")}
+                                                            src={this.getLayoutMedia(
+                                                                values.get(
+                                                                    "defaultStartLayout"
+                                                                )
+                                                            )}
+                                                            alt="layout preview"
+                                                        />
+                                                    </LayoutEntryPreviewDiv>
+                                                )}
+                                            </LayoutEntryContainerDiv>
+                                            <LayoutEntryContainerDiv>
+                                                <LayoutEntryDropdownDiv>
+                                                    <FieldLabel>
+                                                        DEFAULT HOME LAYOUT{" "}
+                                                    </FieldLabel>
+                                                    <Dropdown
+                                                        //  placeholder="Default Home Layout"
+                                                        fluid
+                                                        selection
+                                                        options={
+                                                            HOME_LAYOUT_OPTIONS
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .updateDefaultHomeLayout
+                                                        }
+                                                        // value={
+                                                        //     currentDefaultHomeLayout.size > 0
+                                                        //         ? currentDefaultHomeLayout.get("id")
+                                                        //         : null
+                                                        // }
+                                                        value={values.get(
+                                                            "defaultHomeLayout"
                                                         )}
-                                                        alt="layout preview"
+                                                        error={
+                                                            currentAttributeError ===
+                                                            "defaultHomeLayout"
+                                                        }
                                                     />
-                                                </LayoutEntryPreviewDiv>
-                                            )}
-                                        </LayoutEntryContainerDiv>
-                                        <LayoutEntryContainerDiv>
-                                            <LayoutEntryDropdownDiv>
-                                            <FieldLabel>DEFAULT HOME LAYOUT </FieldLabel>
-                                                <Dropdown
-                                                  //  placeholder="Default Home Layout"
-                                                    fluid
-                                                    selection
-                                                    options={
-                                                        HOME_LAYOUT_OPTIONS
-                                                    }
-                                                    onChange={
-                                                        this
-                                                            .updateDefaultHomeLayout
-                                                    }
-                                                    // value={
-                                                    //     currentDefaultHomeLayout.size > 0
-                                                    //         ? currentDefaultHomeLayout.get("id")
-                                                    //         : null
-                                                    // }
-                                                    value={values.get(
+                                                </LayoutEntryDropdownDiv>
+                                                {Boolean(
+                                                    // currentDefaultHomeLayout
+                                                    //     .get("media")
+                                                    //     .get("path")
+                                                    values.get(
                                                         "defaultHomeLayout"
-                                                    )}
-                                                    error={
-                                                        currentAttributeError ===
-                                                        "defaultHomeLayout"
-                                                    }
-                                                />
-                                            </LayoutEntryDropdownDiv>
-                                            {Boolean(
-                                                // currentDefaultHomeLayout
-                                                //     .get("media")
-                                                //     .get("path")
-                                                values.get("defaultHomeLayout")
-                                            ) && (
-                                                <LayoutEntryPreviewDiv >
-                                                    <LayoutEntryPreviewImage
-                                                    
-                                                        // src={currentDefaultHomeLayout
-                                                        //     .get("media")
-                                                        //     .get("path")}
-                                                        src={this.getLayoutMedia(
-                                                            values.get(
-                                                                "defaultHomeLayout"
-                                                            )
+                                                    )
+                                                ) && (
+                                                    <LayoutEntryPreviewDiv>
+                                                        <LayoutEntryPreviewImage
+                                                            // src={currentDefaultHomeLayout
+                                                            //     .get("media")
+                                                            //     .get("path")}
+                                                            src={this.getLayoutMedia(
+                                                                values.get(
+                                                                    "defaultHomeLayout"
+                                                                )
+                                                            )}
+                                                            alt="layout preview"
+                                                        />
+                                                    </LayoutEntryPreviewDiv>
+                                                )}
+                                            </LayoutEntryContainerDiv>
+                                            <LayoutEntryContainerDiv>
+                                                <LayoutEntryDropdownDiv>
+                                                    <FieldLabel>
+                                                        DEFAULT DIRECTORY LIST
+                                                        LAYOUT
+                                                    </FieldLabel>
+                                                    <Dropdown
+                                                        //  placeholder="Default Directory List Layout"
+                                                        fluid
+                                                        selection
+                                                        options={
+                                                            LIST_LAYOUT_OPTIONS
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .updateDefaultDirListLayout
+                                                        }
+                                                        // value={
+                                                        //     currentDefaultDirListLayout.size > 0
+                                                        //         ? currentDefaultDirListLayout.get("id")
+                                                        //         : null
+                                                        // }
+                                                        value={values.get(
+                                                            "defaultDirListLayout"
                                                         )}
-                                                        alt="layout preview"
+                                                        error={
+                                                            currentAttributeError ===
+                                                            "defaultDirListLayout"
+                                                        }
                                                     />
-                                                </LayoutEntryPreviewDiv>
-                                            )}
-                                        </LayoutEntryContainerDiv>
-                                        <LayoutEntryContainerDiv>
-                                            <LayoutEntryDropdownDiv>
-                                                <FieldLabel>DEFAULT DIRECTORY LIST LAYOUT</FieldLabel>
-                                                <Dropdown
-                                                  //  placeholder="Default Directory List Layout"
-                                                    fluid
-                                                    selection
-                                                    options={
-                                                        LIST_LAYOUT_OPTIONS
-                                                    }
-                                                    onChange={
-                                                        this
-                                                            .updateDefaultDirListLayout
-                                                    }
-                                                    // value={
-                                                    //     currentDefaultDirListLayout.size > 0
-                                                    //         ? currentDefaultDirListLayout.get("id")
-                                                    //         : null
-                                                    // }
-                                                    value={values.get(
+                                                </LayoutEntryDropdownDiv>
+                                                {Boolean(
+                                                    // currentDefaultDirListLayout
+                                                    //     .get("media")
+                                                    //     .get("path")
+                                                    values.get(
                                                         "defaultDirListLayout"
-                                                    )}
-                                                    error={
-                                                        currentAttributeError ===
-                                                        "defaultDirListLayout"
-                                                    }
-                                                />
-                                            </LayoutEntryDropdownDiv>
-                                            {Boolean(
-                                                // currentDefaultDirListLayout
-                                                //     .get("media")
-                                                //     .get("path")
-                                                values.get(
-                                                    "defaultDirListLayout"
-                                                )
-                                            ) && (
-                                                <LayoutEntryPreviewDiv>
-                                                    <LayoutEntryPreviewImage
-                                                        // src={currentDefaultDirListLayout
-                                                        //     .get("media")
-                                                        //     .get("path")}
-                                                        src={this.getLayoutMedia(
-                                                            values.get(
-                                                                "defaultDirListLayout"
-                                                            )
+                                                    )
+                                                ) && (
+                                                    <LayoutEntryPreviewDiv>
+                                                        <LayoutEntryPreviewImage
+                                                            // src={currentDefaultDirListLayout
+                                                            //     .get("media")
+                                                            //     .get("path")}
+                                                            src={this.getLayoutMedia(
+                                                                values.get(
+                                                                    "defaultDirListLayout"
+                                                                )
+                                                            )}
+                                                            alt="layout preview"
+                                                        />
+                                                    </LayoutEntryPreviewDiv>
+                                                )}
+                                            </LayoutEntryContainerDiv>
+                                            <LayoutEntryContainerDiv>
+                                                <LayoutEntryDropdownDiv>
+                                                    <FieldLabel>
+                                                        {" "}
+                                                        DEFAULT DIRECTORY ENTRY
+                                                        LAYOUT
+                                                    </FieldLabel>
+                                                    <Dropdown
+                                                        //  placeholder="Default Directory Entry Layout"
+                                                        fluid
+                                                        selection
+                                                        options={
+                                                            ENTRY_LAYOUT_OPTIONS
+                                                        }
+                                                        onChange={
+                                                            this
+                                                                .updateDefaultDirEntryLayout
+                                                        }
+                                                        // value={
+                                                        //     currentDefaultDirEntryLayout.size > 0
+                                                        //         ? currentDefaultDirEntryLayout.get("id")
+                                                        //         : null
+                                                        // }
+                                                        value={values.get(
+                                                            "defaultDirEntryLayout"
                                                         )}
-                                                        alt="layout preview"
+                                                        error={
+                                                            currentAttributeError ===
+                                                            "defaultDirEntryLayout"
+                                                        }
                                                     />
-                                                </LayoutEntryPreviewDiv>
-                                            )}
-                                        </LayoutEntryContainerDiv>
-                                        <LayoutEntryContainerDiv>
-                                            <LayoutEntryDropdownDiv>
-                                                <FieldLabel> DEFAULT DIRECTORY ENTRY LAYOUT</FieldLabel>
-                                                <Dropdown
-                                                  //  placeholder="Default Directory Entry Layout"
-                                                    fluid
-                                                    selection
-                                                    options={
-                                                        ENTRY_LAYOUT_OPTIONS
-                                                    }
-                                                    onChange={
-                                                        this
-                                                            .updateDefaultDirEntryLayout
-                                                    }
-                                                    // value={
-                                                    //     currentDefaultDirEntryLayout.size > 0
-                                                    //         ? currentDefaultDirEntryLayout.get("id")
-                                                    //         : null
-                                                    // }
-                                                    value={values.get(
+                                                </LayoutEntryDropdownDiv>
+                                                {Boolean(
+                                                    // currentDefaultDirEntryLayout
+                                                    //     .get("media")
+                                                    //     .get("path")
+                                                    values.get(
                                                         "defaultDirEntryLayout"
-                                                    )}
-                                                    error={
-                                                        currentAttributeError ===
-                                                        "defaultDirEntryLayout"
-                                                    }
-                                                />
-                                            </LayoutEntryDropdownDiv>
-                                            {Boolean(
-                                                // currentDefaultDirEntryLayout
-                                                //     .get("media")
-                                                //     .get("path")
-                                                values.get(
-                                                    "defaultDirEntryLayout"
-                                                )
-                                            ) && (
-                                                <LayoutEntryPreviewDiv>
-                                                    <LayoutEntryPreviewImage
-                                                        // src={currentDefaultDirEntryLayout
-                                                        //     .get("media")
-                                                        //     .get("path")}
-                                                        src={this.getLayoutMedia(
-                                                            values.get(
-                                                                "defaultDirEntryLayout"
-                                                            )
-                                                        )}
-                                                        alt="layout preview"
-                                                    />
-                                                </LayoutEntryPreviewDiv>
-                                            )}
-                                        </LayoutEntryContainerDiv>
-                                    </div>
-                                    <div style={{clear:'both', marginBottom:"20%"}}></div>
+                                                    )
+                                                ) && (
+                                                    <LayoutEntryPreviewDiv>
+                                                        <LayoutEntryPreviewImage
+                                                            // src={currentDefaultDirEntryLayout
+                                                            //     .get("media")
+                                                            //     .get("path")}
+                                                            src={this.getLayoutMedia(
+                                                                values.get(
+                                                                    "defaultDirEntryLayout"
+                                                                )
+                                                            )}
+                                                            alt="layout preview"
+                                                        />
+                                                    </LayoutEntryPreviewDiv>
+                                                )}
+                                            </LayoutEntryContainerDiv>
+                                        </div>
+                                        <div
+                                            style={{
+                                                clear: "both",
+                                                marginBottom: "20%"
+                                            }}
+                                        />
                                         <ButtonContainerDiv>
                                             <ContinueButton
-                                                style={{width:"60%"}}
+                                                style={{ width: "60%" }}
                                                 variant="outlined"
                                                 component="span"
                                                 // className={
@@ -895,12 +929,10 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     )
                                                 }
                                             >
-                                                CONFIRM & CONTINUE 
+                                                CONFIRM & CONTINUE
                                             </ContinueButton>
                                         </ButtonContainerDiv>
-                                        
                                     </LayoutContainerDiv>
-                                    
                                 </React.Fragment>
                             ) : (
                                 <React.Fragment>

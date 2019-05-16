@@ -88,7 +88,6 @@ export const NormalButton = styled.button`
     variant: outlined;
     component: span;
     &:hover {
-       // font-weight: bold;
        background-color: #EBEBF2;
     }
 `;
@@ -360,8 +359,8 @@ export const UploadDeleteButton = styled.label`
     width: 200px;
     text-align: center;
     cursor: pointer;
-    padding: 15px 5px;
-    font-size: 1.3em;
+    padding: 7px 5px;
+    font-size: 14px;
     color: #2699fb;
     border-radius: 5px;
     margin: 10px;
