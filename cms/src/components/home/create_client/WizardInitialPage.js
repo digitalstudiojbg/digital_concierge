@@ -5,45 +5,14 @@ import { withRouter } from "react-router-dom";
 import { WELCOME_URL } from "../../../utils/Constants";
 import { withStyles } from "@material-ui/core/styles";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-`;
-
-const CancelButtonContainerDiv = styled.div`
-    width: 100%;
-    height: 10%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`;
-
-const ContentContainerDiv = styled.div`
-    width: 100%;
-    height: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const TitleDiv = styled.div`
-    font-size: 30px;
-    color: black;
-    display: flex;
-    align-items: center;
-    margin-bottom: 100px;
-`;
-
-const HighlightSpan = styled.span`
-    font-size: 60px;
-    font-weight: 700;
-    padding-left: 10px;
-`;
-
-const StartSetupButtonContainerDiv = styled.div`
-    width: 30%;
-`;
+import {
+    ContainerDiv,
+    CancelButtonContainerDiv,
+    ContentContainerDiv,
+    TitleDiv,
+    HighlightSpan,
+    StartSetupButtonContainerDiv
+} from "./CreateClientStyleSet";
 
 const styles = () => ({
     startSetupButton: {
@@ -54,6 +23,7 @@ const styles = () => ({
         padding: "3% 5%",
         margin: "0 10%",
         width: "80%"
+        // &:active{ backgroundColor: "red" }
     }
 });
 
@@ -62,7 +32,7 @@ export const WizardInitialPage = ({ next, history, classes }) => {
         history.push(WELCOME_URL);
     };
     return (
-        <ContainerDiv>
+        <ContainerDiv style={{ display: "inline-block", height: "100vh" }}>
             <CancelButtonContainerDiv>
                 <Button variant="outlined" onClick={cancelCreate}>
                     CANCEL

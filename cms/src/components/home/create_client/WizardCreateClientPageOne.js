@@ -33,44 +33,6 @@ import {
     ContinueButton
 } from "./CreateClientStyleSet";
 
-// const renderTextField = (name, label, required, type, className = null) => (
-//     // <Field
-//     //     name={name}
-//     //     validateOnBlur
-//     //     validateOnChange
-//     //     render={({ field, form }) => (
-//     //         <TextField
-//     //             label={label}
-//     //             fullWidth={true}
-//     //             required={required}
-//     //             variant="outlined"
-//     //             name={field.name}
-//     //             value={field.value}
-//     //             onChange={field.onChange}
-//     //             onBlur={field.onBlur}
-//     //             error={form.errors[field.name] && form.touched[field.name]}
-//     //             helperText={
-//     //                 form.errors[field.name] &&
-//     //                 form.touched[field.name] &&
-//     //                 String(form.errors[field.name])
-//     //             }
-//     //         />
-//     //     )}
-//     // />
-
-//     <Field
-//         //  className={classes.myInput}
-//         name={name}
-//         {...Boolean(label) && { label }}
-//         required={required}
-//         type={type}
-//         component={TextField}
-//         variant="outlined"
-//         fullWidth={true}
-//         //{...Boolean(className) && { className }}
-//     />
-// );
-
 //Bug in rendering material ui select label once value is selected
 const renderSelectField = (
     name,
@@ -124,8 +86,8 @@ const renderSelectField = (
             name={name}
             component={Select}
             disabled={items.length < 1}
-            input={<OutlinedInput style={{ padding: "0px" }} />}
-            style={{ height: 38 }}
+            input={<OutlinedInput />}
+            style={{ height: 38, backgroundColor: "white" }}
         >
             <MenuItem value="null" disabled>
                 {label}
@@ -153,7 +115,8 @@ const styles = theme => ({
         width: "100%"
     },
     myInput: {
-        padding: "10px"
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -352,7 +315,9 @@ class WizardCreateClientPageOne extends React.Component {
                             }) => {
                                 return (
                                     <Form>
-                                        <ContainerDiv>
+                                        <ContainerDiv
+                                        //  style={{ height: "60vh" }}
+                                        >
                                             <SectionDiv
                                                 style={{
                                                     width: "50%",
@@ -470,6 +435,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                 style={{
                                                     width: "25%",
                                                     border: "0px"
+                                                    //   height: "80vh"
                                                 }}
                                             >
                                                 <SectionHeader>

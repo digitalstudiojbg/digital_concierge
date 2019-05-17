@@ -36,12 +36,14 @@ import {
     FiledContainer,
     FieldLabel,
     SubFieldContainerDiv,
-    ContinueButton
+    ContinueButton,
+    SubSection
 } from "./CreateClientStyleSet";
 
 const styles = theme => ({
     myInput: {
-        padding: "10px"
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -139,7 +141,11 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
-                input={<OutlinedInput style={{ height: 38 }} />}
+                input={
+                    <OutlinedInput
+                        style={{ height: 38, backgroundColor: "white" }}
+                    />
+                }
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -154,20 +160,6 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
     );
 };
 
-const renderDateField = ({ name, label, required, type }) => (
-    <Field
-        id={name}
-        name={name}
-        label={label}
-        required={required}
-        type={type}
-        component={TextField}
-        variant="outlined"
-        fullWidth={true}
-        input={<InputBase style={{ height: 38 }} />}
-    />
-);
-
 class WizardCreateClientPageTwo extends React.Component {
     constructor(props) {
         super(props);
@@ -181,7 +173,7 @@ class WizardCreateClientPageTwo extends React.Component {
         switch (type) {
             case "date":
             case "text":
-                return renderDateField({
+                return this.renderDateField({
                     name,
                     label,
                     required,
@@ -197,6 +189,20 @@ class WizardCreateClientPageTwo extends React.Component {
                 return <React.Fragment />;
         }
     }
+
+    renderDateField = ({ name, label, required, type }) => (
+        <Field
+            id={name}
+            name={name}
+            label={label}
+            required={required}
+            type={type}
+            component={TextField}
+            variant="outlined"
+            fullWidth={true}
+            inputProps={{ className: this.props.classes.myInput }}
+        />
+    );
 
     renderLicenseForm() {
         const { getLicenseTypes: { licenseTypes = {} } = {} } = this.props;
@@ -354,50 +360,54 @@ class WizardCreateClientPageTwo extends React.Component {
         const { getCurrencyList: { currencies = {} } = {} } = this.props;
 
         return (
-            <SectionDiv
-                style={{ width: "33%", height: "500px", borderRight: "0" }}
-            >
-                <SectionHeader>Payment</SectionHeader>
-                {PAYMENT_TEXT_FIELD.map(({ name, label, required, type }) => (
-                    <SubFieldContainerDiv>
-                        <FiledContainer>
-                            <FieldLabel>{label}</FieldLabel>
-                            {this.selectRenderMethod({
-                                name,
-                                //  label,
-                                required,
-                                type
-                            })}
-                        </FiledContainer>
-                    </SubFieldContainerDiv>
-                ))}
-                <FiledContainer>
-                    <SubFieldContainerDiv>
-                        <FieldLabel>CURRENCY</FieldLabel>
-                        {currencies.length > 0 &&
-                            this.selectRenderMethod({
-                                name: "currency",
-                                //  label: "CURRENCY",
-                                required: true,
-                                type: "select",
-                                optionList: currencies
-                            })}
-                    </SubFieldContainerDiv>
-                </FiledContainer>
-                {PAYMENT_DATE_FIELD.map(({ name, label, required, type }) => (
+            <SectionDiv style={{ width: "33%", borderRight: "0" }}>
+                <SubSection style={{ height: "50vh" }}>
+                    <SectionHeader>Payment</SectionHeader>
+                    {PAYMENT_TEXT_FIELD.map(
+                        ({ name, label, required, type }) => (
+                            <SubFieldContainerDiv>
+                                <FiledContainer>
+                                    <FieldLabel>{label}</FieldLabel>
+                                    {this.selectRenderMethod({
+                                        name,
+                                        //  label,
+                                        required,
+                                        type
+                                    })}
+                                </FiledContainer>
+                            </SubFieldContainerDiv>
+                        )
+                    )}
                     <FiledContainer>
                         <SubFieldContainerDiv>
-                            <FieldLabel>{label}</FieldLabel>
-                            {this.selectRenderMethod({
-                                name,
-                                // label,
-                                required,
-                                type
-                            })}
+                            <FieldLabel>CURRENCY</FieldLabel>
+                            {currencies.length > 0 &&
+                                this.selectRenderMethod({
+                                    name: "currency",
+                                    //  label: "CURRENCY",
+                                    required: true,
+                                    type: "select",
+                                    optionList: currencies
+                                })}
                         </SubFieldContainerDiv>
                     </FiledContainer>
-                ))}
-                <div
+                    {PAYMENT_DATE_FIELD.map(
+                        ({ name, label, required, type }) => (
+                            <FiledContainer>
+                                <SubFieldContainerDiv>
+                                    <FieldLabel>{label}</FieldLabel>
+                                    {this.selectRenderMethod({
+                                        name,
+                                        // label,
+                                        required,
+                                        type
+                                    })}
+                                </SubFieldContainerDiv>
+                            </FiledContainer>
+                        )
+                    )}
+                </SubSection>
+                <SubSection
                 // style={{
                 //     paddingBottom: "20px",
                 //     display: "flex",
@@ -405,7 +415,7 @@ class WizardCreateClientPageTwo extends React.Component {
                 // }}
                 >
                     <ContinueButton
-                        style={{ width: "90%", margin: "60px 0 60px 35px" }}
+                        style={{ width: "90%", margin: "0 0 180px 35px" }}
                         //  type="submit"
                         variant="contained"
                         color="primary"
@@ -418,7 +428,7 @@ class WizardCreateClientPageTwo extends React.Component {
                     >
                         CONFIRM & CONTINUE
                     </ContinueButton>
-                </div>
+                </SubSection>
             </SectionDiv>
         );
     }

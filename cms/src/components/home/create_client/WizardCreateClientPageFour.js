@@ -56,7 +56,8 @@ const styles = theme => ({
         padding: "0px"
     },
     myInput: {
-        padding: "10px"
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 //inputProps={{ className: this.props.classes.myInput }}
@@ -69,7 +70,11 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
-                input={<OutlinedInput style={{ height: 38 }} />}
+                input={
+                    <OutlinedInput
+                        style={{ height: 38, backgroundColor: "white" }}
+                    />
+                }
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -262,10 +267,10 @@ class WizardCreateClientPageFour extends React.Component {
                             flex: "1",
                             justifyContent: "left",
                             height: "430px",
-                            width: "96%",
+                            width: "97%",
                             margin: "1% 5% 5%",
                             overflow: "auto",
-                            padding: "2%",
+                            padding: "1%",
                             border: "1px solid #9D9D9D",
                             borderRadius: "5px",
 
@@ -374,7 +379,8 @@ class WizardCreateClientPageFour extends React.Component {
                         border: "1px solid #9D9D9D",
                         borderRadius: "5px",
                         overflowY: "scroll",
-                        height: "430px"
+                        height: "430px",
+                        backgroundColor: "white"
                     }}
                 >
                     <div
@@ -466,7 +472,7 @@ class WizardCreateClientPageFour extends React.Component {
                                             width: "40%",
                                             paddingLeft: "10px",
                                             height: "5%",
-                                            marginBottom: "50%"
+                                            marginBottom: "40%"
                                         }}
                                     >
                                         <FieldLabel>

@@ -57,7 +57,7 @@ import {
     AllPermissionContainerDiv,
     AllPermissionFooterContainerDiv,
     PermissionFooterEntryDiv,
-    SubFieldContainerDiv,
+    SubSection,
     FieldLabel,
     NormalButton,
     ContinueButton
@@ -68,7 +68,8 @@ const styles = theme => ({
         fontSize: "10px"
     },
     myInput: {
-        padding: "10px"
+        padding: "10px",
+        background: "white"
     }
 });
 
@@ -478,7 +479,7 @@ class WizardCreateClientPageThree extends React.Component {
     }
 
     render() {
-        //let clientId = 1;
+        //  let clientId = 1;
         let clientId = null;
 
         try {
@@ -517,7 +518,7 @@ class WizardCreateClientPageThree extends React.Component {
                             <SectionDivContainer
                                 style={{
                                     borderRight: "1px solid #9D9D9D",
-                                    borderRadius: "5px",
+                                    //  borderRadius: "5px",
                                     paddingRight: "0"
                                 }}
                             >
@@ -563,7 +564,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                     values,
                                                     { setSubmitting }
                                                 ) => {
-                                                    alert(values.name);
+                                                    //  alert(values.name);
                                                     addANewDepartment({
                                                         variables: {
                                                             input: {
@@ -803,7 +804,9 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         </InputLabel> */}
                                                                             <Select
                                                                                 style={{
-                                                                                    height: 38
+                                                                                    height: 38,
+                                                                                    backgroundColor:
+                                                                                        "white"
                                                                                 }}
                                                                                 id="simple-department-picker"
                                                                                 value={
@@ -940,6 +943,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                             );
                                                                         }}
                                                                     </Mutation>
+
                                                                     <div
                                                                         style={{
                                                                             paddingTop: 10,
@@ -997,12 +1001,14 @@ class WizardCreateClientPageThree extends React.Component {
                                     return (
                                         <SectionDivContainer
                                             style={{
-                                                paddingLeft: "20px",
-                                                paddingRight: "0",
-                                                height: "650px"
+                                                // paddingLeft: "20px",
+                                                // paddingRight: "0",
+                                                padding: "0 0 10px 20px"
+                                                //  height: "650px"
+                                                //  height: "80vh"
                                             }}
                                         >
-                                            <div
+                                            <SubSection
                                                 style={{
                                                     width: "100%",
                                                     display: "flex"
@@ -1044,7 +1050,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 .handleOpenMultipleDuplicateModal
                                                         }
                                                     >
-                                                        <CopyIcon fontSize="large" />
+                                                        <CopyIcon
+                                                            style={{
+                                                                padding: 0
+                                                            }}
+                                                            fontSize="large"
+                                                        />
                                                     </IconButton>
                                                 </div>
                                                 <div
@@ -1067,10 +1078,15 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 .handleOpenMultipleDeleteModal
                                                         }
                                                     >
-                                                        <DeleteIcon fontSize="large" />
+                                                        <DeleteIcon
+                                                            style={{
+                                                                padding: 0
+                                                            }}
+                                                            fontSize="large"
+                                                        />
                                                     </IconButton>
                                                 </div>
-                                            </div>
+                                            </SubSection>
 
                                             {/* <ReactTable
                                                 defaultPageSize={10}
@@ -1277,23 +1293,28 @@ class WizardCreateClientPageThree extends React.Component {
                                                         }
                                                     />
                                                 )}
-
-                                            <Table
-                                                style={{
-                                                    dispaly: "flex",
-                                                    border: "1px solid #9D9D9D",
-                                                    borderRadius: "5px"
-                                                }}
+                                            <SubSection
+                                                style={{ height: "60vh" }}
                                             >
-                                                <TableHead>
-                                                    <TableRow
-                                                        style={{
-                                                            borderBottom:
-                                                                "2px solid #5C5C5C",
-                                                            width: "100%"
-                                                        }}
-                                                    >
-                                                        {/* <TableCell padding="checkbox">
+                                                <Table
+                                                    style={{
+                                                        dispaly: "flex",
+                                                        border:
+                                                            "1px solid #9D9D9D",
+                                                        borderRadius: "5px"
+                                                    }}
+                                                >
+                                                    <TableHead>
+                                                        <TableRow
+                                                            style={{
+                                                                borderBottom:
+                                                                    "2px solid #5C5C5C",
+                                                                width: "100%",
+                                                                background:
+                                                                    "white"
+                                                            }}
+                                                        >
+                                                            {/* <TableCell padding="checkbox">
                                                             <Checkbox
                                                                 indeterminate={
                                                                     selected_roles.size >
@@ -1335,86 +1356,93 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 }}
                                                             />
                                                         </TableCell> */}
-                                                        <TableCell
-                                                            style={{
-                                                                width: "40%"
-                                                            }}
-                                                        >
-                                                            ROLE
-                                                        </TableCell>
-                                                        <TableCell
-                                                            style={{
-                                                                width: "40%"
-                                                            }}
-                                                        >
-                                                            DEPARTMENT
-                                                        </TableCell>
-                                                        <TableCell
-                                                            style={{
-                                                                width: "20%"
-                                                            }}
-                                                        >
-                                                            ACTIONS
-                                                        </TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {roleList.map(role => (
-                                                        <TableRow
-                                                            key={`TABLE-ROW-${
-                                                                role.id
-                                                            }`}
-                                                        >
-                                                            <TableCell>
-                                                                <Checkbox
-                                                                    style={{
-                                                                        padding:
-                                                                            "0",
-                                                                        marginRight:
-                                                                            "10px",
-                                                                        color:
-                                                                            "#707070"
-                                                                    }}
-                                                                    id={role.id}
-                                                                    checked={this.state.selected_roles.includes(
-                                                                        role.id
-                                                                    )}
-                                                                    onChange={
-                                                                        this
-                                                                            .handleChangeSelectedRoles
-                                                                    }
-                                                                />
-
-                                                                {role.name}
+                                                            <TableCell
+                                                                style={{
+                                                                    width: "40%"
+                                                                }}
+                                                            >
+                                                                ROLE
                                                             </TableCell>
-                                                            <TableCell>
-                                                                {
-                                                                    role
-                                                                        .department
-                                                                        .name
-                                                                }
+                                                            <TableCell
+                                                                style={{
+                                                                    width: "40%"
+                                                                }}
+                                                            >
+                                                                DEPARTMENT
                                                             </TableCell>
-                                                            <TableCell>
-                                                                <MoreHorizontalIcon
-                                                                    onClick={
-                                                                        // this
-                                                                        //     .handleOpenOptions
-                                                                        event => {
-                                                                            this.setState(
-                                                                                {
-                                                                                    anchorEl:
-                                                                                        event.currentTarget,
-                                                                                    editRole: role
-                                                                                }
-                                                                            );
-                                                                        }
-                                                                    }
-                                                                />
+                                                            <TableCell
+                                                                style={{
+                                                                    width: "20%"
+                                                                }}
+                                                            >
+                                                                ACTIONS
                                                             </TableCell>
                                                         </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {roleList.map(role => (
+                                                            <TableRow
+                                                                style={{
+                                                                    background:
+                                                                        "white"
+                                                                }}
+                                                                key={`TABLE-ROW-${
+                                                                    role.id
+                                                                }`}
+                                                            >
+                                                                <TableCell>
+                                                                    <Checkbox
+                                                                        style={{
+                                                                            padding:
+                                                                                "0",
+                                                                            marginRight:
+                                                                                "10px",
+                                                                            color:
+                                                                                "#707070"
+                                                                        }}
+                                                                        id={
+                                                                            role.id
+                                                                        }
+                                                                        checked={this.state.selected_roles.includes(
+                                                                            role.id
+                                                                        )}
+                                                                        onChange={
+                                                                            this
+                                                                                .handleChangeSelectedRoles
+                                                                        }
+                                                                    />
+
+                                                                    {role.name}
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    {
+                                                                        role
+                                                                            .department
+                                                                            .name
+                                                                    }
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <MoreHorizontalIcon
+                                                                        onClick={
+                                                                            // this
+                                                                            //     .handleOpenOptions
+                                                                            event => {
+                                                                                this.setState(
+                                                                                    {
+                                                                                        anchorEl:
+                                                                                            event.currentTarget,
+                                                                                        editRole: role
+                                                                                    }
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                    />
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </SubSection>
                                             {/* <PageThreeRoleTable
                                                 roles={roleList}
                                             /> */}
@@ -1461,11 +1489,12 @@ class WizardCreateClientPageThree extends React.Component {
                                                     DELETE
                                                 </MenuItem>
                                             </Menu>
-                                            <SectionDiv
+
+                                            <SubSection
                                                 style={{
-                                                    width: "100%",
-                                                    display: "flex",
-                                                    justifyContent: "flex-end"
+                                                    width: "100%"
+                                                    //display: "flex"
+                                                    // justifyContent: "flex-end"
                                                     // paddingTop: 50
                                                 }}
                                             >
@@ -1473,7 +1502,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                     style={{
                                                         width: "50%",
                                                         marginLeft: "50%",
-                                                        marginBottom: "10%"
+                                                        marginBottom: "0"
                                                     }}
                                                     variant="contained"
                                                     color="primary"
@@ -1484,7 +1513,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                 >
                                                     CONFIRM & CONTINUE
                                                 </ContinueButton>
-                                            </SectionDiv>
+                                            </SubSection>
                                         </SectionDivContainer>
                                     );
                                 }}
@@ -1498,10 +1527,3 @@ class WizardCreateClientPageThree extends React.Component {
 }
 
 export default withApollo(withStyles(styles)(WizardCreateClientPageThree));
-
-//export default (withStyles(styles))(withApollo(WizardCreateClientPageThree));
-
-// export default compose(
-//     withApollo,
-//     withStyles(styles),
-// )(WizardCreateClientPageThree);

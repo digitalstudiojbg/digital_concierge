@@ -20,7 +20,7 @@ class WizardCreateClientPageSix extends React.Component {
         const { getCurrentUser: user } = client.readQuery({ query });
 
         let new_create_client_id;
-        //  let new_create_client_id = 1;
+        //let new_create_client_id = 1;
         try {
             new_create_client_id = client.readQuery({
                 query: getNewCreatedClientId
@@ -47,7 +47,8 @@ class WizardCreateClientPageSix extends React.Component {
                         width: "100%",
                         paddingTop: 20,
                         display: "flex",
-                        justifyContent: "flex-end"
+                        justifyContent: "flex-end",
+                        backgroundColor: "#F4F4F4"
                     }}
                 >
                     <ContinueButton

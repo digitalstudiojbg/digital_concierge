@@ -35,8 +35,9 @@ const styles = theme => ({
     root: {
         width: "90%",
         marginLeft: "auto",
-        marginRight: "auto"
-        //  backgroundColor: "#F4F4F4"
+        marginRight: "auto",
+        backgroundColor: "#F4F4F4",
+        height: "100%"
     },
     button: {
         marginRight: theme.spacing.unit
@@ -45,19 +46,28 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit
     },
-    icon: {
+    unCopletedIcon: {
+        color: "white",
+        border: "2px solid #DDDDDD",
+        borderRadius: "50%",
+        fontColor: "black"
+    },
+    completedIcon: {
         color: "#2699FB !important",
-        alternativeLabel: {
-            color: "#2699FB !important"
-        }
+        border: "2px solid #2699FB"
+
+        // alternativeLabel: {
+        //     color: "red !important"
+        // }
     },
     activeIcon: {
         color: "white !important",
         border: "2px solid #2699FB",
         borderRadius: "50%",
-        alternativeLabel: {
-            color: "#2699FB !important"
-        }
+        StepConnector: "blue"
+        // alternativeLabel: {
+        //     color: "#2699FB !important"
+        // }
     }
 });
 
@@ -66,32 +76,32 @@ const WizardInitialPage = lazy(() => import("./WizardInitialPage"));
 const array_components = [
     {
         component: lazy(() => import("./WizardCreateClientPageOne")),
-        title: "Client",
+        title: "1.Client",
         inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageTwo")),
-        title: "Account set-up",
+        title: "2.Account set-up",
         inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageThree")),
-        title: "Structure",
+        title: "3.Structure",
         inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFour")),
-        title: "System",
+        title: "4.System",
         inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageFive")),
-        title: "Theme",
+        title: "5.Theme",
         inStepper: true
     },
     {
         component: lazy(() => import("./WizardCreateClientPageSix")),
-        title: "Media",
+        title: "6.Media",
         inStepper: true
     }
 ];
@@ -158,8 +168,8 @@ class CreateClient extends Component {
                 {activeStep > -1 && (
                     <div style={{ width: "100%", height: 250 }}>
                         <NewClientSetupTitleContainer>
-                            <NewClientSetupTitle>
-                                New Client Setup
+                            <NewClientSetupTitle style={{ fontSize: "30px" }}>
+                                NEW CLIENT SETUP
                             </NewClientSetupTitle>
                             <CancelButtonContainer>
                                 <Button
@@ -173,7 +183,10 @@ class CreateClient extends Component {
                         <Stepper
                             activeStep={activeStep}
                             alternativeLabel
-                            style={{ marginLeft: "50px" }}
+                            style={{
+                                marginLeft: "50px",
+                                backgroundColor: "#F4F4F4"
+                            }}
                         >
                             {array_components
                                 .filter(({ inStepper }) => Boolean(inStepper))
@@ -187,7 +200,10 @@ class CreateClient extends Component {
                                                 {...labelProps}
                                                 StepIconProps={{
                                                     classes: {
-                                                        completed: classes.icon,
+                                                        root:
+                                                            classes.unCopletedIcon,
+                                                        completed:
+                                                            classes.completedIcon,
                                                         active:
                                                             classes.activeIcon
                                                     }

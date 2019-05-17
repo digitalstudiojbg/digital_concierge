@@ -203,11 +203,11 @@ class Home extends Component {
                             )}
                             <div
                                 style={{
-                                    //paddingTop: "80px",
-                                    padding:"5% 10% 0",
-                                    height: "100vh",
+                                    padding: "5% 5% 0",
+                                    height: "110vh",
                                     width: "100vw",
-                                    display: "flex"
+                                    display: "flex",
+                                    backgroundColor: "#F4F4F4"
                                 }}
                             >
                                 {routes.map(

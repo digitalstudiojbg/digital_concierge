@@ -1,9 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 
+export const CancelButtonContainerDiv = styled.div`
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+`;
+
+export const ContentContainerDiv = styled.div`
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const TitleDiv = styled.div`
+    font-size: 30px;
+    color: black;
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+`;
+
+export const HighlightSpan = styled.span`
+    font-size: 60px;
+    font-weight: 700;
+    padding-left: 10px;
+`;
+
+export const StartSetupButtonContainerDiv = styled.div`
+    width: 30%;
+`;
+
+//---------page1
+
 export const ContainerDiv = styled.div`
     width: 100%;
-    height: 100%;
+    height: 60vh;
     display: flex;
 `;
 
@@ -76,6 +113,7 @@ export const BrowseButton = styled.label`
 `;
 export const NormalButton = styled.button`
     border: 3px solid #2699FB;
+    background-color: white;
     display: inline-block;
     width: 40%;
     margin-left:60%;
@@ -99,11 +137,11 @@ export const FiledContainer = styled.div`
 export const ContinueButton = styled.button`
     type: submit;
     width: 25%;
-    padding: 15px 5px;
+
+    padding: 20px 5px;
     color: white;
     background: #2699fb;
     border: 20px solid #313131;
-    margin-bottom: 5%;
 `;
 
 //----page3----
@@ -113,6 +151,7 @@ export const SectionDivContainer = styled.div`
     height: 100%;
     padding: 10px;
 `;
+export const SubSection = styled.div``;
 
 export const DepartmentSectionDiv = styled.div`
     width: 100%;
@@ -131,6 +170,7 @@ export const RolePermissionContainerDiv = styled.div`
     height: 500px;
     overflow-y: scroll;
     border: 1px solid #9d9d9d;
+    background-color: white;
 `;
 
 export const EachRolePermissionContainerDiv = styled.div`
@@ -356,6 +396,7 @@ export const ImageLinkText = styled.a`
 
 export const UploadDeleteButton = styled.label`
     border: 3px solid #2699fb;
+    background-color: white;
     display: inline-block;
     width: 200px;
     text-align: center;

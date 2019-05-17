@@ -66,7 +66,12 @@ class App extends Component {
     render() {
         return (
             <Router ref={router => (this.router = router)} basename={"cms"}>
-                <div>
+                <div
+                    style={{
+                        backgroundColor: "#F4F4F4",
+                        paddingBottom: "80px"
+                    }}
+                >
                     <section>
                         <div>
                             <Route

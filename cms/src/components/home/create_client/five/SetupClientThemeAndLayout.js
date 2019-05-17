@@ -36,7 +36,8 @@ import {
     ContainerDiv,
     SectionHeader,
     FieldLabel,
-    ContinueButton
+    ContinueButton,
+    SubSection
 } from "../CreateClientStyleSet";
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
@@ -67,9 +68,9 @@ const styles = theme => ({
     uploadButton: {
         margin: theme.spacing.unit,
         width: "55%",
-        marginTop: "7%",
+        marginTop: "4%",
         border: "3px solid #2699FB",
-        padding: "4px 5px",
+        padding: "5px 5px",
         fontSize: "14px",
         color: "#2699FB"
     },
@@ -78,7 +79,8 @@ const styles = theme => ({
         color: "#2699FB !important"
     },
     myInput: {
-        padding: "10px"
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -413,8 +415,15 @@ class SetupClientThemeAndLayout extends React.Component {
                                 <React.Fragment>
                                     <ThemeContainerDiv>
                                         <SectionHeader>System</SectionHeader>
-                                        <div style={{ width: "90%" }}>
+                                        <div
+                                            style={{
+                                                width: "90%"
+                                            }}
+                                        >
                                             <Stepper
+                                                style={{
+                                                    backgroundColor: "#F4F4F4"
+                                                }}
                                                 nonLinear
                                                 activeStep={systemIndex}
                                                 alternativeLabel
@@ -424,13 +433,13 @@ class SetupClientThemeAndLayout extends React.Component {
                                                         <Step
                                                             key={`STEP-${id}-${index}`}
                                                         >
-                                                            <StepConnector
+                                                            {/* <StepConnector
                                                                 style={{
                                                                     marginLeft:
                                                                         "45%",
                                                                     width: "40%"
                                                                 }}
-                                                            />
+                                                            /> */}
                                                             <StepButton
                                                                 onClick={this.handleStep(
                                                                     index
@@ -687,7 +696,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                         </ColourThemeContainerDiv>
                                     </ThemeContainerDiv>
                                     <LayoutContainerDiv>
-                                        <div style={{}}>
+                                        <SubSection>
                                             <SectionHeader>
                                                 Default Layout
                                             </SectionHeader>
@@ -908,16 +917,23 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     </LayoutEntryPreviewDiv>
                                                 )}
                                             </LayoutEntryContainerDiv>
-                                        </div>
-                                        <div
+
+                                            {/* <div
                                             style={{
                                                 clear: "both",
                                                 marginBottom: "20%"
                                             }}
-                                        />
-                                        <ButtonContainerDiv>
+                                        /> */}
+                                        </SubSection>
+                                        <div style={{ clear: "both" }} />
+                                        <ButtonContainerDiv
+                                            style={{ marginTop: "100px" }}
+                                        >
                                             <ContinueButton
-                                                style={{ width: "60%" }}
+                                                style={{
+                                                    width: "60%",
+                                                    padding: "30px 0"
+                                                }}
                                                 variant="outlined"
                                                 component="span"
                                                 // className={

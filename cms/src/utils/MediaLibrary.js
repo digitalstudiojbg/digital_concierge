@@ -391,7 +391,11 @@ class MediaLibrary extends React.Component {
                                                 value={limit}
                                                 input={
                                                     <OutlinedInput
-                                                        style={{ height: 39 }}
+                                                        style={{
+                                                            height: 39,
+                                                            backgroundColor:
+                                                                "white"
+                                                        }}
                                                     />
                                                 }
                                                 onChange={event => {
@@ -429,7 +433,11 @@ class MediaLibrary extends React.Component {
                                                 className={classes.select}
                                                 input={
                                                     <OutlinedInput
-                                                        style={{ height: 39 }}
+                                                        style={{
+                                                            height: 39,
+                                                            backgroundColor:
+                                                                "white"
+                                                        }}
                                                     />
                                                 }
                                                 value={sort}
@@ -473,6 +481,7 @@ class MediaLibrary extends React.Component {
                                         display: "flex",
                                         flex: 1,
                                         overflowY: "scroll",
+                                        backgroundColor: "white",
                                         height: this.props.height,
                                         flexWrap: "wrap",
                                         alignItems: "center",
