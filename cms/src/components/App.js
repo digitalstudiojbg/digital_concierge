@@ -69,7 +69,7 @@ class App extends Component {
                 <div
                     style={{
                         backgroundColor: "#F4F4F4",
-                        paddingBottom: "80px"
+                        paddingBottom: "130px"
                     }}
                 >
                     <section>

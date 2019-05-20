@@ -363,7 +363,7 @@ export const EachMediaSection = styled.div`
     flex-direction: column;
     margin: 10px 0 0 0;
     padding: 5px;
-    height: 240px;
+    height: 260px;
     width: 19%;
     justify-content: space-between;
     transition: all 0.3s ease-in-out;
@@ -372,9 +372,10 @@ export const EachMediaSection = styled.div`
     }
 `;
 export const PaginationSection = styled.li`
-    display: inline;
+    display: inline-block;
     padding: 10px;
     cursor: pointer;
+    flex: 1;
     transition: all 0.3s ease-in-out;
     &:hover {
         background-color: lightgrey;

@@ -60,6 +60,7 @@ class WizardCreateClientPageSix extends React.Component {
                         CONFIRM & COMPLETE SETUP
                     </ContinueButton>
                 </div>
+                <div style={{ clear: "both" }} />
             </div>
         );
     }

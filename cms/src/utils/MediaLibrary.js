@@ -98,7 +98,7 @@ class MediaLibrary extends React.Component {
                     style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        paddingBottom: "3%"
+                        paddingBottom: "1%"
                     }}
                 >
                     <Mutation
@@ -176,7 +176,7 @@ class MediaLibrary extends React.Component {
                     >
                         {(deleteFiles, { loading, error }) => {
                             return (
-                                <div style={{}}>
+                                <div>
                                     <UploadDeleteButton
                                         onClick={() => {
                                             this.handleClickOpen();
@@ -363,6 +363,7 @@ class MediaLibrary extends React.Component {
                                         display: "flex",
                                         justifyContent: "space-between",
                                         alignItems: "center",
+                                        alighnSelf: "flex-end",
                                         height: "3vh"
                                     }}
                                 >
@@ -484,7 +485,7 @@ class MediaLibrary extends React.Component {
                                         backgroundColor: "white",
                                         height: this.props.height,
                                         flexWrap: "wrap",
-                                        alignItems: "center",
+                                        //  alignItems: "center",
                                         width: "100%",
                                         marginTop: "3%"
                                     }}
@@ -626,6 +627,7 @@ class MediaLibrary extends React.Component {
                                 <div
                                     style={{
                                         display: "flex",
+                                        flexDirection: "row",
                                         justifyContent: "space-between",
                                         height: "5vh",
                                         alignItems: "center"
