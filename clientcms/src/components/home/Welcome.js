@@ -45,8 +45,8 @@ const SidebarSelected = styled.div`
     background: rgb(113, 113, 113);
     color: white;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
+    padding: 5% 0 5% 15%;
+    //  text-align: center;
 `;
 
 const SidebarNormal = styled.div`
@@ -54,8 +54,8 @@ const SidebarNormal = styled.div`
     background: white;
     color: black;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
+    padding: 5% 0 5% 15%;
+    text-align: left;
 `;
 
 // class Welcome extends Component {
@@ -259,12 +259,15 @@ const renderWelcomeComponent = (
                 )}
                 <p
                     style={{
-                        fontWeight: "700",
-                        fontSize: "2em",
-                        marginBottom: 20
+                        fontSize: "18px",
+                        width: "100%",
+                        backgroundColor: "#C1C1C1",
+                        color: "white",
+                        padding: "5% 0 5% 15%",
+                        margin: "0"
                     }}
                 >
-                    ADMIN CONSOLE
+                    ADMIN <br /> CONSOLE
                 </p>
                 {SIDEBAR_BUTTONS.map(({ id, name }) => (
                     <React.Fragment key={id}>

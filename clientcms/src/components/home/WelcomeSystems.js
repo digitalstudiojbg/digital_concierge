@@ -27,7 +27,7 @@ const SubtitleContainerDiv = styled.div`
 `;
 
 const InnerContainerDiv = styled.div`
-    height: 60%;
+    height: 80%;
     display: flex;
     color: black;
     flex-wrap: wrap;
@@ -37,15 +37,15 @@ const system_entry_style = {
     flexBasis: "25%",
     height: "50%",
     backgroundColor: "white",
-    border: "2px solid black",
+    border: "2px solid #ebebeb",
     marginRight: "10px",
     textDecoration: "none",
     color: "black",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
-    fontSize: "1.7em",
+    // alignItems: "center",
+    fontSize: "17px",
     padding: 10
 };
 
@@ -130,10 +130,33 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
                         rel="noopener noreferrer"
                         to={SYSTEM_INDEX_URL.replace(":system_id", id)}
                     >
+                        <img
+                            style={{
+                                display: "block",
+                                margin: "auto"
+                            }}
+                            src={
+                                systemTypeName.includes("TABLET")
+                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                            }
+                            height=" 80"
+                        />
                         <div>{name}</div>
-                        <div>{systemTypeName}</div>
-                        <div>{deviceTypeName}</div>
-                        <div>{devices_count} DEVICES</div>
+                        <div
+                            style={{
+                                color: "#585858",
+                                borderBottom: "1px solid black"
+                            }}
+                        >
+                            {systemTypeName}
+                        </div>
+                        <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
+                            {deviceTypeName}
+                        </div>
+                        <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
+                            {devices_count} DEVICES
+                        </div>
                     </Link>
                 )
             )}
