@@ -24,6 +24,27 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            checkin_date: {
+                type: DataTypes.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            total_nights: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            total_people: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             }
         },
         {}

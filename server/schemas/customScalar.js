@@ -3,5 +3,6 @@ export default gql`
     scalar JSON
     scalar URL
     scalar EmailAddress
+    scalar PhoneNumber
     scalar DateTime
 `;

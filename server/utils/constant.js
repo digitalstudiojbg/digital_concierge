@@ -204,12 +204,12 @@ export const handleCreateActionActivityLog = async (
             email: user.email
         });
     } catch (error) {
-        throw new new ApolloError(
+        throw new ApolloError(
             `Fail to create action type log of creating for object ${
                 subject.constructor.name
             } with ID ${subject.id}.\nError message: ${error.message}`,
             500
-        )();
+        );
     }
 };
 
@@ -245,12 +245,12 @@ export const handleUpdateActionActivityLog = async (
             email: user.email
         });
     } catch (error) {
-        throw new new ApolloError(
+        throw new ApolloError(
             `Fail to create action type log of updating for object ${
                 subject.constructor.name
             } with ID ${subject.id}.\nError message: ${error.message}`,
             500
-        )();
+        );
     }
 };
 
@@ -270,7 +270,7 @@ export const handleDeleteActionActivityLog = async (
     } = clientIp;
     //Get model and table name in sequelize v4: https://stackoverflow.com/a/47918030
     try {
-        db.activity_log.create({
+        return db.activity_log.create({
             tableName: subject.constructor.getTableName(),
             modelName: subject.constructor.name,
             subjectId: subject.id,
@@ -286,12 +286,12 @@ export const handleDeleteActionActivityLog = async (
             email: user.email
         });
     } catch (error) {
-        throw new new ApolloError(
+        throw new ApolloError(
             `Fail to create action type log of deleting for object ${
                 subject.constructor.name
             } with ID ${subject.id}.\nError message: ${error.message}`,
             500
-        )();
+        );
     }
 };
 
