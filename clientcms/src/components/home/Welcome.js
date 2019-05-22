@@ -28,7 +28,7 @@ const ContainerDiv = styled.div`
 `;
 
 const SidebarDiv = styled.div`
-    width: 350px;
+    width: 280px;
     background-color: rgb(252, 252, 252);
     color: black;
     display: flex;

@@ -140,7 +140,7 @@ class Sidebar extends Component {
                     justifyContent: "flex-start",
                     alignItems: "stretch",
                     alignContent: "stretch",
-                    width: "350px",
+                    width: "280px",
                     backgroundColor: "rgb(70,73,124)",
                     color: "white",
                     height: "calc(100vh-80px)"

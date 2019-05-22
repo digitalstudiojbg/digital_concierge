@@ -16,43 +16,46 @@ const ContainerDiv = styled.div`
     padding-left: 50px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    //  justify-content: center;
 `;
 
 const SubtitleContainerDiv = styled.div`
-    height: 10%;
     color: black;
-    font-size: 2em;
-    font-weight: 700;
+    font-size: 21px;
+    font-weight: 600;
+    padding: 1%;
 `;
 
 const InnerContainerDiv = styled.div`
     height: 80%;
+    widht: 20%;
     display: flex;
     color: black;
     flex-wrap: wrap;
+    margin: 1%;
 `;
 
 const system_entry_style = {
-    flexBasis: "25%",
-    height: "50%",
+    flexBasis: "17%",
+    height: "100%",
     backgroundColor: "white",
     border: "2px solid #ebebeb",
-    marginRight: "10px",
+    marginRight: "15px",
     textDecoration: "none",
     color: "black",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    // alignItems: "center",
-    fontSize: "17px",
-    padding: 10
+    fontSize: "15px",
+    padding: "1%"
 };
 
 const styles = () => ({
     addIcon: {
-        width: 64,
-        height: 64
+        width: 32,
+        height: 32,
+        color: "#ebebeb",
+        alignItems: "center"
     }
 });
 
@@ -108,66 +111,108 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
                 )}
             </Query>
         )} */}
-        <SubtitleContainerDiv>
-            PLEASE SELECT SYSTEM TO EDIT
-        </SubtitleContainerDiv>
-        <InnerContainerDiv>
-            {systems.map(
-                (
-                    {
-                        id,
-                        name,
-                        devices_count,
-                        system_type: { name: systemTypeName },
-                        device_type: { name: deviceTypeName }
-                    },
-                    index
-                ) => (
-                    <Link
-                        style={system_entry_style}
-                        key={`${id}-${index}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        to={SYSTEM_INDEX_URL.replace(":system_id", id)}
-                    >
-                        <img
-                            style={{
-                                display: "block",
-                                margin: "auto"
-                            }}
-                            src={
-                                systemTypeName.includes("TABLET")
-                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
-                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
-                            }
-                            height=" 80"
-                        />
-                        <div>{name}</div>
-                        <div
-                            style={{
-                                color: "#585858",
-                                borderBottom: "1px solid black"
-                            }}
+        <h2
+            style={{
+                height: "200px",
+                fontSize: "30px",
+                padding: "3% 0 0 0"
+            }}
+        >
+            Systems
+        </h2>
+        <div style={{ padding: "2%", flexDirection: "centre" }}>
+            <SubtitleContainerDiv>
+                PLEASE SELECT SYSTEM TO EDIT
+            </SubtitleContainerDiv>
+            <InnerContainerDiv>
+                {systems.map(
+                    (
+                        {
+                            id,
+                            name,
+                            devices_count,
+                            system_type: { name: systemTypeName },
+                            device_type: { name: deviceTypeName }
+                        },
+                        index
+                    ) => (
+                        <Link
+                            style={system_entry_style}
+                            key={`${id}-${index}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            to={SYSTEM_INDEX_URL.replace(":system_id", id)}
                         >
-                            {systemTypeName}
-                        </div>
-                        <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
-                            {deviceTypeName}
-                        </div>
-                        <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
-                            {devices_count} DEVICES
-                        </div>
-                    </Link>
-                )
-            )}
-            <a
-                style={system_entry_style}
-                href={`mailto:laura@johnbatman.com.au?subject=${name} request for additional system(s)`}
-            >
-                REQUEST ADDITIONAL SYSTEM(S)
-                <AddIcon className={classes.addIcon} />
-            </a>
-        </InnerContainerDiv>
+                            <img
+                                style={{
+                                    display: "block",
+                                    margin: "auto"
+                                }}
+                                src={
+                                    systemTypeName.includes("TABLET")
+                                        ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                        : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                                }
+                                height="50%"
+                            />
+                            <div style={{ fontWeight: "bold" }}>{name}</div>
+                            <div
+                                style={{
+                                    color: "#585858",
+                                    borderBottom: "1px solid black",
+                                    marginBottom: "5%",
+                                    fontSize: "14px",
+                                    fontWeight: "bold"
+                                }}
+                            >
+                                {systemTypeName}
+                            </div>
+                            <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
+                                {deviceTypeName}
+                            </div>
+                            <div style={{ color: "#C1C1C1", fontSize: "12px" }}>
+                                {devices_count} DEVICES
+                            </div>
+                        </Link>
+                    )
+                )}
+                <a
+                    style={system_entry_style}
+                    href={`mailto:laura@johnbatman.com.au?subject=${name} request for additional system(s)`}
+                >
+                    <AddIcon
+                        style={{
+                            height: "80%",
+                            flexDirection: "centre",
+                            border: "2px solid #ebebeb",
+                            width: "100%"
+                        }}
+                        className={classes.addIcon}
+                    />
+                    <p
+                        style={{
+                            fontSize: "15px",
+                            padding: "0",
+                            margin: "0",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        NEW SYSTEM
+                    </p>
+                    <p
+                        style={{
+                            color: "#585858",
+                            padding: "0",
+                            // marginBottom: "5%",
+                            fontSize: "14px",
+                            fontWeight: "bold"
+                        }}
+                    >
+                        REQUEST ADDITIONAL SYSTEM(S)
+                    </p>
+                </a>
+            </InnerContainerDiv>
+        </div>
     </ContainerDiv>
 );
 
