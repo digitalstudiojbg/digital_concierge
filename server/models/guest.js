@@ -24,7 +24,18 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true,
                     isEmail: true
                 }
-            }
+            },
+            phone1: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            phone2: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
         },
         {}
     );
