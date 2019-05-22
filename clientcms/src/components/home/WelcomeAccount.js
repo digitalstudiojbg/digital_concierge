@@ -9,7 +9,8 @@ import WelcomeAccountPaymentAgreement from "./WelcomeAccountPaymentAgreement";
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        backgroundColor: theme.palette.background.paper
+        // backgroundColor: theme.palette.background.paper
+        backgroundColor: "#F4F4F4"
     },
     tabsRoot: {
         borderBottom: "1px solid #e8e8e8"
@@ -70,8 +71,8 @@ class WelcomeAccount extends Component {
                 style={{
                     width: "100%",
                     height: "100%",
-                    backgroundColor: "lightgray",
-                    padding: "20px"
+                    backgroundColor: "#F4F4F4",
+                    padding: "3%"
                 }}
             >
                 <div

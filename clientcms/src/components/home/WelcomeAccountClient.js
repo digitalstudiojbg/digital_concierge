@@ -6,6 +6,7 @@ import { Formik, Field, Form, FieldArray } from "formik";
 import { TextField, Select } from "formik-material-ui";
 import MuiTextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,72 +21,19 @@ import {
 } from "../../data/mutation";
 import * as Yup from "yup";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
-
-const SectionDiv = styled.div`
-    width: ${props => props.width};
-    height: 100%;
-    padding: 10px;
-    border: ${props => (props.noBorder ? "none" : "2px solid black")};
-    margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};
-`;
-
-const TitleDiv = styled.div`
-    font-size: 2em;
-    font-weight: 700;
-    padding-bottom: 20px;
-`;
-
-const ClientContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    margin-bottom: ${props => (Boolean(props.isLastItem) ? "0px" : "20px")};
-`;
-
-const ClientFieldDiv = styled.div`
-    flex-basis: ${props => props.flexBasis};
-    margin-right: ${props => props.marginRight};
-`;
-
-const FieldContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
-const FieldDiv = styled.div`
-    width: 100%;
-    padding: 0px 10px 10px 10px;
-`;
-
-const ContactEntryContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px solid black;
-    margin-bottom: ${props => (Boolean(props.isLastItem) ? "0px" : "20px")};
-    padding: 10px;
-`;
-
-const ContactEntryHeaderContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-`;
-
-const ContactEntryHeaderTitleDiv = styled.div`
-    font-size: 1.5em;
-    font-weight: 700;
-    padding-right: 5px;
-`;
+import {
+    ContainerDiv,
+    SectionDiv,
+    TitleDiv,
+    ClientContainerDiv,
+    ClientFieldDiv,
+    FieldContainerDiv,
+    FieldDiv,
+    FieldLabel,
+    ContactEntryContainerDiv,
+    ContactEntryHeaderContainerDiv,
+    ContactEntryHeaderTitleDiv
+} from "./WelcomeStyleSet";
 
 const CLIENT_TEXT_FIELDS = [
     [
@@ -266,13 +214,17 @@ const CONTACT_TEXT_FIELDS = [
 
 const styles = () => ({
     addContactButton: {
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%",
+        color: "#2699FB",
+        border: "1px solid #2699FB",
+        width: "50%",
         marginBottom: 20
+    },
+    myInput: {
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
-
+//const { classes } = this.props;
 const renderTextField = (name, label, required, type) => (
     <Field
         name={name}
@@ -282,20 +234,35 @@ const renderTextField = (name, label, required, type) => (
         component={TextField}
         variant="outlined"
         fullWidth={true}
+        // classes={{ input: classes.myInput }}
+        //  inputProps={{ className: this.props.classes.myInput }}
     />
 );
 
 const renderSelectField = (nameValue, label, optionList) => {
     // console.log(optionList);
-
+    // const { classes } = this.props;
     return (
         <React.Fragment>
-            <InputLabel>{label}</InputLabel>
+            <InputLabel
+                style={{
+                    color: "#5c5c5c",
+                    fontsize: "10px",
+                    marginbottom: "5px"
+                }}
+            >
+                {label}
+            </InputLabel>
             <Field
+                style={{
+                    height: 38
+                }}
                 name={nameValue}
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
+                input={<OutlinedInput />}
+                //  inputProps={{ className: this.props.classes.myInput }}
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -443,6 +410,21 @@ export const WelcomeAccountClient = ({
     classes
 }) => {
     const [loading, setLoading] = useState(false);
+
+    //  const { classes } = this.props;
+    const renderTextField = (name, label, required, type) => (
+        <Field
+            name={name}
+            label={label}
+            required={required}
+            type={type}
+            component={TextField}
+            variant="outlined"
+            fullWidth={true}
+            // classes={{ input: classes.myInput }}
+            //  inputProps={{ className: this.props.classes.myInput }}
+        />
+    );
 
     return (
         <React.Fragment>
@@ -702,9 +684,20 @@ export const WelcomeAccountClient = ({
                                                 } = postal_country;
 
                                                 return (
-                                                    <Form>
+                                                    <Form
+                                                        style={{
+                                                            backgroundColor:
+                                                                "#F4F4F4"
+                                                        }}
+                                                    >
                                                         <ContainerDiv>
-                                                            <SectionDiv width="50%">
+                                                            <SectionDiv
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        "white",
+                                                                    width: "50%"
+                                                                }}
+                                                            >
                                                                 <TitleDiv>
                                                                     CLIENT INFO
                                                                 </TitleDiv>
@@ -713,8 +706,13 @@ export const WelcomeAccountClient = ({
                                                                         marginBottom: 20
                                                                     }}
                                                                 >
+                                                                    <FieldLabel>
+                                                                        CLIENT
+                                                                        ID
+                                                                        NUMBER
+                                                                    </FieldLabel>
                                                                     <MuiTextField
-                                                                        label="CLIENT ID NUMBER"
+                                                                        //  label="CLIENT ID NUMBER"
                                                                         type="text"
                                                                         variant="outlined"
                                                                         value={
@@ -754,11 +752,16 @@ export const WelcomeAccountClient = ({
                                                                                             marginRight
                                                                                         }
                                                                                     >
+                                                                                        <FieldLabel>
+                                                                                            {
+                                                                                                label
+                                                                                            }
+                                                                                        </FieldLabel>
                                                                                         {renderTextField(
-                                                                                            name,
-                                                                                            label,
-                                                                                            required,
-                                                                                            type
+                                                                                            name
+                                                                                            //  label,
+                                                                                            // required,
+                                                                                            // type
                                                                                         )}
                                                                                     </ClientFieldDiv>
                                                                                 )
@@ -811,7 +814,13 @@ export const WelcomeAccountClient = ({
                                                                     </ClientFieldDiv>
                                                                 </ClientContainerDiv>
                                                             </SectionDiv>
-                                                            <SectionDiv width="25%">
+                                                            <SectionDiv
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        "white",
+                                                                    width: "25%"
+                                                                }}
+                                                            >
                                                                 <TitleDiv>
                                                                     KEY USER
                                                                 </TitleDiv>
@@ -829,11 +838,16 @@ export const WelcomeAccountClient = ({
                                                                             <FieldDiv
                                                                                 key={`USER-FIELD-${index}`}
                                                                             >
+                                                                                <FieldLabel>
+                                                                                    {
+                                                                                        label
+                                                                                    }
+                                                                                </FieldLabel>
                                                                                 {renderTextField(
-                                                                                    name,
-                                                                                    label,
-                                                                                    required,
-                                                                                    type
+                                                                                    name
+                                                                                    //     label,
+                                                                                    // required,
+                                                                                    //  type
                                                                                 )}
                                                                             </FieldDiv>
                                                                         )

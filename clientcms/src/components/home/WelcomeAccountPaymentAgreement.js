@@ -8,6 +8,15 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { withStyles } from "@material-ui/core/styles";
 import dayjs from "dayjs";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputBase from "@material-ui/core/InputBase";
+
+import {
+    ContainerDiv,
+    SectionDiv,
+    TitleDiv,
+    ContactEntryHeaderTitleDiv
+} from "./WelcomeStyleSet";
 
 const useContracts = contract => {
     const [contracts, setContracts] = useState([]);
@@ -132,6 +141,9 @@ const renderLicenseField = license => {
                         margin="normal"
                         disabled={true}
                         fullWidth={true}
+                        input={
+                            <InputBase style={{ border: "1px solid black" }} />
+                        }
                     />
                 </div>
                 <div
@@ -181,26 +193,33 @@ const WelcomeAccountPaymentAgreement = props => {
                 <div
                     style={{
                         display: "flex",
-                        justifyContent: "space-around"
+                        //   justifyContent: "space-around",
+                        justifyContent: "left"
                     }}
                 >
-                    <div
+                    <SectionDiv
                         style={{
-                            width: "50%",
+                            width: "25%",
                             paddingLeft: "20px",
-                            paddingRight: "20px"
+                            paddingRight: "20px",
+                            backgroundColor: "white"
                         }}
                     >
-                        <h1>Agreement</h1>
+                        <TitleDiv>Agreement</TitleDiv>
 
                         {renderAgreementFiled(contractsFromState)}
 
                         {renderLicenseField(
                             contractsFromState.client.activeLicense[0]
                         )}
-                    </div>
-                    <div style={{ width: "50%" }}>
-                        <h1>Payment</h1>
+                    </SectionDiv>
+                    <SectionDiv
+                        style={{
+                            width: "25%",
+                            backgroundColor: "white"
+                        }}
+                    >
+                        <TitleDiv>Payment</TitleDiv>
                         <TextField
                             id="standard-name"
                             label="Name"
@@ -208,8 +227,9 @@ const WelcomeAccountPaymentAgreement = props => {
                             margin="normal"
                             disabled={true}
                             fullWidth={true}
+                            input={<OutlinedInput />}
                         />
-                    </div>
+                    </SectionDiv>
                 </div>
             </div>
         )

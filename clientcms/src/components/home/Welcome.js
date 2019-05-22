@@ -22,9 +22,11 @@ import { WELCOME_URL } from "../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100vw;
-    height: calc(100vh - 80px);
+    // height: calc(100vh - 80px);
+    height: 100vh;
     position: relative;
     display: flex;
+    background-color: #f4f4f4;
 `;
 
 const SidebarDiv = styled.div`
@@ -33,6 +35,7 @@ const SidebarDiv = styled.div`
     color: black;
     display: flex;
     flex-direction: column;
+    hight: 100%;
     align-items: center;
 `;
 
@@ -250,9 +253,9 @@ const renderWelcomeComponent = (
                     <img
                         src={client.avatar}
                         style={{
-                            marginTop: "5vh",
-                            width: "50%",
-                            marginBottom: "5vh"
+                            marginTop: "10%",
+                            width: "60%",
+                            marginBottom: "10%"
                         }}
                         alt={`${client.name} avatar`}
                     />

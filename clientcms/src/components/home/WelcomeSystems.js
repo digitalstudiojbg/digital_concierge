@@ -39,7 +39,6 @@ const system_entry_style = {
     flexBasis: "17%",
     height: "100%",
     backgroundColor: "white",
-    border: "2px solid #ebebeb",
     marginRight: "15px",
     textDecoration: "none",
     color: "black",
