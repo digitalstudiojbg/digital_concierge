@@ -19,6 +19,10 @@ export const SectionDiv = styled.div`
     margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};
 `;
 
+export const SubSectionDiv = styled.div`
+    margin-top: 10px;
+`;
+
 export const TitleDiv = styled.h4`
     font-size: 20px;
     font-weight: 700;

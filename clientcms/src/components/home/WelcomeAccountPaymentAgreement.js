@@ -15,6 +15,8 @@ import {
     ContainerDiv,
     SectionDiv,
     TitleDiv,
+    FieldLabel,
+    SubSectionDiv,
     ContactEntryHeaderTitleDiv
 } from "./WelcomeStyleSet";
 
@@ -83,6 +85,7 @@ const renderAgreementFiled = contractsFromState => {
         return (
             key && (
                 <TextField
+                    variant="outlined"
                     type={each.type === "date" ? "date" : "text"}
                     key={index}
                     id="standard-name"
@@ -97,10 +100,6 @@ const renderAgreementFiled = contractsFromState => {
                     margin="normal"
                     disabled={true}
                     fullWidth={true}
-                    // inputProps={{
-                    //     className: this.props.classes.myInput
-                    // }}
-                    input={<OutlinedInput />}
                 />
             )
         );
@@ -112,24 +111,33 @@ const renderLicenseField = license => {
 
     return (
         <React.Fragment>
-            <TextField
-                type="text"
-                id="standard-name"
-                label="LICENSE NUMBER"
-                value={license.key}
-                margin="normal"
-                disabled={true}
-                fullWidth={true}
-            />
-            <TextField
-                type="text"
-                id="standard-name"
-                label="LICENSE TERM"
-                value={license.licenseType.name}
-                margin="normal"
-                disabled={true}
-                fullWidth={true}
-            />
+            <SubSectionDiv>
+                <FieldLabel>LICENSE NUMBER</FieldLabel>
+                <TextField
+                    variant="outlined"
+                    type="text"
+                    id="standard-name"
+                    //  label="LICENSE NUMBER"
+                    value={license.key}
+                    // margin="normal"
+                    disabled={true}
+                    fullWidth={true}
+                />
+            </SubSectionDiv>
+            <SubSectionDiv>
+                <FieldLabel>LICENSE TERM</FieldLabel>
+                <TextField
+                    style={{ margin: "0" }}
+                    variant="outlined"
+                    type="text"
+                    id="standard-name"
+                    //   label="LICENSE TERM"
+                    value={license.licenseType.name}
+                    margin="normal"
+                    disabled={true}
+                    fullWidth={true}
+                />
+            </SubSectionDiv>
             <div
                 style={{
                     display: "flex",
@@ -138,11 +146,14 @@ const renderLicenseField = license => {
                     width: "100%"
                 }}
             >
-                <div style={{ width: "45%" }}>
+                <SubSectionDiv style={{ width: "45%" }}>
+                    <FieldLabel>LICENSE START DATE</FieldLabel>
                     <TextField
+                        style={{ margin: "0" }}
+                        variant="outlined"
                         type="text"
                         id="standard-name"
-                        label="LICENSE START DATE"
+                        //  label="LICENSE START DATE"
                         value={dayjs(license.commence_date).format(
                             "YYYY-MM-DD"
                         )}
@@ -153,23 +164,27 @@ const renderLicenseField = license => {
                             <InputBase style={{ border: "1px solid black" }} />
                         }
                     />
-                </div>
+                </SubSectionDiv>
+
                 <div
                     style={{ width: "10%", textAlign: "center", color: "grey" }}
                 >
                     TO
                 </div>
-                <div style={{ width: "45%" }}>
+                <SubSectionDiv style={{ width: "45%" }}>
+                    <FieldLabel>LICENSE END DATE</FieldLabel>
                     <TextField
+                        style={{ margin: "0" }}
+                        variant="outlined"
                         type="text"
                         id="standard-name"
-                        label="LICENSE END DATE"
+                        //  label="LICENSE END DATE"
                         value={dayjs(license.expire_date).format("YYYY-MM-DD")}
                         margin="normal"
                         disabled={true}
                         fullWidth={true}
                     />
-                </div>
+                </SubSectionDiv>
             </div>
 
             <FormControlLabel
@@ -179,7 +194,7 @@ const renderLicenseField = license => {
                         label="AUTOMATIC RENEWAL"
                         checked={license.auto_renewal}
                         margin="normal"
-                        color="primary"
+                        color="#2699FB"
                     />
                 }
                 label="AUTOMATIC RENEWAL"
@@ -230,15 +245,20 @@ const WelcomeAccountPaymentAgreement = props => {
                         }}
                     >
                         <TitleDiv>Payment</TitleDiv>
-                        <TextField
-                            id="standard-name"
-                            label="Name"
-                            value={"123"}
-                            margin="normal"
-                            disabled={true}
-                            fullWidth={true}
-                            //  input={<OutlinedInput />}
-                        />
+                        <SubSectionDiv>
+                            <FieldLabel>NAME</FieldLabel>
+                            <TextField
+                                style={{ margin: "0" }}
+                                variant="outlined"
+                                id="standard-name"
+                                //  label="Name"
+                                value={"123"}
+                                margin="normal"
+                                disabled={true}
+                                fullWidth={true}
+                                //  input={<OutlinedInput />}
+                            />
+                        </SubSectionDiv>
                     </SectionDiv>
                 </div>
             </div>

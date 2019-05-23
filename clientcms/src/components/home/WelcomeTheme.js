@@ -461,7 +461,7 @@ const WelcomeThemeSettings = ({
                         nonLinear
                         activeStep={systemIndex}
                         //  alternativeLabel
-                        StepIcon
+
                         style={{ backgroundColor: "#F4F4F4", flex: "left" }}
                     >
                         {systems.map((system, index) => (
