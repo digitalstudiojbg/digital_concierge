@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import classNames from "classnames";
 import Loading from "../loading/Loading";
 import { withApollo, Query, compose, Mutation, graphql } from "react-apollo";
 import { Formik, Field, Form, FieldArray } from "formik";
@@ -41,7 +42,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "name",
             label: "Client Name",
             required: true,
-            flexBasis: "30%",
+            flexBasis: "33%",
             marginRight: "10px",
             type: "text"
         },
@@ -49,7 +50,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "full_company_name",
             label: "Full Client Name",
             required: false,
-            flexBasis: "30%",
+            flexBasis: "33%",
             marginRight: "10px",
             type: "text"
         },
@@ -57,7 +58,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "nature_of_business",
             label: "Nature of Business",
             required: true,
-            flexBasis: "30%",
+            flexBasis: "33%",
             marginRight: "0px",
             type: "text"
         }
@@ -67,7 +68,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "phone",
             label: "Venue Phone Number",
             required: true,
-            flexBasis: "45%",
+            flexBasis: "50%",
             marginRight: "10px",
             type: "text"
         },
@@ -75,7 +76,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "email",
             label: "Business Email",
             required: true,
-            flexBasis: "45%",
+            flexBasis: "50%",
             marginRight: "0px",
             type: "text"
         }
@@ -85,7 +86,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "venue_address",
             label: "Venue Address",
             required: true,
-            flexBasis: "45%",
+            flexBasis: "50%",
             marginRight: "10px",
             type: "text"
         },
@@ -93,7 +94,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "postal_address",
             label: "Postal Address",
             required: false,
-            flexBasis: "45%",
+            flexBasis: "50%",
             marginRight: "0px",
             type: "text"
         }
@@ -103,7 +104,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "venue_city",
             label: "City",
             required: true,
-            flexBasis: "20%",
+            flexBasis: "25%",
             marginRight: "10px",
             type: "text"
         },
@@ -111,15 +112,15 @@ const CLIENT_TEXT_FIELDS = [
             name: "venue_zip_code",
             label: "Zip Code",
             required: true,
-            flexBasis: "20%",
-            marginRight: "30px",
+            flexBasis: "25%",
+            marginRight: "10px",
             type: "text"
         },
         {
             name: "postal_city",
             label: "City",
             required: true,
-            flexBasis: "20%",
+            flexBasis: "25%",
             marginRight: "10px",
             type: "text"
         },
@@ -127,7 +128,7 @@ const CLIENT_TEXT_FIELDS = [
             name: "postal_zip_code",
             label: "Zip Code",
             required: true,
-            flexBasis: "20%",
+            flexBasis: "25%",
             marginRight: "0px",
             type: "text"
         }
@@ -215,8 +216,12 @@ const CONTACT_TEXT_FIELDS = [
 const styles = () => ({
     addContactButton: {
         color: "#2699FB",
-        border: "1px solid #2699FB",
-        width: "50%",
+        backgroundColor: "white",
+        border: "2px solid #2699FB",
+        width: "70%",
+        fontSize: "11px",
+        fontWeight: "bold",
+        padding: "10px 0",
         marginBottom: 20
     },
     myInput: {
@@ -225,23 +230,26 @@ const styles = () => ({
     }
 });
 //const { classes } = this.props;
-const renderTextField = (name, label, required, type) => (
-    <Field
-        name={name}
-        label={label}
-        required={required}
-        type={type}
-        component={TextField}
-        variant="outlined"
-        fullWidth={true}
-        // classes={{ input: classes.myInput }}
-        //  inputProps={{ className: this.props.classes.myInput }}
-    />
-);
+// const renderTextField = (name, label, required, type) => (
+//     <Field
+//         name={name}
+//         label={label}
+//         required={required}
+//         type={type}
+//         component={TextField}
+//         variant="outlined"
+//         fullWidth={true}
+//         // classes={{ input: classes.myInput }}
+//         //  inputProps={{ className: this.props.classes.myInput }}
+//         inputProps={{
+//             className: this.props.classes.myInput
+//         }}
+//     />
+//);
 
 const renderSelectField = (nameValue, label, optionList) => {
     // console.log(optionList);
-    // const { classes } = this.props;
+
     return (
         <React.Fragment>
             <InputLabel
@@ -262,7 +270,6 @@ const renderSelectField = (nameValue, label, optionList) => {
                 disabled={optionList.length < 1}
                 fullWidth={true}
                 input={<OutlinedInput />}
-                //  inputProps={{ className: this.props.classes.myInput }}
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -411,21 +418,6 @@ export const WelcomeAccountClient = ({
 }) => {
     const [loading, setLoading] = useState(false);
 
-    //  const { classes } = this.props;
-    const renderTextField = (name, label, required, type) => (
-        <Field
-            name={name}
-            label={label}
-            required={required}
-            type={type}
-            component={TextField}
-            variant="outlined"
-            fullWidth={true}
-            // classes={{ input: classes.myInput }}
-            //  inputProps={{ className: this.props.classes.myInput }}
-        />
-    );
-
     return (
         <React.Fragment>
             {loading ? (
@@ -570,6 +562,8 @@ export const WelcomeAccountClient = ({
                                                         })
                                                 };
 
+                                                const { classes } = this.props;
+
                                                 const submitContacts = {
                                                     createContacts: contacts
                                                         .filter(
@@ -683,6 +677,26 @@ export const WelcomeAccountClient = ({
                                                     states: postal_states = []
                                                 } = postal_country;
 
+                                                const renderTextField = (
+                                                    name,
+                                                    label,
+                                                    required,
+                                                    type
+                                                ) => (
+                                                    <Field
+                                                        name={name}
+                                                        label={label}
+                                                        required={required}
+                                                        type={type}
+                                                        component={TextField}
+                                                        variant="outlined"
+                                                        fullWidth={true}
+                                                        inputProps={{
+                                                            className:
+                                                                classes.myInput
+                                                        }}
+                                                    />
+                                                );
                                                 return (
                                                     <Form
                                                         style={{
@@ -695,7 +709,12 @@ export const WelcomeAccountClient = ({
                                                                 style={{
                                                                     backgroundColor:
                                                                         "white",
-                                                                    width: "50%"
+                                                                    width:
+                                                                        "50%",
+                                                                    height:
+                                                                        "70vh",
+                                                                    marginTop:
+                                                                        "1%"
                                                                 }}
                                                             >
                                                                 <TitleDiv>
@@ -721,6 +740,10 @@ export const WelcomeAccountClient = ({
                                                                         disabled={
                                                                             true
                                                                         }
+                                                                        inputProps={{
+                                                                            className:
+                                                                                classes.myInput
+                                                                        }}
                                                                     />
                                                                 </div>
                                                                 {CLIENT_TEXT_FIELDS.map(
@@ -771,7 +794,7 @@ export const WelcomeAccountClient = ({
                                                                 )}
                                                                 <ClientContainerDiv>
                                                                     <ClientFieldDiv
-                                                                        flexBasis="45%"
+                                                                        flexBasis="50%"
                                                                         marginRight="10px"
                                                                     >
                                                                         {renderSelectField(
@@ -781,7 +804,7 @@ export const WelcomeAccountClient = ({
                                                                         )}
                                                                     </ClientFieldDiv>
                                                                     <ClientFieldDiv
-                                                                        flexBasis="45%"
+                                                                        flexBasis="50%"
                                                                         marginRight="0px"
                                                                     >
                                                                         {renderSelectField(
@@ -793,7 +816,7 @@ export const WelcomeAccountClient = ({
                                                                 </ClientContainerDiv>
                                                                 <ClientContainerDiv>
                                                                     <ClientFieldDiv
-                                                                        flexBasis="45%"
+                                                                        flexBasis="50%"
                                                                         marginRight="10px"
                                                                     >
                                                                         {renderSelectField(
@@ -803,7 +826,7 @@ export const WelcomeAccountClient = ({
                                                                         )}
                                                                     </ClientFieldDiv>
                                                                     <ClientFieldDiv
-                                                                        flexBasis="45%"
+                                                                        flexBasis="50%"
                                                                         marginRight="0px"
                                                                     >
                                                                         {renderSelectField(
@@ -818,7 +841,12 @@ export const WelcomeAccountClient = ({
                                                                 style={{
                                                                     backgroundColor:
                                                                         "white",
-                                                                    width: "25%"
+                                                                    width:
+                                                                        "25%",
+                                                                    height:
+                                                                        "70vh",
+                                                                    marginTop:
+                                                                        "1%"
                                                                 }}
                                                             >
                                                                 <TitleDiv>
@@ -855,6 +883,12 @@ export const WelcomeAccountClient = ({
                                                                 </FieldContainerDiv>
                                                             </SectionDiv>
                                                             <SectionDiv
+                                                                style={{
+                                                                    width:
+                                                                        "25%",
+                                                                    paddingTop:
+                                                                        "1%"
+                                                                }}
                                                                 width="25%"
                                                                 isLastSection
                                                                 noBorder

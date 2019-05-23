@@ -46,6 +46,10 @@ const styles = theme => ({
     },
     menu: {
         width: 200
+    },
+    myInput: {
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -93,6 +97,10 @@ const renderAgreementFiled = contractsFromState => {
                     margin="normal"
                     disabled={true}
                     fullWidth={true}
+                    // inputProps={{
+                    //     className: this.props.classes.myInput
+                    // }}
+                    input={<OutlinedInput />}
                 />
             )
         );
@@ -202,7 +210,8 @@ const WelcomeAccountPaymentAgreement = props => {
                             width: "25%",
                             paddingLeft: "20px",
                             paddingRight: "20px",
-                            backgroundColor: "white"
+                            backgroundColor: "white",
+                            height: "70vh"
                         }}
                     >
                         <TitleDiv>Agreement</TitleDiv>
@@ -216,7 +225,8 @@ const WelcomeAccountPaymentAgreement = props => {
                     <SectionDiv
                         style={{
                             width: "25%",
-                            backgroundColor: "white"
+                            backgroundColor: "white",
+                            height: "70vh"
                         }}
                     >
                         <TitleDiv>Payment</TitleDiv>
@@ -227,7 +237,7 @@ const WelcomeAccountPaymentAgreement = props => {
                             margin="normal"
                             disabled={true}
                             fullWidth={true}
-                            input={<OutlinedInput />}
+                            //  input={<OutlinedInput />}
                         />
                     </SectionDiv>
                 </div>

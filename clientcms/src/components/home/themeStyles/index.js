@@ -102,6 +102,11 @@ export const ButtonContainerDiv = styled.div`
     justify-content: flex-end;
     align-items: flex-end;
 `;
+export const FieldLabel = styled.div`
+    color: #5c5c5c;
+    fontsize: 10px;
+    marginbottom: 5px;
+`;
 
 export const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
 

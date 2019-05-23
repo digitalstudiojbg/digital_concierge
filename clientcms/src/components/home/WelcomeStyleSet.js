@@ -13,7 +13,7 @@ export const SectionDiv = styled.div`
     width: ${props => props.width};
     height: 80vh;
     padding: 2%;
-    border: ${props => (props.noBorder ? "none" : "2px solid #9D9D9D")};
+    border: ${props => (props.noBorder ? "none" : "1px solid #9D9D9D")};
     border-radius: 5px;
     //  background-color: white;
     margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};

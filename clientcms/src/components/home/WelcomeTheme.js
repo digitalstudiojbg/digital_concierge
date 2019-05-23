@@ -22,13 +22,16 @@ import {
     ColourEntryDiv,
     ColourTitleDiv,
     ButtonContainerDiv,
-    FONT_OPTIONS
+    FONT_OPTIONS,
+    FieldLabel
 } from "./themeStyles";
+
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import StepLabel from "@material-ui/core/StepLabel";
 import TextField from "@material-ui/core/TextField";
+import StepIcon from "@material-ui/core/StepIcon";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
@@ -45,15 +48,27 @@ const styles = theme => ({
     },
     uploadButton: {
         margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%"
+        color: "#2699FB",
+        border: "1px solid #2699FB",
+        backgroundColor: "white",
+        marginTop: "20px",
+        width: "100%",
+        padding: "4% 0"
     },
     confirmButton: {
         margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
+        color: "#2699FB",
+        border: "1px solid #2699FB",
         width: "50%"
+    },
+    myInput: {
+        padding: "10px 0",
+        backgroundColor: "white",
+        border: "1px solid #9D9D9D",
+        borderRadius: "5px"
+    },
+    stepperClass: {
+        activeStep: { borderBottom: "1px solid #9D9D9D" }
     }
 });
 
@@ -441,16 +456,19 @@ const WelcomeThemeSettings = ({
     return (
         <ContainerDiv>
             <ThemeContainerDiv>
-                <div style={{ width: "100%" }}>
+                <div style={{ width: "100%", display: "flex" }}>
                     <Stepper
                         nonLinear
                         activeStep={systemIndex}
-                        alternativeLabel
+                        //  alternativeLabel
+                        StepIcon
+                        style={{ backgroundColor: "#F4F4F4", flex: "left" }}
                     >
                         {systems.map((system, index) => (
                             <Step key={`STEP-${system.get("id")}-${index}`}>
                                 <StepButton onClick={() => handleStep(index)}>
                                     <StepLabel
+
                                     // error={
                                     //     Number.isInteger(
                                     //         error.get("index")
@@ -466,6 +484,7 @@ const WelcomeThemeSettings = ({
                 </div>
                 <EntryThemeContainerDiv>
                     <EntryThemeDiv>
+                        <FieldLabel>Update Company Logo</FieldLabel>
                         <TextField
                             value={
                                 Boolean(values.get("companyLogo")) &&
@@ -475,7 +494,10 @@ const WelcomeThemeSettings = ({
                             }
                             disabled={true}
                             fullWidth={true}
-                            label="Update Company Logo"
+                            //    label="Update Company Logo"
+                            inputProps={{
+                                className: classes.myInput
+                            }}
                             variant="outlined"
                             // error={currentAttributeError === "companyLogo"}
                             // helperText={
@@ -488,7 +510,9 @@ const WelcomeThemeSettings = ({
                     <EntryThemeDiv>
                         <input
                             accept="image/*"
-                            style={{ display: "none" }}
+                            style={{
+                                display: "none"
+                            }}
                             ref={fileInput}
                             onChange={updateCompanyLogo}
                             id="upload-company-logo"
