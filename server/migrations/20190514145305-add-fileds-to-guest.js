@@ -4,7 +4,7 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.addColumn(
             'guests',
-            'phone1',
+            'primary_number',
             {
                 type: Sequelize.STRING,
                 after: 'email',
@@ -13,10 +13,10 @@ module.exports = {
         )
         .then(() => queryInterface.addColumn(
             'guests',
-            'phone2',
+            'secondary_number',
             {
                 type: Sequelize.STRING,
-                after: 'phone1',
+                after: 'primary_number',
                 allowNull: true
             }
         ));
@@ -25,11 +25,11 @@ module.exports = {
     down: queryInterface => {
         return queryInterface.removeColumn(
             'guests',
-            'phone1'
+            'primary_number'
         )
         .then(() => queryInterface.removeColumn(
             'guests',
-            'phone2'
+            'secondary_number'
         ));
     }
 };

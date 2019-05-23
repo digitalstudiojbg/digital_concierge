@@ -5,8 +5,11 @@ export default {
         room: async (_root, { id }) => {
             return await db.guest.findByPk(id);
         },
-        rooms: async (_root, _input, { user }) => {
+        rooms: async (_root, _input) => {
             return await db.guest.findAll();
+        },
+        roomsByNumber: async (_root, { number }) => {
+            return await db.room.findAll({where: { number }});
         }
     },
     Room: {

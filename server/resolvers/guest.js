@@ -1,5 +1,5 @@
 import db from '../models';
-import _ from 'lodash';
+import { pickBy, identity } from 'lodash';
 import {
     checkUserLogin,
     handleCreateActionActivityLog,
@@ -13,6 +13,15 @@ export default {
         guest: async (_root, { id }) => {
             return await db.guest.findByPk(id);
         },
+        guestsByName: async (_root, { name }) => {
+            return await db.guest.findAll({where: {$or: [
+                {firstname: {$like: `${ name }%`}},
+                {lastname: {$like: `${ name }%`}}
+            ]}});
+        },
+        guestsByClientId: async (_root, { clientId }) => {
+            return await db.guest.findAll({where: { clientId }});
+        },
         guests: async (_root, _input, { user }) => {
             return await db.guest.findAll();
         }
@@ -25,8 +34,8 @@ export default {
                     firstname,
                     lastname,
                     email,
-                    phone1,
-                    phone2,
+                    primary_number,
+                    secondary_number,
                     clientId
                 }
             },
@@ -37,10 +46,18 @@ export default {
             const existingGuest = await db.guest.findOne({where: { email }});
 
             if (existingGuest) {
-                throw new UserInputError(`The guest with email ${email} is already exist`)
+                throw new UserInputError(`A guest with the email ${email} already exists`)
             }
 
-            const creatingProps = _.pickBy({firstname, lastname, email, phone1, phone2, clientId}, _.identity);
+            const creatingProps = pickBy({
+                firstname,
+                lastname,
+                email,
+                primary_number,
+                secondary_number,
+                clientId
+            }, identity);
+
             const createdGuest = db.guest.build(creatingProps);
 
             try {
@@ -70,21 +87,27 @@ export default {
                     firstname,
                     lastname,
                     email,
-                    phone1,
-                    phone2
+                    primary_number,
+                    secondary_number
                 }
             },
             { user, clientIp}
         ) => {
-            const updatingProps = _.pickBy({ firstname, lastname, email, phone1, phone2 }, _.identity);
-
             await checkUserLogin(user);
 
             let updatedGuest = await db.guest.findByPk(id);
 
             if (!updatedGuest) {
-                throw new UserInputError('The guest is not exist')
+                throw new UserInputError('The guest does not exist')
             }
+
+            const updatingProps = pickBy({
+                firstname,
+                lastname,
+                email,
+                primary_number,
+                secondary_number
+            }, identity);
 
             try {
                 updatedGuest = await updatedGuest.update(updatingProps);
@@ -110,7 +133,7 @@ export default {
             const deletedGuest = await db.guest.findByPk(id);
 
             if (!deletedGuest) {
-                throw new UserInputError('The guest is already deleted')
+                throw new UserInputError('The guest has already been deleted')
             }
 
             const logDeleteRecord = await handleDeleteActionActivityLog(
@@ -147,6 +170,9 @@ export default {
                     }
                 ]
             });
+        },
+        guest_rooms: async guest => {
+            return await db.guests_rooms.findAll({where: {guestId: guest.id}});
         }
     }
 };

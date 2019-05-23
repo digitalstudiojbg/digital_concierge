@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            number: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
             }
         },
         {}

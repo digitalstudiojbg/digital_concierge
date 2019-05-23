@@ -4,6 +4,8 @@ export default gql`
     extend type Query {
         guest(id: ID!): Guest
         guests: [Guest]
+        guestsByClientId(clientId: Int!): [Guest] 
+        guestsByName(name: String!): [Guest]
     }
     
     extend type Mutation {
@@ -17,20 +19,21 @@ export default gql`
         firstname: String
         lastname: String
         email: EmailAddress
-        phone1: PhoneNumber
-        phone2: PhoneNumber
+        primary_number: PhoneNumber
+        secondary_number: PhoneNumber
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
         rooms: [Room]
+        guest_rooms: [GuestRooms]
     }
     
     input CreateGuestInput {
         firstname: String!
         lastname: String!
         email: EmailAddress!
-        phone1: PhoneNumber!
-        phone2: PhoneNumber
+        primary_number: PhoneNumber!
+        secondary_number: PhoneNumber
         clientId: Int!
     }
     
@@ -39,8 +42,8 @@ export default gql`
         firstname: String
         lastname: String
         email: EmailAddress
-        phone1: PhoneNumber
-        phone2: PhoneNumber
+        primary_number: PhoneNumber
+        secondary_number: PhoneNumber
     }
     
     input DeleteGuestInput {

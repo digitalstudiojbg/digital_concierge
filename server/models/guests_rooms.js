@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            total_people: {
+            guest_count: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 validate: {

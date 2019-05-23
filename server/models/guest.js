@@ -25,14 +25,14 @@ module.exports = (sequelize, DataTypes) => {
                     isEmail: true
                 }
             },
-            phone1: {
+            primary_number: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            phone2: {
+            secondary_number: {
                 type: DataTypes.STRING,
                 allowNull: true
             },

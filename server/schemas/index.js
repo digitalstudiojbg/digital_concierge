@@ -8,6 +8,7 @@ import validation_schema from "./validation";
 import file_schema from "./file";
 import department_schema from "./department";
 import guest_schema from "./guest";
+import guestRooms_schema from "./guestRooms";
 import room_schema from "./room";
 import media_schema from "./media";
 import system_schema from "./system";
@@ -68,6 +69,7 @@ export default [
     validation_schema,
     guest_schema,
     room_schema,
+    guestRooms_schema,
     media_schema,
     system_schema,
     device_schema,

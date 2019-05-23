@@ -22,7 +22,7 @@ module.exports = {
         ))
         .then(() => queryInterface.addColumn(
             'guests_rooms',
-            'total_people',
+            'guest_count',
             {
                 type: Sequelize.INTEGER,
                 after: 'total_nights',
@@ -42,7 +42,7 @@ module.exports = {
         ))
         .then(() => queryInterface.removeColumn(
             'guests_rooms',
-            'total_people'
+            'guest_count'
         ));
     }
 };

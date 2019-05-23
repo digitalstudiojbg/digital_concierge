@@ -1,152 +1,136 @@
 import db from '../models';
-import _ from 'lodash';
+import { pickBy, identity } from 'lodash';
 import {
     checkUserLogin,
     handleCreateActionActivityLog,
-    handleDeleteActionActivityLog,
     handleUpdateActionActivityLog
 } from '../utils/constant';
 import {UserInputError} from 'apollo-server-express';
 
+const _calcTotalNights = (checkInDate, checkOutDate) => {
+    const diff = checkOutDate.getTime() - checkInDate.getTime();
+    return Math.round(Math.abs(diff/(1000*60*60*24)));
+};
+
 export default {
     Query: {
-        guest: async (_root, { id }) => {
-            return await db.guest.findByPk(id);
+        guestRooms: async (_root, _input) => {
+            return await db.guests_rooms.findAll();
         },
-        guests: async (_root, _input, { user }) => {
-            return await db.guest.findAll();
+        guestRoomsByRoomId: async (_root, { roomId }) => {
+            return await db.guests_rooms.findAll({where: { roomId }});
         }
     },
     Mutation: {
         createGuestRoom: async (
-            // _root,
-            // {
-            //     input: {
-            //         firstname,
-            //         lastname,
-            //         email,
-            //         phone1,
-            //         phone2,
-            //         clientId
-            //     }
-            // },
-            // { user, clientIp }
+            _root,
+            {
+                input: {
+                    checkin_date,
+                    checkout_date,
+                    guest_count,
+                    roomId,
+                    guestId,
+                    pin
+                }
+            },
+            { user, clientIp }
         ) => {
-            // await checkUserLogin(user);
-            //
-            // const existingGuest = await db.guest.findOne({where: { email }});
-            //
-            // if (existingGuest) {
-            //     throw new UserInputError(`The guest with email ${email} is already exist`)
-            // }
-            //
-            // const creatingProps = _.pickBy({firstname, lastname, email, phone1, phone2, clientId}, _.identity);
-            // const createdGuest = db.guest.build(creatingProps);
-            //
-            // try {
-            //     await createdGuest.save();
-            // } catch (error) {
-            //     throw new UserInputError(
-            //         `Create Guest ${email} status failed.\nError Message: ${
-            //             error.message
-            //             }`
-            //     );
-            // }
-            //
-            // await handleCreateActionActivityLog(
-            //     createdGuest,
-            //     creatingProps,
-            //     user,
-            //     clientIp
-            // );
-            //
-            // return createdGuest;
+            await checkUserLogin(user);
+
+            const checkInDate = new Date(checkin_date);
+            const checkOutDate = new Date(checkout_date);
+            const creatingProps = {
+                guestId,
+                roomId,
+                pin,
+                checkout_date: checkOutDate,
+                checkin_date: checkInDate,
+                total_nights: _calcTotalNights(checkInDate, checkOutDate),
+                guest_count
+            };
+
+            const createdGuestRoom = db.guests_rooms.build(creatingProps);
+
+            try {
+                await createdGuestRoom.save();
+            } catch (error) {console.log(error);
+                throw new UserInputError(
+                    `Create GuestRoom status failed.\nError Message: ${
+                        error.message
+                        }`
+                );
+            }
+
+            await handleCreateActionActivityLog(
+                createdGuestRoom,
+                creatingProps,
+                user,
+                clientIp
+            );
+
+            return createdGuestRoom;
         },
-        updateGuestRoom: async (
-        //     __root,
+        // updateGuestRoom: async (
+        //     _root,
         //     {
         //         input: {
-        //             id,
-        //             firstname,
-        //             lastname,
-        //             email,
-        //             phone1,
-        //             phone2
+        //             checkin_date,
+        //             checkout_date,
+        //             guest_count,
+        //             roomId,
+        //             pin
         //         }
         //     },
-        //     { user, clientIp}
-        ) => {
-            // const updatingProps = _.pickBy({ firstname, lastname, email, phone1, phone2 }, _.identity);
-            //
-            // await checkUserLogin(user);
-            //
-            // let updatedGuest = await db.guest.findByPk(id);
-            //
-            // if (!updatedGuest) {
-            //     throw new UserInputError('The guest is not exist')
-            // }
-            //
-            // try {
-            //     updatedGuest = await updatedGuest.update(updatingProps);
-            // } catch (error) {
-            //     throw new UserInputError(
-            //         `Unable to update Guest ${id}.\nError Message: ${
-            //             error.message
-            //             }`
-            //     );
-            // }
-            //
-            // await handleUpdateActionActivityLog(
-            //     updatedGuest,
-            //     updatingProps,
-            //     user,
-            //     clientIp
-            // );
-            //
-            // return updatedGuest;
-        },
-        deleteGuestRoom: async (_root, { input: { id } }, { user, clientIp}) => {
-            // await checkUserLogin(user);
-            // const deletedGuest = await db.guest.findByPk(id);
-            //
-            // if (!deletedGuest) {
-            //     throw new UserInputError('The guest is already deleted')
-            // }
-            //
-            // const logDeleteRecord = await handleDeleteActionActivityLog(
-            //     deletedGuest,
-            //     { id },
-            //     user,
-            //     clientIp
-            // );
-            //
-            // try {
-            //     await db.guest.destroy({ where: { id }})
-            // } catch (error) {
-            //     await db.activity_log.destroy({ where: { id: logDeleteRecord.id }});
-            //     throw new UserInputError(
-            //         `Unable to delete Guest ${id}.\nError Message: ${
-            //             error.message
-            //             }`
-            //     );
-            // }
-            //
-            // return id;
-        }
+        //     { user, clientIp }
+        // ) => {
+        //     await checkUserLogin(user);
+        //
+        //     let updatedGuestRoom = await db.guest.findByPk(id);
+        //
+        //     if (!updatedGuest) {
+        //         throw new UserInputError('The guest does not exist')
+        //     }
+        //
+        //     const checkInDate = new Date(checkin_date);
+        //     const checkOutDate = new Date(checkout_date);
+        //     const updatingProps = pickBy({
+        //         roomId,
+        //         pin,
+        //         checkout_date: checkOutDate,
+        //         checkin_date: checkInDate,
+        //         total_nights: _calcTotalNights(checkInDate, checkOutDate),
+        //         guest_count
+        //     }, identity);
+        //
+        //     const createdGuestRoom = db.guests_rooms.build(creatingProps);
+        //
+        //     try {
+        //         await createdGuestRoom.save();
+        //     } catch (error) {console.log(error);
+        //         throw new UserInputError(
+        //             `Create GuestRoom status failed.\nError Message: ${
+        //                 error.message
+        //                 }`
+        //         );
+        //     }
+        //
+        //     await handleCreateActionActivityLog(
+        //         createdGuestRoom,
+        //         creatingProps,
+        //         user,
+        //         clientIp
+        //     );
+        //
+        //     return createdGuestRoom;
+        // },
     },
-    Guest: {
-        client: async guest => {
-            return await db.client.findByPk(guest.clientId);
+    GuestRooms: {
+        guest: async guestsRoom => {
+            return await db.guest.findByPk(guestsRoom.guestId);
         },
-        rooms: async guest => {
-            return await db.room.findAll({
-                include: [
-                    {
-                        model: db.guest,
-                        where: { id: guest.id }
-                    }
-                ]
-            });
+        room: async guestsRoom => {
+            return await db.room.findByPk(guestsRoom.roomId);
         }
     }
 };
