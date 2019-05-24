@@ -60,13 +60,14 @@ export const ContactEntryContainerDiv = styled.div`
     align-items: center;
     //  border: 2px solid black;
     margin-bottom: ${props => (Boolean(props.isLastItem) ? "0px" : "20px")};
-    padding: 10px;
+    padding: 10px 0;
 `;
 
 export const ContactEntryHeaderContainerDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
+
     align-items: center;
     margin-bottom: 10px;
 `;

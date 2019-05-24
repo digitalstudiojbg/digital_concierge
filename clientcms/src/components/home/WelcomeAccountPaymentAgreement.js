@@ -84,23 +84,38 @@ const renderAgreementFiled = contractsFromState => {
 
         return (
             key && (
-                <TextField
-                    variant="outlined"
-                    type={each.type === "date" ? "date" : "text"}
-                    key={index}
-                    id="standard-name"
-                    label={each.label}
-                    value={
-                        each.type === "date"
-                            ? dayjs(contractsFromState[key]).format(
-                                  "YYYY-MM-DD"
-                              )
-                            : contractsFromState[key]
-                    }
-                    margin="normal"
-                    disabled={true}
-                    fullWidth={true}
-                />
+                <React.Fragment>
+                    <SubSectionDiv>
+                        <FieldLabel>{each.label}</FieldLabel>
+                        <TextField
+                            variant="outlined"
+                            type={each.type === "date" ? "date" : "text"}
+                            key={index}
+                            id="standard-name"
+                            //label={each.label}
+                            value={
+                                each.type === "date"
+                                    ? dayjs(contractsFromState[key]).format(
+                                          "YYYY-MM-DD"
+                                      )
+                                    : contractsFromState[key]
+                            }
+                            //  margin="normal"
+                            disabled={true}
+                            fullWidth={true}
+                            style={{
+                                margin: "0",
+                                fontSize: "12px"
+                            }}
+                            inputProps={{
+                                style: {
+                                    paddingTop: "10px",
+                                    paddingBottom: "10px"
+                                }
+                            }}
+                        />
+                    </SubSectionDiv>
+                </React.Fragment>
             )
         );
     });
@@ -114,6 +129,7 @@ const renderLicenseField = license => {
             <SubSectionDiv>
                 <FieldLabel>LICENSE NUMBER</FieldLabel>
                 <TextField
+                    style={{ margin: "0", fontSize: "12px" }}
                     variant="outlined"
                     type="text"
                     id="standard-name"
@@ -122,12 +138,18 @@ const renderLicenseField = license => {
                     // margin="normal"
                     disabled={true}
                     fullWidth={true}
+                    inputProps={{
+                        style: {
+                            paddingTop: "10px",
+                            paddingBottom: "10px"
+                        }
+                    }}
                 />
             </SubSectionDiv>
             <SubSectionDiv>
                 <FieldLabel>LICENSE TERM</FieldLabel>
                 <TextField
-                    style={{ margin: "0" }}
+                    style={{ margin: "0", fontSize: "12px" }}
                     variant="outlined"
                     type="text"
                     id="standard-name"
@@ -136,6 +158,12 @@ const renderLicenseField = license => {
                     margin="normal"
                     disabled={true}
                     fullWidth={true}
+                    inputProps={{
+                        style: {
+                            paddingTop: "10px",
+                            paddingBottom: "10px"
+                        }
+                    }}
                 />
             </SubSectionDiv>
             <div
@@ -149,7 +177,7 @@ const renderLicenseField = license => {
                 <SubSectionDiv style={{ width: "45%" }}>
                     <FieldLabel>LICENSE START DATE</FieldLabel>
                     <TextField
-                        style={{ margin: "0" }}
+                        style={{ margin: "0", fontSize: "12px" }}
                         variant="outlined"
                         type="text"
                         id="standard-name"
@@ -160,21 +188,32 @@ const renderLicenseField = license => {
                         margin="normal"
                         disabled={true}
                         fullWidth={true}
-                        input={
-                            <InputBase style={{ border: "1px solid black" }} />
-                        }
+                        // input={
+                        //     <InputBase style={{ border: "1px solid black" }} />
+                        // }
+                        inputProps={{
+                            style: {
+                                paddingTop: "10px",
+                                paddingBottom: "10px"
+                            }
+                        }}
                     />
                 </SubSectionDiv>
 
                 <div
-                    style={{ width: "10%", textAlign: "center", color: "grey" }}
+                    style={{
+                        width: "20%",
+                        marginTop: "30px",
+                        textAlign: "center"
+                        // marginTop: "15px"
+                    }}
                 >
                     TO
                 </div>
                 <SubSectionDiv style={{ width: "45%" }}>
                     <FieldLabel>LICENSE END DATE</FieldLabel>
                     <TextField
-                        style={{ margin: "0" }}
+                        style={{ margin: "0", fontSize: "12px" }}
                         variant="outlined"
                         type="text"
                         id="standard-name"
@@ -183,6 +222,12 @@ const renderLicenseField = license => {
                         margin="normal"
                         disabled={true}
                         fullWidth={true}
+                        inputProps={{
+                            style: {
+                                paddingTop: "10px",
+                                paddingBottom: "10px"
+                            }
+                        }}
                     />
                 </SubSectionDiv>
             </div>
@@ -194,7 +239,7 @@ const renderLicenseField = license => {
                         label="AUTOMATIC RENEWAL"
                         checked={license.auto_renewal}
                         margin="normal"
-                        color="#2699FB"
+                        style={{ color: "#2699FB" }}
                     />
                 }
                 label="AUTOMATIC RENEWAL"
@@ -256,7 +301,12 @@ const WelcomeAccountPaymentAgreement = props => {
                                 margin="normal"
                                 disabled={true}
                                 fullWidth={true}
-                                //  input={<OutlinedInput />}
+                                inputProps={{
+                                    style: {
+                                        paddingTop: "10px",
+                                        paddingBottom: "10px"
+                                    }
+                                }}
                             />
                         </SubSectionDiv>
                     </SectionDiv>

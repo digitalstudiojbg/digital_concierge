@@ -434,7 +434,7 @@ const WelcomeThemeSettings = ({
 
     //Constants
     const values = systemThemes.get(systemIndex);
-    const colours = values.get("colours");
+    const colours = Boolean(values) ? values.get("colours") : [];
     const LAYOUT_OPTIONS_START = layoutsStart.map(item => ({
         text: item.name,
         value: parseInt(item.id, DECIMAL_RADIX)
@@ -455,317 +455,336 @@ const WelcomeThemeSettings = ({
     //Render method
     return (
         <ContainerDiv>
-            <ThemeContainerDiv>
-                <div style={{ width: "100%", display: "flex" }}>
-                    <Stepper
-                        nonLinear
-                        activeStep={systemIndex}
-                        //  alternativeLabel
+            {Boolean(values) && (
+                <React.Fragment>
+                    <ThemeContainerDiv>
+                        <div style={{ width: "100%", display: "flex" }}>
+                            <Stepper
+                                nonLinear
+                                activeStep={systemIndex}
+                                //  alternativeLabel
 
-                        style={{ backgroundColor: "#F4F4F4", flex: "left" }}
-                    >
-                        {systems.map((system, index) => (
-                            <Step key={`STEP-${system.get("id")}-${index}`}>
-                                <StepButton onClick={() => handleStep(index)}>
-                                    <StepLabel
-
-                                    // error={
-                                    //     Number.isInteger(
-                                    //         error.get("index")
-                                    //     ) && error.get("index") === index
-                                    // }
+                                style={{
+                                    backgroundColor: "#F4F4F4",
+                                    flex: "left"
+                                }}
+                            >
+                                {systems.map((system, index) => (
+                                    <Step
+                                        key={`STEP-${system.get(
+                                            "id"
+                                        )}-${index}`}
                                     >
-                                        {system.get("name")}
-                                    </StepLabel>
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </div>
-                <EntryThemeContainerDiv>
-                    <EntryThemeDiv>
-                        <FieldLabel>Update Company Logo</FieldLabel>
-                        <TextField
-                            value={
-                                Boolean(values.get("companyLogo")) &&
-                                Boolean(values.get("companyLogo").name)
-                                    ? values.get("companyLogo").name
-                                    : ""
-                            }
-                            disabled={true}
-                            fullWidth={true}
-                            //    label="Update Company Logo"
-                            inputProps={{
-                                className: classes.myInput
-                            }}
-                            variant="outlined"
-                            // error={currentAttributeError === "companyLogo"}
-                            // helperText={
-                            //     currentAttributeError === "companyLogo"
-                            //         ? currentErrorMessage
-                            //         : ""
-                            // }
-                        />
-                    </EntryThemeDiv>
-                    <EntryThemeDiv>
-                        <input
-                            accept="image/*"
-                            style={{
-                                display: "none"
-                            }}
-                            ref={fileInput}
-                            onChange={updateCompanyLogo}
-                            id="upload-company-logo"
-                            type="file"
-                        />
-                        <label htmlFor="upload-company-logo">
+                                        <StepButton
+                                            onClick={() => handleStep(index)}
+                                        >
+                                            <StepLabel
+
+                                            // error={
+                                            //     Number.isInteger(
+                                            //         error.get("index")
+                                            //     ) && error.get("index") === index
+                                            // }
+                                            >
+                                                {system.get("name")}
+                                            </StepLabel>
+                                        </StepButton>
+                                    </Step>
+                                ))}
+                            </Stepper>
+                        </div>
+                        <EntryThemeContainerDiv>
+                            <EntryThemeDiv>
+                                <FieldLabel>Update Company Logo</FieldLabel>
+                                <TextField
+                                    value={
+                                        Boolean(values.get("companyLogo")) &&
+                                        Boolean(values.get("companyLogo").name)
+                                            ? values.get("companyLogo").name
+                                            : ""
+                                    }
+                                    disabled={true}
+                                    fullWidth={true}
+                                    //    label="Update Company Logo"
+                                    inputProps={{
+                                        className: classes.myInput
+                                    }}
+                                    variant="outlined"
+                                    // error={currentAttributeError === "companyLogo"}
+                                    // helperText={
+                                    //     currentAttributeError === "companyLogo"
+                                    //         ? currentErrorMessage
+                                    //         : ""
+                                    // }
+                                />
+                            </EntryThemeDiv>
+                            <EntryThemeDiv>
+                                <input
+                                    accept="image/*"
+                                    style={{
+                                        display: "none"
+                                    }}
+                                    ref={fileInput}
+                                    onChange={updateCompanyLogo}
+                                    id="upload-company-logo"
+                                    type="file"
+                                />
+                                <label htmlFor="upload-company-logo">
+                                    <Button
+                                        variant="outlined"
+                                        component="span"
+                                        className={classes.uploadButton}
+                                    >
+                                        Browse
+                                    </Button>
+                                </label>
+                            </EntryThemeDiv>
+                        </EntryThemeContainerDiv>
+                        {Boolean(values.get("companyLogoURL")) && (
+                            <EntryThemeContainerDiv>
+                                CURRENT COMPANY LOGO
+                                <img
+                                    src={values.get("companyLogoURL")}
+                                    alt="current client logo"
+                                    style={{ width: "50%", height: "50%" }}
+                                />
+                            </EntryThemeContainerDiv>
+                        )}
+                        <EntryThemeContainerDiv>
+                            <EntryThemeDiv>
+                                HEADER FONT
+                                <Dropdown
+                                    id="headerDropdown"
+                                    placeholder="Header Font"
+                                    fluid
+                                    selection
+                                    options={FONT_OPTIONS}
+                                    onChange={updateHeaderFont}
+                                    value={values.get("headerFont")}
+                                    // error={currentAttributeError === "headerFont"}
+                                />
+                            </EntryThemeDiv>
+                            <EntryThemeDiv>
+                                SUBHEADER FONT
+                                <Dropdown
+                                    placeholder="Subheader Font"
+                                    fluid
+                                    selection
+                                    options={FONT_OPTIONS}
+                                    onChange={updateSubHeaderFont}
+                                    value={values.get("subHeaderFont")}
+                                    // error={currentAttributeError === "subHeaderFont"}
+                                />
+                            </EntryThemeDiv>
+                        </EntryThemeContainerDiv>
+                        <EntryThemeContainerDiv>
+                            <EntryThemeDiv>
+                                BODY COPY FONT
+                                <Dropdown
+                                    placeholder="Body Copy Font"
+                                    fluid
+                                    selection
+                                    options={FONT_OPTIONS}
+                                    onChange={updateBodyCopyFont}
+                                    value={values.get("bodyFont")}
+                                    // error={currentAttributeError === "bodyFont"}
+                                />
+                            </EntryThemeDiv>
+                            <EntryThemeDiv>
+                                CAPTION COPY FONT
+                                <Dropdown
+                                    placeholder="Caption Copy Font"
+                                    fluid
+                                    selection
+                                    options={FONT_OPTIONS}
+                                    onChange={updateCaptionCopyFont}
+                                    value={values.get("captionFont")}
+                                    // error={currentAttributeError === "captionFont"}
+                                />
+                            </EntryThemeDiv>
+                        </EntryThemeContainerDiv>
+                        COLOUR THEME
+                        <ColourThemeContainerDiv>
+                            {Boolean(colours) &&
+                                colours.map((colour, colourIndex) => (
+                                    <ColourEntryContainerDiv
+                                        key={`COLOUR-${values.get(
+                                            "id"
+                                        )}-${colourIndex}`}
+                                    >
+                                        <ColorPicker
+                                            onChange={colour =>
+                                                handleUpdateColourPicker(
+                                                    colourIndex,
+                                                    colour
+                                                )
+                                            }
+                                            color={colour.get("hex")}
+                                            alpha={colour.get("alpha")}
+                                            placement="topLeft"
+                                        >
+                                            <ColourEntryDiv />
+                                        </ColorPicker>
+                                        <div
+                                            style={{
+                                                width: "100%",
+                                                paddingLeft: 10
+                                            }}
+                                        >
+                                            <ColourTitleDiv>
+                                                COLOUR #{colourIndex + 1}
+                                            </ColourTitleDiv>
+                                        </div>
+                                        <div
+                                            style={{
+                                                width: "100%",
+                                                paddingLeft: 10
+                                            }}
+                                        >
+                                            {colour.get("hex").toUpperCase()}{" "}
+                                            {colour.get("alpha")}%
+                                        </div>
+                                    </ColourEntryContainerDiv>
+                                ))}
+                        </ColourThemeContainerDiv>
+                    </ThemeContainerDiv>
+                    <LayoutContainerDiv>
+                        DEFAULT LAYOUT
+                        <LayoutEntryContainerDiv>
+                            <LayoutEntryDropdownDiv>
+                                DEFAULT START LAYOUT
+                                <Dropdown
+                                    placeholder="Default Start Layout"
+                                    fluid
+                                    selection
+                                    options={LAYOUT_OPTIONS_START}
+                                    onChange={updateDefaultStartLayout}
+                                    value={values.get("defaultStartLayoutId")}
+                                    // error={
+                                    //     currentAttributeError ===
+                                    //     "defaultStartLayout"
+                                    // }
+                                />
+                            </LayoutEntryDropdownDiv>
+                            {Boolean(
+                                Boolean(values.get("defaultStartLayoutId"))
+                            ) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={getLayoutMediaStart(
+                                            values.get("defaultStartLayoutId")
+                                        )}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                        </LayoutEntryContainerDiv>
+                        <LayoutEntryContainerDiv>
+                            <LayoutEntryDropdownDiv>
+                                DEFAULT HOME LAYOUT
+                                <Dropdown
+                                    placeholder="Default Home Layout"
+                                    fluid
+                                    selection
+                                    options={LAYOUT_OPTIONS_HOME}
+                                    onChange={updateDefaultHomeLayout}
+                                    value={values.get("defaultHomeLayoutId")}
+                                    // error={
+                                    //     currentAttributeError ===
+                                    //     "defaultHomeLayout"
+                                    // }
+                                />
+                            </LayoutEntryDropdownDiv>
+                            {Boolean(values.get("defaultHomeLayoutId")) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={getLayoutMediaHome(
+                                            values.get("defaultHomeLayoutId")
+                                        )}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                        </LayoutEntryContainerDiv>
+                        <LayoutEntryContainerDiv>
+                            <LayoutEntryDropdownDiv>
+                                DEFAULT DIRECTORY LIST LAYOUT
+                                <Dropdown
+                                    placeholder="Default Directory List Layout"
+                                    fluid
+                                    selection
+                                    options={LAYOUT_OPTIONS_LIST}
+                                    onChange={updateDefaultDirListLayout}
+                                    value={values.get("defaultDirListLayoutId")}
+                                    // error={
+                                    //     currentAttributeError ===
+                                    //     "defaultDirListLayout"
+                                    // }
+                                />
+                            </LayoutEntryDropdownDiv>
+                            {Boolean(values.get("defaultDirListLayoutId")) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={getLayoutMediaList(
+                                            values.get("defaultDirListLayoutId")
+                                        )}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                        </LayoutEntryContainerDiv>
+                        <LayoutEntryContainerDiv>
+                            <LayoutEntryDropdownDiv>
+                                DEFAULT DIRECTORY ENTRY LAYOUT
+                                <Dropdown
+                                    placeholder="Default Directory Entry Layout"
+                                    fluid
+                                    selection
+                                    options={LAYOUT_OPTIONS_ENTRY}
+                                    onChange={updateDefaultDirEntryLayout}
+                                    value={values.get(
+                                        "defaultDirEntryLayoutId"
+                                    )}
+                                    // error={
+                                    //     currentAttributeError ===
+                                    //     "defaultDirEntryLayout"
+                                    // }
+                                />
+                            </LayoutEntryDropdownDiv>
+                            {Boolean(values.get("defaultDirEntryLayoutId")) && (
+                                <LayoutEntryPreviewDiv>
+                                    <LayoutEntryPreviewImage
+                                        src={getLayoutMediaEntry(
+                                            values.get(
+                                                "defaultDirEntryLayoutId"
+                                            )
+                                        )}
+                                        alt="layout preview"
+                                    />
+                                </LayoutEntryPreviewDiv>
+                            )}
+                        </LayoutEntryContainerDiv>
+                        <ButtonContainerDiv>
                             <Button
                                 variant="outlined"
                                 component="span"
-                                className={classes.uploadButton}
+                                className={classes.confirmButton}
+                                onClick={handleSubmitAndExit}
                             >
-                                Browse
+                                SAVE & EXIT
                             </Button>
-                        </label>
-                    </EntryThemeDiv>
-                </EntryThemeContainerDiv>
-                {Boolean(values.get("companyLogoURL")) && (
-                    <EntryThemeContainerDiv>
-                        CURRENT COMPANY LOGO
-                        <img
-                            src={values.get("companyLogoURL")}
-                            alt="current client logo"
-                            style={{ width: "50%", height: "50%" }}
-                        />
-                    </EntryThemeContainerDiv>
-                )}
-                <EntryThemeContainerDiv>
-                    <EntryThemeDiv>
-                        HEADER FONT
-                        <Dropdown
-                            id="headerDropdown"
-                            placeholder="Header Font"
-                            fluid
-                            selection
-                            options={FONT_OPTIONS}
-                            onChange={updateHeaderFont}
-                            value={values.get("headerFont")}
-                            // error={currentAttributeError === "headerFont"}
-                        />
-                    </EntryThemeDiv>
-                    <EntryThemeDiv>
-                        SUBHEADER FONT
-                        <Dropdown
-                            placeholder="Subheader Font"
-                            fluid
-                            selection
-                            options={FONT_OPTIONS}
-                            onChange={updateSubHeaderFont}
-                            value={values.get("subHeaderFont")}
-                            // error={currentAttributeError === "subHeaderFont"}
-                        />
-                    </EntryThemeDiv>
-                </EntryThemeContainerDiv>
-                <EntryThemeContainerDiv>
-                    <EntryThemeDiv>
-                        BODY COPY FONT
-                        <Dropdown
-                            placeholder="Body Copy Font"
-                            fluid
-                            selection
-                            options={FONT_OPTIONS}
-                            onChange={updateBodyCopyFont}
-                            value={values.get("bodyFont")}
-                            // error={currentAttributeError === "bodyFont"}
-                        />
-                    </EntryThemeDiv>
-                    <EntryThemeDiv>
-                        CAPTION COPY FONT
-                        <Dropdown
-                            placeholder="Caption Copy Font"
-                            fluid
-                            selection
-                            options={FONT_OPTIONS}
-                            onChange={updateCaptionCopyFont}
-                            value={values.get("captionFont")}
-                            // error={currentAttributeError === "captionFont"}
-                        />
-                    </EntryThemeDiv>
-                </EntryThemeContainerDiv>
-                COLOUR THEME
-                <ColourThemeContainerDiv>
-                    {Boolean(colours) &&
-                        colours.map((colour, colourIndex) => (
-                            <ColourEntryContainerDiv
-                                key={`COLOUR-${values.get(
-                                    "id"
-                                )}-${colourIndex}`}
+                            <Button
+                                variant="outlined"
+                                component="span"
+                                className={classes.confirmButton}
+                                onClick={handleSubmit}
                             >
-                                <ColorPicker
-                                    onChange={colour =>
-                                        handleUpdateColourPicker(
-                                            colourIndex,
-                                            colour
-                                        )
-                                    }
-                                    color={colour.get("hex")}
-                                    alpha={colour.get("alpha")}
-                                    placement="topLeft"
-                                >
-                                    <ColourEntryDiv />
-                                </ColorPicker>
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        paddingLeft: 10
-                                    }}
-                                >
-                                    <ColourTitleDiv>
-                                        COLOUR #{colourIndex + 1}
-                                    </ColourTitleDiv>
-                                </div>
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        paddingLeft: 10
-                                    }}
-                                >
-                                    {colour.get("hex").toUpperCase()}{" "}
-                                    {colour.get("alpha")}%
-                                </div>
-                            </ColourEntryContainerDiv>
-                        ))}
-                </ColourThemeContainerDiv>
-            </ThemeContainerDiv>
-            <LayoutContainerDiv>
-                DEFAULT LAYOUT
-                <LayoutEntryContainerDiv>
-                    <LayoutEntryDropdownDiv>
-                        DEFAULT START LAYOUT
-                        <Dropdown
-                            placeholder="Default Start Layout"
-                            fluid
-                            selection
-                            options={LAYOUT_OPTIONS_START}
-                            onChange={updateDefaultStartLayout}
-                            value={values.get("defaultStartLayoutId")}
-                            // error={
-                            //     currentAttributeError ===
-                            //     "defaultStartLayout"
-                            // }
-                        />
-                    </LayoutEntryDropdownDiv>
-                    {Boolean(Boolean(values.get("defaultStartLayoutId"))) && (
-                        <LayoutEntryPreviewDiv>
-                            <LayoutEntryPreviewImage
-                                src={getLayoutMediaStart(
-                                    values.get("defaultStartLayoutId")
-                                )}
-                                alt="layout preview"
-                            />
-                        </LayoutEntryPreviewDiv>
-                    )}
-                </LayoutEntryContainerDiv>
-                <LayoutEntryContainerDiv>
-                    <LayoutEntryDropdownDiv>
-                        DEFAULT HOME LAYOUT
-                        <Dropdown
-                            placeholder="Default Home Layout"
-                            fluid
-                            selection
-                            options={LAYOUT_OPTIONS_HOME}
-                            onChange={updateDefaultHomeLayout}
-                            value={values.get("defaultHomeLayoutId")}
-                            // error={
-                            //     currentAttributeError ===
-                            //     "defaultHomeLayout"
-                            // }
-                        />
-                    </LayoutEntryDropdownDiv>
-                    {Boolean(values.get("defaultHomeLayoutId")) && (
-                        <LayoutEntryPreviewDiv>
-                            <LayoutEntryPreviewImage
-                                src={getLayoutMediaHome(
-                                    values.get("defaultHomeLayoutId")
-                                )}
-                                alt="layout preview"
-                            />
-                        </LayoutEntryPreviewDiv>
-                    )}
-                </LayoutEntryContainerDiv>
-                <LayoutEntryContainerDiv>
-                    <LayoutEntryDropdownDiv>
-                        DEFAULT DIRECTORY LIST LAYOUT
-                        <Dropdown
-                            placeholder="Default Directory List Layout"
-                            fluid
-                            selection
-                            options={LAYOUT_OPTIONS_LIST}
-                            onChange={updateDefaultDirListLayout}
-                            value={values.get("defaultDirListLayoutId")}
-                            // error={
-                            //     currentAttributeError ===
-                            //     "defaultDirListLayout"
-                            // }
-                        />
-                    </LayoutEntryDropdownDiv>
-                    {Boolean(values.get("defaultDirListLayoutId")) && (
-                        <LayoutEntryPreviewDiv>
-                            <LayoutEntryPreviewImage
-                                src={getLayoutMediaList(
-                                    values.get("defaultDirListLayoutId")
-                                )}
-                                alt="layout preview"
-                            />
-                        </LayoutEntryPreviewDiv>
-                    )}
-                </LayoutEntryContainerDiv>
-                <LayoutEntryContainerDiv>
-                    <LayoutEntryDropdownDiv>
-                        DEFAULT DIRECTORY ENTRY LAYOUT
-                        <Dropdown
-                            placeholder="Default Directory Entry Layout"
-                            fluid
-                            selection
-                            options={LAYOUT_OPTIONS_ENTRY}
-                            onChange={updateDefaultDirEntryLayout}
-                            value={values.get("defaultDirEntryLayoutId")}
-                            // error={
-                            //     currentAttributeError ===
-                            //     "defaultDirEntryLayout"
-                            // }
-                        />
-                    </LayoutEntryDropdownDiv>
-                    {Boolean(values.get("defaultDirEntryLayoutId")) && (
-                        <LayoutEntryPreviewDiv>
-                            <LayoutEntryPreviewImage
-                                src={getLayoutMediaEntry(
-                                    values.get("defaultDirEntryLayoutId")
-                                )}
-                                alt="layout preview"
-                            />
-                        </LayoutEntryPreviewDiv>
-                    )}
-                </LayoutEntryContainerDiv>
-                <ButtonContainerDiv>
-                    <Button
-                        variant="outlined"
-                        component="span"
-                        className={classes.confirmButton}
-                        onClick={handleSubmitAndExit}
-                    >
-                        SAVE & EXIT
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        component="span"
-                        className={classes.confirmButton}
-                        onClick={handleSubmit}
-                    >
-                        SAVE & KEEP EDITING
-                    </Button>
-                </ButtonContainerDiv>
-            </LayoutContainerDiv>
+                                SAVE & KEEP EDITING
+                            </Button>
+                        </ButtonContainerDiv>
+                    </LayoutContainerDiv>
+                </React.Fragment>
+            )}
         </ContainerDiv>
     );
 };

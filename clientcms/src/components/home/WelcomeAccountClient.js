@@ -33,7 +33,8 @@ import {
     FieldLabel,
     ContactEntryContainerDiv,
     ContactEntryHeaderContainerDiv,
-    ContactEntryHeaderTitleDiv
+    ContactEntryHeaderTitleDiv,
+    SubSectionDiv
 } from "./WelcomeStyleSet";
 
 const CLIENT_TEXT_FIELDS = [
@@ -938,13 +939,24 @@ export const WelcomeAccountClient = ({
                                                                                         key={`CONTACT-FIELD-${contactIndex}`}
                                                                                     >
                                                                                         <ContactEntryHeaderContainerDiv>
-                                                                                            <ContactEntryHeaderTitleDiv>
+                                                                                            <ContactEntryHeaderTitleDiv
+                                                                                                style={{
+                                                                                                    width:
+                                                                                                        "100%",
+                                                                                                    justifyContent:
+                                                                                                        "left"
+                                                                                                }}
+                                                                                            >
                                                                                                 CONTACT
                                                                                                 #
                                                                                                 {contactIndex +
                                                                                                     1}
                                                                                             </ContactEntryHeaderTitleDiv>
                                                                                             <IconButton
+                                                                                                style={{
+                                                                                                    padding:
+                                                                                                        "0"
+                                                                                                }}
                                                                                                 aria-label="Delete"
                                                                                                 disabled={
                                                                                                     isSubmitting
@@ -985,16 +997,34 @@ export const WelcomeAccountClient = ({
                                                                                                 },
                                                                                                 contactFieldIndex
                                                                                             ) => (
-                                                                                                <FieldDiv
-                                                                                                    key={`CONTACT-FIELD-${contactIndex}-${name}-${contactFieldIndex}`}
+                                                                                                <SubSectionDiv
+                                                                                                    style={{
+                                                                                                        justifyContent:
+                                                                                                            "left",
+                                                                                                        width:
+                                                                                                            "100%"
+                                                                                                    }}
                                                                                                 >
-                                                                                                    {renderTextField(
-                                                                                                        `contacts[${contactIndex}].${name}`,
-                                                                                                        label,
-                                                                                                        required,
-                                                                                                        type
-                                                                                                    )}
-                                                                                                </FieldDiv>
+                                                                                                    <FieldLabel>
+                                                                                                        {
+                                                                                                            label
+                                                                                                        }
+                                                                                                    </FieldLabel>
+                                                                                                    <FieldDiv
+                                                                                                        style={{
+                                                                                                            padding:
+                                                                                                                "0"
+                                                                                                        }}
+                                                                                                        key={`CONTACT-FIELD-${contactIndex}-${name}-${contactFieldIndex}`}
+                                                                                                    >
+                                                                                                        {renderTextField(
+                                                                                                            `contacts[${contactIndex}].${name}`
+                                                                                                            // label,
+                                                                                                            //  required,
+                                                                                                            //  type
+                                                                                                        )}
+                                                                                                    </FieldDiv>
+                                                                                                </SubSectionDiv>
                                                                                             )
                                                                                         )}
                                                                                     </ContactEntryContainerDiv>
@@ -1004,6 +1034,10 @@ export const WelcomeAccountClient = ({
                                                                     )}
                                                                 />
                                                                 <Button
+                                                                    style={{
+                                                                        marginTop:
+                                                                            "2%"
+                                                                    }}
                                                                     type="submit"
                                                                     variant="outlined"
                                                                     className={
