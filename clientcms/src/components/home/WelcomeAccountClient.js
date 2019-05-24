@@ -714,7 +714,11 @@ export const WelcomeAccountClient = ({
                                                                     height:
                                                                         "70vh",
                                                                     marginTop:
-                                                                        "1%"
+                                                                        "1%",
+                                                                    marginRight:
+                                                                        "3%",
+                                                                    fontSize:
+                                                                        "12px"
                                                                 }}
                                                             >
                                                                 <TitleDiv>

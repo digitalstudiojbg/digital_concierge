@@ -16,7 +16,7 @@ const styles = theme => ({
         borderBottom: "1px solid #e8e8e8"
     },
     tabsIndicator: {
-        backgroundColor: "#1890ff"
+        backgroundColor: "#2699FB"
     },
     tabRoot: {
         fontSize: "1.1em",
@@ -41,7 +41,8 @@ const styles = theme => ({
             opacity: 1
         },
         "&$tabSelected": {
-            color: "#1890ff",
+            // color: "#1890ff",
+            color: "#2699FB",
             fontWeight: theme.typography.fontWeightMedium
         },
         "&:focus": {
