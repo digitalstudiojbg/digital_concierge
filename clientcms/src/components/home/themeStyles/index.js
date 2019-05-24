@@ -105,7 +105,7 @@ export const ButtonContainerDiv = styled.div`
 export const FieldLabel = styled.div`
     color: #5c5c5c;
     fontsize: 10px;
-    marginbottom: 5px;
+    marginbottom: 10px;
 `;
 
 export const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
