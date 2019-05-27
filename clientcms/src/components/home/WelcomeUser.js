@@ -16,6 +16,12 @@ import Paper from "@material-ui/core/Paper";
 import Fade from "@material-ui/core/Fade";
 import { withRouter } from "react-router-dom";
 
+import IconButton from "@material-ui/core/IconButton";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import DeleteIcon from "@material-ui/icons/Delete";
+
+import { FieldDiv } from "./WelcomeStyleSet";
+
 const Transition = props => {
     return <Slide direction="up" {...props} />;
 };
@@ -25,7 +31,15 @@ const styles = theme => ({
         marginBottom: "10px"
     },
     button: {
-        margin: theme.spacing.unit
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        color: "#2699FB",
+        border: "1px solid #2699FB",
+        fontWeight: "bold",
+        backgroundColor: "white",
+        // marginTop: "20px",
+        width: "100%",
+        padding: "4% 0"
     },
     input: {
         display: "none"
@@ -71,6 +85,21 @@ const changeClientDataStructure = data => {
             };
         }
     );
+};
+
+const injectThProps = (state, rowInfo, column) => {
+    if (column.Header) {
+        return {
+            style: {
+                border: "0",
+                padding: "5px 0",
+                borderBottom: "2px solid black"
+            } // override style for 'myHeaderTitle'.
+        };
+    }
+
+    // However you should return an object, if there is no styles you want to override do
+    return {}; // no styles.
 };
 
 class WelcomeUser extends Component {
@@ -139,14 +168,15 @@ class WelcomeUser extends Component {
                             <div
                                 style={{
                                     width: "100%",
-                                    height: "100%",
-                                    backgroundColor: "lightgray",
-                                    padding: "20px"
+                                    //  height: "100%",
+                                    backgroundColor: "#F4F4F4",
+                                    padding: "40px"
                                 }}
                             >
                                 <h1>Users</h1>
-                                <div style={{ display: "flex" }}>
-                                    <div>
+
+                                <FieldDiv style={{ display: "flex" }}>
+                                    <div style={{ marginRight: "2%" }}>
                                         <Button
                                             variant="contained"
                                             className={classes.button}
@@ -159,7 +189,26 @@ class WelcomeUser extends Component {
                                             CREATE A USER ACCOUNT
                                         </Button>
                                     </div>
-                                    <div>
+
+                                    <IconButton
+                                        style={{
+                                            padding: "0px",
+                                            backgroundColor: "white",
+                                            border: "1px solid #707070",
+                                            borderRadius: "5px",
+                                            height: "fit-content"
+                                        }}
+                                        aria-label="Delete"
+                                        //  disabled={isSubmitting}
+                                        onClick={() => {
+                                            this.setState({
+                                                deleteModal: true
+                                            });
+                                        }}
+                                    >
+                                        <DeleteOutlinedIcon fontSize="large" />
+                                    </IconButton>
+                                    {/* <div>
                                         <Button
                                             variant="contained"
                                             className={classes.button}
@@ -171,17 +220,18 @@ class WelcomeUser extends Component {
                                         >
                                             DELETE
                                         </Button>
-                                    </div>
-                                </div>
+                                    </div> */}
+                                </FieldDiv>
                                 <div
                                     style={{
-                                        width: "100%",
+                                        width: "90%",
                                         height: "100%",
                                         backgroundColor: "white",
-                                        padding: "20px"
+                                        margin: "2% 1%"
                                     }}
                                 >
                                     <ReactTable
+                                        getTheadThProps={injectThProps}
                                         defaultPageSize={10}
                                         data={changeClientDataStructure(data)}
                                         columns={[
@@ -191,6 +241,7 @@ class WelcomeUser extends Component {
                                                 style: {
                                                     textAlign: "center"
                                                 },
+
                                                 filterable: true,
                                                 filterMethod: (
                                                     filter,
@@ -257,7 +308,8 @@ class WelcomeUser extends Component {
                                                 Header: "STATUS",
                                                 accessor: "status",
                                                 style: {
-                                                    textAlign: "center"
+                                                    textAlign: "center",
+                                                    borderRight: "0px"
                                                 },
                                                 filterable: true,
                                                 filterMethod: (

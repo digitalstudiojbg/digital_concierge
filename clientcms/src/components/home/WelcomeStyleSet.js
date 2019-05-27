@@ -155,9 +155,11 @@ export const LayoutEntryPreviewDiv = styled.div`
 
 export const LayoutEntryPreviewImage = styled.img`
     // width: 30%;
-    height: 100px;
-    margin: "2%";
+    height: 120px;
+    margin: 1%;
     flex: left;
+    border: 1px solid #9d9d9d;
+    padding: 5px;
 `;
 
 export const ColourEntryContainerDiv = styled.div`
@@ -189,7 +191,7 @@ export const ColourTitleDiv = styled.div`
 `;
 
 export const ButtonContainerDiv = styled.div`
-    height: 200px;
+    // height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -224,3 +226,37 @@ export const FONT_OPTIONS = [
         value: "Comic Sans MS"
     }
 ];
+
+//--- WelcomeUserCreate
+
+export const FiledContainer = styled.div`
+    padding-bottom: 20px;
+`;
+
+export const BrowseButton = styled.label`
+    border: 3px solid rgb(64, 84, 178);
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.3em;
+    color: rgb(64, 84, 178);
+    border-radius: 5px;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+export const SelectAndUnselectAll = styled.div`
+    width: 50%;
+    cursor: pointer;
+    &:hover {
+        font-weight: bold;
+    }
+`;
+
+export const SubContainerDiv = styled.div`
+    width: 33%;
+    padding: 20px;
+`;

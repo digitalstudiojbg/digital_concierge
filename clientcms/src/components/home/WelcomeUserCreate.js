@@ -34,6 +34,14 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import { withRouter } from "react-router-dom";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import {
+    FieldLabel,
+    FiledContainer,
+    SubContainerDiv,
+    BrowseButton,
+    SelectAndUnselectAll
+} from "./WelcomeStyleSet";
 
 const CREATE_USER_FIELD = [
     {
@@ -98,38 +106,6 @@ const EDIT_PASSWORD_FIELD = [
     }
 ];
 
-const ContainerDiv = styled.div`
-    width: 33%;
-    padding: 20px;
-`;
-
-const FiledContainer = styled.div`
-    padding-bottom: 20px;
-`;
-
-const BrowseButton = styled.label`
-    border: 3px solid rgb(64, 84, 178);
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
-    padding: 5px;
-    font-size: 1.3em;
-    color: rgb(64, 84, 178);
-    border-radius: 5px;
-    &:hover {
-        font-weight: bold;
-    }
-`;
-
-const SelectAndUnselectAll = styled.div`
-    width: 50%;
-    cursor: pointer;
-    &:hover {
-        font-weight: bold;
-    }
-`;
-
 const styles = theme => ({
     select: {
         width: "300px"
@@ -140,6 +116,14 @@ const styles = theme => ({
     checkbox: {
         paddingTop: "0px",
         paddingBottom: "0px"
+    },
+    button: {
+        color: "white",
+        backgroundColor: "#2699FB"
+        //  border: "1px solid #2699FB",
+    },
+    myInput: {
+        padding: "10px"
     }
 });
 
@@ -156,6 +140,8 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 component={Select}
                 disabled={optionList.length < 1}
                 fullWidth={true}
+                input={<OutlinedInput />}
+                // inputProps={{ className: classes.myInput }}
             >
                 <MenuItem value="null" disabled>
                     {label}
@@ -329,7 +315,7 @@ const WelcomeUserCreate = props => {
 
     const renderCreateNewRoleModel = selectedDepartment => {
         const { classes } = props;
-
+        //const { classes } = this.props;
         const [selectedPermissions, setSelectedPermissions] = useState(Set());
 
         return (
@@ -866,28 +852,36 @@ const WelcomeUserCreate = props => {
                     return (
                         <Form>
                             <div style={{ display: "flex" }}>
-                                <ContainerDiv>
+                                <SubContainerDiv>
                                     {CREATE_USER_FIELD.map(
                                         (
                                             { name, label, required, type },
                                             index
                                         ) => (
                                             <FiledContainer key={index}>
+                                                <FieldLabel>{label}</FieldLabel>
                                                 <Field
                                                     id={name}
                                                     name={name}
-                                                    label={label}
+                                                    // label={label}
                                                     required={required}
                                                     type={type}
                                                     component={TextField}
                                                     variant="outlined"
                                                     fullWidth={true}
+                                                    inputProps={{
+                                                        style: {
+                                                            paddingTop: "10px",
+                                                            paddingBottom:
+                                                                "10px"
+                                                        }
+                                                    }}
                                                 />
                                             </FiledContainer>
                                         )
                                     )}
-                                </ContainerDiv>
-                                <ContainerDiv>
+                                </SubContainerDiv>
+                                <SubContainerDiv>
                                     <FiledContainer>
                                         {departmentsByUser.length > 0 &&
                                             renderSelectField({
@@ -932,9 +926,9 @@ const WelcomeUserCreate = props => {
                                             </BrowseButton>
                                         )}
                                     </FiledContainer>
-                                </ContainerDiv>
+                                </SubContainerDiv>
 
-                                <ContainerDiv>
+                                <SubContainerDiv>
                                     {is_edit && <h4>Reset Password</h4>}
                                     {renderPasswordFieldsList.map(
                                         (
@@ -995,9 +989,13 @@ const WelcomeUserCreate = props => {
                                             </FiledContainer>
                                         )
                                     )}
-                                </ContainerDiv>
+                                </SubContainerDiv>
                             </div>
                             <Button
+                                style={{
+                                    backgroundColor: "#2699FB",
+                                    color: "white"
+                                }}
                                 type="submit"
                                 variant="contained"
                                 color="primary"

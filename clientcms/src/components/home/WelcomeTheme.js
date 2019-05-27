@@ -60,6 +60,10 @@ import { Dropdown } from "semantic-ui-react";
 import ColorPicker from "rc-color-picker";
 import { DECIMAL_RADIX, WELCOME_URL } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+
+//const styles = theme => ({});
 
 const styles = theme => ({
     formControl: {
@@ -79,9 +83,11 @@ const styles = theme => ({
     },
     confirmButton: {
         margin: theme.spacing.unit,
-        color: "#2699FB",
+        color: "white",
         border: "1px solid #2699FB",
-        width: "50%"
+        backgroundColor: "#2699FB",
+        width: "25%",
+        margin: "4px"
     },
     myInput: {
         padding: "10px 0",
@@ -89,8 +95,57 @@ const styles = theme => ({
         border: "1px solid #9D9D9D",
         borderRadius: "5px"
     },
-    stepperClass: {
-        activeStep: { borderBottom: "1px solid #9D9D9D" }
+    activeIcon: {
+        color: "#2699FB !important"
+        // border: "2px solid #2699FB"
+        // borderRadius: "50%",
+        // StepConnector: "blue"
+    },
+    root: {
+        flexGrow: 1,
+        // backgroundColor: theme.palette.background.paper
+        backgroundColor: "#F4F4F4"
+    },
+    tabsRoot: {
+        borderBottom: "1px solid #e8e8e8"
+    },
+    tabsIndicator: {
+        backgroundColor: "#2699FB"
+    },
+    tabRoot: {
+        fontSize: "1.1em",
+        textTransform: "initial",
+        minWidth: 250,
+        fontWeight: theme.typography.fontWeightRegular,
+        marginRight: theme.spacing.unit * 4,
+        fontFamily: [
+            "-apple-system",
+            "BlinkMacSystemFont",
+            '"Segoe UI"',
+            "Roboto",
+            '"Helvetica Neue"',
+            "Arial",
+            "sans-serif",
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"'
+        ].join(","),
+        "&:hover": {
+            color: "#40a9ff",
+            opacity: 1
+        },
+        "&$tabSelected": {
+            // color: "#1890ff",
+            color: "#2699FB",
+            fontWeight: theme.typography.fontWeightMedium
+        },
+        "&:focus": {
+            color: "#40a9ff"
+        }
+    },
+    tabSelected: {},
+    typography: {
+        padding: theme.spacing.unit * 3
     }
 });
 
@@ -454,6 +509,10 @@ const WelcomeThemeSettings = ({
         }
     };
 
+    const handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
     //Constants
     const values = systemThemes.get(systemIndex);
     const colours = Boolean(values) ? values.get("colours") : [];
@@ -480,13 +539,14 @@ const WelcomeThemeSettings = ({
             {Boolean(values) && (
                 <React.Fragment>
                     <ThemeContainerDiv>
-                        <div>
+                        <div style={{ margin: "2% 7% 0 0 " }}>
                             <SubSectionDiv style={{ display: "flex" }}>
                                 <h2
                                     style={{
                                         width: "20%",
-                                        paddingBottom: "2%",
-                                        flex: "1"
+                                        //  paddingBottom: "2%",
+                                        flex: "1",
+                                        margin: "0"
                                     }}
                                 >
                                     Theme Settings
@@ -495,7 +555,7 @@ const WelcomeThemeSettings = ({
                                 <ButtonContainerDiv
                                     style={{
                                         width: "20%",
-                                        paddingBottom: "2%",
+                                        // paddingBottom: "2%",
                                         flex: "1"
                                     }}
                                 >
@@ -517,6 +577,37 @@ const WelcomeThemeSettings = ({
                                     </Button>
                                 </ButtonContainerDiv>
                             </SubSectionDiv>
+
+                            {/* <div className={classes.root}>
+                                <Tabs
+                                    classes={{
+                                        root: classes.tabsRoot,
+                                        indicator: classes.tabsIndicator
+                                    }}
+                                    value={systemIndex}
+                                    onChange={handleChange}
+                                >
+                                    <Tab
+                                        disableRipple
+                                        classes={{
+                                            root: classes.tabRoot,
+                                            selected: classes.tabSelected
+                                        }}
+                                        onClick={() => handleStep(index)}
+                                        // label="Account Details"
+                                    />
+                                    <Tab
+                                        disableRipple
+                                        classes={{
+                                            root: classes.tabRoot,
+                                            selected: classes.tabSelected
+                                        }}
+                                        onClick={() => handleStep(index)}
+                                        //  label="Payment & Agreement"
+                                    />
+                                </Tabs>
+                            </div> */}
+
                             <Stepper
                                 nonLinear
                                 activeStep={systemIndex}
@@ -524,7 +615,8 @@ const WelcomeThemeSettings = ({
 
                                 style={{
                                     backgroundColor: "#F4F4F4",
-                                    flex: "left"
+                                    flex: "left",
+                                    width: "50%"
                                 }}
                             >
                                 {systems.map((system, index) => (
@@ -537,12 +629,17 @@ const WelcomeThemeSettings = ({
                                             onClick={() => handleStep(index)}
                                         >
                                             <StepLabel
-
-                                            // error={
-                                            //     Number.isInteger(
-                                            //         error.get("index")
-                                            //     ) && error.get("index") === index
-                                            // }
+                                                StepIconProps={{
+                                                    classes: {
+                                                        active:
+                                                            classes.activeIcon
+                                                    }
+                                                }}
+                                                // error={
+                                                //     Number.isInteger(
+                                                //         error.get("index")
+                                                //     ) && error.get("index") === index
+                                                // }
                                             >
                                                 {system.get("name")}
                                             </StepLabel>
@@ -637,7 +734,8 @@ const WelcomeThemeSettings = ({
                                     <EntryThemeContainerDiv
                                         style={{
                                             display: "flex",
-                                            flexDirection: "column"
+                                            flexDirection: "column",
+                                            width: "25%"
                                         }}
                                     >
                                         <FieldLabel>
@@ -647,8 +745,9 @@ const WelcomeThemeSettings = ({
                                             src={values.get("companyLogoURL")}
                                             alt="current client logo"
                                             style={{
-                                                width: "25%",
-                                                //  height: "25%",
+                                                // width: "25%",
+                                                width: "auto",
+                                                height: "120px",
                                                 flex: "left"
                                             }}
                                         />
