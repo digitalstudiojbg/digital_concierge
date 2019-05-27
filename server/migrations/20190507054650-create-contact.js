@@ -30,11 +30,7 @@ module.exports = {
                 }
             },
             mobile: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
+                type: Sequelize.STRING
             },
             email: {
                 type: Sequelize.STRING,
