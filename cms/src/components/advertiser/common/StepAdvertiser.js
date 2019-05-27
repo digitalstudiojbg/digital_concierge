@@ -234,24 +234,27 @@ const CONTACT_FIELDS = [
         required: true
     },
     {
-        name: "title",
-        label: "Contact Position",
+        name: "email",
+        label: "Contact Email",
         required: true
     },
     {
+        name: "title",
+        label: "Position",
+        required: true
+    }
+];
+
+const CONTACT_PHONE_FIELDS = [
+    {
         name: "phone",
-        label: "Contact Phone Number",
+        label: "Contact Phone Number 1",
         required: true
     },
     {
         name: "mobile",
-        label: "Contact Mobile Number",
-        required: true
-    },
-    {
-        name: "email",
-        label: "Contact Email Address",
-        required: true
+        label: "Contact Phone Number 2",
+        required: false
     }
 ];
 
@@ -274,6 +277,12 @@ const SectionTitleDiv = styled.div`
     padding-bottom: 20px;
 `;
 
+const SectionContactTitleDiv = styled(SectionTitleDiv)`
+    width: 100%;
+    display: flex;
+    align-items: center;
+`;
+
 const FieldContainerDiv = styled.div`
     width: 100%;
     display: flex;
@@ -293,11 +302,21 @@ const FieldDiv = styled.div`
 `;
 
 const ContactEntryContainerDiv = styled.div`
-    width: 100%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+`;
+
+export const ContinueButton = styled.button`
+    width: 25%;
+    padding: 20px 5px;
+    color: white;
+    background: #2699fb;
+    border: 20px solid #313131;
 `;
 
 const EMPTY_CONTACT = {
@@ -313,8 +332,15 @@ const styles = () => ({
     addContactButton: {
         color: "#2699FB",
         border: "1px solid #2699FB",
-        width: "100%",
+        width: "40%",
         marginBottom: 20
+    },
+    deleteIconButton: {
+        fontSize: "1.7em",
+        backgroundColor: "white",
+        border: "1px solid rgba(112, 112, 112, 1)",
+        borderRadius: 5,
+        padding: 2
     }
 });
 
@@ -471,7 +497,7 @@ const StepAdvertiser = ({
                             </SectionDiv>
                             <SectionDiv
                                 flexBasis="60%"
-                                flexDirection="row"
+                                flexDirection="column"
                                 paddingRight="0px"
                             >
                                 <FieldArray name="contacts">
@@ -482,12 +508,13 @@ const StepAdvertiser = ({
                                             <div
                                                 style={{
                                                     width: "100%",
-                                                    display: "flex"
+                                                    display: "flex",
+                                                    flexDirection: "column"
                                                 }}
                                             >
                                                 <div
                                                     style={{
-                                                        flexBasis: "80%",
+                                                        width: "80%",
                                                         display: "flex"
                                                     }}
                                                 >
@@ -524,19 +551,50 @@ const StepAdvertiser = ({
                                                                 <ContactEntryContainerDiv
                                                                     key={`CONTACT-ENTRY-${contactIndex}`}
                                                                 >
-                                                                    <SectionTitleDiv>
-                                                                        CONTACT
-                                                                        #
-                                                                        {contactIndex +
-                                                                            1}
-                                                                        <IconButton
-                                                                            onClick={deleteContact(
-                                                                                contactIndex
-                                                                            )}
+                                                                    <SectionContactTitleDiv>
+                                                                        <div
+                                                                            style={{
+                                                                                flexBasis:
+                                                                                    "90%"
+                                                                            }}
                                                                         >
-                                                                            <DeleteIcon />
-                                                                        </IconButton>
-                                                                    </SectionTitleDiv>
+                                                                            Contact
+                                                                            Person
+                                                                            #
+                                                                            {contactIndex +
+                                                                                1}
+                                                                        </div>
+
+                                                                        {values
+                                                                            .contacts
+                                                                            .length >
+                                                                            1 && (
+                                                                            <div
+                                                                                style={{
+                                                                                    flexBasis:
+                                                                                        "10%",
+                                                                                    display:
+                                                                                        "flex",
+                                                                                    flexDirection:
+                                                                                        "row-reverse",
+                                                                                    marginBottom:
+                                                                                        "-11px"
+                                                                                }}
+                                                                            >
+                                                                                <IconButton
+                                                                                    onClick={deleteContact(
+                                                                                        contactIndex
+                                                                                    )}
+                                                                                    fontSize="small"
+                                                                                    className={
+                                                                                        classes.deleteIconButton
+                                                                                    }
+                                                                                >
+                                                                                    <DeleteIcon />
+                                                                                </IconButton>
+                                                                            </div>
+                                                                        )}
+                                                                    </SectionContactTitleDiv>
                                                                     <div
                                                                         style={{
                                                                             width:
@@ -552,7 +610,7 @@ const StepAdvertiser = ({
                                                                                 },
                                                                                 contactFieldIndex
                                                                             ) => (
-                                                                                <React.Fragment
+                                                                                <FieldContainerDiv
                                                                                     key={`CONTACT-FIELD-${contactIndex}-${name}-${contactFieldIndex}`}
                                                                                 >
                                                                                     {renderTextField(
@@ -560,33 +618,94 @@ const StepAdvertiser = ({
                                                                                         label,
                                                                                         required
                                                                                     )}
-                                                                                </React.Fragment>
+                                                                                </FieldContainerDiv>
                                                                             )
                                                                         )}
+                                                                        <div
+                                                                            style={{
+                                                                                width:
+                                                                                    "100%",
+                                                                                display:
+                                                                                    "flex"
+                                                                            }}
+                                                                        >
+                                                                            {CONTACT_PHONE_FIELDS.map(
+                                                                                (
+                                                                                    {
+                                                                                        name,
+                                                                                        label,
+                                                                                        required
+                                                                                    },
+                                                                                    contactPhoneFieldIndex
+                                                                                ) => (
+                                                                                    <div
+                                                                                        style={{
+                                                                                            flex: 1,
+                                                                                            paddingRight:
+                                                                                                contactPhoneFieldIndex ===
+                                                                                                CONTACT_PHONE_FIELDS.length -
+                                                                                                    1
+                                                                                                    ? 0
+                                                                                                    : 10
+                                                                                        }}
+                                                                                        key={`CONTACT-FIELD-PHONE-${contactIndex}-${name}-${contactPhoneFieldIndex}`}
+                                                                                    >
+                                                                                        {renderTextField(
+                                                                                            `contacts[${contactIndex}].${name}`,
+                                                                                            label,
+                                                                                            required
+                                                                                        )}
+                                                                                    </div>
+                                                                                )
+                                                                            )}
+                                                                        </div>
                                                                     </div>
                                                                 </ContactEntryContainerDiv>
                                                             );
                                                         }
                                                     )}
                                                 </div>
-                                                <div
-                                                    style={{ flexBasis: "20%" }}
-                                                >
-                                                    <Button
-                                                        variant="outlined"
-                                                        className={
-                                                            classes.addContactButton
-                                                        }
-                                                        onClick={addContact}
-                                                        disabled={isSubmitting}
+                                                {values.contacts.length < 2 && (
+                                                    <div
+                                                        style={{
+                                                            width: "40%",
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "row-reverse",
+                                                            paddingRight: 10
+                                                        }}
                                                     >
-                                                        ADD ADDITIONAL CONTACT
-                                                    </Button>
-                                                </div>
+                                                        <Button
+                                                            variant="outlined"
+                                                            className={
+                                                                classes.addContactButton
+                                                            }
+                                                            onClick={addContact}
+                                                            disabled={
+                                                                isSubmitting
+                                                            }
+                                                        >
+                                                            ADD ADDITIONAL
+                                                            CONTACT
+                                                        </Button>
+                                                    </div>
+                                                )}
                                             </div>
                                         );
                                     }}
                                 </FieldArray>
+                                <div
+                                    style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        flexDirection: "row-reverse",
+                                        alignItems: "flex-end"
+                                    }}
+                                >
+                                    <ContinueButton type="submit">
+                                        Confirm & Continue
+                                    </ContinueButton>
+                                </div>
                             </SectionDiv>
                         </ContainerDiv>
                     </Form>
