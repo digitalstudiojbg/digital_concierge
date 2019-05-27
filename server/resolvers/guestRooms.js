@@ -1,10 +1,5 @@
 import db from '../models';
-import { pickBy, identity } from 'lodash';
-import {
-    checkUserLogin,
-    handleCreateActionActivityLog,
-    handleUpdateActionActivityLog
-} from '../utils/constant';
+import { checkUserLogin } from '../utils/constant';
 import {UserInputError} from 'apollo-server-express';
 
 const _calcTotalNights = (checkInDate, checkOutDate) => {
@@ -40,6 +35,20 @@ export default {
 
             const checkInDate = new Date(checkin_date);
             const checkOutDate = new Date(checkout_date);
+
+            const bookedRooms = await db.guests_rooms.count({where: {
+                roomId,
+                $or: [
+                    {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
+                    {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
+                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                ]
+            }});
+
+            if (bookedRooms > 0) {
+                throw new UserInputError('There are other bookings for these dates');
+            }
+
             const creatingProps = {
                 guestId,
                 roomId,
@@ -62,68 +71,38 @@ export default {
                 );
             }
 
-            await handleCreateActionActivityLog(
-                createdGuestRoom,
-                creatingProps,
-                user,
-                clientIp
-            );
-
             return createdGuestRoom;
         },
-        // updateGuestRoom: async (
-        //     _root,
-        //     {
-        //         input: {
-        //             checkin_date,
-        //             checkout_date,
-        //             guest_count,
-        //             roomId,
-        //             pin
-        //         }
-        //     },
-        //     { user, clientIp }
-        // ) => {
-        //     await checkUserLogin(user);
-        //
-        //     let updatedGuestRoom = await db.guest.findByPk(id);
-        //
-        //     if (!updatedGuest) {
-        //         throw new UserInputError('The guest does not exist')
-        //     }
-        //
-        //     const checkInDate = new Date(checkin_date);
-        //     const checkOutDate = new Date(checkout_date);
-        //     const updatingProps = pickBy({
-        //         roomId,
-        //         pin,
-        //         checkout_date: checkOutDate,
-        //         checkin_date: checkInDate,
-        //         total_nights: _calcTotalNights(checkInDate, checkOutDate),
-        //         guest_count
-        //     }, identity);
-        //
-        //     const createdGuestRoom = db.guests_rooms.build(creatingProps);
-        //
-        //     try {
-        //         await createdGuestRoom.save();
-        //     } catch (error) {console.log(error);
-        //         throw new UserInputError(
-        //             `Create GuestRoom status failed.\nError Message: ${
-        //                 error.message
-        //                 }`
-        //         );
-        //     }
-        //
-        //     await handleCreateActionActivityLog(
-        //         createdGuestRoom,
-        //         creatingProps,
-        //         user,
-        //         clientIp
-        //     );
-        //
-        //     return createdGuestRoom;
-        // },
+        deleteGuestRoom: async (
+            _root,
+            {
+                input: {
+                    roomId,
+                    guestId
+                }
+            },
+            { user }
+        ) => {
+            await checkUserLogin(user);
+
+            const deletedGuestRoom = await db.guests_rooms.findOne({where: { roomId, guestId }});
+
+            if (!deletedGuestRoom) {
+                throw new UserInputError('The guest room has already been deleted')
+            }
+
+            try {
+                await deletedGuestRoom.destroy();
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to delete room ${ roomId } for guest ${ guestId }.\nError Message: ${
+                        error.message
+                        }`
+                );
+            }
+
+            return deletedGuestRoom;
+        }
     },
     GuestRooms: {
         guest: async guestsRoom => {
