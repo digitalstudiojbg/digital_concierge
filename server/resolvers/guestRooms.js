@@ -26,7 +26,8 @@ export default {
                     guest_count,
                     roomId,
                     guestId,
-                    pin
+                    pin,
+                    active
                 }
             },
             { user, clientIp }
@@ -56,7 +57,8 @@ export default {
                 checkout_date: checkOutDate,
                 checkin_date: checkInDate,
                 total_nights: _calcTotalNights(checkInDate, checkOutDate),
-                guest_count
+                guest_count,
+                active
             };
 
             const createdGuestRoom = db.guests_rooms.build(creatingProps);

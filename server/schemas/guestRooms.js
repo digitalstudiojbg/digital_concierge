@@ -31,6 +31,7 @@ export default gql`
         roomId: Int!
         guestId: Int!
         pin: Int!
+        active: Int!
     }
     
     input DeleteGuestRoomsInput {
