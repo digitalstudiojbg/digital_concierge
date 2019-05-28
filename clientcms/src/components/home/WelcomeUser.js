@@ -92,8 +92,8 @@ const injectThProps = (state, rowInfo, column) => {
         return {
             style: {
                 border: "0",
-                padding: "5px 0",
-                borderBottom: "2px solid black"
+                padding: "5px 0"
+                //   borderBottom: "2px solid black"
             } // override style for 'myHeaderTitle'.
         };
     }
@@ -497,7 +497,6 @@ class WelcomeUser extends Component {
                                                                 });
                                                             }}
                                                             value="checkedB"
-                                                            color="primary"
                                                             style={{
                                                                 padding: "0"
                                                             }}

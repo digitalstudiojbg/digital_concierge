@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import { getCountryList, getClientDetail } from "../../data/query";
 import { DECIMAL_RADIX } from "../../utils/Constants";
@@ -952,10 +953,19 @@ export const WelcomeAccountClient = ({
                                                                                                 {contactIndex +
                                                                                                     1}
                                                                                             </ContactEntryHeaderTitleDiv>
+
                                                                                             <IconButton
                                                                                                 style={{
                                                                                                     padding:
-                                                                                                        "0"
+                                                                                                        "0px",
+                                                                                                    backgroundColor:
+                                                                                                        "white",
+                                                                                                    border:
+                                                                                                        "1px solid #707070",
+                                                                                                    borderRadius:
+                                                                                                        "5px",
+                                                                                                    height:
+                                                                                                        "fit-content"
                                                                                                 }}
                                                                                                 aria-label="Delete"
                                                                                                 disabled={
@@ -984,7 +994,7 @@ export const WelcomeAccountClient = ({
                                                                                                     );
                                                                                                 }}
                                                                                             >
-                                                                                                <DeleteIcon fontSize="large" />
+                                                                                                <DeleteOutlinedIcon fontSize="large" />
                                                                                             </IconButton>
                                                                                         </ContactEntryHeaderContainerDiv>
                                                                                         {CONTACT_TEXT_FIELDS.map(

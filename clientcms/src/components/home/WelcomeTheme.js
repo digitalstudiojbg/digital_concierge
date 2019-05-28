@@ -96,7 +96,8 @@ const styles = theme => ({
         borderRadius: "5px"
     },
     activeIcon: {
-        color: "#2699FB !important"
+        color: "#2699FB !important",
+        display: "felx"
         // border: "2px solid #2699FB"
         // borderRadius: "50%",
         // StepConnector: "blue"
@@ -624,22 +625,22 @@ const WelcomeThemeSettings = ({
                                         key={`STEP-${system.get(
                                             "id"
                                         )}-${index}`}
+                                        StepIconProps={{
+                                            classes: {
+                                                active: classes.activeIcon
+                                            }
+                                        }}
                                     >
                                         <StepButton
                                             onClick={() => handleStep(index)}
                                         >
                                             <StepLabel
-                                                StepIconProps={{
-                                                    classes: {
-                                                        active:
-                                                            classes.activeIcon
-                                                    }
-                                                }}
-                                                // error={
-                                                //     Number.isInteger(
-                                                //         error.get("index")
-                                                //     ) && error.get("index") === index
-                                                // }
+
+                                            // error={
+                                            //     Number.isInteger(
+                                            //         error.get("index")
+                                            //     ) && error.get("index") === index
+                                            // }
                                             >
                                                 {system.get("name")}
                                             </StepLabel>

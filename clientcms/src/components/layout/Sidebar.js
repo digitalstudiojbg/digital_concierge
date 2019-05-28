@@ -44,6 +44,13 @@ import { getSystemDetailSidebar } from "../../data/query";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 
+import {
+    SidebarContainer,
+    SidebarItem,
+    SidebarLabel,
+    ClientAvatarDiv
+} from "../home/WelcomeStyleSet";
+
 const SIDEBAR_ITEMS = [
     {
         name:
@@ -140,62 +147,14 @@ const SIDEBAR_ITEMS = [
     // }
 ];
 
-const SidebarContainer = styled.div``;
-
-const SidebarItem = styled.div`
-    display: flex;
-    align-items: center;
-    padding-left: ${props => props.paddingLeft};
-    height: 60px;
-    transition: all 0.3s linear;
-    width:100%;
-
-  background-color: ${({ selectedItem, expectedItem }) =>
-      selectedItem === expectedItem && "rgb(43,43,43)"}; 
-    
-
-    color: ${({ selectedItem, expectedItem }) =>
-        selectedItem === expectedItem && "rgb(234,234,234)"};
-
-    &:hover {
-        background-color: white;
-        color: black;
-    }
-
-    background-image: ${({ selectedItem, expectedItem }) =>
-        selectedItem === expectedItem &&
-        "linear-gradient(to bottom,rgb(43,43,43) 0%, rgb(43,43,43) 100%),linear-gradient(to bottom, rgb(0,0,0) 0%, rgb(0,0,0) 100%)"};
- 
-
-    background-clip: ${({ selectedItem, expectedItem }) =>
-        selectedItem === expectedItem && " content-box , padding-box"};
-   
- /* justify-content: ${props => (props.center ? "center" : "stretch")}; */
-`;
-
-const SidebarLabel = styled.div`
-    font-size: 18px;
-    /* font-weight: 700; */
-    padding-left: 10px;
-    padding-top: 0x;
-    padding-bottom: 0px;
-`;
-
-const ClientAvatarDiv = styled.div`
-    height: 90%;
-
-    background-image: url(${props => props.imageUrl});
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-color: white;
-`;
-
 const styles = {
     icon: {
-        width: 30,
+        //  width: 30,
         height: 30,
         paddingLeft: 10
+    },
+    addActiveClass: {
+        width: "260px"
     }
 };
 
@@ -304,9 +263,6 @@ class Sidebar extends Component {
             expandContent
         };
     }
-    // handleClick = () => {
-    //     this.setState(state => ({ open: !state.open }));
-    // };
 
     render() {
         const { selectedItem } = this.state;
@@ -342,7 +298,7 @@ class Sidebar extends Component {
                                     <div
                                         style={{
                                             width: "100%",
-                                            height: "15%",
+                                            height: "20%",
                                             backgroundColor: "white",
                                             paddingTop: "5%"
                                         }}
@@ -393,6 +349,7 @@ class Sidebar extends Component {
                                                     }}
                                                 /> */}
                                                 <SidebarItem
+                                                    style={{ width: "260px" }}
                                                     onClick={() => {
                                                         // console.log("Name is ", name);
                                                         if (
@@ -472,6 +429,10 @@ class Sidebar extends Component {
                                                                     } = eItem;
                                                                     return (
                                                                         <SidebarItem
+                                                                            style={{
+                                                                                width:
+                                                                                    "260px"
+                                                                            }}
                                                                             key={`${index}-${eIndex}`}
                                                                             onClick={() => {
                                                                                 // console.log("Name is ", name);

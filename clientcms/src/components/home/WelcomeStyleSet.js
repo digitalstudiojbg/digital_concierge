@@ -260,3 +260,56 @@ export const SubContainerDiv = styled.div`
     width: 33%;
     padding: 20px;
 `;
+
+//----------
+
+export const SidebarContainer = styled.div``;
+
+export const SidebarItem = styled.div`
+    display: flex;
+    align-items: center;
+    padding-left: ${props => props.paddingLeft};
+    height: 60px;
+    transition: all 0.3s linear;
+    width:100%;
+
+  background-color: ${({ selectedItem, expectedItem }) =>
+      selectedItem === expectedItem && "rgb(43,43,43)"}; 
+    
+
+    color: ${({ selectedItem, expectedItem }) =>
+        selectedItem === expectedItem && "rgb(234,234,234)"};
+
+    &:hover {
+        background-color: white;
+        color: black;
+    }
+
+    background-image: ${({ selectedItem, expectedItem }) =>
+        selectedItem === expectedItem &&
+        "linear-gradient(to bottom,rgb(43,43,43) 0%, rgb(43,43,43) 100%),linear-gradient(to bottom, rgb(0,0,0) 0%, rgb(0,0,0) 100%)"};
+ 
+
+    background-clip: ${({ selectedItem, expectedItem }) =>
+        selectedItem === expectedItem && " content-box , padding-box"};
+   
+ /* justify-content: ${props => (props.center ? "center" : "stretch")}; */
+`;
+
+export const SidebarLabel = styled.div`
+    font-size: 18px;
+    /* font-weight: 700; */
+    padding-left: 10px;
+    padding-top: 0x;
+    padding-bottom: 0px;
+`;
+
+export const ClientAvatarDiv = styled.div`
+    height: 80%;
+    padding: 10%;
+    background-image: url(${props => props.imageUrl});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: white;
+`;
