@@ -7,6 +7,7 @@ import {
 import Loading from "../loading/Loading";
 import { UPDATE_THEMES } from "../../data/mutation/theme";
 import Immutable, { Map, List } from "immutable";
+
 // import {
 //     ContainerDiv,
 //     ThemeContainerDiv,
@@ -45,13 +46,15 @@ import {
     FieldLabel,
     SectionHeader,
     SubSectionDiv,
-    SubSectionTheme
+    SubSectionTheme,
+    StepperCon
 } from "./WelcomeStyleSet";
 
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import StepLabel from "@material-ui/core/StepLabel";
+import MobileStepper from "@material-ui/core/MobileStepper";
 import TextField from "@material-ui/core/TextField";
 import StepIcon from "@material-ui/core/StepIcon";
 import Button from "@material-ui/core/Button";
@@ -62,6 +65,7 @@ import { DECIMAL_RADIX, WELCOME_URL } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import StepConnector from "@material-ui/core/StepConnector";
 
 //const styles = theme => ({});
 
@@ -97,57 +101,64 @@ const styles = theme => ({
     },
     activeIcon: {
         color: "#2699FB !important",
-        display: "felx"
-        // border: "2px solid #2699FB"
-        // borderRadius: "50%",
-        // StepConnector: "blue"
+        display: "felx",
+        borderBottom: "2px solid #2699FB"
     },
-    root: {
-        flexGrow: 1,
-        // backgroundColor: theme.palette.background.paper
-        backgroundColor: "#F4F4F4"
+    activeLabel: {
+        paddingBottom: "10px",
+        borderBottom: "2px solid #2699FB",
+        fontWeight: "bold !important"
     },
-    tabsRoot: {
-        borderBottom: "1px solid #e8e8e8"
-    },
-    tabsIndicator: {
-        backgroundColor: "#2699FB"
-    },
-    tabRoot: {
-        fontSize: "1.1em",
-        textTransform: "initial",
-        minWidth: 250,
-        fontWeight: theme.typography.fontWeightRegular,
-        marginRight: theme.spacing.unit * 4,
-        fontFamily: [
-            "-apple-system",
-            "BlinkMacSystemFont",
-            '"Segoe UI"',
-            "Roboto",
-            '"Helvetica Neue"',
-            "Arial",
-            "sans-serif",
-            '"Apple Color Emoji"',
-            '"Segoe UI Emoji"',
-            '"Segoe UI Symbol"'
-        ].join(","),
-        "&:hover": {
-            color: "#40a9ff",
-            opacity: 1
-        },
-        "&$tabSelected": {
-            // color: "#1890ff",
-            color: "#2699FB",
-            fontWeight: theme.typography.fontWeightMedium
-        },
-        "&:focus": {
-            color: "#40a9ff"
-        }
-    },
-    tabSelected: {},
-    typography: {
-        padding: theme.spacing.unit * 3
+    unCopletedIcon: {
+        display: "none"
     }
+
+    // root: {
+    //     flexGrow: 1,
+    //     // backgroundColor: theme.palette.background.paper
+    //     backgroundColor: "#F4F4F4"
+    // },
+    // tabsRoot: {
+    //     borderBottom: "1px solid #e8e8e8"
+    // },
+    // tabsIndicator: {
+    //     backgroundColor: "#2699FB"
+    // },
+    // tabRoot: {
+    //     fontSize: "1.1em",
+    //     textTransform: "initial",
+    //     minWidth: 250,
+    //     fontWeight: theme.typography.fontWeightRegular,
+    //     marginRight: theme.spacing.unit * 4,
+    //     fontFamily: [
+    //         "-apple-system",
+    //         "BlinkMacSystemFont",
+    //         '"Segoe UI"',
+    //         "Roboto",
+    //         '"Helvetica Neue"',
+    //         "Arial",
+    //         "sans-serif",
+    //         '"Apple Color Emoji"',
+    //         '"Segoe UI Emoji"',
+    //         '"Segoe UI Symbol"'
+    //     ].join(","),
+    //     "&:hover": {
+    //         color: "#40a9ff",
+    //         opacity: 1
+    //     },
+    //     "&$tabSelected": {
+    //         // color: "#1890ff",
+    //         color: "#2699FB",
+    //         fontWeight: theme.typography.fontWeightMedium
+    //     },
+    //     "&:focus": {
+    //         color: "#40a9ff"
+    //     }
+    // },
+    // tabSelected: {},
+    // typography: {
+    //     padding: theme.spacing.unit * 3
+    // }
 });
 
 export const WelcomeTheme = ({ data: { id }, classes, history }) => {
@@ -540,7 +551,7 @@ const WelcomeThemeSettings = ({
             {Boolean(values) && (
                 <React.Fragment>
                     <ThemeContainerDiv>
-                        <div style={{ margin: "2% 7% 0 0 " }}>
+                        <div style={{ margin: "0 7% 3% 0 " }}>
                             <SubSectionDiv style={{ display: "flex" }}>
                                 <h2
                                     style={{
@@ -579,75 +590,65 @@ const WelcomeThemeSettings = ({
                                 </ButtonContainerDiv>
                             </SubSectionDiv>
 
-                            {/* <div className={classes.root}>
-                                <Tabs
-                                    classes={{
-                                        root: classes.tabsRoot,
-                                        indicator: classes.tabsIndicator
+                            <StepperCon>
+                                <Stepper
+                                    orientation="none"
+                                    nonLinear
+                                    activeStep={systemIndex}
+                                    //  alternativeLabel
+
+                                    style={{
+                                        backgroundColor: "#F4F4F4",
+                                        flex: "left",
+                                        width: "50%",
+                                        paddingBottom: "10px",
+                                        paddingTop: "10px"
                                     }}
-                                    value={systemIndex}
-                                    onChange={handleChange}
                                 >
-                                    <Tab
-                                        disableRipple
-                                        classes={{
-                                            root: classes.tabRoot,
-                                            selected: classes.tabSelected
-                                        }}
-                                        onClick={() => handleStep(index)}
-                                        // label="Account Details"
-                                    />
-                                    <Tab
-                                        disableRipple
-                                        classes={{
-                                            root: classes.tabRoot,
-                                            selected: classes.tabSelected
-                                        }}
-                                        onClick={() => handleStep(index)}
-                                        //  label="Payment & Agreement"
-                                    />
-                                </Tabs>
-                            </div> */}
-
-                            <Stepper
-                                nonLinear
-                                activeStep={systemIndex}
-                                //  alternativeLabel
-
-                                style={{
-                                    backgroundColor: "#F4F4F4",
-                                    flex: "left",
-                                    width: "50%"
-                                }}
-                            >
-                                {systems.map((system, index) => (
-                                    <Step
-                                        key={`STEP-${system.get(
-                                            "id"
-                                        )}-${index}`}
-                                        StepIconProps={{
-                                            classes: {
-                                                active: classes.activeIcon
-                                            }
-                                        }}
-                                    >
-                                        <StepButton
-                                            onClick={() => handleStep(index)}
+                                    {systems.map((system, index) => (
+                                        <Step
+                                            key={`STEP-${system.get(
+                                                "id"
+                                            )}-${index}`}
+                                            // style={{
+                                            //     border: "1px solid black"
+                                            // }}
                                         >
-                                            <StepLabel
-
-                                            // error={
-                                            //     Number.isInteger(
-                                            //         error.get("index")
-                                            //     ) && error.get("index") === index
-                                            // }
+                                            <StepButton
+                                                style={{
+                                                    paddingBottom: "11px"
+                                                }}
+                                                onClick={() =>
+                                                    handleStep(index)
+                                                }
                                             >
-                                                {system.get("name")}
-                                            </StepLabel>
-                                        </StepButton>
-                                    </Step>
-                                ))}
-                            </Stepper>
+                                                <StepLabel
+                                                    classes={{
+                                                        // apply this style
+                                                        active:
+                                                            classes.activeLabel
+                                                    }}
+                                                    StepIconProps={{
+                                                        classes: {
+                                                            root:
+                                                                classes.unCopletedIcon,
+                                                            active:
+                                                                classes.activeIcon
+                                                        }
+                                                    }}
+                                                    // error={
+                                                    //     Number.isInteger(
+                                                    //         error.get("index")
+                                                    //     ) && error.get("index") === index
+                                                    // }
+                                                >
+                                                    {system.get("name")}
+                                                </StepLabel>
+                                            </StepButton>
+                                        </Step>
+                                    ))}
+                                </Stepper>
+                            </StepperCon>
                         </div>
                         <SubSectionTheme style={{ display: "flex" }}>
                             <LayoutContainerDiv style={{ width: "60%" }}>
@@ -749,7 +750,8 @@ const WelcomeThemeSettings = ({
                                                 // width: "25%",
                                                 width: "auto",
                                                 height: "120px",
-                                                flex: "left"
+                                                flex: "left",
+                                                margin: "3%"
                                             }}
                                         />
                                     </EntryThemeContainerDiv>

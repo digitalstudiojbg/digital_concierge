@@ -111,7 +111,7 @@ export const SubSectionTheme = styled.div`
 `;
 
 export const ColourThemeContainerDiv = styled.div`
-    width: 80%;
+    width: 90%;
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -168,7 +168,7 @@ export const ColourEntryContainerDiv = styled.div`
     padding-top: 5px;
     padding-bottom: 5px;
     border: 1px solid #9d9d9d;
-    margin-right: 10px;
+    margin-: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -312,4 +312,10 @@ export const ClientAvatarDiv = styled.div`
     background-repeat: no-repeat;
     background-size: contain;
     background-color: white;
+`;
+export const StepperCon = styled.div`
+    width: 100%;
+    display: flex;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 0px;
 `;
