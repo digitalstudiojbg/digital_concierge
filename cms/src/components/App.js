@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
-import "./App.css";
+import "./App.scss";
 import "react-table/react-table.css";
 import Loading from "./loading/Loading";
 import {
@@ -12,9 +12,12 @@ import {
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL,
-    SYSTEM_INDEX_URL
+    SYSTEM_INDEX_URL, GUESTS_CHECK_IN
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
+import CheckInPage from "../pages/guests/CheckInPage";
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from "@date-io/date-fns";
 
 const Home = lazy(() => import("./home/Home"));
 
@@ -34,6 +37,10 @@ const routes = [
     {
         path: SYSTEM_INDEX_URL,
         component: Home
+    },
+    {
+        path: GUESTS_CHECK_IN,
+        component: CheckInPage,
     }
 ];
 
@@ -65,6 +72,7 @@ class App extends Component {
 
     render() {
         return (
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Router ref={router => (this.router = router)} basename={"cms"}>
                 <div
                     style={{
@@ -105,6 +113,7 @@ class App extends Component {
                     </section>
                 </div>
             </Router>
+          </MuiPickersUtilsProvider>
         );
     }
 }

@@ -20,7 +20,7 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY, GUESTS_CHECK_IN
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -44,6 +44,7 @@ const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
 );
 const CreateClient = lazy(() => import("./create_client"));
+const CheckInPage = lazy(() => import("../../pages/guests/CheckInPage"));
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
@@ -176,6 +177,14 @@ const routes = [
         sidebar: Sidebar,
         main: Library,
         withProps: {}
+    },
+    {
+        path: GUESTS_CHECK_IN,
+        exact: true,
+        header: Header,
+        sidebar: Sidebar,
+        main: CheckInPage,
+        withProps: {},
     }
 ];
 
@@ -203,9 +212,8 @@ class Home extends Component {
                             )}
                             <div
                                 style={{
-                                    padding: "5% 5% 0",
-                                    height: "110vh",
-                                    width: "100vw",
+                                    padding: "80px 0",
+                                    width: "100%",
                                     display: "flex",
                                     backgroundColor: "#F4F4F4"
                                 }}

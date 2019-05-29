@@ -1,0 +1,178 @@
+.container {
+	display: flex;
+	margin: 1%;
+	max-width: 900px;
+	flex-wrap: wrap;
+	flex-flow: row wrap;
+}
+
+h1 {
+	color: #43425D;
+  font-family: Source Sans Pro, Bold;
+  font-size: 26px;
+}
+
+h2 {
+	color: #2699FB;
+	font-size: 20px;
+	font-family: Aria, Bold;
+}
+
+.section-name {
+	&.check-in {
+		min-width: 185px
+	}
+}
+.info-box-container {
+	margin-left: 4px;
+	margin-top: 13px;
+}
+
+.header {
+	margin-bottom: 30px;
+}
+
+.row.form {
+	&>.row {
+		&>.column:nth-child(1) {
+		margin-right: 30px;
+		padding: 0 10px;
+	}
+	}
+}
+.row {
+	&.section {
+		margin-bottom: 54px;
+	}
+	&.end-section {
+		margin-top: 45px;
+	}
+}
+
+.medium {
+	max-width: 160px;
+}
+.small {
+	max-width: 109px
+}
+
+.medium-margin {
+	margin-right: 33px;
+}
+
+.small-margin {
+	margin-right: 9px;
+}
+
+
+
+.w-100 {
+    width: 100%;
+}
+
+.flex {
+    flex: 1;
+}
+
+.column {
+    display: flex;
+    .form {
+        flex: 2;
+    }
+    .additional-info {
+        flex: 1;
+    }
+
+    & .guest-details {
+        flex: 1;
+    }
+    & .booking-details {
+        flex: 1;
+    }
+}
+
+.guest-details {
+    display: flex;
+    flex-wrap: wrap;
+    & .field {
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 2%;
+    }
+	 & h1 {
+		color: #2699FB;
+	}
+}
+
+.phone-block {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    & .field {
+        padding-left: 5%;
+        padding-right: 3%;
+    }
+    & div:nth-child(2) {
+        flex: 1;
+    }
+    & div:nth-child(3) {
+        flex: 3;
+    }
+}
+.w-100 {
+	width: 100%;
+}
+
+.flex {
+	flex: 1;
+}
+
+.column {
+	display: flex;
+
+	.form {
+		flex: 2;
+	}
+
+	.additional-info {
+		flex: 1;
+	}
+
+	& .guest-details {
+		flex: 1;
+	}
+
+	& .booking-details {
+		flex: 1;
+	}
+}
+
+.guest-details {
+	display: flex;
+	flex-wrap: wrap;
+
+	& .field {
+		padding-left: 5%;
+		padding-right: 5%;
+		padding-top: 2%;
+	}
+}
+
+.phone-block {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+
+	& .field {
+		padding-left: 5%;
+		padding-right: 3%;
+	}
+
+	& div:nth-child(2) {
+		flex: 1;
+	}
+
+	& div:nth-child(3) {
+		flex: 3;
+	}
+}
