@@ -58,7 +58,7 @@ export default {
             );
 
             try {
-                create_advertiser.save();
+                await create_advertiser.save();
             } catch (error) {
                 throw new UserInputError(
                     `Advertiser name ${name} was not created.\nError Message: ${

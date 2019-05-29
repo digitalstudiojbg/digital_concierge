@@ -75,6 +75,5 @@ export default gql`
         phone: String!
         mobile: String
         email: EmailAddress!
-        advertiserId: Int!
     }
 `;
