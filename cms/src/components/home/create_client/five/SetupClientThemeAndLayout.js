@@ -37,7 +37,8 @@ import {
     SectionHeader,
     FieldLabel,
     ContinueButton,
-    SubSection
+    SubSection,
+    SectionDiv
 } from "../CreateClientStyleSet";
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
@@ -417,7 +418,8 @@ class SetupClientThemeAndLayout extends React.Component {
                                         <SectionHeader>System</SectionHeader>
                                         <div
                                             style={{
-                                                width: "90%"
+                                                width: "90%",
+                                                display: "flex"
                                             }}
                                         >
                                             <Stepper
@@ -917,37 +919,39 @@ class SetupClientThemeAndLayout extends React.Component {
                                                     </LayoutEntryPreviewDiv>
                                                 )}
                                             </LayoutEntryContainerDiv>
-
-                                            {/* <div
-                                            style={{
-                                                clear: "both",
-                                                marginBottom: "20%"
-                                            }}
-                                        /> */}
                                         </SubSection>
                                         <div style={{ clear: "both" }} />
-                                        <ButtonContainerDiv
-                                            style={{ marginTop: "100px" }}
+
+                                        <SectionDiv
+                                            style={{
+                                                width: "100%",
+                                                height: "100px",
+                                                border: "0px",
+                                                padding: "0px"
+                                            }}
                                         >
-                                            <ContinueButton
+                                            <div
                                                 style={{
-                                                    width: "60%",
-                                                    padding: "30px 0"
+                                                    // flex: 1,
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    justifyContent: "flex-end",
+                                                    alignItems: "flex-end"
                                                 }}
-                                                variant="outlined"
-                                                component="span"
-                                                // className={
-                                                //     classes.confirmButton
-                                                // }
-                                                onClick={() =>
-                                                    this.validateAndSubmitData(
-                                                        createThemes
-                                                    )
-                                                }
                                             >
-                                                CONFIRM & CONTINUE
-                                            </ContinueButton>
-                                        </ButtonContainerDiv>
+                                                <ContinueButton
+                                                    variant="outlined"
+                                                    component="span"
+                                                    onClick={() =>
+                                                        this.validateAndSubmitData(
+                                                            createThemes
+                                                        )
+                                                    }
+                                                >
+                                                    CONFIRM & CONTINUE
+                                                </ContinueButton>
+                                            </div>
+                                        </SectionDiv>
                                     </LayoutContainerDiv>
                                 </React.Fragment>
                             ) : (

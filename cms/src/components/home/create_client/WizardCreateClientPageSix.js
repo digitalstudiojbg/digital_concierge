@@ -7,7 +7,9 @@ import Loading from "../../loading/Loading";
 import Button from "@material-ui/core/Button";
 import { withRouter } from "react-router-dom";
 import { WELCOME_URL } from "../../../utils/Constants";
-import { ContinueButton } from "./CreateClientStyleSet";
+//import { ContinueButton } from "./CreateClientStyleSet";
+
+import { SectionDiv, ContinueButton } from "./CreateClientStyleSet";
 
 class WizardCreateClientPageSix extends React.Component {
     navigateToDashboard = () => {
@@ -42,24 +44,33 @@ class WizardCreateClientPageSix extends React.Component {
                         height={"60vh"}
                     />
                 )}
-                <div
+
+                <SectionDiv
                     style={{
                         width: "100%",
-                        paddingTop: 20,
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        backgroundColor: "#F4F4F4"
+                        height: "100px",
+                        border: "0px",
+                        padding: "0px"
                     }}
                 >
-                    <ContinueButton
-                        style={{ width: "20%" }}
-                        variant="contained"
-                        color="primary"
-                        onClick={this.navigateToDashboard}
+                    <div
+                        style={{
+                            // flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "flex-end"
+                        }}
                     >
-                        CONFIRM & COMPLETE SETUP
-                    </ContinueButton>
-                </div>
+                        <ContinueButton
+                            variant="contained"
+                            color="primary"
+                            onClick={this.navigateToDashboard}
+                        >
+                            CONFIRM & COMPLETE SETUP
+                        </ContinueButton>
+                    </div>
+                </SectionDiv>
                 <div style={{ clear: "both" }} />
             </div>
         );

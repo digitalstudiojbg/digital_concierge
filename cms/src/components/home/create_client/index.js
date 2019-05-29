@@ -184,7 +184,7 @@ class CreateClient extends Component {
                             activeStep={activeStep}
                             alternativeLabel
                             style={{
-                                marginLeft: "50px",
+                                // marginLeft: "50px",
                                 backgroundColor: "#F4F4F4"
                             }}
                         >
@@ -195,7 +195,6 @@ class CreateClient extends Component {
                                     const labelProps = {};
                                     return (
                                         <Step key={title} {...props}>
-                                            <StepConnector />
                                             <StepLabel
                                                 {...labelProps}
                                                 StepIconProps={{

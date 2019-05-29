@@ -136,8 +136,9 @@ export const FiledContainer = styled.div`
 
 export const ContinueButton = styled.button`
     type: submit;
-    width: 25%;
-
+    width: 15%;
+    position: fixed;
+    bottom: 0;
     padding: 20px 5px;
     color: white;
     background: #2699fb;
@@ -236,9 +237,9 @@ export const SelectUnselectButton = styled.p`
 `;
 
 export const EachClientSystemContainer = styled.div`
-    width: 200px;
-    height: 180px;
-    margin: 5px;
+    width: 45%;
+    height: 45%;
+    margin: 2%;
     padding: 5px;
     border: 1px solid #dddddd;
     position: relative;

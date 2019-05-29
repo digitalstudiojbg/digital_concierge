@@ -44,6 +44,7 @@ import {
     FieldContainerDiv,
     FieldLabel,
     ContinueButton,
+    SectionDiv,
     NormalButton
 } from "./CreateClientStyleSet";
 
@@ -242,24 +243,13 @@ class WizardCreateClientPageFour extends React.Component {
                 style={{
                     width: "37%",
                     padding: "20px",
-                    borderLeft: "1px solid #DDDDDD"
+                    borderLeft: "1px solid #DDDDDD",
+                    marginLeft: "4%;"
                 }}
             >
                 <SectionHeader>All Client System</SectionHeader>
-                <FiledContainer
-                    style={
-                        {
-                            // display: "flex",
-                            //  flexWrap: "wrap",
-                            // justifyContent: "left",
-                            //  overflow: "auto",
-                            // height: "60vh"
-                        }
-                    }
-                >
-                    <FieldLabel style={{ marginLeft: "4%" }}>
-                        SYSTEM CREATED
-                    </FieldLabel>
+                <FiledContainer>
+                    <FieldLabel>SYSTEM CREATED</FieldLabel>
                     <FiledContainer
                         style={{
                             display: "flex",
@@ -312,31 +302,37 @@ class WizardCreateClientPageFour extends React.Component {
                             )}
                     </FiledContainer>
                 </FiledContainer>
-                <div
+
+                <SectionDiv
                     style={{
                         width: "100%",
-                        paddingBottom: "20px",
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        marginTop: "0%"
+                        height: "100px",
+                        border: "0px",
+                        padding: "0px"
                     }}
                 >
-                    <ContinueButton
+                    <div
                         style={{
-                            width: "60%",
-                            marginRight: "5%",
-                            marginTop: "10%"
-                        }}
-                        variant="contained"
-                        color="primary"
-                        disabled={systemsByClient.length <= 0}
-                        onClick={() => {
-                            next && next();
+                            // flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "flex-end"
+                            //   margin: "6% 3% 0 0"
                         }}
                     >
-                        CONFIRM & CONTINUE
-                    </ContinueButton>
-                </div>
+                        <ContinueButton
+                            variant="contained"
+                            color="primary"
+                            disabled={systemsByClient.length <= 0}
+                            onClick={() => {
+                                next && next();
+                            }}
+                        >
+                            CONFIRM & CONTINUE
+                        </ContinueButton>
+                    </div>
+                </SectionDiv>
             </div>
         );
     }

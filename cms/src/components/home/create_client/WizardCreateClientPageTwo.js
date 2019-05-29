@@ -407,28 +407,41 @@ class WizardCreateClientPageTwo extends React.Component {
                         )
                     )}
                 </SubSection>
-                <SubSection
-                // style={{
-                //     paddingBottom: "20px",
-                //     display: "flex",
-                //     justifyContent: "flex-end"
-                // }}
+
+                <SectionDiv
+                    style={{
+                        width: "100%",
+                        height: "100px",
+                        border: "0px",
+                        padding: "0px"
+                    }}
                 >
-                    <ContinueButton
-                        style={{ width: "90%", margin: "0 0 180px 35px" }}
-                        //  type="submit"
-                        variant="contained"
-                        color="primary"
-                        disabled={
-                            isSubmitting ||
-                            Object.keys(errors).length > 0 ||
-                            !values.license_type ||
-                            !client_image
-                        }
+                    <div
+                        style={{
+                            // flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "flex-end",
+                            alignItems: "flex-end"
+                            //   margin: "10% 6% 0 0"
+                        }}
                     >
-                        CONFIRM & CONTINUE
-                    </ContinueButton>
-                </SubSection>
+                        <ContinueButton
+                            //style={{ bottom: 0 }}
+                            //  type="submit"
+                            variant="contained"
+                            color="primary"
+                            disabled={
+                                isSubmitting ||
+                                Object.keys(errors).length > 0 ||
+                                !values.license_type ||
+                                !client_image
+                            }
+                        >
+                            CONFIRM & CONTINUE
+                        </ContinueButton>
+                    </div>
+                </SectionDiv>
             </SectionDiv>
         );
     }

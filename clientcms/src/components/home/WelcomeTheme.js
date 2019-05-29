@@ -101,7 +101,7 @@ const styles = theme => ({
     },
     activeIcon: {
         color: "#2699FB !important",
-        display: "felx",
+        display: "flex",
         borderBottom: "2px solid #2699FB"
     },
     activeLabel: {
@@ -112,53 +112,6 @@ const styles = theme => ({
     unCopletedIcon: {
         display: "none"
     }
-
-    // root: {
-    //     flexGrow: 1,
-    //     // backgroundColor: theme.palette.background.paper
-    //     backgroundColor: "#F4F4F4"
-    // },
-    // tabsRoot: {
-    //     borderBottom: "1px solid #e8e8e8"
-    // },
-    // tabsIndicator: {
-    //     backgroundColor: "#2699FB"
-    // },
-    // tabRoot: {
-    //     fontSize: "1.1em",
-    //     textTransform: "initial",
-    //     minWidth: 250,
-    //     fontWeight: theme.typography.fontWeightRegular,
-    //     marginRight: theme.spacing.unit * 4,
-    //     fontFamily: [
-    //         "-apple-system",
-    //         "BlinkMacSystemFont",
-    //         '"Segoe UI"',
-    //         "Roboto",
-    //         '"Helvetica Neue"',
-    //         "Arial",
-    //         "sans-serif",
-    //         '"Apple Color Emoji"',
-    //         '"Segoe UI Emoji"',
-    //         '"Segoe UI Symbol"'
-    //     ].join(","),
-    //     "&:hover": {
-    //         color: "#40a9ff",
-    //         opacity: 1
-    //     },
-    //     "&$tabSelected": {
-    //         // color: "#1890ff",
-    //         color: "#2699FB",
-    //         fontWeight: theme.typography.fontWeightMedium
-    //     },
-    //     "&:focus": {
-    //         color: "#40a9ff"
-    //     }
-    // },
-    // tabSelected: {},
-    // typography: {
-    //     padding: theme.spacing.unit * 3
-    // }
 });
 
 export const WelcomeTheme = ({ data: { id }, classes, history }) => {
@@ -616,7 +569,8 @@ const WelcomeThemeSettings = ({
                                         >
                                             <StepButton
                                                 style={{
-                                                    paddingBottom: "11px"
+                                                    paddingBottom: "11px",
+                                                    flex: "left"
                                                 }}
                                                 onClick={() =>
                                                     handleStep(index)

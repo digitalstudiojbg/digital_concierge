@@ -1490,30 +1490,36 @@ class WizardCreateClientPageThree extends React.Component {
                                                 </MenuItem>
                                             </Menu>
 
-                                            <SubSection
+                                            <SectionDiv
                                                 style={{
-                                                    width: "100%"
-                                                    //display: "flex"
-                                                    // justifyContent: "flex-end"
-                                                    // paddingTop: 50
+                                                    width: "100%",
+                                                    height: "100px",
+                                                    border: "0px",
+                                                    padding: "0px"
                                                 }}
                                             >
-                                                <ContinueButton
+                                                <div
                                                     style={{
-                                                        width: "50%",
-                                                        marginLeft: "50%",
-                                                        marginBottom: "0"
+                                                        // flex: 1,
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        justifyContent:
+                                                            "flex-end",
+                                                        alignItems: "flex-end"
                                                     }}
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={() =>
-                                                        this.props.next &&
-                                                        this.props.next()
-                                                    }
                                                 >
-                                                    CONFIRM & CONTINUE
-                                                </ContinueButton>
-                                            </SubSection>
+                                                    <ContinueButton
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={() =>
+                                                            this.props.next &&
+                                                            this.props.next()
+                                                        }
+                                                    >
+                                                        CONFIRM & CONTINUE
+                                                    </ContinueButton>
+                                                </div>
+                                            </SectionDiv>
                                         </SectionDivContainer>
                                     );
                                 }}

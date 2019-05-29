@@ -20,6 +20,8 @@ import ValidationSchema from "./one/PageOneValidationSchema";
 import { CREATE_CLIENT, CREATE_USER } from "../../../data/mutation";
 import { DECIMAL_RADIX } from "../../../utils/Constants";
 
+import yup from "yup";
+
 import {
     ContainerDiv,
     SectionDiv,
@@ -523,14 +525,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                         </FieldDiv>
                                                     </FieldContainerDiv>
                                                 </div>
-                                                {/* <div style={{marginTop: "10%"}}>
-                                                            <SectionHeader >Just Brilliant Guides</SectionHeader>
-                                                            <div>
-
-
-                                                            </div>
-                                             
-                                                </div> */}
                                             </SectionDiv>
                                         </ContainerDiv>
 
@@ -544,7 +538,7 @@ class WizardCreateClientPageOne extends React.Component {
                                         >
                                             <div
                                                 style={{
-                                                    flex: 1,
+                                                    // flex: 1,
                                                     display: "flex",
                                                     flexDirection: "column",
                                                     justifyContent: "flex-end",
@@ -552,8 +546,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                 }}
                                             >
                                                 <ContinueButton
-                                                    // style={{ width: "20%" , color: "white", background: "#2699FB", border: "30px solid #313131"}}
-                                                    // type="submit"
                                                     variant="contained"
                                                     color="primary"
                                                     disabled={

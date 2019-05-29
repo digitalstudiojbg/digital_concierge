@@ -1,50 +1,6 @@
 export default [
     [
         {
-            name: "name",
-            label: "Client ID",
-            required: true,
-            flexBasis: "20%",
-            marginRight: "80%",
-            type: "text"
-        },
-        {
-            name: "full_company_name",
-            label: "Full Client Name",
-            required: false,
-            flexBasis: "45%",
-            marginRight: "5%",
-            type: "text"
-        },
-        {
-            name: "nature_of_business",
-            label: "Nature of Business",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "5%",
-            type: "text"
-        }
-    ],
-    [
-        {
-            name: "phone",
-            label: "Venue Phone Number",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "5%",
-            type: "text"
-        },
-        {
-            name: "email",
-            label: "Business Email",
-            required: true,
-            flexBasis: "45%",
-            marginRight: "5%",
-            type: "text"
-        }
-    ],
-    [
-        {
             name: "venue_address",
             label: "Venue Address",
             required: true,
@@ -89,7 +45,7 @@ export default [
         {
             name: "postal_zip_code",
             label: "Zip Code",
-            required: false,
+            required: true,
             flexBasis: "20%",
             marginRight: "5%",
             type: "text"
