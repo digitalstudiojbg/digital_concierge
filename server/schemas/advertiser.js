@@ -46,6 +46,7 @@ export default gql`
         postal_zip_code: String!
         phone: String!
         email: EmailAddress!
+        contacts: [AdvertiserContactInput]!
         stateId: ID!
         postalStateId: ID!
         justBrilliantGuideId: ID!
@@ -63,7 +64,17 @@ export default gql`
         postal_zip_code: String!
         phone: String!
         email: EmailAddress!
+        contacts: [AdvertiserContactInput]!
         stateId: ID!
         postalStateId: ID!
+    }
+
+    input AdvertiserContactInput {
+        name: String!
+        title: String!
+        phone: String!
+        mobile: String
+        email: EmailAddress!
+        advertiserId: Int!
     }
 `;

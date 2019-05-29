@@ -1,4 +1,6 @@
 import db from "../models";
+import { UserInputError } from "apollo-server-express";
+import { handleCreateActionActivityLog } from "../utils/constant";
 
 export default {
     Query: {
@@ -9,6 +11,93 @@ export default {
             await db.advertiser.findAll({
                 where: { justBrilliantGuideId: id }
             })
+    },
+    Mutation: {
+        createAdvertiser: async (
+            _root,
+            {
+                input: {
+                    name,
+                    nature_of_business,
+                    address,
+                    city,
+                    zip_code,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    phone,
+                    email,
+                    contacts,
+                    stateId,
+                    postalStateId,
+                    justBrilliantGuideId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const tempAdvertiser = {
+                name,
+                nature_of_business,
+                address,
+                city,
+                zip_code,
+                postal_address,
+                postal_city,
+                postal_zip_code,
+                phone,
+                email,
+                stateId,
+                postalStateId,
+                justBrilliantGuideId,
+                contacts
+            };
+
+            let create_advertiser = db.advertiser.build(
+                { ...tempAdvertiser },
+                { include: { model: db.contact, as: "contacts" } }
+            );
+
+            try {
+                create_advertiser.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Advertiser name ${name} was not created.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleCreateActionActivityLog(
+                create_advertiser,
+                tempAdvertiser,
+                user,
+                clientIp
+            );
+
+            return create_advertiser;
+        },
+        editAdvertiser: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    nature_of_business,
+                    address,
+                    city,
+                    zip_code,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    phone,
+                    email,
+                    contacts,
+                    stateId,
+                    postalStateId
+                }
+            },
+            { user, clientIp }
+        ) => {}
     },
     Advertiser: {
         state: async advertiser => await db.state.findByPk(advertiser.stateId),
