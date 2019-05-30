@@ -1,5 +1,6 @@
 import React from "react";
 import ModifyAdvertiser from "../common/ModifyAdvertiser";
+import { GUIDE_MAIN_URL } from "../../../utils/Constants";
 
 const CreateNewAdvertiser = ({
     history: { goBack, push },
