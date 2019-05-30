@@ -5,6 +5,7 @@ export default gql`
         advertiser(id: ID!): Advertiser
         advertisers: [Advertiser]
         advertisersByPublication(id: ID!): [Advertiser]
+        advertiserCurrencyList(id: ID!): [Currency]
     }
 
     extend type Mutation {

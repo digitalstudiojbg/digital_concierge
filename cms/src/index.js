@@ -10,6 +10,8 @@ import { getAccessToken, isLoggedIn } from "./auth/auth";
 import { API_URL } from "./utils/Constants";
 // import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DayjsUtils from "@date-io/dayjs";
 
 const authLink = setContext((_, { headers }) => {
     return {
@@ -65,7 +67,9 @@ cache.writeData({
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <App />
+        <MuiPickersUtilsProvider utils={DayjsUtils}>
+            <App />
+        </MuiPickersUtilsProvider>
     </ApolloProvider>,
     document.getElementById("root")
 );

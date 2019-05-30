@@ -12,6 +12,7 @@ const CreateNewAdvertiser = ({
         goBack={goBack}
         push={push}
         pubId={pub_id}
+        exitUrl={GUIDE_MAIN_URL.replace(":pub_id", pub_id)}
     />
 );
 

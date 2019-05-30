@@ -10,7 +10,34 @@ export default {
         advertisersByPublication: async (_root, { id }) =>
             await db.advertiser.findAll({
                 where: { justBrilliantGuideId: id }
-            })
+            }),
+        advertiserCurrencyList: async (_root, { id }) => {
+            const advertiser = await db.advertiser.findByPk(id);
+            if (!Boolean(advertiser)) {
+                return [];
+            } else {
+                const { stateId } = advertiser;
+                const state = await db.state.findByPk(stateId);
+                if (!Boolean(state)) {
+                    return [];
+                } else {
+                    const { countryId } = state;
+                    const country = await db.country.findByPk(countryId);
+                    if (!Boolean(country)) {
+                        return [];
+                    } else {
+                        return await db.currency.findAll({
+                            include: [
+                                {
+                                    model: db.country,
+                                    where: { id: country.id }
+                                }
+                            ]
+                        });
+                    }
+                }
+            }
+        }
     },
     Mutation: {
         createAdvertiser: async (

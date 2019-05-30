@@ -13,6 +13,12 @@ import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
 import StepContractValidationSchema from "./StepContractValidationSchema";
+import {
+    ContainerDiv,
+    SectionDiv,
+    SectionTitleDiv,
+    FormLabelDiv
+} from "./commonStyle";
 
 const StepAdvertiserHOC = ({
     has_data,
@@ -140,11 +146,6 @@ const renderTextField = (name, label, required) => (
     </div>
 );
 
-const FormLabelDiv = styled.div`
-    color: rgb(92, 92, 92);
-    font-size: 0.8em;
-`;
-
 const renderSelectField = (name, label, optionValues, errors) => (
     <div style={{ width: "100%" }}>
         <FormLabelDiv>{label}</FormLabelDiv>
@@ -271,25 +272,6 @@ const CONTACT_PHONE_FIELDS = [
         required: false
     }
 ];
-
-const ContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-`;
-
-const SectionDiv = styled.div`
-    flex-basis: ${props => props.flexBasis};
-    display: flex;
-    flex-direction: ${props => props.flexDirection};
-    padding-right: ${props => props.paddingRight};
-`;
-
-const SectionTitleDiv = styled.div`
-    color: rgb(38, 153, 251);
-    font-size: 1.7em;
-    font-weight: 600;
-    padding-bottom: 20px;
-`;
 
 const SectionContactTitleDiv = styled(SectionTitleDiv)`
     width: 100%;

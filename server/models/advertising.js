@@ -52,13 +52,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            artwork_supply_date: {
-                type: DataTypes.DATE,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
+            artwork_supply_date: DataTypes.DATE,
             active: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,

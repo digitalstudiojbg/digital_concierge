@@ -58,11 +58,7 @@ module.exports = {
                 }
             },
             artwork_supply_date: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
+                type: Sequelize.DATE
             },
             active: {
                 type: Sequelize.BOOLEAN,

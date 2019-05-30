@@ -8,3 +8,12 @@ export const getCurrencyList = gql`
         }
     }
 `;
+
+export const getAdvertiserCurrencyList = gql`
+    query advertiserCurrencyList($id: ID!) {
+        advertiserCurrencyList(id: $id) {
+            id
+            name
+        }
+    }
+`;

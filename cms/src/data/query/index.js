@@ -14,7 +14,7 @@ import {
 } from "./department";
 import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
-import { getCurrencyList } from "./currency";
+import { getCurrencyList, getAdvertiserCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
 import { getRoleList } from "./role";
 import { getDeviceTypes } from "./deviceType";
@@ -59,5 +59,6 @@ export {
     getJbgLayoutFamilyList,
     getTabbedPageComplete,
     getAdvertiserList,
-    getAdvertiserFromPublication
+    getAdvertiserFromPublication,
+    getAdvertiserCurrencyList
 };
