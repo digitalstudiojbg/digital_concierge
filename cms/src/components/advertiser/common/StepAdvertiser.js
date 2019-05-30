@@ -11,8 +11,16 @@ import { OutlinedInput, MenuItem, Button, IconButton } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
+import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
 
-const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
+const StepAdvertiserHOC = ({
+    has_data,
+    advertiserId,
+    next,
+    onRef,
+    push,
+    pubId
+}) => (
     <Query query={getCountryList}>
         {({
             loading: loadingCountry,
@@ -73,6 +81,8 @@ const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
                                                 next={next}
                                                 action={action}
                                                 countries={countries}
+                                                onRef={onRef}
+                                                push={push}
                                             />
                                         );
                                     }}
@@ -102,6 +112,9 @@ const StepAdvertiserHOC = ({ has_data, advertiserId, next }) => (
                                     next={next}
                                     action={action}
                                     countries={countries}
+                                    onRef={onRef}
+                                    push={push}
+                                    pubId={pubId}
                                 />
                             );
                         }}
@@ -350,7 +363,10 @@ const StepAdvertiser = ({
     next,
     action,
     countries,
-    classes
+    classes,
+    onRef,
+    push,
+    pubId
 }) => {
     const contacts = has_data
         ? data.contacts.map(({ __typename, ...others }) => ({ ...others }))
@@ -391,11 +407,77 @@ const StepAdvertiser = ({
               postalStateId: null,
               countryId: null,
               postalCountryId: null,
-              contacts
+              contacts,
+              deleteContacts: null
           };
 
     return (
-        <Formik initialValues={initialValues}>
+        <Formik
+            initialValues={initialValues}
+            ref={onRef}
+            onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(true);
+                const {
+                    name,
+                    nature_of_business,
+                    address,
+                    city,
+                    zip_code,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    phone,
+                    email,
+                    stateId,
+                    postalStateId,
+                    contacts,
+                    deleteContacts: delete_contacts
+                } = values;
+
+                const toSubmit = {
+                    name,
+                    nature_of_business,
+                    address,
+                    city,
+                    zip_code,
+                    postal_address,
+                    postal_city,
+                    postal_zip_code,
+                    phone,
+                    email,
+                    stateId,
+                    postalStateId,
+                    contacts: contacts.map(({ id, ...others }) => ({
+                        ...(Boolean(id) && { id }),
+                        ...others
+                    })),
+                    ...(Array.isArray(delete_contacts) &&
+                        delete_contacts.length > 0 && { delete_contacts }),
+                    ...(!has_data && { justBrilliantGuideId: pubId })
+                };
+
+                console.log("To submit: ", toSubmit);
+                action({ variables: { input: toSubmit } }).then(
+                    ({
+                        data: {
+                            createAdvertiser: { id: advertiser_id }
+                        }
+                    }) => {
+                        if (!has_data) {
+                            push({
+                                pathname: ADVERTISER_MAIN_URL.replace(
+                                    ":advertiser_id",
+                                    advertiser_id
+                                ),
+                                state: { goToNext: true }
+                            });
+                        } else {
+                            next();
+                        }
+                    }
+                );
+            }}
+        >
             {({ values, errors, isSubmitting, setFieldValue }) => {
                 const selectedCountry = Boolean(values.countryId)
                     ? countries.find(({ id }) => id === values.countryId)

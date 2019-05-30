@@ -65,11 +65,13 @@ export default gql`
         phone: String!
         email: EmailAddress!
         contacts: [AdvertiserContactInput]!
+        delete_contacts: [ID]
         stateId: ID!
         postalStateId: ID!
     }
 
     input AdvertiserContactInput {
+        id: ID
         name: String!
         title: String!
         phone: String!

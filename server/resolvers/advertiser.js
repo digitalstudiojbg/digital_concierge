@@ -126,7 +126,7 @@ export default {
                 order: [["agreement_date", "DESC"]]
             });
 
-            const { expire_date = null } = advertisement;
+            const { expire_date = null } = advertisement || {};
             const difference = Boolean(expire_date)
                 ? Date.parse(expire_date) - Date.parse(new Date())
                 : null;

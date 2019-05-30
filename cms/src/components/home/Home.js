@@ -58,6 +58,10 @@ const CreateNewAdvertiser = lazy(() =>
     import("../advertiser/create/CreateNewAdvertiser")
 );
 
+const EditExistingAdvertiser = lazy(() =>
+    import("../advertiser/edit/EditExistingAdvertiser")
+);
+
 const routes = [
     {
         path: WELCOME_URL,
@@ -201,7 +205,7 @@ const routes = [
         sidebar: ({ history }) => (
             <SidebarNew selected="guide" history={history} />
         ),
-        main: JustBrilliantGuideDetail, //TODO: CHANGE THIS
+        main: EditExistingAdvertiser, //TODO: CHANGE THIS
         withProps: {}
     },
     {

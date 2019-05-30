@@ -13,6 +13,7 @@ import {
 import MaterialTable, { MTableToolbar } from "material-table";
 import dayJs from "dayjs";
 import { ADVERTISER_CREATE_NEW_URL } from "../../../utils/Constants";
+import { isEmpty } from "lodash";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -68,8 +69,12 @@ class AdvertiserTableList extends React.Component {
     }
 
     navigateToCreateNewAdvertiserPage = () => {
-        const { history } = this.props;
-        Boolean(history) && history.push(ADVERTISER_CREATE_NEW_URL);
+        const { history, pub_id } = this.props;
+        Boolean(history) &&
+            history.push({
+                pathname: ADVERTISER_CREATE_NEW_URL,
+                state: { pub_id }
+            });
     };
 
     headerButtons = [
@@ -83,23 +88,31 @@ class AdvertiserTableList extends React.Component {
     formatDate = dateValue => dayJs(dateValue).format("HH:mm DD MMM YYYY");
 
     modifyAdvertiserList = () =>
-        this.props.data.map(
-            ({
-                name,
-                active_advertising: {
-                    agreement_number,
-                    articles: [article],
-                    commence_date,
-                    expire_date
-                }
-            }) => ({
-                name,
-                agreement_number,
-                article_location: article.name,
-                commence_date: this.formatDate(commence_date),
-                expire_date: this.formatDate(expire_date)
-            })
-        );
+        this.props.data.map(({ name, active_advertising }) => ({
+            name,
+            agreement_number:
+                !isEmpty(active_advertising) &&
+                Boolean(active_advertising.agreement_number)
+                    ? active_advertising.agreement_number
+                    : "",
+            article_location:
+                !isEmpty(active_advertising) &&
+                Array.isArray(active_advertising.articles) &&
+                active_advertising.articles.length > 0 &&
+                !isEmpty(active_advertising.articles[0])
+                    ? active_advertising.articles[0].name
+                    : "",
+            commence_date:
+                !isEmpty(active_advertising) &&
+                Boolean(active_advertising.commence_date)
+                    ? this.formatDate(active_advertising.commence_date)
+                    : "",
+            expire_date:
+                !isEmpty(active_advertising) &&
+                Boolean(active_advertising.expire_date)
+                    ? this.formatDate(active_advertising.expire_date)
+                    : ""
+        }));
 
     render() {
         const { classes } = this.props;
