@@ -23,6 +23,7 @@ import {
     SYSTEM_CMS_LIBRARY, GUESTS_CHECK_IN
 } from "../../utils/Constants";
 import Library from "./Library";
+import ROUTES from "../../utils/routes";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
@@ -62,6 +63,13 @@ import Welcome from "./Welcome.js";*/
 const routes = [
     {
         path: WELCOME_URL,
+        exact: true,
+        header: Header,
+        main: Welcome,
+        withProps: {}
+    },
+    {
+        path: ROUTES.guests,
         exact: true,
         header: Header,
         main: Welcome,

@@ -18,10 +18,15 @@ import "rc-color-picker/assets/index.css";
 import CheckInPage from "../pages/guests/CheckInPage";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
+import ROUTES from "../utils/routes";
 
 const Home = lazy(() => import("./home/Home"));
 
 const routes = [
+    {
+        path: ROUTES.guests,
+        component: Home,
+    },
     {
         path: WELCOME_URL,
         component: Home
