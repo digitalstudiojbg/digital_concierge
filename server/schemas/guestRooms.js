@@ -9,6 +9,7 @@ export default gql`
     extend type Mutation {
         createGuestRoom(input: CreateGuestRoomsInput): GuestRooms
         deleteGuestRoom(input: DeleteGuestRoomsInput): GuestRooms
+        updateGuestRoom(input: UpdateGuestRoomsInput): GuestRooms
     }
 
     type GuestRooms {
@@ -32,6 +33,16 @@ export default gql`
         guestId: Int!
         pin: Int!
         active: Int!
+    }
+    
+    input UpdateGuestRoomsInput {
+        roomId: Int!
+        guestId: Int!
+        checkout_date: String
+        guest_count: Int
+        pin: Int
+        active: Int
+        is_sending_survey: Boolean
     }
     
     input DeleteGuestRoomsInput {

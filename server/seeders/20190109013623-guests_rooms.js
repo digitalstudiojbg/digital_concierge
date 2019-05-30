@@ -13,7 +13,8 @@ module.exports = {
                     checkout_date: "2019-03-30 05:29:22",
                     checkin_date: "2019-03-20 05:29:22",
                     total_nights: 10,
-                    guest_count: 3
+                    guest_count: 3,
+                    is_sending_survey: false
                 },
                 {
                     roomId: 3,
@@ -23,7 +24,8 @@ module.exports = {
                     checkout_date: "2018-04-30 05:29:26",
                     checkin_date: "2019-03-20 05:29:22",
                     total_nights: 10,
-                    guest_count: 3
+                    guest_count: 3,
+                    is_sending_survey: false
                 },
                 {
                     roomId: 5,
@@ -33,7 +35,8 @@ module.exports = {
                     checkout_date: "2019-05-12 05:29:29",
                     checkin_date: "2019-03-20 05:29:22",
                     total_nights: 10,
-                    guest_count: 3
+                    guest_count: 3,
+                    is_sending_survey: false
                 },
                 {
                     roomId: 6,
@@ -43,7 +46,8 @@ module.exports = {
                     checkout_date: "2019-05-12 05:29:29",
                     checkin_date: "2019-03-20 05:29:22",
                     total_nights: 10,
-                    guest_count: 3
+                    guest_count: 3,
+                    is_sending_survey: false
                 }
             ],
             {}
