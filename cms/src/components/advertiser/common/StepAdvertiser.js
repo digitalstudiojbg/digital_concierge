@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
+import StepContractValidationSchema from "./StepContractValidationSchema";
 
 const StepAdvertiserHOC = ({
     has_data,
@@ -408,13 +409,14 @@ const StepAdvertiser = ({
               countryId: null,
               postalCountryId: null,
               contacts,
-              deleteContacts: null
+              deleteContacts: []
           };
 
     return (
         <Formik
             initialValues={initialValues}
             ref={onRef}
+            validationSchema={StepContractValidationSchema(countries)}
             onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(true);
                 const {
@@ -448,12 +450,12 @@ const StepAdvertiser = ({
                     stateId,
                     postalStateId,
                     contacts: contacts.map(({ id, ...others }) => ({
-                        ...(Boolean(id) && { id }),
+                        ...(Boolean(id) && { id }), //Only put ID attribute if ID is not null
                         ...others
                     })),
-                    ...(Array.isArray(delete_contacts) &&
-                        delete_contacts.length > 0 && { delete_contacts }),
-                    ...(!has_data && { justBrilliantGuideId: pubId })
+                    ...(has_data &&
+                        delete_contacts.length > 0 && { delete_contacts }), //Only send deleteContact in EDIT mode
+                    ...(!has_data && { justBrilliantGuideId: pubId }) //Only send justBrilliantGuideId in CREATE mode
                 };
 
                 console.log("To submit: ", toSubmit);
