@@ -1,13 +1,13 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import ReactTable from "react-table";
-import { Query, withApollo } from "react-apollo";
+import { Query, withApollo } from "react-apollo/index";
 
-import Box from "@material-ui/core/Box";
-import getGuestsRooms from "../query/getGuestRooms";
-import { GUEST_TABLE_FORMAT_DATE } from "../constants";
+import Box from "@material-ui/core/Box/index";
+import getGuestsRooms from "../../query/getGuestRooms";
+import { GUEST_TABLE_FORMAT_DATE } from "../../constants";
 
-import Loading from "../../loading/Loading";
+import Loading from "../../../loading/Loading";
 import GuestsLayout from "../GuestLayout";
 import GuestsNav from "../GuestsNav";
 import {

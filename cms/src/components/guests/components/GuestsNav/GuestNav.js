@@ -1,7 +1,7 @@
 import React from 'react';
-import Box from "@material-ui/core/Box";
+import Box from "@material-ui/core/Box/index";
 import { NavLink } from "react-router-dom";
-import ROUTES from "../../../utils/routes";
+import ROUTES from "../../../../utils/routes";
 import {
     GuestsNavButton,
     GuestsNavTab,

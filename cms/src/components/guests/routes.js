@@ -1,6 +1,6 @@
 import React from "react";
 import ROUTES from "../../utils/routes";
-import GuestsCurrent from "./GuestsCurrent";
+import GuestsCurrent from "./components/GuestsCurrent";
 
 const routes = [
     {
