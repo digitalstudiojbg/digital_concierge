@@ -24,14 +24,18 @@ const EditExistingAdvertiser = ({
             if (loading) return <Loading loadingData />;
             if (error)
                 return <React.Fragment>Error! {error.message}</React.Fragment>;
-            const { id: pub_id } = publication;
+            const { id: pub_id = null } = publication || {};
             return (
                 <ModifyAdvertiser
                     has_data={true}
                     push={push}
                     advertiserId={advertiser_id}
                     goToNext={Boolean(state) && Boolean(state.goToNext)}
-                    exitUrl={GUIDE_MAIN_URL.replace(":pub_id", pub_id)}
+                    exitUrl={
+                        Boolean(pub_id)
+                            ? GUIDE_MAIN_URL.replace(":pub_id", pub_id)
+                            : "/cms/main/guide"
+                    }
                 />
             );
         }}

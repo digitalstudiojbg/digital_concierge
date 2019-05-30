@@ -34,7 +34,7 @@ const TabContainer = props => {
 
 const styles = () => ({
     buttonSaveExit: {
-        width: 150,
+        width: 160,
         position: "absolute",
         top: 100,
         right: 20,
@@ -43,7 +43,7 @@ const styles = () => ({
         fontFamily: "Source Sans Pro, sans-serif"
     },
     buttonSaveKeep: {
-        width: 150,
+        width: 160,
         position: "absolute",
         top: 140,
         right: 20,
@@ -54,7 +54,7 @@ const styles = () => ({
     buttonCancel: {
         position: "absolute",
         top: 140,
-        right: 180,
+        right: 190,
         backgroundColor: "white",
         color: "rgb(33,143,250)",
         border: "2px solid rgb(33,143,250)",
