@@ -242,7 +242,7 @@ class WizardCreateClientPageFour extends React.Component {
             <div
                 style={{
                     width: "37%",
-                    padding: "20px",
+                    padding: "20px 40px",
                     borderLeft: "1px solid #DDDDDD",
                     marginLeft: "4%;"
                 }}
@@ -258,7 +258,7 @@ class WizardCreateClientPageFour extends React.Component {
                             justifyContent: "left",
                             height: "430px",
                             width: "97%",
-                            margin: "1% 5% 5%",
+                            margin: "1% 0",
                             overflow: "auto",
                             padding: "1%",
                             border: "1px solid #9D9D9D",

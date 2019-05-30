@@ -6,6 +6,8 @@ import Tab from "@material-ui/core/Tab";
 import WelcomeAccountClient from "./WelcomeAccountClient";
 import WelcomeAccountPaymentAgreement from "./WelcomeAccountPaymentAgreement";
 
+import { MainSectionContainer, PageHeader } from "./WelcomeStyleSet";
+
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -68,22 +70,8 @@ class WelcomeAccount extends Component {
         const { value } = this.state;
 
         return (
-            <div
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#F4F4F4",
-                    padding: "3%"
-                }}
-            >
-                <div
-                    style={{
-                        fontSize: "2em",
-                        paddingBottom: "20px"
-                    }}
-                >
-                    Account
-                </div>
+            <MainSectionContainer>
+                <PageHeader>Account</PageHeader>
                 <div className={classes.root}>
                     <Tabs
                         classes={{
@@ -121,7 +109,7 @@ class WelcomeAccount extends Component {
                         </div>
                     )}
                 </div>
-            </div>
+            </MainSectionContainer>
         );
     }
 }

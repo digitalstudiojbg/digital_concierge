@@ -5,7 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import {
-    ContainerDiv,
     SYSTEM_CMS_CONTENT_URL,
     DECIMAL_RADIX,
     SYSTEM_MODIFY_START_URL
@@ -26,12 +25,13 @@ import {
 import { isEmpty } from "lodash";
 import ModifyStartLayout from "./ModifyStartLayout";
 import ModifyStartContent from "./ModifyStartContent";
+import {
+    MainSectionContainer,
+    PageHeader,
+    ContainerDiv,
+    ContainerDivTab
+} from "../../home/WelcomeStyleSet";
 
-export const ContainerDivTab = styled.div`
-    width: 100%;
-    overflow-y: auto;
-    height: 80vh;
-`;
 const TabContainer = props => {
     return <ContainerDiv>{props.children}</ContainerDiv>;
 };
@@ -321,7 +321,11 @@ const ModifyStart = props => {
 
                             return (
                                 <Form>
-                                    <div
+                                    <MainSectionContainer>
+                                        <PageHeader>
+                                            System Content: start{" "}
+                                        </PageHeader>
+                                        {/* <div
                                         style={{
                                             height: 60,
                                             fontSize: "2em",
@@ -329,80 +333,97 @@ const ModifyStart = props => {
                                             paddingTop: 20,
                                             paddingBottom: 20
                                         }}
-                                    >
-                                        SYSTEM CONTENT: START
-                                    </div>
-                                    <Paper
-                                        square
-                                        style={{
-                                            backgroundColor: lightGreyHeader,
-                                            boxShadow: "none",
-                                            borderBottom:
-                                                "2px solid rgb(217,217,217)"
-                                        }}
-                                    >
-                                        <Tabs
-                                            value={tab}
-                                            // classes={{
-                                            //     indicator: props.classes.indicator
-                                            // }}
-                                            TabIndicatorProps={{
-                                                style: {
-                                                    backgroundColor:
-                                                        "rgb(57,154,249)"
-                                                }
+                                    > */}
+
+                                        <Paper
+                                            square
+                                            style={{
+                                                backgroundColor: lightGreyHeader,
+                                                boxShadow: "none",
+                                                borderBottom:
+                                                    "2px solid rgb(217,217,217)"
                                             }}
-                                            onChange={handleChange}
                                         >
+                                            <Tabs
+                                                value={tab}
+                                                // classes={{
+                                                //     indicator: props.classes.indicator
+                                                // }}
+                                                TabIndicatorProps={{
+                                                    style: {
+                                                        backgroundColor:
+                                                            "rgb(57,154,249)"
+                                                    }
+                                                }}
+                                                onChange={handleChange}
                                             >
-                                            <Tab label="PREVIEW" />
-                                            <Tab label="LAYOUT" />
-                                            <Tab label="CONTENT" />
-                                        </Tabs>
-                                    </Paper>
-                                    <Button
-                                        type="submit"
-                                        variant="outlined"
-                                        className={classes.buttonSaveExit}
-                                    >
-                                        SAVE & EXIT
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={saveAndKeepEditing}
-                                        className={classes.buttonSaveKeep}
-                                    >
-                                        SAVE & KEEP EDITING
-                                    </Button>
-                                    <ContainerDivTab>
-                                        {tab === 0 && (
-                                            <TabContainer>PREVIEW</TabContainer>
-                                        )}
-                                        {tab === 1 && (
-                                            <TabContainer>
-                                                <ModifyStartLayout
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
-                                                    }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                        {tab === 2 && (
-                                            <TabContainer>
-                                                <ModifyStartContent
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
-                                                    }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                    </ContainerDivTab>
+                                                >
+                                                <Tab label="PREVIEW" />
+                                                <Tab label="LAYOUT" />
+                                                <Tab label="CONTENT" />
+                                            </Tabs>
+                                        </Paper>
+                                        <Button
+                                            type="submit"
+                                            variant="outlined"
+                                            className={classes.buttonSaveExit}
+                                        >
+                                            SAVE & EXIT
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={saveAndKeepEditing}
+                                            className={classes.buttonSaveKeep}
+                                        >
+                                            SAVE & KEEP EDITING
+                                        </Button>
+                                        <ContainerDivTab
+                                            style={{ display: "flex" }}
+                                        >
+                                            {tab === 0 && (
+                                                <TabContainer>
+                                                    PREVIEW
+                                                    <containerDiv
+                                                        style={{
+                                                            height: "500px",
+                                                            width: "700px",
+                                                            backgroundColor:
+                                                                "white",
+                                                            flex: "centre"
+                                                        }}
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                            {tab === 1 && (
+                                                <TabContainer>
+                                                    <ModifyStartLayout
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                            {tab === 2 && (
+                                                <TabContainer>
+                                                    <ModifyStartContent
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                        </ContainerDivTab>
+                                    </MainSectionContainer>
                                 </Form>
                             );
                         }}

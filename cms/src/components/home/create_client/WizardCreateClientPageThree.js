@@ -12,6 +12,8 @@ import {
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+//import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+
 import {
     CREATE_DEPARTMENT,
     CREATE_ROLE,
@@ -1003,7 +1005,7 @@ class WizardCreateClientPageThree extends React.Component {
                                             style={{
                                                 // paddingLeft: "20px",
                                                 // paddingRight: "0",
-                                                padding: "0 0 10px 20px"
+                                                padding: "0 0 10px 25px"
                                                 //  height: "650px"
                                                 //  height: "80vh"
                                             }}
@@ -1016,8 +1018,8 @@ class WizardCreateClientPageThree extends React.Component {
                                             >
                                                 <div
                                                     style={{
-                                                        width: "80%",
-                                                        paddingLeft: "3%",
+                                                        width: "84%",
+
                                                         paddingTop: "3%",
                                                         display: "flex"
                                                     }}
@@ -1032,7 +1034,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                 </div>
                                                 <div
                                                     style={{
-                                                        width: "10%",
+                                                        width: "8%",
                                                         display: "flex",
                                                         justifyContent:
                                                             "flex-end"
@@ -1060,7 +1062,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                 </div>
                                                 <div
                                                     style={{
-                                                        width: "10%",
+                                                        width: "8%",
                                                         display: "flex",
                                                         justifyContent:
                                                             "flex-end"

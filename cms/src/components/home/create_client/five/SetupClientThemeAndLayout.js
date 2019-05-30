@@ -6,6 +6,7 @@ import StepButton from "@material-ui/core/StepButton";
 import StepLabel from "@material-ui/core/StepLabel";
 import StepConnector from "@material-ui/core/StepConnector";
 import TextField from "@material-ui/core/TextField";
+
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { Dropdown } from "semantic-ui-react";
@@ -435,13 +436,6 @@ class SetupClientThemeAndLayout extends React.Component {
                                                         <Step
                                                             key={`STEP-${id}-${index}`}
                                                         >
-                                                            {/* <StepConnector
-                                                                style={{
-                                                                    marginLeft:
-                                                                        "45%",
-                                                                    width: "40%"
-                                                                }}
-                                                            /> */}
                                                             <StepButton
                                                                 onClick={this.handleStep(
                                                                     index
@@ -450,7 +444,9 @@ class SetupClientThemeAndLayout extends React.Component {
                                                                 <StepLabel
                                                                     style={{
                                                                         fontSize:
-                                                                            "15px"
+                                                                            "15px",
+                                                                        paddingRight:
+                                                                            "40px"
                                                                     }}
                                                                     StepIconProps={{
                                                                         classes: {

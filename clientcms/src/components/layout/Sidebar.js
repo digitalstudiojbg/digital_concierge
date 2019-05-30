@@ -48,8 +48,18 @@ import {
     SidebarContainer,
     SidebarItem,
     SidebarLabel,
-    ClientAvatarDiv
+    ClientAvatarDiv,
+    SidebarSubItem
 } from "../home/WelcomeStyleSet";
+
+const SIDEBAR_HUB = [
+    {
+        name: WELCOME_URL,
+        displayName: "System Hub",
+        icon: Home,
+        paddingLeft: "20px"
+    }
+];
 
 const SIDEBAR_ITEMS = [
     {
@@ -61,12 +71,12 @@ const SIDEBAR_ITEMS = [
         icon: Visibility,
         paddingLeft: "20px"
     },
-    {
-        name: WELCOME_URL,
-        displayName: "Home",
-        icon: Home,
-        paddingLeft: "20px"
-    },
+    // {
+    //     name: WELCOME_URL,
+    //     displayName: "Home",
+    //     icon: Home,
+    //     paddingLeft: "20px"
+    // },
     {
         name: SYSTEM_CMS_INDEX_URL,
         displayName: "Dashboard",
@@ -149,7 +159,7 @@ const SIDEBAR_ITEMS = [
 
 const styles = {
     icon: {
-        //  width: 30,
+        width: 30,
         height: 30,
         paddingLeft: 10
     },
@@ -298,7 +308,7 @@ class Sidebar extends Component {
                                     <div
                                         style={{
                                             width: "100%",
-                                            height: "20%",
+                                            height: "15%",
                                             backgroundColor: "white",
                                             paddingTop: "5%"
                                         }}
@@ -308,20 +318,82 @@ class Sidebar extends Component {
                                         />
                                     </div>
                                 )}
+
+                            {/* name: WELCOME_URL,
+        displayName: "Home",
+        icon: Home,
+        paddingLeft: "20px" */}
+
+                            {SIDEBAR_HUB.map((items, index) => {
+                                const {
+                                    name,
+                                    displayName,
+                                    icon: EntryIcon,
+                                    paddingLeft
+                                } = items;
+                                return (
+                                    name &&
+                                    displayName && (
+                                        <SidebarContainer
+                                            style={{
+                                                //overflowY: "scroll",
+                                                backgroundColor:
+                                                    "rgb(191, 191, 191)",
+                                                color: "rgb(43,43,43)"
+                                            }}
+                                        >
+                                            <React.Fragment key={index}>
+                                                <SidebarItem
+                                                    style={{ width: "260px" }}
+                                                    onClick={() => {
+                                                        {
+                                                            const navigateTo =
+                                                                WELCOME_URL +
+                                                                "/" +
+                                                                system.client
+                                                                    .id +
+                                                                "/systems";
+                                                            this.props.history.push(
+                                                                navigateTo
+                                                            );
+                                                        }
+                                                    }}
+                                                    selectedItem={selectedItem}
+                                                    expectedItem={name}
+                                                    paddingLeft={paddingLeft}
+                                                >
+                                                    {Boolean(EntryIcon) && (
+                                                        <EntryIcon
+                                                            className={
+                                                                classes.icon
+                                                            }
+                                                        />
+                                                    )}
+
+                                                    <SidebarLabel>
+                                                        {displayName}
+                                                    </SidebarLabel>
+                                                </SidebarItem>
+                                            </React.Fragment>
+                                        </SidebarContainer>
+                                    )
+                                );
+                            })}
+
                             <div
                                 style={{
-                                    backgroundColor: "rgba(49, 49, 49, 1)",
-                                    // padding: "10 0 10 30",
+                                    backgroundColor: "black",
+
                                     width: "100%",
-                                    //   display: "flex",
+
                                     alignItems: "center",
                                     fontSize: "18px",
-                                    padding: " 10px 30px"
-                                    // overflowY: "scroll"
+                                    padding: " 30px "
                                 }}
                             >
                                 <p>{system.name}</p>
                             </div>
+
                             {SIDEBAR_ITEMS.map((items, index) => {
                                 const {
                                     name,
@@ -340,14 +412,6 @@ class Sidebar extends Component {
                                             }}
                                         >
                                             <React.Fragment key={index}>
-                                                {/* <span
-                                                    style={{
-                                                        position: "relative",
-                                                        height: "100%",
-                                                        width: "10%",
-                                                        backgroundColor: "red"
-                                                    }}
-                                                /> */}
                                                 <SidebarItem
                                                     style={{ width: "260px" }}
                                                     onClick={() => {
@@ -428,11 +492,7 @@ class Sidebar extends Component {
                                                                         paddingLeft: ePaddingLeft
                                                                     } = eItem;
                                                                     return (
-                                                                        <SidebarItem
-                                                                            style={{
-                                                                                width:
-                                                                                    "260px"
-                                                                            }}
+                                                                        <SidebarSubItem
                                                                             key={`${index}-${eIndex}`}
                                                                             onClick={() => {
                                                                                 // console.log("Name is ", name);
@@ -459,9 +519,8 @@ class Sidebar extends Component {
                                                                                 ePaddingLeft
                                                                             }
                                                                         >
-                                                                            {Boolean(
-                                                                                EEntryIcon
-                                                                            ) && (
+                                                                            {Boolean() && (
+                                                                                //  EEntryIcon
                                                                                 <EEntryIcon
                                                                                     className={
                                                                                         classes.icon
@@ -472,12 +531,17 @@ class Sidebar extends Component {
                                                                                     }}
                                                                                 />
                                                                             )}
-                                                                            <SidebarLabel>
+                                                                            <SidebarLabel
+                                                                                style={{
+                                                                                    marginLeft:
+                                                                                        "40px"
+                                                                                }}
+                                                                            >
                                                                                 {
                                                                                     eDisplayName
                                                                                 }
                                                                             </SidebarLabel>
-                                                                        </SidebarItem>
+                                                                        </SidebarSubItem>
                                                                     );
                                                                 }
                                                             )}

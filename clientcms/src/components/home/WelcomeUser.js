@@ -20,7 +20,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-import { FieldDiv } from "./WelcomeStyleSet";
+import { FieldDiv, PageHeader, MainSectionContainer } from "./WelcomeStyleSet";
 
 const Transition = props => {
     return <Slide direction="up" {...props} />;
@@ -165,15 +165,17 @@ class WelcomeUser extends Component {
                         console.log(data);
 
                         return (
-                            <div
-                                style={{
-                                    width: "100%",
-                                    //  height: "100%",
-                                    backgroundColor: "#F4F4F4",
-                                    padding: "40px"
-                                }}
+                            <MainSectionContainer
+                                style={
+                                    {
+                                        // width: "100%",
+                                        // //  height: "100%",
+                                        // backgroundColor: "#F4F4F4",
+                                        // padding: "40px"
+                                    }
+                                }
                             >
-                                <h1>Users</h1>
+                                <PageHeader>Users</PageHeader>
 
                                 <FieldDiv style={{ display: "flex" }}>
                                     <div style={{ marginRight: "2%" }}>
@@ -468,6 +470,11 @@ class WelcomeUser extends Component {
                                                     );
                                                     return (
                                                         <Checkbox
+                                                            style={{
+                                                                color: "grey",
+
+                                                                padding: "0"
+                                                            }}
                                                             checked={this.state.selected.includes(
                                                                 selectedId
                                                             )}
@@ -497,9 +504,6 @@ class WelcomeUser extends Component {
                                                                 });
                                                             }}
                                                             value="checkedB"
-                                                            style={{
-                                                                padding: "0"
-                                                            }}
                                                         />
                                                     );
                                                 }
@@ -742,7 +746,7 @@ class WelcomeUser extends Component {
                                         );
                                     }}
                                 </Mutation>
-                            </div>
+                            </MainSectionContainer>
                         );
                     }}
                 </Query>

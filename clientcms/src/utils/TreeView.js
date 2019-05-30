@@ -65,8 +65,8 @@ const styles = () => ({
         marginRight: 15
     },
     expansionButton: {
-        color: "white",
-        background: "rgb(38,153,251)",
+        color: "rgb(38,153,251)",
+        //  background: "rgb(38,153,251)",
         padding: 0,
         margin: 0,
         width: 24,
@@ -892,7 +892,7 @@ class TreeView extends React.PureComponent {
                         </TableCell>
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <DirListIcon className={classes.dirIconStyle} />
+                                {/* <DirListIcon className={classes.dirIconStyle} /> */}
                                 <span>{directory.name}</span>
                             </TreeEntry>
                         </TableCell>
@@ -952,7 +952,7 @@ class TreeView extends React.PureComponent {
                         </TableCell>
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
-                                <DirListIcon className={classes.dirIconStyle} />
+                                {/* <DirListIcon className={classes.dirIconStyle} /> */}
                                 <span
                                     onClick={this.navigateToEditPage.bind(
                                         this,

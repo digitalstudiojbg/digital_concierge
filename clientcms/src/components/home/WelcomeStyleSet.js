@@ -1,6 +1,45 @@
 import React from "react";
 import styled from "styled-components";
 
+export const MainSectionContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    padding: 3%;
+`;
+
+export const PageHeader = styled.h2`
+    fontsize: 30px;
+    paddingbottom: 2%;
+`;
+//------Dashboard page
+
+export const SubSectionDiv = styled.div`
+    margin: 30px 60px 10px 0;
+`;
+export const SubSectionTop = styled.div`
+    display: flex;
+`;
+export const SubSectionBottom = styled.div`
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+`;
+export const SubSectionTitle = styled.h5`
+    font-size: 16px;
+    font-weight: 700;
+    padding-bottom: 5px;
+    color: #2699fb;
+    margin: 0;
+`;
+
+export const ContainerDivTab = styled.div`
+    width: 100%;
+    overflow-y: auto;
+    height: 80vh;
+`;
 //---- WelcomeAccountClient
 
 export const ContainerDiv = styled.div`
@@ -8,6 +47,7 @@ export const ContainerDiv = styled.div`
     height: 100%;
     display: flex;
 `;
+export const MainSubSections = styled.div``;
 
 export const SectionDiv = styled.div`
     width: ${props => props.width};
@@ -17,10 +57,6 @@ export const SectionDiv = styled.div`
     border-radius: 5px;
     //  background-color: white;
     margin-right: ${props => (Boolean(props.isLastSection) ? "0px" : "10px")};
-`;
-
-export const SubSectionDiv = styled.div`
-    margin-top: 10px;
 `;
 
 export const TitleDiv = styled.h4`
@@ -100,6 +136,7 @@ export const ThemeContainerDiv = styled.div`
     padding: 3%;
     //  border-right: 1px solid black;
 `;
+export const HeaderDiv = styled.div``;
 
 export const EntryThemeContainerDiv = styled.div`
     //  display: flex;
@@ -264,6 +301,36 @@ export const SubContainerDiv = styled.div`
 //----------
 
 export const SidebarContainer = styled.div``;
+
+export const SidebarSubItem = styled.div`
+display: flex;
+align-items: center;
+padding-left: ${props => props.paddingLeft};
+height: 60px;
+transition: all 0.3s linear;
+width:260px;
+
+background-color:rgb(92, 92, 92); 
+
+
+color: ${({ selectedItem, expectedItem }) =>
+    selectedItem === expectedItem && "rgb(234,234,234)"};
+
+&:hover {
+    background-color: white;
+    color: black;
+}
+
+background-image: ${({ selectedItem, expectedItem }) =>
+    selectedItem === expectedItem &&
+    "linear-gradient(to bottom,rgb(43,43,43) 0%, rgb(43,43,43) 100%),linear-gradient(to bottom, rgb(0,0,0) 0%, rgb(0,0,0) 100%)"};
+
+
+background-clip: ${({ selectedItem, expectedItem }) =>
+    selectedItem === expectedItem && " content-box , padding-box"};
+
+/* justify-content: ${props => (props.center ? "center" : "stretch")}; */
+`;
 
 export const SidebarItem = styled.div`
     display: flex;

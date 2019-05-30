@@ -47,7 +47,10 @@ import {
     SectionHeader,
     SubSectionDiv,
     SubSectionTheme,
-    StepperCon
+    StepperCon,
+    MainSectionContainer,
+    PageHeader,
+    HeaderDiv
 } from "./WelcomeStyleSet";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -503,10 +506,12 @@ const WelcomeThemeSettings = ({
         <ContainerDiv>
             {Boolean(values) && (
                 <React.Fragment>
-                    <ThemeContainerDiv>
-                        <div style={{ margin: "0 7% 3% 0 " }}>
-                            <SubSectionDiv style={{ display: "flex" }}>
-                                <h2
+                    <MainSectionContainer>
+                        <HeaderDiv>
+                            <SubSectionDiv
+                                style={{ margin: "0", display: "flex" }}
+                            >
+                                <PageHeader
                                     style={{
                                         width: "20%",
                                         //  paddingBottom: "2%",
@@ -515,7 +520,7 @@ const WelcomeThemeSettings = ({
                                     }}
                                 >
                                     Theme Settings
-                                </h2>
+                                </PageHeader>
 
                                 <ButtonContainerDiv
                                     style={{
@@ -543,7 +548,9 @@ const WelcomeThemeSettings = ({
                                 </ButtonContainerDiv>
                             </SubSectionDiv>
 
-                            <StepperCon>
+                            <StepperCon
+                                style={{ width: "100%", display: "flex" }}
+                            >
                                 <Stepper
                                     orientation="none"
                                     nonLinear
@@ -552,7 +559,7 @@ const WelcomeThemeSettings = ({
 
                                     style={{
                                         backgroundColor: "#F4F4F4",
-                                        flex: "left",
+                                        alignFlex: "felx-start",
                                         width: "50%",
                                         paddingBottom: "10px",
                                         paddingTop: "10px"
@@ -603,7 +610,7 @@ const WelcomeThemeSettings = ({
                                     ))}
                                 </Stepper>
                             </StepperCon>
-                        </div>
+                        </HeaderDiv>
                         <SubSectionTheme style={{ display: "flex" }}>
                             <LayoutContainerDiv style={{ width: "60%" }}>
                                 <SectionHeader style={{ margin: "2% 0 4%" }}>
@@ -990,7 +997,7 @@ const WelcomeThemeSettings = ({
                                 </ButtonContainerDiv> */}
                             </LayoutContainerDiv>
                         </SubSectionTheme>
-                    </ThemeContainerDiv>
+                    </MainSectionContainer>
                 </React.Fragment>
             )}
         </ContainerDiv>

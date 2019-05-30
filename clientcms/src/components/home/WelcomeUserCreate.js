@@ -458,7 +458,10 @@ const WelcomeUserCreate = props => {
                                                                             key={`select_all`}
                                                                             control={
                                                                                 <Checkbox
-                                                                                    color="primary"
+                                                                                    style={{
+                                                                                        color:
+                                                                                            "#2699FB"
+                                                                                    }}
                                                                                     checked={
                                                                                         selectedPermissions.size ===
                                                                                         allPermissionsLength
@@ -568,7 +571,10 @@ const WelcomeUserCreate = props => {
                                                                                                         key={`PERMISSION-${name}-${id}`}
                                                                                                         control={
                                                                                                             <Checkbox
-                                                                                                                color="primary"
+                                                                                                                style={{
+                                                                                                                    color:
+                                                                                                                        "#2699FB"
+                                                                                                                }}
                                                                                                                 id={
                                                                                                                     id
                                                                                                                 }
