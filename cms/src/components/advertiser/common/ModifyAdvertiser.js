@@ -64,7 +64,7 @@ const ContentContainer = styled.div`
 `;
 
 const ModifyAdvertiser = props => {
-    const { goBack, goToNext } = props;
+    const { goToNext, push, exitUrl } = props;
 
     const [activeStep, setActiveStep] = useState(goToNext ? 1 : 0);
     const [showModal, setShowModal] = useState(false);
@@ -80,6 +80,8 @@ const ModifyAdvertiser = props => {
         Boolean(currentComponentFormikRef.state) &&
         !Boolean(currentComponentFormikRef.state.isSubmitting) &&
         isEmpty(currentComponentFormikRef.state.touched);
+
+    const goBack = () => push(exitUrl);
 
     const handleCancel = () => {
         if (safeToExit()) {
@@ -171,7 +173,6 @@ const ModifyAdvertiser = props => {
 ModifyAdvertiser.propTypes = {
     has_data: PropTypes.bool.isRequired,
     advertiserId: PropTypes.string,
-    goBack: PropTypes.func,
     exitUrl: PropTypes.string
 };
 

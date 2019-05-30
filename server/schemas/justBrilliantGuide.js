@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         justBrilliantGuide(id: ID!): JustBrilliantGuide
         justBrilliantGuides: [JustBrilliantGuide]
+        justBrilliantGuideFromAdvertiser(id: ID!): JustBrilliantGuide
     }
 
     extend type Mutation {

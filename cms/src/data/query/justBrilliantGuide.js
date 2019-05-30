@@ -18,3 +18,12 @@ export const getJustBrilliantGuideDetail = gql`
     }
     ${justBrilliantGuideDetailFragment}
 `;
+
+export const getJustBrilliantGuideIdFromAdvertiser = gql`
+    query getJustBrilliantGuideIdFromAdvertiser($id: ID!) {
+        justBrilliantGuideFromAdvertiser(id: $id) {
+            id
+            name
+        }
+    }
+`;

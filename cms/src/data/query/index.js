@@ -24,7 +24,8 @@ import { getFeaturesByCategories } from "./featureCategory";
 import { getContractByClientId } from "./contract";
 import {
     getJustBrilliantGuideList,
-    getJustBrilliantGuideDetail
+    getJustBrilliantGuideDetail,
+    getJustBrilliantGuideIdFromAdvertiser
 } from "./justBrilliantGuide";
 import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
 import { getTabbedPageComplete } from "./misc";
@@ -60,5 +61,6 @@ export {
     getTabbedPageComplete,
     getAdvertiserList,
     getAdvertiserFromPublication,
-    getAdvertiserCurrencyList
+    getAdvertiserCurrencyList,
+    getJustBrilliantGuideIdFromAdvertiser
 };

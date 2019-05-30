@@ -15,6 +15,16 @@ export default {
         },
         justBrilliantGuides: async (_root, _input, { user }) => {
             return await db.just_brilliant_guide.findAll();
+        },
+        justBrilliantGuideFromAdvertiser: async (_root, { id }) => {
+            const advertiser = await db.advertiser.findByPk(id);
+            if (!Boolean(advertiser)) {
+                return null;
+            } else {
+                return await db.just_brilliant_guide.findByPk(
+                    advertiser.justBrilliantGuideId
+                );
+            }
         }
     },
     Mutation: {
