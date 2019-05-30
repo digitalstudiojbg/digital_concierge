@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import ReactTable from "react-table";
-import { Query, withApollo } from "react-apollo/index";
+import { Query, withApollo } from "react-apollo";
 
 import Box from "@material-ui/core/Box/index";
 import getGuestsRooms from "../../query/getGuestRooms";
