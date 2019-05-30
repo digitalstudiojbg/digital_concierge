@@ -7,28 +7,34 @@ module.exports = {
             [
                 {
                     name: "SAMPLE LOBBY",
-                    clientId: 3
+                    clientId: 3,
+                    number: 1
                 },
 
                 {
                     name: "SAMPLE ROOM 1",
-                    clientId: 3
+                    clientId: 3,
+                    number: 1
                 },
                 {
                     name: "SAMPLE ROOM 2",
-                    clientId: 3
+                    clientId: 3,
+                    number: 1
                 },
                 {
                     name: "HOLIDAY INN LOBBY",
-                    clientId: 1
+                    clientId: 1,
+                    number: 1
                 },
                 {
                     name: "HOLIDAY INN ROOM 1",
-                    clientId: 1
+                    clientId: 1,
+                    number: 1
                 },
                 {
                     name: "HOLIDAY INN ROOM 2",
-                    clientId: 1
+                    clientId: 1,
+                    number: 1
                 }
             ],
             {}
