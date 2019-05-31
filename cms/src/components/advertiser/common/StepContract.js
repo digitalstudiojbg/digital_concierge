@@ -8,7 +8,13 @@ import {
 import styled from "styled-components";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
-import { OutlinedInput, MenuItem, Button, Select } from "@material-ui/core";
+import {
+    OutlinedInput,
+    MenuItem,
+    Button,
+    Select,
+    InputAdornment
+} from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { isEmpty } from "lodash";
 import { Query } from "react-apollo";
@@ -17,6 +23,7 @@ import Loading from "../../loading/Loading";
 import { getAdvertiserDetail } from "../../../data/query/advertiser";
 import { generatePeriodMonthList } from "../../../utils/Constants";
 import dayjs from "dayjs";
+import SimpleDocumentUploader from "../../../utils/SimpleDocumentUploader";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 20px;
@@ -84,7 +91,8 @@ const PAYMENT_FIELDS = [
         name: "invoice_amount",
         label: "Invoice Amount",
         required: true,
-        type: "text"
+        type: "text",
+        adornmentPosition: "end"
     },
     {
         name: "payable_date",
@@ -214,12 +222,14 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
             disableFuture,
             views,
             openTo,
-            customOnChange
+            customOnChange,
+            adornmentPosition
         },
         values,
         errors,
         setFieldValue,
-        optionValues = []
+        optionValues = [],
+        inputAdornmentText = null
     ) => {
         const handleDateChange = ({ $d: date }) => {
             if (Boolean(customOnChange)) {
@@ -252,6 +262,22 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                         component={TextField}
                         variant="outlined"
                         fullWidth={true}
+                        InputProps={{
+                            ...(adornmentPosition === "end" && {
+                                endAdornment: Boolean(inputAdornmentText) ? (
+                                    <InputAdornment position="end">
+                                        {inputAdornmentText}
+                                    </InputAdornment>
+                                ) : null
+                            }),
+                            ...(adornmentPosition === "start" && {
+                                startAdornment: Boolean(inputAdornmentText) ? (
+                                    <InputAdornment position="start">
+                                        {inputAdornmentText}
+                                    </InputAdornment>
+                                ) : null
+                            })
+                        }}
                     />
                 </div>
             );
@@ -297,9 +323,10 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                         required={required}
                         openTo={openTo}
                         views={views}
-                        {...Boolean(values[name]) && { value: values[name] }}
+                        value={values[name]}
                         onChange={handleDateChange}
                         clearable
+                        autoOk
                         inputVariant="outlined"
                         fullWidth
                     />
@@ -310,37 +337,69 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
         }
     };
 
-    const { active_agreement } = advertiser;
+    const { active_advertising } = advertiser;
+    const agreement_key_file_array =
+        Boolean(active_advertising) &&
+        Boolean(active_advertising.agreement_file_key)
+            ? active_advertising.agreement_file_key.split("/")
+            : [];
     const initialValues = has_data
         ? {
-              agreement_number: active_agreement.agreement_number,
-              agreement_date: active_agreement.agreement_date,
-              agreement_file: active_agreement.agreement_file,
-              invoice_number: active_agreement.payment.invoice_number,
-              currency_id: active_agreement.payment.currency,
-              invoice_amount: active_agreement.payment.invoice_amount,
-              payable: active_agreement.payment.payable_date,
-              period_month: active_agreement.period_month,
-              commence_date: active_agreement.commence_date,
-              expiry_date: active_agreement.expiry_date
+              agreement_number: active_advertising.agreement_number,
+              agreement_date: active_advertising.agreement_date,
+              agreement_file: active_advertising.agreement_file,
+              agreement_filename:
+                  agreement_key_file_array[agreement_key_file_array.length - 1],
+              invoice_number:
+                  Boolean(active_advertising.payment) &&
+                  Boolean(active_advertising.payment.invoice_number)
+                      ? active_advertising.payment.invoice_number
+                      : "",
+              currency_id:
+                  Boolean(active_advertising.payment) &&
+                  Boolean(active_advertising.payment.currency)
+                      ? active_advertising.payment.currency.id
+                      : null,
+              invoice_amount:
+                  Boolean(active_advertising.payment) &&
+                  Boolean(active_advertising.payment.invoice_amount)
+                      ? active_advertising.payment.invoice_amount
+                      : "",
+              payable_date:
+                  Boolean(active_advertising.payment) &&
+                  Boolean(active_advertising.payment.payable_date)
+                      ? active_advertising.payment.payable_date
+                      : null,
+              period_month: active_advertising.period_month,
+              commence_date: active_advertising.commence_date,
+              expiry_date: active_advertising.expiry_date
           }
         : {
               agreement_number: "",
-              agreement_date: "",
+              agreement_date: null,
               agreement_file: null,
+              agreement_filename: null,
               invoice_number: "",
-              invoice_date: "",
-              currency_id: null,
+              invoice_date: null,
+              currency_id:
+                  Array.isArray(currencyList) && currencyList.length === 1
+                      ? currencyList[0].id
+                      : null,
               invoice_amount: "",
-              payable_date: "",
+              payable_date: null,
               period_month: null,
-              commence_date: "",
-              expiry_date: ""
+              commence_date: null,
+              expiry_date: null
           };
 
+    let documentRef = React.createRef();
     return (
         <Formik ref={onRef} initialValues={initialValues}>
             {({ values, errors, isSubmitting, setFieldValue }) => {
+                const currency = Boolean(values.currency_id)
+                    ? currencyList.find(({ id }) => id === values.currency_id)
+                    : null;
+                const currencyCode = Boolean(currency) ? currency.code : null;
                 return (
                     <Form>
                         <ContainerDivModified>
@@ -365,6 +424,21 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                                         </FieldContainerDiv>
                                     )
                                 )}
+                                <FieldContainerDiv>
+                                    <SimpleDocumentUploader
+                                        onRef={ref => (documentRef = ref)}
+                                        {...Boolean(values.agreement_file) && {
+                                            previewUrl: values.agreement_file
+                                        }}
+                                        {...Boolean(
+                                            values.agreement_filename
+                                        ) && {
+                                            previewName:
+                                                values.agreement_filename
+                                        }}
+                                        label="Upload Agreement"
+                                    />
+                                </FieldContainerDiv>
                             </SectionDivModified>
                             <SectionDivModified
                                 flexBasis="33%"
@@ -386,7 +460,10 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                                             setFieldValue,
                                             item.type === "select"
                                                 ? currencyList
-                                                : []
+                                                : [],
+                                            item.name === "invoice_amount"
+                                                ? currencyCode
+                                                : null
                                         )}
                                     </FieldContainerDiv>
                                 ))}

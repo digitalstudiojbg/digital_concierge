@@ -6,37 +6,46 @@ module.exports = {
             "currencies",
             [
                 {
-                    name: "Australia Dollar"
+                    name: "Australia Dollar",
+                    code: "AUD"
                 },
                 {
-                    name: "New Zealand Dollar"
+                    name: "New Zealand Dollar",
+                    code: "NZD"
                 },
                 {
-                    name: "United States Dollar"
+                    name: "United States Dollar",
+                    code: "USD"
                 },
                 {
-                    name: "Papua New Guinean Kina"
+                    name: "Papua New Guinean Kina",
+                    code: "PGK"
                 },
                 {
-                    name: "Chinese Yuan"
+                    name: "Chinese Yuan",
+                    code: "CNY"
                 },
                 {
-                    name: "Vanuatu Vatu"
+                    name: "Vanuatu Vatu",
+                    code: "VUV"
                 },
                 {
-                    name: "Solomon Islands Dollar"
+                    name: "Solomon Islands Dollar",
+                    code: "SBD"
                 },
                 {
-                    name: "Samoa Tala"
+                    name: "Samoa Tala",
+                    code: "WST"
                 },
                 {
-                    name: "Cook Islands Dollar"
+                    name: "Cook Islands Dollar",
+                    code: "CKD"
                 }
             ],
             {}
         );
     },
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.bulkDelete("currencies", null, {});
     }
 };

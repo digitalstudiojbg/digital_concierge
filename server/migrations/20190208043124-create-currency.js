@@ -15,6 +15,13 @@ module.exports = {
                     notEmpty: true
                 }
             },
+            code: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

@@ -53,6 +53,7 @@ export const advertiserDetailFragment = gql`
             agreement_number
             agreement_date
             agreement_file
+            agreement_file_key
             period_month
             commence_date
             expire_date
