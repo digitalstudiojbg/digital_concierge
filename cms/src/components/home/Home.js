@@ -20,7 +20,7 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
-    SYSTEM_CMS_LIBRARY, GUESTS_CHECK_IN
+    SYSTEM_CMS_LIBRARY,
 } from "../../utils/Constants";
 import Library from "./Library";
 import ROUTES from "../../utils/routes";
@@ -45,7 +45,6 @@ const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
 );
 const CreateClient = lazy(() => import("./create_client"));
-const CheckInPage = lazy(() => import("../../pages/guests/CheckInPage"));
 
 /*import TabletDashboard from "../tablet/TabletDashboard";
 import TabletLandingPage from "../tablet/TabletLandingPage";
@@ -70,7 +69,7 @@ const routes = [
     },
     {
         path: ROUTES.guests,
-        exact: true,
+        exact: false,
         header: Header,
         main: Welcome,
         withProps: {}
@@ -186,14 +185,6 @@ const routes = [
         main: Library,
         withProps: {}
     },
-    {
-        path: GUESTS_CHECK_IN,
-        exact: true,
-        header: Header,
-        sidebar: Sidebar,
-        main: CheckInPage,
-        withProps: {},
-    }
 ];
 
 class Home extends Component {

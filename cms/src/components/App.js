@@ -12,10 +12,9 @@ import {
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL,
-    SYSTEM_INDEX_URL, GUESTS_CHECK_IN
+    SYSTEM_INDEX_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
-import CheckInPage from "../pages/guests/CheckInPage";
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import ROUTES from "../utils/routes";
@@ -43,10 +42,6 @@ const routes = [
         path: SYSTEM_INDEX_URL,
         component: Home
     },
-    {
-        path: GUESTS_CHECK_IN,
-        component: CheckInPage,
-    }
 ];
 
 class App extends Component {

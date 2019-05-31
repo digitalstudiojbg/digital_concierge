@@ -14,12 +14,16 @@ export const GuestTable = styled.div`
 
 export const GuestTR = styled.div`
     display: flex;
+    align-items: center;
     border-bottom: solid 1px rgba(0,0,0,0.05);
 `;
 
 export const GuestTD = styled.div`
     border-right: none;
     padding: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const GuestTH = styled.div`

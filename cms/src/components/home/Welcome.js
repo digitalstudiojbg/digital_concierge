@@ -35,7 +35,8 @@ const SidebarDiv = styled.div`
 const ContentDiv = styled.div`
     width: calc(100vw - 350px);
     display: flex;
-    overflow: auto;
+    overflow-x: auto;
+    //overflow: auto;
 `;
 
 const SidebarHeaderTitle = styled.div`
@@ -106,6 +107,8 @@ const WelcomeClients = lazy(() => import("./WelcomeClients"));
 const Guests = lazy(() => import("../guests"));
 // const AllGuestsPage = lazy(() => import("../../pages/guests/AllGuestsPage"));
 
+window.SELECTED_WELCOME_TAB = "dashboard";
+
 class Welcome extends Component {
     sidebarButtons = [
         { id: "dashboard", name: "DASHBOARD", component: WelcomeDashboard },
@@ -120,15 +123,17 @@ class Welcome extends Component {
 
     isSelectedGuestsPage = () => {
         const { pathname } = this.props.location;
-        return pathname === ROUTES.guests;
+        return pathname.includes(ROUTES.guests);
     };
 
     state = {
-        selected: this.isSelectedGuestsPage() ? null : "dashboard"
+        selected: this.isSelectedGuestsPage() ? null : window.SELECTED_WELCOME_TAB
     };
 
     clickSidebarButton(selected) {
         const { history: { push } } = this.props;
+
+        window.SELECTED_WELCOME_TAB = selected;
 
         push(WELCOME_URL);
 
@@ -141,7 +146,7 @@ class Welcome extends Component {
 
         const GuestBtn = (
             <WelcomeNavButton
-                key={"guests"}
+                key="guests"
                 content="GUESTS"
                 isSelected={this.isSelectedGuestsPage()}
                 onClick={() => push(ROUTES.guests)}

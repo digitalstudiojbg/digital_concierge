@@ -6,7 +6,7 @@ const Guests = () => (
     <Switch>
         {
             routes.map((route) => (
-                <Route {...route} key={route.path} />
+                <Route {...route} key={route.path} extact={true} />
             ))
         }
     </Switch>

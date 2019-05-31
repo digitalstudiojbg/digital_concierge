@@ -1,11 +1,20 @@
 import React from "react";
 import ROUTES from "../../utils/routes";
 import GuestsCurrent from "./components/GuestsCurrent";
+import CheckIn from "../check/CheckIn";
+import GuestsLayout from "./components/GuestLayout";
 
 const routes = [
     {
         path: ROUTES.guestsCheckIn,
-        component: () => <div>Check in</div>,
+        component: () => (
+            <GuestsLayout
+                title="Guest Check-in"
+                isShowCancel
+            >
+                <CheckIn />
+            </GuestsLayout>
+        ),
     },
     {
         path: ROUTES.guestsCheckOut,
@@ -14,7 +23,7 @@ const routes = [
     {
         path: "/",
         component: GuestsCurrent,
-    }
+    },
 ];
 
 export default routes;

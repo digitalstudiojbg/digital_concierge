@@ -22,7 +22,6 @@ import { getSystemTypes } from "./systemType";
 import { getFeatures } from "./feature";
 import { getFeaturesByCategories } from "./featureCategory";
 import { getContractByClientId } from "./contract";
-import getGuests from "./guests";
 
 export {
     getCurrentUserQuery,
@@ -48,5 +47,4 @@ export {
     systemsByClientQuery,
     getContractByClientId,
     getLayoutListFromType,
-    getGuests,
 };

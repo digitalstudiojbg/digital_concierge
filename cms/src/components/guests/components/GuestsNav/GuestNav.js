@@ -16,8 +16,8 @@ const NAV = [
 
 const NAV_SECONDARY = [
     { path: "book", title: "Add booking" },
-    { path: ROUTES.guestsCheckOut, title: "CHECK-IN" },
-    { path: ROUTES.guestsCheckIn, title: "CHECK-OUT" }
+    { path: ROUTES.guestsCheckIn, title: "CHECK-IN" },
+    { path: ROUTES.guestsCheckOut, title: "CHECK-OUT" }
 ];
 
 const GuestsNav = () => (
@@ -29,6 +29,7 @@ const GuestsNav = () => (
             {
                 NAV.map((nav) => (
                     <GuestsNavTab
+                        key={nav.path}
                         textColor="primary"
                         indicatorColor="primary"
                         component={NavLink}
