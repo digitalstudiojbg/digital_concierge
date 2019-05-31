@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import InfoIcon from "@material-ui/icons/Info";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
+import { PageHeader, SubSectionTop } from "../home/WelcomeStyleSet";
 
 const styles = () => ({
     infoIcon: {
@@ -44,17 +45,9 @@ const TabletContent = ({ history, match, classes }) => {
                 console.log(modifiedData);
 
                 return (
-                    <ContainerDiv>
-                        <div
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                fontSize: "1.7em",
-                                fontWeight: 600,
-                                alignItems: "center"
-                            }}
-                        >
-                            SYSTEM CONTENT: DIRECTORIES
+                    <ContainerDiv style={{ padding: "3%" }}>
+                        <SubSectionTop>
+                            <PageHeader>System Content: Directories</PageHeader>
                             <div style={{ paddingLeft: 10 }}>
                                 <Tooltip
                                     classes={{ tooltip: classes.tooltip }}
@@ -84,7 +77,7 @@ const TabletContent = ({ history, match, classes }) => {
                                     />
                                 </Tooltip>
                             </div>
-                        </div>
+                        </SubSectionTop>
                         {modifiedData.length > 0 ? (
                             <TreeView data={modifiedData} history={history} />
                         ) : (
@@ -95,7 +88,9 @@ const TabletContent = ({ history, match, classes }) => {
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    flexDirection: "column"
+                                    flexDirection: "column",
+                                    border: "1px solid #9D9D9D",
+                                    borderRadius: "5px"
                                 }}
                             >
                                 <div
@@ -124,8 +119,11 @@ const TabletContent = ({ history, match, classes }) => {
                                     }}
                                 >
                                     <Button
+                                        style={{
+                                            color: "white",
+                                            backgroundColor: "#2699FB"
+                                        }}
                                         variant="contained"
-                                        color="primary"
                                         fullWidth={true}
                                         onClick={handleClick}
                                     >

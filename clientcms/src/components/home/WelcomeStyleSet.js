@@ -40,6 +40,13 @@ export const ContainerDivTab = styled.div`
     overflow-y: auto;
     height: 80vh;
 `;
+
+export const TopButtonsContiner = styled.div`
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+`;
+
 //---- WelcomeAccountClient
 
 export const ContainerDiv = styled.div`
@@ -47,6 +54,7 @@ export const ContainerDiv = styled.div`
     height: 100%;
     display: flex;
 `;
+
 export const MainSubSections = styled.div``;
 
 export const SectionDiv = styled.div`

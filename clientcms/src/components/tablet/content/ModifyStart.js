@@ -29,7 +29,10 @@ import {
     MainSectionContainer,
     PageHeader,
     ContainerDiv,
-    ContainerDivTab
+    ContainerDivTab,
+    TopButtonsContiner,
+    // BlueButtons,
+    SubSectionTop
 } from "../../home/WelcomeStyleSet";
 
 const TabContainer = props => {
@@ -37,23 +40,12 @@ const TabContainer = props => {
 };
 
 const styles = () => ({
-    buttonSaveExit: {
-        width: 150,
-        position: "absolute",
-        top: 100,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
+    blueButtons: {
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonSaveKeep: {
-        width: 150,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
-        color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
+        margin: "2%",
+        padding: "5% 0"
     }
 });
 
@@ -322,10 +314,13 @@ const ModifyStart = props => {
                             return (
                                 <Form>
                                     <MainSectionContainer>
-                                        <PageHeader>
-                                            System Content: start{" "}
-                                        </PageHeader>
-                                        {/* <div
+                                        <SubSectionTop>
+                                            <PageHeader
+                                                style={{ width: "75%" }}
+                                            >
+                                                System Content: start
+                                            </PageHeader>
+                                            {/* <div
                                         style={{
                                             height: 60,
                                             fontSize: "2em",
@@ -334,7 +329,27 @@ const ModifyStart = props => {
                                             paddingBottom: 20
                                         }}
                                     > */}
-
+                                            <TopButtonsContiner>
+                                                <Button
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    className={
+                                                        classes.blueButtons
+                                                    }
+                                                >
+                                                    SAVE & EXIT
+                                                </Button>
+                                                <Button
+                                                    variant="outlined"
+                                                    onClick={saveAndKeepEditing}
+                                                    className={
+                                                        classes.blueButtons
+                                                    }
+                                                >
+                                                    SAVE & KEEP EDITING
+                                                </Button>
+                                            </TopButtonsContiner>
+                                        </SubSectionTop>
                                         <Paper
                                             square
                                             style={{
@@ -363,20 +378,7 @@ const ModifyStart = props => {
                                                 <Tab label="CONTENT" />
                                             </Tabs>
                                         </Paper>
-                                        <Button
-                                            type="submit"
-                                            variant="outlined"
-                                            className={classes.buttonSaveExit}
-                                        >
-                                            SAVE & EXIT
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            onClick={saveAndKeepEditing}
-                                            className={classes.buttonSaveKeep}
-                                        >
-                                            SAVE & KEEP EDITING
-                                        </Button>
+
                                         <ContainerDivTab
                                             style={{ display: "flex" }}
                                         >

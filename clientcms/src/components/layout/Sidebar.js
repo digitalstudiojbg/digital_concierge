@@ -97,13 +97,13 @@ const SIDEBAR_ITEMS = [
     },
     {
         name: "expandContent",
-        displayName: "System Content",
+        displayName: "Content",
         icon: List,
         paddingLeft: "20px",
         expandItems: [
             {
                 name: SYSTEM_MODIFY_START_URL,
-                displayName: "Start",
+                displayName: "Welcome",
                 icon: Stars,
                 paddingLeft: "20px"
             },
@@ -115,13 +115,13 @@ const SIDEBAR_ITEMS = [
             },
             {
                 name: SYSTEM_CMS_CONTENT_URL,
-                displayName: "Directories",
+                displayName: "Compendium",
                 icon: List,
                 paddingLeft: "20px"
             },
             {
                 name: SYSTEM_CMS_PROMOTION,
-                displayName: "Promotions",
+                displayName: "Promos",
                 icon: ImageOutlined,
                 paddingLeft: "20px"
             },

@@ -21,35 +21,45 @@ import {
 import { isEmpty } from "lodash";
 import ModifyHomeLayout from "./ModifyHomeLayout";
 import ModifyHomeContent from "./ModifyHomeContent";
+import {
+    MainSectionContainer,
+    PageHeader,
+    ContainerDivTab,
+    TopButtonsContiner,
+    BlueButtons,
+    SubSectionTop
+} from "../../home/WelcomeStyleSet";
 
-export const ContainerDivTab = styled.div`
-    width: 100%;
-    overflow-y: auto;
-    height: 80vh;
-`;
 const TabContainer = props => {
     return <ContainerDiv>{props.children}</ContainerDiv>;
 };
 
 const styles = () => ({
-    buttonSaveExit: {
-        width: 150,
-        position: "absolute",
-        top: 100,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
+    blueButtons: {
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonSaveKeep: {
-        width: 150,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
-        color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
+        margin: "2%",
+        padding: "5% 0"
     }
+    // buttonSaveExit: {
+    //     width: 150,
+    //     position: "absolute",
+    //     top: 100,
+    //     right: 20,
+    //     backgroundColor: "rgb(33,143,250)",
+    //     color: "white",
+    //     fontFamily: "Source Sans Pro, sans-serif"
+    // },
+    // buttonSaveKeep: {
+    //     width: 150,
+    //     position: "absolute",
+    //     top: 140,
+    //     right: 20,
+    //     backgroundColor: "rgb(33,143,250)",
+    //     color: "white",
+    //     fontFamily: "Source Sans Pro, sans-serif"
+    // }
 });
 
 const lightGreyHeader = "rgb(247,247,247)";
@@ -302,88 +312,114 @@ const ModifyHome = props => {
 
                             return (
                                 <Form>
-                                    <div
-                                        style={{
-                                            height: 60,
-                                            fontSize: "2em",
-                                            fontWeight: 700,
-                                            paddingTop: 20,
-                                            paddingBottom: 20
-                                        }}
-                                    >
-                                        SYSTEM CONTENT: HOME
-                                    </div>
-                                    <Paper
-                                        square
-                                        style={{
-                                            backgroundColor: lightGreyHeader,
-                                            boxShadow: "none",
-                                            borderBottom:
-                                                "2px solid rgb(217,217,217)"
-                                        }}
-                                    >
-                                        <Tabs
-                                            value={tab}
-                                            // classes={{
-                                            //     indicator: props.classes.indicator
-                                            // }}
-                                            TabIndicatorProps={{
-                                                style: {
-                                                    backgroundColor:
-                                                        "rgb(57,154,249)"
-                                                }
-                                            }}
-                                            onChange={handleChange}
-                                        >
+                                    <MainSectionContainer>
+                                        <SubSectionTop>
+                                            <PageHeader
+                                                style={{
+                                                    width: "75%"
+                                                }}
                                             >
-                                            <Tab label="PREVIEW" />
-                                            <Tab label="LAYOUT" />
-                                            <Tab label="CONTENT" />
-                                        </Tabs>
-                                    </Paper>
-                                    <Button
-                                        type="submit"
-                                        variant="outlined"
-                                        className={classes.buttonSaveExit}
-                                    >
-                                        SAVE & EXIT
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={saveAndKeepEditing}
-                                        className={classes.buttonSaveKeep}
-                                    >
-                                        SAVE & KEEP EDITING
-                                    </Button>
-                                    <ContainerDivTab>
-                                        {tab === 0 && (
-                                            <TabContainer>PREVIEW</TabContainer>
-                                        )}
-                                        {tab === 1 && (
-                                            <TabContainer>
-                                                <ModifyHomeLayout
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
+                                                System Content: Home
+                                            </PageHeader>
+                                            <TopButtonsContiner>
+                                                <Button
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    className={
+                                                        classes.blueButtons
                                                     }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                        {tab === 2 && (
-                                            <TabContainer>
-                                                <ModifyHomeContent
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
+                                                >
+                                                    SAVE & EXIT
+                                                </Button>
+                                                <Button
+                                                    variant="outlined"
+                                                    onClick={saveAndKeepEditing}
+                                                    className={
+                                                        classes.blueButtons
                                                     }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                    </ContainerDivTab>
+                                                >
+                                                    SAVE & KEEP EDITING
+                                                </Button>
+                                            </TopButtonsContiner>
+                                        </SubSectionTop>
+                                        <Paper
+                                            square
+                                            style={{
+                                                backgroundColor: lightGreyHeader,
+                                                boxShadow: "none",
+                                                borderBottom:
+                                                    "2px solid rgb(217,217,217)"
+                                            }}
+                                        >
+                                            <Tabs
+                                                value={tab}
+                                                // classes={{
+                                                //     indicator: props.classes.indicator
+                                                // }}
+                                                TabIndicatorProps={{
+                                                    style: {
+                                                        backgroundColor:
+                                                            "rgb(57,154,249)"
+                                                    }
+                                                }}
+                                                onChange={handleChange}
+                                            >
+                                                >
+                                                <Tab label="PREVIEW" />
+                                                <Tab label="LAYOUT" />
+                                                <Tab label="CONTENT" />
+                                            </Tabs>
+                                        </Paper>
+                                        {/* <Button
+                                            type="submit"
+                                            variant="outlined"
+                                            className={classes.buttonSaveExit}
+                                        >
+                                            SAVE & EXIT
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={saveAndKeepEditing}
+                                            className={classes.buttonSaveKeep}
+                                        >
+                                            SAVE & KEEP EDITING
+                                        </Button> */}
+                                        <ContainerDivTab>
+                                            {tab === 0 && (
+                                                <TabContainer>
+                                                    PREVIEW
+                                                </TabContainer>
+                                            )}
+                                            {tab === 1 && (
+                                                <TabContainer>
+                                                    <ModifyHomeLayout
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                            {tab === 2 && (
+                                                <TabContainer>
+                                                    <ModifyHomeContent
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                        </ContainerDivTab>
+                                    </MainSectionContainer>
                                 </Form>
                             );
                         }}

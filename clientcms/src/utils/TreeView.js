@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ExpandIcon from "@material-ui/icons/ChevronRight";
 import CompressIcon from "@material-ui/icons/ExpandMore";
@@ -58,11 +59,15 @@ const styles = () => ({
     //     paddingRight: "25px"
     // },
     buttonDelete: {
-        color: "white",
-        backgroundColor: "rgb(35,38,92)",
+        color: "rgb(35,38,92)",
+        backgroundColor: "white",
         paddingLeft: "1px",
         paddingRight: "1px",
         marginRight: 15
+        // active: {
+        //     backgroundColor: "grey",
+        //     color: "white"
+        // }
     },
     expansionButton: {
         color: "rgb(38,153,251)",
@@ -83,27 +88,34 @@ const styles = () => ({
         backgroundColor: "rgb(235,235,235)"
     },
     headerCol: {
-        color: "rgb(49,49,49)",
-        width: "5%"
+        color: "black",
+        width: "5%",
+        fontSize: "12px"
     },
     headerTitleCol: {
-        color: "rgb(131,134,166)",
+        //  color: "rgb(131,134,166)",
         width: "80%",
-        paddingLeft: 10
+        paddingLeft: 10,
+        fontSize: "12px",
+        color: "black"
     },
     tableEntryRow: {
         backgroundColor: "white",
+
         borderLeft: "1px solid rgb(201,201,201)",
-        borderRight: "1px solid rgb(181,181,181)"
+        borderRight: "1px solid rgb(181,181,181)",
+        "&:hover": { backgroundColor: "#F4F4F4" }
     },
     tableEntryCol: {
         color: "rgb(89,89,89)",
         width: "5%"
     },
     tableEntryTitleCol: {
-        color: "rgb(89,89,89)",
+        //  color: "rgb(89,89,89)",
         width: "80%",
-        fontSize: "1.3em",
+        fontSize: "18px",
+        color: "black",
+
         paddingLeft: 10
     },
     tableCheckboxCol: {
@@ -898,7 +910,7 @@ class TreeView extends React.PureComponent {
                         </TableCell>
                         <TableCell>
                             {/* TODO: ADD NAVIGATE TO EDIT HOME FUNCTIONALITY */}
-                            <EditIcon disabled />
+                            {/* <EditIcon disabled /> */}
                         </TableCell>
                         <TableCell>
                             <CheckIcon />
@@ -913,7 +925,10 @@ class TreeView extends React.PureComponent {
                             padding="checkbox"
                             className={classes.tableCheckboxCol}
                         >
-                            <Checkbox disabled={true} />
+                            <Checkbox
+                                style={{ color: "#707070" }}
+                                disabled={true}
+                            />
                         </TableCell>
                     </TableRow>
                     {is_expanded &&
@@ -967,7 +982,7 @@ class TreeView extends React.PureComponent {
                             </TreeEntry>
                         </TableCell>
                         <TableCell>
-                            <EditIcon
+                            {/* <EditIcon
                                 onClick={this.navigateToEditPage.bind(
                                     this,
                                     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
@@ -975,7 +990,7 @@ class TreeView extends React.PureComponent {
                                         directory
                                     )
                                 )}
-                            />
+                            /> */}
                         </TableCell>
                         <TableCell>{this.renderCheck(directory)}</TableCell>
                         <TableCell>
@@ -989,6 +1004,7 @@ class TreeView extends React.PureComponent {
                             className={classes.tableCheckboxCol}
                         >
                             <Checkbox
+                                style={{ color: "#707070" }}
                                 onChange={() => {
                                     if (
                                         selected_dir_lists.includes(
@@ -1057,15 +1073,15 @@ class TreeView extends React.PureComponent {
                                     alignItems: "center"
                                 }}
                             >
-                                {!directory.is_dir_list ? (
+                                {/* {!directory.is_dir_list ? (
                                     <DirEntryIcon
-                                        className={classes.dirIconStyle}
+                                    className={classes.dirIconStyle}
                                     />
                                 ) : (
                                     <DirListIcon
-                                        className={classes.dirIconStyle}
+                                       // className={classes.dirIconStyle}
                                     />
-                                )}
+                                )} */}
                                 <span
                                     onClick={this.navigateToEditPage.bind(
                                         this,
@@ -1083,7 +1099,7 @@ class TreeView extends React.PureComponent {
                         </TreeEntry>
                     </TableCell>
                     <TableCell>
-                        <EditIcon
+                        {/* <EditIcon
                             onClick={this.navigateToEditPage.bind(
                                 this,
                                 directory.is_dir_list
@@ -1091,7 +1107,7 @@ class TreeView extends React.PureComponent {
                                     : SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
                                 this.modifyDataBeingSendToEditPage(directory)
                             )}
-                        />
+                        /> */}
                     </TableCell>
                     <TableCell>{this.renderCheck(directory)}</TableCell>
                     <TableCell>
@@ -1105,6 +1121,7 @@ class TreeView extends React.PureComponent {
                         className={classes.tableCheckboxCol}
                     >
                         <Checkbox
+                            style={{ color: "#707070" }}
                             onChange={() => {
                                 //Differentiating between a directory list with empty directory entries or just a normal directory entry
                                 if (directory.is_dir_list) {
@@ -1189,9 +1206,7 @@ class TreeView extends React.PureComponent {
                             <TableCell className={classes.headerTitleCol}>
                                 TITLE
                             </TableCell>
-                            <TableCell className={classes.headerCol}>
-                                EDIT
-                            </TableCell>
+                            <TableCell className={classes.headerCol} />
                             <TableCell className={classes.headerCol}>
                                 VISIBLE
                             </TableCell>
@@ -1204,6 +1219,7 @@ class TreeView extends React.PureComponent {
                             >
                                 {Boolean(dataTree) && dataTree.length > 0 && (
                                     <Checkbox
+                                        style={{ color: "#707070" }}
                                         indeterminate={
                                             (selected_dir_lists.length > 0 ||
                                                 selected_dir_entries > 0) &&
@@ -1739,7 +1755,7 @@ class TreeView extends React.PureComponent {
                         }
                         onClick={this.openDeleteModal}
                     >
-                        <DeleteIcon />
+                        <DeleteOutlinedIcon />
                     </Button>
                     {/* <Button
                         variant="contained"

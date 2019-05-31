@@ -256,7 +256,7 @@ const renderRoutes = routes => (
         <div
             style={{
                 paddingTop: "80px",
-                height: "100vh",
+                //  height: "100vh",
                 width: "100vw",
                 display: "flex"
             }}
