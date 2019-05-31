@@ -26,6 +26,7 @@ import {
 import { CREATE_SYSTEM } from "./system";
 import { CREATE_GUIDE, EDIT_GUIDE } from "./justBrilliantGuide";
 import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "./advertiser";
+import { CREATE_ADVERTISING, EDIT_ADVERTISING } from "./advertising";
 
 export {
     CREATE_DIRECTORY_LIST,
@@ -51,5 +52,7 @@ export {
     CREATE_GUIDE,
     EDIT_GUIDE,
     CREATE_ADVERTISER,
-    EDIT_ADVERTISER
+    EDIT_ADVERTISER,
+    CREATE_ADVERTISING,
+    EDIT_ADVERTISING
 };
