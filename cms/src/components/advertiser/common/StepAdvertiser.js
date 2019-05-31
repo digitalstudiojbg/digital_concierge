@@ -395,6 +395,7 @@ const StepAdvertiser = ({
             onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(true);
                 const {
+                    id,
                     name,
                     nature_of_business,
                     address,
@@ -412,6 +413,7 @@ const StepAdvertiser = ({
                 } = values;
 
                 const toSubmit = {
+                    ...(has_data && { id }),
                     name,
                     nature_of_business,
                     address,
@@ -434,25 +436,22 @@ const StepAdvertiser = ({
                 };
 
                 console.log("To submit: ", toSubmit);
-                action({ variables: { input: toSubmit } }).then(
-                    ({
-                        data: {
+                action({ variables: { input: toSubmit } }).then(({ data }) => {
+                    if (!has_data) {
+                        const {
                             createAdvertiser: { id: advertiser_id }
-                        }
-                    }) => {
-                        if (!has_data) {
-                            push({
-                                pathname: ADVERTISER_MAIN_URL.replace(
-                                    ":advertiser_id",
-                                    advertiser_id
-                                ),
-                                state: { goToNext: true }
-                            });
-                        } else {
-                            next();
-                        }
+                        } = data;
+                        push({
+                            pathname: ADVERTISER_MAIN_URL.replace(
+                                ":advertiser_id",
+                                advertiser_id
+                            ),
+                            state: { goToNext: true }
+                        });
+                    } else {
+                        next();
                     }
-                );
+                });
             }}
         >
             {({ values, errors, isSubmitting, setFieldValue }) => {
