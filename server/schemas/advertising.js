@@ -6,6 +6,11 @@ export default gql`
         advertisings: [Advertising]
     }
 
+    extend type Mutation {
+        createAdvertising(input: CreateAdvertisingInput): Advertising
+        editAdvertising(input: UpdateAdvertisingInput): Advertising
+    }
+
     type Advertising {
         id: ID!
         agreement_number: String
@@ -25,5 +30,36 @@ export default gql`
         payments: [Payment]
         payment: Payment
         articles: [Article]
+    }
+
+    input CreateAdvertisingInput {
+        agreement_number: String!
+        agreement_date: DateTime!
+        agreement_file: Upload!
+        payment: AdvertisingPaymentInput!
+        period_month: Int
+        commence_date: DateTime!
+        expiry_date: DateTime!
+        advertiserId: ID!
+    }
+
+    input UpdateAdvertisingInput {
+        id: ID!
+        agreement_number: String!
+        agreement_date: DateTime!
+        agreement_file: Upload
+        payment_id: ID!
+        payment: AdvertisingPaymentInput!
+        period_month: Int
+        commence_date: DateTime!
+        expiry_date: DateTime!
+    }
+
+    input AdvertisingPaymentInput {
+        invoice_number: String!
+        invoice_date: DateTime!
+        currency_id: ID!
+        invoice_amount: Float!
+        payable_date: DateTime!
     }
 `;
