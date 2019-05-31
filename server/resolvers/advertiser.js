@@ -1,6 +1,9 @@
 import db from "../models";
 import { UserInputError } from "apollo-server-express";
-import { handleCreateActionActivityLog } from "../utils/constant";
+import {
+    handleCreateActionActivityLog,
+    handleUpdateActionActivityLog
+} from "../utils/constant";
 
 export default {
     Query: {
@@ -119,12 +122,154 @@ export default {
                     phone,
                     email,
                     contacts,
+                    delete_contacts = [],
                     stateId,
                     postalStateId
                 }
             },
             { user, clientIp }
-        ) => {}
+        ) => {
+            const tempAdvertiser = {
+                name,
+                nature_of_business,
+                address,
+                city,
+                zip_code,
+                postal_address,
+                postal_city,
+                postal_zip_code,
+                phone,
+                email,
+                stateId,
+                postalStateId
+            };
+
+            if (!(await db.advertiser.findByPk(id))) {
+                throw new UserInputError(`Advertiser ID ${id} was not found.`);
+            }
+
+            try {
+                await db.advertiser.update(
+                    {
+                        ...tempAdvertiser
+                    },
+                    { where: { id } }
+                );
+            } catch (error) {
+                throw new UserInputError(error);
+            }
+
+            //Update contacts here
+            let updated_advertiser = await db.advertiser.findByPk(id);
+            for await (const {
+                id,
+                name,
+                title,
+                phone,
+                mobile,
+                email
+            } of contacts) {
+                if (Boolean(id)) {
+                    //Edit existing Contact
+                    const temp = await db.contact.findByPk(id);
+                    if (!Boolean(temp)) {
+                        throw new UserInputError(
+                            `Contact ID ${id} was not found.`
+                        );
+                    }
+                    try {
+                        await db.contact.update(
+                            {
+                                name,
+                                title,
+                                phone,
+                                mobile,
+                                email
+                            },
+                            { where: { id } }
+                        );
+                    } catch (error) {
+                        throw new UserInputError(error);
+                    }
+
+                    handleUpdateActionActivityLog(
+                        temp,
+                        {
+                            name,
+                            title,
+                            phone,
+                            mobile,
+                            email
+                        },
+                        user,
+                        clientIp
+                    );
+                } else {
+                    //Create new contact
+                    let contact = db.contact.build({
+                        name,
+                        title,
+                        phone,
+                        mobile,
+                        email
+                    });
+                    try {
+                        await contact.save();
+                    } catch (error) {
+                        throw new UserInputError(error);
+                    }
+
+                    try {
+                        await updated_advertiser.addContact(contact);
+                    } catch (error) {
+                        throw new UserInputError(error);
+                    }
+
+                    handleCreateActionActivityLog(
+                        contact,
+                        { name, title, phone, mobile, email },
+                        user,
+                        clientIp
+                    );
+                }
+            }
+
+            //Deleting users
+            if (Array.isArray(delete_contacts) && delete_contacts.length > 0) {
+                try {
+                    await updated_advertiser.removeContacts(delete_contacts);
+                } catch (error) {
+                    throw new UserInputError(error);
+                }
+            }
+
+            //Logging and deleting contacts
+            for await (const deleteContactId of delete_contacts) {
+                const contact = db.contact.findByPk(deleteContactId);
+                if (!contact) {
+                    throw new UserInputError(
+                        `Unable to find Contact ID ${deleteContactId}`
+                    );
+                }
+                const { name, title, phone, mobile, email } = contact;
+                handleDeleteActionActivityLog(
+                    contact,
+                    { name, title, phone, mobile, email },
+                    user,
+                    clientIp
+                );
+                await contact.destroy();
+            }
+
+            handleUpdateActionActivityLog(
+                updated_advertiser,
+                { ...tempAdvertiser, contacts, delete_contacts },
+                user,
+                clientIp
+            );
+
+            return updated_advertiser;
+        }
     },
     Advertiser: {
         state: async advertiser => await db.state.findByPk(advertiser.stateId),
