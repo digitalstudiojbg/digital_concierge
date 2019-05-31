@@ -15,6 +15,12 @@ export default {
         },
         guestRoomsByRoomId: async (_root, { roomId }) => {
             return await db.guests_rooms.findAll({where: { roomId }});
+        },
+        guestRoomsByGuestId: async (_root, { guestId }) => {
+            return await db.guests_rooms.findAll({
+                where: {guestId},
+                order: [['updatedAt', 'DESC']]
+            })
         }
     },
     Mutation: {

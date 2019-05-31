@@ -4,6 +4,7 @@ export default gql`
     extend type Query {
         guestRooms: [GuestRooms]
         guestRoomsByRoomId(roomId: Int!): [GuestRooms]
+        guestRoomsByGuestId(guestId: Int!): [GuestRooms]
     }
     
     extend type Mutation {
