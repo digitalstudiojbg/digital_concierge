@@ -136,6 +136,7 @@ const DISPLAY_FIELDS = [
         customOnChange: (date, setFieldValue, values) => {
             setFieldValue("commence_date", date);
             Boolean(values.period_month) &&
+                date &&
                 setFieldValue(
                     "expiry_date",
                     dayjs(date)
@@ -231,7 +232,8 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
         optionValues = [],
         inputAdornmentText = null
     ) => {
-        const handleDateChange = ({ $d: date }) => {
+        const handleDateChange = data => {
+            const { $d: date = null } = data || {};
             if (Boolean(customOnChange)) {
                 return customOnChange(date, setFieldValue, values);
             } else {
