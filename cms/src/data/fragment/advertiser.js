@@ -78,6 +78,9 @@ export const advertiserDetailFragment = gql`
         contacts {
             ...contactDetail
         }
+        just_brilliant_guide {
+            id
+        }
     }
     ${contactDetailFragment}
     ${paymentDetailFragment}

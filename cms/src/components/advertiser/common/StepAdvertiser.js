@@ -2,7 +2,10 @@ import React from "react";
 import { Query, Mutation } from "react-apollo";
 import { getCountryList } from "../../../data/query";
 import Loading from "../../loading/Loading";
-import { getAdvertiserDetail } from "../../../data/query/advertiser";
+import {
+    getAdvertiserDetail,
+    getAdvertiserFromPublication
+} from "../../../data/query/advertiser";
 import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "../../../data/mutation";
 import styled from "styled-components";
 import { Formik, Form, Field, FieldArray } from "formik";
@@ -65,7 +68,15 @@ const StepAdvertiserHOC = ({
                                     </React.Fragment>
                                 );
                             return (
-                                <Mutation mutation={EDIT_ADVERTISER}>
+                                <Mutation
+                                    mutation={EDIT_ADVERTISER}
+                                    refetchQueries={[
+                                        {
+                                            query: getAdvertiserFromPublication,
+                                            variables: { id: pubId }
+                                        }
+                                    ]}
+                                >
                                     {(
                                         action,
                                         {

@@ -18,13 +18,17 @@ import {
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { isEmpty } from "lodash";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { getAdvertiserCurrencyList } from "../../../data/query";
 import Loading from "../../loading/Loading";
-import { getAdvertiserDetail } from "../../../data/query/advertiser";
+import {
+    getAdvertiserDetail,
+    getAdvertiserFromPublication
+} from "../../../data/query/advertiser";
 import { generatePeriodMonthList } from "../../../utils/Constants";
 import dayjs from "dayjs";
 import SimpleDocumentUploader from "../../../utils/SimpleDocumentUploader";
+import { CREATE_ADVERTISING, EDIT_ADVERTISING } from "../../../data/mutation";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 20px;
@@ -174,7 +178,7 @@ const StepContractHOC = props => {
                 if (errorAdvertiser)
                     return (
                         <React.Fragment>
-                            Error! ${errorAdvertiser.message}
+                            Error! {errorAdvertiser.message}
                         </React.Fragment>
                     );
                 return (
@@ -191,19 +195,56 @@ const StepContractHOC = props => {
                             if (error)
                                 return (
                                     <React.Fragment>
-                                        Error! ${error.message}
+                                        Error! {error.message}
                                     </React.Fragment>
                                 );
+
+                            const has_data =
+                                Boolean(advertiser) &&
+                                Boolean(advertiser.active_advertising);
+
+                            const pubId = advertiser.just_brilliant_guide.id;
                             return (
-                                <StepContract
-                                    currencyList={currencyList}
-                                    {...props}
-                                    advertiser={advertiser}
-                                    has_data={
-                                        Boolean(advertiser) &&
-                                        Boolean(advertiser.active_advertising)
+                                <Mutation
+                                    mutation={
+                                        has_data
+                                            ? EDIT_ADVERTISING
+                                            : CREATE_ADVERTISING
                                     }
-                                />
+                                    refetchQueries={[
+                                        {
+                                            query: getAdvertiserFromPublication,
+                                            variables: { id: pubId }
+                                        }
+                                    ]}
+                                >
+                                    {(
+                                        action,
+                                        {
+                                            loading: loadingMutation,
+                                            error: errorMutation
+                                        }
+                                    ) => {
+                                        if (loadingMutation)
+                                            return <Loading loadingData />;
+                                        if (errorMutation)
+                                            return (
+                                                <React.Fragment>
+                                                    Error!{" "}
+                                                    {errorMutation.message}
+                                                </React.Fragment>
+                                            );
+                                        return (
+                                            <StepContract
+                                                currencyList={currencyList}
+                                                {...props}
+                                                advertiser={advertiser}
+                                                has_data={has_data}
+                                                action={action}
+                                            />
+                                        );
+                                    }}
+                                </Mutation>
                             );
                         }}
                     </Query>
