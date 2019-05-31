@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
 import { contactDetailFragment } from "./contact";
+import { paymentDetailFragment } from "./payment";
 
 export const advertiserListFragment = gql`
     fragment advertiserList on Advertiser {
@@ -69,10 +70,14 @@ export const advertiserDetailFragment = gql`
                 id
                 name
             }
+            payment {
+                ...paymentDetail
+            }
         }
         contacts {
             ...contactDetail
         }
     }
     ${contactDetailFragment}
+    ${paymentDetailFragment}
 `;

@@ -23,6 +23,7 @@ export default gql`
         advertiser: Advertiser
         artwork_size: ArtworkSize
         payments: [Payment]
+        payment: Payment
         articles: [Article]
     }
 `;

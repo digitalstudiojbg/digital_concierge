@@ -14,6 +14,11 @@ export default {
             await db.artwork_size.findByPk(artworkSizeId),
         payments: async ({ id }) =>
             await db.payment.findAll({ where: { advertisingId: id } }),
+        payment: async ({ id }) =>
+            await db.payment.findOne({
+                where: { advertisingId: id },
+                order: [["invoice_date", "DESC"]]
+            }),
         articles: async ({ id }) =>
             await db.article.findAll({
                 include: [
