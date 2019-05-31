@@ -17,7 +17,8 @@ import {
     ContainerDiv,
     SectionDiv,
     SectionTitleDiv,
-    FormLabelDiv
+    FormLabelDiv,
+    ContinueButton
 } from "./commonStyle";
 
 const StepAdvertiserHOC = ({
@@ -305,14 +306,6 @@ const ContactEntryContainerDiv = styled.div`
     padding-bottom: 10px;
     padding-right: 10px;
     padding-left: 10px;
-`;
-
-export const ContinueButton = styled.button`
-    width: 25%;
-    padding: 20px 5px;
-    color: white;
-    background: #2699fb;
-    border: 20px solid #313131;
 `;
 
 const EMPTY_CONTACT = {

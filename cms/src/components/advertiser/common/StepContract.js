@@ -3,7 +3,8 @@ import {
     ContainerDiv,
     SectionDiv,
     SectionTitleDiv,
-    FormLabelDiv
+    FormLabelDiv,
+    ContinueButton
 } from "./commonStyle";
 import styled from "styled-components";
 import { Formik, Form, Field } from "formik";
@@ -494,6 +495,19 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                                         )}
                                     </FieldContainerDiv>
                                 ))}
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        flex: 1,
+                                        display: "flex",
+                                        flexDirection: "row-reverse",
+                                        alignItems: "flex-end"
+                                    }}
+                                >
+                                    <ContinueButton type="submit" width="50%">
+                                        Confirm & Continue
+                                    </ContinueButton>
+                                </div>
                             </SectionDivModified>
                         </ContainerDivModified>
                     </Form>

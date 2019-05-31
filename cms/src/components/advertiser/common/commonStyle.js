@@ -23,3 +23,11 @@ export const FormLabelDiv = styled.div`
     color: rgb(92, 92, 92);
     font-size: 0.8em;
 `;
+
+export const ContinueButton = styled.button`
+    width: ${props => (props.width ? props.width : "25%")};
+    padding: 20px 5px;
+    color: white;
+    background: #2699fb;
+    border: 20px solid #313131;
+`;
