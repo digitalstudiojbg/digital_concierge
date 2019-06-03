@@ -211,18 +211,15 @@ const CLIENT_FIELDS = [
             required: true,
             paddingRight: "0px"
         }
-    ],
+    ]
+];
+
+const CLIENT_ADDRESS_FIELDS = [
     [
         {
             name: "address",
             label: "Address",
             required: true,
-            paddingRight: "10px"
-        },
-        {
-            name: "postal_address",
-            label: "Postal Address",
-            required: false,
             paddingRight: "0px"
         }
     ],
@@ -237,8 +234,21 @@ const CLIENT_FIELDS = [
             name: "zip_code",
             label: "Zip Code",
             required: true,
-            paddingRight: "30px"
-        },
+            paddingRight: "0px"
+        }
+    ]
+];
+
+const CLIENT_POSTAL_FIELDS = [
+    [
+        {
+            name: "postal_address",
+            label: "Postal Address",
+            required: false,
+            paddingRight: "0px"
+        }
+    ],
+    [
         {
             name: "postal_city",
             label: "City",
@@ -317,6 +327,23 @@ const ContactEntryContainerDiv = styled.div`
     padding-bottom: 10px;
     padding-right: 10px;
     padding-left: 10px;
+`;
+
+const AddressContainerDiv = styled.div`
+    flex-basis: 48%;
+    margin-right: ${props => props.marginRight};
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #707070;
+`;
+
+const AddressSectionTitleDiv = styled.div`
+    color: #2699fb;
+    font-size: 1.4em;
+    font-weight: 600;
+    padding-bottom: 10px;
 `;
 
 const EMPTY_CONTACT = {
@@ -482,6 +509,39 @@ const StepAdvertiser = ({
                     !isEmpty(selectedPostalCountry.states)
                         ? selectedPostalCountry.states
                         : [];
+
+                const businessAndPostalAddressAreTheSame = () =>
+                    Boolean(values.address) &&
+                    Boolean(values.postal_address) &&
+                    values.address === values.postal_address &&
+                    Boolean(values.city) &&
+                    Boolean(values.postal_city) &&
+                    values.city === values.postal_city &&
+                    Boolean(values.zip_code) &&
+                    Boolean(values.postal_zip_code) &&
+                    values.zip_code === values.postal_zip_code &&
+                    Boolean(values.stateId) &&
+                    Boolean(values.postalStateId) &&
+                    values.stateId === values.postalStateId &&
+                    Boolean(values.countryId) &&
+                    Boolean(values.postalCountryId) &&
+                    values.countryId === values.postalCountryId;
+
+                const businessAddressDetailsCompleted = () =>
+                    Boolean(values.address) &&
+                    Boolean(values.city) &&
+                    Boolean(values.zip_code) &&
+                    Boolean(values.stateId) &&
+                    Boolean(values.countryId);
+
+                const setPostalSameAsBusinessAddress = () => {
+                    setFieldValue("postal_address", values.address);
+                    setFieldValue("postal_city", values.city);
+                    setFieldValue("postal_zip_code", values.zip_code);
+                    setFieldValue("postalStateId", values.postalStateId);
+                    setFieldValue("postalCountryId", values.countryId);
+                };
+
                 return (
                     <Form>
                         <ContainerDiv>
@@ -522,46 +582,132 @@ const StepAdvertiser = ({
                                     </FieldContainerDiv>
                                 ))}
                                 <FieldContainerDiv>
-                                    <FieldDiv
-                                        flexBasis="45%"
-                                        marginRight="10px"
-                                    >
-                                        {renderSelectField(
-                                            "countryId",
-                                            "Country",
-                                            countries,
-                                            errors
+                                    <AddressContainerDiv marginRight="10px">
+                                        <AddressSectionTitleDiv>
+                                            Business Address
+                                        </AddressSectionTitleDiv>
+                                        {CLIENT_ADDRESS_FIELDS.map(
+                                            (row_fields, index) => (
+                                                <FieldContainerDiv
+                                                    key={`FIELDS-ROW-${index}`}
+                                                >
+                                                    {row_fields.map(
+                                                        (
+                                                            {
+                                                                name,
+                                                                label,
+                                                                required,
+                                                                paddingRight
+                                                            },
+                                                            field_index
+                                                        ) => (
+                                                            <FieldDivEqual
+                                                                key={`INNER-FIELD=${index}-${field_index}`}
+                                                                paddingRight={
+                                                                    paddingRight
+                                                                }
+                                                            >
+                                                                {renderTextField(
+                                                                    name,
+                                                                    label,
+                                                                    required
+                                                                )}
+                                                            </FieldDivEqual>
+                                                        )
+                                                    )}
+                                                </FieldContainerDiv>
+                                            )
                                         )}
-                                    </FieldDiv>
-                                    <FieldDiv flexBasis="45%" marginRight="0px">
-                                        {renderSelectField(
-                                            "postalCountryId",
-                                            "Country",
-                                            countries,
-                                            errors
+                                        <FieldContainerDiv>
+                                            <FieldDiv
+                                                flexBasis="95%"
+                                                marginRight="0px"
+                                            >
+                                                {renderSelectField(
+                                                    "countryId",
+                                                    "Country",
+                                                    countries,
+                                                    errors
+                                                )}
+                                            </FieldDiv>
+                                        </FieldContainerDiv>
+                                        <FieldContainerDiv>
+                                            <FieldDiv
+                                                flexBasis="95%"
+                                                marginRight="0px"
+                                            >
+                                                {renderSelectField(
+                                                    "stateId",
+                                                    "State / Province (If Applicable)",
+                                                    states,
+                                                    errors
+                                                )}
+                                            </FieldDiv>
+                                        </FieldContainerDiv>
+                                    </AddressContainerDiv>
+                                    <AddressContainerDiv>
+                                        <AddressSectionTitleDiv>
+                                            Postal Address
+                                        </AddressSectionTitleDiv>
+                                        {CLIENT_POSTAL_FIELDS.map(
+                                            (row_fields, index) => (
+                                                <FieldContainerDiv
+                                                    key={`FIELDS-ROW-${index}`}
+                                                >
+                                                    {row_fields.map(
+                                                        (
+                                                            {
+                                                                name,
+                                                                label,
+                                                                required,
+                                                                paddingRight
+                                                            },
+                                                            field_index
+                                                        ) => (
+                                                            <FieldDivEqual
+                                                                key={`INNER-FIELD=${index}-${field_index}`}
+                                                                paddingRight={
+                                                                    paddingRight
+                                                                }
+                                                            >
+                                                                {renderTextField(
+                                                                    name,
+                                                                    label,
+                                                                    required
+                                                                )}
+                                                            </FieldDivEqual>
+                                                        )
+                                                    )}
+                                                </FieldContainerDiv>
+                                            )
                                         )}
-                                    </FieldDiv>
-                                </FieldContainerDiv>
-                                <FieldContainerDiv>
-                                    <FieldDiv
-                                        flexBasis="45%"
-                                        marginRight="10px"
-                                    >
-                                        {renderSelectField(
-                                            "stateId",
-                                            "State / Province (If Applicable)",
-                                            states,
-                                            errors
-                                        )}
-                                    </FieldDiv>
-                                    <FieldDiv flexBasis="45%" marginRight="0px">
-                                        {renderSelectField(
-                                            "postalStateId",
-                                            "State / Province (If Applicable)",
-                                            postalStates,
-                                            errors
-                                        )}
-                                    </FieldDiv>
+                                        <FieldContainerDiv>
+                                            <FieldDiv
+                                                flexBasis="95%"
+                                                marginRight="0px"
+                                            >
+                                                {renderSelectField(
+                                                    "postalCountryId",
+                                                    "Country",
+                                                    countries,
+                                                    errors
+                                                )}
+                                            </FieldDiv>
+                                        </FieldContainerDiv>
+                                        <FieldContainerDiv>
+                                            <FieldDiv
+                                                flexBasis="95%"
+                                                marginRight="0px"
+                                            >
+                                                {renderSelectField(
+                                                    "postalStateId",
+                                                    "State / Province (If Applicable)",
+                                                    postalStates,
+                                                    errors
+                                                )}
+                                            </FieldDiv>
+                                        </FieldContainerDiv>
+                                    </AddressContainerDiv>
                                 </FieldContainerDiv>
                             </SectionDiv>
                             <SectionDiv
