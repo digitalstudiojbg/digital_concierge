@@ -9,7 +9,7 @@ const CheckGuestInfo = () => (
         <Box display="flex">
             <Box maxWidth={110}>
                 <Field
-                    name="people_number"
+                    name="guest_count"
                     render={({ field, form }) => (
                         <CheckTextField
                             {...field}

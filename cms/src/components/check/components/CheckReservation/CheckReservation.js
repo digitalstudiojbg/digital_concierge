@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
 export const CheckReservationValidationSchema = Yup.object().shape({
     firstname: Yup.string().required(),
-    surname: Yup.string().required(),
+    lastname: Yup.string().required(),
     email: Yup.string().email().required(),
     primary_number: Yup.number().required(),
     secondary_number: Yup.number().required(),
