@@ -28,6 +28,20 @@ export default {
                 where: {guestId},
                 order: [['updatedAt', 'DESC']]
             })
+        },
+        guestRoomsCheckOut: async (_root, { name }) => {
+            return await db.guests_rooms.findAll({
+                include: [
+                    {
+                        model: db.guest,
+                        where: {$or: [
+                            {firstname: {$like: `${ name }%`}},
+                            {lastname: {$like: `${ name }%`}}
+                        ]}
+                    }
+                ],
+                order: [['updatedAt', 'DESC']]
+            })
         }
     },
     Mutation: {
