@@ -63,12 +63,10 @@ const styles = () => ({
         backgroundColor: "white",
         paddingLeft: "1px",
         paddingRight: "1px",
-        marginRight: 15
-        // active: {
-        //     backgroundColor: "grey",
-        //     color: "white"
-        // }
+        marginRight: 15,
+        "&:hover": { backgroundColor: "#EBEBEB" }
     },
+
     expansionButton: {
         color: "rgb(38,153,251)",
         //  background: "rgb(38,153,251)",
@@ -2017,6 +2015,7 @@ class TreeView extends React.PureComponent {
                     </DialogContent>
                     <DialogActions>
                         <Mutation
+                            style={{ justifyContent: "center" }}
                             mutation={DELETE_DIR_LIST_ENTRY()}
                             refetchQueries={[
                                 {
@@ -2040,6 +2039,12 @@ class TreeView extends React.PureComponent {
                                     this.deleteListEntryAction(action);
                                 return (
                                     <Button
+                                        style={{
+                                            color: "#2699FB",
+                                            backgroundColor: "white",
+                                            border: "2px solid #2699FB",
+                                            borderRadius: "5px"
+                                        }}
                                         onClick={deleteSelectedItems}
                                         color="primary"
                                     >
@@ -2049,7 +2054,16 @@ class TreeView extends React.PureComponent {
                             }}
                         </Mutation>
 
-                        <Button onClick={this.closeDeleteModal} color="primary">
+                        <Button
+                            style={{
+                                color: "#2699FB",
+                                backgroundColor: "white",
+                                border: "2px solid #2699FB",
+                                borderRadius: "5px"
+                            }}
+                            onClick={this.closeDeleteModal}
+                            color="primary"
+                        >
                             NO
                         </Button>
                     </DialogActions>

@@ -37,7 +37,7 @@ class TabletDashboard extends Component {
                         <PageHeader>Dashboard</PageHeader>
                         <ContainerDiv>
                             <MainSubSections style={{ width: "55%" }}>
-                                <SubSectionDiv>
+                                <SubSectionDiv style={{ marginBottom: "3%" }}>
                                     <SubSectionTop>
                                         <SubSectionTitle
                                             style={{
@@ -50,7 +50,7 @@ class TabletDashboard extends Component {
                                     </SubSectionTop>
                                     <SubSectionBottom />
                                 </SubSectionDiv>
-                                <SubSectionDiv>
+                                <SubSectionDiv style={{ marginBottom: "3%" }}>
                                     <SubSectionTop>
                                         <SubSectionTitle
                                             style={{
@@ -73,7 +73,12 @@ class TabletDashboard extends Component {
                                 </SubSectionDiv>
                             </MainSubSections>
                             <MainSubSections style={{ width: "45%" }}>
-                                <SubSectionDiv>
+                                <SubSectionDiv
+                                    style={{
+                                        marginBottom: "3%",
+                                        marginLeft: "5%"
+                                    }}
+                                >
                                     <SubSectionTitle>
                                         Top Priority
                                     </SubSectionTitle>
@@ -84,7 +89,12 @@ class TabletDashboard extends Component {
                                     <div />
                                     <div />
                                 </SubSectionDiv>
-                                <SubSectionDiv>
+                                <SubSectionDiv
+                                    style={{
+                                        marginBottom: "3%",
+                                        marginLeft: "5%"
+                                    }}
+                                >
                                     <SubSectionTitle>
                                         Guest Activity Log
                                     </SubSectionTitle>

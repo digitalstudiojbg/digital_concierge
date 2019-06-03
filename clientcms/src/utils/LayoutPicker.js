@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import { Field } from "formik";
 import { withStyles } from "@material-ui/core/styles";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -95,7 +96,11 @@ const styles = () => ({
             color: "rgb(43,43,43)"
         }
     },
-    checked: {}
+    checked: {},
+
+    myInput: {
+        padding: "10px"
+    }
 });
 
 const LayoutPicker = ({
@@ -256,7 +261,7 @@ const LayoutPicker = ({
                       layoutIdsInTemplate.includes(id)
                   )
                 : [];
-
+        const { classes } = this.props;
         return (
             <InnerContainerDiv>
                 <div style={{ width: "100%", display: "flex" }}>
@@ -267,6 +272,10 @@ const LayoutPicker = ({
                             component={Select}
                             disabled={layoutFamilies.length < 1}
                             fullWidth={true}
+                            // inputProps={{
+                            //     className: this.props.classes.myInput
+                            // }}
+                            input={<OutlinedInput />}
                         >
                             {layoutFamilies.map(({ id, name }, index) => (
                                 <MenuItem

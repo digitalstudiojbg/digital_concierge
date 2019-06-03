@@ -4,18 +4,18 @@ import styled from "styled-components";
 export const MainSectionContainer = styled.div`
     width: 100%;
     height: 100%;
-    background-color: #f4f4f4;
+    //  background-color: #f4f4f4;
     padding: 3%;
 `;
 
 export const PageHeader = styled.h2`
     fontsize: 30px;
-    paddingbottom: 2%;
+    padding-bottom: 2%;
 `;
 //------Dashboard page
 
 export const SubSectionDiv = styled.div`
-    margin: 30px 60px 10px 0;
+    margin: 5px 0;
 `;
 export const SubSectionTop = styled.div`
     display: flex;
@@ -51,7 +51,7 @@ export const TopButtonsContiner = styled.div`
 
 export const ContainerDiv = styled.div`
     width: 100%;
-    height: 100%;
+    //  height: 100%;
     display: flex;
 `;
 
@@ -134,6 +134,11 @@ export const SectionHeader = styled.h4`
     font-size: 20px;
     padding: 0px;
     width: 100%;
+`;
+
+export const SubSectionHeader = styled.h5`
+    padding: 20px 0 5px;
+    color: black;
 `;
 
 //---WelcomeTheme

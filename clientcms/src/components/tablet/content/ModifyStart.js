@@ -32,8 +32,11 @@ import {
     ContainerDivTab,
     TopButtonsContiner,
     // BlueButtons,
-    SubSectionTop
+    SubSectionTop,
+    MainSubSections
 } from "../../home/WelcomeStyleSet";
+
+import TabletMockUp from "../../../images/TabletImageTest.jpg";
 
 const TabContainer = props => {
     return <ContainerDiv>{props.children}</ContainerDiv>;
@@ -380,20 +383,38 @@ const ModifyStart = props => {
                                         </Paper>
 
                                         <ContainerDivTab
-                                            style={{ display: "flex" }}
+                                            style={{
+                                                display: "flex"
+                                                // marginTop: "2%"
+                                            }}
                                         >
                                             {tab === 0 && (
                                                 <TabContainer>
-                                                    PREVIEW
                                                     <containerDiv
                                                         style={{
-                                                            height: "500px",
-                                                            width: "700px",
+                                                            height: "100%",
+                                                            width: "60%",
                                                             backgroundColor:
                                                                 "white",
-                                                            flex: "centre"
+                                                            marginLeft: "20%"
                                                         }}
-                                                    />
+                                                    >
+                                                        <MainSubSections
+                                                            style={{
+                                                                width: "100%",
+
+                                                                height: "100%",
+                                                                backgroundImage: `url('${TabletMockUp}')`,
+
+                                                                backgroundPosition:
+                                                                    "center",
+                                                                backgroundSize:
+                                                                    "cover",
+                                                                backgroundColor:
+                                                                    "white"
+                                                            }}
+                                                        />
+                                                    </containerDiv>
                                                 </TabContainer>
                                             )}
                                             {tab === 1 && (

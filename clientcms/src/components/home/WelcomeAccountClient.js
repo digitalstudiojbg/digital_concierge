@@ -943,7 +943,9 @@ export const WelcomeAccountClient = ({
                                                                                             <ContactEntryHeaderTitleDiv
                                                                                                 style={{
                                                                                                     width:
-                                                                                                        "100%",
+                                                                                                        "75%",
+                                                                                                    marginLeft:
+                                                                                                        "3%",
                                                                                                     justifyContent:
                                                                                                         "left"
                                                                                                 }}
@@ -1012,7 +1014,7 @@ export const WelcomeAccountClient = ({
                                                                                                         justifyContent:
                                                                                                             "left",
                                                                                                         width:
-                                                                                                            "100%"
+                                                                                                            "90%"
                                                                                                     }}
                                                                                                 >
                                                                                                     <FieldLabel>

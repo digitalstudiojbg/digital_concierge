@@ -5,8 +5,14 @@ import Tab from "@material-ui/core/Tab";
 // import Typography from "@material-ui/core/Typography";
 import WelcomeAccountClient from "./WelcomeAccountClient";
 import WelcomeAccountPaymentAgreement from "./WelcomeAccountPaymentAgreement";
+import Button from "@material-ui/core/Button";
 
-import { MainSectionContainer, PageHeader } from "./WelcomeStyleSet";
+import {
+    MainSectionContainer,
+    PageHeader,
+    SubSectionTop,
+    TopButtonsContiner
+} from "./WelcomeStyleSet";
 
 const styles = theme => ({
     root: {
@@ -54,6 +60,13 @@ const styles = theme => ({
     tabSelected: {},
     typography: {
         padding: theme.spacing.unit * 3
+    },
+    blueButtons: {
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
+        color: "white",
+        margin: "2%",
+        padding: "5% 0"
     }
 });
 
@@ -71,7 +84,26 @@ class WelcomeAccount extends Component {
 
         return (
             <MainSectionContainer>
-                <PageHeader>Account</PageHeader>
+                <SubSectionTop>
+                    <PageHeader style={{ width: "75%" }}>Account</PageHeader>
+                    <TopButtonsContiner>
+                        <Button
+                            type="submit"
+                            variant="outlined"
+                            className={classes.blueButtons}
+                        >
+                            SAVE & EXIT
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            //  onClick={saveAndKeepEditing}
+                            className={classes.blueButtons}
+                        >
+                            SAVE & KEEP EDITING
+                        </Button>
+                    </TopButtonsContiner>
+                </SubSectionTop>
+
                 <div className={classes.root}>
                     <Tabs
                         classes={{

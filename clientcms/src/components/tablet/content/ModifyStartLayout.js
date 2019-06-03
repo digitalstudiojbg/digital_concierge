@@ -1,6 +1,12 @@
 import React from "react";
 import LayoutPicker from "../../../utils/LayoutPicker";
 import styled from "styled-components";
+
+//import TabletImage from "../images/TabletImage.png";
+
+// import TabletMockUp from "../../../../src/images/TabletMockUp.png";
+import TabletMockUp from "../../../images/TabletImageTest.jpg";
+
 import {
     MainSectionContainer,
     MainSubSections
@@ -9,19 +15,39 @@ import {
 export const ModifyStartLayout = ({ values, setFieldValue }) => {
     return (
         <React.Fragment>
-            <MainSectionContainer>
-                <MainSubSections style={{ width: "60%" }}>
-                    tablet
-                </MainSubSections>
+            <MainSectionContainer style={{ display: "flex" }}>
                 <MainSubSections
                     style={{
-                        width: "40%",
+                        width: "65%",
+                        flex: "left",
+                        height: "600px",
+                        marginRight: "5%",
+                        // backgroundImage:
+                        //     "url('https://source.unsplash.com/-YHSwy6uqvk/1080x720')",
+                        backgroundImage: `url('${TabletMockUp}')`,
+
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        backgroundColor: "white"
+                    }}
+                />
+                <MainSubSections
+                    style={{
+                        width: "25%",
                         display: "flex",
-                        height: "100%",
+                        height: "700px",
+                        padding: "1%",
                         flexDirection: "column"
                     }}
                 >
-                    <div style={{ flex: 1, width: "100%", height: "100%" }}>
+                    <div
+                        style={{
+                            flex: 1,
+                            width: "90%",
+                            height: "90%",
+                            margin: "5%"
+                        }}
+                    >
                         <LayoutPicker
                             values={values}
                             setFieldValue={setFieldValue}

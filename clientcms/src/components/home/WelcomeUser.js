@@ -227,7 +227,7 @@ class WelcomeUser extends Component {
                                 <div
                                     style={{
                                         width: "90%",
-                                        height: "100%",
+                                        //  height: "100%",
                                         backgroundColor: "white",
                                         margin: "2% 1%"
                                     }}

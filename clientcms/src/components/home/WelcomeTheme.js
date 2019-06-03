@@ -50,7 +50,9 @@ import {
     StepperCon,
     MainSectionContainer,
     PageHeader,
-    HeaderDiv
+    HeaderDiv,
+    SubSectionTop,
+    TopButtonsContiner
 } from "./WelcomeStyleSet";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -88,14 +90,7 @@ const styles = theme => ({
         width: "100%",
         padding: "4% 0"
     },
-    confirmButton: {
-        margin: theme.spacing.unit,
-        color: "white",
-        border: "1px solid #2699FB",
-        backgroundColor: "#2699FB",
-        width: "25%",
-        margin: "4px"
-    },
+
     myInput: {
         padding: "10px 0",
         backgroundColor: "white",
@@ -114,6 +109,13 @@ const styles = theme => ({
     },
     unCopletedIcon: {
         display: "none"
+    },
+    blueButtons: {
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
+        color: "white",
+        margin: "2%",
+        padding: "5% 0"
     }
 });
 
@@ -508,45 +510,28 @@ const WelcomeThemeSettings = ({
                 <React.Fragment>
                     <MainSectionContainer>
                         <HeaderDiv>
-                            <SubSectionDiv
-                                style={{ margin: "0", display: "flex" }}
-                            >
-                                <PageHeader
-                                    style={{
-                                        width: "20%",
-                                        //  paddingBottom: "2%",
-                                        flex: "1",
-                                        margin: "0"
-                                    }}
-                                >
+                            <SubSectionTop>
+                                <PageHeader style={{ width: "75%" }}>
                                     Theme Settings
                                 </PageHeader>
-
-                                <ButtonContainerDiv
-                                    style={{
-                                        width: "20%",
-                                        // paddingBottom: "2%",
-                                        flex: "1"
-                                    }}
-                                >
+                                <TopButtonsContiner>
                                     <Button
+                                        type="submit"
                                         variant="outlined"
-                                        component="span"
-                                        className={classes.confirmButton}
+                                        className={classes.blueButtons}
                                         onClick={handleSubmitAndExit}
                                     >
                                         SAVE & EXIT
                                     </Button>
                                     <Button
                                         variant="outlined"
-                                        component="span"
-                                        className={classes.confirmButton}
                                         onClick={handleSubmit}
+                                        className={classes.blueButtons}
                                     >
                                         SAVE & KEEP EDITING
                                     </Button>
-                                </ButtonContainerDiv>
-                            </SubSectionDiv>
+                                </TopButtonsContiner>
+                            </SubSectionTop>
 
                             <StepperCon
                                 style={{ width: "100%", display: "flex" }}
@@ -560,7 +545,7 @@ const WelcomeThemeSettings = ({
                                     style={{
                                         backgroundColor: "#F4F4F4",
                                         alignFlex: "felx-start",
-                                        width: "50%",
+                                        width: "40%",
                                         paddingBottom: "10px",
                                         paddingTop: "10px"
                                     }}
@@ -718,7 +703,10 @@ const WelcomeThemeSettings = ({
                                     </EntryThemeContainerDiv>
                                 )}
                                 <EntryThemeContainerDiv
-                                    style={{ display: "flex" }}
+                                    style={{
+                                        display: "flex",
+                                        marginTop: "30px"
+                                    }}
                                 >
                                     <EntryThemeDiv style={{ width: "30%" }}>
                                         <FieldLabel> HEADER FONT</FieldLabel>
@@ -747,7 +735,10 @@ const WelcomeThemeSettings = ({
                                     </EntryThemeDiv>
                                 </EntryThemeContainerDiv>
                                 <EntryThemeContainerDiv
-                                    style={{ display: "flex" }}
+                                    style={{
+                                        display: "flex",
+                                        marginBottom: "30px"
+                                    }}
                                 >
                                     <EntryThemeDiv style={{ width: "30%" }}>
                                         <FieldLabel> BODY COPY FONT</FieldLabel>
