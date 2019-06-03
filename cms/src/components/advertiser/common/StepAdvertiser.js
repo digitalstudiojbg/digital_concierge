@@ -10,7 +10,14 @@ import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "../../../data/mutation";
 import styled from "styled-components";
 import { Formik, Form, Field, FieldArray } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { OutlinedInput, MenuItem, Button, IconButton } from "@material-ui/core";
+import {
+    OutlinedInput,
+    MenuItem,
+    Button,
+    IconButton,
+    FormControlLabel,
+    Checkbox
+} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
@@ -427,6 +434,7 @@ const StepAdvertiser = ({
 
     return (
         <Formik
+            // enableReinitialize={true}
             initialValues={initialValues}
             ref={onRef}
             validationSchema={StepContractValidationSchema(countries)}
@@ -527,19 +535,33 @@ const StepAdvertiser = ({
                     Boolean(values.postalCountryId) &&
                     values.countryId === values.postalCountryId;
 
-                const businessAddressDetailsCompleted = () =>
-                    Boolean(values.address) &&
-                    Boolean(values.city) &&
-                    Boolean(values.zip_code) &&
-                    Boolean(values.stateId) &&
-                    Boolean(values.countryId);
+                const businessAddressDetailsNotCompleted = () =>
+                    !(
+                        Boolean(values.address) &&
+                        Boolean(values.city) &&
+                        Boolean(values.zip_code) &&
+                        Boolean(values.stateId) &&
+                        Boolean(values.countryId)
+                    );
 
                 const setPostalSameAsBusinessAddress = () => {
                     setFieldValue("postal_address", values.address);
                     setFieldValue("postal_city", values.city);
                     setFieldValue("postal_zip_code", values.zip_code);
-                    setFieldValue("postalStateId", values.postalStateId);
+                    setFieldValue("postalStateId", values.stateId);
                     setFieldValue("postalCountryId", values.countryId);
+                };
+
+                const handleCheck = () => {
+                    if (businessAndPostalAddressAreTheSame()) {
+                        setFieldValue("postal_address", "");
+                        setFieldValue("postal_city", "");
+                        setFieldValue("postal_zip_code", "");
+                        setFieldValue("postalStateId", null);
+                        setFieldValue("postalCountryId", null);
+                    } else {
+                        return setPostalSameAsBusinessAddress();
+                    }
                 };
 
                 return (
@@ -649,6 +671,19 @@ const StepAdvertiser = ({
                                         <AddressSectionTitleDiv>
                                             Postal Address
                                         </AddressSectionTitleDiv>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    style={{
+                                                        color: "#2699FB"
+                                                    }}
+                                                    checked={businessAndPostalAddressAreTheSame()}
+                                                    onChange={handleCheck}
+                                                    disabled={businessAddressDetailsNotCompleted()}
+                                                />
+                                            }
+                                            label="Same as Business Address"
+                                        />
                                         {CLIENT_POSTAL_FIELDS.map(
                                             (row_fields, index) => (
                                                 <FieldContainerDiv
