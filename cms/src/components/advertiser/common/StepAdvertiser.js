@@ -483,6 +483,7 @@ const StepAdvertiser = ({
 
                 console.log("To submit: ", toSubmit);
                 action({ variables: { input: toSubmit } }).then(({ data }) => {
+                    setSubmitting(false);
                     if (!has_data) {
                         const {
                             createAdvertiser: { id: advertiser_id }

@@ -66,13 +66,13 @@ module.exports = (sequelize, DataTypes) => {
     );
     advertising.associate = function(models) {
         advertising.belongsTo(models.media, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
         });
         advertising.belongsTo(models.advertiser, {
             foreignKey: { allowNull: false }
         });
         advertising.belongsTo(models.artwork_size, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
         });
         advertising.hasMany(models.payment);
         advertising.belongsToMany(models.article, {

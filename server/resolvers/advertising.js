@@ -24,7 +24,7 @@ export default {
                     payment,
                     period_month,
                     commence_date,
-                    expiry_date,
+                    expire_date,
                     advertiserId
                 }
             },
@@ -49,17 +49,15 @@ export default {
                 agreement_date,
                 agreement_file: agreement_file.location,
                 agreement_file_key: agreement_file.key,
-                payment: { ...payment, advertiserId },
                 period_month,
                 commence_date,
-                expiry_date,
+                expire_date,
                 advertiserId
             };
 
-            let create_advertising = db.advertising.build(
-                { ...tempAdvertising },
-                { include: { model: db.payment, as: "payment" } }
-            );
+            let create_advertising = db.advertising.build({
+                ...tempAdvertising
+            });
 
             try {
                 await create_advertising.save();
@@ -71,9 +69,29 @@ export default {
                 );
             }
 
+            const tempPayment = {
+                ...payment,
+                advertisingId: create_advertising.id
+            };
+
+            //Create and associating payment to advertising
+            let create_payment = db.payment.build({
+                ...tempPayment
+            });
+
+            try {
+                await create_payment.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Payment number ${
+                        payment.invoice_number
+                    } was not created.\nError Message: ${error.message}`
+                );
+            }
+
             handleCreateActionActivityLog(
                 create_advertising,
-                tempAdvertising,
+                { ...tempAdvertising, payment: { ...tempPayment } },
                 user,
                 clientIp
             );

@@ -87,7 +87,7 @@ const PAYMENT_FIELDS = [
         customOnChange: null
     },
     {
-        name: "currency_id",
+        name: "currencyId",
         label: "Currency",
         required: true,
         type: "select"
@@ -96,7 +96,7 @@ const PAYMENT_FIELDS = [
         name: "invoice_amount",
         label: "Invoice Amount",
         required: true,
-        type: "text",
+        type: "number",
         adornmentPosition: "end"
     },
     {
@@ -122,7 +122,7 @@ const DISPLAY_FIELDS = [
             setFieldValue("period_month", value);
             Boolean(values.commence_date) &&
                 setFieldValue(
-                    "expiry_date",
+                    "expire_date",
                     dayjs(values.commence_date)
                         .add(value, "month")
                         .toDate()
@@ -143,7 +143,7 @@ const DISPLAY_FIELDS = [
             Boolean(values.period_month) &&
                 date &&
                 setFieldValue(
-                    "expiry_date",
+                    "expire_date",
                     dayjs(date)
                         .add(values.period_month, "month")
                         .toDate()
@@ -151,7 +151,7 @@ const DISPLAY_FIELDS = [
         }
     },
     {
-        name: "expiry_date",
+        name: "expire_date",
         label: "Expiry Date",
         required: true,
         type: "date",
@@ -254,7 +254,14 @@ const StepContractHOC = props => {
     );
 };
 
-const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
+const StepContract = ({
+    onRef,
+    currencyList,
+    advertiser,
+    has_data,
+    next,
+    action
+}) => {
     const renderField = (
         {
             name,
@@ -295,14 +302,14 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
             }
         };
 
-        if (type === "text") {
+        if (type === "text" || type === "number") {
             return (
                 <div style={{ width: "100%" }}>
                     <FormLabelDiv>{label}</FormLabelDiv>
                     <Field
                         name={name}
                         required={required}
-                        type="text"
+                        type={type}
                         component={TextField}
                         variant="outlined"
                         fullWidth={true}
@@ -381,7 +388,7 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
         }
     };
 
-    const { active_advertising } = advertiser;
+    const { active_advertising, id: advertiserId } = advertiser;
     const agreement_key_file_array =
         Boolean(active_advertising) &&
         Boolean(active_advertising.agreement_file_key)
@@ -389,17 +396,21 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
             : [];
     const initialValues = has_data
         ? {
+              advertising_id: active_advertising.id,
               agreement_number: active_advertising.agreement_number,
               agreement_date: active_advertising.agreement_date,
               agreement_file: active_advertising.agreement_file,
               agreement_filename:
                   agreement_key_file_array[agreement_key_file_array.length - 1],
+              payment_id: Boolean(active_advertising.payment)
+                  ? active_advertising.payment.id
+                  : null,
               invoice_number:
                   Boolean(active_advertising.payment) &&
                   Boolean(active_advertising.payment.invoice_number)
                       ? active_advertising.payment.invoice_number
                       : "",
-              currency_id:
+              currencyId:
                   Boolean(active_advertising.payment) &&
                   Boolean(active_advertising.payment.currency)
                       ? active_advertising.payment.currency.id
@@ -416,16 +427,18 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                       : null,
               period_month: active_advertising.period_month,
               commence_date: active_advertising.commence_date,
-              expiry_date: active_advertising.expiry_date
+              expire_date: active_advertising.expire_date
           }
         : {
+              advertising_id: null,
               agreement_number: "",
               agreement_date: null,
               agreement_file: null,
               agreement_filename: null,
+              payment_id: null,
               invoice_number: "",
               invoice_date: null,
-              currency_id:
+              currencyId:
                   Array.isArray(currencyList) && currencyList.length === 1
                       ? currencyList[0].id
                       : null,
@@ -433,15 +446,63 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
               payable_date: null,
               period_month: null,
               commence_date: null,
-              expiry_date: null
+              expire_date: null
           };
 
     let documentRef = React.createRef();
     return (
-        <Formik ref={onRef} initialValues={initialValues}>
+        <Formik
+            ref={onRef}
+            initialValues={initialValues}
+            onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(true);
+                console.log(documentRef);
+                const {
+                    advertising_id,
+                    agreement_number,
+                    agreement_date,
+                    payment_id,
+                    invoice_number,
+                    invoice_date,
+                    currencyId,
+                    invoice_amount,
+                    payable_date,
+                    period_month,
+                    commence_date,
+                    expire_date
+                } = values;
+
+                const toSubmit = {
+                    ...(has_data && { id: advertising_id }),
+                    agreement_number,
+                    agreement_date,
+                    ...(documentRef.state.file && {
+                        agreement_file: documentRef.state.file
+                    }),
+                    ...(has_data && payment_id && { payment_id }),
+                    payment: {
+                        invoice_number,
+                        invoice_date,
+                        currencyId,
+                        invoice_amount,
+                        payable_date
+                    },
+                    period_month,
+                    commence_date,
+                    expire_date,
+                    ...(!has_data && { advertiserId })
+                };
+
+                console.log("To submit ", toSubmit);
+                action({ variables: { input: toSubmit } }).then(({ data }) => {
+                    console.log("data received ", data);
+                    next();
+                });
+            }}
+        >
             {({ values, errors, isSubmitting, setFieldValue }) => {
-                const currency = Boolean(values.currency_id)
-                    ? currencyList.find(({ id }) => id === values.currency_id)
+                const currency = Boolean(values.currencyId)
+                    ? currencyList.find(({ id }) => id === values.currencyId)
                     : null;
                 const currencyCode = Boolean(currency) ? currency.code : null;
                 return (
@@ -545,7 +606,11 @@ const StepContract = ({ onRef, currencyList, advertiser, has_data }) => {
                                         alignItems: "flex-end"
                                     }}
                                 >
-                                    <ContinueButton type="submit" width="50%">
+                                    <ContinueButton
+                                        type="submit"
+                                        width="50%"
+                                        disabled={isSubmitting}
+                                    >
                                         Confirm & Continue
                                     </ContinueButton>
                                 </div>

@@ -39,7 +39,7 @@ export default gql`
         payment: AdvertisingPaymentInput!
         period_month: Int
         commence_date: DateTime!
-        expiry_date: DateTime!
+        expire_date: DateTime!
         advertiserId: ID!
     }
 
@@ -52,13 +52,13 @@ export default gql`
         payment: AdvertisingPaymentInput!
         period_month: Int
         commence_date: DateTime!
-        expiry_date: DateTime!
+        expire_date: DateTime!
     }
 
     input AdvertisingPaymentInput {
         invoice_number: String!
         invoice_date: DateTime!
-        currency_id: ID!
+        currencyId: ID!
         invoice_amount: Float!
         payable_date: DateTime!
     }
