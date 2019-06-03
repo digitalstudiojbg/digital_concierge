@@ -1,10 +1,11 @@
 import db from '../models';
 import { checkUserLogin } from '../utils/constant';
-import {UserInputError} from 'apollo-server-express';
+import { UserInputError } from 'apollo-server-express';
+import { identity, pickBy } from "lodash";
 
-const _calcTotalNights = (checkInDate, checkOutDate) => {
+const _calcDiffInDays = (checkInDate, checkOutDate) => {
     const diff = checkOutDate.getTime() - checkInDate.getTime();
-    return Math.round(Math.abs(diff/(1000*60*60*24)));
+    return Math.round(diff/(1000*60*60*24));
 };
 
 export default {
@@ -14,6 +15,12 @@ export default {
         },
         guestRoomsByRoomId: async (_root, { roomId }) => {
             return await db.guests_rooms.findAll({where: { roomId }});
+        },
+        guestRoomsByGuestId: async (_root, { guestId }) => {
+            return await db.guests_rooms.findAll({
+                where: {guestId},
+                order: [['updatedAt', 'DESC']]
+            })
         }
     },
     Mutation: {
@@ -30,12 +37,18 @@ export default {
                     active
                 }
             },
-            { user, clientIp }
+            { user }
         ) => {
             await checkUserLogin(user);
 
             const checkInDate = new Date(checkin_date);
             const checkOutDate = new Date(checkout_date);
+
+            const totalNights = _calcDiffInDays(checkInDate, checkOutDate);
+
+            if (totalNights < 1) {
+                throw new UserInputError('Dates are incorrect');
+            }
 
             const bookedRooms = await db.guests_rooms.count({where: {
                 roomId,
@@ -56,7 +69,7 @@ export default {
                 pin,
                 checkout_date: checkOutDate,
                 checkin_date: checkInDate,
-                total_nights: _calcTotalNights(checkInDate, checkOutDate),
+                total_nights: totalNights,
                 guest_count,
                 active
             };
@@ -65,7 +78,7 @@ export default {
 
             try {
                 await createdGuestRoom.save();
-            } catch (error) {console.log(error);
+            } catch (error) {
                 throw new UserInputError(
                     `Create GuestRoom status failed.\nError Message: ${
                         error.message
@@ -74,6 +87,76 @@ export default {
             }
 
             return createdGuestRoom;
+        },
+        updateGuestRoom: async (
+            _root,
+            {
+                input: {
+                    roomId,
+                    guestId,
+                    checkout_date,
+                    guest_count,
+                    pin,
+                    active,
+                    is_sending_survey
+                }
+            },
+            { user }
+        ) => {
+            await checkUserLogin(user);
+
+            let updatedGuestRoom = await db.guests_rooms.findOne({where: { roomId, guestId }});
+
+            if (!updatedGuestRoom) {
+                throw new UserInputError('The guest room does not exist')
+            }
+
+            const updatingProps = pickBy({
+                guest_count,
+                pin,
+                active,
+                is_sending_survey
+            }, identity);
+
+            if (checkout_date) {
+                const checkOutDate = new Date(checkout_date);
+                const checkInDate = updatedGuestRoom.checkin_date;
+                const daysFromTodayToCheckout = _calcDiffInDays(new Date(), updatedGuestRoom.checkout_date);
+
+                if (daysFromTodayToCheckout < 1) {
+                    throw new UserInputError('Check Out date has already been expired')
+                }
+
+                const bookedRooms = await db.guests_rooms.count({where: {
+                    roomId,
+                    guestId: {$not: guestId },
+                    $or: [
+                        {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
+                        {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
+                        {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                    ]
+                }});
+
+                if (bookedRooms > 0) {
+                    throw new UserInputError('There are other bookings for these dates');
+                }
+
+                updatingProps.total_nights = _calcDiffInDays(updatedGuestRoom.checkin_date, checkOutDate);
+                updatingProps.checkout_date = checkOutDate;
+            }
+
+            try {
+                updatedGuestRoom = await updatedGuestRoom.update(updatingProps);
+            } catch (error) {
+                throw new UserInputError(
+                    `Update GuestRoom status failed.\nError Message: ${
+                        error.message
+                        }`
+                );
+            }
+
+            return updatedGuestRoom;
+
         },
         deleteGuestRoom: async (
             _root,
@@ -97,7 +180,7 @@ export default {
                 await deletedGuestRoom.destroy();
             } catch (error) {
                 throw new UserInputError(
-                    `Unable to delete room ${ roomId } for guest ${ guestId }.\nError Message: ${
+                    `Delete GuestRoom status failed.\nError Message: ${
                         error.message
                         }`
                 );

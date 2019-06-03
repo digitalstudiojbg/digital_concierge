@@ -45,6 +45,14 @@ module.exports = (sequelize, DataTypes) => {
                 validate: {
                     notEmpty: true
                 }
+            },
+            is_sending_survey: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: false
             }
         },
         {}
