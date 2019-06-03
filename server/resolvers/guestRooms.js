@@ -1,5 +1,5 @@
 import db from '../models';
-import { checkUserLogin } from '../utils/constant';
+import {checkUserLogin, handleCreateActionActivityLog} from '../utils/constant';
 import { UserInputError } from 'apollo-server-express';
 import { identity, pickBy } from "lodash";
 
@@ -13,8 +13,15 @@ export default {
         guestRooms: async (_root, _input) => {
             return await db.guests_rooms.findAll();
         },
-        guestRoomsByRoomId: async (_root, { roomId }) => {
-            return await db.guests_rooms.findAll({where: { roomId }});
+        guestRoomsByRoomNumber: async (_root, { room_number: number, clientId }) => {
+            return await db.guests_rooms.findAll({
+                include: [
+                    {
+                        model: db.room,
+                        where: { number, clientId }
+                    }
+                ]
+            });
         },
         guestRoomsByGuestId: async (_root, { guestId }) => {
             return await db.guests_rooms.findAll({
@@ -31,8 +38,9 @@ export default {
                     checkin_date,
                     checkout_date,
                     guest_count,
-                    roomId,
+                    room_number,
                     guestId,
+                    clientId,
                     pin,
                     active
                 }
@@ -40,6 +48,17 @@ export default {
             { user }
         ) => {
             await checkUserLogin(user);
+
+            const {id: roomId} = await db.room.findOne({
+                where: {
+                    clientId,
+                    number: room_number
+                }
+            });
+
+            if (!roomId) {
+                throw new UserInputError(`There is not a room with number ${room_number}`);
+            }
 
             const checkInDate = new Date(checkin_date);
             const checkOutDate = new Date(checkout_date);
@@ -92,18 +111,30 @@ export default {
             _root,
             {
                 input: {
-                    roomId,
+                    room_number,
                     guestId,
                     checkout_date,
                     guest_count,
                     pin,
                     active,
-                    is_sending_survey
+                    is_sending_survey,
+                    clientId
                 }
             },
             { user }
         ) => {
             await checkUserLogin(user);
+
+            const {id: roomId} = await db.room.findOne({
+                where: {
+                    clientId,
+                    number: room_number
+                }
+            });
+
+            if (!roomId) {
+                throw new UserInputError(`There is not a room with number ${room_number}`);
+            }
 
             let updatedGuestRoom = await db.guests_rooms.findOne({where: { roomId, guestId }});
 
@@ -162,13 +193,25 @@ export default {
             _root,
             {
                 input: {
-                    roomId,
-                    guestId
+                    room_number,
+                    guestId,
+                    clientId
                 }
             },
             { user }
         ) => {
             await checkUserLogin(user);
+
+            const {id: roomId} = await db.room.findOne({
+                where: {
+                    clientId,
+                    number: room_number
+                }
+            });
+
+            if (!roomId) {
+                throw new UserInputError(`There is not a room with number ${room_number}`);
+            }
 
             const deletedGuestRoom = await db.guests_rooms.findOne({where: { roomId, guestId }});
 
@@ -187,6 +230,120 @@ export default {
             }
 
             return deletedGuestRoom;
+        },
+        newGuestCheckIn: async (
+            _root,
+            {
+                input: {
+                    firstname,
+                    lastname,
+                    email,
+                    primary_number,
+                    secondary_number,
+                    clientId,
+                    checkin_date,
+                    checkout_date,
+                    guest_count,
+                    room_number,
+                    pin,
+                    active
+                }
+            },
+            { user, clientIp }
+        ) => {
+            await checkUserLogin(user);
+
+            const {id: roomId} = await db.room.findOne({
+                where: {
+                    clientId,
+                    number: room_number
+                }
+            });
+
+            if (!roomId) {
+                throw new UserInputError(`There is not a room with number ${room_number}`);
+            }
+
+            const existingGuest = await db.guest.findOne({where: { email }});
+
+            if (existingGuest) {
+                throw new UserInputError(`A guest with the email ${email} already exists`)
+            }
+
+            const creatingGuestProps = pickBy({
+                firstname,
+                lastname,
+                email,
+                primary_number,
+                secondary_number,
+                clientId
+            }, identity);
+
+            const createdGuest = db.guest.build(creatingGuestProps);
+
+            try {
+                await createdGuest.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Guest ${email} status failed.\nError Message: ${
+                        error.message
+                        }`
+                );
+            }
+
+            await handleCreateActionActivityLog(
+                createdGuest,
+                creatingGuestProps,
+                user,
+                clientIp
+            );
+
+            const checkInDate = new Date(checkin_date);
+            const checkOutDate = new Date(checkout_date);
+
+            const totalNights = _calcDiffInDays(checkInDate, checkOutDate);
+
+            if (totalNights < 1) {
+                throw new UserInputError('Dates are incorrect');
+            }
+
+            const bookedRooms = await db.guests_rooms.count({where: {
+                roomId,
+                $or: [
+                    {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
+                    {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
+                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                ]
+            }});
+
+            if (bookedRooms > 0) {
+                throw new UserInputError('There are other bookings for these dates');
+            }
+
+            const creatingProps = {
+                guestId: createdGuest.id,
+                roomId,
+                pin,
+                checkout_date: checkOutDate,
+                checkin_date: checkInDate,
+                total_nights: totalNights,
+                guest_count,
+                active
+            };
+
+            const createdGuestRoom = db.guests_rooms.build(creatingProps);
+
+            try {
+                await createdGuestRoom.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Create GuestRoom status failed.\nError Message: ${
+                        error.message
+                        }`
+                );
+            }
+
+            return createdGuestRoom;
         }
     },
     GuestRooms: {
