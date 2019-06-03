@@ -5,6 +5,7 @@ export default gql`
         guestRooms: [GuestRooms]
         guestRoomsByRoomNumber(room_number: Int!, clientId: Int!): [GuestRooms]
         guestRoomsByGuestId(guestId: Int!): [GuestRooms]
+        guestRoomsCheckOut(name: String!): [GuestRooms]
     }
     
     extend type Mutation {
