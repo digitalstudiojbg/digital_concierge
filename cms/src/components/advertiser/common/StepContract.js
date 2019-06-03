@@ -410,6 +410,11 @@ const StepContract = ({
                   Boolean(active_advertising.payment.invoice_number)
                       ? active_advertising.payment.invoice_number
                       : "",
+              invoice_date:
+                  Boolean(active_advertising.payment) &&
+                  Boolean(active_advertising.payment.invoice_date)
+                      ? active_advertising.payment.invoice_date
+                      : "",
               currencyId:
                   Boolean(active_advertising.payment) &&
                   Boolean(active_advertising.payment.currency)

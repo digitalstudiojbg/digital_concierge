@@ -217,7 +217,7 @@ export default {
                 clientIp
             );
 
-            return updateAdvertising;
+            return await db.advertising.findByPk(id);
         }
     },
 
