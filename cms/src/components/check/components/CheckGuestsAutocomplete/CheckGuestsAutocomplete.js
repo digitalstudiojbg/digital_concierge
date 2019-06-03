@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from "prop-types";
 import Downshift from "downshift";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,14 +10,20 @@ import { CheckInput } from "../CheckTextField/styled";
 
 const getName = (obj) => obj ? `${obj.firstname} ${obj.lastname}` : "";
 
-const CheckAutocomplete = ({ onSelectItem }) => {
+const CheckAutocomplete = React.memo((
+    {
+        onSelect,
+        onUnselect
+    },
+) => {
     const popperNode = useRef();
 
     return (
         <Query query={getGuests}>
             {({ data: { guests } = {} }) => (
                 <Downshift
-                    onSelect={onSelectItem}
+                    onInputValueChange={onUnselect}
+                    onSelect={onSelect}
                     itemToString={getName}
                 >
                     {({
@@ -63,10 +69,11 @@ const CheckAutocomplete = ({ onSelectItem }) => {
             )}
         </Query>
     )
-};
+});
 
 CheckAutocomplete.propTypes = {
-    onSelectItem: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onUnselect: PropTypes.func.isRequired,
 };
 
 export default CheckAutocomplete;

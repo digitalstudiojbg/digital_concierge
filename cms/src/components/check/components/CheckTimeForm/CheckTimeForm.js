@@ -15,7 +15,15 @@ const isEqualTime = (d1, d2) => {
     return getHHPlusMM(d1) === getHHPlusMM(d2);
 };
 
-const CheckTimeForm = ({ title, basename, isShowCurrentCheckboxes }) => (
+const CheckTimeForm = (
+    {
+        title,
+        basename,
+        isShowCurrentCheckboxes,
+        minDate,
+        maxDate,
+    },
+) => (
     <CheckSection title={title}>
         <Box display="flex">
             <Field
@@ -27,6 +35,8 @@ const CheckTimeForm = ({ title, basename, isShowCurrentCheckboxes }) => (
                             onChange={(date) => form.setFieldValue(field.name, date)}
                             label="CHECK-IN DATE"
                             Component={DatePicker}
+                            minDate={minDate}
+                            maxDate={maxDate}
                         />
 
                         {
@@ -56,6 +66,8 @@ const CheckTimeForm = ({ title, basename, isShowCurrentCheckboxes }) => (
                             onChange={(date) => form.setFieldValue(field.name, date)}
                             label="CHECK-IN TIME"
                             Component={TimePicker}
+                            minDate={minDate}
+                            maxDate={maxDate}
                         />
 
                         {

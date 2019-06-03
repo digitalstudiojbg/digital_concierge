@@ -5,7 +5,6 @@ import { CheckInput, CheckInputError, CheckLabel } from "./styled";
 
 const CheckTextField = ({ label, children, name, Component = CheckInput, error, ...props }) => (
     <Box
-        {...props}
         mb={2.5}
         maxWidth={327}
     >

@@ -1,6 +1,6 @@
 import React from 'react';
 import DateRange from "@material-ui/icons/DateRange"
-import DateFnsUtils from '@date-io/date-fns';
+import DayJsUtils from '@date-io/dayjs';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -9,13 +9,13 @@ import {
 import { CheckInput, CheckIconButton } from "../../check/components/CheckTextField/styled";
 import { Box } from "@material-ui/core";
 
-const DATE_PICKER_DEFAULT_FORMAT = "dd MMMM yyyy";
+const DATE_PICKER_DEFAULT_FORMAT = "DD MMMM YYYY";
 
 const DatePicker = ({ isTimePicker = false, ...props }) => {
     const Component = isTimePicker ? KeyboardTimePicker : KeyboardDatePicker;
 
     return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <MuiPickersUtilsProvider utils={DayJsUtils}>
             <Component
                 disableUnderline={true}
                 InputAdornmentComponent={DateRange}

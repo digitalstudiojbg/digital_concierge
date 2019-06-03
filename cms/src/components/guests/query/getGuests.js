@@ -12,11 +12,6 @@ const getGuests = gql`
             client {
                 id
             }
-            rooms {
-                id
-                name
-                number
-            }
         }
     }    
 `;

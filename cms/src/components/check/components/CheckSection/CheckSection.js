@@ -10,14 +10,16 @@ const CheckSectionTitle = styled("h3")`
 `;
 
 const CheckSectionBox = styled(Box)`
-  ${props => props.isDisabled && css`
-    pointer-events: none;
-    opacity: 0.8;
+  ${props => props.disabled && css`
+    && {
+        pointer-events: none;
+        opacity: 0.6;
+    }
   `}
 `;
 
 const CheckSection = ({ title, children, isDisabled }) => (
-    <CheckSectionBox mt={5.5}>
+    <CheckSectionBox mt={5.5} disabled={isDisabled}>
         <CheckSectionTitle>{title}</CheckSectionTitle>
         <Box>
             {children}

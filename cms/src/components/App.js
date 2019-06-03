@@ -15,8 +15,6 @@ import {
     SYSTEM_INDEX_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from "@date-io/date-fns";
 import ROUTES from "../utils/routes";
 
 const Home = lazy(() => import("./home/Home"));
@@ -72,7 +70,6 @@ class App extends Component {
 
     render() {
         return (
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Router ref={router => (this.router = router)} basename={"cms"}>
                 <div
                     style={{
@@ -113,7 +110,6 @@ class App extends Component {
                     </section>
                 </div>
             </Router>
-          </MuiPickersUtilsProvider>
         );
     }
 }
