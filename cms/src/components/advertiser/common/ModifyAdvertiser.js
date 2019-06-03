@@ -42,10 +42,8 @@ const HeaderContainerDiv = styled.div`
 
 const HeaderTitleDiv = styled.div`
     width: 90%;
-    /* font-size: 2em; */
     padding-top: 20px;
     padding-bottom: 20px;
-    /* display: flex; */
 `;
 
 const HeaderButtonDiv = styled.div`
