@@ -98,7 +98,7 @@ export default {
 
             return create_advertising;
         },
-        editAdvertiser: async (
+        editAdvertising: async (
             _root,
             {
                 input: {
