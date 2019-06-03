@@ -3,7 +3,7 @@ import { gql } from "apollo-server-express";
 export default gql`
     extend type Query {
         guestRooms: [GuestRooms]
-        guestRoomsByRoomId(roomId: Int!): [GuestRooms]
+        guestRoomsByRoomNumber(room_number: Int!, clientId: Int!): [GuestRooms]
         guestRoomsByGuestId(guestId: Int!): [GuestRooms]
     }
     
@@ -11,6 +11,7 @@ export default gql`
         createGuestRoom(input: CreateGuestRoomsInput): GuestRooms
         deleteGuestRoom(input: DeleteGuestRoomsInput): GuestRooms
         updateGuestRoom(input: UpdateGuestRoomsInput): GuestRooms
+        newGuestCheckIn(input: newGuestCheckInInput): GuestRooms
     }
 
     type GuestRooms {
@@ -30,24 +31,42 @@ export default gql`
         checkin_date: String!
         checkout_date: String!
         guest_count: Int!
-        roomId: Int!
+        room_number: Int!
         guestId: Int!
+        pin: Int!
+        active: Int!
+        clientId: Int! 
+    }
+    
+    input newGuestCheckInInput {
+        firstname: String!
+        lastname: String!
+        email: EmailAddress!
+        primary_number: PhoneNumber!
+        secondary_number: PhoneNumber
+        clientId: Int!
+        checkin_date: String!
+        checkout_date: String!
+        guest_count: Int!
+        room_number: Int!
         pin: Int!
         active: Int!
     }
     
     input UpdateGuestRoomsInput {
-        roomId: Int!
+        room_number: Int!
         guestId: Int!
         checkout_date: String
         guest_count: Int
         pin: Int
         active: Int
         is_sending_survey: Boolean
+        clientId: Int!
     }
     
     input DeleteGuestRoomsInput {
-        roomId: Int!
+        room_number: Int!
         guestId: Int!
+        clientId: Int!
     }
 `;

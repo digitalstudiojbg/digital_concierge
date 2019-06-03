@@ -4,7 +4,7 @@ export default gql`
     extend type Query {
         room(id: ID!): Room
         rooms: [Room]
-        roomsByNumber(number: Int!): [Room]
+        roomsByNumber(number: Int!, clientId: Int!): [Room]
     }
 
     type Room {

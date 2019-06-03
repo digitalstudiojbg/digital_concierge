@@ -8,8 +8,8 @@ export default {
         rooms: async (_root, _input) => {
             return await db.guest.findAll();
         },
-        roomsByNumber: async (_root, { number }) => {
-            return await db.room.findAll({where: { number }});
+        roomsByNumber: async (_root, { number, clientId }) => {
+            return await db.room.findAll({where: { number, clientId }});
         }
     },
     Room: {
