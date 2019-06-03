@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import { CheckLabel } from "../CheckTextField/styled";
 import { CheckCheckbox } from "../styled";
 
-const CheckTimeFormCheckbox = ({ id, label, ...props }) => (
+const CheckTimeFormCheckbox = React.memo(({ id, label, ...props }) => (
     <Box
         display="flex"
         alignItems="center"
@@ -16,13 +16,16 @@ const CheckTimeFormCheckbox = ({ id, label, ...props }) => (
             {...props}
         />
 
-        <Box ml={1} mt="1px">
+        <Box
+            ml={1}
+            mt="1px"
+        >
             <CheckLabel htmlFor={id}>
                 {label}
             </CheckLabel>
         </Box>
     </Box>
-);
+));
 
 CheckTimeFormCheckbox.propTypes = {
     id: PropTypes.string.isRequired,

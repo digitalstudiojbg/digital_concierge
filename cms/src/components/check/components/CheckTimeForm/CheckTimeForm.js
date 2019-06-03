@@ -1,93 +1,106 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { connect, Field } from 'formik';
 import PropTypes from "prop-types";
-import { Field } from "formik"
+import Box from "@material-ui/core/Box";
+import dayjs from "dayjs";
+
 import CheckSection from "../CheckSection";
 import DatePicker from "../../../shared/DatePicker";
 import TimePicker from "../../../shared/TimePicker";
 import CheckTextField from "../CheckTextField";
-import Box from "@material-ui/core/Box";
 import CheckTimeFormCheckbox from "./CheckTimeFormCheckbox";
 
-const NOW = new Date();
+const NOW = dayjs(new Date());
 
 const isEqualTime = (d1, d2) => {
-    const getHHPlusMM = (d) => d.getMinutes() + d.getHours();
+    const getHHPlusMM = (d) => d.minute() + d.hour();
     return getHHPlusMM(d1) === getHHPlusMM(d2);
 };
 
-const CheckTimeForm = (
+const CheckTimeForm = React.memo((
     {
         title,
         basename,
         isShowCurrentCheckboxes,
         minDate,
         maxDate,
+        formik: { setFieldValue },
     },
-) => (
-    <CheckSection title={title}>
-        <Box display="flex">
-            <Field
-                name={`${basename}_date`}
-                render={({ field, form }) => (
-                    <>
-                        <CheckTextField
-                            {...field}
-                            onChange={(date) => form.setFieldValue(field.name, date)}
-                            label="CHECK-IN DATE"
-                            Component={DatePicker}
-                            minDate={minDate}
-                            maxDate={maxDate}
-                        />
+) => {
+    const nameDate = `${basename}_date`;
+    const nameTime = `${basename}_date_time`;
 
-                        {
-                            isShowCurrentCheckboxes && (
-                                <CheckTimeFormCheckbox
-                                    label="CURRENT DATE"
-                                    id={`${field.name}_cb`}
-                                    onChange={({ target: { checked }}) =>
-                                        checked && form.setFieldValue(field.name, NOW)
-                                    }
-                                    checked={field.value.getDate() === NOW.getDate()}
-                                />
-                            )
-                        }
-                    </>
-                )}
-            />
-        </Box>
+    const handleDatepicker = useCallback(date => setFieldValue(nameDate, date), []);
+    const handleTimepicker = useCallback(date => setFieldValue(nameTime, date), []);
 
-        <Box display="flex">
-            <Field
-                name={`${basename}_date_time`}
-                render={({ field, form }) => (
-                    <>
-                        <CheckTextField
-                            {...field}
-                            onChange={(date) => form.setFieldValue(field.name, date)}
-                            label="CHECK-IN TIME"
-                            Component={TimePicker}
-                            minDate={minDate}
-                            maxDate={maxDate}
-                        />
+    const handleDateCheckbox = useCallback(() => handleDatepicker(NOW), []);
+    const handleTimeCheckbox = useCallback(() => handleTimepicker(NOW), []);
 
-                        {
-                            isShowCurrentCheckboxes && (
-                                <CheckTimeFormCheckbox
-                                    label="CURRENT TIME"
-                                    id={`${field.name}_cb`}
-                                    onChange={({ target: { checked }}) =>
-                                        checked && form.setFieldValue(field.name, NOW)
-                                    }
-                                    checked={isEqualTime(field.value, NOW)}
-                                />
-                            )
-                        }
-                    </>
-                )}
-            />
-        </Box>
-    </CheckSection>
-);
+    const isCurrentDay = useCallback(day => dayjs(day).day() === NOW.day(), []);
+    const isCurrentTime = useCallback(day => isEqualTime(day, NOW), []);
+
+    return (
+        <CheckSection title={title}>
+            <Box display="flex">
+                <Field
+                    name={nameDate}
+                    render={({ field }) => (
+                        <>
+                            <CheckTextField
+                                {...field}
+                                onChange={handleDatepicker}
+                                label="CHECK-IN DATE"
+                                Component={DatePicker}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                            />
+
+                            {
+                                isShowCurrentCheckboxes && (
+                                    <CheckTimeFormCheckbox
+                                        label="CURRENT DATE"
+                                        id={`${field.name}_cb`}
+                                        onClick={handleDateCheckbox}
+                                        checked={isCurrentDay(field.value)}
+                                    />
+                                )
+                            }
+                        </>
+                    )}
+                />
+            </Box>
+
+            <Box display="flex">
+                <Field
+                    name={nameTime}
+                    render={({ field }) => (
+                        <>
+                            <CheckTextField
+                                {...field}
+                                onChange={handleTimepicker}
+                                label="CHECK-IN TIME"
+                                Component={TimePicker}
+                                minDate={minDate}
+                                maxDate={maxDate}
+                            />
+
+                            {
+                                isShowCurrentCheckboxes && (
+                                    <CheckTimeFormCheckbox
+                                        label="CURRENT TIME"
+                                        id={`${field.name}_cb`}
+                                        onClick={handleTimeCheckbox}
+                                        checked={isCurrentTime(field.value)}
+                                    />
+                                )
+                            }
+                        </>
+                    )}
+                />
+            </Box>
+        </CheckSection>
+    );
+});
 
 CheckTimeForm.propTypes = {
     title: PropTypes.string.isRequired,
@@ -95,4 +108,4 @@ CheckTimeForm.propTypes = {
     isShowCurrentCheckboxes: PropTypes.bool,
 };
 
-export default CheckTimeForm;
+export default connect(CheckTimeForm);

@@ -1,5 +1,7 @@
 import React, { Component, Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DayJsUtils from "@date-io/dayjs";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
@@ -70,46 +72,48 @@ class App extends Component {
 
     render() {
         return (
-            <Router ref={router => (this.router = router)} basename={"cms"}>
-                <div
-                    style={{
-                        backgroundColor: "#F4F4F4",
-                        paddingBottom: "130px"
-                    }}
-                >
-                    <section>
-                        <div>
-                            <Route
-                                exact
-                                path="/"
-                                render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
-                                )}
-                            />
-                            <Route
-                                path={LOGIN_URL}
-                                render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
-                                )}
-                            />
+            <MuiPickersUtilsProvider utils={DayJsUtils}>
+                <Router ref={router => (this.router = router)} basename={"cms"}>
+                    <div
+                        style={{
+                            backgroundColor: "#F4F4F4",
+                            paddingBottom: "130px"
+                        }}
+                    >
+                        <section>
+                            <div>
+                                <Route
+                                    exact
+                                    path="/"
+                                    render={() => (
+                                        <Login
+                                            onLogin={this.handleLogin.bind(this)}
+                                        />
+                                    )}
+                                />
+                                <Route
+                                    path={LOGIN_URL}
+                                    render={() => (
+                                        <Login
+                                            onLogin={this.handleLogin.bind(this)}
+                                        />
+                                    )}
+                                />
 
-                            <Suspense fallback={<Loading />}>
-                                {routes.map((route, index) => (
-                                    <PrivateRoute
-                                        key={index}
-                                        path={route.path}
-                                        component={route.component}
-                                    />
-                                ))}
-                            </Suspense>
-                        </div>
-                    </section>
-                </div>
-            </Router>
+                                <Suspense fallback={<Loading />}>
+                                    {routes.map((route, index) => (
+                                        <PrivateRoute
+                                            key={index}
+                                            path={route.path}
+                                            component={route.component}
+                                        />
+                                    ))}
+                                </Suspense>
+                            </div>
+                        </section>
+                    </div>
+                </Router>
+            </MuiPickersUtilsProvider>
         );
     }
 }

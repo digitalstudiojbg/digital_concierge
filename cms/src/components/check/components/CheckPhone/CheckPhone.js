@@ -1,6 +1,6 @@
 import React from 'react';
-import { Field } from "formik"
-import { Box } from "@material-ui/core";
+import { FastField } from "formik"
+import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import CheckTextField from "../CheckTextField";
 import { CheckLabel } from "../CheckTextField/styled";
@@ -13,13 +13,12 @@ const CheckPhone = ({ index, name }) => (
         {/*    </CheckLabel>*/}
         {/*</Box>*/}
 
-        <Field
+        <FastField
             name={name}
-            render={({ field, form }) => (
+            render={({ field }) => (
                 <CheckTextField
                     {...field}
                     label={`CONTACT NUMBER #${index + 1}`}
-                    error={form.errors[field.name]}
                     placeholder="+61 0425 872 504"
                 />
             )}
@@ -34,7 +33,6 @@ const CheckPhone = ({ index, name }) => (
         {/*                <CheckTextField*/}
         {/*                    {...field}*/}
         {/*                    label="AREA"*/}
-        {/*                    error={form.errors[field.name]}*/}
         {/*                />*/}
         {/*            )}*/}
         {/*        />*/}
@@ -47,7 +45,6 @@ const CheckPhone = ({ index, name }) => (
         {/*                <CheckTextField*/}
         {/*                    {...field}*/}
         {/*                    label="NUMBER"*/}
-        {/*                    error={form.errors[field.name]}*/}
         {/*                />*/}
         {/*            )}*/}
         {/*        />*/}

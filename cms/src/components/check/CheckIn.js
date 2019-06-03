@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Box from "@material-ui/core/Box";
-import { Formik, Form } from "formik"
+import { Form, Formik } from "formik"
 import * as Yup from 'yup';
 import dayjs from "dayjs";
 import pick from "lodash/pick";
@@ -15,33 +15,46 @@ import { CheckCol, CheckSubmitButton } from "./components/styled";
 import mutationCreateGuestRoom from "./query/mutationCreateGuestRoom";
 import { CheckReservationValidationSchema } from "./components/CheckReservation/CheckReservation";
 import mutationNewGuestCheckIn from "./query/mutationNewGuestCheckIn";
-import { withApollo, graphql, compose } from "react-apollo";
+import { compose, graphql, withApollo } from "react-apollo";
+import {
+    CHECK_FORM_NAMES,
+    CHECK_HARDCODE_ACTIVE,
+    CHECK_HARDCODE_CLIENT_ID,
+    CHECK_HARDCODE_PIN
+} from "./constants";
 
-const NOW = new Date();
-const NEXT_DAY = dayjs(NOW).clone().add(3, "day");
+const NOW = dayjs(new Date());
+const NEXT_DAY = NOW.clone().add(3, "day");
 
 const CheckInSchema = Yup.object().shape({
-    guest_count: Yup.number().required(),
-    room_number: Yup.number().required(),
+    [CHECK_FORM_NAMES.guestCount]: Yup.number().required(),
+    [CHECK_FORM_NAMES.roomNumber]: Yup.number().required(),
 }).concat(CheckReservationValidationSchema);
 
-/* TODO: Hardcode clientId for hotel */
-const CHECK_HARDCODE_CLIENT_ID = 1;
-const CHECK_HARDCODE_PIN = 1111;
-const CHECK_HARDCODE_ACTIVE = 0;
-
 const CheckInInitialValues = {
-    checkout_date: NEXT_DAY,
-    checkout_date_time: NEXT_DAY,
-    checkin_date: NOW,
-    checkin_date_time: NOW,
-    guest_count: 2,
-    clientId: CHECK_HARDCODE_CLIENT_ID,
-    pin: CHECK_HARDCODE_PIN,
-    active: CHECK_HARDCODE_ACTIVE,
+    [CHECK_FORM_NAMES.roomNumber]: "",
+    [CHECK_FORM_NAMES.firstname]: "",
+    [CHECK_FORM_NAMES.lastname]: "",
+    [CHECK_FORM_NAMES.primaryNumber]: "",
+    [CHECK_FORM_NAMES.secondaryNumber]: "",
+    [CHECK_FORM_NAMES.email]: "",
+    [CHECK_FORM_NAMES.checkOutDate]: NEXT_DAY,
+    [CHECK_FORM_NAMES.checkOutDateTime]: NEXT_DAY,
+    [CHECK_FORM_NAMES.checkInDate]: NOW,
+    [CHECK_FORM_NAMES.checkInDateTime]: NOW,
+    [CHECK_FORM_NAMES.guestCount]: 2,
+    [CHECK_FORM_NAMES.clientId]: CHECK_HARDCODE_CLIENT_ID,
+    [CHECK_FORM_NAMES.pin]: CHECK_HARDCODE_PIN,
+    [CHECK_FORM_NAMES.active]: CHECK_HARDCODE_ACTIVE,
 };
 
-const GuestFields = ["firstname", "lastname", "primary_number", "secondary_number", "email"];
+const GuestFields = [
+    CHECK_FORM_NAMES.firstname,
+    CHECK_FORM_NAMES.lastname,
+    CHECK_FORM_NAMES.primaryNumber,
+    CHECK_FORM_NAMES.secondaryNumber,
+    CHECK_FORM_NAMES.email,
+];
 
 const pickGuestData = (obj) => pick(
     obj,
@@ -51,15 +64,9 @@ const pickGuestData = (obj) => pick(
 const transformData = (obj, isRemoveUserData) => omit(
     obj,
     [
-        "checkout_date_time",
-        "checkin_date_time",
-        ...(isRemoveUserData ? [
-            "firstname",
-            "lastname",
-            "primary_number",
-            "secondary_number",
-            "email"
-        ] : [])
+        CHECK_FORM_NAMES.checkOutDateTime,
+        CHECK_FORM_NAMES.checkInDateTime,
+        ...(isRemoveUserData ? GuestFields : [])
     ],
 );
 
@@ -71,13 +78,12 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
             validationSchema={CheckInSchema}
             validateOnBlur={false}
             onSubmit={(fd) => {
-                console.log(user);
                 if (user) {
                     mutationCreateGuestRoom({
                         variables: {
                             input: {
                                 ...transformData(fd, true),
-                                guestId: ++user.id
+                                guestId: +user.id
                             },
                         }
                     })
@@ -114,16 +120,16 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                         >
                             <CheckTimeForm
                                 title="Check-in"
-                                basename="checkin"
+                                basename={CHECK_FORM_NAMES.checkInBasename}
                                 isShowCurrentCheckboxes={true}
                                 minDate={NOW}
-                                maxDate={values["checkout_date"]}
+                                maxDatxwe={values[CHECK_FORM_NAMES.checkOutDate]}
                             />
 
                             <CheckTimeForm
                                 title="Check-out"
-                                basename="checkout"
-                                minDate={values["checkin_date"]}
+                                basename={CHECK_FORM_NAMES.checkOutBasename}
+                                minDate={values[CHECK_FORM_NAMES.checkInDate]}
                             />
 
                             <Box mt={4}>

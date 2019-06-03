@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import { Box } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 
 const CheckField = ({ title, children, ...props }) => (
     <Box {...props}>
