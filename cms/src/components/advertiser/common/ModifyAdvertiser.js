@@ -36,22 +36,21 @@ const ContainerDiv = styled.div`
 
 const HeaderContainerDiv = styled.div`
     width: 100%;
-    height: 60px;
+    height: 70px;
     display: flex;
 `;
 
 const HeaderTitleDiv = styled.div`
     width: 90%;
-    font-size: 2em;
-    font-weight: 700;
+    /* font-size: 2em; */
     padding-top: 20px;
     padding-bottom: 20px;
-    display: flex;
+    /* display: flex; */
 `;
 
 const HeaderButtonDiv = styled.div`
     width: 10%;
-    height: 60px;
+    height: 70px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -64,7 +63,7 @@ const ContentContainer = styled.div`
 `;
 
 const ModifyAdvertiser = props => {
-    const { goToNext, push, exitUrl } = props;
+    const { goToNext, push, exitUrl, has_data } = props;
 
     const [activeStep, setActiveStep] = useState(goToNext ? 1 : 0);
     const [showModal, setShowModal] = useState(false);
@@ -98,7 +97,16 @@ const ModifyAdvertiser = props => {
         <React.Fragment>
             <ContainerDiv>
                 <HeaderContainerDiv>
-                    <HeaderTitleDiv>Just Brilliant Guides</HeaderTitleDiv>
+                    <HeaderTitleDiv>
+                        <div style={{ fontSize: "2em", fontWeight: 700 }}>
+                            Just Brilliant Guides
+                        </div>
+                        <div style={{ fontSize: "1.5em", paddingTop: 10 }}>
+                            {has_data
+                                ? "Edit Advertiser"
+                                : "Add new Advertiser"}
+                        </div>
+                    </HeaderTitleDiv>
                     <HeaderButtonDiv>
                         <Button
                             variant="outlined"
