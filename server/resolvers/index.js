@@ -9,6 +9,7 @@ import directoryList_resolver from "./directoryList";
 import gallery_resolver from "./gallery";
 import department_resolver from "./department";
 import guest_resolver from "./guest";
+import guestRooms_resolver from "./guestRooms";
 import home_resolver from "./home";
 import jbgDirectoryEntry_resolver from "./jbgDirectoryEntry";
 import jbgDirectoryList_resolver from "./jbgDirectoryList";
@@ -29,6 +30,7 @@ import contact_resolver from "./contact";
 import contract_resolver from "./contract";
 import url_resolver from "./url_resolver";
 import email_resolver from "./email_resolver";
+import phone_resolver from "./phone_resolver";
 import dateTime_resolver from "./datetime_resolver";
 import country_resolver from "./country";
 import state_resolver from "./state";
@@ -57,6 +59,7 @@ export default [
     gallery_resolver,
     department_resolver,
     guest_resolver,
+    guestRooms_resolver,
     home_resolver,
     jbgDirectoryEntry_resolver,
     jbgDirectoryList_resolver,
@@ -78,6 +81,7 @@ export default [
     contact_resolver,
     url_resolver,
     email_resolver,
+    phone_resolver,
     dateTime_resolver,
     file_resolver,
     country_resolver,

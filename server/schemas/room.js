@@ -4,11 +4,13 @@ export default gql`
     extend type Query {
         room(id: ID!): Room
         rooms: [Room]
+        roomsByNumber(number: Int!, clientId: Int!): [Room]
     }
 
     type Room {
         id: ID!
         name: String
+        number: Int
         createdAt: DateTime
         updatedAt: DateTime
         guests: [Guest]

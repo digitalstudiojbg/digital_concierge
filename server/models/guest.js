@@ -24,7 +24,18 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true,
                     isEmail: true
                 }
-            }
+            },
+            primary_number: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            secondary_number: {
+                type: DataTypes.STRING,
+                allowNull: true
+            },
         },
         {}
     );
