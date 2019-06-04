@@ -21,6 +21,7 @@ const CheckGuestInfo = ({ isDisabled }) => (
                             label="NUMBER OF PEOPLE"
                             type="number"
                             placeholder="2"
+                            inputProps={{ min: 1 }}
                         />
                     )}
                 />
@@ -37,6 +38,8 @@ const CheckGuestInfo = ({ isDisabled }) => (
                             {...field}
                             label="Room Number"
                             type="number"
+                            min={1}
+                            inputProps={{ min: 1 }}
                         />
                     )}
                 />
