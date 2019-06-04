@@ -3,7 +3,8 @@ import { UserInputError } from "apollo-server-express";
 import {
     handleCreateActionActivityLog,
     handleUpdateActionActivityLog,
-    processUpload
+    processUpload,
+    processUploadMedia
 } from "../utils/constant";
 
 export default {
@@ -231,7 +232,84 @@ export default {
                 }
             },
             { user, clientIp }
-        ) => {}
+        ) => {
+            const advertising = await db.advertising.findByPk(id);
+            if (!Boolean(advertising)) {
+                throw new UserInputError(
+                    `Error! Advertising ID ${id} does not exist`
+                );
+            }
+
+            const articleToAdd = await db.article.findByPk(articleId);
+            if (!Boolean(articleToAdd)) {
+                throw new UserInputError(
+                    `Error! Article ID ${articleId} does not exist`
+                );
+            }
+
+            const client = await db.client.findOne({
+                //CLIENT EQUAL TO JOHN BATMAN GROUP
+                where: { name: { [Op.like]: "JOHN BATMAN GROUP" } }
+            });
+
+            if (!Boolean(client)) {
+                throw new UserInputError(
+                    `Error! Client John Batman Group was not found!`
+                );
+            }
+
+            let uploadedImage = null;
+            //Try to upload media file
+            if (Boolean(artwork_file)) {
+                uploadedImage = await processUploadMedia(
+                    artwork_file,
+                    client.id,
+                    "image"
+                );
+            }
+
+            const tempAdvertising = {
+                artworkSizeId,
+                artwork_supply_date,
+                ...(Boolean(artwork_file) &&
+                    Boolean(uploadedImage) && { mediumId: uploadedImage.id })
+            };
+
+            try {
+                await db.advertising.update(
+                    { ...tempAdvertising },
+                    { where: { id } }
+                );
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to update advertising ${id} `,
+                    error
+                );
+            }
+
+            //Assign article and advertising
+            try {
+                const articles = await advertising.getArticles();
+                if (articles.length > 0) {
+                    await advertising.removeArticles(articles);
+                }
+                await advertising.addArticle(articleToAdd);
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to assign articleID ${articleId} to advertisingID ${id} `,
+                    error
+                );
+            }
+
+            handleUpdateActionActivityLog(
+                advertising,
+                { ...tempAdvertising, mediumId: uploadedImage.id, articleId },
+                user,
+                clientIp
+            );
+
+            return await db.advertising.findByPk(id);
+        }
     },
 
     Advertising: {
