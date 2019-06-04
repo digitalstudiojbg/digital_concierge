@@ -31,38 +31,37 @@ const CheckIn = (
     const [user, setUser] = useState(false);
 
     const handleSubmit = useCallback(
-        (fd) => {
-            let promise;
+        async (fd) => {
+            try {
+                if (user) {
+                    await mutationCreateGuestRoom({
+                        variables: {
+                            input: {
+                                ...createCheckInFormData(fd, true),
+                                guestId: Number(user.id),
+                            },
+                        }
+                    })
+                } else {
+                    await mutationNewGuestCheckIn({
+                        variables: {
+                            input: createCheckInFormData(fd),
+                        }
+                    });
+                }
 
-            if (user) {
-                promise = mutationCreateGuestRoom({
-                    variables: {
-                        input: {
-                            ...createCheckInFormData(fd, true),
-                            guestId: Number(user.id),
-                        },
-                    }
-                })
-            } else {
-                promise = mutationNewGuestCheckIn({
-                    variables: {
-                        input: createCheckInFormData(fd),
-                    }
-                });
-            }
+                enqueueSnackbar(
+                    "Guest Check-in successfully created",
+                    { variant: "success" }
+                );
 
-            promise
-                .then(() => {
-                    enqueueSnackbar(
-                        "Guest Check-in successfully created",
-                        { variant: "success" }
-                    );
-                    push(ROUTES.guests);
-                })
-                .catch(err => enqueueSnackbar(
+                push(ROUTES.guests);
+            } catch (err) {
+                enqueueSnackbar(
                     getErrorMessage(err),
                     { variant: "error" }
-                ))
+                )
+            }
         },
         [user],
     );
@@ -73,7 +72,7 @@ const CheckIn = (
             validateOnBlur={false}
             onSubmit={handleSubmit}
             initialValues={CheckInitialValues}
-            render={({ setValues, values, isValid }) => (
+            render={({ setValues, values }) => (
                 <Form>
                     <Box width={900}>
                         <CheckTextField

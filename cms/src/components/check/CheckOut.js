@@ -6,6 +6,9 @@ import Box from "@material-ui/core/Box";
 import { Form, Formik } from "formik"
 import dayjs from "dayjs";
 
+import mutationDeleteGuestRoom from "./query/mutationDeleteGuestRoom";
+import mutationUpdateGuestRoom from "./query/mutationUpdateGuestRoom";
+
 import CheckGuestInfo from "./components/CheckGuestInfo";
 import CheckReservation from "./components/CheckReservation";
 import CheckTimeForm from "./components/CheckTimeForm";
@@ -13,7 +16,6 @@ import CheckAutocomplete from "./components/CheckGuestsAutocomplete";
 import CheckTextField from "./components/CheckTextField";
 import { CheckCol, CheckSubmitButton } from "./components/styled";
 import CheckSection from "./components/CheckSection";
-import mutationCheckOut from "./query/mutationCheckOut";
 import ROUTES from "../../utils/routes";
 
 import {
@@ -30,15 +32,25 @@ import { CheckSchema } from "./validation";
 
 const CheckOut = (
     {
-        mutationCheckOut,
+        mutationDeleteGuestRoom,
+        mutationUpdateGuestRoom,
         history: { push },
         enqueueSnackbar,
     },
 ) => {
     const [user, setUser] = useState(false);
 
+    const getIsChangedDate = useCallback(
+        (date) => {
+            const prevDate = pickGuestRoom(user)[CHECK_FORM_NAMES.checkOutDate];
+
+            return prevDate === date;
+        },
+        [user],
+    );
+
     const handleSubmit = useCallback(
-        (fd) => {
+        async (fd) => {
             const data = {
                 [CHECK_FORM_NAMES.roomNumber]: fd[CHECK_FORM_NAMES.roomNumber],
                 [CHECK_FORM_NAMES.guestId]: Number(user.id),
@@ -50,21 +62,27 @@ const CheckOut = (
                 [CHECK_FORM_NAMES.checkOutDate]: fd[CHECK_FORM_NAMES.checkOutDate]
             };
 
-            mutationCheckOut({
-                variables: {
-                    input: updateFd,
-                    deleteInput: data,
+            const isChangedDate = getIsChangedDate(fd);
+
+            try {
+                if (isChangedDate) {
+                    await mutationUpdateGuestRoom({ variables: { input: updateFd } })
                 }
-            }).then(() => {
+
+                await mutationDeleteGuestRoom({ variables: { input: data } });
+
                 enqueueSnackbar(
                     "Guest Check-out successfully created",
                     { variant: "success" }
                 );
+
                 push(ROUTES.guests);
-            }).catch(err => enqueueSnackbar(
-                getErrorMessage(err),
-                { variant: "error" }
-            ))
+            } catch (err) {
+                enqueueSnackbar(
+                    getErrorMessage(err),
+                    { variant: "error" }
+                )
+            }
         },
         [user],
     );
@@ -144,5 +162,6 @@ export default compose(
     withApollo,
     withRouter,
     withSnackbar,
-    graphql(mutationCheckOut, { name: "mutationCheckOut" }),
+    graphql(mutationDeleteGuestRoom, { name: "mutationDeleteGuestRoom" }),
+    graphql(mutationUpdateGuestRoom, { name: "mutationUpdateGuestRoom" }),
 )(CheckOut);
