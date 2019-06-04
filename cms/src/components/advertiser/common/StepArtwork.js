@@ -162,15 +162,16 @@ const StepArtwork = ({
     artworkSizes
 }) => {
     const { active_advertising } = advertiser;
+    const { media } = active_advertising;
     let documentRef = React.createRef();
     return (
         <Formik
             initialValues={{
                 artworkSizeId:
                     Boolean(active_advertising) &&
-                    Boolean(active_advertising.artworkSize) &&
-                    Boolean(active_advertising.artworkSize.id)
-                        ? active_advertising.artworkSize.id
+                    Boolean(active_advertising.artwork_size) &&
+                    Boolean(active_advertising.artwork_size.id)
+                        ? active_advertising.artwork_size.id
                         : null,
                 artwork_supply_date:
                     Boolean(active_advertising) &&
@@ -178,17 +179,9 @@ const StepArtwork = ({
                         ? active_advertising.artwork_supply_date
                         : null,
                 artwork_file_preview:
-                    Boolean(active_advertising) &&
-                    Boolean(active_advertising.media) &&
-                    Boolean(active_advertising.media.path)
-                        ? active_advertising.media.path
-                        : "",
+                    Boolean(media) && Boolean(media.path) ? media.path : "",
                 artwork_file_name:
-                    Boolean(active_advertising) &&
-                    Boolean(active_advertising.media) &&
-                    Boolean(active_advertising.media.name)
-                        ? active_advertising.media.name
-                        : "",
+                    Boolean(media) && Boolean(media.name) ? media.name : "",
                 articleId:
                     Boolean(active_advertising) &&
                     Array.isArray(active_advertising.articles) &&
@@ -268,11 +261,29 @@ const StepArtwork = ({
                                     )}
                                 </FieldContainerDiv>
                             </SectionDivModified>
-                            <SectionDivModified flexBasis="60%">
+                            <SectionDiv
+                                flexBasis="60%"
+                                flexDirection="column"
+                                paddingRight="0px"
+                            >
                                 <SectionTitleDiv>
                                     Artwork Preview
                                 </SectionTitleDiv>
-                            </SectionDivModified>
+                                {Boolean(media) && Boolean(media.path) && (
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            backgroundImage: `url('${
+                                                media.path
+                                            }')`,
+                                            height: "100%",
+                                            backgroundPosition: "left",
+                                            backgroundRepeat: "no-repeat",
+                                            backgroundSize: "contain"
+                                        }}
+                                    />
+                                )}
+                            </SectionDiv>
                         </ContainerDiv>
                     </Form>
                 );
