@@ -46,5 +46,5 @@ export {
     getFeaturesByCategories,
     systemsByClientQuery,
     getContractByClientId,
-    getLayoutListFromType
+    getLayoutListFromType,
 };

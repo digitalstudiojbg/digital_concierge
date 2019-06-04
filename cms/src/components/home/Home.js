@@ -20,9 +20,10 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY,
 } from "../../utils/Constants";
 import Library from "./Library";
+import ROUTES from "../../utils/routes";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
@@ -62,6 +63,13 @@ const routes = [
     {
         path: WELCOME_URL,
         exact: true,
+        header: Header,
+        main: Welcome,
+        withProps: {}
+    },
+    {
+        path: ROUTES.guests,
+        exact: false,
         header: Header,
         main: Welcome,
         withProps: {}
@@ -176,7 +184,7 @@ const routes = [
         sidebar: Sidebar,
         main: Library,
         withProps: {}
-    }
+    },
 ];
 
 class Home extends Component {
@@ -203,9 +211,8 @@ class Home extends Component {
                             )}
                             <div
                                 style={{
-                                    padding: "5% 5% 0",
-                                    height: "110vh",
-                                    width: "100vw",
+                                    padding: "80px 0",
+                                    width: "100%",
                                     display: "flex",
                                     backgroundColor: "#F4F4F4"
                                 }}

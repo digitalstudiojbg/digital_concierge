@@ -12,7 +12,8 @@ import {
     SYSTEM_CMS_CREATE_CONTENT_CATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_SUBCATEGORY_URL,
     SYSTEM_CMS_CREATE_CONTENT_DIRECTORY_URL,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY,
+    GUESTS_CHECK_IN
 } from "../../utils/Constants";
 
 const SIDEBAR_ITEMS = [
@@ -44,6 +45,10 @@ const SIDEBAR_ITEMS = [
     {
         name: SYSTEM_CMS_LIBRARY,
         displayName: "Library"
+    },
+    {
+        name: GUESTS_CHECK_IN,
+        displayName: 'Guests',
     }
 ];
 
