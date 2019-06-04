@@ -20,9 +20,9 @@ import { OutlinedInput, MenuItem } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { isEmpty } from "lodash";
 import styled from "styled-components";
-import SimpleDocumentUploader from "../../../utils/SimpleDocumentUploader";
+import SimpleImageUploader from "../../../utils/SimpleImageUploader";
 
-const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId }) => (
+const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId, push }) => (
     <Query
         query={getAdvertiserActiveAgreement}
         variables={{ id: advertiserId }}
@@ -98,6 +98,8 @@ const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId }) => (
                                                         artworkSizes={
                                                             artworkSizes
                                                         }
+                                                        action={action}
+                                                        push={push}
                                                     />
                                                 );
                                             }}
@@ -159,10 +161,12 @@ const StepArtwork = ({
     exitUrl,
     onRef,
     articles,
-    artworkSizes
+    artworkSizes,
+    action,
+    push
 }) => {
     const { active_advertising } = advertiser;
-    const { media } = active_advertising;
+    const { media, expire_date, commence_date } = active_advertising;
     let documentRef = React.createRef();
     return (
         <Formik
@@ -190,8 +194,33 @@ const StepArtwork = ({
                         ? active_advertising.articles[0].id
                         : null
             }}
+            onSubmit={(values, { setSubmitting }) => {
+                setSubmitting(true);
+                const {
+                    artworkSizeId,
+                    artwork_supply_date,
+                    articleId
+                } = values;
+
+                const toSubmit = {
+                    id: active_advertising.id,
+                    artworkSizeId,
+                    artwork_supply_date,
+                    ...(documentRef.state.file && {
+                        artwork_file: documentRef.state.file
+                    }),
+                    articleId
+                };
+
+                console.log("To submit ", toSubmit);
+                action({ variables: { input: toSubmit } }).then(({ data }) => {
+                    console.log("data received ", data);
+                    setSubmitting(false);
+                    push(exitUrl);
+                });
+            }}
         >
-            {({ errors, setFieldValue, values }) => {
+            {({ errors, setFieldValue, values, isSubmitting }) => {
                 const handleDateChange = data => {
                     const { $d: date = null } = data || {};
                     setFieldValue("artwork_supply_date", date);
@@ -232,10 +261,12 @@ const StepArtwork = ({
                                         autoOk
                                         inputVariant="outlined"
                                         fullWidth
+                                        minDate={commence_date}
+                                        maxDate={expire_date}
                                     />
                                 </FieldContainerDiv>
                                 <FieldContainerDiv>
-                                    <SimpleDocumentUploader
+                                    <SimpleImageUploader
                                         onRef={ref => (documentRef = ref)}
                                         {...Boolean(
                                             values.artwork_file_preview
@@ -262,7 +293,7 @@ const StepArtwork = ({
                                 </FieldContainerDiv>
                             </SectionDivModified>
                             <SectionDiv
-                                flexBasis="60%"
+                                flexBasis="50%"
                                 flexDirection="column"
                                 paddingRight="0px"
                             >
@@ -283,6 +314,22 @@ const StepArtwork = ({
                                         }}
                                     />
                                 )}
+                                <div
+                                    style={{
+                                        flex: 1,
+                                        display: "flex",
+                                        justifyContent: "flex-end",
+                                        alignItems: "flex-end"
+                                    }}
+                                >
+                                    <ContinueButton
+                                        type="submit"
+                                        width="25%"
+                                        disabled={isSubmitting}
+                                    >
+                                        Confirm & Continue
+                                    </ContinueButton>
+                                </div>
                             </SectionDiv>
                         </ContainerDiv>
                     </Form>

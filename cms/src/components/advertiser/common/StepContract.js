@@ -500,6 +500,7 @@ const StepContract = ({
                 console.log("To submit ", toSubmit);
                 action({ variables: { input: toSubmit } }).then(({ data }) => {
                     console.log("data received ", data);
+                    setSubmitting(false);
                     next();
                 });
             }}

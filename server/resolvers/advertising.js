@@ -6,6 +6,8 @@ import {
     processUpload,
     processUploadMedia
 } from "../utils/constant";
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 export default {
     Query: {
