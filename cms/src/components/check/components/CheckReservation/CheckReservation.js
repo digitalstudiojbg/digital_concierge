@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { FastField } from "formik"
+import { Field} from "formik"
 import PropTypes from "prop-types";
 
 import CheckSection from "../CheckSection";
@@ -21,7 +21,7 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
         isDisabled={isDisabled}
         title="Reservation Details"
     >
-        <FastField
+        <Field
             name={CHECK_FORM_NAMES.firstname}
             render={({ field }) => (
                 <CheckTextField
@@ -32,7 +32,7 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
             )}
         />
 
-        <FastField
+        <Field
             name={CHECK_FORM_NAMES.lastname}
             render={({ field }) => (
                 <CheckTextField
@@ -53,7 +53,7 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
            index={1}
        />
 
-        <FastField
+        <Field
             name={CHECK_FORM_NAMES.email}
             render={({ field }) => (
                 <CheckTextField

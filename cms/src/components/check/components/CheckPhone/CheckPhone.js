@@ -1,5 +1,5 @@
 import React from 'react';
-import { FastField } from "formik"
+import { Field } from "formik"
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import CheckTextField from "../CheckTextField";
@@ -13,7 +13,7 @@ const CheckPhone = ({ index, name }) => (
         {/*    </CheckLabel>*/}
         {/*</Box>*/}
 
-        <FastField
+        <Field
             name={name}
             render={({ field }) => (
                 <CheckTextField

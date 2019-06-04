@@ -15,12 +15,15 @@ import { CheckReservationValidationSchema } from "./components/CheckReservation/
 import mutationNewGuestCheckIn from "./query/mutationNewGuestCheckIn";
 import { compose, graphql, withApollo } from "react-apollo";
 import {
+    CHECK_OUT_DATE_FORMAT,
     CHECK_FORM_NAMES,
     CHECK_HARDCODE_ACTIVE,
     CHECK_HARDCODE_CLIENT_ID,
     CHECK_HARDCODE_PIN,
 } from "./constants";
-import { pickGuest, createCheckInFormData } from "./utils";
+import { pickGuest, createCheckInFormData, pickGuestRoom } from "./utils";
+import CheckSection from "./components/CheckSection";
+import mutationCheckOut from "./query/mutationCheckOut";
 
 const NOW = dayjs(new Date());
 const NEXT_DAY = NOW.clone().add(3, "day");
@@ -30,7 +33,7 @@ const CheckInSchema = Yup.object().shape({
     [CHECK_FORM_NAMES.roomNumber]: Yup.number().required(),
 }).concat(CheckReservationValidationSchema);
 
-const CheckInInitialValues = {
+const CheckOutInitialValues = {
     [CHECK_FORM_NAMES.roomNumber]: "",
     [CHECK_FORM_NAMES.firstname]: "",
     [CHECK_FORM_NAMES.lastname]: "",
@@ -47,7 +50,7 @@ const CheckInInitialValues = {
     [CHECK_FORM_NAMES.active]: CHECK_HARDCODE_ACTIVE,
 };
 
-const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
+const CheckOut = ({ mutationCheckOut }) => {
     const [user, setUser] = useState(false);
 
     return (
@@ -55,24 +58,30 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
             validationSchema={CheckInSchema}
             validateOnBlur={false}
             onSubmit={(fd) => {
-                if (user) {
-                    mutationCreateGuestRoom({
-                        variables: {
-                            input: {
-                                ...createCheckInFormData(fd, true),
-                                guestId: Number(user.id),
-                            },
-                        }
-                    })
-                } else {
-                    mutationNewGuestCheckIn({
-                        variables: {
-                            input: createCheckInFormData(fd),
-                        }
-                    });
-                }
+                const data = {
+                    [CHECK_FORM_NAMES.roomNumber]: fd[CHECK_FORM_NAMES.roomNumber],
+                    [CHECK_FORM_NAMES.guestId]: Number(user.id),
+                    [CHECK_FORM_NAMES.clientId]: fd[CHECK_FORM_NAMES.clientId],
+                };
+
+                const updateFd = {
+                    ...data,
+                    [CHECK_FORM_NAMES.checkOutDate]: fd[CHECK_FORM_NAMES.checkOutDate]
+                };
+
+                const deleteFd = data;
+
+                mutationCheckOut({
+                    variables: {
+                        input: updateFd,
+                        deleteInput: deleteFd,
+                    }
+                }).then(() => {
+                    console.log("GOGOGOGO");
+                })
+
             }}
-            initialValues={CheckInInitialValues}
+            initialValues={CheckOutInitialValues}
             render={({ setValues, values }) => (
                 <Form>
                     <Box width={900}>
@@ -81,7 +90,11 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                             name="guest"
                             onSelect={(data) => {
                                 !user && setUser(data);
-                                setValues({ ...values, ...pickGuest(data) });
+                                setValues({
+                                    ...values,
+                                    ...pickGuest(data),
+                                    ...pickGuestRoom(data)
+                                });
                             }}
                             onUnselect={() => user && setUser(null)}
                             Component={CheckAutocomplete}
@@ -92,25 +105,24 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                         <CheckCol width={390}>
                             <CheckGuestInfo />
 
-                            <CheckReservation isDisabled={user} />
+                            <CheckReservation isDisabled={true} />
                         </CheckCol>
 
                         <CheckCol
                             width={510}
                             pl={3}
                         >
-                            <CheckTimeForm
-                                title="Check-in"
-                                basename={CHECK_FORM_NAMES.checkInBasename}
-                                isShowCurrentCheckboxes={true}
-                                minDate={NOW}
-                                maxDate={values[CHECK_FORM_NAMES.checkOutDate]}
-                            />
+                            <CheckSection title="Check-in">
+                                {
+                                    dayjs(values[CHECK_FORM_NAMES.checkInDate]).format(CHECK_OUT_DATE_FORMAT)
+                                }
+                            </CheckSection>
 
                             <CheckTimeForm
                                 title="Check-out"
                                 basename={CHECK_FORM_NAMES.checkOutBasename}
                                 minDate={values[CHECK_FORM_NAMES.checkInDate]}
+                                isShowCurrentCheckboxes={true}
                             />
 
                             <Box mt={4}>
@@ -120,7 +132,7 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                                     variant="contained"
                                     size="large"
                                 >
-                                    CHECK-IN GUEST
+                                    CHECK-OUT GUEST
                                 </CheckSubmitButton>
                             </Box>
                         </CheckCol>
@@ -134,6 +146,5 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
 
 export default compose(
     withApollo,
-    graphql(mutationNewGuestCheckIn, { name: "mutationNewGuestCheckIn" }),
-    graphql(mutationCreateGuestRoom, { name: "mutationCreateGuestRoom" }),
-)(CheckIn);
+    graphql(mutationCheckOut, { name: "mutationCheckOut" }),
+)(CheckOut);

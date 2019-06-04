@@ -5,6 +5,8 @@ export const CHECK_HARDCODE_CLIENT_ID = 1;
 export const CHECK_HARDCODE_PIN = 1111;
 export const CHECK_HARDCODE_ACTIVE = 0;
 
+export const CHECK_OUT_DATE_FORMAT = "DD MMMM YYYY, hh:mm a";
+
 /**
  * A person object with a name and age.
  * @typedef {Object<string, string>} CheckFormNames
@@ -21,6 +23,7 @@ export const CHECK_HARDCODE_ACTIVE = 0;
  * @property {string} checkInDate
  * @property {string} checkInDateTime
  * @property {string} guestCount
+ * @property {string} guestId
  * @property {string} clientId
  * @property {string} pin
  * @property {string} active
@@ -45,9 +48,8 @@ export const CHECK_FORM_NAMES = proxyEnum({
     checkInDateTime: "checkin_date_time",
 
     guestCount: "guest_count",
+    guestId: "guestId",
     clientId: "clientId",
     pin: "pin",
     active: "active",
 });
-
-CHECK_FORM_NAMES
