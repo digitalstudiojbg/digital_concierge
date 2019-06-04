@@ -21,6 +21,7 @@ const CheckTimeForm = React.memo((
     {
         title,
         basename,
+        basenameTitle,
         isShowCurrentCheckboxes,
         minDate,
         maxDate,
@@ -49,21 +50,21 @@ const CheckTimeForm = React.memo((
                             <CheckTextField
                                 {...field}
                                 onChange={handleDatepicker}
-                                label="CHECK-IN DATE"
+                                label={`${basenameTitle} DATE`}
                                 Component={DatePicker}
                                 minDate={minDate}
                                 maxDate={maxDate}
                             />
 
                             {
-                                isShowCurrentCheckboxes && (
+                                isShowCurrentCheckboxes ? (
                                     <CheckTimeFormCheckbox
                                         label="CURRENT DATE"
                                         id={`${field.name}_cb`}
                                         onClick={handleDateCheckbox}
                                         checked={isCurrentDay(field.value)}
                                     />
-                                )
+                                ): <span />
                             }
                         </>
                     )}
@@ -78,21 +79,21 @@ const CheckTimeForm = React.memo((
                             <CheckTextField
                                 {...field}
                                 onChange={handleTimepicker}
-                                label="CHECK-IN TIME"
+                                label={`${basenameTitle} TIME`}
                                 Component={TimePicker}
                                 minDate={minDate}
                                 maxDate={maxDate}
                             />
 
                             {
-                                isShowCurrentCheckboxes && (
+                                isShowCurrentCheckboxes ? (
                                     <CheckTimeFormCheckbox
                                         label="CURRENT TIME"
                                         id={`${field.name}_cb`}
                                         onClick={handleTimeCheckbox}
                                         checked={isCurrentTime(field.value)}
                                     />
-                                )
+                                ) :  <span />
                             }
                         </>
                     )}
@@ -104,6 +105,7 @@ const CheckTimeForm = React.memo((
 
 CheckTimeForm.propTypes = {
     title: PropTypes.string.isRequired,
+    basenameTitle: PropTypes.string.isRequired,
     basename: PropTypes.string.isRequired,
     isShowCurrentCheckboxes: PropTypes.bool,
 };

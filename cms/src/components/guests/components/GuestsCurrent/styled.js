@@ -28,6 +28,7 @@ export const GuestTD = styled.div`
 
 export const GuestTH = styled.div`
     padding: 18px 0;
+    cursor: pointer;
 `;
 
 export const GuestTHead = styled.div`

@@ -1,4 +1,5 @@
 import React, { Component, Suspense, lazy } from "react";
+import { SnackbarProvider } from 'notistack';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DayJsUtils from "@date-io/dayjs";
@@ -72,48 +73,53 @@ class App extends Component {
 
     render() {
         return (
-            <MuiPickersUtilsProvider utils={DayJsUtils}>
-                <Router ref={router => (this.router = router)} basename={"cms"}>
-                    <div
-                        style={{
-                            backgroundColor: "#F4F4F4",
-                            paddingBottom: "130px"
-                        }}
-                    >
-                        <section>
-                            <div>
-                                <Route
-                                    exact
-                                    path="/"
-                                    render={() => (
-                                        <Login
-                                            onLogin={this.handleLogin.bind(this)}
-                                        />
-                                    )}
-                                />
-                                <Route
-                                    path={LOGIN_URL}
-                                    render={() => (
-                                        <Login
-                                            onLogin={this.handleLogin.bind(this)}
-                                        />
-                                    )}
-                                />
+            <SnackbarProvider
+                maxSnack={3}
+                autoHideDuration={3000}
+            >
+                <MuiPickersUtilsProvider utils={DayJsUtils}>
+                    <Router ref={router => (this.router = router)} basename={"cms"}>
+                        <div
+                            style={{
+                                backgroundColor: "#F4F4F4",
+                                paddingBottom: "130px"
+                            }}
+                        >
+                            <section>
+                                <div>
+                                    <Route
+                                        exact
+                                        path="/"
+                                        render={() => (
+                                            <Login
+                                                onLogin={this.handleLogin.bind(this)}
+                                            />
+                                        )}
+                                    />
+                                    <Route
+                                        path={LOGIN_URL}
+                                        render={() => (
+                                            <Login
+                                                onLogin={this.handleLogin.bind(this)}
+                                            />
+                                        )}
+                                    />
 
-                                <Suspense fallback={<Loading />}>
-                                    {routes.map((route, index) => (
-                                        <PrivateRoute
-                                            key={index}
-                                            path={route.path}
-                                            component={route.component}
-                                        />
-                                    ))}
-                                </Suspense>
-                            </div>
-                        </section>
-                    </div>
-                </Router>
-            </MuiPickersUtilsProvider>
+                                    <Suspense fallback={<Loading />}>
+                                        {routes.map((route, index) => (
+                                            <PrivateRoute
+                                                key={index}
+                                                path={route.path}
+                                                component={route.component}
+                                            />
+                                        ))}
+                                    </Suspense>
+                                </div>
+                            </section>
+                        </div>
+                    </Router>
+                </MuiPickersUtilsProvider>
+            </SnackbarProvider>
         );
     }
 }

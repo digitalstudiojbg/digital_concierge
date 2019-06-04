@@ -1,8 +1,10 @@
+import styled from "styled-components";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import IconButton from "@material-ui/core/IconButton";
 import { FormHelperText } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 
 export const CheckInputStyles = {
     root: {
@@ -10,7 +12,7 @@ export const CheckInputStyles = {
         fontFamily: "Arial",
         padding: "8px 16px",
         border: "1px solid #9D9D9D",
-        background: "#fff",
+        background: "#fff !important",
         borderRadius: 4,
         width: "100%",
     },
@@ -29,6 +31,7 @@ export const CheckInputError = withStyles({
         color: "red",
         fontSize: 10,
         marginTop: 2,
+        position: "absolute",
     }
 })(FormHelperText);
 
@@ -45,5 +48,13 @@ export const CheckLabel = withStyles({
         fontFamily: "Arial",
         fontWeight: "bold",
         color: "#5C5C5C",
+        textTransform: "uppercase",
     },
 })(InputLabel);
+
+export const CheckTextFieldBox = styled(Box)`
+  margin-bottom: 20px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;

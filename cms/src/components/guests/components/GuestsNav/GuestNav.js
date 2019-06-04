@@ -15,7 +15,7 @@ const NAV = [
 ];
 
 const NAV_SECONDARY = [
-    { path: "book", title: "Add booking" },
+    { path: "book", title: "Add booking", disabled: true },
     { path: ROUTES.guestsCheckIn, title: "CHECK-IN" },
     { path: ROUTES.guestsCheckOut, title: "CHECK-OUT" }
 ];
@@ -24,6 +24,7 @@ const GuestsNav = () => (
     <Box
         display="flex"
         justifyContent="space-between"
+        borderBottom="2px solid #DDDDDD"
     >
         <div>
             {
@@ -31,7 +32,6 @@ const GuestsNav = () => (
                     <GuestsNavTab
                         key={nav.path}
                         textColor="primary"
-                        indicatorColor="primary"
                         component={NavLink}
                         to={nav.path}
                         disabled={nav.disabled}
@@ -42,22 +42,25 @@ const GuestsNav = () => (
             }
         </div>
 
-        <div>
+        <Box display="flex">
             {
                 NAV_SECONDARY.map((nav) => (
                     <Box
                         ml={2}
                         key={nav.path}
-                        component={NavLink}
-                        to={nav.path}
                     >
-                        <GuestsNavButton variant="outlined">
+                        <GuestsNavButton
+                            component={NavLink}
+                            to={nav.path}
+                            variant="outlined"
+                            disabled={nav.disabled}
+                        >
                             {nav.title}
                         </GuestsNavButton>
                     </Box>
                 ))
             }
-        </div>
+        </Box>
     </Box>
 );
 

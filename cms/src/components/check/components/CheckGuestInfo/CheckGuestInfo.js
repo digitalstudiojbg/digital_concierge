@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import { FastField } from "formik"
 import Box from "@material-ui/core/Box";
 import CheckSection from "../CheckSection";
 import CheckTextField from "../CheckTextField";
 import { CHECK_FORM_NAMES } from "../../constants";
 
-const CheckGuestInfo = () => (
-    <CheckSection title="Guest Info">
+const CheckGuestInfo = ({ isDisabled }) => (
+    <CheckSection isDisabled={isDisabled} title="Guest Info">
         <Box display="flex">
             <Box maxWidth={110}>
                 <FastField
@@ -42,5 +43,9 @@ const CheckGuestInfo = () => (
 
     </CheckSection>
 );
+
+CheckGuestInfo.propTypes = {
+    isDisabled: PropTypes.bool,
+};
 
 export default CheckGuestInfo;

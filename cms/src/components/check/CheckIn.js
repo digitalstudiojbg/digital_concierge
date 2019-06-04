@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
-import Box from "@material-ui/core/Box";
+import React, { useCallback, useState } from 'react';
+import { withSnackbar } from "notistack";
 import { Form, Formik } from "formik"
-import * as Yup from 'yup';
-import dayjs from "dayjs";
+import { compose, graphql, withApollo } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import Box from "@material-ui/core/Box";
+
+import ROUTES from "../../utils/routes";
+
+import mutationCreateGuestRoom from "./query/mutationCreateGuestRoom";
+import mutationNewGuestCheckIn from "./query/mutationNewGuestCheckIn";
 
 import CheckGuestInfo from "./components/CheckGuestInfo";
 import CheckReservation from "./components/CheckReservation";
@@ -10,70 +16,64 @@ import CheckTimeForm from "./components/CheckTimeForm";
 import CheckAutocomplete from "./components/CheckGuestsAutocomplete";
 import CheckTextField from "./components/CheckTextField";
 import { CheckCol, CheckSubmitButton } from "./components/styled";
-import mutationCreateGuestRoom from "./query/mutationCreateGuestRoom";
-import { CheckReservationValidationSchema } from "./components/CheckReservation/CheckReservation";
-import mutationNewGuestCheckIn from "./query/mutationNewGuestCheckIn";
-import { compose, graphql, withApollo } from "react-apollo";
-import {
-    CHECK_FORM_NAMES,
-    CHECK_HARDCODE_ACTIVE,
-    CHECK_HARDCODE_CLIENT_ID,
-    CHECK_HARDCODE_PIN,
-} from "./constants";
-import { pickGuest, createCheckInFormData } from "./utils";
+import { CHECK_FORM_NAMES, CHECK_INITIAL_DATE, CheckInitialValues, } from "./constants";
+import { createCheckInFormData, getErrorMessage, pickGuest } from "./utils";
+import { CheckSchema } from "./validation";
 
-const NOW = dayjs(new Date());
-const NEXT_DAY = NOW.clone().add(3, "day");
-
-const CheckInSchema = Yup.object().shape({
-    [CHECK_FORM_NAMES.guestCount]: Yup.number().required(),
-    [CHECK_FORM_NAMES.roomNumber]: Yup.number().required(),
-}).concat(CheckReservationValidationSchema);
-
-const CheckInInitialValues = {
-    [CHECK_FORM_NAMES.roomNumber]: "",
-    [CHECK_FORM_NAMES.firstname]: "",
-    [CHECK_FORM_NAMES.lastname]: "",
-    [CHECK_FORM_NAMES.primaryNumber]: "",
-    [CHECK_FORM_NAMES.secondaryNumber]: "",
-    [CHECK_FORM_NAMES.email]: "",
-    [CHECK_FORM_NAMES.checkOutDate]: NEXT_DAY,
-    [CHECK_FORM_NAMES.checkOutDateTime]: NEXT_DAY,
-    [CHECK_FORM_NAMES.checkInDate]: NOW,
-    [CHECK_FORM_NAMES.checkInDateTime]: NOW,
-    [CHECK_FORM_NAMES.guestCount]: 2,
-    [CHECK_FORM_NAMES.clientId]: CHECK_HARDCODE_CLIENT_ID,
-    [CHECK_FORM_NAMES.pin]: CHECK_HARDCODE_PIN,
-    [CHECK_FORM_NAMES.active]: CHECK_HARDCODE_ACTIVE,
-};
-
-const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
+const CheckIn = (
+    {
+        mutationNewGuestCheckIn,
+        mutationCreateGuestRoom,
+        history: { push },
+        enqueueSnackbar
+    },
+) => {
     const [user, setUser] = useState(false);
+
+    const handleSubmit = useCallback(
+        (fd) => {
+            let promise;
+
+            if (user) {
+                promise = mutationCreateGuestRoom({
+                    variables: {
+                        input: {
+                            ...createCheckInFormData(fd, true),
+                            guestId: Number(user.id),
+                        },
+                    }
+                })
+            } else {
+                promise = mutationNewGuestCheckIn({
+                    variables: {
+                        input: createCheckInFormData(fd),
+                    }
+                });
+            }
+
+            promise
+                .then(() => {
+                    enqueueSnackbar(
+                        "Guest Check-in successfully created",
+                        { variant: "success" }
+                    );
+                    push(ROUTES.guests);
+                })
+                .catch(err => enqueueSnackbar(
+                    getErrorMessage(err),
+                    { variant: "error" }
+                ))
+        },
+        [user],
+    );
 
     return (
         <Formik
-            validationSchema={CheckInSchema}
+            validationSchema={CheckSchema}
             validateOnBlur={false}
-            onSubmit={(fd) => {
-                if (user) {
-                    mutationCreateGuestRoom({
-                        variables: {
-                            input: {
-                                ...createCheckInFormData(fd, true),
-                                guestId: Number(user.id),
-                            },
-                        }
-                    })
-                } else {
-                    mutationNewGuestCheckIn({
-                        variables: {
-                            input: createCheckInFormData(fd),
-                        }
-                    });
-                }
-            }}
-            initialValues={CheckInInitialValues}
-            render={({ setValues, values }) => (
+            onSubmit={handleSubmit}
+            initialValues={CheckInitialValues}
+            render={({ setValues, values, isValid }) => (
                 <Form>
                     <Box width={900}>
                         <CheckTextField
@@ -92,7 +92,7 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                         <CheckCol width={390}>
                             <CheckGuestInfo />
 
-                            <CheckReservation isDisabled={user} />
+                            <CheckReservation isDisabled={Boolean(user)} />
                         </CheckCol>
 
                         <CheckCol
@@ -101,14 +101,16 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
                         >
                             <CheckTimeForm
                                 title="Check-in"
+                                basenameTitle="Check-in"
                                 basename={CHECK_FORM_NAMES.checkInBasename}
                                 isShowCurrentCheckboxes={true}
-                                minDate={NOW}
+                                minDate={CHECK_INITIAL_DATE}
                                 maxDate={values[CHECK_FORM_NAMES.checkOutDate]}
                             />
 
                             <CheckTimeForm
                                 title="Check-out"
+                                basenameTitle="Check-out"
                                 basename={CHECK_FORM_NAMES.checkOutBasename}
                                 minDate={values[CHECK_FORM_NAMES.checkInDate]}
                             />
@@ -134,6 +136,8 @@ const CheckIn = ({ mutationNewGuestCheckIn, mutationCreateGuestRoom }) => {
 
 export default compose(
     withApollo,
+    withSnackbar,
+    withRouter,
     graphql(mutationNewGuestCheckIn, { name: "mutationNewGuestCheckIn" }),
     graphql(mutationCreateGuestRoom, { name: "mutationCreateGuestRoom" }),
 )(CheckIn);

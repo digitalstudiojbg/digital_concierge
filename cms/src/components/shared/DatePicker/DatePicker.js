@@ -26,7 +26,7 @@ const DatePickerInputComponent = (
             />
         </Box>
         <CheckIconButton onClick={onClick}>
-            <InputAdornmentComponent />
+            <InputAdornmentComponent fontSize="large" />
         </CheckIconButton>
     </Box>
 );

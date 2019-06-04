@@ -1,5 +1,6 @@
 /* TODO: Hardcode clientId for hotel */
 import proxyEnum from "../../utils/proxyEnum";
+import dayjs from "dayjs";
 
 export const CHECK_HARDCODE_CLIENT_ID = 1;
 export const CHECK_HARDCODE_PIN = 1111;
@@ -53,3 +54,23 @@ export const CHECK_FORM_NAMES = proxyEnum({
     pin: "pin",
     active: "active",
 });
+
+export const CHECK_INITIAL_DATE = dayjs(new Date());
+const NEXT_DAY = CHECK_INITIAL_DATE.clone().add(3, "day");
+
+export const CheckInitialValues = {
+    [CHECK_FORM_NAMES.roomNumber]: "",
+    [CHECK_FORM_NAMES.firstname]: "",
+    [CHECK_FORM_NAMES.lastname]: "",
+    [CHECK_FORM_NAMES.primaryNumber]: "",
+    [CHECK_FORM_NAMES.secondaryNumber]: "",
+    [CHECK_FORM_NAMES.email]: "",
+    [CHECK_FORM_NAMES.checkOutDate]: NEXT_DAY,
+    [CHECK_FORM_NAMES.checkOutDateTime]: NEXT_DAY,
+    [CHECK_FORM_NAMES.checkInDate]: CHECK_INITIAL_DATE,
+    [CHECK_FORM_NAMES.checkInDateTime]: CHECK_INITIAL_DATE,
+    [CHECK_FORM_NAMES.guestCount]: 2,
+    [CHECK_FORM_NAMES.clientId]: CHECK_HARDCODE_CLIENT_ID,
+    [CHECK_FORM_NAMES.pin]: CHECK_HARDCODE_PIN,
+    [CHECK_FORM_NAMES.active]: CHECK_HARDCODE_ACTIVE,
+};

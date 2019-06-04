@@ -17,7 +17,7 @@ export const pickGuest = (obj) => pick(
 );
 
 export const pickGuestRoom = (obj) => {
-    const room = obj.guest_rooms && obj.guest_rooms[0];
+    const room = obj.guest_rooms && obj.guest_rooms[obj.guest_rooms.length - 1];
 
     if (!room) {
         return null;
@@ -40,9 +40,9 @@ export const pickGuestRoom = (obj) => {
 };
 
 const setMinutesAndHours = (date1, date2) => {
-    const date = date1.clone();
-    date.hour(date2.hour());
-    date.minute(date2.minute());
+    let date = date1.clone();
+    date = date.set("hour", date2.hour());
+    date = date.set("minute", date2.minute());
     return date;
 };
 
@@ -66,3 +66,7 @@ export const createCheckInFormData = (obj, isRemoveGuestData) => {
         ],
     );
 };
+
+export const getErrorMessage = (err) => err && (err.graphQLErrors &&  err.graphQLErrors[0]
+    ? err.graphQLErrors[0].message
+    : err.message);

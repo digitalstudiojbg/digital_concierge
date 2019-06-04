@@ -2,7 +2,12 @@ import React, { memo } from 'react';
 import { connect } from 'formik';
 import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
-import { CheckInput, CheckInputError, CheckLabel } from "./styled";
+import {
+    CheckInput,
+    CheckInputError,
+    CheckLabel,
+    CheckTextFieldBox,
+} from "./styled";
 
 const CheckTextField = memo((
     {
@@ -20,10 +25,7 @@ const CheckTextField = memo((
     const isShowError = Boolean(touch && error);
 
     return (
-        <Box
-            mb={2.5}
-            maxWidth={327}
-        >
+        <CheckTextFieldBox maxWidth={327}>
             {
                 label && (
                     <Box
@@ -49,7 +51,7 @@ const CheckTextField = memo((
                     <CheckInputError>{error}</CheckInputError>
                 )
             }
-        </Box>
+        </CheckTextFieldBox>
     )
 });
 

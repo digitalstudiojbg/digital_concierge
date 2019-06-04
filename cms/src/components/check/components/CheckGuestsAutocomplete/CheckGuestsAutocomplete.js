@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import Downshift from "downshift";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -10,16 +11,39 @@ import { CheckInput } from "../CheckTextField/styled";
 
 const getName = (obj) => obj ? `${obj.firstname} ${obj.lastname}` : "";
 
+const CheckAutocompletePaper = styled(Paper)`
+  max-height: 300px;
+  overflow: auto;
+`;
+
 const CheckAutocomplete = React.memo((
     {
         onSelect,
-        onUnselect
+        onUnselect,
+        isFilterByGuestsRoom,
     },
 ) => {
     const popperNode = useRef();
 
+    const filter = useCallback(
+        (obj, val) => {
+            let result = getName(obj).toLowerCase().includes(val.toLowerCase());
+
+            if (isFilterByGuestsRoom && result) {
+                result = obj.guest_rooms && obj.guest_rooms.length;
+            }
+
+            return result;
+        },
+        [],
+    );
+
+    // TODO: now it load all guest on every mount; need create normal autocomplete
     return (
-        <Query query={getGuests}>
+        <Query
+            query={getGuests}
+            fetchPolicy="no-cache"
+        >
             {({ data: { guests } = {} }) => (
                 <Downshift
                     onInputValueChange={onUnselect}
@@ -45,9 +69,9 @@ const CheckAutocomplete = React.memo((
                                 anchorEl={popperNode.current}
                                 style={{ width: popperNode.current ? popperNode.current.clientWidth : undefined }}
                             >
-                                <Paper>
+                                <CheckAutocompletePaper>
                                     {guests && guests
-                                        .filter(item => !inputValue || getName(item).includes(inputValue))
+                                        .filter(item => !inputValue || filter(item, inputValue))
                                         .map((item, index) => (
                                             <MenuItem
                                                 key={index}
@@ -61,7 +85,7 @@ const CheckAutocomplete = React.memo((
                                                 {getName(item)}
                                             </MenuItem>
                                         ))}
-                                </Paper>
+                                </CheckAutocompletePaper>
                             </Popper>
                         </div>
                     )}
@@ -74,6 +98,8 @@ const CheckAutocomplete = React.memo((
 CheckAutocomplete.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onUnselect: PropTypes.func.isRequired,
+
+    isFilterByGuestsRoom: PropTypes.bool,
 };
 
 export default CheckAutocomplete;

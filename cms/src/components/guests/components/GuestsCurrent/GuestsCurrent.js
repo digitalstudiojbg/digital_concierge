@@ -21,6 +21,10 @@ import {
 import s from "./GuestCurrent.module.scss";
 import GuestsCurrentMenu from "./GuestsCurrentMenu";
 
+const sortDateString = (d1, d2) => {
+    return (new Date(d1)).getTime() > (new Date(d2)).getTime() ? 1 : -1;
+};
+
 const COLUMNS = [
     {
         Header: "GUEST NAME",
@@ -42,6 +46,7 @@ const COLUMNS = [
         accessor: ({ checkin_date }) => checkin_date
             ? dayjs(checkin_date).format(GUEST_TABLE_FORMAT_DATE)
             : "-",
+        sortMethod: sortDateString,
     },
     {
         Header: "CHECK OUT @",
@@ -49,6 +54,7 @@ const COLUMNS = [
         accessor: ({ checkout_date }) => checkout_date
             ? dayjs(checkout_date).format(GUEST_TABLE_FORMAT_DATE)
             : "-",
+        sortMethod: sortDateString,
     },
     {
         Header: "TOTAL NIGHTS",
@@ -87,7 +93,10 @@ const COLUMNS = [
 ];
 
 const GuestsCurrent = () => (
-    <Query query={getGuestsRooms}>
+    <Query
+        query={getGuestsRooms}
+        fetchPolicy="no-cache"
+    >
         {({ loading, error, data: { guestRooms } }) => {
             if (loading) return <Loading loadingData />;
             if (error) return `Error: ${error.message}`;
@@ -96,7 +105,10 @@ const GuestsCurrent = () => (
                 <GuestsLayout title="Guests">
                     <GuestsNav />
 
-                    <Box mt={8.5}>
+                    <Box
+                        mt={8.5}
+                        mb={3}
+                    >
                         <ReactTable
                             className={s.guest_current_table}
                             resizable={false}
@@ -107,11 +119,11 @@ const GuestsCurrent = () => (
                             showPageSizeOptions={false}
                             showPaginationBottom={false}
                             NoDataComponent={() => null}
-                            TableComponent={GuestTable}
-                            TheadComponent={GuestTHead}
-                            TrComponent={GuestTR}
-                            ThComponent={GuestTH}
-                            TdComponent={GuestTD}
+                            TableComponent={(props) => <GuestTable {...props} />}
+                            TheadComponent={(props) => <GuestTHead {...props} />}
+                            TrComponent={(props) => <GuestTR {...props} />}
+                            ThComponent={(props) => <GuestTH {...props} onClick={props.toggleSort} />}
+                            TdComponent={(props) => <GuestTD {...props} />}
                         />
                     </Box>
                 </GuestsLayout>

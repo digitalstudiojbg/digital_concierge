@@ -16,10 +16,11 @@ export const GuestsNavTab = styled(Tab)`
         font-size: 14px;
         font-weight: bold;
         text-transform: none;
+        margin-bottom: -2px;
     }
 `;
 
 export const GuestsNavTabActiveStyle = {
-    borderBottom: "1px solid #2699FB",
+    borderBottom: "2px solid #2699FB",
     color: "#000",
 };
