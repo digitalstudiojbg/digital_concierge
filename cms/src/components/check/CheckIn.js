@@ -16,7 +16,7 @@ import CheckTimeForm from "./components/CheckTimeForm";
 import CheckAutocomplete from "./components/CheckGuestsAutocomplete";
 import CheckTextField from "./components/CheckTextField";
 import { CheckCol, CheckSubmitButton } from "./components/styled";
-import { CHECK_FORM_NAMES, CHECK_INITIAL_DATE, CheckInitialValues, } from "./constants";
+import { CHECK_FORM_NAMES, CHECK_INITIAL_DATE, CheckInitialValues } from "./constants";
 import { createCheckInFormData, getErrorMessage, pickGuest } from "./utils";
 import { CheckSchema } from "./validation";
 
@@ -51,7 +51,7 @@ const CheckIn = (
                 }
 
                 enqueueSnackbar(
-                    "Guest Check-in successfully created",
+                    "The guest has been checked in",
                     { variant: "success" }
                 );
 
@@ -125,7 +125,6 @@ const CheckIn = (
                                 </CheckSubmitButton>
                             </Box>
                         </CheckCol>
-
                     </Box>
                 </Form>
             )}

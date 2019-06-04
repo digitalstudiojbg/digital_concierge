@@ -72,7 +72,7 @@ const CheckOut = (
                 await mutationDeleteGuestRoom({ variables: { input: data } });
 
                 enqueueSnackbar(
-                    "Guest Check-out successfully created",
+                    "The guest has been checked out",
                     { variant: "success" }
                 );
 
