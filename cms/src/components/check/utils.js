@@ -17,7 +17,7 @@ export const pickGuest = (obj) => pick(
 );
 
 export const pickGuestRoom = (obj) => {
-    const room = obj.guest_rooms && obj.guest_rooms[obj.guest_rooms.length - 1];
+    const room = obj && obj.guest_rooms && obj.guest_rooms[obj.guest_rooms.length - 1];
 
     if (!room) {
         return null;
