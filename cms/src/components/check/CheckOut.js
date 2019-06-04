@@ -42,7 +42,9 @@ const CheckOut = (
 
     const getIsChangedDate = useCallback(
         (date) => {
-            const prevDate = pickGuestRoom(user)[CHECK_FORM_NAMES.checkOutDate];
+            console.log("pickGuestRoom", user, pickGuestRoom(user));
+            const prev = pickGuestRoom(user);
+            const prevDate = prev && prev[CHECK_FORM_NAMES.checkOutDate];
 
             return prevDate === date;
         },

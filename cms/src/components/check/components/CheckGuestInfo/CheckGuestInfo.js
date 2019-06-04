@@ -7,7 +7,10 @@ import CheckTextField from "../CheckTextField";
 import { CHECK_FORM_NAMES } from "../../constants";
 
 const CheckGuestInfo = ({ isDisabled }) => (
-    <CheckSection isDisabled={isDisabled} title="Guest Info">
+    <CheckSection
+        isDisabled={isDisabled}
+        title="Guest Info"
+    >
         <Box display="flex">
             <Box maxWidth={110}>
                 <FastField
@@ -34,7 +37,6 @@ const CheckGuestInfo = ({ isDisabled }) => (
                             {...field}
                             label="Room Number"
                             type="number"
-                            placeholder="66"
                         />
                     )}
                 />
