@@ -57,7 +57,7 @@ const CheckOut = (
                 [CHECK_FORM_NAMES.clientId]: fd[CHECK_FORM_NAMES.clientId],
             };
 
-            const updateFd = {
+            const update = {
                 ...data,
                 [CHECK_FORM_NAMES.checkOutDate]: fd[CHECK_FORM_NAMES.checkOutDate]
             };
@@ -66,7 +66,7 @@ const CheckOut = (
 
             try {
                 if (isChangedDate) {
-                    await mutationUpdateGuestRoom({ variables: { input: updateFd } })
+                    await mutationUpdateGuestRoom({ variables: { input: update } })
                 }
 
                 await mutationDeleteGuestRoom({ variables: { input: data } });

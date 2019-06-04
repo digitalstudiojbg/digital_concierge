@@ -16,14 +16,14 @@ const CheckAutocompletePaper = styled(Paper)`
   overflow: auto;
 `;
 
-function stateReducer(state, changes) {
+const stateReducer = (state, changes) => {
     switch (changes.type) {
         case Downshift.stateChangeTypes.changeInput:
             return { ...changes, selectedItem: null };
         default:
             return changes
     }
-}
+};
 
 const CheckAutocomplete = React.memo((
     {
