@@ -13,7 +13,11 @@ import Button from "@material-ui/core/Button";
 import InfoIcon from "@material-ui/icons/Info";
 import Tooltip from "@material-ui/core/Tooltip";
 import { withStyles } from "@material-ui/core/styles";
-import { PageHeader, SubSectionTop } from "../home/WelcomeStyleSet";
+import {
+    PageHeader,
+    SubSectionTop,
+    SubSectionDiv
+} from "../home/WelcomeStyleSet";
 
 const styles = () => ({
     infoIcon: {
@@ -81,7 +85,7 @@ const TabletContent = ({ history, match, classes }) => {
                         {modifiedData.length > 0 ? (
                             <TreeView data={modifiedData} history={history} />
                         ) : (
-                            <div
+                            <SubSectionDiv
                                 style={{
                                     height: "100%",
                                     width: "100%",
@@ -90,14 +94,15 @@ const TabletContent = ({ history, match, classes }) => {
                                     alignItems: "center",
                                     flexDirection: "column",
                                     border: "1px solid #9D9D9D",
-                                    borderRadius: "5px"
+                                    borderRadius: "5px",
+                                    padding: "200px 0"
                                 }}
                             >
                                 <div
                                     style={{
                                         fontSize: "2em",
-                                        paddingBottom: 20,
-                                        borderBottom: "2px solid black"
+                                        paddingBottom: 40,
+                                        borderBottom: "2px solid #707070"
                                     }}
                                 >
                                     This is where the system content will
@@ -106,7 +111,7 @@ const TabletContent = ({ history, match, classes }) => {
                                 <div
                                     style={{
                                         fontSize: "1.2em",
-                                        paddingTop: 20
+                                        paddingTop: 40
                                     }}
                                 >
                                     To get started add a directory list followed
@@ -114,14 +119,15 @@ const TabletContent = ({ history, match, classes }) => {
                                 </div>
                                 <div
                                     style={{
-                                        width: "30%",
-                                        paddingTop: 50
+                                        width: "20%",
+                                        paddingTop: 80
                                     }}
                                 >
                                     <Button
                                         style={{
                                             color: "white",
-                                            backgroundColor: "#2699FB"
+                                            backgroundColor: "#2699FB",
+                                            padding: "10px 0"
                                         }}
                                         variant="contained"
                                         fullWidth={true}
@@ -130,7 +136,7 @@ const TabletContent = ({ history, match, classes }) => {
                                         ADD DIRECTORY LIST
                                     </Button>
                                 </div>
-                            </div>
+                            </SubSectionDiv>
                         )}
                     </ContainerDiv>
                 );

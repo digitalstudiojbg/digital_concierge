@@ -35,9 +35,12 @@ const HeaderDiv = styled.div`
     align-items: center;
 `;
 
-const HeaderTitleDiv = styled.div`
-    font-size: 1.5em;
-    padding-right: 10px;
+const SectionHeader = styled.h4`
+    text-align: left;
+    font-size: 20px;
+    padding: 0px;
+    width: 100%;
+    padding-bottom: 10px;
 `;
 
 const ColourThemeContainerDiv = styled.div`
@@ -45,13 +48,15 @@ const ColourThemeContainerDiv = styled.div`
     display: flex;
     justify-content: center;
     padding: 10px;
-    border: 2px solid black;
+    border: 2px solid #dddddd;
+    border-radius: 5px;
+    background-color: white;
 `;
 
 const ColourThemeContainerDivWithWrap = styled.div`
     width: 80%;
     padding: 10px;
-    border: 2px solid black;
+    border: 2px solid #9d9d9d;
 `;
 
 const ColourEntryContainerDiv = styled.div`
@@ -59,7 +64,7 @@ const ColourEntryContainerDiv = styled.div`
     height: 150px;
     padding-top: 5px;
     padding-bottom: 5px;
-    border: 1px solid black;
+    border: 1px solid #dddddd;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
@@ -74,7 +79,7 @@ const FinalEntryWithWrapContainerDiv = styled(ColourEntryContainerDiv)`
 const ColourEntryDiv = styled.div`
     width: 80px;
     height: 80px;
-    border: 2px solid black;
+    border: 2px solid #9d9d9d;
     margin-bottom: 10px;
 `;
 
@@ -96,12 +101,12 @@ const ColourTitleDiv = styled.div`
 `;
 
 const styles = () => ({
-    importColourThemeButton: {
-        backgroundColor: "white"
-    },
-    saveCurrentThemeButton: {
+    Button: {
         backgroundColor: "white",
-        marginBottom: 10
+        borderRadius: "5px",
+        marginTop: "10px",
+        padding: "7px 0",
+        fontSize: "10px"
     }
 });
 
@@ -257,6 +262,12 @@ export const ColourSchemePicker = ({
                         <FormControlLabel
                             control={
                                 <Checkbox
+                                    style={{
+                                        color: "#2699FB",
+                                        label: {
+                                            fontSize: "10px"
+                                        }
+                                    }}
                                     checked={colours.equals(
                                         immutableSystemTheme
                                     )}
@@ -267,7 +278,7 @@ export const ColourSchemePicker = ({
                         />
                         <Button
                             variant="outlined"
-                            className={classes.saveCurrentThemeButton}
+                            className={classes.Button}
                             fullWidth={true}
                             onClick={openCreateDialog}
                             disabled={createButtonIsDisabled}
@@ -276,7 +287,7 @@ export const ColourSchemePicker = ({
                         </Button>
                         <Button
                             variant="outlined"
-                            className={classes.importColourThemeButton}
+                            className={classes.Button}
                             fullWidth={true}
                             onClick={openImportDialog}
                         >
@@ -296,13 +307,16 @@ export const ColourSchemePicker = ({
                             <React.Fragment>
                                 <ContainerDiv>
                                     <HeaderDiv>
-                                        <HeaderTitleDiv>
+                                        <SectionHeader>
                                             COLOUR SCHEME
-                                        </HeaderTitleDiv>
+                                        </SectionHeader>
                                         {!withWrap && (
                                             <FormControlLabel
                                                 control={
                                                     <Checkbox
+                                                        style={{
+                                                            color: "#2699FB"
+                                                        }}
                                                         checked={colours.equals(
                                                             immutableSystemTheme
                                                         )}

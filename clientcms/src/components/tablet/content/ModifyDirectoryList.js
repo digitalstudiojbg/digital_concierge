@@ -35,13 +35,20 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitleHelper from "../../../utils/DialogTitleHelper";
+import InfoIcon from "@material-ui/icons/Info";
+import Tooltip from "@material-ui/core/Tooltip";
 import { sanitize } from "dompurify";
+import {
+    MainSectionContainer,
+    PageHeader,
+    //  ContainerDiv,
+    ContainerDivTab,
+    TopButtonsContiner,
+    // BlueButtons,
+    SubSectionTop,
+    MainSubSections
+} from "../../home/WelcomeStyleSet";
 
-export const ContainerDivTab = styled.div`
-    width: 100%;
-    overflow-y: auto;
-    height: 80vh;
-`;
 const TabContainer = props => {
     return (
         // <Typography component="div" style={{ height: "100%" }}>
@@ -63,14 +70,13 @@ const styles = () => ({
         fontFamily: "Source Sans Pro, sans-serif"
     },
     buttonCancel: {
-        position: "absolute",
-        top: 140,
-        right: 180,
         backgroundColor: "white",
         color: "rgb(33,143,250)",
         border: "2px solid rgb(33,143,250)",
-        fontWeight: 600,
-        fontFamily: "Source Sans Pro, sans-serif"
+        fontWeight: "bold",
+        margin: "2% 2% 2% 15%",
+        width: "180px",
+        padding: "5% 0"
     },
     buttonSaveKeep: {
         width: 150,
@@ -80,6 +86,19 @@ const styles = () => ({
         backgroundColor: "rgb(33,143,250)",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif"
+    },
+    blueButtons: {
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
+        color: "white",
+        margin: "2%",
+        padding: "5% 0"
+    },
+    infoIcon: {
+        color: "rgb(38, 153, 251)"
+    },
+    tooltip: {
+        fontSize: "1em"
     }
 });
 
@@ -480,112 +499,169 @@ const ModifyDirectoryList = props => {
 
                             return (
                                 <Form>
-                                    <div
-                                        style={{
-                                            height: 60,
-                                            fontSize: "2em",
-                                            fontWeight: 700,
-                                            paddingTop: 20,
-                                            paddingBottom: 20
-                                        }}
-                                    >
-                                        SYSTEM CONTENT:{" "}
-                                        {has_data ? "MODIFY" : "ADD"} DIRECTORY
-                                        LIST
-                                    </div>
-                                    <Paper
-                                        square
-                                        style={{
-                                            backgroundColor: lightGreyHeader,
-                                            boxShadow: "none",
-                                            borderBottom:
-                                                "2px solid rgb(217,217,217)"
-                                        }}
-                                    >
-                                        <Tabs
-                                            value={tab}
-                                            // classes={{
-                                            //     indicator: props.classes.indicator
-                                            // }}
-                                            TabIndicatorProps={{
-                                                style: {
-                                                    backgroundColor:
-                                                        "rgb(57,154,249)"
-                                                }
-                                            }}
-                                            onChange={handleChange}
-                                        >
+                                    <ContainerDiv style={{ padding: "3%" }}>
+                                        <SubSectionTop>
+                                            <div
+                                                style={{
+                                                    width: "65%",
+                                                    display: "flex"
+                                                }}
                                             >
-                                            <Tab label="PREVIEW" />
-                                            <Tab label="LAYOUT" />
-                                            <Tab label="CONTENT" />
-                                        </Tabs>
-                                    </Paper>
-                                    <Button
-                                        type="submit"
-                                        variant="outlined"
-                                        className={classes.buttonSaveExit}
-                                    >
-                                        SAVE & EXIT
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={saveAndKeepEditing}
-                                        className={classes.buttonSaveKeep}
-                                    >
-                                        SAVE & KEEP EDITING
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        className={classes.buttonCancel}
-                                        onClick={handleCancelButton}
-                                    >
-                                        CANCEL
-                                    </Button>
-                                    <ContainerDivTab>
-                                        {tab === 0 && (
-                                            <TabContainer>PREVIEW</TabContainer>
-                                        )}
-                                        {tab === 1 && (
-                                            <TabContainer>
-                                                <ModifyDirectoryListLayout
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
+                                                <PageHeader>
+                                                    SYSTEM CONTENT:{" "}
+                                                    {has_data
+                                                        ? "MODIFY"
+                                                        : "ADD"}{" "}
+                                                    DIRECTORY LIST
+                                                </PageHeader>
+
+                                                <Tooltip
+                                                    classes={{
+                                                        tooltip: classes.tooltip
+                                                    }}
+                                                    title=" tincidunt, urna odio facilisis sapien, at
+                                                    aliquam massa turpis in ante. Praesent
+                                                    cursus venenatis erat, ac blandit velit.
+                                                    Duis eu ante faucibus, sollicitudin urna"
+                                                    placement="bottom"
+                                                >
+                                                    <InfoIcon
+                                                        className={
+                                                            classes.infoIcon
+                                                        }
+                                                        fontSize="small"
+                                                    />
+                                                </Tooltip>
+                                            </div>
+                                            <TopButtonsContiner>
+                                                <Button
+                                                    variant="outlined"
+                                                    className={
+                                                        classes.buttonCancel
                                                     }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                        {tab === 2 && (
-                                            <TabContainer>
-                                                <ModifyDirectoryListContent
-                                                    values={values}
-                                                    errors={errors}
-                                                    isSubmitting={isSubmitting}
-                                                    setFieldValue={
-                                                        setFieldValue
+                                                    onClick={handleCancelButton}
+                                                >
+                                                    CANCEL
+                                                </Button>
+                                            </TopButtonsContiner>
+                                            <TopButtonsContiner>
+                                                <Button
+                                                    type="submit"
+                                                    variant="outlined"
+                                                    className={
+                                                        classes.blueButtons
                                                     }
-                                                />
-                                            </TabContainer>
-                                        )}
-                                    </ContainerDivTab>
-                                    <Dialog
-                                        open={openDialog}
-                                        TransitionComponent={SlideUpTransition}
-                                        keepMounted
-                                        onClose={closeDialog}
-                                    >
-                                        <DialogTitleHelper
+                                                >
+                                                    SAVE & EXIT
+                                                </Button>
+                                                <Button
+                                                    variant="outlined"
+                                                    onClick={saveAndKeepEditing}
+                                                    className={
+                                                        classes.blueButtons
+                                                    }
+                                                >
+                                                    SAVE & KEEP EDITING
+                                                </Button>
+                                            </TopButtonsContiner>
+                                        </SubSectionTop>
+
+                                        <Paper
+                                            square
+                                            style={{
+                                                backgroundColor: lightGreyHeader,
+                                                boxShadow: "none",
+                                                borderBottom:
+                                                    "2px solid rgb(217,217,217)"
+                                            }}
+                                        >
+                                            <Tabs
+                                                value={tab}
+                                                // classes={{
+                                                //     indicator: props.classes.indicator
+                                                // }}
+                                                TabIndicatorProps={{
+                                                    style: {
+                                                        backgroundColor:
+                                                            "rgb(57,154,249)"
+                                                    }
+                                                }}
+                                                onChange={handleChange}
+                                            >
+                                                >
+                                                <Tab label="PREVIEW" />
+                                                <Tab label="LAYOUT" />
+                                                <Tab label="CONTENT" />
+                                            </Tabs>
+                                        </Paper>
+
+                                        <ContainerDivTab>
+                                            {tab === 0 && (
+                                                <TabContainer>
+                                                    PREVIEW
+                                                </TabContainer>
+                                            )}
+                                            {tab === 1 && (
+                                                <TabContainer>
+                                                    <ModifyDirectoryListLayout
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                            {tab === 2 && (
+                                                <TabContainer>
+                                                    <ModifyDirectoryListContent
+                                                        values={values}
+                                                        errors={errors}
+                                                        isSubmitting={
+                                                            isSubmitting
+                                                        }
+                                                        setFieldValue={
+                                                            setFieldValue
+                                                        }
+                                                    />
+                                                </TabContainer>
+                                            )}
+                                        </ContainerDivTab>
+                                        <Dialog
+                                            open={openDialog}
+                                            TransitionComponent={
+                                                SlideUpTransition
+                                            }
+                                            keepMounted
                                             onClose={closeDialog}
                                         >
-                                            CONFIRM PAGE NAVIGATION
-                                        </DialogTitleHelper>
-                                        <DialogContent>
-                                            <DialogContentText component="div">
-                                                {dirty ? (
-                                                    <React.Fragment>
+                                            <DialogTitleHelper
+                                                onClose={closeDialog}
+                                            >
+                                                CONFIRM PAGE NAVIGATION
+                                            </DialogTitleHelper>
+                                            <DialogContent>
+                                                <DialogContentText component="div">
+                                                    {dirty ? (
+                                                        <React.Fragment>
+                                                            <div
+                                                                style={{
+                                                                    paddingTop: 10
+                                                                }}
+                                                            >
+                                                                ARE YOU SURE YOU
+                                                                WANT TO LEAVE
+                                                                THIS PAGE?
+                                                            </div>
+                                                            <div>
+                                                                YOU HAVE UNSAVED
+                                                                CHANGES.
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ) : (
                                                         <div
                                                             style={{
                                                                 paddingTop: 10
@@ -595,38 +671,25 @@ const ModifyDirectoryList = props => {
                                                             WANT TO LEAVE THIS
                                                             PAGE?
                                                         </div>
-                                                        <div>
-                                                            YOU HAVE UNSAVED
-                                                            CHANGES.
-                                                        </div>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <div
-                                                        style={{
-                                                            paddingTop: 10
-                                                        }}
-                                                    >
-                                                        ARE YOU SURE YOU WANT TO
-                                                        LEAVE THIS PAGE?
-                                                    </div>
-                                                )}
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button
-                                                color="primary"
-                                                onClick={cancelEdit}
-                                            >
-                                                LEAVE
-                                            </Button>
-                                            <Button
-                                                color="primary"
-                                                onClick={closeDialog}
-                                            >
-                                                STAY
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
+                                                    )}
+                                                </DialogContentText>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button
+                                                    color="primary"
+                                                    onClick={cancelEdit}
+                                                >
+                                                    LEAVE
+                                                </Button>
+                                                <Button
+                                                    color="primary"
+                                                    onClick={closeDialog}
+                                                >
+                                                    STAY
+                                                </Button>
+                                            </DialogActions>
+                                        </Dialog>
+                                    </ContainerDiv>
                                 </Form>
                             );
                         }}

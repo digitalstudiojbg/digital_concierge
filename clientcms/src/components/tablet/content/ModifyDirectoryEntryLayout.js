@@ -9,6 +9,14 @@ import { getDirectoryListBySystem } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import { modifyDirectoryListData } from "../../../utils/Constants";
 import TreeviewSelector from "../../../utils/TreeviewSelector";
+import {
+    SectionHeader,
+    SubSectionHeader,
+    SubSectionTop,
+    MainSubSections,
+    SubSectionDiv,
+    ContainerDiv
+} from "../../home/WelcomeStyleSet";
 
 const SubtitleDiv = styled.div`
     font-size: 1.5em;
@@ -30,14 +38,16 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
     };
 
     return (
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-                paddingTop: 20
-            }}
+        <ContainerDiv
+            style={
+                {
+                    // width: "100%",
+                    // height: "100%",
+                    // paddingTop: 20
+                }
+            }
         >
-            <SubtitleDiv>DETAILS</SubtitleDiv>
+            <SectionHeader>DETAILS</SectionHeader>
             <div
                 style={{
                     width: "80%",
@@ -112,7 +122,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                 </Field>
             </div>
             <div style={{ width: "80%", height: "50%" }}>
-                <SubtitleDiv>LAYOUT</SubtitleDiv>
+                <SectionHeader>LAYOUT</SectionHeader>
                 <LayoutPicker
                     values={values}
                     setFieldValue={setFieldValue}
@@ -122,7 +132,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                     layoutListDirection="horizontal"
                 />
             </div>
-        </div>
+        </ContainerDiv>
     );
 };
 

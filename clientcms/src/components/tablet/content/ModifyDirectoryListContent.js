@@ -24,6 +24,13 @@ import ColourSchemePicker from "../../../utils/ColourSchemePicker";
 import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import {
+    SectionHeader,
+    SubSectionHeader,
+    SubSectionTop,
+    MainSubSections,
+    SubSectionDiv
+} from "../../home/WelcomeStyleSet";
 
 const styles = _theme => ({
     saveButton: {
@@ -66,6 +73,9 @@ const styles = _theme => ({
     uploadFileButton: {
         backgroundColor: "white",
         marginBottom: 10
+    },
+    input: {
+        color: "white"
     }
 });
 
@@ -383,22 +393,23 @@ class ModifyDirectoryListContent extends React.PureComponent {
         return (
             <ContainerDiv>
                 <CreateContentContainerDiv>
-                    <div
+                    <MainSubSections
                         style={{
                             width: "100%",
                             height: "60%",
                             display: "flex"
                         }}
                     >
-                        <div style={{ flexBasis: "35%" }}>
-                            <div style={{ width: "95%", paddingBottom: 20 }}>
-                                <div
-                                    style={{
-                                        paddingBottom: 20
-                                    }}
-                                >
+                        <SubSectionDiv
+                            style={{
+                                flexBasis: "30%",
+                                margin: "1% 3% 1% 0"
+                            }}
+                        >
+                            <div style={{ width: "95%" }}>
+                                <SectionHeader style={{ color: "black" }}>
                                     {subTitleText}
-                                </div>
+                                </SectionHeader>
                                 {/* <Field
                                     name="title"
                                     validateOnBlur
@@ -417,16 +428,15 @@ class ModifyDirectoryListContent extends React.PureComponent {
                                     setFieldValue={setFieldValue}
                                     initialValue={values.title}
                                     withPlaintext={true}
+                                    InputProps={{
+                                        className: classes.input
+                                    }}
                                 />
                             </div>
-                            <div style={{ width: "95%" }}>
-                                <div
-                                    style={{
-                                        paddingBottom: 20
-                                    }}
-                                >
+                            <div style={{ width: "95%", marginTop: "10%" }}>
+                                <SectionHeader style={{ color: "black" }}>
                                     TEXT FIELD
-                                </div>
+                                </SectionHeader>
                                 {/* <Field
                                     name="description"
                                     multiline
@@ -451,21 +461,27 @@ class ModifyDirectoryListContent extends React.PureComponent {
                                     withPlaintext={false}
                                 />
                             </div>
-                        </div>
-                        <div style={{ flexBasis: "35%" }}>
+                        </SubSectionDiv>
+                        <SubSectionDiv
+                            style={{
+                                flexBasis: "30%",
+                                margin: "1% 3% 1% 0",
+                                borderRight: "1px solid #DDDDDD"
+                            }}
+                        >
                             <div style={{ width: "95%", height: "100%" }}>
-                                <div style={{ paddingBottom: 20 }}>
+                                <SectionHeader style={{ color: "black" }}>
                                     HEADER IMAGE
-                                </div>
+                                </SectionHeader>
 
                                 {this.renderImageUploader()}
                             </div>
-                        </div>
+                        </SubSectionDiv>
 
-                        <div style={{ flexBasis: "30%" }}>
+                        <SubSectionDiv style={{ flexBasis: "30%" }}>
                             {this.renderColourSchemePicker()}
-                        </div>
-                    </div>
+                        </SubSectionDiv>
+                    </MainSubSections>
                 </CreateContentContainerDiv>
                 <Dialog
                     open={this.state.openDialog}

@@ -7,16 +7,41 @@ export const MainSectionContainer = styled.div`
     //  background-color: #f4f4f4;
     padding: 3%;
 `;
-
-export const PageHeader = styled.h2`
-    fontsize: 30px;
-    padding-bottom: 2%;
+export const ContainerDiv = styled.div`
+    width: 100%;
+    //  height: 100%;
+    display: flex;
 `;
-//------Dashboard page
+
+export const SubContainerDiv = styled.div`
+    width: 33%;
+    padding: 20px;
+`;
+export const MainSubSections = styled.div``;
 
 export const SubSectionDiv = styled.div`
     margin: 5px 0;
 `;
+export const PageHeader = styled.h2`
+    fontsize: 30px;
+    padding-bottom: 2%;
+`;
+
+export const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 0px;
+    width: 100%;
+`;
+
+export const SubSectionHeader = styled.h5`
+    padding: 20px 0 5px;
+    color: black;
+`;
+
+//------Dashboard page
+
 export const SubSectionTop = styled.div`
     display: flex;
 `;
@@ -48,14 +73,6 @@ export const TopButtonsContiner = styled.div`
 `;
 
 //---- WelcomeAccountClient
-
-export const ContainerDiv = styled.div`
-    width: 100%;
-    //  height: 100%;
-    display: flex;
-`;
-
-export const MainSubSections = styled.div``;
 
 export const SectionDiv = styled.div`
     width: ${props => props.width};
@@ -126,19 +143,6 @@ export const FieldLabel = styled.div`
     color: #5c5c5c;
     fontsize: 10px;
     marginbottom: 10px;
-`;
-
-export const SectionHeader = styled.h4`
-    text-align: left;
-    color: #2699fb;
-    font-size: 20px;
-    padding: 0px;
-    width: 100%;
-`;
-
-export const SubSectionHeader = styled.h5`
-    padding: 20px 0 5px;
-    color: black;
 `;
 
 //---WelcomeTheme
@@ -306,11 +310,6 @@ export const SelectAndUnselectAll = styled.div`
     }
 `;
 
-export const SubContainerDiv = styled.div`
-    width: 33%;
-    padding: 20px;
-`;
-
 //----------
 
 export const SidebarContainer = styled.div``;
@@ -319,7 +318,7 @@ export const SidebarSubItem = styled.div`
 display: flex;
 align-items: center;
 padding-left: ${props => props.paddingLeft};
-height: 60px;
+height: 70px;
 transition: all 0.3s linear;
 width:260px;
 
@@ -349,7 +348,7 @@ export const SidebarItem = styled.div`
     display: flex;
     align-items: center;
     padding-left: ${props => props.paddingLeft};
-    height: 60px;
+    height: 70px;
     transition: all 0.3s linear;
     width:100%;
 
@@ -379,14 +378,11 @@ export const SidebarItem = styled.div`
 export const SidebarLabel = styled.div`
     font-size: 18px;
     /* font-weight: 700; */
-    padding-left: 10px;
-    padding-top: 0x;
-    padding-bottom: 0px;
+    padding: 0 0 0 10px;
 `;
 
 export const ClientAvatarDiv = styled.div`
     height: 80%;
-    padding: 10%;
     background-image: url(${props => props.imageUrl});
     background-position: center;
     background-repeat: no-repeat;

@@ -308,9 +308,9 @@ class Sidebar extends Component {
                                     <div
                                         style={{
                                             width: "100%",
-                                            height: "15%",
+                                            height: "160px",
                                             backgroundColor: "white",
-                                            paddingTop: "5%"
+                                            paddingTop: "10%"
                                         }}
                                     >
                                         <ClientAvatarDiv
@@ -344,7 +344,9 @@ class Sidebar extends Component {
                                         >
                                             <React.Fragment key={index}>
                                                 <SidebarItem
-                                                    style={{ width: "260px" }}
+                                                    style={{
+                                                        width: "260px"
+                                                    }}
                                                     onClick={() => {
                                                         {
                                                             const navigateTo =

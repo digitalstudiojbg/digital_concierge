@@ -26,10 +26,6 @@ import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {
-    MainSectionContainer,
-    PageHeader,
-    ContainerDivTab,
-    TopButtonsContiner,
     SectionHeader,
     SubSectionHeader,
     SubSectionTop,
