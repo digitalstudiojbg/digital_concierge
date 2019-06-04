@@ -29,7 +29,13 @@ import {
 } from "./justBrilliantGuide";
 import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
 import { getTabbedPageComplete } from "./misc";
-import { getAdvertiserList, getAdvertiserFromPublication } from "./advertiser";
+import {
+    getAdvertiserList,
+    getAdvertiserFromPublication,
+    getAdvertiserDetail,
+    getAdvertiserActiveAgreement
+} from "./advertiser";
+import { getArtworkSizeList } from "./artworkSize";
 
 export {
     getCurrentUserQuery,
@@ -62,5 +68,8 @@ export {
     getAdvertiserList,
     getAdvertiserFromPublication,
     getAdvertiserCurrencyList,
-    getJustBrilliantGuideIdFromAdvertiser
+    getJustBrilliantGuideIdFromAdvertiser,
+    getAdvertiserDetail,
+    getAdvertiserActiveAgreement,
+    getArtworkSizeList
 };

@@ -218,7 +218,20 @@ export default {
             );
 
             return await db.advertising.findByPk(id);
-        }
+        },
+        editAdvertisingArtwork: async (
+            _root,
+            {
+                input: {
+                    id,
+                    artworkSizeId,
+                    artwork_supply_date,
+                    artwork_file,
+                    articleId
+                }
+            },
+            { user, clientIp }
+        ) => {}
     },
 
     Advertising: {

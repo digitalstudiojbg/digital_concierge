@@ -9,6 +9,7 @@ export default gql`
     extend type Mutation {
         createAdvertising(input: CreateAdvertisingInput): Advertising
         editAdvertising(input: UpdateAdvertisingInput): Advertising
+        editAdvertisingArtwork(input: AdvertisingArtworkInput): Advertising
     }
 
     type Advertising {
@@ -61,5 +62,13 @@ export default gql`
         currencyId: ID!
         invoice_amount: Float!
         payable_date: DateTime!
+    }
+
+    input AdvertisingArtworkInput {
+        id: ID!
+        artworkSizeId: ID!
+        artwork_supply_date: DateTime!
+        artwork_file: Upload
+        articleId: ID!
     }
 `;

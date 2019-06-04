@@ -287,6 +287,8 @@ export default {
         eventFamily: async jbg =>
             await db.jbg_layout_family.findByPk(jbg.eventFamilyId),
         essentialFamily: async jbg =>
-            await db.jbg_layout_family.findByPk(jbg.essentialFamilyId)
+            await db.jbg_layout_family.findByPk(jbg.essentialFamilyId),
+        articles: async ({ id }) =>
+            await db.article.findAll({ where: { justBrilliantGuideId: id } })
     }
 };

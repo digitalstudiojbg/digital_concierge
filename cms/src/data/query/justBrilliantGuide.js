@@ -27,3 +27,15 @@ export const getJustBrilliantGuideIdFromAdvertiser = gql`
         }
     }
 `;
+
+export const getArticlesFromJustBrilliantGuide = gql`
+    query getArticlesFromJustBrilliantGuide($id: ID!) {
+        justBrilliantGuide(id: $id) {
+            id
+            articles {
+                id
+                name
+            }
+        }
+    }
+`;

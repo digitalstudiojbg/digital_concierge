@@ -15,3 +15,11 @@ export const EDIT_ADVERTISING = gql`
         }
     }
 `;
+
+export const EDIT_ADVERTISING_ARTWORK = gql`
+    mutation editAdvertisingArtwork($input: AdvertisingArtworkInput) {
+        editAdvertisingArtwork(input: $input) {
+            id
+        }
+    }
+`;

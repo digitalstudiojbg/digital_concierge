@@ -1,5 +1,9 @@
 import gql from "graphql-tag";
-import { advertiserListFragment, advertiserDetailFragment } from "../fragment";
+import {
+    advertiserListFragment,
+    advertiserDetailFragment,
+    paymentDetailFragment
+} from "../fragment";
 
 export const getAdvertiserFromPublication = gql`
     query getAdvertiserFromPublication($id: ID!) {
@@ -26,4 +30,40 @@ export const getAdvertiserDetail = gql`
         }
     }
     ${advertiserDetailFragment}
+`;
+
+export const getAdvertiserActiveAgreement = gql`
+    query getAdvertiserActiveAgreement($id: ID!) {
+        advertiser(id: $id) {
+            id
+            active_advertising {
+                id
+                agreement_number
+                agreement_date
+                agreement_file
+                agreement_file_key
+                period_month
+                commence_date
+                expire_date
+                artwork_supply_date
+                media {
+                    id
+                    name
+                    path
+                }
+                artwork_size {
+                    id
+                    name
+                }
+                articles {
+                    id
+                    name
+                }
+                payment {
+                    ...paymentDetail
+                }
+            }
+        }
+    }
+    ${paymentDetailFragment}
 `;

@@ -46,6 +46,7 @@ export default gql`
         jbg_maps: [JbgMap]
         jbg_directory_lists: [JbgDirectoryList]
         media: [Media]
+        articles: [Article]
     }
 
     input CreateJustBrilliantGuideInput {

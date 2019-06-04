@@ -30,6 +30,7 @@ const EditExistingAdvertiser = ({
                     has_data={true}
                     push={push}
                     advertiserId={advertiser_id}
+                    pubId={pub_id}
                     goToNext={Boolean(state) && Boolean(state.goToNext)}
                     exitUrl={
                         Boolean(pub_id)
