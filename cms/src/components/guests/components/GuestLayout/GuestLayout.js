@@ -10,6 +10,7 @@ const GuestsLayoutTitle = styled("h1")`
     color: #43425D;
     font-family: Source Sans Pro, Bold;
     font-size: 28px;
+    margin-bottom: 0;
 `;
 
 const GuestsLayoutDot = styled(Box)`
@@ -32,7 +33,6 @@ const GuestsLayout = ({ children, title, isShowCancel }) => (
         pr={5}
     >
         <Box
-            mb={5.5}
             display="flex"
             alignItems="center"
             justifyContent="space-between"
@@ -42,10 +42,7 @@ const GuestsLayout = ({ children, title, isShowCancel }) => (
                 alignItems="center"
             >
                 <GuestsLayoutTitle>{title}</GuestsLayoutTitle>
-                <GuestsLayoutDot
-                    ml={1.5}
-                    mt={-1.5}
-                >
+                <GuestsLayoutDot ml={1.5}>
                     <span>i</span>
                 </GuestsLayoutDot>
             </Box>

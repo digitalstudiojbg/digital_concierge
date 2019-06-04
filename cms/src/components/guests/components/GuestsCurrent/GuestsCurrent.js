@@ -105,28 +105,30 @@ const GuestsCurrent = () => (
 
             return (
                 <GuestsLayout title="Guests">
-                    <GuestsNav />
+                    <Box mt={5}>
+                        <GuestsNav />
 
-                    <Box
-                        mt={8.5}
-                        mb={3}
-                    >
-                        <ReactTable
-                            className={s.guest_current_table}
-                            resizable={false}
-                            data={guestRooms}
-                            columns={COLUMNS}
-                            defaultPageSize={guestRooms.length}
-                            showPagination={false}
-                            showPageSizeOptions={false}
-                            showPaginationBottom={false}
-                            NoDataComponent={() => null}
-                            TableComponent={(props) => <GuestTable {...props} />}
-                            TheadComponent={(props) => <GuestTHead {...props} />}
-                            TrComponent={(props) => <GuestTR {...props} />}
-                            ThComponent={(props) => <GuestTH {...props} onClick={props.toggleSort} />}
-                            TdComponent={(props) => <GuestTD {...props} />}
-                        />
+                        <Box
+                            mt={8.5}
+                            mb={3}
+                        >
+                            <ReactTable
+                                className={s.guest_current_table}
+                                resizable={false}
+                                data={guestRooms}
+                                columns={COLUMNS}
+                                defaultPageSize={guestRooms.length}
+                                showPagination={false}
+                                showPageSizeOptions={false}
+                                showPaginationBottom={false}
+                                NoDataComponent={() => null}
+                                TableComponent={(props) => <GuestTable {...props} />}
+                                TheadComponent={(props) => <GuestTHead {...props} />}
+                                TrComponent={(props) => <GuestTR {...props} />}
+                                ThComponent={(props) => <GuestTH {...props} onClick={props.toggleSort} />}
+                                TdComponent={(props) => <GuestTD {...props} />}
+                            />
+                        </Box>
                     </Box>
                 </GuestsLayout>
             );

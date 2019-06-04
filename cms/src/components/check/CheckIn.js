@@ -74,7 +74,10 @@ const CheckIn = (
             initialValues={CheckInitialValues}
             render={({ setValues, values }) => (
                 <Form>
-                    <Box width={900}>
+                    <Box
+                        width={900}
+                        mt={2}
+                    >
                         <CheckTextField
                             label="SEARCH GUEST REGISTER"
                             name="guest"
