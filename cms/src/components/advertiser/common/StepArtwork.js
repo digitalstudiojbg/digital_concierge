@@ -22,6 +22,7 @@ import { isEmpty } from "lodash";
 import styled from "styled-components";
 import SimpleImageUploader from "../../../utils/SimpleImageUploader";
 import * as Yup from "yup";
+import { getAdvertiserFromPublication } from "../../../data/query/advertiser";
 
 const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId, push }) => (
     <Query
@@ -78,6 +79,12 @@ const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId, push }) => (
                                     return (
                                         <Mutation
                                             mutation={EDIT_ADVERTISING_ARTWORK}
+                                            refetchQueries={[
+                                                {
+                                                    query: getAdvertiserFromPublication,
+                                                    variables: { id: pubId }
+                                                }
+                                            ]}
                                         >
                                             {(action, { loading, error }) => {
                                                 if (loading)
