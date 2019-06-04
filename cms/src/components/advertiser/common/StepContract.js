@@ -28,6 +28,10 @@ import { generatePeriodMonthList } from "../../../utils/Constants";
 import dayjs from "dayjs";
 import SimpleDocumentUploader from "../../../utils/SimpleDocumentUploader";
 import { CREATE_ADVERTISING, EDIT_ADVERTISING } from "../../../data/mutation";
+import {
+    createContractSchema,
+    editContractSchema
+} from "./StepContractValidationSchema";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 20px;
@@ -167,6 +171,7 @@ const StepContractHOC = props => {
         <Query
             query={getAdvertiserDetail}
             variables={{ id: props.advertiserId }}
+            fetchPolicy="network-only"
         >
             {({
                 loading: loadingAdvertiser,
@@ -454,10 +459,16 @@ const StepContract = ({
           };
 
     let documentRef = React.createRef();
+    const currencyIds = currencyList.map(({ id }) => id);
     return (
         <Formik
             ref={onRef}
             initialValues={initialValues}
+            validationSchema={
+                has_data
+                    ? editContractSchema(currencyIds)
+                    : createContractSchema(currencyIds)
+            }
             onSubmit={(values, { setSubmitting }) => {
                 setSubmitting(true);
                 console.log(documentRef);

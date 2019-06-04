@@ -21,11 +21,13 @@ import { DatePicker } from "@material-ui/pickers";
 import { isEmpty } from "lodash";
 import styled from "styled-components";
 import SimpleImageUploader from "../../../utils/SimpleImageUploader";
+import * as Yup from "yup";
 
 const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId, push }) => (
     <Query
         query={getAdvertiserActiveAgreement}
         variables={{ id: advertiserId }}
+        fetchPolicy="network-only"
     >
         {({
             loading: loadingAdvertiser,
@@ -156,6 +158,18 @@ const FieldContainerDiv = styled.div`
     margin-bottom: 20px;
 `;
 
+const requiredErrorMessage = "Required";
+const validationSchema = (articles, artworkSizes) =>
+    Yup.object().shape({
+        artworkSizeId: Yup.string()
+            .oneOf(artworkSizes)
+            .required(requiredErrorMessage),
+        artwork_supply_date: Yup.date().required(requiredErrorMessage),
+        articleId: Yup.string()
+            .oneOf(articles)
+            .required(requiredErrorMessage)
+    });
+
 const StepArtwork = ({
     advertiser,
     exitUrl,
@@ -168,8 +182,13 @@ const StepArtwork = ({
     const { active_advertising } = advertiser;
     const { media, expire_date, commence_date } = active_advertising;
     let documentRef = React.createRef();
+
+    const articleIds = articles.map(({ id }) => id);
+    const artworkIds = artworkSizes.map(({ id }) => id);
     return (
         <Formik
+            ref={onRef}
+            validationSchema={validationSchema(articleIds, artworkIds)}
             initialValues={{
                 artworkSizeId:
                     Boolean(active_advertising) &&

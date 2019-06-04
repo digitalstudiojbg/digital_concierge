@@ -22,7 +22,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
-import StepContractValidationSchema from "./StepContractValidationSchema";
+import StepContractValidationSchema from "./StepAdvertiserValidationSchema";
 import {
     ContainerDiv,
     SectionDiv,

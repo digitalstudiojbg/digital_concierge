@@ -131,7 +131,7 @@ export default {
                 );
             }
 
-            temp = await db.payment.findByPk(id);
+            temp = await db.advertising.findByPk(id);
             if (!Boolean(temp)) {
                 throw new UserInputError(
                     `Error! Advertising ID ${id} does not exist`
@@ -305,7 +305,14 @@ export default {
 
             handleUpdateActionActivityLog(
                 advertising,
-                { ...tempAdvertising, mediumId: uploadedImage.id, articleId },
+                {
+                    ...tempAdvertising,
+                    ...(Boolean(artwork_file) &&
+                        Boolean(uploadedImage) && {
+                            mediumId: uploadedImage.id
+                        }),
+                    articleId
+                },
                 user,
                 clientIp
             );
