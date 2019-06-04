@@ -40,6 +40,8 @@ const CheckTimeForm = React.memo((
     const isCurrentDay = useCallback(day => dayjs(day).day() === NOW.day(), []);
     const isCurrentTime = useCallback(day => isEqualTime(day, NOW), []);
 
+    const isDisabledCheckbox = minDate.diff(NOW) > 0;
+
     return (
         <CheckSection title={title}>
             <Box display="flex">
@@ -61,6 +63,7 @@ const CheckTimeForm = React.memo((
                                     <CheckTimeFormCheckbox
                                         label="CURRENT DATE"
                                         id={`${field.name}_cb`}
+                                        disabled={isDisabledCheckbox}
                                         onClick={handleDateCheckbox}
                                         checked={isCurrentDay(field.value)}
                                     />
@@ -91,6 +94,7 @@ const CheckTimeForm = React.memo((
                                         label="CURRENT TIME"
                                         id={`${field.name}_cb`}
                                         onClick={handleTimeCheckbox}
+                                        disabled={isDisabledCheckbox}
                                         checked={isCurrentTime(field.value)}
                                     />
                                 ) :  <span />
