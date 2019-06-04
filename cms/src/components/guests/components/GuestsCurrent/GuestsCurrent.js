@@ -34,11 +34,12 @@ const COLUMNS = [
     {
         Header: "GUEST ID",
         id: "guest.id",
-        accessor: ({ guest }) => guest.id,
+        accessor: ({ guest }) => Number(guest.id),
     },
     {
         Header: "# PEOPLE",
-        accessor: "guest_count",
+        id: "guest_count",
+        accessor: ({ guest_count }) => Number(guest_count),
     },
     {
         Header: "CHECKED IN @",
@@ -58,12 +59,13 @@ const COLUMNS = [
     },
     {
         Header: "TOTAL NIGHTS",
-        accessor: "total_nights",
+        id: "total_nights",
+        accessor: ({ total_nights }) => Number(total_nights),
     },
     {
         Header: "ROOM #",
         id: "room.id",
-        accessor: ({ room }) => room.id,
+        accessor: ({ room }) => Number(room.id),
     },
     {
         Header: "DEVICE STATUS",
