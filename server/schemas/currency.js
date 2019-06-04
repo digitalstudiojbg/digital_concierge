@@ -9,6 +9,7 @@ export default gql`
     type Currency {
         id: ID!
         name: String
+        code: String
         countries: [Country]
         payments: [Payment]
     }

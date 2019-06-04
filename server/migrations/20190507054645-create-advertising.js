@@ -1,48 +1,72 @@
 "use strict";
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        return queryInterface.createTable("contacts", {
+        return queryInterface.createTable("advertising", {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            name: {
+            agreement_number: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            title: {
+            agreement_date: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            agreement_file: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            phone: {
+            agreement_file_key: {
                 type: Sequelize.STRING,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            mobile: {
-                type: Sequelize.STRING,
+            period_month: {
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 validate: {
                     notEmpty: true
                 }
             },
-            email: {
-                type: Sequelize.STRING,
+            commence_date: {
+                type: Sequelize.DATE,
                 allowNull: false,
                 validate: {
-                    notEmpty: true,
-                    isEmail: true
+                    notEmpty: true
                 }
+            },
+            expire_date: {
+                type: Sequelize.DATE,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                }
+            },
+            artwork_supply_date: {
+                type: Sequelize.DATE
+            },
+            active: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                validate: {
+                    notEmpty: true
+                },
+                defaultValue: true
             },
             createdAt: {
                 allowNull: false,
@@ -56,7 +80,7 @@ module.exports = {
             }
         });
     },
-    down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable("contacts");
+    down: queryInterface => {
+        return queryInterface.dropTable("advertising");
     }
 };

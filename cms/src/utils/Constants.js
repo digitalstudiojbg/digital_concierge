@@ -1,5 +1,7 @@
+import React from "react";
 import styled from "styled-components";
 import FileSaver from "file-saver";
+import Slide from "@material-ui/core/Slide";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -21,8 +23,10 @@ export const DECIMAL_RADIX = 10;
 
 //URL Constants
 export const LOGIN_URL = "/login";
-export const WELCOME_URL = "/welcome";
-export const CREATE_NEW_CLIENT = "/welcome/new_client";
+export const WELCOME_URL = "/main";
+export const WELCOME_URL_CLIENT = "/welcome";
+export const WELCOME_URL_ROUTER = "/main/:which";
+export const CREATE_NEW_CLIENT = "/create_new_client";
 
 export const SYSTEM_INDEX_URL = "/system/:system_id";
 export const SYSTEM_CMS_INDEX_URL = SYSTEM_INDEX_URL + "/cms";
@@ -43,6 +47,14 @@ export const SYSTEM_MODIFY_DIRECTORY_LIST_URL =
 export const SYSTEM_MODIFY_DIRECTORY_ENTRY_URL =
     SYSTEM_INDEX_URL + "/content/modify_directory_entry";
 export const SYSTEM_CMS_LIBRARY = SYSTEM_INDEX_URL + "/library";
+
+//Guides URL
+export const GUIDE_MAIN_URL = "/guide/:pub_id";
+export const GUIDE_CREATE_NEW_URL = "/guide/new";
+
+//Advertisers URL
+export const ADVERTISER_MAIN_URL = "/edit/advertiser/:advertiser_id";
+export const ADVERTISER_CREATE_NEW_URL = "/create/advertiser";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
@@ -176,3 +188,36 @@ export const bytesToKb = size => size / 1024;
 
 //https://stackoverflow.com/questions/8027423/how-to-check-if-a-string-is-a-valid-hex-color-representation/8027444
 export const HEX_COLOUR_REGEX = /^#[0-9A-F]{6}$/i;
+
+export const LayoutImageDiv = styled.div`
+    width: ${props => props.width};
+    height: ${props => props.height};
+    background-image: url(${props => props.imageUrl});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: white;
+`;
+
+export const SlideUpTransition = props => {
+    return <Slide direction="up" {...props} />;
+};
+
+export const digitsOnly = value => new RegExp("/^d+$/").test(value);
+
+export const generatePeriodMonthList = (maxMonth, minMonth = 1) => {
+    let currentMonth = minMonth;
+    let output = [];
+    if (maxMonth > minMonth) {
+        output = Array(maxMonth - minMonth + 1).fill({});
+        return output.map(_ => {
+            const temp = {
+                id: currentMonth,
+                name: `${currentMonth} ${currentMonth > 1 ? "Months" : "Month"}`
+            };
+            currentMonth += 1;
+            return temp;
+        });
+    }
+    return output;
+};

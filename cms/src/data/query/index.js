@@ -14,7 +14,7 @@ import {
 } from "./department";
 import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
-import { getCurrencyList } from "./currency";
+import { getCurrencyList, getAdvertiserCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
 import { getRoleList } from "./role";
 import { getDeviceTypes } from "./deviceType";
@@ -22,6 +22,20 @@ import { getSystemTypes } from "./systemType";
 import { getFeatures } from "./feature";
 import { getFeaturesByCategories } from "./featureCategory";
 import { getContractByClientId } from "./contract";
+import {
+    getJustBrilliantGuideList,
+    getJustBrilliantGuideDetail,
+    getJustBrilliantGuideIdFromAdvertiser
+} from "./justBrilliantGuide";
+import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
+import { getTabbedPageComplete } from "./misc";
+import {
+    getAdvertiserList,
+    getAdvertiserFromPublication,
+    getAdvertiserDetail,
+    getAdvertiserActiveAgreement
+} from "./advertiser";
+import { getArtworkSizeList } from "./artworkSize";
 
 export {
     getCurrentUserQuery,
@@ -46,5 +60,16 @@ export {
     getFeaturesByCategories,
     systemsByClientQuery,
     getContractByClientId,
-    getLayoutListFromType
+    getLayoutListFromType,
+    getJustBrilliantGuideList,
+    getJustBrilliantGuideDetail,
+    getJbgLayoutFamilyList,
+    getTabbedPageComplete,
+    getAdvertiserList,
+    getAdvertiserFromPublication,
+    getAdvertiserCurrencyList,
+    getJustBrilliantGuideIdFromAdvertiser,
+    getAdvertiserDetail,
+    getAdvertiserActiveAgreement,
+    getArtworkSizeList
 };

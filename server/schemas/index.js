@@ -44,6 +44,15 @@ import layoutFamily_schema from "./layoutFamily";
 import layoutType_schema from "./layoutType";
 import templateType_schema from "./templateType";
 import palette_schema from "./palette";
+import jbgLayout_schema from "./jbgLayout";
+import jbgLayoutFamily_schema from "./jbgLayoutFamily";
+import jbgLayoutType_schema from "./jbgLayoutType";
+import jbgTemplate_schema from "./jbgTemplate";
+import jbgTemplateType_schema from "./jbgTemplateType";
+import advertiser_schema from "./advertiser";
+import advertising_schema from "./advertising";
+import article_schema from "./article";
+import artworkSize_schema from "./artworkSize";
 
 const link_schema = gql`
     type Query {
@@ -103,5 +112,14 @@ export default [
     layoutFamily_schema,
     layoutType_schema,
     templateType_schema,
-    palette_schema
+    palette_schema,
+    jbgLayout_schema,
+    jbgLayoutFamily_schema,
+    jbgLayoutType_schema,
+    jbgTemplate_schema,
+    jbgTemplateType_schema,
+    advertiser_schema,
+    advertising_schema,
+    article_schema,
+    artworkSize_schema
 ];

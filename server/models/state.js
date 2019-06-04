@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
         state.hasMany(models.client, {
             foreignKey: "postalStateId"
         });
+        state.hasMany(models.advertiser, {
+            foreignKey: "stateId"
+        });
+        state.hasMany(models.advertiser, {
+            foreignKey: "postalStateId"
+        });
     };
     return state;
 };

@@ -42,6 +42,7 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
+        advertiser: Advertiser
     }
 
     input CreateUpdateDeleteContactInput {

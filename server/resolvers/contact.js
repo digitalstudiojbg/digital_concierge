@@ -143,6 +143,8 @@ export default {
         }
     },
     Contact: {
-        client: async contact => await db.client.findByPk(contact.clientId)
+        client: async contact => await db.client.findByPk(contact.clientId),
+        advertiser: async contact =>
+            await db.advertiser.findByPk(contact.advertiserId)
     }
 };

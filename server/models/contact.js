@@ -24,13 +24,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            mobile: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
+            mobile: DataTypes.STRING,
             email: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -44,7 +38,10 @@ module.exports = (sequelize, DataTypes) => {
     );
     contact.associate = function(models) {
         contact.belongsTo(models.client, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
+        });
+        contact.belongsTo(models.advertiser, {
+            foreignKey: { allowNull: true }
         });
     };
     return contact;

@@ -18,6 +18,17 @@ export const checkUserLogin = async user => {
 };
 
 /**
+ * check whether user is a JBG Staff
+ */
+
+export const checkUserJBG = async ({ clientId }) => {
+    const client = await db.client.findByPk(clientId);
+    if (!client || client.name.toLowerCase() !== "john batman group") {
+        throw new AuthenticationError("Unauthorized to do this action");
+    }
+};
+
+/**
  * check whether user's venue belongs to one of the list of venues from category
  */
 export const checkUserClientByDirectoryList = async (user, directory_list) => {
@@ -345,3 +356,5 @@ export const processColours = colours => {
         colour5Alpha
     };
 };
+
+export const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));

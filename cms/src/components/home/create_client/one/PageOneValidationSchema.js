@@ -25,7 +25,9 @@ function validState(ref, message, countries) {
         test: function(value) {
             const country_id = this.resolve(ref);
             const country = countries.find(({ id }) => id === country_id);
-            const state = country.states.find(({ id }) => id === value);
+            const state = Boolean(country)
+                ? country.states.find(({ id }) => id === value)
+                : null;
             return Boolean(state);
         }
     });

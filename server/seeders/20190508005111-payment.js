@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-    up: (queryInterface, Sequelize) => {
+    up: queryInterface => {
         const current = new Date();
         let nextMonth = new Date();
         nextMonth.setDate(current.getDate() + 30);
@@ -24,6 +24,30 @@ module.exports = {
                     payable_date: nextMonth,
                     currencyId: 6,
                     clientId: 1
+                },
+                {
+                    invoice_number: "INVOICE_003",
+                    invoice_date: current,
+                    invoice_amount: 10000.55,
+                    payable_date: nextMonth,
+                    currencyId: 6,
+                    advertisingId: 1
+                },
+                {
+                    invoice_number: "INVOICE_004",
+                    invoice_date: current,
+                    invoice_amount: 15000,
+                    payable_date: nextMonth,
+                    currencyId: 1,
+                    advertisingId: 3
+                },
+                {
+                    invoice_number: "INVOICE_005",
+                    invoice_date: current,
+                    invoice_amount: 10000.55,
+                    payable_date: nextMonth,
+                    currencyId: 1,
+                    advertisingId: 4
                 }
             ],
             {}

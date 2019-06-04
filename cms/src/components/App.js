@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Login from "./auth/Login";
 import PrivateRoute from "./auth/PrivateRoute";
 import { isLoggedIn, logout } from "../auth/auth";
@@ -12,7 +12,13 @@ import {
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL,
-    SYSTEM_INDEX_URL
+    SYSTEM_INDEX_URL,
+    WELCOME_URL_ROUTER,
+    CREATE_NEW_CLIENT,
+    GUIDE_CREATE_NEW_URL,
+    GUIDE_MAIN_URL,
+    ADVERTISER_MAIN_URL,
+    ADVERTISER_CREATE_NEW_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
 
@@ -20,7 +26,7 @@ const Home = lazy(() => import("./home/Home"));
 
 const routes = [
     {
-        path: WELCOME_URL,
+        path: WELCOME_URL_ROUTER,
         component: Home
     },
     {
@@ -34,6 +40,22 @@ const routes = [
     {
         path: SYSTEM_INDEX_URL,
         component: Home
+    },
+    {
+        path: CREATE_NEW_CLIENT,
+        component: Home
+    },
+    {
+        path: GUIDE_MAIN_URL,
+        component: Home
+    },
+    {
+        path: ADVERTISER_MAIN_URL,
+        component: Home
+    },
+    {
+        path: ADVERTISER_CREATE_NEW_URL,
+        component: Home
     }
 ];
 
@@ -45,7 +67,7 @@ class App extends Component {
 
     handleLogin() {
         this.setState({ loggedIn: true });
-        this.router.history.push(WELCOME_URL);
+        this.router.history.push(WELCOME_URL + "/dashboard");
     }
 
     handleLogout() {
@@ -78,9 +100,19 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
+                                    <React.Fragment>
+                                        {isLoggedIn() ? (
+                                            <Redirect
+                                                to={`${WELCOME_URL}/dashboard`}
+                                            />
+                                        ) : (
+                                            <Login
+                                                onLogin={this.handleLogin.bind(
+                                                    this
+                                                )}
+                                            />
+                                        )}
+                                    </React.Fragment>
                                 )}
                             />
                             <Route

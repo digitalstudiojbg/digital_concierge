@@ -4,6 +4,7 @@ import { getCurrentUserQuery } from "../../data/query";
 import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
+import SidebarNew from "../layout/SidebarNew";
 import PrivateRoute from "../auth/PrivateRoute";
 import {
     WELCOME_URL,
@@ -20,7 +21,11 @@ import {
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
     SYSTEM_INDEX_URL,
     CREATE_NEW_CLIENT,
-    SYSTEM_CMS_LIBRARY
+    SYSTEM_CMS_LIBRARY,
+    WELCOME_URL_ROUTER,
+    GUIDE_MAIN_URL,
+    ADVERTISER_CREATE_NEW_URL,
+    ADVERTISER_MAIN_URL
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -45,22 +50,28 @@ const ModifyDirectoryList = lazy(() =>
 );
 const CreateClient = lazy(() => import("./create_client"));
 
-/*import TabletDashboard from "../tablet/TabletDashboard";
-import TabletLandingPage from "../tablet/TabletLandingPage";
-import TabletSetting from "../tablet/TabletSetting";
-import TabletContent from "../tablet/TabletContent";
-import TabletCreateContent from "../tablet/content/CreateContent";
-import TabletCreateCategory from "../tablet/content/CreateCategory";
-import TabletCreateDirectory from "../tablet/content/CreateDirectory";
-import ModifyDirectoryList from "../tablet/content/ModifyDirectoryList";
+const JustBrilliantGuideDetail = lazy(() =>
+    import("../guide/detail/JustBrilliantGuideDetail")
+);
 
-import Touchscreen from "../touchscreen/Touchscreen";
+const CreateNewAdvertiser = lazy(() =>
+    import("../advertiser/create/CreateNewAdvertiser")
+);
 
-import Welcome from "./Welcome.js";*/
+const EditExistingAdvertiser = lazy(() =>
+    import("../advertiser/edit/EditExistingAdvertiser")
+);
 
 const routes = [
     {
         path: WELCOME_URL,
+        exact: true,
+        header: Header,
+        main: Welcome,
+        withProps: {}
+    },
+    {
+        path: WELCOME_URL_ROUTER,
         exact: true,
         header: Header,
         main: Welcome,
@@ -175,6 +186,36 @@ const routes = [
         header: Header,
         sidebar: Sidebar,
         main: Library,
+        withProps: {}
+    },
+    {
+        path: GUIDE_MAIN_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: JustBrilliantGuideDetail,
+        withProps: {}
+    },
+    {
+        path: ADVERTISER_MAIN_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: EditExistingAdvertiser, //TODO: CHANGE THIS
+        withProps: {}
+    },
+    {
+        path: ADVERTISER_CREATE_NEW_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: CreateNewAdvertiser,
         withProps: {}
     }
 ];

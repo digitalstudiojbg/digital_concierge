@@ -36,7 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     );
     payment.associate = function(models) {
         payment.belongsTo(models.client, {
-            foreignKey: { allowNull: false }
+            foreignKey: { allowNull: true }
+        });
+        payment.belongsTo(models.advertising, {
+            foreignKey: { allowNull: true }
         });
         payment.belongsTo(models.currency, {
             foreignKey: { allowNull: false }

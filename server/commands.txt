@@ -478,3 +478,83 @@ node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationsh
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-start
 
 node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-template-and-home
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-just_brilliant_guide-and-media
+
+node_modules/.bin/sequelize seed:generate --name just_brilliant_guides_media
+
+node_modules/.bin/sequelize model:generate --name jbg_layout_family --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_layout_type --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_layout --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-jbg_layout
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_layout_family-and-jbg_layout
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_layout_type-and-jbg_layout
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout_family
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout_type
+
+node_modules/.bin/sequelize seed:generate --name jbg_layout
+
+node_modules/.bin/sequelize model:generate --name jbg_template_type --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name jbg_template --attributes name:string
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_template_type-and-jbg_template
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_layout-and-jbg_template
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-jbg_template-and-validation
+
+node_modules/.bin/sequelize seed:generate --name jbg_template_type
+
+node_modules/.bin/sequelize seed:generate --name jbg_template
+
+node_modules/.bin/sequelize seed:generate --name jbg_layouts_jbg_templates
+
+node_modules/.bin/sequelize seed:generate --name jbg_templates_validations
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-jbg_layout_family
+
+node_modules/.bin/sequelize model:generate --name advertiser --attributes name:string,nature_of_business:string,address:string,city:string,zip_code:string,postal_address:string,postal_city:string,postal_zip_code:string,phone:string,email:string,active:boolean
+
+node_modules/.bin/sequelize model:generate --name article --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name artwork_size --attributes name:string
+
+node_modules/.bin/sequelize model:generate --name advertising --attributes agreement_number:string,agreement_date:date,agreement_file:string,agreement_file_key:string,period_month:integer,commence_date:date,expire_date:date,artwork_supply_date:date,active:boolean
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-state-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-postal-state-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-just_brilliant_guide-and-advertiser
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-just_brilliant_guide-and-article
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-media-and-advertising
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-advertiser-and-advertising
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-advertising-and-payment
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-artwork_size-and-advertising
+
+node_modules/.bin/sequelize seed:generate --name artwork_size
+
+node_modules/.bin/sequelize seed:generate --name advertiser
+
+node_modules/.bin/sequelize seed:generate --name article
+
+node_modules/.bin/sequelize seed:generate --name advertising
+
+node_modules/.bin/sequelize migration:generate --name add-many-to-many-relationship-between-advertising-and-article
+
+node_modules/.bin/sequelize seed:generate --name advertising_articles
+
+node_modules/.bin/sequelize db:seed --seed 20190508005109-advertising

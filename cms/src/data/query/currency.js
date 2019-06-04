@@ -5,6 +5,17 @@ export const getCurrencyList = gql`
         currencies {
             id
             name
+            code
+        }
+    }
+`;
+
+export const getAdvertiserCurrencyList = gql`
+    query advertiserCurrencyList($id: ID!) {
+        advertiserCurrencyList(id: $id) {
+            id
+            name
+            code
         }
     }
 `;
