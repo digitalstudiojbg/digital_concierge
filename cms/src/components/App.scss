@@ -10,11 +10,12 @@ body {
     height: 100%;
 }
 
+/* https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
+    transition: background-color 9999s ease-in-out 0s;
 }
 
 button, input, optgroup, select, textarea {
