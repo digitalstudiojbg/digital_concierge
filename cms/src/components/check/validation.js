@@ -11,8 +11,9 @@ export const CheckReservationValidationSchema = Yup.object().shape({
         .typeError("Phone is not valid")
         .required("Contact number is required"),
     [CHECK_FORM_NAMES.secondaryNumber]: Yup.number()
+        .notRequired()
+        .nullable()
         .typeError("Phone is not valid")
-        .required("Contact number is required"),
 });
 
 export const CheckSchema = Yup.object().shape({
