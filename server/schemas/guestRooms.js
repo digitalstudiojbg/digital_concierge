@@ -43,8 +43,8 @@ export default gql`
         firstname: String!
         lastname: String!
         email: EmailAddress!
-        primary_number: PhoneNumber!
-        secondary_number: PhoneNumber
+        primary_number: String!
+        secondary_number: String
         clientId: Int!
         checkin_date: String!
         checkout_date: String!
