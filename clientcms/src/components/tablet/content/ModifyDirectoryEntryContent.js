@@ -24,6 +24,14 @@ import ColourSchemePicker from "../../../utils/ColourSchemePicker";
 import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import {
+    SectionHeader,
+    SubSectionHeader,
+    SubSectionTop,
+    SubContainerDiv,
+    SubSectionDiv,
+    MainSubSections
+} from "../../home/WelcomeStyleSet";
 
 const styles = _theme => ({
     saveButton: {
@@ -61,11 +69,13 @@ const styles = _theme => ({
         alignItems: "center"
     },
     removeImageButton: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        width: "140px"
     },
     uploadFileButton: {
         backgroundColor: "white",
-        marginBottom: 10
+        marginBottom: 10,
+        width: "140px"
     }
 });
 
@@ -343,60 +353,82 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
 
         return (
             <ContainerDiv>
-                <CreateContentContainerDiv>
-                    <div
-                        style={{
-                            width: "100%",
-                            height: "60%",
-                            display: "flex"
-                        }}
-                    >
-                        <div style={{ flexBasis: "35%" }}>
-                            <div style={{ width: "95%", paddingBottom: 20 }}>
-                                <div
-                                    style={{
-                                        paddingBottom: 20
-                                    }}
-                                >
-                                    {subTitleText}
+                <CreateContentContainerDiv style={{ display: "flex" }}>
+                    <MainSubSections style={{ flexBasis: "60%" }}>
+                        <SubContainerDiv
+                            style={{
+                                width: "100%",
+                                height: "60%",
+                                display: "flex"
+                            }}
+                        >
+                            <SubSectionDiv
+                                style={{
+                                    flexBasis: "50%",
+                                    margin: "1% 3% 1% 0"
+                                }}
+                            >
+                                <div style={{ width: "95%" }}>
+                                    <SectionHeader style={{ color: "black" }}>
+                                        {subTitleText}
+                                    </SectionHeader>
+                                    <TextEditorField
+                                        name="title"
+                                        setFieldValue={setFieldValue}
+                                        initialValue={values.title}
+                                        withPlaintext={true}
+                                    />
                                 </div>
-                                <TextEditorField
-                                    name="title"
-                                    setFieldValue={setFieldValue}
-                                    initialValue={values.title}
-                                    withPlaintext={true}
-                                />
-                            </div>
-                            <div style={{ width: "95%" }}>
-                                <div
-                                    style={{
-                                        paddingBottom: 20
-                                    }}
-                                >
-                                    TEXT FIELD
+                                <div style={{ width: "95%", marginTop: "10%" }}>
+                                    <SectionHeader style={{ color: "black" }}>
+                                        TEXT FIELD
+                                    </SectionHeader>
+                                    <TextEditorField
+                                        name="description"
+                                        setFieldValue={setFieldValue}
+                                        initialValue={values.description}
+                                        withPlaintext={false}
+                                    />
                                 </div>
-                                <TextEditorField
-                                    name="description"
-                                    setFieldValue={setFieldValue}
-                                    initialValue={values.description}
-                                    withPlaintext={false}
-                                />
-                            </div>
-                        </div>
-                        <div style={{ flexBasis: "35%" }}>
-                            <div style={{ width: "95%", height: "100%" }}>
-                                <div style={{ paddingBottom: 20 }}>
-                                    HEADER IMAGE
-                                </div>
+                            </SubSectionDiv>
+                            <SubSectionDiv
+                                style={{
+                                    flexBasis: "50%",
+                                    margin: "1% 3% 1% 0"
+                                    //   borderRight: "1px solid #DDDDDD"
+                                }}
+                            >
+                                <div style={{ width: "95%", height: "100%" }}>
+                                    <SectionHeader style={{ color: "black" }}>
+                                        HEADER IMAGE
+                                    </SectionHeader>
 
-                                {this.renderImageUploader()}
-                            </div>
-                        </div>
+                                    {this.renderImageUploader()}
+                                </div>
+                            </SubSectionDiv>
+                        </SubContainerDiv>
 
-                        <div style={{ flexBasis: "30%" }}>
+                        <SubContainerDiv style={{ width: "100%" }}>
+                            <div
+                                style={{
+                                    width: "95%",
+                                    marginTop: "20%",
+                                    paddingTop: "5%",
+                                    borderTop: "2px solid #DDDDDD"
+                                }}
+                            >
+                                <SectionHeader style={{ color: "black" }}>
+                                    MENU OVERVIEW
+                                </SectionHeader>
+                            </div>
+                        </SubContainerDiv>
+                    </MainSubSections>
+
+                    <MainSubSections style={{ flexBasis: "30%" }}>
+                        <SubSectionDiv>
                             {this.renderColourSchemePicker()}
-                        </div>
-                    </div>
+                        </SubSectionDiv>
+                    </MainSubSections>
                 </CreateContentContainerDiv>
                 <Dialog
                     open={this.state.openDialog}

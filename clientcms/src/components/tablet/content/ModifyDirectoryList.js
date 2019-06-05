@@ -74,7 +74,7 @@ const styles = () => ({
         color: "rgb(33,143,250)",
         border: "2px solid rgb(33,143,250)",
         fontWeight: "bold",
-        margin: "2% 2% 2% 15%",
+        margin: "2%",
         width: "180px",
         padding: "5% 0"
     },
@@ -533,7 +533,9 @@ const ModifyDirectoryList = props => {
                                                     />
                                                 </Tooltip>
                                             </div>
-                                            <TopButtonsContiner>
+                                            <TopButtonsContiner
+                                                style={{ width: "13%" }}
+                                            >
                                                 <Button
                                                     variant="outlined"
                                                     className={

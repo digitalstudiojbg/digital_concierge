@@ -6,6 +6,7 @@ import { Field } from "formik";
 import { TextField } from "formik-material-ui";
 import styled from "styled-components";
 import { getDirectoryListBySystem } from "../../../data/query";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Loading from "../../loading/Loading";
 import {
     modifyDirectoryListData,
@@ -22,6 +23,13 @@ import {
     SubSectionDiv,
     FieldDiv
 } from "../../home/WelcomeStyleSet";
+
+const styles = () => ({
+    myInput: {
+        padding: "10px",
+        backgroundColor: "white"
+    }
+});
 
 // const SubtitleDiv = styled.div`
 //     font-size: 1.5em;
@@ -75,12 +83,13 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                             component={TextField}
                             variant="outlined"
                             fullWidth={true}
+                            input={<OutlinedInput />}
                         />
                     </FieldDiv>
-                    <FieldDiv>
+                    {/* <FieldDiv>
                         <FieldLabel>CHILD ORGANISATION</FieldLabel>
                         <input />
-                    </FieldDiv>
+                    </FieldDiv> */}
                 </MainSubSections>
                 <MainSubSections style={{ width: "45%" }}>
                     <SectionHeader style={{ color: "black" }}>
@@ -127,7 +136,6 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                             justifyContent: "left"
                         }}
                     >
-                        <div>check box</div>
                         <FieldDiv style={{ paddingLeft: "0" }}>
                             <FieldLabel>SORT ORDER</FieldLabel>
                             <Dropdown
@@ -144,20 +152,12 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     </SubSectionDiv>
                     <SubSectionDiv
                         style={{
-                            flexBasis: "30%",
+                            flexBasis: "65%",
                             marginRight: "5%",
                             marginLeft: "50px"
                         }}
                     >
                         <FieldDiv>
-                            <FieldLabel>SEARCH BY NAME</FieldLabel>
-                            <input
-                                style={{
-                                    width: "70%",
-                                    height: "38"
-                                }}
-                            />
-
                             <Field name="parent_id">
                                 {() => (
                                     <Query
@@ -212,27 +212,6 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                                     </Query>
                                 )}
                             </Field>
-                        </FieldDiv>
-                    </SubSectionDiv>
-                    <SubSectionDiv
-                        style={{
-                            flexBasis: "40%"
-                        }}
-                    >
-                        <FieldDiv>
-                            <FieldLabel>
-                                SELECT LOCATION BY EXPANDING AND COLLAPSING THE
-                                LISTS BELOW
-                            </FieldLabel>
-                            <table
-                                style={{
-                                    width: "820px",
-                                    height: "400px",
-                                    border: "1px solid  #9D9D9D",
-                                    backgroundColor: "white",
-                                    marginTop: "10px"
-                                }}
-                            />
                         </FieldDiv>
                     </SubSectionDiv>
                 </MainSubSections>

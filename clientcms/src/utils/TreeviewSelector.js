@@ -38,6 +38,10 @@ const styles = () => ({
     },
     checkIcon: {
         color: "white"
+    },
+    myInput: {
+        padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -62,7 +66,7 @@ const TitleHeaderDiv = styled.div`
 const SearchFilterContainerDiv = styled.div`
     flex-basis: 30%;
     padding-right: 10px;
-    border-right: 2px solid rgb(187, 187, 187);
+    // border-right: 2px solid rgb(187, 187, 187);
     margin-right: 10px;
     display: flex;
     flex-direction: column;
@@ -557,8 +561,9 @@ class TreeviewSelector extends React.PureComponent {
             >
                 <div
                     style={{
-                        fontSize: "1em",
-                        color: "rgb(137,137,137)"
+                        fontSize: "10px",
+                        color: "rgb(137,137,137)",
+                        marginBottom: "10px"
                     }}
                 >
                     SELECT LOCATION BY EXPANDING AND COLLAPSING THE LISTS BELOW
@@ -579,7 +584,13 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <SearchFilterContainerDiv>
                 <div style={{ width: "100%" }}>
-                    <div style={{ fontSize: "1em", color: "rgb(137,137,137)" }}>
+                    <div
+                        style={{
+                            fontSize: "10px",
+                            color: "rgb(137,137,137)",
+                            marginBottom: "10px"
+                        }}
+                    >
                         SEARCH BY NAME
                     </div>
                     <TextField
@@ -587,6 +598,7 @@ class TreeviewSelector extends React.PureComponent {
                         fullWidth={true}
                         value={searchQuery}
                         onChange={this.handleChange}
+                        inputProps={{ className: this.props.classes.myInput }}
                     />
                 </div>
                 {showListItems && (
