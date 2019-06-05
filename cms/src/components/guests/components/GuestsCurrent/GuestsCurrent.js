@@ -29,7 +29,7 @@ const COLUMNS = [
     {
         Header: "GUEST NAME",
         id: "firstname",
-        accessor: ({ guest }) => guest.firstname,
+        accessor: ({ guest }) => `${guest.firstname} ${guest.lastname}`,
     },
     {
         Header: "GUEST ID",

@@ -18,7 +18,7 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
                 <CheckTextField
                     {...field}
                     label="FIRST NAME"
-                    placeholder="Neal"
+                    placeholder="Nick"
                 />
             )}
         />
@@ -29,7 +29,7 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
                 <CheckTextField
                     {...field}
                     label="SURNAME"
-                    placeholder="66"
+                    placeholder="Fury"
                 />
             )}
         />

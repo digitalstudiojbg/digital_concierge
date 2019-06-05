@@ -10,6 +10,7 @@ const getGuestsRooms = gql`
             guest {
                 id
                 firstname
+                lastname
             }
             guest_count
             room {
