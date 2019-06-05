@@ -64,9 +64,7 @@ export default {
                 await createdGuest.save();
             } catch (error) {
                 throw new UserInputError(
-                    `Create Guest ${email} status failed.\nError Message: ${
-                        error.message
-                    }`
+                    `An error occured while creating a record in the database`
                 );
             }
 
@@ -113,9 +111,7 @@ export default {
                 updatedGuest = await updatedGuest.update(updatingProps);
             } catch (error) {
                 throw new UserInputError(
-                    `Unable to update Guest ${id}.\nError Message: ${
-                        error.message
-                    }`
+                    `An error occured while updating a record in the database`
                 );
             }
 
@@ -133,7 +129,7 @@ export default {
             const deletedGuest = await db.guest.findByPk(id);
 
             if (!deletedGuest) {
-                throw new UserInputError('The guest has already been deleted')
+                throw new UserInputError('A record for the given guest has already been deleted from the database')
             }
 
             const logDeleteRecord = await handleDeleteActionActivityLog(
@@ -148,9 +144,7 @@ export default {
             } catch (error) {
                 await db.activity_log.destroy({ where: { id: logDeleteRecord.id }});
                 throw new UserInputError(
-                    `Unable to delete Guest ${id}.\nError Message: ${
-                        error.message
-                    }`
+                    `An error occured while deleting a record from the database`
                 );
             }
 

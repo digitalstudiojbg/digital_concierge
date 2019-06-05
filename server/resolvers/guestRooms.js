@@ -71,7 +71,7 @@ export default {
             });
 
             if (!foundedRoom) {
-                throw new UserInputError(`There is not a room with number ${room_number}`);
+                throw new UserInputError(`A room with the number ${room_number} doesn't exist`);
             }
 
             const roomId = foundedRoom.id;
@@ -81,7 +81,7 @@ export default {
             const totalNights = _calcDiffInDays(checkInDate, checkOutDate);
 
             if (totalNights < 1) {
-                throw new UserInputError('Dates are incorrect');
+                throw new UserInputError('The provided dates are incorrect');
             }
 
             const bookedRooms = await db.guests_rooms.count({where: {
@@ -94,7 +94,7 @@ export default {
             }});
 
             if (bookedRooms > 0) {
-                throw new UserInputError('There are other bookings for these dates');
+                throw new UserInputError('The current room has already been reserved for these dates');
             }
 
             const creatingProps = {
@@ -114,9 +114,7 @@ export default {
                 await createdGuestRoom.save();
             } catch (error) {
                 throw new UserInputError(
-                    `Create GuestRoom status failed.\nError Message: ${
-                        error.message
-                        }`
+                    `An error occured while creating a record in the database`
                 );
             }
 
@@ -148,7 +146,7 @@ export default {
             });
 
             if (!foundedRoom) {
-                throw new UserInputError(`There is not a room with number ${room_number}`);
+                throw new UserInputError(`A room with the number ${room_number} doesn't exist`);
             }
 
             const roomId = foundedRoom.id;
@@ -171,7 +169,7 @@ export default {
                 const daysFromTodayToCheckout = _calcDiffInDays(new Date(), updatedGuestRoom.checkout_date);
 
                 if (daysFromTodayToCheckout < 1) {
-                    throw new UserInputError('Check Out date has already been expired')
+                    throw new UserInputError('The check out date has expired')
                 }
 
                 const bookedRooms = await db.guests_rooms.count({where: {
@@ -185,7 +183,7 @@ export default {
                 }});
 
                 if (bookedRooms > 0) {
-                    throw new UserInputError('There are other bookings for these dates');
+                    throw new UserInputError('The current room has already been reserved for these dates');
                 }
 
                 updatingProps.total_nights = _calcDiffInDays(updatedGuestRoom.checkin_date, checkOutDate);
@@ -196,9 +194,7 @@ export default {
                 updatedGuestRoom = await updatedGuestRoom.update(updatingProps);
             } catch (error) {
                 throw new UserInputError(
-                    `Update GuestRoom status failed.\nError Message: ${
-                        error.message
-                        }`
+                    `An error occured while updating a record in the database`
                 );
             }
 
@@ -225,7 +221,7 @@ export default {
             });
 
             if (!foundedRoom) {
-                throw new UserInputError(`There is not a room with number ${room_number}`);
+                throw new UserInputError(`A room with the number ${room_number} doesn't exist`);
             }
 
             const roomId = foundedRoom.id;
@@ -239,9 +235,7 @@ export default {
                 await deletedGuestRoom.destroy();
             } catch (error) {
                 throw new UserInputError(
-                    `Delete GuestRoom status failed.\nError Message: ${
-                        error.message
-                        }`
+                    `An error occured while deleting a record from the database`
                 );
             }
 
@@ -277,7 +271,7 @@ export default {
             });
 
             if (!foundedRoom) {
-                throw new UserInputError(`There is not a room with number ${room_number}`);
+                throw new UserInputError(`A room with the number ${room_number} doesn't exist`);
             }
 
             const roomId = foundedRoom.id;
@@ -292,7 +286,7 @@ export default {
             const totalNights = _calcDiffInDays(checkInDate, checkOutDate);
 
             if (totalNights < 1) {
-                throw new UserInputError('Dates are incorrect');
+                throw new UserInputError('The provided dates are incorrect');
             }
 
             const bookedRooms = await db.guests_rooms.count({where: {
@@ -305,7 +299,7 @@ export default {
             }});
 
             if (bookedRooms > 0) {
-                throw new UserInputError('There are other bookings for these dates');
+                throw new UserInputError('The current room has already been reserved for these dates');
             }
 
             const creatingGuestProps = pickBy({
@@ -323,9 +317,7 @@ export default {
                 await createdGuest.save();
             } catch (error) {
                 throw new UserInputError(
-                    `Create Guest ${email} status failed.\nError Message: ${
-                        error.message
-                        }`
+                    `An error occured while creating a record in the database`
                 );
             }
 
@@ -353,9 +345,7 @@ export default {
                 await createdGuestRoom.save();
             } catch (error) {
                 throw new UserInputError(
-                    `Create GuestRoom status failed.\nError Message: ${
-                        error.message
-                        }`
+                    `An error occured while creating a record in the database`
                 );
             }
 
