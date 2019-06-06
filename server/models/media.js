@@ -84,6 +84,8 @@ module.exports = (sequelize, DataTypes) => {
         media.hasMany(models.jbg_layout_family);
         media.hasMany(models.jbg_layout);
         media.hasMany(models.advertising);
+        media.hasMany(models.article, { foreignKey: "headerMediumId" });
+        media.hasMany(models.article, { foreignKey: "featureMediumId" });
     };
     return media;
 };

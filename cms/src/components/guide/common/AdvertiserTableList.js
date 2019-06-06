@@ -56,7 +56,6 @@ const styles = () => ({
         borderRadius: 5,
         backgroundColor: "white",
         border: "1px solid rgba(112, 112, 112, 1)",
-        marginRight: 10
     }
 });
 

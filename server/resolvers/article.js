@@ -18,6 +18,14 @@ export default {
                         where: { id: article.id }
                     }
                 ]
-            })
+            }),
+        header_image: async article =>
+            await db.media.findByPk(article.headerMediumId),
+        feature_image: async article =>
+            await db.media.findByPk(article.featureMediumId),
+        jbg_template: async article =>
+            await db.jbg_template.findByPk(article.jbgTemplateId),
+        jbg_layout: async article =>
+            await db.jbg_layout.findByPk(article.jbgLayoutId)
     }
 };
