@@ -26,9 +26,9 @@ import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {
-    SectionHeader,
+    FieldLabel,
     SubSectionHeader,
-    SubSectionTop,
+    FieldDiv,
     MainSubSections,
     SubSectionDiv
 } from "../../home/WelcomeStyleSet";
@@ -59,8 +59,9 @@ const styles = () => ({
     },
     imageNameTextField: {
         // marginTop: 15,
-        paddingBottom: 20,
-        width: "60%"
+        marginBottom: 20,
+        width: "100%",
+        backgroundColor: "white"
     },
     categoryNameFormHelper: {
         fontSize: "0.7em",
@@ -284,14 +285,17 @@ class ModifyStartContent extends React.PureComponent {
                         alignItems: "center"
                     }}
                 >
-                    <MuiTextField
-                        label="FILENAME"
-                        disabled={true}
-                        value={headerImageName}
-                        className={classes.imageNameTextField}
-                        fullWidth={true}
-                        variant="outlined"
-                    />
+                    <FieldDiv style={{ width: "70%", padding: "0" }}>
+                        <FieldLabel>FILENAME</FieldLabel>
+                        <MuiTextField
+                            // label="FILENAME"
+                            disabled={true}
+                            value={headerImageName}
+                            className={classes.imageNameTextField}
+                            fullWidth={true}
+                            variant="outlined"
+                        />
+                    </FieldDiv>
                     <div
                         style={{
                             width: "35%",
@@ -303,10 +307,8 @@ class ModifyStartContent extends React.PureComponent {
                     >
                         <Button
                             className={classes.Button}
-                            style={{ padding: 10 }}
                             variant="outlined"
-                            //  className={classes.Button}
-                            // fullWidth={true}
+                            fullWidth={true}
                             disabled={
                                 !Boolean(headerImageName) &&
                                 Boolean(headerImageName.length === 0)
@@ -415,18 +417,23 @@ class ModifyStartContent extends React.PureComponent {
                         // height: "400px"
                     }}
                 >
-                    <MuiTextField
-                        label="FILENAME"
-                        disabled={true}
-                        value={logoImageName}
-                        className={classes.imageNameTextField}
-                        fullWidth={true}
-                        variant="outlined"
-                    />
+                    <FieldDiv style={{ width: "70%", padding: "0" }}>
+                        <FieldLabel>FILENAME</FieldLabel>
+                        <MuiTextField
+                            //  label="FILENAME"
+                            disabled={true}
+                            value={logoImageName}
+                            className={classes.imageNameTextField}
+                            fullWidth={true}
+                            variant="outlined"
+                        />
+                    </FieldDiv>
                     <div
                         style={{
+                            width: "35%",
+                            //  height: "80%",
                             display: "flex",
-                            padding: 10,
+                            paddingLeft: 10,
                             alignItems: "center"
                         }}
                     >
@@ -586,9 +593,9 @@ class ModifyStartContent extends React.PureComponent {
                                     // height: "70vh"
                                 }}
                             >
-                                <SectionHeader style={{ color: "black" }}>
+                                <SubSectionHeader style={{ color: "black" }}>
                                     LAYOUT DIAGRAM
-                                </SectionHeader>
+                                </SubSectionHeader>
                                 {Boolean(imageUrl) && (
                                     <ImageDiv imageUrl={imageUrl} />
                                 )}
@@ -632,26 +639,26 @@ class ModifyStartContent extends React.PureComponent {
                             }}
                         >
                             <div style={{ width: "95%" }}>
-                                <SectionHeader
+                                <SubSectionHeader
                                     style={{
                                         paddingBottom: 15,
                                         color: "black"
                                     }}
                                 >
                                     LOGO
-                                </SectionHeader>
+                                </SubSectionHeader>
 
                                 {this.renderImageUploaderForLogo()}
                             </div>
                             <div style={{ width: "95%", marginTop: "7%" }}>
-                                <SectionHeader
+                                <SubSectionHeader
                                     style={{
                                         paddingBottom: 15,
                                         color: "black"
                                     }}
                                 >
-                                    HEADER
-                                </SectionHeader>
+                                    HEADER IMAGE
+                                </SubSectionHeader>
 
                                 {this.renderImageUploaderForHeader()}
                             </div>

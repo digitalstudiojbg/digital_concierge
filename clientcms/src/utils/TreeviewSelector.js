@@ -40,7 +40,7 @@ const styles = () => ({
         color: "white"
     },
     myInput: {
-        padding: "10px",
+        //  padding: "10px",
         backgroundColor: "white"
     }
 });
@@ -57,17 +57,17 @@ const ContainerDiv = styled.div`
     flex-direction: column;
 `;
 
-const TitleHeaderDiv = styled.div`
-    font-size: 1.5em;
-    color: rgb(10, 10, 10);
-    padding-bottom: 30px;
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: black;
+    font-size: 20px;
+    padding: 0px;
+    width: 100%;
 `;
 
 const SearchFilterContainerDiv = styled.div`
     flex-basis: 30%;
-    padding-right: 10px;
-    // border-right: 2px solid rgb(187, 187, 187);
-    margin-right: 10px;
+    padding-right: 3%;
     display: flex;
     flex-direction: column;
 `;
@@ -474,6 +474,7 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <React.Fragment key={`DIR-LIST-VIEW-${index}-${id}`}>
                 <DirectoryListEntryDiv
+                    style={{ display: "flex", flex: "1" }}
                     selected={selected}
                     depth={depth}
                     disabled={disabled}
@@ -553,7 +554,9 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <div
                 style={{
-                    flexBasis: "70%",
+                    flexBasis: "60%",
+                    paddingLeft: "3%",
+                    borderLeft: "2px solid #9D9D9D",
                     height: "100%",
                     display: "flex",
                     flexDirection: "column"
@@ -627,7 +630,7 @@ class TreeviewSelector extends React.PureComponent {
         const { data } = this.props;
         return (
             <ContainerDiv>
-                <TitleHeaderDiv>LINKS FROM</TitleHeaderDiv>
+                <SectionHeader>LINKS FROM</SectionHeader>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
                     <div
                         style={{

@@ -7,6 +7,7 @@ import { TextField } from "formik-material-ui";
 import styled from "styled-components";
 import { getDirectoryListBySystem } from "../../../data/query";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+
 import Loading from "../../loading/Loading";
 import {
     modifyDirectoryListData,
@@ -27,6 +28,9 @@ import {
 const styles = () => ({
     myInput: {
         padding: "10px",
+        backgroundColor: "white"
+    },
+    field: {
         backgroundColor: "white"
     }
 });
@@ -68,47 +72,225 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                     width: "100%"
                 }}
             >
-                <MainSubSections style={{ width: "40%", marginRight: "10%" }}>
-                    <SectionHeader style={{ color: "black" }}>
+                <MainSubSections style={{ width: "100%" }}>
+                    <SectionHeader
+                        style={{ color: "black", marginLeft: "10px" }}
+                    >
                         DETAILS
                     </SectionHeader>
+                    <SubSectionDiv style={{ display: "flex" }}>
+                        <FieldDiv
+                            style={{ flexBasis: "30%", paddingRight: "3%" }}
+                        >
+                            <FieldLabel>DIRECTORY ENTRY NAME</FieldLabel>
+                            <Field
+                                style={{
+                                    width: "100%",
+                                    backgroundColor: "white",
+                                    paddingRight: ""
+                                }}
+                                name="name"
+                                // label="DIRECTORY LIST NAME"
+                                required={true}
+                                type="text"
+                                component={TextField}
+                                variant="outlined"
+                                fullWidth={true}
+                                input={<OutlinedInput />}
+                            />
+                        </FieldDiv>
+                        <FieldDiv
+                            style={{ flexBasis: "55%", paddingLeft: "3%" }}
+                        >
+                            <FieldLabel>ORDER NUMBER ON TABLE</FieldLabel>
+                        </FieldDiv>
+                    </SubSectionDiv>
+                </MainSubSections>
+            </SubContainerDiv>
+            <SubContainerDiv style={{ width: "100%" }}>
+                <MainSubSections
+                    style={{ display: "flex", flexDirection: "row" }}
+                >
                     <FieldDiv>
-                        <FieldLabel>DIRECTORY LIST NAME</FieldLabel>
-                        <Field
-                            style={{ width: "70%", height: "38" }}
-                            name="name"
-                            // label="DIRECTORY LIST NAME"
-                            required={true}
-                            type="text"
-                            component={TextField}
-                            variant="outlined"
-                            fullWidth={true}
-                            input={<OutlinedInput />}
-                        />
+                        <Field name="parent_id">
+                            {() => (
+                                <Query
+                                    query={getDirectoryListBySystem}
+                                    variables={{
+                                        id: system_id
+                                    }}
+                                >
+                                    {({ loading, error, data }) => {
+                                        if (loading)
+                                            return <Loading loadingData />;
+                                        if (error)
+                                            return `Error! ${error.message}`;
+                                        const modifiedData = modifyDirectoryListData(
+                                            data.directoryLists_by_system,
+                                            true
+                                        );
+                                        // if (
+                                        //     !Boolean(values.parent_id) &&
+                                        //     modifiedData.length > 0
+                                        // ) {
+                                        //     return (
+                                        //         <TreeviewSelector
+                                        //             data={modifiedData}
+                                        //             updateSelectedDirectory={
+                                        //                 updateSelectedDirectory
+                                        //             }
+                                        //             selectAmount="single"
+                                        //         />
+                                        //     );
+                                        // } else
+                                        if (modifiedData.length > 0) {
+                                            return (
+                                                <TreeviewSelector
+                                                    data={modifiedData}
+                                                    updateSelectedDirectory={
+                                                        updateSelectedDirectory
+                                                    }
+                                                    selectAmount="single"
+                                                    selectedValue={
+                                                        values.parent_id
+                                                    }
+                                                    directoryType="list"
+                                                />
+                                            );
+                                        } else {
+                                            return <React.Fragment />;
+                                        }
+                                    }}
+                                </Query>
+                            )}
+                        </Field>
                     </FieldDiv>
+                </MainSubSections>
+            </SubContainerDiv>
+
+            <SubContainerDiv
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%"
+                }}
+            >
+                <MainSubSections
+                    style={{
+                        width: "49%",
+                        marginRight: "2%",
+                        border: "1px solid #9D9D9D",
+                        borderRadius: "5px",
+                        padding: "1%"
+                    }}
+                >
+                    <SectionHeader style={{ color: "black" }}>
+                        TEMPLATE
+                    </SectionHeader>
+                    <SubSectionDiv
+                        style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            margin: "0"
+                        }}
+                    >
+                        <FieldDiv
+                            style={{ flexBasis: "48%", marginRight: "4%" }}
+                        >
+                            <FieldLabel>ENTRY TEMPLATE TYPE</FieldLabel>
+                            <Field
+                                style={{
+                                    backgroundColor: "white"
+                                }}
+                                name="name"
+                                // label="DIRECTORY LIST NAME"
+                                required={true}
+                                type="text"
+                                component={TextField}
+                                variant="outlined"
+                                fullWidth={true}
+                                input={<OutlinedInput />}
+                            />
+                        </FieldDiv>
+                        <FieldDiv style={{ flexBasis: "48%" }}>
+                            <FieldLabel>SERVICE TYPE</FieldLabel>
+                            <Field
+                                style={{
+                                    backgroundColor: "white"
+                                }}
+                                name="name"
+                                // label="DIRECTORY LIST NAME"
+                                required={true}
+                                type="text"
+                                component={TextField}
+                                variant="outlined"
+                                fullWidth={true}
+                                input={<OutlinedInput />}
+                            />
+                        </FieldDiv>
+                    </SubSectionDiv>
                     {/* <FieldDiv>
                         <FieldLabel>CHILD ORGANISATION</FieldLabel>
                         <input />
                     </FieldDiv> */}
                 </MainSubSections>
-                <MainSubSections style={{ width: "45%" }}>
+                <MainSubSections
+                    style={{
+                        width: "49%",
+                        border: "1px solid #9D9D9D",
+                        borderRadius: "5px",
+                        padding: "1%"
+                    }}
+                >
                     <SectionHeader style={{ color: "black" }}>
                         LAYOUT
                     </SectionHeader>
                     <div style={{ display: "flex" }}>
                         <SubSectionDiv
-                            style={{ width: "45%", flexDirection: "column" }}
+                            style={{
+                                width: "45%",
+                                marginRight: "5%",
+                                flexDirection: "column"
+                            }}
                         >
                             <FieldDiv>
                                 <FieldLabel>LIST FAMILY</FieldLabel>
-                                <input />
+                                <Field
+                                    style={{
+                                        width: "100%",
+
+                                        backgroundColor: "white"
+                                    }}
+                                    name="name"
+                                    // label="DIRECTORY LIST NAME"
+                                    required={true}
+                                    type="text"
+                                    component={TextField}
+                                    variant="outlined"
+                                    fullWidth={true}
+                                    input={<OutlinedInput />}
+                                />
                             </FieldDiv>
                             <FieldDiv>
                                 <FieldLabel>LIST FAMILY OPTION</FieldLabel>
-                                <input />
+                                <Field
+                                    style={{
+                                        width: "100%",
+
+                                        backgroundColor: "white"
+                                    }}
+                                    name="name"
+                                    // label="DIRECTORY LIST NAME"
+                                    required={true}
+                                    type="text"
+                                    component={TextField}
+                                    variant="outlined"
+                                    fullWidth={true}
+                                    input={<OutlinedInput />}
+                                />
                             </FieldDiv>
                         </SubSectionDiv>
-                        <SubSectionDiv>
+                        <SubSectionDiv style={{ width: "45%" }}>
                             <div
                                 style={{
                                     width: "280px",
@@ -118,102 +300,6 @@ export const ModifyDirectoryListLayout = ({ values, match, setFieldValue }) => {
                             />
                         </SubSectionDiv>
                     </div>
-                </MainSubSections>
-            </SubContainerDiv>
-            <SubContainerDiv style={{ width: "100%" }}>
-                <SectionHeader style={{ color: "black" }}>
-                    LOCATION
-                </SectionHeader>
-                <MainSubSections
-                    style={{ display: "flex", flexDirection: "row" }}
-                >
-                    <SubSectionDiv
-                        style={{
-                            flexBasis: "25%",
-                            // borderRight: "2px solid #9D9D9D",
-                            //   marginRight: "5%",
-                            padding: "10px 10px 50px 10px",
-                            justifyContent: "left"
-                        }}
-                    >
-                        <FieldDiv style={{ paddingLeft: "0" }}>
-                            <FieldLabel>SORT ORDER</FieldLabel>
-                            <Dropdown
-                                value={values.sortBy}
-                                placeholder="Select Sort By"
-                                fluid
-                                selection
-                                options={SORT_BY_ORDER_BY_OPTIONS.map(
-                                    ({ text, value }) => ({ text, value })
-                                )}
-                                onChange={updateSortByDropdown}
-                            />
-                        </FieldDiv>
-                    </SubSectionDiv>
-                    <SubSectionDiv
-                        style={{
-                            flexBasis: "65%",
-                            marginRight: "5%",
-                            marginLeft: "50px"
-                        }}
-                    >
-                        <FieldDiv>
-                            <Field name="parent_id">
-                                {() => (
-                                    <Query
-                                        query={getDirectoryListBySystem}
-                                        variables={{
-                                            id: system_id
-                                        }}
-                                    >
-                                        {({ loading, error, data }) => {
-                                            if (loading)
-                                                return <Loading loadingData />;
-                                            if (error)
-                                                return `Error! ${
-                                                    error.message
-                                                }`;
-                                            const modifiedData = modifyDirectoryListData(
-                                                data.directoryLists_by_system,
-                                                true
-                                            );
-                                            // if (
-                                            //     !Boolean(values.parent_id) &&
-                                            //     modifiedData.length > 0
-                                            // ) {
-                                            //     return (
-                                            //         <TreeviewSelector
-                                            //             data={modifiedData}
-                                            //             updateSelectedDirectory={
-                                            //                 updateSelectedDirectory
-                                            //             }
-                                            //             selectAmount="single"
-                                            //         />
-                                            //     );
-                                            // } else
-                                            if (modifiedData.length > 0) {
-                                                return (
-                                                    <TreeviewSelector
-                                                        data={modifiedData}
-                                                        updateSelectedDirectory={
-                                                            updateSelectedDirectory
-                                                        }
-                                                        selectAmount="single"
-                                                        selectedValue={
-                                                            values.parent_id
-                                                        }
-                                                        directoryType="list"
-                                                    />
-                                                );
-                                            } else {
-                                                return <React.Fragment />;
-                                            }
-                                        }}
-                                    </Query>
-                                )}
-                            </Field>
-                        </FieldDiv>
-                    </SubSectionDiv>
                 </MainSubSections>
             </SubContainerDiv>
         </ContainerDiv>
