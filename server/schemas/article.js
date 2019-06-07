@@ -9,6 +9,8 @@ export default gql`
 
     extend type Mutation {
         setArticleActiveInactive(id: ID!): Article
+        moveArticleUp(id: ID!, by: Int): Article
+        moveArticleDown(id: ID!, by: Int): Article
     }
 
     type Article {

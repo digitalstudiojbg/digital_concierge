@@ -6,8 +6,6 @@ import {
     processUpload,
     processUploadMedia
 } from "../utils/constant";
-const Sequelize = require("sequelize");
-const Op = Sequelize.Op;
 
 export default {
     Query: {
@@ -251,7 +249,7 @@ export default {
 
             const client = await db.client.findOne({
                 //CLIENT EQUAL TO JOHN BATMAN GROUP
-                where: { name: { [Op.like]: "JOHN BATMAN GROUP" } }
+                where: { name: { [db.op.like]: "JOHN BATMAN GROUP" } }
             });
 
             if (!Boolean(client)) {

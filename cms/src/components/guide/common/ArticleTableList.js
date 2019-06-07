@@ -133,7 +133,14 @@ class ArticleTableList extends React.Component {
     };
 
     render() {
-        const { classes, handleActiveInactive, data, history } = this.props;
+        const {
+            classes,
+            handleActiveInactive,
+            data,
+            history,
+            moveUpByOne,
+            moveDownByOne
+        } = this.props;
         const { anchorEl } = this.state;
         const handleVisibleClick = id => _event => {
             Boolean(handleActiveInactive) &&
@@ -159,6 +166,28 @@ class ArticleTableList extends React.Component {
                 history.push(
                     ARTICLE_MAIN_URL.replace(":article_id", anchorEl.id)
                 );
+        };
+
+        const handleMoveUpClickMenu = () => {
+            if (
+                Boolean(anchorEl) &&
+                Boolean(anchorEl.id) &&
+                Boolean(moveUpByOne)
+            ) {
+                const { id } = anchorEl;
+                moveUpByOne({ variables: { id } });
+            }
+        };
+
+        const handleMoveDownClickMenu = () => {
+            if (
+                Boolean(anchorEl) &&
+                Boolean(anchorEl.id) &&
+                Boolean(moveDownByOne)
+            ) {
+                const { id } = anchorEl;
+                moveDownByOne({ variables: { id } });
+            }
         };
 
         const currentSelectedArticle =
@@ -315,10 +344,14 @@ class ArticleTableList extends React.Component {
                     <MenuItem onClick={handleEditClickMenu}>EDIT</MenuItem>
                     <MenuItem>DELETE</MenuItem>
                     {!currentSelectedArticleIsFirstElement && (
-                        <MenuItem>MOVE UP</MenuItem>
+                        <MenuItem onClick={handleMoveUpClickMenu}>
+                            MOVE UP
+                        </MenuItem>
                     )}
                     {!currentSelectedArticleIsLastElement && (
-                        <MenuItem>MOVE DOWN</MenuItem>
+                        <MenuItem onClick={handleMoveDownClickMenu}>
+                            MOVE DOWN
+                        </MenuItem>
                     )}
                     <MenuItem onClick={handleVisibleClickMenu}>
                         {currentSelectedArticleIsActive
