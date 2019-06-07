@@ -70,12 +70,15 @@ const styles = _theme => ({
     },
     removeImageButton: {
         backgroundColor: "white",
-        width: "140px"
+        color: "#313131",
+        width: "160px",
+        fontSize: "10px"
     },
     uploadFileButton: {
         backgroundColor: "white",
+        color: "#313131",
         marginBottom: 10,
-        width: "140px"
+        fontSize: "10px"
     }
 });
 
@@ -232,11 +235,12 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
                     />
                     <div
                         style={{
-                            width: "35%",
+                            width: "38%",
                             height: "80%",
                             display: "flex",
                             paddingLeft: 10,
-                            alignItems: "center"
+                            alignItems: "center",
+                            bottom: "0"
                         }}
                     >
                         <Button
@@ -260,7 +264,7 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
                         height: "45%"
                     }}
                 >
-                    <div style={{ width: "60%", height: "100%" }}>
+                    <div style={{ width: "67%", height: "100%" }}>
                         <Dropzone
                             ref={this.dropZoneRef}
                             disableClick={true}
@@ -293,7 +297,7 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
                     </div>
                     <div
                         style={{
-                            width: "35%",
+                            width: "38%",
                             height: "90%",
                             paddingLeft: 10,
                             display: "flex",
@@ -312,7 +316,10 @@ class ModifyDirectoryEntryContent extends React.PureComponent {
                         <BrowserMedia
                             variant="outlined"
                             color="default"
-                            buttonStyle={{ backgroundColor: "white" }}
+                            buttonStyle={{
+                                backgroundColor: "white",
+                                fontSize: "10px"
+                            }}
                             fullWidth={true}
                             multipleSelect={false}
                             updateImageSelection={this.mediaSelectImage}

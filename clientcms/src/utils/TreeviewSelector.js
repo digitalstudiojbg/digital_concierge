@@ -17,8 +17,8 @@ import DirListIcon from "@material-ui/icons/List";
 
 const styles = () => ({
     expansionButton: {
-        color: "white",
-        background: "rgb(38,153,251)",
+        color: "rgb(38,153,251)",
+        //  background: "rgb(38,153,251)",
         padding: 0,
         margin: 0,
         width: 24,
@@ -497,7 +497,7 @@ class TreeviewSelector extends React.PureComponent {
                                 : this.addOrRemoveFromSelected
                         }
                     >
-                        <DirListIcon
+                        {/* <DirListIcon
                             fontSize="large"
                             className={classes.dirListIcon}
                             id={id}
@@ -506,7 +506,7 @@ class TreeviewSelector extends React.PureComponent {
                                     ? this.doNothing
                                     : this.addOrRemoveFromSelected
                             }
-                        />
+                        /> */}
                         <span
                             style={{ paddingLeft: 5, fontSize: "1.5em" }}
                             id={id}
@@ -557,7 +557,7 @@ class TreeviewSelector extends React.PureComponent {
                     flexBasis: "60%",
                     paddingLeft: "3%",
                     borderLeft: "2px solid #9D9D9D",
-                    height: "100%",
+                    height: "400px",
                     display: "flex",
                     flexDirection: "column"
                 }}

@@ -52,11 +52,18 @@ import {
     SidebarSubItem
 } from "../home/WelcomeStyleSet";
 
+//const { expandCon } = true;
+
+// state = {
+//     expandCon: false
+// };
+
 const SIDEBAR_HUB = [
     {
         name: WELCOME_URL,
         displayName: "System Hub",
         icon: Home,
+
         paddingLeft: "20px"
     }
 ];
@@ -99,6 +106,10 @@ const SIDEBAR_ITEMS = [
         name: "expandContent",
         displayName: "Content",
         icon: List,
+
+        // icon2: [expandCon ? true : ExpandMore, ExpandLess],
+        icon2: ExpandLess,
+        icon3: ExpandMore,
         paddingLeft: "20px",
         expandItems: [
             {
@@ -162,6 +173,11 @@ const styles = {
         width: 30,
         height: 30,
         paddingLeft: 10
+    },
+    icon2: {
+        width: 30,
+        height: 30,
+        margin: "0 0 0 80px"
     },
     addActiveClass: {
         width: "260px"
@@ -271,7 +287,17 @@ class Sidebar extends Component {
             //   open: true,
             selectedItem: urlPath,
             expandContent
+            // expandCon: true
         };
+    }
+
+    handleOnClick() {
+        this.state = { expandCon: true };
+        if (!this.state.expandCon) {
+            this.setState({ expandCon: true });
+        } else {
+            this.setState({ expandCon: false });
+        }
     }
 
     render() {
@@ -279,6 +305,7 @@ class Sidebar extends Component {
         const { classes, match } = this.props;
         const { params } = match || {};
         const { system_id = "" } = params || {};
+
         return (
             <Query variables={{ id: system_id }} query={getSystemDetailSidebar}>
                 {({ loading, error, data: { system } }) => {
@@ -329,6 +356,7 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
+
                                     paddingLeft
                                 } = items;
                                 return (
@@ -401,6 +429,8 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
+                                    icon2: ExpandIcon,
+                                    icon3: ExpandLessIcon,
                                     paddingLeft,
                                     expandItems = []
                                 } = items;
@@ -440,6 +470,7 @@ class Sidebar extends Component {
                                                                 [name]: !this
                                                                     .state[name]
                                                             });
+                                                            this.handleOnClick();
                                                         } else {
                                                             this.setState({
                                                                 selectedItem: name
@@ -474,6 +505,15 @@ class Sidebar extends Component {
                                                     <SidebarLabel>
                                                         {displayName}
                                                     </SidebarLabel>
+
+                                                    {Boolean(ExpandIcon) && (
+                                                        <ExpandIcon
+                                                            className={
+                                                                classes.icon2
+                                                            }
+                                                            // onClick="handleOnClick()"
+                                                        />
+                                                    )}
                                                 </SidebarItem>
                                                 {name.includes("expand") &&
                                                     this.state[name] &&

@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    ContainerDiv,
-    CreateContentContainerDiv,
-    SYSTEM_CMS_CONTENT_URL
-} from "../../../utils/Constants";
+import { SYSTEM_CMS_CONTENT_URL } from "../../../utils/Constants";
 import Loading from "../../loading/Loading";
 import styled from "styled-components";
 import { Query } from "react-apollo";
@@ -30,7 +26,9 @@ import {
     SubSectionHeader,
     FieldDiv,
     MainSubSections,
-    SubSectionDiv
+    SubSectionDiv,
+    ContainerDiv,
+    SubContainerDiv
 } from "../../home/WelcomeStyleSet";
 
 const QueryHOC = ({ ...props }) => (
@@ -323,10 +321,10 @@ class ModifyStartContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex",
-                        height: "45%"
+                        height: "200px"
                     }}
                 >
-                    <div style={{ width: "60%", height: "100%" }}>
+                    <div style={{ width: "67%", height: "100%" }}>
                         <Dropzone
                             ref={this.dropZoneRefHeader}
                             disableClick={true}
@@ -336,7 +334,7 @@ class ModifyStartContent extends React.PureComponent {
                                 position: "relative",
                                 width: "100%",
                                 backgroundColor: "rgb(221, 221, 221)",
-                                height: "90%",
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "center",
@@ -349,18 +347,19 @@ class ModifyStartContent extends React.PureComponent {
                                         ? `url(${image.preview})`
                                         : "none",
                                 backgroundPosition: "center",
+                                //  backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat",
-                                backgroundSize: "contain"
+                                backgroundSize: "cover"
                             }}
                             onDrop={this.onDropHeader.bind(this)}
                         >
                             {!Boolean(image) && (
                                 <div
-                                    style={{
-                                        padding: "100px 0",
-                                        width: "300px",
-                                        textAlign: "center"
-                                    }}
+                                // style={{
+                                //     padding: "100px 0",
+                                //     width: "300px",
+                                //     textAlign: "center"
+                                // }}
                                 >
                                     DRAG & DROP HERE
                                 </div>
@@ -431,7 +430,7 @@ class ModifyStartContent extends React.PureComponent {
                     <div
                         style={{
                             width: "35%",
-                            //  height: "80%",
+                            height: "200px",
                             display: "flex",
                             paddingLeft: 10,
                             alignItems: "center"
@@ -455,10 +454,11 @@ class ModifyStartContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex"
+
                         //  height: "45%"
                     }}
                 >
-                    <div style={{ width: "60%" }}>
+                    <div style={{ width: "67%" }}>
                         <Dropzone
                             ref={this.dropZoneRefLogo}
                             disableClick={true}
@@ -468,7 +468,7 @@ class ModifyStartContent extends React.PureComponent {
                                 position: "relative",
                                 width: "100%",
                                 backgroundColor: "rgb(221, 221, 221)",
-                                // height: "90%",
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
 
@@ -482,7 +482,7 @@ class ModifyStartContent extends React.PureComponent {
                                         : "none",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
-                                backgroundSize: "contain"
+                                backgroundSize: "cover"
                             }}
                             onDrop={this.onDropLogo.bind(this)}
                         >
@@ -571,7 +571,7 @@ class ModifyStartContent extends React.PureComponent {
 
         return (
             <ContainerDiv>
-                <CreateContentContainerDiv>
+                <SubContainerDiv style={{ width: "100%" }}>
                     <MainSubSections
                         style={{
                             width: "100%",
@@ -670,7 +670,7 @@ class ModifyStartContent extends React.PureComponent {
                             {this.renderColourSchemePicker()}
                         </SubSectionDiv>
                     </MainSubSections>
-                </CreateContentContainerDiv>
+                </SubContainerDiv>
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}

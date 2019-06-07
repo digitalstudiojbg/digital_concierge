@@ -11,6 +11,7 @@ import { formatBytes } from "./Constants";
 import { UPLOAD_FILES_WITH_CLIENT_ID, DELETE_FILES } from "../data/mutation";
 import Checkbox from "@material-ui/core/Checkbox";
 import Dialog from "@material-ui/core/Dialog";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -25,7 +26,9 @@ const Transition = props => {
 
 const styles = theme => ({
     select: {
-        width: "300px"
+        width: "300px",
+
+        variant: "outlined"
     },
     buttonFont: {
         fontSize: "1.2em"
@@ -44,6 +47,7 @@ const EachMediaSection = styled.div`
     height: 280px;
     justify-content: space-between;
     transition: all 0.3s ease-in-out;
+    border: 1px solid grey;
     &:hover {
         background-color: #fff0f5;
     }
@@ -452,8 +456,8 @@ class MediaLibrary extends React.Component {
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-between",
-                                        alignItems: "center",
-                                        height: "3vh"
+                                        alignItems: "center"
+                                        //  height: "3vh"
                                     }}
                                 >
                                     <div>
@@ -478,6 +482,7 @@ class MediaLibrary extends React.Component {
                                         <div style={{ paddingRight: "20px" }}>
                                             <Select
                                                 className={classes.select}
+                                                input={<OutlinedInput />}
                                                 value={limit}
                                                 onChange={event => {
                                                     this.setState({
@@ -511,6 +516,7 @@ class MediaLibrary extends React.Component {
 
                                         <div style={{ paddingLeft: "20px" }}>
                                             <Select
+                                                input={<OutlinedInput />}
                                                 className={classes.select}
                                                 value={sort}
                                                 onChange={event => {
@@ -554,7 +560,8 @@ class MediaLibrary extends React.Component {
                                         overflowY: "scroll",
                                         height: this.props.height,
                                         flexWrap: "wrap",
-                                        alignItems: "center"
+                                        alignItems: "center",
+                                        marginTop: "20px"
                                     }}
                                 >
                                     {images.length > 0 &&
@@ -702,7 +709,7 @@ class MediaLibrary extends React.Component {
                                     style={{
                                         display: "flex",
                                         justifyContent: "space-between",
-                                        height: "5vh",
+                                        //   height: "5vh",
                                         alignItems: "center"
                                     }}
                                 >
