@@ -113,7 +113,11 @@ class ArticleTableList extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, handleActiveInactive } = this.props;
+        const handleVisibleClick = id => _event => {
+            handleActiveInactive({ variables: { id } });
+        };
+
         return (
             <ContainerDiv>
                 <MaterialTable
@@ -122,13 +126,17 @@ class ArticleTableList extends React.Component {
                         {
                             title: "VISIBLE",
                             field: "active",
-                            render: ({ active }) =>
+                            render: ({ id, active }) =>
                                 active ? (
-                                    <IconButton>
+                                    <IconButton
+                                        onClick={handleVisibleClick(id)}
+                                    >
                                         <Visibility />
                                     </IconButton>
                                 ) : (
-                                    <IconButton>
+                                    <IconButton
+                                        onClick={handleVisibleClick(id)}
+                                    >
                                         <VisibilityOff />
                                     </IconButton>
                                 )
@@ -148,7 +156,6 @@ class ArticleTableList extends React.Component {
                     }}
                     components={{
                         Toolbar: props => {
-                            console.log(props);
                             return (
                                 <div
                                     style={{

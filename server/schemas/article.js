@@ -7,6 +7,10 @@ export default gql`
         articlesByPublication(id: ID!): [Article]
     }
 
+    extend type Mutation {
+        setArticleActiveInactive(id: ID!): Article
+    }
+
     type Article {
         id: ID!
         name: String
