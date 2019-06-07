@@ -15,7 +15,11 @@ import {
     VisibilityOff
 } from "@material-ui/icons";
 import { withRouter } from "react-router-dom";
-import { ARTICLE_CREATE_NEW_URL } from "../../../utils/Constants";
+import {
+    ARTICLE_CREATE_NEW_URL,
+    ARTICLE_MAIN_URL,
+    sortDate
+} from "../../../utils/Constants";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -111,8 +115,10 @@ class ArticleTableList extends React.Component {
                       template_name,
                       layout_family_name,
                       layout_option_name,
-                      createdAt: this.formatDate(createdAt).toUpperCase(),
-                      updatedAt: this.formatDate(updatedAt).toUpperCase()
+                      createdAt,
+                      updatedAt,
+                      createdAtFormat: this.formatDate(createdAt).toUpperCase(),
+                      updatedAtFormat: this.formatDate(updatedAt).toUpperCase()
                   })
               );
     };
@@ -127,7 +133,7 @@ class ArticleTableList extends React.Component {
     };
 
     render() {
-        const { classes, handleActiveInactive, data } = this.props;
+        const { classes, handleActiveInactive, data, history } = this.props;
         const { anchorEl } = this.state;
         const handleVisibleClick = id => _event => {
             Boolean(handleActiveInactive) &&
@@ -143,6 +149,16 @@ class ArticleTableList extends React.Component {
                 const { id } = anchorEl;
                 handleActiveInactive({ variables: { id } });
             }
+        };
+
+        const handleEditClickMenu = () => {
+            Boolean(anchorEl) &&
+                Boolean(anchorEl.id) &&
+                Boolean(history) &&
+                Boolean(history.push) &&
+                history.push(
+                    ARTICLE_MAIN_URL.replace(":article_id", anchorEl.id)
+                );
         };
 
         const currentSelectedArticle =
@@ -189,8 +205,22 @@ class ArticleTableList extends React.Component {
                         { title: "TEMPLATE", field: "template_name" },
                         { title: "LAYOUT FAMILY", field: "layout_family_name" },
                         { title: "LAYOUT OPTION", field: "layout_option_name" },
-                        { title: "CREATED", field: "createdAt" },
-                        { title: "LAST EDITED", field: "updatedAt" },
+                        {
+                            title: "CREATED",
+                            field: "createdAtFormat",
+                            customSort: (
+                                { createdAt: date1 },
+                                { createdAt: date2 }
+                            ) => sortDate(date1, date2)
+                        },
+                        {
+                            title: "LAST EDITED",
+                            field: "updatedAtFormat",
+                            customSort: (
+                                { updatedAt: date1 },
+                                { updatedAt: date2 }
+                            ) => sortDate(date1, date2)
+                        },
                         {
                             title: "ACTIONS",
                             render: ({ id }) => (
@@ -282,7 +312,7 @@ class ArticleTableList extends React.Component {
                         horizontal: "left"
                     }}
                 >
-                    <MenuItem>EDIT</MenuItem>
+                    <MenuItem onClick={handleEditClickMenu}>EDIT</MenuItem>
                     <MenuItem>DELETE</MenuItem>
                     {!currentSelectedArticleIsFirstElement && (
                         <MenuItem>MOVE UP</MenuItem>

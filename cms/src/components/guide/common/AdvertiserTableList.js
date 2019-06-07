@@ -12,7 +12,7 @@ import {
 } from "@material-ui/icons";
 import MaterialTable, { MTableToolbar } from "material-table";
 import dayJs from "dayjs";
-import { ADVERTISER_CREATE_NEW_URL } from "../../../utils/Constants";
+import { ADVERTISER_CREATE_NEW_URL, sortDate } from "../../../utils/Constants";
 import { isEmpty } from "lodash";
 
 const ContainerDiv = styled.div`
@@ -55,7 +55,7 @@ const styles = () => ({
         marginRight: 10,
         borderRadius: 5,
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)",
+        border: "1px solid rgba(112, 112, 112, 1)"
     }
 });
 
@@ -104,9 +104,19 @@ class AdvertiserTableList extends React.Component {
             commence_date:
                 !isEmpty(active_advertising) &&
                 Boolean(active_advertising.commence_date)
+                    ? active_advertising.commence_date
+                    : "",
+            commence_date_format:
+                !isEmpty(active_advertising) &&
+                Boolean(active_advertising.commence_date)
                     ? this.formatDate(active_advertising.commence_date)
                     : "",
             expire_date:
+                !isEmpty(active_advertising) &&
+                Boolean(active_advertising.expire_date)
+                    ? active_advertising.expire_date
+                    : "",
+            expire_date_format:
                 !isEmpty(active_advertising) &&
                 Boolean(active_advertising.expire_date)
                     ? this.formatDate(active_advertising.expire_date)
@@ -129,11 +139,19 @@ class AdvertiserTableList extends React.Component {
                             },
                             {
                                 title: "DATE ADDED",
-                                field: "commence_date"
+                                field: "commence_date_format",
+                                customSort: (
+                                    { commence_date: date1 },
+                                    { commence_date: date2 }
+                                ) => sortDate(date1, date2)
                             },
                             {
                                 title: "EXPIRY DATE",
-                                field: "expire_date"
+                                field: "expire_date_format",
+                                customSort: (
+                                    { expire_date: date1 },
+                                    { expire_date: date2 }
+                                ) => sortDate(date1, date2)
                             }
                         ]}
                         options={{
