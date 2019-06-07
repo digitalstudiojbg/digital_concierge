@@ -86,7 +86,7 @@ class ArticleTableList extends React.Component {
     };
 
     handleOpenMenu = event => {
-        console.log("Clicked Article: ", event.currentTarget.id);
+        // console.log("Clicked Article: ", event.currentTarget.id);
         this.setState({ anchorEl: event.currentTarget });
     };
 
