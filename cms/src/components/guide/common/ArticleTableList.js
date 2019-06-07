@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MaterialTable, { MTableToolbar } from "material-table";
 import { isEmpty } from "lodash";
 import dayJs from "dayjs";
-import { IconButton, Button } from "@material-ui/core";
+import { IconButton, Button, Menu, MenuItem } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import {
     MoreHoriz,
@@ -58,6 +58,11 @@ const styles = () => ({
 });
 
 class ArticleTableList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleOpenMenu = this.handleOpenMenu.bind(this);
+        this.handleCloseMenu = this.handleCloseMenu.bind(this);
+    }
     state = {
         anchorEl: null
     };
@@ -71,6 +76,15 @@ class ArticleTableList extends React.Component {
     ];
 
     formatDate = dateValue => dayJs(dateValue).format("HH:mm DD MMM YYYY");
+
+    handleCloseMenu = () => {
+        this.setState({ anchorEl: null });
+    };
+
+    handleOpenMenu = event => {
+        console.log("Clicked Article: ", event.currentTarget.id);
+        this.setState({ anchorEl: event.currentTarget });
+    };
 
     modifyArticleList = () => {
         const { data } = this.props;
@@ -113,10 +127,40 @@ class ArticleTableList extends React.Component {
     };
 
     render() {
-        const { classes, handleActiveInactive } = this.props;
+        const { classes, handleActiveInactive, data } = this.props;
+        const { anchorEl } = this.state;
         const handleVisibleClick = id => _event => {
-            handleActiveInactive({ variables: { id } });
+            Boolean(handleActiveInactive) &&
+                handleActiveInactive({ variables: { id } });
         };
+
+        const handleVisibleClickMenu = () => {
+            if (
+                Boolean(anchorEl) &&
+                Boolean(anchorEl.id) &&
+                Boolean(handleActiveInactive)
+            ) {
+                const { id } = anchorEl;
+                handleActiveInactive({ variables: { id } });
+            }
+        };
+
+        const currentSelectedArticle =
+            !isEmpty(data) && Boolean(anchorEl) && Boolean(anchorEl.id)
+                ? data.find(({ id }) => id === anchorEl.id)
+                : null;
+
+        const currentSelectedArticleIsActive =
+            Boolean(currentSelectedArticle) &&
+            Boolean(currentSelectedArticle.active);
+
+        const currentSelectedArticleIsFirstElement =
+            Boolean(currentSelectedArticle) &&
+            data[0].id === currentSelectedArticle.id;
+
+        const currentSelectedArticleIsLastElement =
+            Boolean(currentSelectedArticle) &&
+            data[data.length - 1].id === currentSelectedArticle.id;
 
         return (
             <ContainerDiv>
@@ -125,7 +169,6 @@ class ArticleTableList extends React.Component {
                     columns={[
                         {
                             title: "VISIBLE",
-                            field: "active",
                             render: ({ id, active }) =>
                                 active ? (
                                     <IconButton
@@ -147,12 +190,24 @@ class ArticleTableList extends React.Component {
                         { title: "LAYOUT FAMILY", field: "layout_family_name" },
                         { title: "LAYOUT OPTION", field: "layout_option_name" },
                         { title: "CREATED", field: "createdAt" },
-                        { title: "LAST EDITED", field: "updatedAt" }
+                        { title: "LAST EDITED", field: "updatedAt" },
+                        {
+                            title: "ACTIONS",
+                            render: ({ id }) => (
+                                <IconButton
+                                    id={id}
+                                    onClick={this.handleOpenMenu}
+                                >
+                                    <MoreHoriz />
+                                </IconButton>
+                            )
+                        }
                     ]}
                     options={{
                         selection: true,
                         searchFieldAlignment: "left",
-                        showTitle: false
+                        showTitle: false,
+                        actionsColumnIndex: -1
                     }}
                     components={{
                         Toolbar: props => {
@@ -214,6 +269,37 @@ class ArticleTableList extends React.Component {
                         }
                     }}
                 />
+                <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleCloseMenu}
+                    anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "right"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left"
+                    }}
+                >
+                    <MenuItem>EDIT</MenuItem>
+                    <MenuItem>DELETE</MenuItem>
+                    {!currentSelectedArticleIsFirstElement && (
+                        <MenuItem>MOVE UP</MenuItem>
+                    )}
+                    {!currentSelectedArticleIsLastElement && (
+                        <MenuItem>MOVE DOWN</MenuItem>
+                    )}
+                    {currentSelectedArticleIsActive ? (
+                        <MenuItem onClick={handleVisibleClickMenu}>
+                            MAKE INVISIBLE
+                        </MenuItem>
+                    ) : (
+                        <MenuItem onClick={handleVisibleClickMenu}>
+                            MAKE VISIBLE
+                        </MenuItem>
+                    )}
+                </Menu>
             </ContainerDiv>
         );
     }
