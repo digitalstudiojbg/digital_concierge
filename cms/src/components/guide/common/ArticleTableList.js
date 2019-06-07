@@ -236,8 +236,7 @@ class ArticleTableList extends React.Component {
                     options={{
                         selection: true,
                         searchFieldAlignment: "left",
-                        showTitle: false,
-                        actionsColumnIndex: -1
+                        showTitle: false
                     }}
                     components={{
                         Toolbar: props => {
