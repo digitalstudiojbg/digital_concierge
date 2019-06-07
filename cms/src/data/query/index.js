@@ -36,6 +36,7 @@ import {
     getAdvertiserActiveAgreement
 } from "./advertiser";
 import { getArtworkSizeList } from "./artworkSize";
+import { getArticleDetail, getArticleListFromPublication } from "./article";
 
 export {
     getCurrentUserQuery,
@@ -71,5 +72,7 @@ export {
     getJustBrilliantGuideIdFromAdvertiser,
     getAdvertiserDetail,
     getAdvertiserActiveAgreement,
-    getArtworkSizeList
+    getArtworkSizeList,
+    getArticleDetail,
+    getArticleListFromPublication
 };

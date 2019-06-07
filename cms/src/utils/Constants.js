@@ -56,6 +56,10 @@ export const GUIDE_CREATE_NEW_URL = "/guide/new";
 export const ADVERTISER_MAIN_URL = "/edit/advertiser/:advertiser_id";
 export const ADVERTISER_CREATE_NEW_URL = "/create/advertiser";
 
+//Articles URL
+export const ARTICLE_MAIN_URL = "/edit/article/:article_id";
+export const ARTICLE_CREATE_NEW_URL = "/create/article";
+
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
 export const MAX_FILE_SIZE = 104857600; //100MB in bytes

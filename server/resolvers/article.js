@@ -3,7 +3,9 @@ import db from "../models";
 export default {
     Query: {
         article: async (_root, { id }) => await db.article.findByPk(id),
-        articles: async (_root, _input, { user }) => await db.article.findAll()
+        articles: async (_root, _input, { user }) => await db.article.findAll(),
+        articlesByPublication: async (_root, { id }) =>
+            await db.article.findAll({ where: { justBrilliantGuideId: id } })
     },
     Article: {
         just_brilliant_guide: async article =>
