@@ -321,15 +321,11 @@ class ArticleTableList extends React.Component {
                     {!currentSelectedArticleIsLastElement && (
                         <MenuItem>MOVE DOWN</MenuItem>
                     )}
-                    {currentSelectedArticleIsActive ? (
-                        <MenuItem onClick={handleVisibleClickMenu}>
-                            MAKE INVISIBLE
-                        </MenuItem>
-                    ) : (
-                        <MenuItem onClick={handleVisibleClickMenu}>
-                            MAKE VISIBLE
-                        </MenuItem>
-                    )}
+                    <MenuItem onClick={handleVisibleClickMenu}>
+                        {currentSelectedArticleIsActive
+                            ? "MAKE INVISIBLE"
+                            : "MAKE VISIBLE"}
+                    </MenuItem>
                 </Menu>
             </ContainerDiv>
         );
