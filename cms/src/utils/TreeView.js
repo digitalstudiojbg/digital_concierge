@@ -1442,6 +1442,7 @@ class TreeView extends React.PureComponent {
                         anchorEl={anchorElCreate}
                         open={Boolean(anchorElCreate)}
                         onClose={this.handleCloseCreate}
+                        getContentAnchorEl={null}
                         anchorOrigin={{
                             vertical: "bottom",
                             horizontal: "right"
@@ -1478,6 +1479,7 @@ class TreeView extends React.PureComponent {
                                 anchorEl={anchorEl}
                                 open={Boolean(anchorEl)}
                                 onClose={this.handleCloseOptions}
+                                getContentAnchorEl={null}
                                 anchorOrigin={{
                                     vertical: "bottom",
                                     horizontal: "left"

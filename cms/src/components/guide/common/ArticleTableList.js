@@ -303,6 +303,7 @@ class ArticleTableList extends React.Component {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={this.handleCloseMenu}
+                    getContentAnchorEl={null}
                     anchorOrigin={{
                         vertical: "center",
                         horizontal: "right"

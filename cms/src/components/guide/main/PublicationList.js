@@ -182,6 +182,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleCloseMenu}
+                    getContentAnchorEl={null}
                     anchorOrigin={{
                         vertical: "bottom",
                         horizontal: "left"

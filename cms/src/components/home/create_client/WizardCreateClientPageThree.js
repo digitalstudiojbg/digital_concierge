@@ -1452,6 +1452,7 @@ class WizardCreateClientPageThree extends React.Component {
                                             <Menu
                                                 id="simple-menu"
                                                 anchorEl={this.state.anchorEl}
+                                                getContentAnchorEl={null}
                                                 open={Boolean(
                                                     this.state.anchorEl
                                                 )}

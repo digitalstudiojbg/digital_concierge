@@ -1867,6 +1867,7 @@ class TreeView extends React.PureComponent {
                                                 id="simple-menu"
                                                 anchorEl={anchorEl}
                                                 open={Boolean(anchorEl)}
+                                                getContentAnchorEl={null}
                                                 onClose={
                                                     this.handleCloseOptions
                                                 }
