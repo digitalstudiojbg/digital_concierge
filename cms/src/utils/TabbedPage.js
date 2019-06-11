@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import { withApollo, compose, graphql } from "react-apollo";
 import { getTabbedPageComplete } from "../data/query";
 import InfoIcon from "@material-ui/icons/Info";
+import { isEmpty } from "lodash";
 
 const ContainerDivTab = styled.div`
     width: 100%;
@@ -160,7 +161,8 @@ class TabbedPage extends React.Component {
             tabs,
             tooltipText,
             tooltipColor,
-            tooltipFontSize
+            tooltipFontSize,
+            otherProps
         } = this.props;
         const { tab } = this.state;
         const CurrentComponent = tabs[tab].component;
@@ -260,6 +262,7 @@ class TabbedPage extends React.Component {
                                         (this.childComponentsRefs[tab] = ref)
                                     } //This props is to be linked to the Formik ref prop
                                     setIsComplete={this.setIsComplete} //This prop is to tell that the form has finished submission
+                                    {...!isEmpty(otherProps) && { otherProps }}
                                 />
                             )}
                     </TabContainer>
@@ -290,7 +293,8 @@ TabbedPage.propTypes = {
     ),
     tooltipColor: PropTypes.string,
     tooltipFontSize: PropTypes.string,
-    tooltipText: PropTypes.string
+    tooltipText: PropTypes.string,
+    otherProps: PropTypes.object
 };
 
 export default compose(
