@@ -42,6 +42,10 @@ const SectionHeader = styled.h4`
     width: 100%;
     padding-bottom: 10px;
 `;
+const SubSectionHeader = styled.h5`
+    padding: 20px 0 5px;
+    color: black;
+`;
 
 const ColourThemeContainerDiv = styled.div`
     width: 80%;
@@ -97,7 +101,8 @@ const ColourEntryDivModal = styled(ColourEntryDiv)`
 const ColourTitleDiv = styled.div`
     width: 90%;
     border-bottom: 2px solid black;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: bold;
 `;
 
 const styles = () => ({
@@ -210,7 +215,8 @@ export const ColourSchemePicker = ({
             <div
                 style={{
                     width: "100%",
-                    paddingLeft: 10
+                    paddingLeft: 10,
+                    fontSize: "9px"
                 }}
             >
                 {colour.get("hex").toUpperCase()} {colour.get("alpha")}%
@@ -307,9 +313,9 @@ export const ColourSchemePicker = ({
                             <React.Fragment>
                                 <ContainerDiv>
                                     <HeaderDiv>
-                                        <SectionHeader>
+                                        <SubSectionHeader>
                                             COLOUR SCHEME
-                                        </SectionHeader>
+                                        </SubSectionHeader>
                                         {!withWrap && (
                                             <FormControlLabel
                                                 control={

@@ -24,12 +24,16 @@ import ColourSchemePicker from "../../../utils/ColourSchemePicker";
 import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+
 import {
     SectionHeader,
     SubSectionHeader,
     SubSectionTop,
     MainSubSections,
-    SubSectionDiv
+    SubSectionDiv,
+    FieldLabel,
+    FieldDiv
 } from "../../home/WelcomeStyleSet";
 
 const styles = _theme => ({
@@ -46,9 +50,8 @@ const styles = _theme => ({
         margin: 0
     },
     imageNameTextField: {
-        // marginTop: 15,
-        paddingBottom: 20,
-        width: "60%"
+        backgroundColor: "white"
+        // padding: "10px"
     },
     categoryNameFormHelper: {
         fontSize: "0.7em",
@@ -68,14 +71,19 @@ const styles = _theme => ({
         alignItems: "center"
     },
     removeImageButton: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        color: "#313131",
+        fontSize: "10px"
     },
     uploadFileButton: {
         backgroundColor: "white",
-        marginBottom: 10
+        color: "#313131",
+        marginBottom: 10,
+        fontSize: "10px"
     },
     input: {
-        color: "white"
+        color: "white",
+        padding: "10px"
     }
 });
 
@@ -259,18 +267,35 @@ class ModifyDirectoryListContent extends React.PureComponent {
                         alignItems: "center"
                     }}
                 >
-                    <MuiTextField
-                        label="FILENAME"
-                        disabled={true}
-                        value={this.state.imageName}
-                        className={classes.imageNameTextField}
-                        fullWidth={true}
-                        variant="outlined"
-                    />
+                    <FieldDiv
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            padding: "0"
+                        }}
+                    >
+                        <FieldLabel>FILENAME</FieldLabel>
+                        <MuiTextField
+                            //  label="FILENAME"
+
+                            disabled={true}
+                            value={this.state.imageName}
+                            className={classes.imageNameTextField}
+                            fullWidth={true}
+                            variant="outlined"
+                            input={
+                                <OutlinedInput
+                                    style={{
+                                        height: 38
+                                    }}
+                                />
+                            }
+                        />
+                    </FieldDiv>
                     <div
                         style={{
-                            width: "35%",
-                            height: "80%",
+                            width: "60%",
+                            //   height: "80%",
                             display: "flex",
                             paddingLeft: 10,
                             alignItems: "center"
@@ -294,7 +319,8 @@ class ModifyDirectoryListContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex",
-                        height: "45%"
+                        height: "45%",
+                        marginTop: "35px"
                     }}
                 >
                     <div style={{ width: "60%", height: "100%" }}>
@@ -330,7 +356,7 @@ class ModifyDirectoryListContent extends React.PureComponent {
                     </div>
                     <div
                         style={{
-                            width: "35%",
+                            width: "38%",
                             height: "90%",
                             paddingLeft: 10,
                             display: "flex",
@@ -349,7 +375,10 @@ class ModifyDirectoryListContent extends React.PureComponent {
                         <BrowserMedia
                             variant="outlined"
                             color="default"
-                            buttonStyle={{ backgroundColor: "white" }}
+                            buttonStyle={{
+                                backgroundColor: "white",
+                                fontSize: "10px"
+                            }}
                             fullWidth={true}
                             multipleSelect={false}
                             updateImageSelection={this.mediaSelectImage}
@@ -407,9 +436,9 @@ class ModifyDirectoryListContent extends React.PureComponent {
                             }}
                         >
                             <div style={{ width: "95%" }}>
-                                <SectionHeader style={{ color: "black" }}>
+                                <SubSectionHeader style={{ color: "black" }}>
                                     {subTitleText}
-                                </SectionHeader>
+                                </SubSectionHeader>
                                 {/* <Field
                                     name="title"
                                     validateOnBlur
@@ -434,9 +463,9 @@ class ModifyDirectoryListContent extends React.PureComponent {
                                 />
                             </div>
                             <div style={{ width: "95%", marginTop: "10%" }}>
-                                <SectionHeader style={{ color: "black" }}>
+                                <SubSectionHeader style={{ color: "black" }}>
                                     TEXT FIELD
-                                </SectionHeader>
+                                </SubSectionHeader>
                                 {/* <Field
                                     name="description"
                                     multiline
@@ -470,9 +499,9 @@ class ModifyDirectoryListContent extends React.PureComponent {
                             }}
                         >
                             <div style={{ width: "95%", height: "100%" }}>
-                                <SectionHeader style={{ color: "black" }}>
+                                <SubSectionHeader style={{ color: "black" }}>
                                     HEADER IMAGE
-                                </SectionHeader>
+                                </SubSectionHeader>
 
                                 {this.renderImageUploader()}
                             </div>

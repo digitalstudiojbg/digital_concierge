@@ -22,7 +22,7 @@ const ContainerDiv = styled.div`
 `;
 
 const SidebarDiv = styled.div`
-    width: 350px;
+    width: 260px;
     background-color: rgb(252, 252, 252);
     color: black;
     display: flex;
@@ -51,9 +51,9 @@ const SidebarSelected = styled.div`
     background: rgb(113, 113, 113);
     color: white;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.5em;
+    padding: 20px 20px 20px 50px;
+    text-align: left;
+    font-size: 16px;
 `;
 
 const SidebarNormal = styled.div`
@@ -61,9 +61,9 @@ const SidebarNormal = styled.div`
     background: white;
     color: black;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.5em;
+    padding: 20px 20px 20px 40px;
+    text-align: left;
+    font-size: 16px;
 `;
 
 // const styles = () => ({
@@ -167,18 +167,19 @@ class Welcome extends Component {
         return (
             <ContainerDiv>
                 <SidebarDiv>
-                    {user.client && user.client.avatar && (
-                        <img
-                            src={user.client.avatar}
-                            style={{
-                                marginTop: "5vh",
-                                width: "50%",
-                                marginBottom: "5vh"
-                            }}
-                            alt={`${user.client.name} avatar`}
-                        />
-                    )}
-                    <SidebarHeaderTitle>
+                    <div style={{ height: "150px" }}>
+                        {user.client && user.client.avatar && (
+                            <img
+                                src={user.client.avatar}
+                                style={{
+                                    margin: "15%",
+                                    width: "70%"
+                                }}
+                                alt={`${user.client.name} avatar`}
+                            />
+                        )}
+                    </div>
+                    {/* <SidebarHeaderTitle>
                         <span style={{ fontSize: "4em", paddingRight: 5 }}>
                             PORTAL
                         </span>
@@ -186,7 +187,7 @@ class Welcome extends Component {
                             <div>ADMIN</div>
                             <div>CONSOLE</div>
                         </span>
-                    </SidebarHeaderTitle>
+                    </SidebarHeaderTitle> */}
                     {this.renderSidebarButtons()}
                 </SidebarDiv>
                 <ContentDiv>

@@ -17,8 +17,8 @@ import DirListIcon from "@material-ui/icons/List";
 
 const styles = () => ({
     expansionButton: {
-        color: "white",
-        background: "rgb(38,153,251)",
+        color: "rgb(38,153,251)",
+        //  background: "rgb(38,153,251)",
         padding: 0,
         margin: 0,
         width: 24,
@@ -38,6 +38,10 @@ const styles = () => ({
     },
     checkIcon: {
         color: "white"
+    },
+    myInput: {
+        //  padding: "10px",
+        backgroundColor: "white"
     }
 });
 
@@ -53,17 +57,17 @@ const ContainerDiv = styled.div`
     flex-direction: column;
 `;
 
-const TitleHeaderDiv = styled.div`
-    font-size: 1.5em;
-    color: rgb(10, 10, 10);
-    padding-bottom: 30px;
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: black;
+    font-size: 20px;
+    padding: 0px;
+    width: 100%;
 `;
 
 const SearchFilterContainerDiv = styled.div`
     flex-basis: 30%;
-    padding-right: 10px;
-    border-right: 2px solid rgb(187, 187, 187);
-    margin-right: 10px;
+    padding-right: 3%;
     display: flex;
     flex-direction: column;
 `;
@@ -470,6 +474,7 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <React.Fragment key={`DIR-LIST-VIEW-${index}-${id}`}>
                 <DirectoryListEntryDiv
+                    style={{ display: "flex", flex: "1" }}
                     selected={selected}
                     depth={depth}
                     disabled={disabled}
@@ -492,7 +497,7 @@ class TreeviewSelector extends React.PureComponent {
                                 : this.addOrRemoveFromSelected
                         }
                     >
-                        <DirListIcon
+                        {/* <DirListIcon
                             fontSize="large"
                             className={classes.dirListIcon}
                             id={id}
@@ -501,7 +506,7 @@ class TreeviewSelector extends React.PureComponent {
                                     ? this.doNothing
                                     : this.addOrRemoveFromSelected
                             }
-                        />
+                        /> */}
                         <span
                             style={{ paddingLeft: 5, fontSize: "1.5em" }}
                             id={id}
@@ -549,16 +554,19 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <div
                 style={{
-                    flexBasis: "70%",
-                    height: "100%",
+                    flexBasis: "60%",
+                    paddingLeft: "3%",
+                    borderLeft: "2px solid #9D9D9D",
+                    height: "400px",
                     display: "flex",
                     flexDirection: "column"
                 }}
             >
                 <div
                     style={{
-                        fontSize: "1em",
-                        color: "rgb(137,137,137)"
+                        fontSize: "10px",
+                        color: "rgb(137,137,137)",
+                        marginBottom: "10px"
                     }}
                 >
                     SELECT LOCATION BY EXPANDING AND COLLAPSING THE LISTS BELOW
@@ -579,7 +587,13 @@ class TreeviewSelector extends React.PureComponent {
         return (
             <SearchFilterContainerDiv>
                 <div style={{ width: "100%" }}>
-                    <div style={{ fontSize: "1em", color: "rgb(137,137,137)" }}>
+                    <div
+                        style={{
+                            fontSize: "10px",
+                            color: "rgb(137,137,137)",
+                            marginBottom: "10px"
+                        }}
+                    >
                         SEARCH BY NAME
                     </div>
                     <TextField
@@ -587,6 +601,7 @@ class TreeviewSelector extends React.PureComponent {
                         fullWidth={true}
                         value={searchQuery}
                         onChange={this.handleChange}
+                        inputProps={{ className: this.props.classes.myInput }}
                     />
                 </div>
                 {showListItems && (
@@ -615,7 +630,7 @@ class TreeviewSelector extends React.PureComponent {
         const { data } = this.props;
         return (
             <ContainerDiv>
-                <TitleHeaderDiv>LINKS FROM</TitleHeaderDiv>
+                <SectionHeader>LINKS FROM</SectionHeader>
                 {Boolean(data) && Array.isArray(data) && data.length > 0 && (
                     <div
                         style={{

@@ -244,9 +244,8 @@ class Home extends Component {
                             )}
                             <div
                                 style={{
-                                    // padding: "5% 5% 0",
-                                    paddingTop: "3%",
-                                    // height: "110vh",
+                                    paddingTop: "80px",
+                                    height: "110vh",
                                     width: "100vw",
                                     display: "flex",
                                     backgroundColor: "#F4F4F4"

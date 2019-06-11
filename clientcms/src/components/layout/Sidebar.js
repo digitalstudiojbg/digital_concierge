@@ -52,11 +52,14 @@ import {
     SidebarSubItem
 } from "../home/WelcomeStyleSet";
 
+//const { expandCon } = true;
+
 const SIDEBAR_HUB = [
     {
         name: WELCOME_URL,
         displayName: "System Hub",
         icon: Home,
+
         paddingLeft: "20px"
     }
 ];
@@ -99,6 +102,7 @@ const SIDEBAR_ITEMS = [
         name: "expandContent",
         displayName: "Content",
         icon: List,
+        icon2: [ExpandMore, ExpandLess],
         paddingLeft: "20px",
         expandItems: [
             {
@@ -162,6 +166,11 @@ const styles = {
         width: 30,
         height: 30,
         paddingLeft: 10
+    },
+    icon2: {
+        width: 30,
+        height: 30,
+        margin: "0 0 0 80px"
     },
     addActiveClass: {
         width: "260px"
@@ -271,7 +280,14 @@ class Sidebar extends Component {
             //   open: true,
             selectedItem: urlPath,
             expandContent
+            // expandCon: true
         };
+    }
+    state = {
+        open: true
+    };
+    handleOnClick() {
+        this.setState(state => ({ open: !state.open }));
     }
 
     render() {
@@ -279,6 +295,7 @@ class Sidebar extends Component {
         const { classes, match } = this.props;
         const { params } = match || {};
         const { system_id = "" } = params || {};
+
         return (
             <Query variables={{ id: system_id }} query={getSystemDetailSidebar}>
                 {({ loading, error, data: { system } }) => {
@@ -288,18 +305,12 @@ class Sidebar extends Component {
                     return (
                         <div
                             style={{
-                                //   display: "flex",
-
                                 flexDirection: "column",
-                                //   flexWrap: "nowrap",
-                                // justifyContent: "flex-start",
-                                //  alignItems: "stretch",
                                 alignContent: "stretch",
                                 width: "260px",
                                 backgroundColor: "rgb(71,70,71)",
-                                color: "rgb(223,223,223)"
-
-                                //  height: "100%"
+                                color: "rgb(223,223,223)",
+                                height: "100vh"
                             }}
                         >
                             {Boolean(system) &&
@@ -329,6 +340,7 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
+
                                     paddingLeft
                                 } = items;
                                 return (
@@ -401,9 +413,22 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
+                                    icon2: expandCompressIcons,
                                     paddingLeft,
                                     expandItems = []
                                 } = items;
+
+                                const ExpandIcon =
+                                    Array.isArray(expandCompressIcons) &&
+                                    expandCompressIcons.length === 2
+                                        ? expandCompressIcons[0]
+                                        : null;
+                                const CompressIcon =
+                                    Array.isArray(expandCompressIcons) &&
+                                    expandCompressIcons.length === 2
+                                        ? expandCompressIcons[1]
+                                        : null;
+
                                 return (
                                     name &&
                                     displayName && (
@@ -440,6 +465,7 @@ class Sidebar extends Component {
                                                                 [name]: !this
                                                                     .state[name]
                                                             });
+                                                            this.handleOnClick();
                                                         } else {
                                                             this.setState({
                                                                 selectedItem: name
@@ -474,6 +500,28 @@ class Sidebar extends Component {
                                                     <SidebarLabel>
                                                         {displayName}
                                                     </SidebarLabel>
+
+                                                    {this.state.open &&
+                                                    Boolean(CompressIcon) ? (
+                                                        <CompressIcon
+                                                            className={
+                                                                classes.icon2
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <React.Fragment>
+                                                            {!this.state.open &&
+                                                                Boolean(
+                                                                    ExpandIcon
+                                                                ) && (
+                                                                    <ExpandIcon
+                                                                        className={
+                                                                            classes.icon2
+                                                                        }
+                                                                    />
+                                                                )}
+                                                        </React.Fragment>
+                                                    )}
                                                 </SidebarItem>
                                                 {name.includes("expand") &&
                                                     this.state[name] &&

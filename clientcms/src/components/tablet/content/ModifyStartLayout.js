@@ -19,18 +19,30 @@ export const ModifyStartLayout = ({ values, setFieldValue }) => {
                 <MainSubSections
                     style={{
                         width: "65%",
-                        flex: "left",
-                        height: "600px",
-                        marginRight: "5%",
+                        flex: "left"
+                        // height: "600px",
+                        //  marginRight: "5%"
                         // backgroundImage:
                         //     "url('https://source.unsplash.com/-YHSwy6uqvk/1080x720')",
-                        backgroundImage: `url('${TabletMockUp}')`,
+                        // backgroundImage: `url('${TabletMockUp}')`,
 
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                        backgroundColor: "white"
+                        // backgroundPosition: "center",
+                        // backgroundSize: "cover",
+                        // backgroundColor: "white"
                     }}
-                />
+                >
+                    <div
+                        style={{
+                            width: "90%",
+                            height: "100%",
+                            margin: "0 5%",
+                            backgroundImage: `url('${TabletMockUp}')`,
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundColor: "white"
+                        }}
+                    />
+                </MainSubSections>
                 <MainSubSections
                     style={{
                         width: "25%",

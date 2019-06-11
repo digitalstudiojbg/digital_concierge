@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    ContainerDiv,
-    CreateContentContainerDiv,
-    SYSTEM_CMS_CONTENT_URL
-} from "../../../utils/Constants";
+import { SYSTEM_CMS_CONTENT_URL } from "../../../utils/Constants";
 import Loading from "../../loading/Loading";
 import styled from "styled-components";
 import { Query } from "react-apollo";
@@ -26,11 +22,13 @@ import TextEditorField from "../../../utils/TextEditorField";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import {
-    SectionHeader,
+    FieldLabel,
     SubSectionHeader,
-    SubSectionTop,
+    FieldDiv,
     MainSubSections,
-    SubSectionDiv
+    SubSectionDiv,
+    ContainerDiv,
+    SubContainerDiv
 } from "../../home/WelcomeStyleSet";
 
 const QueryHOC = ({ ...props }) => (
@@ -59,8 +57,9 @@ const styles = () => ({
     },
     imageNameTextField: {
         // marginTop: 15,
-        paddingBottom: 20,
-        width: "60%"
+        marginBottom: 20,
+        width: "100%",
+        backgroundColor: "white"
     },
     categoryNameFormHelper: {
         fontSize: "0.7em",
@@ -284,14 +283,17 @@ class ModifyStartContent extends React.PureComponent {
                         alignItems: "center"
                     }}
                 >
-                    <MuiTextField
-                        label="FILENAME"
-                        disabled={true}
-                        value={headerImageName}
-                        className={classes.imageNameTextField}
-                        fullWidth={true}
-                        variant="outlined"
-                    />
+                    <FieldDiv style={{ width: "70%", padding: "0" }}>
+                        <FieldLabel>FILENAME</FieldLabel>
+                        <MuiTextField
+                            // label="FILENAME"
+                            disabled={true}
+                            value={headerImageName}
+                            className={classes.imageNameTextField}
+                            fullWidth={true}
+                            variant="outlined"
+                        />
+                    </FieldDiv>
                     <div
                         style={{
                             width: "35%",
@@ -303,10 +305,8 @@ class ModifyStartContent extends React.PureComponent {
                     >
                         <Button
                             className={classes.Button}
-                            style={{ padding: 10 }}
                             variant="outlined"
-                            //  className={classes.Button}
-                            // fullWidth={true}
+                            fullWidth={true}
                             disabled={
                                 !Boolean(headerImageName) &&
                                 Boolean(headerImageName.length === 0)
@@ -321,10 +321,10 @@ class ModifyStartContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex",
-                        height: "45%"
+                        height: "200px"
                     }}
                 >
-                    <div style={{ width: "60%", height: "100%" }}>
+                    <div style={{ width: "67%", height: "100%" }}>
                         <Dropzone
                             ref={this.dropZoneRefHeader}
                             disableClick={true}
@@ -334,7 +334,7 @@ class ModifyStartContent extends React.PureComponent {
                                 position: "relative",
                                 width: "100%",
                                 backgroundColor: "rgb(221, 221, 221)",
-                                height: "90%",
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 justifyContent: "center",
@@ -347,18 +347,19 @@ class ModifyStartContent extends React.PureComponent {
                                         ? `url(${image.preview})`
                                         : "none",
                                 backgroundPosition: "center",
+                                //  backgroundSize: "cover",
                                 backgroundRepeat: "no-repeat",
-                                backgroundSize: "contain"
+                                backgroundSize: "cover"
                             }}
                             onDrop={this.onDropHeader.bind(this)}
                         >
                             {!Boolean(image) && (
                                 <div
-                                    style={{
-                                        padding: "100px 0",
-                                        width: "300px",
-                                        textAlign: "center"
-                                    }}
+                                // style={{
+                                //     padding: "100px 0",
+                                //     width: "300px",
+                                //     textAlign: "center"
+                                // }}
                                 >
                                     DRAG & DROP HERE
                                 </div>
@@ -415,18 +416,23 @@ class ModifyStartContent extends React.PureComponent {
                         // height: "400px"
                     }}
                 >
-                    <MuiTextField
-                        label="FILENAME"
-                        disabled={true}
-                        value={logoImageName}
-                        className={classes.imageNameTextField}
-                        fullWidth={true}
-                        variant="outlined"
-                    />
+                    <FieldDiv style={{ width: "70%", padding: "0" }}>
+                        <FieldLabel>FILENAME</FieldLabel>
+                        <MuiTextField
+                            //  label="FILENAME"
+                            disabled={true}
+                            value={logoImageName}
+                            className={classes.imageNameTextField}
+                            fullWidth={true}
+                            variant="outlined"
+                        />
+                    </FieldDiv>
                     <div
                         style={{
+                            width: "35%",
+                            height: "200px",
                             display: "flex",
-                            padding: 10,
+                            paddingLeft: 10,
                             alignItems: "center"
                         }}
                     >
@@ -448,10 +454,11 @@ class ModifyStartContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex"
+
                         //  height: "45%"
                     }}
                 >
-                    <div style={{ width: "60%" }}>
+                    <div style={{ width: "67%" }}>
                         <Dropzone
                             ref={this.dropZoneRefLogo}
                             disableClick={true}
@@ -461,7 +468,7 @@ class ModifyStartContent extends React.PureComponent {
                                 position: "relative",
                                 width: "100%",
                                 backgroundColor: "rgb(221, 221, 221)",
-                                // height: "90%",
+                                height: "100%",
                                 display: "flex",
                                 flexDirection: "column",
 
@@ -475,7 +482,7 @@ class ModifyStartContent extends React.PureComponent {
                                         : "none",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
-                                backgroundSize: "contain"
+                                backgroundSize: "cover"
                             }}
                             onDrop={this.onDropLogo.bind(this)}
                         >
@@ -564,7 +571,7 @@ class ModifyStartContent extends React.PureComponent {
 
         return (
             <ContainerDiv>
-                <CreateContentContainerDiv>
+                <SubContainerDiv style={{ width: "100%" }}>
                     <MainSubSections
                         style={{
                             width: "100%",
@@ -586,9 +593,9 @@ class ModifyStartContent extends React.PureComponent {
                                     // height: "70vh"
                                 }}
                             >
-                                <SectionHeader style={{ color: "black" }}>
+                                <SubSectionHeader style={{ color: "black" }}>
                                     LAYOUT DIAGRAM
-                                </SectionHeader>
+                                </SubSectionHeader>
                                 {Boolean(imageUrl) && (
                                     <ImageDiv imageUrl={imageUrl} />
                                 )}
@@ -632,26 +639,26 @@ class ModifyStartContent extends React.PureComponent {
                             }}
                         >
                             <div style={{ width: "95%" }}>
-                                <SectionHeader
+                                <SubSectionHeader
                                     style={{
                                         paddingBottom: 15,
                                         color: "black"
                                     }}
                                 >
                                     LOGO
-                                </SectionHeader>
+                                </SubSectionHeader>
 
                                 {this.renderImageUploaderForLogo()}
                             </div>
                             <div style={{ width: "95%", marginTop: "7%" }}>
-                                <SectionHeader
+                                <SubSectionHeader
                                     style={{
                                         paddingBottom: 15,
                                         color: "black"
                                     }}
                                 >
-                                    HEADER
-                                </SectionHeader>
+                                    HEADER IMAGE
+                                </SubSectionHeader>
 
                                 {this.renderImageUploaderForHeader()}
                             </div>
@@ -663,7 +670,7 @@ class ModifyStartContent extends React.PureComponent {
                             {this.renderColourSchemePicker()}
                         </SubSectionDiv>
                     </MainSubSections>
-                </CreateContentContainerDiv>
+                </SubContainerDiv>
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}
