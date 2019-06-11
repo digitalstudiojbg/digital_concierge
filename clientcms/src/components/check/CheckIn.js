@@ -55,7 +55,8 @@ const CheckIn = (
                     { variant: "success" }
                 );
 
-                push(ROUTES.guests);
+                // push(ROUTES.guests);
+                push(".");
             } catch (err) {
                 enqueueSnackbar(
                     getErrorMessage(err),

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Popover } from "@material-ui/core/index";
-import MenuItem from "@material-ui/core/MenuItem/index";
-import MenuList from "@material-ui/core/MenuList/index";
-import Box from "@material-ui/core/Box/index";
+import { Popover } from "@material-ui/core";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
+import Box from "@material-ui/core/Box";
 import MoreHoriz from "@material-ui/icons/MoreHoriz";
 
 const GuestsCurrentMenuItem = ({ children }) => (

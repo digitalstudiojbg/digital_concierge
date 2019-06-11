@@ -35,6 +35,7 @@ const CheckOut = (
         mutationDeleteGuestRoom,
         mutationUpdateGuestRoom,
         history: { push },
+        match: { params: { system_id } },
         enqueueSnackbar,
     },
 ) => {
@@ -77,7 +78,7 @@ const CheckOut = (
                     { variant: "success" }
                 );
 
-                push(ROUTES.guests);
+                push(ROUTES.guests(system_id));
             } catch (err) {
                 enqueueSnackbar(
                     getErrorMessage(err),

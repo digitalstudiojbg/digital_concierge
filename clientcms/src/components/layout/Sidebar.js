@@ -310,6 +310,7 @@ class Sidebar extends Component {
                                 alignItems: "stretch",
                                 alignContent: "stretch",
                                 width: "350px",
+                                flex: "none",
                                 backgroundColor: "rgb(71,70,71)",
                                 color: "rgb(223,223,223)",
                                 // height: "calc(100vh-80px)"

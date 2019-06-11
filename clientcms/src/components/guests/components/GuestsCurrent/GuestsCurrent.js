@@ -3,11 +3,10 @@ import dayjs from 'dayjs';
 import ReactTable from "react-table";
 import { Query, withApollo } from "react-apollo";
 
-import Box from "@material-ui/core/Box/index";
+import Box from "@material-ui/core/Box";
 import getGuestsRooms from "../../query/getGuestRooms";
 import { GUEST_TABLE_FORMAT_DATE } from "../../constants";
 
-import Loading from "../../../loading/Loading";
 import GuestsLayout from "../GuestLayout";
 import GuestsNav from "../GuestsNav";
 import {
@@ -18,8 +17,8 @@ import {
     GuestTHead,
     GuestDeviceStatus,
 } from "./styled";
-import s from "./GuestCurrent.module.scss";
 import GuestsCurrentMenu from "./GuestsCurrentMenu";
+import Loading from "../../../loading/Loading";
 
 const sortDateString = (d1, d2) => {
     return (new Date(d1)).getTime() > (new Date(d2)).getTime() ? 1 : -1;
@@ -70,7 +69,7 @@ const COLUMNS = [
     {
         Header: "DEVICE STATUS",
         accessor: "device_status",
-        width: 78,
+        width: 80,
         Cell: () => <GuestDeviceStatus />
     },
     {
@@ -105,7 +104,11 @@ const GuestsCurrent = () => (
 
             return (
                 <GuestsLayout title="Guests">
-                    <Box mt={5}>
+                    <Box
+                        mt={5}
+                        pr={5}
+                        style={{ minWidth: 1300 }}
+                    >
                         <GuestsNav />
 
                         <Box
@@ -113,7 +116,7 @@ const GuestsCurrent = () => (
                             mb={3}
                         >
                             <ReactTable
-                                className={s.guest_current_table}
+                                style={{ border: 0 }}
                                 resizable={false}
                                 data={guestRooms}
                                 columns={COLUMNS}

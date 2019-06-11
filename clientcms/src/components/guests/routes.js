@@ -7,7 +7,7 @@ import CheckOut from "../check/CheckOut";
 
 const routes = [
     {
-        path: ROUTES.guestsCheckIn,
+        path: ROUTES.guestsCheckIn(),
         component: () => (
             <GuestsLayout
                 title="Guest Check-in"
@@ -18,7 +18,7 @@ const routes = [
         ),
     },
     {
-        path: ROUTES.guestsCheckOut,
+        path: ROUTES.guestsCheckOut(),
         component: () => (
             <GuestsLayout
                 title="Guest Check-out"
@@ -29,7 +29,6 @@ const routes = [
         ),
     },
     {
-        path: "/",
         component: GuestsCurrent,
     },
 ];

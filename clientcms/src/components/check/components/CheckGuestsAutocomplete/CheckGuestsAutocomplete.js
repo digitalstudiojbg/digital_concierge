@@ -6,8 +6,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import Query from "react-apollo/Query";
-import getGuests from "../../../guests/query/getGuests";
 import { CheckInput } from "../CheckTextField/styled";
+import getGuests from "../../../guests/query/getGuests";
 
 const getName = (obj) => obj ? `${obj.firstname} ${obj.lastname}` : "";
 

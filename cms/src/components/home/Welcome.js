@@ -1,12 +1,9 @@
 import React, { Component, Fragment, lazy, Suspense } from "react";
 import "./Welcome.css";
 import { getCurrentUserQuery as query } from "../../data/query";
-import {compose, withApollo} from "react-apollo";
+import { withApollo } from "react-apollo";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
-import { withRouter, Route } from "react-router-dom";
-import ROUTES from "../../utils/routes";
-import { WELCOME_URL } from "../../utils/Constants";
 // import { Query } from "react-apollo";
 // import { gql } from "apollo-boost";
 
@@ -34,9 +31,6 @@ const SidebarDiv = styled.div`
 
 const ContentDiv = styled.div`
     width: calc(100vw - 350px);
-    display: flex;
-    overflow-x: auto;
-    //overflow: auto;
 `;
 
 const SidebarHeaderTitle = styled.div`
@@ -88,96 +82,75 @@ const styles = () => ({
     }
 });
 
-const WelcomeNavButton = ({ content, onClick, isSelected }) => (
-    isSelected ? (
-        <SidebarSelected onClick={onClick}>
-            {content}
-        </SidebarSelected>
-    ) : (
-        <SidebarNormal onClick={onClick}>
-            {content}
-        </SidebarNormal>
-    )
-);
-
 // const WelcomeSystems = lazy(() => import("./WelcomeSystems"));
 const WelcomeAccount = lazy(() => import("./WelcomeAccount"));
 const WelcomeDashboard = lazy(() => import("./WelcomeDashboard"));
 const WelcomeClients = lazy(() => import("./WelcomeClients"));
-const Guests = lazy(() => import("../guests"));
-// const AllGuestsPage = lazy(() => import("../../pages/guests/AllGuestsPage"));
-
-window.SELECTED_WELCOME_TAB = "dashboard";
 
 class Welcome extends Component {
     sidebarButtons = [
         { id: "dashboard", name: "DASHBOARD", component: WelcomeDashboard },
         // { id: "systems", name: "SYSTEMS", component: WelcomeSystems },
         { id: "clients", name: "CLIENTS", component: WelcomeClients },
-        { id: "account", name: "ACCOUNT", component: WelcomeAccount },
-        // { id: "guests", name: "GUESTS", component: Guests },
+        { id: "account", name: "ACCOUNT", component: WelcomeAccount }
         // { id: "theme", name: "THEME SETTINGS", component: WelcomeSystems },
         // { id: "users", name: "USERS & ROLES", component: WelcomeSystems },
         // { id: "support", name: "SUPPORT", component: WelcomeSystems }
     ];
-
-    isSelectedGuestsPage = () => {
-        const { pathname } = this.props.location;
-        return pathname.includes(ROUTES.guests);
-    };
-
     state = {
-        selected: this.isSelectedGuestsPage() ? null : window.SELECTED_WELCOME_TAB
+        selected: "dashboard"
     };
 
     clickSidebarButton(selected) {
-        const { history: { push } } = this.props;
-
-        window.SELECTED_WELCOME_TAB = selected;
-
-        push(WELCOME_URL);
-
         this.setState({ selected });
     }
 
     renderSidebarButtons() {
         const { selected } = this.state;
-        const { history: { push } } = this.props;
-
-        const GuestBtn = (
-            <WelcomeNavButton
-                key="guests"
-                content="GUESTS"
-                isSelected={this.isSelectedGuestsPage()}
-                onClick={() => push(ROUTES.guests)}
-            />
+        const { classes } = this.props;
+        return (
+            <Fragment>
+                {this.sidebarButtons.map(({ id, name }) => (
+                    // <Button
+                    //     id={id}
+                    //     size="large"
+                    //     key={id}
+                    //     className={
+                    //         selected === id
+                    //             ? classes.sidebarButtonSelected
+                    //             : classes.sidebarButtonNormal
+                    //     }
+                    //     onClick={this.clickSidebarButton.bind(this, id)}
+                    // >
+                    //     {name}
+                    // </Button>
+                    <Fragment key={id}>
+                        {selected === id ? (
+                            <SidebarSelected
+                                onClick={this.clickSidebarButton.bind(this, id)}
+                            >
+                                {name}
+                            </SidebarSelected>
+                        ) : (
+                            <SidebarNormal
+                                onClick={this.clickSidebarButton.bind(this, id)}
+                            >
+                                {name}
+                            </SidebarNormal>
+                        )}
+                    </Fragment>
+                ))}
+            </Fragment>
         );
-
-        const result = this.sidebarButtons.map(
-            ({ id, name }) => (
-                <WelcomeNavButton
-                    key={id}
-                    isSelected={selected === id}
-                    content={name}
-                    onClick={() => this.clickSidebarButton(id)}
-                />
-            )
-        );
-
-        result.push(GuestBtn);
-
-        return result;
     }
 
     render() {
         const { selected } = this.state;
         const { client } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
-
-        const isSelectedGuestsPage = this.isSelectedGuestsPage();
-        const SelectedComponent = !isSelectedGuestsPage
-            ? this.sidebarButtons.find(({ id }) => id === selected).component
-            : null;
+        const { component: SelectedComponent } = this.sidebarButtons.find(
+            ({ id }) => id === selected
+        );
 
         return (
             <ContainerDiv>
@@ -206,14 +179,7 @@ class Welcome extends Component {
                 </SidebarDiv>
                 <ContentDiv>
                     <Suspense>
-                        {
-                            SelectedComponent && <SelectedComponent />
-                        }
-
-                        <Route
-                            path={ROUTES.guests}
-                            component={Guests}
-                        />
+                        <SelectedComponent />
                     </Suspense>
                     {/* WELCOME PAGE
                     {user.client.systems.map(system => {
@@ -247,8 +213,4 @@ class Welcome extends Component {
     }
 }
 
-export default compose(
-    withApollo,
-    withStyles(styles),
-    withRouter,
-)(Welcome);
+export default withApollo(withStyles(styles)(Welcome));

@@ -18,7 +18,6 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
                 <CheckTextField
                     {...field}
                     label="FIRST NAME"
-                    placeholder="Neal"
                 />
             )}
         />
@@ -29,7 +28,6 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
                 <CheckTextField
                     {...field}
                     label="SURNAME"
-                    placeholder="66"
                 />
             )}
         />
@@ -51,7 +49,6 @@ const CheckReservation =  React.memo(({ isDisabled }) => (
                     {...field}
                     label="CONTACT EMAIL"
                     type="email"
-                    placeholder="nealsbbq@johnbatman.com.au"
                 />
             )}
         />
