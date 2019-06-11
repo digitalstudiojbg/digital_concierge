@@ -7,7 +7,8 @@ import { CREATE_ARTICLE } from "../../../data/mutation";
 import {
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
-    getArticleListFromPublication
+    getArticleListFromPublication,
+    getJustBrilliantGuideLayoutFamilyDefaults
 } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import TabLayout from "../common/TabLayout";
@@ -124,25 +125,104 @@ const CreateNewArticle = ({ match }) => {
                                                 };
 
                                                 return (
-                                                    <TabbedPageSingleForm
-                                                        title="Editorial Article"
-                                                        data={{ id: null }}
-                                                        exitUrl={
-                                                            WELCOME_URL +
-                                                            "/guide"
+                                                    <Query
+                                                        query={
+                                                            getJustBrilliantGuideLayoutFamilyDefaults
                                                         }
-                                                        cancelUrl={
-                                                            WELCOME_URL +
-                                                            "/guide"
-                                                        }
-                                                        tabs={tabs}
-                                                        tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                                                        onSubmit={onSubmit}
-                                                        otherProps={{
-                                                            layoutFamilies: jbgLayoutFamilies,
-                                                            templates: jbgTemplates
+                                                        variables={{
+                                                            id: pub_id
                                                         }}
-                                                    />
+                                                    >
+                                                        {({
+                                                            loading: loadingQueryDefault,
+                                                            error: errorQueryDefault,
+                                                            data: {
+                                                                justBrilliantGuide
+                                                            }
+                                                        }) => {
+                                                            if (
+                                                                loadingQueryDefault
+                                                            )
+                                                                return (
+                                                                    <Loading
+                                                                        loadingData
+                                                                    />
+                                                                );
+                                                            if (
+                                                                errorQueryDefault
+                                                            )
+                                                                return (
+                                                                    <React.Fragment>
+                                                                        Error!{" "}
+                                                                        {
+                                                                            errorQueryDefault.message
+                                                                        }
+                                                                    </React.Fragment>
+                                                                );
+                                                            const {
+                                                                __typename,
+                                                                ...otherDefaults
+                                                            } = justBrilliantGuide;
+
+                                                            //https://stackoverflow.com/a/38829074 -- Mapping keys inside an array to create a new array
+                                                            const defaultFamilyLayouts = Object.assign(
+                                                                {},
+                                                                ...Object.keys(
+                                                                    otherDefaults
+                                                                ).map(k =>
+                                                                    k === "id"
+                                                                        ? {}
+                                                                        : {
+                                                                              [k]: otherDefaults[
+                                                                                  k
+                                                                              ].toString()
+                                                                          }
+                                                                )
+                                                            );
+
+                                                            return (
+                                                                <TabbedPageSingleForm
+                                                                    title="Editorial Article"
+                                                                    data={{
+                                                                        justBrilliantGuideId: pub_id,
+                                                                        jbgLayoutId: null,
+                                                                        jbgFamilyLayoutId: null,
+                                                                        jbgTemplateId: null,
+                                                                        headerMediumId: null,
+                                                                        header_preview: null,
+                                                                        header_image_upload: null,
+                                                                        featureMediumId: null,
+                                                                        feature_image_upload: null,
+                                                                        feature_preview: null,
+                                                                        name:
+                                                                            "",
+                                                                        introductionText:
+                                                                            "",
+                                                                        description:
+                                                                            ""
+                                                                    }}
+                                                                    exitUrl={
+                                                                        WELCOME_URL +
+                                                                        "/guide"
+                                                                    }
+                                                                    cancelUrl={
+                                                                        WELCOME_URL +
+                                                                        "/guide"
+                                                                    }
+                                                                    tabs={tabs}
+                                                                    tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                                                    onSubmit={
+                                                                        onSubmit
+                                                                    }
+                                                                    otherProps={{
+                                                                        layoutFamilies: jbgLayoutFamilies,
+                                                                        templates: jbgTemplates,
+                                                                        defaultFamilyLayouts
+                                                                    }}
+                                                                />
+                                                            );
+                                                        }}
+                                                    </Query>
                                                 );
                                             }}
                                         </Query>

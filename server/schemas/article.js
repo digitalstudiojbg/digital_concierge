@@ -39,9 +39,9 @@ export default gql`
         introductionText: String
         justBrilliantGuideId: ID!
         header_image_upload: Upload
-        header_image_id: ID!
+        headerMediumId: ID!
         feature_image_upload: Upload
-        feature_image_id: ID!
+        featureMediumId: ID!
         jbgTemplateId: ID!
         jbgLayoutId: ID!
     }
@@ -53,9 +53,9 @@ export default gql`
         introductionText: String
         justBrilliantGuideId: ID!
         header_image_upload: Upload
-        header_image_id: ID!
+        headerMediumId: ID!
         feature_image_upload: Upload
-        feature_image_id: ID!
+        featureMediumId: ID!
         jbgTemplateId: ID!
         jbgLayoutId: ID!
     }

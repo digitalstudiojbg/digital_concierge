@@ -39,3 +39,21 @@ export const getArticlesFromJustBrilliantGuide = gql`
         }
     }
 `;
+
+export const getJustBrilliantGuideLayoutFamilyDefaults = gql`
+    query getJustBrilliantGuideLayoutFamilyDefaults($id: ID!) {
+        justBrilliantGuide(id: $id) {
+            id
+            welcomeFamilyId
+            featureFamilyId
+            informationFamilyId
+            mapFamilyId
+            galleryFamilyId
+            marketFamilyId
+            foodFamilyId
+            attractionFamilyId
+            eventFamilyId
+            essentialFamilyId
+        }
+    }
+`;

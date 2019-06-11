@@ -25,7 +25,8 @@ import { getContractByClientId } from "./contract";
 import {
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
-    getJustBrilliantGuideIdFromAdvertiser
+    getJustBrilliantGuideIdFromAdvertiser,
+    getJustBrilliantGuideLayoutFamilyDefaults
 } from "./justBrilliantGuide";
 import {
     getJbgLayoutFamilyList,
@@ -80,5 +81,6 @@ export {
     getArticleDetail,
     getArticleListFromPublication,
     getJbgLayoutFamilyDetailedList,
-    getJbgTemplateList
+    getJbgTemplateList,
+    getJustBrilliantGuideLayoutFamilyDefaults
 };

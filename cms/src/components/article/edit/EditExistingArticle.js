@@ -8,7 +8,8 @@ import {
     getArticleDetail,
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
-    getArticleListFromPublication
+    getArticleListFromPublication,
+    getJustBrilliantGuideLayoutFamilyDefaults
 } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import TabLayout from "../common/TabLayout";
@@ -167,28 +168,134 @@ const EditExistingArticle = ({ match }) => {
                                                                 //TODO: Do action here
                                                             };
 
+                                                            const initialValues = {
+                                                                id: article_id,
+                                                                justBrilliantGuideId: pub_id,
+                                                                jbgLayoutId:
+                                                                    data
+                                                                        .jbg_layout
+                                                                        .id,
+                                                                jbgFamilyLayoutId:
+                                                                    data
+                                                                        .jbg_layout
+                                                                        .jbg_layout_family
+                                                                        .id,
+                                                                jbgTemplateId:
+                                                                    data
+                                                                        .jbg_template
+                                                                        .id,
+                                                                headerMediumId:
+                                                                    data
+                                                                        .header_image
+                                                                        .id,
+                                                                header_preview:
+                                                                    data
+                                                                        .header_image
+                                                                        .path,
+                                                                featureMediumId:
+                                                                    data
+                                                                        .feature_image
+                                                                        .id,
+                                                                feature_preview:
+                                                                    data
+                                                                        .feature_image
+                                                                        .path,
+                                                                name: data.name,
+                                                                introductionText:
+                                                                    data.introductionText,
+                                                                description:
+                                                                    data.description
+                                                            };
+
                                                             return (
-                                                                <TabbedPageSingleForm
-                                                                    title="Editorial Article"
-                                                                    data={data}
-                                                                    exitUrl={GUIDE_MAIN_URL.replace(
-                                                                        ":pub_id",
-                                                                        pub_id
-                                                                    )}
-                                                                    cancelUrl={GUIDE_MAIN_URL.replace(
-                                                                        ":pub_id",
-                                                                        pub_id
-                                                                    )}
-                                                                    tabs={tabs}
-                                                                    tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                                                                    onSubmit={
-                                                                        onSubmit
+                                                                <Query
+                                                                    query={
+                                                                        getJustBrilliantGuideLayoutFamilyDefaults
                                                                     }
-                                                                    otherProps={{
-                                                                        layoutFamilies: jbgLayoutFamilies,
-                                                                        templates: jbgTemplates
+                                                                    variables={{
+                                                                        id: pub_id
                                                                     }}
-                                                                />
+                                                                >
+                                                                    {({
+                                                                        loading: loadingDefaultQuery,
+                                                                        error: errorDefaultQuery,
+                                                                        data: {
+                                                                            justBrilliantGuide
+                                                                        }
+                                                                    }) => {
+                                                                        if (
+                                                                            loadingDefaultQuery
+                                                                        )
+                                                                            return (
+                                                                                <Loading
+                                                                                    loadingData
+                                                                                />
+                                                                            );
+                                                                        if (
+                                                                            errorDefaultQuery
+                                                                        )
+                                                                            return (
+                                                                                <React.Fragment>
+                                                                                    Error!{" "}
+                                                                                    {
+                                                                                        errorDefaultQuery.message
+                                                                                    }
+                                                                                </React.Fragment>
+                                                                            );
+
+                                                                        const {
+                                                                            __typename,
+                                                                            ...otherDefaults
+                                                                        } = justBrilliantGuide;
+
+                                                                        //https://stackoverflow.com/a/38829074 -- Mapping keys inside an array to create a new array
+                                                                        const defaultFamilyLayouts = Object.assign(
+                                                                            {},
+                                                                            ...Object.keys(
+                                                                                otherDefaults
+                                                                            ).map(
+                                                                                k =>
+                                                                                    k ===
+                                                                                    "id"
+                                                                                        ? {}
+                                                                                        : {
+                                                                                              [k]: otherDefaults[
+                                                                                                  k
+                                                                                              ].toString()
+                                                                                          }
+                                                                            )
+                                                                        );
+
+                                                                        return (
+                                                                            <TabbedPageSingleForm
+                                                                                title="Editorial Article"
+                                                                                data={
+                                                                                    initialValues
+                                                                                }
+                                                                                exitUrl={GUIDE_MAIN_URL.replace(
+                                                                                    ":pub_id",
+                                                                                    pub_id
+                                                                                )}
+                                                                                cancelUrl={GUIDE_MAIN_URL.replace(
+                                                                                    ":pub_id",
+                                                                                    pub_id
+                                                                                )}
+                                                                                tabs={
+                                                                                    tabs
+                                                                                }
+                                                                                tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                                                                onSubmit={
+                                                                                    onSubmit
+                                                                                }
+                                                                                otherProps={{
+                                                                                    layoutFamilies: jbgLayoutFamilies,
+                                                                                    templates: jbgTemplates,
+                                                                                    defaultFamilyLayouts
+                                                                                }}
+                                                                            />
+                                                                        );
+                                                                    }}
+                                                                </Query>
                                                             );
                                                         }}
                                                     </Query>
