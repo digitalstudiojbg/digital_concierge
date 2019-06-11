@@ -126,10 +126,7 @@ class ArticleTableList extends React.Component {
     navigateToCreateNewArticlePage = () => {
         const { history, pub_id } = this.props;
         Boolean(history) &&
-            history.push({
-                pathname: ARTICLE_CREATE_NEW_URL,
-                state: { pub_id }
-            });
+            history.push(ARTICLE_CREATE_NEW_URL.replace(":pub_id", pub_id));
     };
 
     render() {
