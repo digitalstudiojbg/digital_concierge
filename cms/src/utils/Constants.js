@@ -58,8 +58,8 @@ export const ADVERTISER_MAIN_URL = "/edit/advertiser/:advertiser_id";
 export const ADVERTISER_CREATE_NEW_URL = "/create/advertiser";
 
 //Articles URL
-export const ARTICLE_MAIN_URL = "/edit/article/:article_id";
-export const ARTICLE_CREATE_NEW_URL = "/create/article";
+export const ARTICLE_MAIN_URL = "/edit/article/:article_id/publication/:pub_id";
+export const ARTICLE_CREATE_NEW_URL = "/create/article/publication/:pub_id";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 

@@ -139,7 +139,8 @@ class ArticleTableList extends React.Component {
             data,
             history,
             moveUpByOne,
-            moveDownByOne
+            moveDownByOne,
+            pub_id
         } = this.props;
         const { anchorEl } = this.state;
         const handleVisibleClick = id => _event => {
@@ -164,7 +165,10 @@ class ArticleTableList extends React.Component {
                 Boolean(history) &&
                 Boolean(history.push) &&
                 history.push(
-                    ARTICLE_MAIN_URL.replace(":article_id", anchorEl.id)
+                    ARTICLE_MAIN_URL.replace(
+                        ":article_id",
+                        anchorEl.id
+                    ).replace(":pub_id", pub_id)
                 );
         };
 

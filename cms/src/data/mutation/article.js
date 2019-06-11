@@ -23,3 +23,19 @@ export const MOVE_ARTICLE_DOWN_BY_ONE = gql`
         }
     }
 `;
+
+export const CREATE_ARTICLE = gql`
+    mutation createArticle($input: CreateArticleInput) {
+        createArticle(input: $input) {
+            id
+        }
+    }
+`;
+
+export const EDIT_ARTICLE = gql`
+    mutation editArticle($input: UpdateArticleInput) {
+        editArticle(input: $input) {
+            id
+        }
+    }
+`;
