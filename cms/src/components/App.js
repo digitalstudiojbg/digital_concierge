@@ -18,7 +18,9 @@ import {
     GUIDE_CREATE_NEW_URL,
     GUIDE_MAIN_URL,
     ADVERTISER_MAIN_URL,
-    ADVERTISER_CREATE_NEW_URL
+    ADVERTISER_CREATE_NEW_URL,
+    ARTICLE_CREATE_NEW_URL,
+    ARTICLE_MAIN_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
 
@@ -55,6 +57,14 @@ const routes = [
     },
     {
         path: ADVERTISER_CREATE_NEW_URL,
+        component: Home
+    },
+    {
+        path: ARTICLE_CREATE_NEW_URL,
+        component: Home
+    },
+    {
+        path: ARTICLE_MAIN_URL,
         component: Home
     }
 ];

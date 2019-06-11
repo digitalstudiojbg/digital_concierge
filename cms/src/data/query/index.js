@@ -25,9 +25,13 @@ import { getContractByClientId } from "./contract";
 import {
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
-    getJustBrilliantGuideIdFromAdvertiser
+    getJustBrilliantGuideIdFromAdvertiser,
+    getJustBrilliantGuideLayoutFamilyDefaults
 } from "./justBrilliantGuide";
-import { getJbgLayoutFamilyList } from "./jbgLayoutFamily";
+import {
+    getJbgLayoutFamilyList,
+    getJbgLayoutFamilyDetailedList
+} from "./jbgLayoutFamily";
 import { getTabbedPageComplete } from "./misc";
 import {
     getAdvertiserList,
@@ -36,6 +40,8 @@ import {
     getAdvertiserActiveAgreement
 } from "./advertiser";
 import { getArtworkSizeList } from "./artworkSize";
+import { getArticleDetail, getArticleListFromPublication } from "./article";
+import { getJbgTemplateList } from "./jbgTemplates";
 
 export {
     getCurrentUserQuery,
@@ -71,5 +77,10 @@ export {
     getJustBrilliantGuideIdFromAdvertiser,
     getAdvertiserDetail,
     getAdvertiserActiveAgreement,
-    getArtworkSizeList
+    getArtworkSizeList,
+    getArticleDetail,
+    getArticleListFromPublication,
+    getJbgLayoutFamilyDetailedList,
+    getJbgTemplateList,
+    getJustBrilliantGuideLayoutFamilyDefaults
 };

@@ -224,6 +224,18 @@ export const handleCreateActionActivityLog = async (
     }
 };
 
+const handleUpdateProperties = (subject, properties) => {
+    let output = {};
+    for (let key of Object.keys(properties)) {
+        if (!subject[key]) {
+            output[key] = properties[key];
+        } else {
+            output[key] = { from: subject[key], to: properties[key] };
+        }
+    }
+    return output;
+};
+
 export const handleUpdateActionActivityLog = async (
     subject,
     properties,
@@ -245,7 +257,9 @@ export const handleUpdateActionActivityLog = async (
             modelName: subject.constructor.name,
             subjectId: subject.id,
             actionType: "UPDATE",
-            properties: JSON.stringify(properties),
+            properties: JSON.stringify(
+                handleUpdateProperties(subject, properties)
+            ),
             ip,
             country,
             region,

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         jbg_template.belongsToMany(models.validation, {
             through: "jbg_templates_validations"
         });
+        jbg_template.hasMany(models.article);
     };
     return jbg_template;
 };

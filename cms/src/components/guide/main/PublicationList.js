@@ -7,6 +7,8 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import MoreIcon from "@material-ui/icons/MoreHoriz";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import dayJs from "dayjs";
 import { withRouter } from "react-router-dom";
 import { GUIDE_MAIN_URL, GUIDE_CREATE_NEW_URL } from "../../../utils/Constants";
@@ -105,6 +107,7 @@ const styles = theme => ({
 
 const PublicationList = ({ data: { publications }, classes, history }) => {
     const [search, setSearch] = useState("");
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const handleSearch = event => setSearch(event.target.value);
 
@@ -122,9 +125,9 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         </Paper>
     );
 
-    const handleClickMore = id => _event => {
-        console.log("Clicked Publication: ", id);
-        //TODO: ADD EVENT HANDLER HERE
+    const handleClickMore = event => {
+        console.log("Clicked Publication: ", event.currentTarget.id);
+        setAnchorEl(event.currentTarget);
     };
 
     const formatDate = dateValue => dayJs(dateValue).format("D MMM YYYY");
@@ -132,6 +135,8 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
     const handleClickPublication = id => _event => {
         history.push(GUIDE_MAIN_URL.replace(":pub_id", id));
     };
+
+    const handleCloseMenu = () => setAnchorEl(null);
 
     const renderPublicationList = () => {
         const toLoop =
@@ -149,7 +154,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                             key={`PUB-${index}-${id}`}
                         >
                             <PublicationMoreIconContainerDiv>
-                                <IconButton onClick={handleClickMore(id)}>
+                                <IconButton id={id} onClick={handleClickMore}>
                                     <MoreIcon />
                                 </IconButton>
                             </PublicationMoreIconContainerDiv>
@@ -173,6 +178,23 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                         </PublicationEntryContainerDiv>
                     )
                 )}
+                <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleCloseMenu}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center"
+                    }}
+                >
+                    <MenuItem>EDIT</MenuItem>
+                    <MenuItem>DUPLICATE</MenuItem>
+                </Menu>
             </PublicationListContainerDiv>
         );
     };

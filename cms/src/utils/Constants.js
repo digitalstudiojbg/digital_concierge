@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import FileSaver from "file-saver";
 import Slide from "@material-ui/core/Slide";
+import dayJs from "dayjs";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -55,6 +56,10 @@ export const GUIDE_CREATE_NEW_URL = "/guide/new";
 //Advertisers URL
 export const ADVERTISER_MAIN_URL = "/edit/advertiser/:advertiser_id";
 export const ADVERTISER_CREATE_NEW_URL = "/create/advertiser";
+
+//Articles URL
+export const ARTICLE_MAIN_URL = "/edit/article/:article_id/publication/:pub_id";
+export const ARTICLE_CREATE_NEW_URL = "/create/article/publication/:pub_id";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
@@ -220,4 +225,16 @@ export const generatePeriodMonthList = (maxMonth, minMonth = 1) => {
         });
     }
     return output;
+};
+
+export const sortDate = (date1, date2) => {
+    if (dayJs(date1).isBefore(dayJs(date2))) {
+        //date1 is less than date2 by some ordering criterion
+        return -1;
+    } else if (dayJs(date1).isAfter(dayJs(date2))) {
+        //date1 is greater than date2 by the ordering criterion
+        return 1;
+    } else {
+        return 0;
+    }
 };

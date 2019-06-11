@@ -7,191 +7,191 @@ module.exports = {
             [
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 46,
                     layoutFamilyId: 1,
                     layoutTypeId: 1
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 47,
                     layoutFamilyId: 1,
                     layoutTypeId: 1
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 48,
                     layoutFamilyId: 1,
                     layoutTypeId: 1
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 52,
                     layoutFamilyId: 1,
                     layoutTypeId: 2
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 53,
                     layoutFamilyId: 1,
                     layoutTypeId: 2
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 54,
                     layoutFamilyId: 1,
                     layoutTypeId: 2
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 58,
                     layoutFamilyId: 1,
                     layoutTypeId: 3
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 59,
                     layoutFamilyId: 1,
                     layoutTypeId: 3
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 60,
                     layoutFamilyId: 1,
                     layoutTypeId: 3
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 58,
                     layoutFamilyId: 1,
                     layoutTypeId: 4
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 59,
                     layoutFamilyId: 1,
                     layoutTypeId: 4
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 60,
                     layoutFamilyId: 1,
                     layoutTypeId: 4
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 46,
                     layoutFamilyId: 1,
                     layoutTypeId: 5
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 47,
                     layoutFamilyId: 1,
                     layoutTypeId: 5
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 48,
                     layoutFamilyId: 1,
                     layoutTypeId: 5
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 49,
                     layoutFamilyId: 2,
                     layoutTypeId: 1
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 50,
                     layoutFamilyId: 2,
                     layoutTypeId: 1
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 51,
                     layoutFamilyId: 2,
                     layoutTypeId: 1
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 55,
                     layoutFamilyId: 2,
                     layoutTypeId: 2
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 56,
                     layoutFamilyId: 2,
                     layoutTypeId: 2
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 57,
                     layoutFamilyId: 2,
                     layoutTypeId: 2
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 61,
                     layoutFamilyId: 2,
                     layoutTypeId: 3
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 62,
                     layoutFamilyId: 2,
                     layoutTypeId: 3
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 63,
                     layoutFamilyId: 2,
                     layoutTypeId: 3
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 61,
                     layoutFamilyId: 2,
                     layoutTypeId: 4
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 62,
                     layoutFamilyId: 2,
                     layoutTypeId: 4
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 63,
                     layoutFamilyId: 2,
                     layoutTypeId: 4
                 },
                 {
                     name: "OPTION A",
-                    mediumId: 1,
+                    mediumId: 49,
                     layoutFamilyId: 2,
                     layoutTypeId: 5
                 },
 
                 {
                     name: "OPTION B",
-                    mediumId: 1,
+                    mediumId: 50,
                     layoutFamilyId: 2,
                     layoutTypeId: 5
                 },
                 {
                     name: "OPTION C",
-                    mediumId: 1,
+                    mediumId: 51,
                     layoutFamilyId: 2,
                     layoutTypeId: 5
                 }

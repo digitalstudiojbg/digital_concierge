@@ -2,6 +2,7 @@ import React from "react";
 import TabbedPage from "../../../utils/TabbedPage";
 import ModifyPublication from "./ModifyPublication";
 import DetailAdvertiserList from "./DetailAdvertiserList";
+import DetailArticleList from "./DetailArticleList";
 import { WELCOME_URL } from "../../../utils/Constants";
 
 export const JustBrilliantGuideDetail = ({ match }) => {
@@ -24,7 +25,7 @@ export const JustBrilliantGuideDetail = ({ match }) => {
             name: "Editorial",
             withButtons: false,
             withCancel: false,
-            component: () => <div>Editorial LIST</div>
+            component: DetailArticleList
         }
     ];
 

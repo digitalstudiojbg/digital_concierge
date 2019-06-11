@@ -13,3 +13,26 @@ export const getJbgLayoutFamilyList = gql`
         }
     }
 `;
+
+export const getJbgLayoutFamilyDetailedList = gql`
+    query getJbgLayoutFamilyDetailedList {
+        jbgLayoutFamilies {
+            id
+            name
+            media {
+                id
+                name
+                path
+            }
+            jbg_layouts {
+                id
+                name
+                media {
+                    id
+                    name
+                    path
+                }
+            }
+        }
+    }
+`;

@@ -558,3 +558,11 @@ node_modules/.bin/sequelize migration:generate --name add-many-to-many-relations
 node_modules/.bin/sequelize seed:generate --name advertising_articles
 
 node_modules/.bin/sequelize db:seed --seed 20190508005109-advertising
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_template-and-article
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-jbg_layout-and-article
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-header-media-and-article
+
+node_modules/.bin/sequelize migration:generate --name add-one-to-many-relationship-between-feature-media-and-article

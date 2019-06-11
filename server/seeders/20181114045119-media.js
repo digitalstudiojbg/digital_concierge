@@ -416,12 +416,174 @@ module.exports = {
                     clientId: 2,
                     key: "cms_users/Coffs_Harbour_AIF.jpg",
                     size: Math.random() * 50000
+                },
+                {
+                    name: "Start1OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-01.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-01.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Start1OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-04.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-04.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Start1OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-11.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-11.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Start2OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-23.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-23.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Start2OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-25.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-25.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Start2OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Start+Page-31.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Start Page-31.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home1OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-03.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-03.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home1OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-05.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-05.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home1OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-08.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-08.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home2OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-10.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-10.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home2OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-11.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-11.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Home2OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Home+Page-12.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Home Page-12.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory1OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-02.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-02.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory1OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-07.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-07.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory1OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-27.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-27.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory2OptionA",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-33.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-33.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory2OptionB",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-36.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-36.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "Directory2OptionC",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_assets/Directory+List+Page-40.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_assets/Directory List Page-40.jpg",
+                    size: Math.random() * 50000
                 }
             ],
             {}
         );
     },
-    down: (queryInterface, Sequelize) => {
+    down: queryInterface => {
         return queryInterface.bulkDelete("media", null, {});
     }
 };

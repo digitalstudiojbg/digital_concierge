@@ -25,7 +25,9 @@ import {
     WELCOME_URL_ROUTER,
     GUIDE_MAIN_URL,
     ADVERTISER_CREATE_NEW_URL,
-    ADVERTISER_MAIN_URL
+    ADVERTISER_MAIN_URL,
+    ARTICLE_CREATE_NEW_URL,
+    ARTICLE_MAIN_URL
 } from "../../utils/Constants";
 import Library from "./Library";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -60,6 +62,14 @@ const CreateNewAdvertiser = lazy(() =>
 
 const EditExistingAdvertiser = lazy(() =>
     import("../advertiser/edit/EditExistingAdvertiser")
+);
+
+const EditExistingArticle = lazy(() =>
+    import("../article/edit/EditExistingArticle")
+);
+
+const CreateNewArticle = lazy(() =>
+    import("../article/create/CreateNewArticle")
 );
 
 const routes = [
@@ -216,6 +226,26 @@ const routes = [
             <SidebarNew selected="guide" history={history} />
         ),
         main: CreateNewAdvertiser,
+        withProps: {}
+    },
+    {
+        path: ARTICLE_CREATE_NEW_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: CreateNewArticle,
+        withProps: {}
+    },
+    {
+        path: ARTICLE_MAIN_URL,
+        exact: true,
+        header: Header,
+        sidebar: ({ history }) => (
+            <SidebarNew selected="guide" history={history} />
+        ),
+        main: EditExistingArticle,
         withProps: {}
     }
 ];

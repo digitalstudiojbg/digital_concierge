@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         jbg_layout.belongsToMany(models.jbg_template, {
             through: "jbg_layouts_jbg_templates"
         });
+        jbg_layout.hasMany(models.article);
     };
     return jbg_layout;
 };
