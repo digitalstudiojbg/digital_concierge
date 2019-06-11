@@ -54,10 +54,6 @@ import {
 
 //const { expandCon } = true;
 
-// state = {
-//     expandCon: false
-// };
-
 const SIDEBAR_HUB = [
     {
         name: WELCOME_URL,
@@ -106,10 +102,7 @@ const SIDEBAR_ITEMS = [
         name: "expandContent",
         displayName: "Content",
         icon: List,
-
-        // icon2: [expandCon ? true : ExpandMore, ExpandLess],
-        icon2: ExpandLess,
-        icon3: ExpandMore,
+        icon2: [ExpandMore, ExpandLess],
         paddingLeft: "20px",
         expandItems: [
             {
@@ -290,14 +283,11 @@ class Sidebar extends Component {
             // expandCon: true
         };
     }
-
+    state = {
+        open: true
+    };
     handleOnClick() {
-        this.state = { expandCon: true };
-        if (!this.state.expandCon) {
-            this.setState({ expandCon: true });
-        } else {
-            this.setState({ expandCon: false });
-        }
+        this.setState(state => ({ open: !state.open }));
     }
 
     render() {
@@ -315,18 +305,12 @@ class Sidebar extends Component {
                     return (
                         <div
                             style={{
-                                //   display: "flex",
-
                                 flexDirection: "column",
-                                //   flexWrap: "nowrap",
-                                // justifyContent: "flex-start",
-                                //  alignItems: "stretch",
                                 alignContent: "stretch",
                                 width: "260px",
                                 backgroundColor: "rgb(71,70,71)",
-                                color: "rgb(223,223,223)"
-
-                                //  height: "100%"
+                                color: "rgb(223,223,223)",
+                                height: "100vh"
                             }}
                         >
                             {Boolean(system) &&
@@ -429,11 +413,22 @@ class Sidebar extends Component {
                                     name,
                                     displayName,
                                     icon: EntryIcon,
-                                    icon2: ExpandIcon,
-                                    icon3: ExpandLessIcon,
+                                    icon2: expandCompressIcons,
                                     paddingLeft,
                                     expandItems = []
                                 } = items;
+
+                                const ExpandIcon =
+                                    Array.isArray(expandCompressIcons) &&
+                                    expandCompressIcons.length === 2
+                                        ? expandCompressIcons[0]
+                                        : null;
+                                const CompressIcon =
+                                    Array.isArray(expandCompressIcons) &&
+                                    expandCompressIcons.length === 2
+                                        ? expandCompressIcons[1]
+                                        : null;
+
                                 return (
                                     name &&
                                     displayName && (
@@ -506,13 +501,26 @@ class Sidebar extends Component {
                                                         {displayName}
                                                     </SidebarLabel>
 
-                                                    {Boolean(ExpandIcon) && (
-                                                        <ExpandIcon
+                                                    {this.state.open &&
+                                                    Boolean(CompressIcon) ? (
+                                                        <CompressIcon
                                                             className={
                                                                 classes.icon2
                                                             }
-                                                            // onClick="handleOnClick()"
                                                         />
+                                                    ) : (
+                                                        <React.Fragment>
+                                                            {!this.state.open &&
+                                                                Boolean(
+                                                                    ExpandIcon
+                                                                ) && (
+                                                                    <ExpandIcon
+                                                                        className={
+                                                                            classes.icon2
+                                                                        }
+                                                                    />
+                                                                )}
+                                                        </React.Fragment>
                                                     )}
                                                 </SidebarItem>
                                                 {name.includes("expand") &&

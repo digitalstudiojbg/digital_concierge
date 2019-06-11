@@ -50,9 +50,8 @@ const styles = _theme => ({
         margin: 0
     },
     imageNameTextField: {
-        // marginTop: 15,
-        paddingBottom: 20,
-        width: "60%"
+        backgroundColor: "white"
+        // padding: "10px"
     },
     categoryNameFormHelper: {
         fontSize: "0.7em",
@@ -83,7 +82,8 @@ const styles = _theme => ({
         fontSize: "10px"
     },
     input: {
-        color: "white"
+        color: "white",
+        padding: "10px"
     }
 });
 
@@ -277,18 +277,25 @@ class ModifyDirectoryListContent extends React.PureComponent {
                         <FieldLabel>FILENAME</FieldLabel>
                         <MuiTextField
                             //  label="FILENAME"
+
                             disabled={true}
                             value={this.state.imageName}
                             className={classes.imageNameTextField}
                             fullWidth={true}
                             variant="outlined"
-                            input={<OutlinedInput />}
+                            input={
+                                <OutlinedInput
+                                    style={{
+                                        height: 38
+                                    }}
+                                />
+                            }
                         />
                     </FieldDiv>
                     <div
                         style={{
-                            width: "38%",
-                            height: "80%",
+                            width: "60%",
+                            //   height: "80%",
                             display: "flex",
                             paddingLeft: 10,
                             alignItems: "center"
@@ -312,7 +319,8 @@ class ModifyDirectoryListContent extends React.PureComponent {
                     style={{
                         width: "100%",
                         display: "flex",
-                        height: "45%"
+                        height: "45%",
+                        marginTop: "35px"
                     }}
                 >
                     <div style={{ width: "60%", height: "100%" }}>
