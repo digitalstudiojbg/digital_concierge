@@ -72,7 +72,7 @@ const CheckIn = (
             validationSchema={CheckSchema}
             validateOnBlur={false}
             onSubmit={handleSubmit}
-            initialValues={CheckInitialValues}
+            initialValues={{ ...CheckInitialValues, clientId }}
             render={({ setValues, values }) => (
                 <Form>
                     <Box
