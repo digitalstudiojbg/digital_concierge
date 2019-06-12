@@ -96,7 +96,8 @@ export default {
                 $or: [
                     {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
                     {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
-                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}},
+                    {checkin_date: {$gt: checkInDate}, checkout_date: {$lt: checkOutDate}}
                 ]
             }});
 
@@ -185,7 +186,8 @@ export default {
                     $or: [
                         {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
                         {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
-                        {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                        {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}},
+                        {checkin_date: {$gt: checkInDate}, checkout_date: {$lt: checkOutDate}}
                     ]
                 }});
 
@@ -301,7 +303,8 @@ export default {
                 $or: [
                     {checkin_date: {$lte: checkInDate}, checkout_date: {$gte: checkOutDate}},
                     {checkin_date: {$lt: checkOutDate}, checkout_date: {$gte: checkOutDate}},
-                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}}
+                    {checkin_date: {$lt: checkInDate}, checkout_date: {$gt: checkInDate}},
+                    {checkin_date: {$gt: checkInDate}, checkout_date: {$lt: checkOutDate}}
                 ]
             }});
 
