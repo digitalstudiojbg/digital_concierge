@@ -23,6 +23,7 @@ import {
     ARTICLE_MAIN_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Home = lazy(() => import("./home/Home"));
 

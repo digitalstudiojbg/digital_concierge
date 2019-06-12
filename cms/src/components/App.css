@@ -9,3 +9,15 @@ html,
 body {
     height: 100%;
 }
+
+.demo-editor {
+    /* height: 275px; */
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 2px;
+    font-size: 12pt;
+    color: black;
+}
+.demo-wrapper {
+    width: 100%;
+}

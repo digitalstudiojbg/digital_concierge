@@ -5,6 +5,7 @@ import { Select, TextField } from "formik-material-ui";
 import { OutlinedInput, MenuItem } from "@material-ui/core";
 import SelectOriginal from "@material-ui/core/Select";
 import { isEmpty } from "lodash";
+import EditorField from "../../../utils/TextEditorField";
 
 export const renderSelectField = (name, label, optionValues, errors) => (
     <div style={{ width: "100%" }}>
@@ -76,4 +77,20 @@ export const renderTextField = (name, label, required) => (
             fullWidth={true}
         />
     </div>
+);
+
+export const renderEditorField = (
+    name,
+    withPlaintext,
+    initialValue,
+    error,
+    setFieldValue
+) => (
+    <EditorField
+        name={name}
+        initialValue={initialValue}
+        withPlaintext={withPlaintext}
+        setFieldValue={setFieldValue}
+        error={error}
+    />
 );
