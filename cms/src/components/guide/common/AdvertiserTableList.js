@@ -12,7 +12,11 @@ import {
 } from "@material-ui/icons";
 import MaterialTable, { MTableToolbar } from "material-table";
 import dayJs from "dayjs";
-import { ADVERTISER_CREATE_NEW_URL, sortDate } from "../../../utils/Constants";
+import {
+    ADVERTISER_CREATE_NEW_URL,
+    sortDate,
+    ADVERTISER_MAIN_URL
+} from "../../../utils/Constants";
 import { isEmpty } from "lodash";
 
 const ContainerDiv = styled.div`
@@ -87,7 +91,8 @@ class AdvertiserTableList extends React.Component {
     formatDate = dateValue => dayJs(dateValue).format("HH:mm DD MMM YYYY");
 
     modifyAdvertiserList = () =>
-        this.props.data.map(({ name, active_advertising }) => ({
+        this.props.data.map(({ id, name, active_advertising }) => ({
+            id,
             name,
             agreement_number:
                 !isEmpty(active_advertising) &&
@@ -123,6 +128,14 @@ class AdvertiserTableList extends React.Component {
                     : ""
         }));
 
+    handleClickRow = (_event, { id: advertiser_id }) => {
+        const { history } = this.props;
+        Boolean(history) &&
+            history.push(
+                ADVERTISER_MAIN_URL.replace(":advertiser_id", advertiser_id)
+            );
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -130,6 +143,7 @@ class AdvertiserTableList extends React.Component {
                 <TableDiv>
                     <MaterialTable
                         data={this.modifyAdvertiserList()}
+                        onRowClick={this.handleClickRow}
                         columns={[
                             { title: "ADVERTISER", field: "name" },
                             { title: "INVOICE #", field: "agreement_number" },
