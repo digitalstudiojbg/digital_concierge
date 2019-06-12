@@ -29,6 +29,7 @@ import {
     CheckInitialValues,
 } from "./constants";
 import { CheckSchema } from "./validation";
+import withClientId from "./withClientId";
 
 const CheckOut = (
     {
@@ -37,6 +38,7 @@ const CheckOut = (
         history: { push },
         match: { params: { system_id } },
         enqueueSnackbar,
+        clientId,
     },
 ) => {
     const [user, setUser] = useState(false);
@@ -115,6 +117,7 @@ const CheckOut = (
                             onUnselect={() => user && setUser(null)}
                             isFilterByGuestsRoom={true}
                             Component={CheckAutocomplete}
+                            clientId={clientId}
                         />
                     </Box>
 
@@ -167,6 +170,7 @@ export default compose(
     withApollo,
     withRouter,
     withSnackbar,
+    withClientId,
     graphql(mutationDeleteGuestRoom, { name: "mutationDeleteGuestRoom" }),
     graphql(mutationUpdateGuestRoom, { name: "mutationUpdateGuestRoom" }),
 )(CheckOut);

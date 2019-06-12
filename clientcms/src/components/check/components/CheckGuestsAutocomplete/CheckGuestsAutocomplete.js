@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import Query from "react-apollo/Query";
 import { CheckInput } from "../CheckTextField/styled";
-import getGuests from "../../../guests/query/getGuests";
+import getGuestsByClientId from "../../../guests/query/getGuestsByClientId";
 
 const getName = (obj) => obj ? `${obj.firstname} ${obj.lastname}` : "";
 
@@ -30,6 +30,7 @@ const CheckAutocomplete = React.memo((
         onSelect,
         onUnselect,
         isFilterByGuestsRoom,
+        clientId,
     },
 ) => {
     const popperNode = useRef();
@@ -50,10 +51,11 @@ const CheckAutocomplete = React.memo((
     // TODO: now it load all guest on every mount; need create normal autocomplete
     return (
         <Query
-            query={getGuests}
+            query={getGuestsByClientId}
             fetchPolicy="no-cache"
+            variables={{ input: clientId }}
         >
-            {({ data: { guests } = {} }) => (
+            {({ data: { guestsByClientId: guests } = {} }) => (
                 <Downshift
                     onInputValueChange={onUnselect}
                     onSelect={onSelect}
@@ -108,6 +110,7 @@ const CheckAutocomplete = React.memo((
 CheckAutocomplete.propTypes = {
     onSelect: PropTypes.func.isRequired,
     onUnselect: PropTypes.func.isRequired,
+    clientId: PropTypes.number.isRequired,
 
     isFilterByGuestsRoom: PropTypes.bool,
 };

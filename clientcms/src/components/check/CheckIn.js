@@ -19,13 +19,15 @@ import { CheckCol, CheckSubmitButton } from "./components/styled";
 import { CHECK_FORM_NAMES, CHECK_INITIAL_DATE, CheckInitialValues } from "./constants";
 import { createCheckInFormData, getErrorMessage, pickGuest } from "./utils";
 import { CheckSchema } from "./validation";
+import withClientId from "./withClientId";
 
 const CheckIn = (
     {
         mutationNewGuestCheckIn,
         mutationCreateGuestRoom,
         history: { push },
-        enqueueSnackbar
+        enqueueSnackbar,
+        clientId,
     },
 ) => {
     const [user, setUser] = useState(false);
@@ -88,6 +90,7 @@ const CheckIn = (
                             }}
                             onUnselect={() => user && setUser(null)}
                             Component={CheckAutocomplete}
+                            clientId={clientId}
                         />
                     </Box>
 
@@ -140,6 +143,7 @@ export default compose(
     withApollo,
     withSnackbar,
     withRouter,
+    withClientId,
     graphql(mutationNewGuestCheckIn, { name: "mutationNewGuestCheckIn" }),
     graphql(mutationCreateGuestRoom, { name: "mutationCreateGuestRoom" }),
 )(CheckIn);
