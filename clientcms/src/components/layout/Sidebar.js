@@ -49,7 +49,9 @@ import {
     SidebarItem,
     SidebarLabel,
     ClientAvatarDiv,
-    SidebarSubItem
+    SidebarSubItem,
+    MainSidebarContainer,
+    SidebarContainerDiv
 } from "../home/WelcomeStyleSet";
 
 //const { expandCon } = true;
@@ -174,6 +176,23 @@ const styles = {
     },
     addActiveClass: {
         width: "260px"
+    },
+    SidebarDiv: {
+        flexDirection: "column",
+        alignContent: "stretch",
+        width: "260px",
+        position: "fixed",
+        overflowY: "auto",
+        overflowX: "none",
+        direction: "rtl",
+        backgroundColor: "rgb(71,70,71)",
+        color: "rgb(223,223,223)",
+        height: "100vh",
+
+        paddingBottom: "80px"
+        // "&::-webkitScrollbar": {
+        //     width: "5px"
+        // }
     }
 };
 
@@ -303,306 +322,320 @@ class Sidebar extends Component {
                     if (error) return `Error message:\n${error.message}`;
                     console.log(system);
                     return (
-                        <div
+                        <MainSidebarContainer
                             style={{
-                                flexDirection: "column",
-                                alignContent: "stretch",
-                                width: "260px",
-                                backgroundColor: "rgb(71,70,71)",
-                                color: "rgb(223,223,223)",
-                                height: "100vh"
+                                position: "relative",
+                                width: "300px"
                             }}
                         >
-                            {Boolean(system) &&
-                                Boolean(system.client) &&
-                                Boolean(system.client.avatar) && (
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            height: "160px",
-                                            backgroundColor: "white",
-                                            paddingTop: "10%"
-                                        }}
-                                    >
-                                        <ClientAvatarDiv
-                                            imageUrl={system.client.avatar}
-                                        />
-                                    </div>
-                                )}
-
-                            {/* name: WELCOME_URL,
-        displayName: "Home",
-        icon: Home,
-        paddingLeft: "20px" */}
-
-                            {SIDEBAR_HUB.map((items, index) => {
-                                const {
-                                    name,
-                                    displayName,
-                                    icon: EntryIcon,
-
-                                    paddingLeft
-                                } = items;
-                                return (
-                                    name &&
-                                    displayName && (
-                                        <SidebarContainer
+                            <SidebarContainerDiv className={classes.SidebarDiv}>
+                                {Boolean(system) &&
+                                    Boolean(system.client) &&
+                                    Boolean(system.client.avatar) && (
+                                        <div
                                             style={{
-                                                //overflowY: "scroll",
-                                                backgroundColor:
-                                                    "rgb(191, 191, 191)",
-                                                color: "rgb(43,43,43)"
+                                                width: "100%",
+                                                height: "160px",
+                                                backgroundColor: "white",
+                                                paddingTop: "10%",
+                                                direction: "ltr"
                                             }}
                                         >
-                                            <React.Fragment key={index}>
-                                                <SidebarItem
-                                                    style={{
-                                                        width: "260px"
-                                                    }}
-                                                    onClick={() => {
-                                                        {
-                                                            const navigateTo =
-                                                                WELCOME_URL +
-                                                                "/" +
-                                                                system.client
-                                                                    .id +
-                                                                "/systems";
-                                                            this.props.history.push(
-                                                                navigateTo
-                                                            );
-                                                        }
-                                                    }}
-                                                    selectedItem={selectedItem}
-                                                    expectedItem={name}
-                                                    paddingLeft={paddingLeft}
-                                                >
-                                                    {Boolean(EntryIcon) && (
-                                                        <EntryIcon
-                                                            className={
-                                                                classes.icon
+                                            <ClientAvatarDiv
+                                                imageUrl={system.client.avatar}
+                                            />
+                                        </div>
+                                    )}
+
+                                {SIDEBAR_HUB.map((items, index) => {
+                                    const {
+                                        name,
+                                        displayName,
+                                        icon: EntryIcon,
+
+                                        paddingLeft
+                                    } = items;
+                                    return (
+                                        name &&
+                                        displayName && (
+                                            <SidebarContainer
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgb(191, 191, 191)",
+                                                    color: "rgb(43,43,43)",
+                                                    direction: "ltr"
+                                                }}
+                                            >
+                                                <React.Fragment key={index}>
+                                                    <SidebarItem
+                                                        style={{
+                                                            width: "260px"
+                                                        }}
+                                                        onClick={() => {
+                                                            {
+                                                                const navigateTo =
+                                                                    WELCOME_URL +
+                                                                    "/" +
+                                                                    system
+                                                                        .client
+                                                                        .id +
+                                                                    "/systems";
+                                                                this.props.history.push(
+                                                                    navigateTo
+                                                                );
                                                             }
-                                                        />
-                                                    )}
+                                                        }}
+                                                        selectedItem={
+                                                            selectedItem
+                                                        }
+                                                        expectedItem={name}
+                                                        paddingLeft={
+                                                            paddingLeft
+                                                        }
+                                                    >
+                                                        {Boolean(EntryIcon) && (
+                                                            <EntryIcon
+                                                                className={
+                                                                    classes.icon
+                                                                }
+                                                            />
+                                                        )}
 
-                                                    <SidebarLabel>
-                                                        {displayName}
-                                                    </SidebarLabel>
-                                                </SidebarItem>
-                                            </React.Fragment>
-                                        </SidebarContainer>
-                                    )
-                                );
-                            })}
+                                                        <SidebarLabel>
+                                                            {displayName}
+                                                        </SidebarLabel>
+                                                    </SidebarItem>
+                                                </React.Fragment>
+                                            </SidebarContainer>
+                                        )
+                                    );
+                                })}
 
-                            <div
-                                style={{
-                                    backgroundColor: "black",
+                                <div
+                                    style={{
+                                        backgroundColor: "black",
+                                        width: "100%",
+                                        alignItems: "center",
+                                        fontSize: "18px",
+                                        padding: "20px ",
+                                        direction: "ltr"
+                                    }}
+                                >
+                                    <p>{system.name}</p>
+                                </div>
 
-                                    width: "100%",
+                                {SIDEBAR_ITEMS.map((items, index) => {
+                                    const {
+                                        name,
+                                        displayName,
+                                        icon: EntryIcon,
+                                        icon2: expandCompressIcons,
+                                        paddingLeft,
+                                        expandItems = []
+                                    } = items;
 
-                                    alignItems: "center",
-                                    fontSize: "18px",
-                                    padding: " 30px "
-                                }}
-                            >
-                                <p>{system.name}</p>
-                            </div>
+                                    const ExpandIcon =
+                                        Array.isArray(expandCompressIcons) &&
+                                        expandCompressIcons.length === 2
+                                            ? expandCompressIcons[0]
+                                            : null;
+                                    const CompressIcon =
+                                        Array.isArray(expandCompressIcons) &&
+                                        expandCompressIcons.length === 2
+                                            ? expandCompressIcons[1]
+                                            : null;
 
-                            {SIDEBAR_ITEMS.map((items, index) => {
-                                const {
-                                    name,
-                                    displayName,
-                                    icon: EntryIcon,
-                                    icon2: expandCompressIcons,
-                                    paddingLeft,
-                                    expandItems = []
-                                } = items;
-
-                                const ExpandIcon =
-                                    Array.isArray(expandCompressIcons) &&
-                                    expandCompressIcons.length === 2
-                                        ? expandCompressIcons[0]
-                                        : null;
-                                const CompressIcon =
-                                    Array.isArray(expandCompressIcons) &&
-                                    expandCompressIcons.length === 2
-                                        ? expandCompressIcons[1]
-                                        : null;
-
-                                return (
-                                    name &&
-                                    displayName && (
-                                        <SidebarContainer
-                                            style={{
-                                                //overflowY: "scroll",
-                                                backgroundColor: "rgb(71,70,71)"
-                                            }}
-                                        >
-                                            <React.Fragment key={index}>
-                                                <SidebarItem
-                                                    style={{ width: "260px" }}
-                                                    onClick={() => {
-                                                        // console.log("Name is ", name);
-                                                        if (
-                                                            name === WELCOME_URL
-                                                        ) {
-                                                            const navigateTo =
-                                                                WELCOME_URL +
-                                                                "/" +
-                                                                system.client
-                                                                    .id +
-                                                                "/systems";
-                                                            this.props.history.push(
-                                                                navigateTo
-                                                            );
-                                                        } else if (
-                                                            name.includes(
-                                                                "expand"
-                                                            )
-                                                        ) {
-                                                            //Do not navigate if expand
-                                                            this.setState({
-                                                                [name]: !this
-                                                                    .state[name]
-                                                            });
-                                                            this.handleOnClick();
-                                                        } else {
-                                                            this.setState({
-                                                                selectedItem: name
-                                                            });
-                                                            displayName ===
-                                                            "View Site"
-                                                                ? window.open(
-                                                                      name,
-                                                                      "_blank"
-                                                                  )
-                                                                : name &&
-                                                                  this.props.history.push(
-                                                                      name.replace(
-                                                                          ":system_id",
-                                                                          system.id
+                                    return (
+                                        name &&
+                                        displayName && (
+                                            <SidebarContainer
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgb(71,70,71)",
+                                                    direction: "ltr"
+                                                }}
+                                            >
+                                                <React.Fragment key={index}>
+                                                    <SidebarItem
+                                                        style={{
+                                                            width: "260px",
+                                                            direction: "ltr"
+                                                        }}
+                                                        onClick={() => {
+                                                            // console.log("Name is ", name);
+                                                            if (
+                                                                name ===
+                                                                WELCOME_URL
+                                                            ) {
+                                                                const navigateTo =
+                                                                    WELCOME_URL +
+                                                                    "/" +
+                                                                    system
+                                                                        .client
+                                                                        .id +
+                                                                    "/systems";
+                                                                this.props.history.push(
+                                                                    navigateTo
+                                                                );
+                                                            } else if (
+                                                                name.includes(
+                                                                    "expand"
+                                                                )
+                                                            ) {
+                                                                //Do not navigate if expand
+                                                                this.setState({
+                                                                    [name]: !this
+                                                                        .state[
+                                                                        name
+                                                                    ]
+                                                                });
+                                                                this.handleOnClick();
+                                                            } else {
+                                                                this.setState({
+                                                                    selectedItem: name
+                                                                });
+                                                                displayName ===
+                                                                "View Site"
+                                                                    ? window.open(
+                                                                          name,
+                                                                          "_blank"
                                                                       )
-                                                                  );
+                                                                    : name &&
+                                                                      this.props.history.push(
+                                                                          name.replace(
+                                                                              ":system_id",
+                                                                              system.id
+                                                                          )
+                                                                      );
+                                                            }
+                                                        }}
+                                                        selectedItem={
+                                                            selectedItem
                                                         }
-                                                    }}
-                                                    selectedItem={selectedItem}
-                                                    expectedItem={name}
-                                                    paddingLeft={paddingLeft}
-                                                >
-                                                    {Boolean(EntryIcon) && (
-                                                        <EntryIcon
-                                                            className={
-                                                                classes.icon
-                                                            }
-                                                        />
-                                                    )}
+                                                        expectedItem={name}
+                                                        paddingLeft={
+                                                            paddingLeft
+                                                        }
+                                                    >
+                                                        {Boolean(EntryIcon) && (
+                                                            <EntryIcon
+                                                                className={
+                                                                    classes.icon
+                                                                }
+                                                            />
+                                                        )}
 
-                                                    <SidebarLabel>
-                                                        {displayName}
-                                                    </SidebarLabel>
+                                                        <SidebarLabel>
+                                                            {displayName}
+                                                        </SidebarLabel>
 
-                                                    {this.state.open &&
-                                                    Boolean(CompressIcon) ? (
-                                                        <CompressIcon
-                                                            className={
-                                                                classes.icon2
-                                                            }
-                                                        />
-                                                    ) : (
-                                                        <React.Fragment>
-                                                            {!this.state.open &&
-                                                                Boolean(
-                                                                    ExpandIcon
-                                                                ) && (
-                                                                    <ExpandIcon
-                                                                        className={
-                                                                            classes.icon2
-                                                                        }
-                                                                    />
-                                                                )}
-                                                        </React.Fragment>
-                                                    )}
-                                                </SidebarItem>
-                                                {name.includes("expand") &&
-                                                    this.state[name] &&
-                                                    Array.isArray(
-                                                        expandItems
-                                                    ) &&
-                                                    expandItems.length > 0 && (
-                                                        <React.Fragment>
-                                                            {expandItems.map(
-                                                                (
-                                                                    eItem,
-                                                                    eIndex
-                                                                ) => {
-                                                                    const {
-                                                                        name: eName,
-                                                                        displayName: eDisplayName,
-                                                                        icon: EEntryIcon,
-                                                                        paddingLeft: ePaddingLeft
-                                                                    } = eItem;
-                                                                    return (
-                                                                        <SidebarSubItem
-                                                                            key={`${index}-${eIndex}`}
-                                                                            onClick={() => {
-                                                                                // console.log("Name is ", name);
+                                                        {this.state.open &&
+                                                        Boolean(
+                                                            CompressIcon
+                                                        ) ? (
+                                                            <CompressIcon
+                                                                className={
+                                                                    classes.icon2
+                                                                }
+                                                            />
+                                                        ) : (
+                                                            <React.Fragment>
+                                                                {!this.state
+                                                                    .open &&
+                                                                    Boolean(
+                                                                        ExpandIcon
+                                                                    ) && (
+                                                                        <ExpandIcon
+                                                                            className={
+                                                                                classes.icon2
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                            </React.Fragment>
+                                                        )}
+                                                    </SidebarItem>
+                                                    {name.includes("expand") &&
+                                                        this.state[name] &&
+                                                        Array.isArray(
+                                                            expandItems
+                                                        ) &&
+                                                        expandItems.length >
+                                                            0 && (
+                                                            <React.Fragment>
+                                                                {expandItems.map(
+                                                                    (
+                                                                        eItem,
+                                                                        eIndex
+                                                                    ) => {
+                                                                        const {
+                                                                            name: eName,
+                                                                            displayName: eDisplayName,
+                                                                            icon: EEntryIcon,
+                                                                            paddingLeft: ePaddingLeft
+                                                                        } = eItem;
+                                                                        return (
+                                                                            <SidebarSubItem
+                                                                                key={`${index}-${eIndex}`}
+                                                                                onClick={() => {
+                                                                                    // console.log("Name is ", name);
 
-                                                                                this.setState(
-                                                                                    {
-                                                                                        selectedItem: eName
-                                                                                    }
-                                                                                );
-                                                                                this.props.history.push(
-                                                                                    eName.replace(
-                                                                                        ":system_id",
-                                                                                        system.id
-                                                                                    )
-                                                                                );
-                                                                            }}
-                                                                            selectedItem={
-                                                                                selectedItem
-                                                                            }
-                                                                            expectedItem={
-                                                                                eName
-                                                                            }
-                                                                            paddingLeft={
-                                                                                ePaddingLeft
-                                                                            }
-                                                                        >
-                                                                            {Boolean() && (
-                                                                                //  EEntryIcon
-                                                                                <EEntryIcon
-                                                                                    className={
-                                                                                        classes.icon
-                                                                                    }
+                                                                                    this.setState(
+                                                                                        {
+                                                                                            selectedItem: eName
+                                                                                        }
+                                                                                    );
+                                                                                    this.props.history.push(
+                                                                                        eName.replace(
+                                                                                            ":system_id",
+                                                                                            system.id
+                                                                                        )
+                                                                                    );
+                                                                                }}
+                                                                                selectedItem={
+                                                                                    selectedItem
+                                                                                }
+                                                                                expectedItem={
+                                                                                    eName
+                                                                                }
+                                                                                paddingLeft={
+                                                                                    ePaddingLeft
+                                                                                }
+                                                                            >
+                                                                                {Boolean() && (
+                                                                                    //  EEntryIcon
+                                                                                    <EEntryIcon
+                                                                                        className={
+                                                                                            classes.icon
+                                                                                        }
+                                                                                        style={{
+                                                                                            marginLeft:
+                                                                                                "30px"
+                                                                                        }}
+                                                                                    />
+                                                                                )}
+                                                                                <SidebarLabel
                                                                                     style={{
                                                                                         marginLeft:
-                                                                                            "30px"
+                                                                                            "40px"
                                                                                     }}
-                                                                                />
-                                                                            )}
-                                                                            <SidebarLabel
-                                                                                style={{
-                                                                                    marginLeft:
-                                                                                        "40px"
-                                                                                }}
-                                                                            >
-                                                                                {
-                                                                                    eDisplayName
-                                                                                }
-                                                                            </SidebarLabel>
-                                                                        </SidebarSubItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </React.Fragment>
-                                                    )}
-                                            </React.Fragment>
-                                        </SidebarContainer>
-                                    )
-                                );
-                            })}
-                        </div>
+                                                                                >
+                                                                                    {
+                                                                                        eDisplayName
+                                                                                    }
+                                                                                </SidebarLabel>
+                                                                            </SidebarSubItem>
+                                                                        );
+                                                                    }
+                                                                )}
+                                                            </React.Fragment>
+                                                        )}
+                                                </React.Fragment>
+                                            </SidebarContainer>
+                                        )
+                                    );
+                                })}
+                            </SidebarContainerDiv>
+                        </MainSidebarContainer>
                     );
                 }}
             </Query>

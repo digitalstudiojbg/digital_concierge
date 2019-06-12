@@ -6,6 +6,9 @@ export const MainSectionContainer = styled.div`
     height: 100%;
     //  background-color: #f4f4f4;
     padding: 3%;
+    // position: fixed;
+    // margin-left: 260px;
+    // overflow-y: auto;
 `;
 export const ContainerDiv = styled.div`
     width: 100%;
@@ -312,13 +315,15 @@ export const SelectAndUnselectAll = styled.div`
 
 //----------
 
+export const MainSidebarContainer = styled.div``;
 export const SidebarContainer = styled.div``;
+export const SidebarContainerDiv = styled.div``;
 
 export const SidebarSubItem = styled.div`
 display: flex;
 align-items: center;
 padding-left: ${props => props.paddingLeft};
-height: 70px;
+height: 65px;
 transition: all 0.3s linear;
 width:260px;
 
@@ -348,7 +353,7 @@ export const SidebarItem = styled.div`
     display: flex;
     align-items: center;
     padding-left: ${props => props.paddingLeft};
-    height: 70px;
+    height: 65px;
     transition: all 0.3s linear;
     width:100%;
 
