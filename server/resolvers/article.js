@@ -69,7 +69,7 @@ export default {
 
             if (articles.length !== by) {
                 throw new UserInputError(
-                    `Error! Cannot move article up by ${by} because there is not enough elements!`
+                    `Error! Cannot move article ID ${id} up by ${by} because there is not enough elements!`
                 );
             }
 
@@ -146,7 +146,7 @@ export default {
 
             if (articles.length !== by) {
                 throw new UserInputError(
-                    `Error! Cannot move article down by ${by} because there is not enough elements!`
+                    `Error! Cannot move article ID ${id} down by ${by} because there is not enough elements!`
                 );
             }
 
