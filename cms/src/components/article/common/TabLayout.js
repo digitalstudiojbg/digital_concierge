@@ -12,6 +12,19 @@ import {
 } from "../../../utils/Constants";
 import { isEmpty } from "lodash";
 import { FormLabelDiv } from "../../advertiser/common/commonStyle";
+import styled from "styled-components";
+
+const LayoutPreviewDiv = styled.div`
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-image: url(${props => props.imageUrl});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: white;
+    flex-basis: 100%;
+    height: 600px;
+`;
 
 class TabLayout extends React.Component {
     handleChangeTemplate = event => {
@@ -64,6 +77,17 @@ class TabLayout extends React.Component {
               )
             : [];
 
+        const layout = !isEmpty(layouts)
+            ? layouts.find(({ id }) => id === values.jbgLayoutId)
+            : {};
+        const imageUrl =
+            Boolean(layout) &&
+            !isEmpty(layout) &&
+            Boolean(layout.media) &&
+            Boolean(layout.media.path)
+                ? layout.media.path
+                : null;
+
         return (
             <ContainerDiv>
                 <SectionDiv
@@ -103,16 +127,17 @@ class TabLayout extends React.Component {
                     <FieldContainerDiv>
                         <FieldDiv flexBasis="70%" marginRight="0px">
                             <FormLabelDiv>Layout Option</FormLabelDiv>
-                        </FieldDiv>
-                    </FieldContainerDiv>
-                    <FieldContainerDiv>
-                        <FieldDiv flexBasis="70%" marginRight="0px">
-                            {renderSelectField(
-                                "jbgLayoutId",
-                                "",
-                                layouts,
-                                errors
+                            {Boolean(imageUrl) && (
+                                <LayoutPreviewDiv imageUrl={imageUrl} />
                             )}
+                            <FieldDiv flexBasis="100%" marginRight="0px">
+                                {renderSelectField(
+                                    "jbgLayoutId",
+                                    "",
+                                    layouts,
+                                    errors
+                                )}
+                            </FieldDiv>
                         </FieldDiv>
                     </FieldContainerDiv>
                 </SectionDiv>
