@@ -29,7 +29,7 @@ const COLUMNS = [
     {
         Header: "GUEST NAME",
         id: "firstname",
-        accessor: ({ guest }) => guest.firstname,
+        accessor: ({ guest }) => `${guest.firstname} ${guest.lastname}`,
     },
     {
         Header: "GUEST ID",
@@ -97,7 +97,7 @@ const COLUMNS = [
 const GuestsCurrent = ({ clientId }) => (
     <Query
         query={getGuestsRooms}
-        variables={{ input: clientId }}
+        variables={{ clientId }}
         fetchPolicy="no-cache"
     >
         {({ loading, error, data: { guestRooms } }) => {
@@ -126,7 +126,7 @@ const GuestsCurrent = ({ clientId }) => (
                                 showPagination={false}
                                 showPageSizeOptions={false}
                                 showPaginationBottom={false}
-                                NoDataComponent={() => null}
+                                NoDataComponent={() => <div>Not found guest rooms</div>}
                                 TableComponent={(props) => <GuestTable {...props} />}
                                 TheadComponent={(props) => <GuestTHead {...props} />}
                                 TrComponent={(props) => <GuestTR {...props} />}

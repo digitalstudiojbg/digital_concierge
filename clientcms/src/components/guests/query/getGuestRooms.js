@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 const getGuestsRooms = gql`
-    query guestRooms($input: Int!) {
-        guestRooms(input: $input) {
+    query guestRooms($clientId: Int!) {
+        guestRooms(clientId: $clientId) {
             pin
             active
             checkin_date
@@ -10,6 +10,7 @@ const getGuestsRooms = gql`
             guest {
                 id
                 firstname
+                lastname
             }
             guest_count
             room {

@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 export default gql`
     extend type Query {
-        guestRooms: [GuestRooms]
+        guestRooms(clientId: Int!): [GuestRooms]
         guestRoomsByRoomNumber(room_number: Int!, clientId: Int!): [GuestRooms]
         guestRoomsByGuestId(guestId: Int!): [GuestRooms]
         guestRoomsCheckOut(name: String!): [GuestRooms]
@@ -43,8 +43,8 @@ export default gql`
         firstname: String!
         lastname: String!
         email: EmailAddress!
-        primary_number: PhoneNumber!
-        secondary_number: PhoneNumber
+        primary_number: String!
+        secondary_number: String
         clientId: Int!
         checkin_date: String!
         checkout_date: String!

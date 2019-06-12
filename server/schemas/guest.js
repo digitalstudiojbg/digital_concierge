@@ -19,8 +19,8 @@ export default gql`
         firstname: String
         lastname: String
         email: EmailAddress
-        primary_number: PhoneNumber
-        secondary_number: PhoneNumber
+        primary_number: String
+        secondary_number: String
         createdAt: DateTime
         updatedAt: DateTime
         client: Client
@@ -32,8 +32,8 @@ export default gql`
         firstname: String!
         lastname: String!
         email: EmailAddress!
-        primary_number: PhoneNumber!
-        secondary_number: PhoneNumber
+        primary_number: String!
+        secondary_number: String
         clientId: Int!
     }
     
@@ -42,8 +42,8 @@ export default gql`
         firstname: String
         lastname: String
         email: EmailAddress
-        primary_number: PhoneNumber
-        secondary_number: PhoneNumber
+        primary_number: String
+        secondary_number: String
     }
     
     input DeleteGuestInput {
