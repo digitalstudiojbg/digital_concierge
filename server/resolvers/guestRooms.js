@@ -10,8 +10,15 @@ const _calcDiffInDays = (checkInDate, checkOutDate) => {
 
 export default {
     Query: {
-        guestRooms: async (_root, _input) => {
-            return await db.guests_rooms.findAll();
+        guestRooms: async (_root, { clientId }) => {
+            return await db.guests_rooms.findAll({
+                include: [
+                    {
+                        model: db.room,
+                        where: { clientId }
+                    }
+                ]
+            });
         },
         guestRoomsByRoomNumber: async (_root, { room_number: number, clientId }) => {
             return await db.guests_rooms.findAll({
