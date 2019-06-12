@@ -3,6 +3,7 @@ import styled from "styled-components";
 import FileSaver from "file-saver";
 import Slide from "@material-ui/core/Slide";
 import dayJs from "dayjs";
+import TabletMockUp from "../images/TabletImageTest.jpg";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -237,4 +238,35 @@ export const sortDate = (date1, date2) => {
     } else {
         return 0;
     }
+};
+
+export const renderTabletMockUp = () => (
+    <div
+        style={{
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url('${TabletMockUp}')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
+            backgroundColor: "white"
+        }}
+    />
+);
+
+export const defaultFamilyKeyNameFromTemplateName = name => {
+    const temp = name.split(" ")[0].toLowerCase();
+    const items = {
+        welcome: "welcomeFamilyId",
+        home: "home",
+        featured: "featureFamilyId",
+        information: "informationFamilyId",
+        map: "mapFamilyId",
+        gallery: "galleryFamilyId",
+        markets: "marketFamilyId",
+        food: "foodFamilyId",
+        attractions: "attractionFamilyId",
+        calendar: "eventFamilyId",
+        essential: "essentialFamilyId"
+    };
+    return items[temp];
 };

@@ -215,6 +215,7 @@ const CreateNewArticle = ({ match }) => {
                                                                         onSubmit
                                                                     }
                                                                     otherProps={{
+                                                                        has_data: false,
                                                                         layoutFamilies: jbgLayoutFamilies,
                                                                         templates: jbgTemplates,
                                                                         defaultFamilyLayouts

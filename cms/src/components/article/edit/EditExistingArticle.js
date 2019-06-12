@@ -288,6 +288,7 @@ const EditExistingArticle = ({ match }) => {
                                                                                     onSubmit
                                                                                 }
                                                                                 otherProps={{
+                                                                                    has_data: true,
                                                                                     layoutFamilies: jbgLayoutFamilies,
                                                                                     templates: jbgTemplates,
                                                                                     defaultFamilyLayouts
