@@ -29,7 +29,7 @@ import {
     CheckInitialValues,
 } from "./constants";
 import { CheckSchema } from "./validation";
-import withClientId from "./withClientId";
+import withClientId from "../guests/withClientId";
 
 const CheckOut = (
     {

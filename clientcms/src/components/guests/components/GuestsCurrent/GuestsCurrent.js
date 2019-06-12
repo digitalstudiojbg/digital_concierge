@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import ReactTable from "react-table";
-import { Query, withApollo } from "react-apollo";
+import { compose, Query, withApollo } from "react-apollo";
 
 import Box from "@material-ui/core/Box";
 import getGuestsRooms from "../../query/getGuestRooms";
@@ -19,6 +19,7 @@ import {
 } from "./styled";
 import GuestsCurrentMenu from "./GuestsCurrentMenu";
 import Loading from "../../../loading/Loading";
+import withClientId from "../../withClientId";
 
 const sortDateString = (d1, d2) => {
     return (new Date(d1)).getTime() > (new Date(d2)).getTime() ? 1 : -1;
@@ -93,9 +94,10 @@ const COLUMNS = [
     },
 ];
 
-const GuestsCurrent = () => (
+const GuestsCurrent = ({ clientId }) => (
     <Query
         query={getGuestsRooms}
+        variables={{ input: clientId }}
         fetchPolicy="no-cache"
     >
         {({ loading, error, data: { guestRooms } }) => {
@@ -139,4 +141,7 @@ const GuestsCurrent = () => (
     </Query>
 );
 
-export default withApollo(GuestsCurrent);
+export default compose(
+    withApollo,
+    withClientId,
+)(GuestsCurrent);

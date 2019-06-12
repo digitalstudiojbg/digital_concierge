@@ -5,8 +5,6 @@ import { compose, graphql, withApollo } from "react-apollo";
 import { withRouter } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 
-import ROUTES from "../../utils/routes";
-
 import mutationCreateGuestRoom from "./query/mutationCreateGuestRoom";
 import mutationNewGuestCheckIn from "./query/mutationNewGuestCheckIn";
 
@@ -19,7 +17,7 @@ import { CheckCol, CheckSubmitButton } from "./components/styled";
 import { CHECK_FORM_NAMES, CHECK_INITIAL_DATE, CheckInitialValues } from "./constants";
 import { createCheckInFormData, getErrorMessage, pickGuest } from "./utils";
 import { CheckSchema } from "./validation";
-import withClientId from "./withClientId";
+import withClientId from "../guests/withClientId";
 
 const CheckIn = (
     {
