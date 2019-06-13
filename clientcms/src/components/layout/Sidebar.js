@@ -325,7 +325,7 @@ class Sidebar extends Component {
                         <MainSidebarContainer
                             style={{
                                 position: "relative",
-                                width: "300px"
+                                width: "260px"
                             }}
                         >
                             <SidebarContainerDiv className={classes.SidebarDiv}>

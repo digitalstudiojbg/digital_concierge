@@ -119,9 +119,9 @@ class Header extends Component {
                 ) : (
                     <div
                         style={{
-                            width: 350,
+                            width: 260,
                             fontSize: "2em",
-                            paddingLeft: 30,
+                            // paddingLeft: 30,
                             fontWeight: 700,
                             textAlign: "center"
                         }}

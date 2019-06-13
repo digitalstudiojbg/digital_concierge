@@ -8,25 +8,6 @@ import Loading from "../loading/Loading";
 import { UPDATE_THEMES } from "../../data/mutation/theme";
 import Immutable, { Map, List } from "immutable";
 
-// import {
-//     ContainerDiv,
-//     ThemeContainerDiv,
-//     EntryThemeContainerDiv,
-//     ColourThemeContainerDiv,
-//     EntryThemeDiv,
-//     LayoutContainerDiv,
-//     LayoutEntryContainerDiv,
-//     LayoutEntryDropdownDiv,
-//     LayoutEntryPreviewDiv,
-//     LayoutEntryPreviewImage,
-//     ColourEntryContainerDiv,
-//     ColourEntryDiv,
-//     ColourTitleDiv,
-//     ButtonContainerDiv,
-//     FONT_OPTIONS,
-//     FieldLabel
-// } from "./themeStyles";
-
 import {
     ContainerDiv,
     ThemeContainerDiv,
@@ -52,7 +33,7 @@ import {
     PageHeader,
     HeaderDiv,
     SubSectionTop,
-    TopButtonsContiner
+    TopButtonsContainer
 } from "./WelcomeStyleSet";
 
 import Stepper from "@material-ui/core/Stepper";
@@ -86,13 +67,13 @@ const styles = theme => ({
         color: "#2699FB",
         border: "1px solid #2699FB",
         backgroundColor: "white",
-        marginTop: "20px",
+        marginTop: "22px",
         width: "100%",
-        padding: "4% 0"
+        padding: "10%"
     },
 
     myInput: {
-        padding: "10px 0",
+        padding: "15px 10px",
         backgroundColor: "white",
         border: "1px solid #9D9D9D",
         borderRadius: "5px"
@@ -508,13 +489,15 @@ const WelcomeThemeSettings = ({
         <ContainerDiv>
             {Boolean(values) && (
                 <React.Fragment>
-                    <MainSectionContainer>
+                    <MainSectionContainer
+                        style={{ backgroundColor: "#F4F4F4" }}
+                    >
                         <HeaderDiv>
                             <SubSectionTop>
                                 <PageHeader style={{ width: "75%" }}>
                                     Theme Settings
                                 </PageHeader>
-                                <TopButtonsContiner>
+                                <TopButtonsContainer>
                                     <Button
                                         type="submit"
                                         variant="outlined"
@@ -530,7 +513,7 @@ const WelcomeThemeSettings = ({
                                     >
                                         SAVE & KEEP EDITING
                                     </Button>
-                                </TopButtonsContiner>
+                                </TopButtonsContainer>
                             </SubSectionTop>
 
                             <StepperCon
@@ -544,7 +527,7 @@ const WelcomeThemeSettings = ({
 
                                     style={{
                                         backgroundColor: "#F4F4F4",
-                                        alignFlex: "felx-start",
+                                        alignFlex: "flex-start",
                                         width: "40%",
                                         paddingBottom: "10px",
                                         paddingTop: "10px"
@@ -596,8 +579,10 @@ const WelcomeThemeSettings = ({
                                 </Stepper>
                             </StepperCon>
                         </HeaderDiv>
-                        <SubSectionTheme style={{ display: "flex" }}>
-                            <LayoutContainerDiv style={{ width: "60%" }}>
+                        <SubSectionTheme
+                            style={{ display: "flex", padding: "24px" }}
+                        >
+                            <LayoutContainerDiv style={{ width: "50%" }}>
                                 <SectionHeader style={{ margin: "2% 0 4%" }}>
                                     BRAND ASSETS
                                 </SectionHeader>
@@ -683,7 +668,7 @@ const WelcomeThemeSettings = ({
                                         style={{
                                             display: "flex",
                                             flexDirection: "column",
-                                            width: "25%"
+                                            width: "35%"
                                         }}
                                     >
                                         <FieldLabel>
@@ -695,7 +680,7 @@ const WelcomeThemeSettings = ({
                                             style={{
                                                 // width: "25%",
                                                 width: "auto",
-                                                height: "120px",
+                                                height: "160px",
                                                 flex: "left",
                                                 margin: "3%"
                                             }}
@@ -847,7 +832,11 @@ const WelcomeThemeSettings = ({
                                             values.get("defaultStartLayoutId")
                                         )
                                     ) && (
-                                        <LayoutEntryPreviewDiv>
+                                        <LayoutEntryPreviewDiv
+                                            style={{
+                                                height: "100%"
+                                            }}
+                                        >
                                             <LayoutEntryPreviewImage
                                                 src={getLayoutMediaStart(
                                                     values.get(

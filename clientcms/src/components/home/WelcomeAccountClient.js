@@ -25,7 +25,7 @@ import * as Yup from "yup";
 
 import {
     ContainerDiv,
-    SectionDiv,
+    SubContainerDiv,
     TitleDiv,
     ClientContainerDiv,
     ClientFieldDiv,
@@ -227,7 +227,7 @@ const styles = () => ({
         marginBottom: 20
     },
     myInput: {
-        padding: "10px",
+        padding: "15px 10px",
         backgroundColor: "white"
     }
 });
@@ -254,7 +254,7 @@ const renderSelectField = (nameValue, label, optionList) => {
 
     return (
         <React.Fragment>
-            <InputLabel
+            <FieldLabel
                 style={{
                     color: "#5c5c5c",
                     fontsize: "10px",
@@ -262,10 +262,11 @@ const renderSelectField = (nameValue, label, optionList) => {
                 }}
             >
                 {label}
-            </InputLabel>
+            </FieldLabel>
             <Field
                 style={{
-                    height: 38
+                    height: 48,
+                    backgroundColor: "white"
                 }}
                 name={nameValue}
                 component={Select}
@@ -709,24 +710,21 @@ export const WelcomeAccountClient = ({
                                                         }}
                                                     >
                                                         <ContainerDiv>
-                                                            <SectionDiv
+                                                            <SubContainerDiv
                                                                 style={{
-                                                                    backgroundColor:
-                                                                        "white",
                                                                     width:
-                                                                        "50%",
-                                                                    height:
-                                                                        "70vh",
-                                                                    marginTop:
-                                                                        "1%",
+                                                                        "47%",
+                                                                    // height:
+                                                                    //     "70vh",
+
                                                                     marginRight:
-                                                                        "3%",
+                                                                        "1%",
                                                                     fontSize:
                                                                         "12px"
                                                                 }}
                                                             >
                                                                 <TitleDiv>
-                                                                    CLIENT INFO
+                                                                    Client Info
                                                                 </TitleDiv>
                                                                 <div
                                                                     style={{
@@ -844,21 +842,23 @@ export const WelcomeAccountClient = ({
                                                                         )}
                                                                     </ClientFieldDiv>
                                                                 </ClientContainerDiv>
-                                                            </SectionDiv>
-                                                            <SectionDiv
+                                                            </SubContainerDiv>
+                                                            <SubContainerDiv
                                                                 style={{
-                                                                    backgroundColor:
-                                                                        "white",
+                                                                    // backgroundColor:
+                                                                    //     "white",
                                                                     width:
-                                                                        "25%",
-                                                                    height:
-                                                                        "70vh",
-                                                                    marginTop:
-                                                                        "1%"
+                                                                        "20%",
+                                                                    // height:
+                                                                    //     "70vh",
+                                                                    borderLeft:
+                                                                        "1px solid #DDDDDD",
+                                                                    marginRight:
+                                                                        "2%"
                                                                 }}
                                                             >
                                                                 <TitleDiv>
-                                                                    KEY USER
+                                                                    Key User
                                                                 </TitleDiv>
                                                                 <FieldContainerDiv>
                                                                     {USER_TEXT_FIELDS.map(
@@ -889,11 +889,11 @@ export const WelcomeAccountClient = ({
                                                                         )
                                                                     )}
                                                                 </FieldContainerDiv>
-                                                            </SectionDiv>
-                                                            <SectionDiv
+                                                            </SubContainerDiv>
+                                                            <SubContainerDiv
                                                                 style={{
                                                                     width:
-                                                                        "25%",
+                                                                        "20%",
                                                                     paddingTop:
                                                                         "1%"
                                                                 }}
@@ -945,9 +945,9 @@ export const WelcomeAccountClient = ({
                                                                                             <ContactEntryHeaderTitleDiv
                                                                                                 style={{
                                                                                                     width:
-                                                                                                        "75%",
-                                                                                                    marginLeft:
-                                                                                                        "3%",
+                                                                                                        "80%",
+                                                                                                    // marginLeft:
+                                                                                                    //     "3%",
                                                                                                     justifyContent:
                                                                                                         "left"
                                                                                                 }}
@@ -1016,7 +1016,7 @@ export const WelcomeAccountClient = ({
                                                                                                         justifyContent:
                                                                                                             "left",
                                                                                                         width:
-                                                                                                            "90%"
+                                                                                                            "100%"
                                                                                                     }}
                                                                                                 >
                                                                                                     <FieldLabel>
@@ -1069,7 +1069,7 @@ export const WelcomeAccountClient = ({
                                                                     UPDATE &
                                                                     SAVE
                                                                 </Button>
-                                                            </SectionDiv>
+                                                            </SubContainerDiv>
                                                         </ContainerDiv>
                                                     </Form>
                                                 );

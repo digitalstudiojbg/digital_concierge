@@ -11,12 +11,14 @@ import {
     MainSectionContainer,
     PageHeader,
     SubSectionTop,
-    TopButtonsContiner
+    TopButtonsContainer,
+    ContainerDiv,
+    MainSubSections
 } from "./WelcomeStyleSet";
 
 const styles = theme => ({
     root: {
-        flexGrow: 1,
+        // flexGrow: 1,
         // backgroundColor: theme.palette.background.paper
         backgroundColor: "#F4F4F4"
     },
@@ -83,10 +85,10 @@ class WelcomeAccount extends Component {
         const { value } = this.state;
 
         return (
-            <MainSectionContainer>
-                <SubSectionTop>
+            <MainSectionContainer style={{ padding: 0 }}>
+                <SubSectionTop style={{ padding: "3% 3% 0 3%" }}>
                     <PageHeader style={{ width: "75%" }}>Account</PageHeader>
-                    <TopButtonsContiner>
+                    <TopButtonsContainer>
                         <Button
                             type="submit"
                             variant="outlined"
@@ -101,46 +103,53 @@ class WelcomeAccount extends Component {
                         >
                             SAVE & KEEP EDITING
                         </Button>
-                    </TopButtonsContiner>
+                    </TopButtonsContainer>
                 </SubSectionTop>
-
-                <div className={classes.root}>
-                    <Tabs
-                        classes={{
-                            root: classes.tabsRoot,
-                            indicator: classes.tabsIndicator
-                        }}
-                        value={value}
-                        onChange={this.handleChange}
-                    >
-                        <Tab
-                            disableRipple
+                <MainSubSections
+                    style={{
+                        width: "100%",
+                        padding: "0 3% 3% 3%",
+                        backgroundColor: "#F4F4F4"
+                    }}
+                >
+                    <div className={classes.root}>
+                        <Tabs
                             classes={{
-                                root: classes.tabRoot,
-                                selected: classes.tabSelected
+                                root: classes.tabsRoot,
+                                indicator: classes.tabsIndicator
                             }}
-                            label="Account Details"
-                        />
-                        <Tab
-                            disableRipple
-                            classes={{
-                                root: classes.tabRoot,
-                                selected: classes.tabSelected
-                            }}
-                            label="Payment & Agreement"
-                        />
-                    </Tabs>
-                    {value === 0 && (
-                        <div className={classes.typography}>
-                            <WelcomeAccountClient data={data} />
-                        </div>
-                    )}
-                    {value === 1 && (
-                        <div className={classes.typography}>
-                            <WelcomeAccountPaymentAgreement />
-                        </div>
-                    )}
-                </div>
+                            value={value}
+                            onChange={this.handleChange}
+                        >
+                            <Tab
+                                disableRipple
+                                classes={{
+                                    root: classes.tabRoot,
+                                    selected: classes.tabSelected
+                                }}
+                                label="Account Details"
+                            />
+                            <Tab
+                                disableRipple
+                                classes={{
+                                    root: classes.tabRoot,
+                                    selected: classes.tabSelected
+                                }}
+                                label="Payment & Agreement"
+                            />
+                        </Tabs>
+                        {value === 0 && (
+                            <div className={classes.typography}>
+                                <WelcomeAccountClient data={data} />
+                            </div>
+                        )}
+                        {value === 1 && (
+                            <div className={classes.typography}>
+                                <WelcomeAccountPaymentAgreement />
+                            </div>
+                        )}
+                    </div>
+                </MainSubSections>
             </MainSectionContainer>
         );
     }

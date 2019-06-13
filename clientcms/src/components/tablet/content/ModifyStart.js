@@ -30,7 +30,7 @@ import {
     PageHeader,
     ContainerDiv,
     ContainerDivTab,
-    TopButtonsContiner,
+    TopButtonsContainer,
     // BlueButtons,
     SubSectionTop,
     MainSubSections
@@ -332,7 +332,7 @@ const ModifyStart = props => {
                                             paddingBottom: 20
                                         }}
                                     > */}
-                                            <TopButtonsContiner>
+                                            <TopButtonsContainer>
                                                 <Button
                                                     type="submit"
                                                     variant="outlined"
@@ -351,7 +351,7 @@ const ModifyStart = props => {
                                                 >
                                                     SAVE & KEEP EDITING
                                                 </Button>
-                                            </TopButtonsContiner>
+                                            </TopButtonsContainer>
                                         </SubSectionTop>
                                         <Paper
                                             square

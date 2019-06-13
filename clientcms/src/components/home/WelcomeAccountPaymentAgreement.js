@@ -50,7 +50,7 @@ const styles = theme => ({
         width: 200
     },
     myInput: {
-        padding: "10px",
+        padding: "15px",
         backgroundColor: "white"
     }
 });
@@ -109,8 +109,8 @@ const renderAgreementFiled = contractsFromState => {
                             }}
                             inputProps={{
                                 style: {
-                                    paddingTop: "10px",
-                                    paddingBottom: "10px"
+                                    padding: "15px 10px",
+                                    backgroundColor: "white"
                                 }
                             }}
                         />
@@ -140,8 +140,8 @@ const renderLicenseField = license => {
                     fullWidth={true}
                     inputProps={{
                         style: {
-                            paddingTop: "10px",
-                            paddingBottom: "10px"
+                            padding: "15px 10px",
+                            backgroundColor: "white"
                         }
                     }}
                 />
@@ -160,8 +160,8 @@ const renderLicenseField = license => {
                     fullWidth={true}
                     inputProps={{
                         style: {
-                            paddingTop: "10px",
-                            paddingBottom: "10px"
+                            padding: "15px 10px",
+                            backgroundColor: "white"
                         }
                     }}
                 />
@@ -181,20 +181,15 @@ const renderLicenseField = license => {
                         variant="outlined"
                         type="text"
                         id="standard-name"
-                        //  label="LICENSE START DATE"
-                        value={dayjs(license.commence_date).format(
-                            "YYYY-MM-DD"
-                        )}
+                        //  label="LICENSE END DATE"
+                        value={dayjs(license.expire_date).format("YYYY-MM-DD")}
                         margin="normal"
                         disabled={true}
                         fullWidth={true}
-                        // input={
-                        //     <InputBase style={{ border: "1px solid black" }} />
-                        // }
                         inputProps={{
                             style: {
-                                paddingTop: "10px",
-                                paddingBottom: "10px"
+                                padding: "15px 10px",
+                                backgroundColor: "white"
                             }
                         }}
                     />
@@ -224,8 +219,8 @@ const renderLicenseField = license => {
                         fullWidth={true}
                         inputProps={{
                             style: {
-                                paddingTop: "10px",
-                                paddingBottom: "10px"
+                                padding: "15px 10px",
+                                backgroundColor: "white"
                             }
                         }}
                     />
@@ -270,8 +265,9 @@ const WelcomeAccountPaymentAgreement = props => {
                             width: "25%",
                             paddingLeft: "20px",
                             paddingRight: "20px",
-                            backgroundColor: "white",
-                            height: "70vh"
+                            // backgroundColor: "white",
+                            height: "70vh",
+                            border: "0px"
                         }}
                     >
                         <TitleDiv>Agreement</TitleDiv>
@@ -285,8 +281,9 @@ const WelcomeAccountPaymentAgreement = props => {
                     <SectionDiv
                         style={{
                             width: "25%",
-                            backgroundColor: "white",
-                            height: "70vh"
+                            //  backgroundColor: "white",
+                            height: "70vh",
+                            border: "0px"
                         }}
                     >
                         <TitleDiv>Payment</TitleDiv>
@@ -303,8 +300,8 @@ const WelcomeAccountPaymentAgreement = props => {
                                 fullWidth={true}
                                 inputProps={{
                                     style: {
-                                        paddingTop: "10px",
-                                        paddingBottom: "10px"
+                                        padding: "15px 10px",
+                                        backgroundColor: "white"
                                     }
                                 }}
                             />

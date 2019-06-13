@@ -25,7 +25,7 @@ import {
     MainSectionContainer,
     PageHeader,
     ContainerDivTab,
-    TopButtonsContiner,
+    TopButtonsContainer,
     BlueButtons,
     SubSectionTop
 } from "../../home/WelcomeStyleSet";
@@ -321,7 +321,7 @@ const ModifyHome = props => {
                                             >
                                                 System Content: Home
                                             </PageHeader>
-                                            <TopButtonsContiner>
+                                            <TopButtonsContainer>
                                                 <Button
                                                     type="submit"
                                                     variant="outlined"
@@ -340,7 +340,7 @@ const ModifyHome = props => {
                                                 >
                                                     SAVE & KEEP EDITING
                                                 </Button>
-                                            </TopButtonsContiner>
+                                            </TopButtonsContainer>
                                         </SubSectionTop>
                                         <Paper
                                             square

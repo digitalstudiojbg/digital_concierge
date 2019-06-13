@@ -4,11 +4,8 @@ import styled from "styled-components";
 export const MainSectionContainer = styled.div`
     width: 100%;
     height: 100%;
-    //  background-color: #f4f4f4;
+
     padding: 3%;
-    // position: fixed;
-    // margin-left: 260px;
-    // overflow-y: auto;
 `;
 export const ContainerDiv = styled.div`
     width: 100%;
@@ -69,7 +66,7 @@ export const ContainerDivTab = styled.div`
     height: 80vh;
 `;
 
-export const TopButtonsContiner = styled.div`
+export const TopButtonsContainer = styled.div`
     width: 15%;
     display: flex;
     flex-direction: column;
@@ -187,7 +184,7 @@ export const LayoutContainerDiv = styled.div`
 `;
 
 export const LayoutEntryContainerDiv = styled.div`
-    height: 120px;
+    height: 160px;
     margin-bottom: 10px;
     display: flex;
     flex: left;
@@ -199,24 +196,23 @@ export const LayoutEntryDropdownDiv = styled.div`
     margin-right: 5%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
 `;
 
 export const LayoutEntryPreviewDiv = styled.div`
     flex: 1;
     display: flex;
-    //  align-items: center;
-    //  border: 1px solid #9d9d9d;
-    //  margin: 5;
+    margin-top: 20px;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`
     // width: 30%;
-    height: 120px;
+    height: 140px;
     margin: 1%;
     flex: left;
     border: 1px solid #9d9d9d;
-    padding: 5px;
+    border-radius: 5px;
+    padding: 10px;
 `;
 
 export const ColourEntryContainerDiv = styled.div`

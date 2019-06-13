@@ -41,7 +41,7 @@ import {
     PageHeader,
     //  ContainerDiv,
     ContainerDivTab,
-    TopButtonsContiner,
+    TopButtonsContainer,
     // BlueButtons,
     SubSectionTop,
     MainSubSections
@@ -495,7 +495,7 @@ const ModifyDirectoryEntry = props => {
                                                     />
                                                 </Tooltip>
                                             </div>
-                                            <TopButtonsContiner
+                                            <TopButtonsContainer
                                                 style={{
                                                     width: "10%",
                                                     margin: "0 1% 0 2%"
@@ -510,8 +510,8 @@ const ModifyDirectoryEntry = props => {
                                                 >
                                                     CANCEL
                                                 </Button>
-                                            </TopButtonsContiner>
-                                            <TopButtonsContiner>
+                                            </TopButtonsContainer>
+                                            <TopButtonsContainer>
                                                 <Button
                                                     type="submit"
                                                     variant="outlined"
@@ -530,7 +530,7 @@ const ModifyDirectoryEntry = props => {
                                                 >
                                                     SAVE & KEEP EDITING
                                                 </Button>
-                                            </TopButtonsContiner>
+                                            </TopButtonsContainer>
                                         </SubSectionTop>
                                         <Paper
                                             square

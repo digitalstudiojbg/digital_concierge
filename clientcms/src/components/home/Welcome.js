@@ -23,24 +23,30 @@ import { WELCOME_URL } from "../../utils/Constants";
 const ContainerDiv = styled.div`
     width: 100vw;
     // height: calc(100vh - 80px);
-    height: 120vh;
+    height: 100vh;
+
     position: relative;
     display: flex;
     background-color: #f4f4f4;
 `;
 
 const SidebarDiv = styled.div`
-    width: 280px;
-    background-color: rgb(252, 252, 252);
+    width: 260px;
+    background-color: white;
+    position: fixed;
     color: black;
     display: flex;
     flex-direction: column;
-    //  hight: 100%;
+    height: 100vh;
     align-items: center;
 `;
-
 const ContentDiv = styled.div`
-    width: calc(100vw - 350px);
+    width: calc(100vw - 260px);
+`;
+
+const SidebarContainer = styled.div`
+    width: 260px;
+    height: 100vh;
 `;
 
 const SidebarSelected = styled.div`
@@ -248,19 +254,20 @@ const renderWelcomeComponent = (
     );
     return (
         <React.Fragment>
-            <SidebarDiv>
-                {client && client.avatar && (
-                    <img
-                        src={client.avatar}
-                        style={{
-                            marginTop: "10%",
-                            width: "60%",
-                            marginBottom: "10%"
-                        }}
-                        alt={`${client.name} avatar`}
-                    />
-                )}
-                <p
+            <SidebarContainer>
+                <SidebarDiv>
+                    {client && client.avatar && (
+                        <img
+                            src={client.avatar}
+                            style={{
+                                marginTop: "10%",
+                                width: "60%",
+                                marginBottom: "10%"
+                            }}
+                            alt={`${client.name} avatar`}
+                        />
+                    )}
+                    {/* <p
                     style={{
                         fontSize: "18px",
                         width: "100%",
@@ -271,24 +278,28 @@ const renderWelcomeComponent = (
                     }}
                 >
                     ADMIN <br /> CONSOLE
-                </p>
-                {SIDEBAR_BUTTONS.map(({ id, name }) => (
-                    <React.Fragment key={id}>
-                        {selected === id ? (
-                            <SidebarSelected
-                                id={id}
-                                onClick={handleClickSidebar}
-                            >
-                                {name}
-                            </SidebarSelected>
-                        ) : (
-                            <SidebarNormal id={id} onClick={handleClickSidebar}>
-                                {name}
-                            </SidebarNormal>
-                        )}
-                    </React.Fragment>
-                ))}
-            </SidebarDiv>
+                </p> */}
+                    {SIDEBAR_BUTTONS.map(({ id, name }) => (
+                        <React.Fragment key={id}>
+                            {selected === id ? (
+                                <SidebarSelected
+                                    id={id}
+                                    onClick={handleClickSidebar}
+                                >
+                                    {name}
+                                </SidebarSelected>
+                            ) : (
+                                <SidebarNormal
+                                    id={id}
+                                    onClick={handleClickSidebar}
+                                >
+                                    {name}
+                                </SidebarNormal>
+                            )}
+                        </React.Fragment>
+                    ))}
+                </SidebarDiv>
+            </SidebarContainer>
             <ContentDiv>
                 <React.Suspense>
                     <SelectedComponent data={client} />

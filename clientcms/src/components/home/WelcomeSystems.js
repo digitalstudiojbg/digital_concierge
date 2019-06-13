@@ -27,8 +27,8 @@ const SubtitleContainerDiv = styled.div`
 `;
 
 const InnerContainerDiv = styled.div`
-    height: 80%;
-    widht: 20%;
+    height: 100%;
+    // width: 20%;
     display: flex;
     color: black;
     flex-wrap: wrap;
@@ -39,14 +39,14 @@ const system_entry_style = {
     flexBasis: "17%",
     height: "100%",
     backgroundColor: "white",
-    marginRight: "15px",
+    marginRight: "25px",
     textDecoration: "none",
     color: "black",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     fontSize: "15px",
-    padding: "1%"
+    padding: "15px"
 };
 
 const styles = () => ({
@@ -112,17 +112,19 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
         )} */}
         <h2
             style={{
-                height: "200px",
-                fontSize: "30px",
+                height: "150px",
+                fontSize: "28px",
                 padding: "3% 0 0 0"
             }}
         >
-            Systems
+            System Hub
         </h2>
-        <div style={{ padding: "2%", flexDirection: "centre" }}>
-            <SubtitleContainerDiv>
+        <div
+            style={{ padding: "2%", flexDirection: "centre", height: "400px" }}
+        >
+            {/* <SubtitleContainerDiv>
                 PLEASE SELECT SYSTEM TO EDIT
-            </SubtitleContainerDiv>
+            </SubtitleContainerDiv> */}
             <InnerContainerDiv>
                 {systems.map(
                     (
@@ -152,9 +154,13 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
                                         ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
                                         : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
                                 }
-                                height="50%"
+                                height="40%"
                             />
-                            <div style={{ fontWeight: "bold" }}>{name}</div>
+                            <div
+                                style={{ fontSize: "14px", fontWeight: "bold" }}
+                            >
+                                {name}
+                            </div>
                             <div
                                 style={{
                                     color: "#585858",
@@ -181,7 +187,8 @@ const WelcomeSystems = ({ data: { name, systems }, classes }) => (
                 >
                     <AddIcon
                         style={{
-                            height: "80%",
+                            height: "70%",
+                            marginBottom: "10%",
                             flexDirection: "centre",
                             border: "2px solid #ebebeb",
                             width: "100%"
