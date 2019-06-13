@@ -129,6 +129,13 @@ const CreateNewArticle = ({ match }) => {
                                                 ) => {
                                                     console.log(values);
                                                     console.log(formikBag);
+
+                                                    const {
+                                                        setSubmitting
+                                                    } = formikBag;
+
+                                                    setSubmitting(true);
+
                                                     const {
                                                         name,
                                                         description,
@@ -208,6 +215,16 @@ const CreateNewArticle = ({ match }) => {
                                                         "To submit ",
                                                         toSubmit
                                                     );
+
+                                                    createArticle({
+                                                        variables: {
+                                                            input: {
+                                                                ...toSubmit
+                                                            }
+                                                        }
+                                                    }).then(() => {
+                                                        setSubmitting(false);
+                                                    });
                                                 };
 
                                                 return (

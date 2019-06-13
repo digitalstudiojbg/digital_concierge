@@ -111,6 +111,7 @@ class TabbedPageSingleForm extends React.Component {
             otherProps,
             formikProps
         } = this.props;
+        const { isSubmitting } = formikProps;
         const { tab } = this.state;
         const CurrentComponent = tabs[tab].component;
         const shouldRenderButtons = tabs[tab].withButtons;
@@ -178,6 +179,7 @@ class TabbedPageSingleForm extends React.Component {
                             variant="outlined"
                             className={classes.buttonSaveExit}
                             onClick={this.submitExitAction}
+                            disabled={isSubmitting}
                         >
                             SAVE & EXIT
                         </Button>
@@ -185,6 +187,7 @@ class TabbedPageSingleForm extends React.Component {
                             variant="outlined"
                             className={classes.buttonSaveKeep}
                             onClick={this.submitAction}
+                            disabled={isSubmitting}
                         >
                             SAVE & KEEP EDITING
                         </Button>
@@ -193,6 +196,7 @@ class TabbedPageSingleForm extends React.Component {
                                 variant="outlined"
                                 className={classes.buttonCancel}
                                 onClick={this.submitCancelAction}
+                                disabled={isSubmitting}
                             >
                                 CANCEL
                             </Button>

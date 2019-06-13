@@ -177,6 +177,15 @@ const EditExistingArticle = ({ match }) => {
                                                                 console.log(
                                                                     formikBag
                                                                 );
+
+                                                                const {
+                                                                    setSubmitting
+                                                                } = formikBag;
+
+                                                                setSubmitting(
+                                                                    true
+                                                                );
+
                                                                 const {
                                                                     id,
                                                                     name,
@@ -260,6 +269,18 @@ const EditExistingArticle = ({ match }) => {
                                                                     "To submit ",
                                                                     toSubmit
                                                                 );
+
+                                                                editArticle({
+                                                                    variables: {
+                                                                        input: {
+                                                                            ...toSubmit
+                                                                        }
+                                                                    }
+                                                                }).then(() => {
+                                                                    setSubmitting(
+                                                                        false
+                                                                    );
+                                                                });
                                                             };
 
                                                             return (

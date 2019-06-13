@@ -11,7 +11,7 @@ const processArticleImage = async (uploadFile, mediumId, clientId) => {
     //Check if image update
     if (uploadFile) {
         image = await processUploadMedia(uploadFile, clientId, "image");
-    } else if (media_id) {
+    } else if (mediumId) {
         //If Image was changed from media library
         image = await db.media.findByPk(mediumId);
     }
