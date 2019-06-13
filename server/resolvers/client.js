@@ -9,7 +9,7 @@ import {
     handleUpdateActionActivityLog,
     processDelete
 } from "../utils/constant";
-import { UserInputError } from "apollo-server-express";
+import { UserInputError, AuthenticationError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -23,7 +23,21 @@ export default {
             });
         },
         clientByUser: async (_root, _input, { user }) =>
-            await db.client.findByPk(user.clientId)
+            await db.client.findByPk(user.clientId),
+        clientJBG: async (_root, _input, { user }) => {
+            const client = await db.client.findOne({
+                where: { name: { [db.op.like]: "JOHN BATMAN GROUP" } }
+            });
+            if (
+                Boolean(user) &&
+                Boolean(client) &&
+                user.clientId === client.id
+            ) {
+                return client;
+            } else {
+                throw new AuthenticationError("Unauthorized");
+            }
+        }
     },
     Mutation: {
         async uploadFilesWithClientId(parent, { files, clientId }, { user }) {

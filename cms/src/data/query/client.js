@@ -148,3 +148,12 @@ export const getNewCreatedClientId = gql`
         new_create_client_id @client
     }
 `;
+
+export const CLIENT_JBG = gql`
+    query client_JBG {
+        clientJBG {
+            id
+            name
+        }
+    }
+`;

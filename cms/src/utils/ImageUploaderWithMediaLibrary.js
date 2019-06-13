@@ -73,6 +73,7 @@ class ImageUploaderWithMediaLibrary extends React.Component {
         this.openDialogImage = this.openDialogImage.bind(this);
         this.closeDialogImage = this.closeDialogImage.bind(this);
         this.openFileBrowser = this.openFileBrowser.bind(this);
+        this.removeImage = this.removeImage.bind(this);
     }
 
     componentDidMount() {
@@ -88,32 +89,52 @@ class ImageUploaderWithMediaLibrary extends React.Component {
     }
 
     mediaSelectImage(images) {
+        const { usingRef, setFieldValue, fieldName } = this.props;
+        const [image] = images;
         if (Array.isArray(images) && images.length > 0) {
-            const [image] = images;
-            this.setState({
-                imageName: images[0].name,
-                file: { ...image, uploaded: true, changed: true }
+            const newImage = Object.assign(image, {
+                uploaded: true,
+                changed: true
             });
+            if (usingRef) {
+                this.setState({
+                    imageName: images[0].name,
+                    file: newImage
+                });
+            } else {
+                //Using setFieldValue to update media image selection
+                setFieldValue(fieldName, newImage);
+            }
         }
     }
 
     onDrop(images) {
+        const { usingRef, setFieldValue, fieldName } = this.props;
         const [image] = images || [];
-        const { file } = this.state;
-        if (file && file.preview) {
-            //Prevent memory leak
-            URL.revokeObjectURL(file.preview);
-        }
-        this.setState({
-            imageName: Boolean(image) && Boolean(image.name) ? image.name : "",
-            file: Boolean(image)
+        if (Array.isArray(images) && images.length > 0) {
+            const newImage = Boolean(image)
                 ? Object.assign(image, {
                       preview: URL.createObjectURL(image),
                       uploaded: false,
                       changed: true
                   })
-                : null
-        });
+                : null;
+            if (usingRef) {
+                const { file } = this.state;
+                if (file && file.preview) {
+                    //Prevent memory leak
+                    URL.revokeObjectURL(file.preview);
+                }
+                this.setState({
+                    imageName:
+                        Boolean(image) && Boolean(image.name) ? image.name : "",
+                    file: newImage
+                });
+            } else {
+                //Using setFieldValue to update file drop
+                setFieldValue(fieldName, newImage);
+            }
+        }
     }
 
     openDialogImage() {
@@ -125,162 +146,198 @@ class ImageUploaderWithMediaLibrary extends React.Component {
     }
 
     removeImage() {
-        this.setState({
-            imageName: "",
-            openDialog: false,
-            file: null
-        });
+        const { usingRef, setFieldValue, fieldName } = this.props;
+        if (usingRef) {
+            this.setState({
+                imageName: "",
+                openDialog: false,
+                file: null
+            });
+        } else {
+            this.setState({ openDialog: false }, () => {
+                setFieldValue(fieldName, null);
+            });
+        }
     }
 
     openFileBrowser() {
         this.dropZoneRef.current.open();
     }
 
-    render() {
-        const { classes, previewUrl, previewName } = this.props;
-
+    imageNameWithRef = () => {
         //Always prioritise internal state over props
-        const toShow =
-            Boolean(this.state.file) && Boolean(this.state.file.uploaded)
-                ? `url(${this.state.file.path})`
-                : Boolean(this.state.file) && !Boolean(this.state.file.uploaded)
-                ? `url(${this.state.file.preview})`
-                : Boolean(previewUrl)
-                ? previewUrl
-                : "none";
+        const { previewName } = this.props;
+        return Boolean(this.state.file) && Boolean(this.state.imageName)
+            ? this.state.imageName //Using uploaded filename
+            : Boolean(previewName) //Using preview file name
+            ? previewName
+            : "";
+    };
 
-        const imageName =
-            Boolean(this.state.file) && Boolean(this.state.file.name)
-                ? this.state.file.name //Using uploaded filename
-                : Boolean(previewName) //Using preview file name
-                ? previewName
-                : "";
+    imageUrlWithRef = () => {
+        const { previewUrl } = this.props;
+        return Boolean(this.state.file) && Boolean(this.state.file.uploaded)
+            ? `url(${this.state.file.path})`
+            : Boolean(this.state.file) && !Boolean(this.state.file.uploaded)
+            ? `url(${this.state.file.preview})`
+            : Boolean(previewUrl)
+            ? previewUrl
+            : "none";
+    };
+
+    imageNameWithoutRef = () => {
+        const { value } = this.props;
+        return Boolean(value) && Boolean(value.name) ? value.name : "";
+    };
+
+    imageUrlWithoutRef = () => {
+        const { value } = this.props;
+        return Boolean(value) && Boolean(value.preview)
+            ? `url(${value.preview})`
+            : Boolean(value) && Boolean(value.path)
+            ? `url(${value.path})`
+            : "none";
+    };
+
+    render() {
+        const { classes, usingRef } = this.props;
+
+        const toShow = usingRef
+            ? this.imageUrlWithRef()
+            : this.imageUrlWithoutRef();
+
+        const imageName = usingRef
+            ? this.imageNameWithRef()
+            : this.imageNameWithoutRef();
 
         console.log("Image URL ", toShow);
         console.log("Image name ", imageName);
         return (
-            <ContainerDiv>
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center"
-                    }}
-                >
-                    <FieldDiv
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            padding: "0"
-                        }}
-                    >
-                        <FieldLabel>FILENAME</FieldLabel>
-                        <TextField
-                            disabled={true}
-                            value={this.state.imageName}
-                            className={classes.imageNameTextField}
-                            fullWidth={true}
-                            variant="outlined"
-                            input={
-                                <OutlinedInput
-                                    style={{
-                                        height: 38
-                                    }}
-                                />
-                            }
-                        />
-                    </FieldDiv>
+            <React.Fragment>
+                <ContainerDiv>
                     <div
                         style={{
-                            width: "60%",
-                            //   height: "80%",
+                            width: "100%",
                             display: "flex",
-                            paddingLeft: 10,
                             alignItems: "center"
                         }}
                     >
-                        <Button
-                            variant="outlined"
-                            className={classes.removeImageButton}
-                            fullWidth={true}
-                            disabled={
-                                !Boolean(imageName) &&
-                                Boolean(imageName.length === 0)
-                            }
-                            onClick={this.openDialogImage}
-                        >
-                            REMOVE EXISTING
-                        </Button>
-                    </div>
-                </div>
-                <div
-                    style={{
-                        width: "100%",
-                        display: "flex",
-                        height: "45%",
-                        marginTop: "35px"
-                    }}
-                >
-                    <div style={{ width: "60%", height: "100%" }}>
-                        <Dropzone
-                            accept="image/*"
-                            ref={this.dropZoneRef}
-                            disableClick={true}
+                        <div
                             style={{
-                                color: "rgb(123,123,123)",
-                                fontSize: "0.8em",
-                                position: "relative",
                                 width: "100%",
-                                backgroundColor: "rgb(221, 221, 221)",
-                                height: "90%",
                                 display: "flex",
                                 flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                backgroundImage: `${toShow}`,
-                                backgroundPosition: "center",
-                                backgroundRepeat: "no-repeat",
-                                backgroundSize: "contain"
+                                padding: "0"
                             }}
-                            onDrop={this.onDrop.bind(this)}
                         >
-                            {!Boolean(this.state.file) && (
-                                <div>DRAG & DROP HERE</div>
-                            )}
-                        </Dropzone>
+                            <FieldLabel>FILENAME</FieldLabel>
+                            <TextField
+                                disabled={true}
+                                value={imageName}
+                                className={classes.imageNameTextField}
+                                fullWidth={true}
+                                variant="outlined"
+                                input={
+                                    <OutlinedInput
+                                        style={{
+                                            height: 38
+                                        }}
+                                    />
+                                }
+                            />
+                        </div>
+                        <div
+                            style={{
+                                width: "60%",
+                                //   height: "80%",
+                                display: "flex",
+                                paddingLeft: 10,
+                                alignItems: "center"
+                            }}
+                        >
+                            <Button
+                                variant="outlined"
+                                className={classes.removeImageButton}
+                                fullWidth={true}
+                                disabled={
+                                    !Boolean(imageName) &&
+                                    Boolean(imageName.length === 0)
+                                }
+                                onClick={this.openDialogImage}
+                            >
+                                REMOVE EXISTING
+                            </Button>
+                        </div>
                     </div>
                     <div
                         style={{
-                            width: "38%",
-                            height: "90%",
-                            paddingLeft: 10,
+                            flex: 1,
+                            width: "100%",
                             display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flex-end"
+                            height: "100%"
                         }}
                     >
-                        <Button
-                            variant="outlined"
-                            className={classes.uploadFileButton}
-                            fullWidth={true}
-                            onClick={this.openFileBrowser}
-                        >
-                            UPLOAD FILE
-                        </Button>
-                        <BrowserMedia
-                            variant="outlined"
-                            color="default"
-                            buttonStyle={{
-                                backgroundColor: "white",
-                                fontSize: "10px"
+                        <div style={{ width: "60%", height: "100%" }}>
+                            <Dropzone
+                                accept="image/*"
+                                ref={this.dropZoneRef}
+                                disableClick={true}
+                                style={{
+                                    color: "rgb(123,123,123)",
+                                    fontSize: "0.8em",
+                                    position: "relative",
+                                    width: "100%",
+                                    backgroundColor: "rgb(221, 221, 221)",
+                                    height: "90%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    backgroundImage: `${toShow}`,
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                    backgroundSize: "contain"
+                                }}
+                                onDrop={this.onDrop.bind(this)}
+                            >
+                                {Boolean(toShow === "none") && (
+                                    <div>DRAG & DROP HERE</div>
+                                )}
+                            </Dropzone>
+                        </div>
+                        <div
+                            style={{
+                                width: "38%",
+                                height: "90%",
+                                paddingLeft: 10,
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "flex-end"
                             }}
-                            fullWidth={true}
-                            multipleSelect={false}
-                            updateImageSelection={this.mediaSelectImage}
-                            clientId={this.props.clientId}
-                        />
+                        >
+                            <Button
+                                variant="outlined"
+                                className={classes.uploadFileButton}
+                                fullWidth={true}
+                                onClick={this.openFileBrowser}
+                            >
+                                UPLOAD FILE
+                            </Button>
+                            <BrowserMedia
+                                variant="outlined"
+                                color="default"
+                                buttonStyle={{
+                                    backgroundColor: "white",
+                                    fontSize: "10px"
+                                }}
+                                fullWidth={true}
+                                multipleSelect={false}
+                                updateImageSelection={this.mediaSelectImage}
+                                clientId={this.props.clientId}
+                            />
+                        </div>
                     </div>
-                </div>
+                </ContainerDiv>
                 <Dialog
                     open={this.state.openDialog}
                     TransitionComponent={SlideUpTransition}
@@ -312,7 +369,7 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </ContainerDiv>
+            </React.Fragment>
         );
     }
 }
@@ -320,8 +377,12 @@ class ImageUploaderWithMediaLibrary extends React.Component {
 ImageUploaderWithMediaLibrary.propTypes = {
     clientId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         .isRequired,
-    onRef: PropTypes.func.isRequired,
+    usingRef: PropTypes.bool.isRequired,
+    onRef: PropTypes.func,
     previewUrl: PropTypes.string,
-    previewName: PropTypes.string
+    previewName: PropTypes.string,
+    fieldName: PropTypes.string,
+    setFieldValue: PropTypes.func,
+    value: PropTypes.object
 };
 export default withStyles(styles)(ImageUploaderWithMediaLibrary);

@@ -5,7 +5,8 @@ import {
     getClientFromUser,
     getAllClients,
     getClientImageById,
-    getNewCreatedClientId
+    getNewCreatedClientId,
+    CLIENT_JBG
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import {
@@ -82,5 +83,6 @@ export {
     getArticleListFromPublication,
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
-    getJustBrilliantGuideLayoutFamilyDefaults
+    getJustBrilliantGuideLayoutFamilyDefaults,
+    CLIENT_JBG
 };

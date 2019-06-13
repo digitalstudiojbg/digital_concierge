@@ -9,7 +9,8 @@ import {
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
     getArticleListFromPublication,
-    getJustBrilliantGuideLayoutFamilyDefaults
+    getJustBrilliantGuideLayoutFamilyDefaults,
+    CLIENT_JBG
 } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import TabLayout from "../common/TabLayout";
@@ -184,22 +185,24 @@ const EditExistingArticle = ({ match }) => {
                                                                     data
                                                                         .jbg_template
                                                                         .id,
-                                                                headerMediumId:
-                                                                    data
-                                                                        .header_image
-                                                                        .id,
-                                                                header_preview:
-                                                                    data
-                                                                        .header_image
-                                                                        .path,
-                                                                featureMediumId:
-                                                                    data
-                                                                        .feature_image
-                                                                        .id,
-                                                                feature_preview:
-                                                                    data
-                                                                        .feature_image
-                                                                        .path,
+                                                                headerImage: Boolean(
+                                                                    data.header_image
+                                                                )
+                                                                    ? {
+                                                                          ...data.header_image,
+                                                                          uploaded: true,
+                                                                          changed: false
+                                                                      }
+                                                                    : null,
+                                                                featureImage: Boolean(
+                                                                    data.featureImage
+                                                                )
+                                                                    ? {
+                                                                          ...data.feature_image,
+                                                                          uploaded: true,
+                                                                          changed: false
+                                                                      }
+                                                                    : null,
                                                                 name: data.name,
                                                                 introductionText:
                                                                     data.introductionText,
@@ -267,33 +270,70 @@ const EditExistingArticle = ({ match }) => {
                                                                         );
 
                                                                         return (
-                                                                            <TabbedPageSingleForm
-                                                                                title="Editorial Article"
-                                                                                data={
-                                                                                    initialValues
+                                                                            <Query
+                                                                                query={
+                                                                                    CLIENT_JBG
                                                                                 }
-                                                                                exitUrl={GUIDE_MAIN_URL.replace(
-                                                                                    ":pub_id",
-                                                                                    pub_id
-                                                                                )}
-                                                                                cancelUrl={GUIDE_MAIN_URL.replace(
-                                                                                    ":pub_id",
-                                                                                    pub_id
-                                                                                )}
-                                                                                tabs={
-                                                                                    tabs
-                                                                                }
-                                                                                tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                                                                                onSubmit={
-                                                                                    onSubmit
-                                                                                }
-                                                                                otherProps={{
-                                                                                    has_data: true,
-                                                                                    layoutFamilies: jbgLayoutFamilies,
-                                                                                    templates: jbgTemplates,
-                                                                                    defaultFamilyLayouts
+                                                                            >
+                                                                                {({
+                                                                                    loading: loadingJBG,
+                                                                                    error: errorJBG,
+                                                                                    data: {
+                                                                                        clientJBG
+                                                                                    }
+                                                                                }) => {
+                                                                                    if (
+                                                                                        loadingJBG
+                                                                                    )
+                                                                                        return (
+                                                                                            <Loading
+                                                                                                loadingData
+                                                                                            />
+                                                                                        );
+                                                                                    if (
+                                                                                        errorJBG
+                                                                                    )
+                                                                                        return (
+                                                                                            <React.Fragment>
+                                                                                                Error!{" "}
+                                                                                                {
+                                                                                                    errorJBG.message
+                                                                                                }
+                                                                                            </React.Fragment>
+                                                                                        );
+                                                                                    return (
+                                                                                        <TabbedPageSingleForm
+                                                                                            title="Editorial Article"
+                                                                                            data={
+                                                                                                initialValues
+                                                                                            }
+                                                                                            exitUrl={GUIDE_MAIN_URL.replace(
+                                                                                                ":pub_id",
+                                                                                                pub_id
+                                                                                            )}
+                                                                                            cancelUrl={GUIDE_MAIN_URL.replace(
+                                                                                                ":pub_id",
+                                                                                                pub_id
+                                                                                            )}
+                                                                                            tabs={
+                                                                                                tabs
+                                                                                            }
+                                                                                            tooltipText="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                                                                                            onSubmit={
+                                                                                                onSubmit
+                                                                                            }
+                                                                                            otherProps={{
+                                                                                                has_data: true,
+                                                                                                layoutFamilies: jbgLayoutFamilies,
+                                                                                                templates: jbgTemplates,
+                                                                                                defaultFamilyLayouts,
+                                                                                                clientId:
+                                                                                                    clientJBG.id
+                                                                                            }}
+                                                                                        />
+                                                                                    );
                                                                                 }}
-                                                                            />
+                                                                            </Query>
                                                                         );
                                                                     }}
                                                                 </Query>
