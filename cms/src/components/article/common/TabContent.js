@@ -4,16 +4,16 @@ import {
     ContainerDiv,
     SectionDiv,
     SectionTitleDiv,
-    FieldContainerDiv,
     FieldDiv
 } from "./commonStyle";
-import { renderTextField } from "./fieldRenderer";
+import { renderTextField, renderEditorField } from "./fieldRenderer";
 
 class TabContent extends React.Component {
     render() {
         const { formikProps, otherProps } = this.props;
-        const { values, setFieldValue } = formikProps || {};
-        const { headerImage, featureImage } = values || {};
+        const { values, setFieldValue, errors } = formikProps || {};
+        const { headerImage, featureImage, introductionText, description } =
+            values || {};
         const { clientId } = otherProps;
         return (
             <ContainerDiv>
@@ -67,7 +67,40 @@ class TabContent extends React.Component {
                     flexDirection="column"
                     paddingRight="10px"
                 >
-                    INTRODUCTION AND ARTICLE TEXT
+                    <div
+                        style={{
+                            flexBasis: "45%",
+                            width: "70%",
+                            height: "100%",
+                            marginBottom: 30
+                        }}
+                    >
+                        <SectionTitleDiv>Introduction Text</SectionTitleDiv>
+                        {renderEditorField(
+                            "introductionText",
+                            false,
+                            introductionText,
+                            errors.introductionText,
+                            setFieldValue
+                        )}
+                    </div>
+                    <div
+                        style={{
+                            flexBasis: "45%",
+                            width: "70%",
+                            height: "100%",
+                            marginBottom: 30
+                        }}
+                    >
+                        <SectionTitleDiv>Article Text</SectionTitleDiv>
+                        {renderEditorField(
+                            "description",
+                            false,
+                            description,
+                            errors.description,
+                            setFieldValue
+                        )}
+                    </div>
                 </SectionDiv>
             </ContainerDiv>
         );
