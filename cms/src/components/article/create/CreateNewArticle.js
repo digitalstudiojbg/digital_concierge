@@ -1,6 +1,10 @@
 import React from "react";
 import TabbedPageSingleForm from "../../../utils/TabbedPageSingleForm";
-import { WELCOME_URL, renderTabletMockUp } from "../../../utils/Constants";
+import {
+    WELCOME_URL,
+    renderTabletMockUp,
+    GUIDE_MAIN_URL
+} from "../../../utils/Constants";
 import { Redirect } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
 import { CREATE_ARTICLE } from "../../../data/mutation";
@@ -334,14 +338,14 @@ const CreateNewArticle = ({ match }) => {
                                                                                     clientId:
                                                                                         clientJBG.id
                                                                                 }}
-                                                                                exitUrl={
-                                                                                    WELCOME_URL +
-                                                                                    "/guide"
-                                                                                }
-                                                                                cancelUrl={
-                                                                                    WELCOME_URL +
-                                                                                    "/guide"
-                                                                                }
+                                                                                exitUrl={GUIDE_MAIN_URL.replace(
+                                                                                    ":pub_id",
+                                                                                    pub_id
+                                                                                )}
+                                                                                cancelUrl={GUIDE_MAIN_URL.replace(
+                                                                                    ":pub_id",
+                                                                                    pub_id
+                                                                                )}
                                                                                 tabs={
                                                                                     tabs
                                                                                 }

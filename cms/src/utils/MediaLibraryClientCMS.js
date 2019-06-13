@@ -773,10 +773,7 @@ class MediaLibrary extends React.Component {
                                                             <span>
                                                                 {totalImages %
                                                                     limit >
-                                                                    0 &&
-                                                                pages < 3
-                                                                    ? pages + 1
-                                                                    : pages}
+                                                                    0 && pages}
                                                             </span>
                                                         </PaginationSection>
                                                     </a>

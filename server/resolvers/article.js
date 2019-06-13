@@ -239,6 +239,16 @@ export default {
                 clientId
             );
 
+            //Find the biggest order article
+            const biggestOrderArticle = await db.article.findOne({
+                where: { justBrilliantGuideId },
+                order: [["order", "DESC"]]
+            });
+
+            if (!biggestOrderArticle) {
+                throw new UserInputError(`Cannot find biggest order article.`);
+            }
+
             const tempArticle = {
                 name,
                 ...(Boolean(description) && { description }),
@@ -253,7 +263,8 @@ export default {
                 ...(Boolean(featureImage) &&
                     Boolean(featureImage.id) && {
                         featureMediumId: featureImage.id
-                    })
+                    }),
+                order: biggestOrderArticle.order + 1
             };
 
             let created_article = db.article.build({ ...tempArticle });

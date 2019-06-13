@@ -80,13 +80,15 @@ class TabbedPageSingleForm extends React.Component {
     };
 
     submitAction = () => {
-        const { submitForm } = this.props.formikProps;
-        Boolean(submitForm) && submitForm();
+        const { submitForm, errors } = this.props.formikProps;
+        isEmpty(errors) && Boolean(submitForm) && submitForm();
     };
 
     submitExitAction = () => {
-        const { submitForm } = this.props.formikProps;
-        Boolean(submitForm) && submitForm().then(() => this.exitAction());
+        const { submitForm, errors } = this.props.formikProps;
+        isEmpty(errors) &&
+            Boolean(submitForm) &&
+            submitForm().then(() => this.exitAction());
     };
 
     submitCancelAction = () => {
