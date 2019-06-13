@@ -22,7 +22,13 @@ class TabContent extends React.Component {
                     flexDirection="column"
                     paddingRight="30px"
                 >
-                    <div style={{ width: "70%", marginBottom: 20 }}>
+                    <div
+                        style={{
+                            width: "70%",
+                            marginBottom: 20,
+                            flexBasis: "10%"
+                        }}
+                    >
                         <SectionTitleDiv>Article Name</SectionTitleDiv>
                         <FieldDiv flexBasis="70%" marginRight="0px">
                             {renderTextField("name", "", true)}
@@ -30,7 +36,7 @@ class TabContent extends React.Component {
                     </div>
                     <div
                         style={{
-                            flexBasis: "45%",
+                            flexBasis: "40%",
                             width: "70%",
                             height: "100%",
                             marginBottom: 30
@@ -47,7 +53,7 @@ class TabContent extends React.Component {
                     </div>
                     <div
                         style={{
-                            flexBasis: "45%",
+                            flexBasis: "40%",
                             width: "70%",
                             height: "100%"
                         }}
