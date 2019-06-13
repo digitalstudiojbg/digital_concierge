@@ -51,7 +51,6 @@ export default gql`
         name: String!
         description: String
         introductionText: String
-        justBrilliantGuideId: ID!
         header_image_upload: Upload
         headerMediumId: ID!
         feature_image_upload: Upload

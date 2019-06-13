@@ -14,6 +14,8 @@ import {
 import Loading from "../../loading/Loading";
 import TabLayout from "../common/TabLayout";
 import TabContent from "../common/TabContent";
+import { sanitize } from "dompurify";
+import { isEmpty } from "lodash";
 
 const CreateNewArticle = ({ match }) => {
     const { params } = match || {};
@@ -52,7 +54,7 @@ const CreateNewArticle = ({ match }) => {
                     ]}
                 >
                     {(
-                        action,
+                        createArticle,
                         { loading: loadingMutation, error: errorMutation }
                     ) => {
                         if (loadingMutation) return <Loading loadingData />;
@@ -122,7 +124,83 @@ const CreateNewArticle = ({ match }) => {
                                                 ) => {
                                                     console.log(values);
                                                     console.log(formikBag);
-                                                    //TODO: Do action here
+                                                    const {
+                                                        name,
+                                                        description,
+                                                        introductionText,
+                                                        justBrilliantGuideId,
+                                                        headerImage,
+                                                        featureImage,
+                                                        jbgTemplateId,
+                                                        jbgLayoutId
+                                                    } = values;
+                                                    const header_image_upload =
+                                                        !isEmpty(headerImage) &&
+                                                        !headerImage.uploaded
+                                                            ? headerImage
+                                                            : null;
+                                                    const headerMediumId =
+                                                        !isEmpty(headerImage) &&
+                                                        headerImage.uploaded &&
+                                                        headerImage.changed &&
+                                                        headerImage.id
+                                                            ? headerImage.id
+                                                            : null;
+
+                                                    const feature_image_upload =
+                                                        !isEmpty(
+                                                            featureImage
+                                                        ) &&
+                                                        !featureImage.uploaded
+                                                            ? featureImage
+                                                            : null;
+                                                    const featureMediumId =
+                                                        !isEmpty(
+                                                            featureImage
+                                                        ) &&
+                                                        featureImage.uploaded &&
+                                                        featureImage.changed &&
+                                                        featureImage.id
+                                                            ? featureImage.id
+                                                            : null;
+
+                                                    const toSubmit = {
+                                                        name,
+                                                        description: sanitize(
+                                                            description
+                                                        ),
+                                                        introductionText: sanitize(
+                                                            introductionText
+                                                        ),
+                                                        justBrilliantGuideId,
+                                                        jbgTemplateId,
+                                                        jbgLayoutId,
+                                                        ...(Boolean(
+                                                            header_image_upload
+                                                        ) && {
+                                                            header_image_upload
+                                                        }),
+                                                        ...(Boolean(
+                                                            headerMediumId
+                                                        ) && {
+                                                            headerMediumId
+                                                        }),
+                                                        ...(Boolean(
+                                                            feature_image_upload
+                                                        ) && {
+                                                            feature_image_upload
+                                                        }),
+                                                        ...(Boolean(
+                                                            featureMediumId
+                                                        ) && {
+                                                            featureMediumId
+                                                        })
+                                                    };
+
+                                                    console.log(
+                                                        "To submit ",
+                                                        toSubmit
+                                                    );
                                                 };
 
                                                 return (
