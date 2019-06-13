@@ -1,6 +1,6 @@
 import React from "react";
 import TabbedPageSingleForm from "../../../utils/TabbedPageSingleForm";
-import { WELCOME_URL } from "../../../utils/Constants";
+import { WELCOME_URL, renderTabletMockUp } from "../../../utils/Constants";
 import { Redirect } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
 import { CREATE_ARTICLE } from "../../../data/mutation";
@@ -26,7 +26,11 @@ const CreateNewArticle = ({ match }) => {
             name: "Preview",
             withButtons: true,
             withCancel: true,
-            component: () => <div>Preview</div>
+            component: () => (
+                <div style={{ width: "70%", height: "100%" }}>
+                    {renderTabletMockUp()}
+                </div>
+            )
         },
         {
             name: "Layout",

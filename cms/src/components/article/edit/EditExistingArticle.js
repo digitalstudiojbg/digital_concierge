@@ -1,6 +1,10 @@
 import React from "react";
 import TabbedPageSingleForm from "../../../utils/TabbedPageSingleForm";
-import { GUIDE_MAIN_URL, WELCOME_URL } from "../../../utils/Constants";
+import {
+    GUIDE_MAIN_URL,
+    WELCOME_URL,
+    renderTabletMockUp
+} from "../../../utils/Constants";
 import { Redirect } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
 import { EDIT_ARTICLE } from "../../../data/mutation";
@@ -27,7 +31,11 @@ const EditExistingArticle = ({ match }) => {
             name: "Preview",
             withButtons: true,
             withCancel: true,
-            component: () => <div>Preview</div>
+            component: () => (
+                <div style={{ width: "70%", height: "100%" }}>
+                    {renderTabletMockUp()}
+                </div>
+            )
         },
         {
             name: "Layout",
