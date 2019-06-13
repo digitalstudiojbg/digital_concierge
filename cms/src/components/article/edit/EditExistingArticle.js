@@ -174,11 +174,11 @@ const EditExistingArticle = ({ match }) => {
                                                                     name,
                                                                     description,
                                                                     introductionText,
-                                                                    justBrilliantGuideId,
                                                                     headerImage,
                                                                     featureImage,
                                                                     jbgTemplateId,
-                                                                    jbgLayoutId
+                                                                    jbgLayoutId,
+                                                                    clientId
                                                                 } = values;
                                                                 const header_image_upload =
                                                                     !isEmpty(
@@ -244,54 +244,14 @@ const EditExistingArticle = ({ match }) => {
                                                                         featureMediumId
                                                                     ) && {
                                                                         featureMediumId
-                                                                    })
+                                                                    }),
+                                                                    clientId
                                                                 };
 
                                                                 console.log(
                                                                     "To submit ",
                                                                     toSubmit
                                                                 );
-                                                            };
-
-                                                            const initialValues = {
-                                                                id: article_id,
-                                                                justBrilliantGuideId: pub_id,
-                                                                jbgLayoutId:
-                                                                    data
-                                                                        .jbg_layout
-                                                                        .id,
-                                                                jbgFamilyLayoutId:
-                                                                    data
-                                                                        .jbg_layout
-                                                                        .jbg_layout_family
-                                                                        .id,
-                                                                jbgTemplateId:
-                                                                    data
-                                                                        .jbg_template
-                                                                        .id,
-                                                                headerImage: Boolean(
-                                                                    data.header_image
-                                                                )
-                                                                    ? {
-                                                                          ...data.header_image,
-                                                                          uploaded: true,
-                                                                          changed: false
-                                                                      }
-                                                                    : null,
-                                                                featureImage: Boolean(
-                                                                    data.featureImage
-                                                                )
-                                                                    ? {
-                                                                          ...data.feature_image,
-                                                                          uploaded: true,
-                                                                          changed: false
-                                                                      }
-                                                                    : null,
-                                                                name: data.name,
-                                                                introductionText:
-                                                                    data.introductionText,
-                                                                description:
-                                                                    data.description
                                                             };
 
                                                             return (
@@ -385,6 +345,50 @@ const EditExistingArticle = ({ match }) => {
                                                                                                 }
                                                                                             </React.Fragment>
                                                                                         );
+
+                                                                                    const initialValues = {
+                                                                                        id: article_id,
+                                                                                        justBrilliantGuideId: pub_id,
+                                                                                        jbgLayoutId:
+                                                                                            data
+                                                                                                .jbg_layout
+                                                                                                .id,
+                                                                                        jbgFamilyLayoutId:
+                                                                                            data
+                                                                                                .jbg_layout
+                                                                                                .jbg_layout_family
+                                                                                                .id,
+                                                                                        jbgTemplateId:
+                                                                                            data
+                                                                                                .jbg_template
+                                                                                                .id,
+                                                                                        headerImage: Boolean(
+                                                                                            data.header_image
+                                                                                        )
+                                                                                            ? {
+                                                                                                  ...data.header_image,
+                                                                                                  uploaded: true,
+                                                                                                  changed: false
+                                                                                              }
+                                                                                            : null,
+                                                                                        featureImage: Boolean(
+                                                                                            data.featureImage
+                                                                                        )
+                                                                                            ? {
+                                                                                                  ...data.feature_image,
+                                                                                                  uploaded: true,
+                                                                                                  changed: false
+                                                                                              }
+                                                                                            : null,
+                                                                                        name:
+                                                                                            data.name,
+                                                                                        introductionText:
+                                                                                            data.introductionText,
+                                                                                        description:
+                                                                                            data.description,
+                                                                                        clientId:
+                                                                                            clientJBG.id
+                                                                                    };
                                                                                     return (
                                                                                         <TabbedPageSingleForm
                                                                                             title="Editorial Article"

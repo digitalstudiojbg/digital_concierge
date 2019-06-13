@@ -133,7 +133,8 @@ const CreateNewArticle = ({ match }) => {
                                                         headerImage,
                                                         featureImage,
                                                         jbgTemplateId,
-                                                        jbgLayoutId
+                                                        jbgLayoutId,
+                                                        clientId
                                                     } = values;
                                                     const header_image_upload =
                                                         !isEmpty(headerImage) &&
@@ -195,7 +196,8 @@ const CreateNewArticle = ({ match }) => {
                                                             featureMediumId
                                                         ) && {
                                                             featureMediumId
-                                                        })
+                                                        }),
+                                                        clientId
                                                     };
 
                                                     console.log(
@@ -307,7 +309,9 @@ const CreateNewArticle = ({ match }) => {
                                                                                     introductionText:
                                                                                         "",
                                                                                     description:
-                                                                                        ""
+                                                                                        "",
+                                                                                    clientId:
+                                                                                        clientJBG.id
                                                                                 }}
                                                                                 exitUrl={
                                                                                     WELCOME_URL +

@@ -44,6 +44,7 @@ export default gql`
         featureMediumId: ID
         jbgTemplateId: ID!
         jbgLayoutId: ID!
+        clientId: ID!
     }
 
     input UpdateArticleInput {
@@ -57,5 +58,6 @@ export default gql`
         featureMediumId: ID
         jbgTemplateId: ID!
         jbgLayoutId: ID!
+        clientId: ID!
     }
 `;
