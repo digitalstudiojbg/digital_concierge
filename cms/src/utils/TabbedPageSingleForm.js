@@ -247,6 +247,9 @@ const TabbedPageSingleFormComponent = withRouter(
 
 const TabbedPageSingleFormHOC = props => (
     <Formik
+        {...!isEmpty(props.validationSchema) && {
+            validationSchema: props.validationSchema
+        }}
         enableReinitialize={true}
         initialValues={{ ...props.data }}
         onSubmit={props.onSubmit}

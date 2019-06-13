@@ -17,6 +17,7 @@ import TabLayout from "../common/TabLayout";
 import TabContent from "../common/TabContent";
 import { sanitize } from "dompurify";
 import { isEmpty } from "lodash";
+import { editArticleSchema } from "../common/schema";
 
 const EditExistingArticle = ({ match }) => {
     const { params } = match || {};
@@ -413,6 +414,9 @@ const EditExistingArticle = ({ match }) => {
                                                                                                 clientId:
                                                                                                     clientJBG.id
                                                                                             }}
+                                                                                            validationSchema={
+                                                                                                editArticleSchema
+                                                                                            }
                                                                                         />
                                                                                     );
                                                                                 }}

@@ -16,6 +16,7 @@ import TabLayout from "../common/TabLayout";
 import TabContent from "../common/TabContent";
 import { sanitize } from "dompurify";
 import { isEmpty } from "lodash";
+import { createArticleSchema } from "../common/schema";
 
 const CreateNewArticle = ({ match }) => {
     const { params } = match || {};
@@ -331,6 +332,9 @@ const CreateNewArticle = ({ match }) => {
                                                                                     clientId:
                                                                                         clientJBG.id
                                                                                 }}
+                                                                                validationSchema={
+                                                                                    createArticleSchema
+                                                                                }
                                                                             />
                                                                         );
                                                                     }}
