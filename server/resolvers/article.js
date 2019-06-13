@@ -1,6 +1,22 @@
 import db from "../models";
 import { UserInputError } from "apollo-server-express";
-import { handleUpdateActionActivityLog } from "../utils/constant";
+import {
+    handleUpdateActionActivityLog,
+    processUploadMedia,
+    handleCreateActionActivityLog
+} from "../utils/constant";
+
+const processArticleImage = async (uploadFile, mediumId, clientId) => {
+    let image = null;
+    //Check if image update
+    if (uploadFile) {
+        image = await processUploadMedia(uploadFile, clientId, "image");
+    } else if (media_id) {
+        //If Image was changed from media library
+        image = await db.media.findByPk(mediumId);
+    }
+    return image;
+};
 
 export default {
     Query: {
@@ -190,6 +206,140 @@ export default {
                     );
                 }
             }
+
+            return await db.article.findByPk(id);
+        },
+        createArticle: async (
+            _root,
+            {
+                input: {
+                    name,
+                    description,
+                    introductionText,
+                    justBrilliantGuideId,
+                    header_image_upload,
+                    headerMediumId,
+                    feature_image_upload,
+                    featureMediumId,
+                    jbgTemplateId,
+                    jbgLayoutId,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const headerImage = await processArticleImage(
+                header_image_upload,
+                headerMediumId,
+                clientId
+            );
+            const featureImage = await processArticleImage(
+                feature_image_upload,
+                featureMediumId,
+                clientId
+            );
+
+            const tempArticle = {
+                name,
+                ...(Boolean(description) && { description }),
+                ...(Boolean(introductionText) && { introductionText }),
+                justBrilliantGuideId,
+                jbgTemplateId,
+                jbgLayoutId,
+                ...(Boolean(headerImage) &&
+                    Boolean(headerImage.id) && {
+                        headerMediumId: headerImage.id
+                    }),
+                ...(Boolean(featureImage) &&
+                    Boolean(featureImage.id) && {
+                        featureMediumId: featureImage.id
+                    })
+            };
+
+            let created_article = db.article.build({ ...tempArticle });
+            try {
+                await created_article.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Article ${name} failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleCreateActionActivityLog(
+                created_article,
+                tempArticle,
+                user,
+                clientIp
+            );
+
+            return created_article;
+        },
+        editArticle: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    description,
+                    introductionText,
+                    header_image_upload,
+                    headerMediumId,
+                    feature_image_upload,
+                    featureMediumId,
+                    jbgTemplateId,
+                    jbgLayoutId,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const article = await db.article.findByPk(id);
+            if (!article) {
+                throw new UserInputError(
+                    `Error! Article ID ${id} does not exist`
+                );
+            }
+
+            const headerImage = await processArticleImage(
+                header_image_upload,
+                headerMediumId,
+                clientId
+            );
+            const featureImage = await processArticleImage(
+                feature_image_upload,
+                featureMediumId,
+                clientId
+            );
+
+            const tempArticle = {
+                name,
+                ...(Boolean(description) && { description }),
+                ...(Boolean(introductionText) && { introductionText }),
+                jbgTemplateId,
+                jbgLayoutId,
+                ...(Boolean(headerImage) &&
+                    Boolean(headerImage.id) && {
+                        headerMediumId: headerImage.id
+                    }),
+                ...(Boolean(featureImage) &&
+                    Boolean(featureImage.id) && {
+                        featureMediumId: featureImage.id
+                    })
+            };
+
+            try {
+                await db.article.update({ ...tempArticle }, { where: { id } });
+            } catch (error) {
+                throw new UserInputError(
+                    `Update Article ID: ${id} with Article name: ${name} failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleUpdateActionActivityLog(article, tempArticle, user, clientIp);
 
             return await db.article.findByPk(id);
         }
