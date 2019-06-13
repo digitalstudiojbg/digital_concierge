@@ -75,6 +75,9 @@ class ArticleTableList extends React.Component {
         super(props);
         this.handleOpenMenu = this.handleOpenMenu.bind(this);
         this.handleCloseMenu = this.handleCloseMenu.bind(this);
+        this.navigateToCreateNewArticlePage = this.navigateToCreateNewArticlePage.bind(
+            this
+        );
     }
     state = {
         anchorEl: null
@@ -136,6 +139,17 @@ class ArticleTableList extends React.Component {
         const { history, pub_id } = this.props;
         Boolean(history) &&
             history.push(ARTICLE_CREATE_NEW_URL.replace(":pub_id", pub_id));
+    };
+
+    handleClickRow = (_event, { id: article_id }) => {
+        const { history, pub_id } = this.props;
+        Boolean(history) &&
+            history.push(
+                ARTICLE_MAIN_URL.replace(":article_id", article_id).replace(
+                    ":pub_id",
+                    pub_id
+                )
+            );
     };
 
     render() {
@@ -228,6 +242,7 @@ class ArticleTableList extends React.Component {
             <ContainerDiv>
                 <MaterialTable
                     data={this.modifyArticleList()}
+                    onRowClick={this.handleClickRow}
                     columns={[
                         {
                             title: "VISIBLE",
