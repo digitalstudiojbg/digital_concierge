@@ -53,6 +53,7 @@ const routes = [
     },
     {
         path: SYSTEM_INDEX_URL,
+        exact: true,
         component: ({ match }) => (
             <Redirect
                 to={SYSTEM_CMS_INDEX_URL.replace(
@@ -139,6 +140,7 @@ class App extends Component {
                                     <PrivateRoute
                                         key={index}
                                         path={route.path}
+                                        exact={route.exact}
                                         component={route.component}
                                     />
                                 ))}

@@ -26,7 +26,6 @@ import MessageIcon from "@material-ui/icons/MessageOutlined";
 import EmailIcon from "@material-ui/icons/EmailOutlined";
 import NotificationIcon from "@material-ui/icons/NotificationsOutlined";
 import { logout } from "../../auth/auth";
-import ROUTES from "../../utils/routes";
 
 const styles = theme => ({
     button: {
@@ -122,7 +121,7 @@ class Header extends Component {
         // const userDivWidth = availableWidth * 0.35;
 
         const { has_tablet = false, has_touchscreen = false, name = "" } =
-            user.venue || {};
+        user.venue || {};
 
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
@@ -130,7 +129,6 @@ class Header extends Component {
         return (
             <ContainerDiv>
                 {match.url === URL_WELCOME ||
-                match.url === ROUTES.guests ||
                 match.url === CREATE_NEW_CLIENT ? (
                     <WelcomeDiv>PLATYPUS</WelcomeDiv>
                 ) : (

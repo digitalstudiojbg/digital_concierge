@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Button, Tab } from "@material-ui/core/index";
+import { Button, Tab } from "@material-ui/core";
 
 export const GuestsNavButton = styled(Button)`
     && { 

@@ -10,7 +10,6 @@ const CheckPhone = ({ index, name }) => (
             <CheckTextField
                 {...field}
                 label={`CONTACT NUMBER #${index + 1}`}
-                placeholder="+61 0425 872 504"
             />
         )}
     />

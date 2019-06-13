@@ -5,7 +5,7 @@ import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import PrivateRoute from "../auth/PrivateRoute";
-import { Redirect } from "react-router-dom";
+import { Redirect, Switch } from "react-router-dom";
 import {
     WELCOME_URL,
     SYSTEM_CMS_INDEX_URL,
@@ -25,7 +25,9 @@ import {
     SYSTEM_MODIFY_START_URL,
     SYSTEM_MODIFY_HOME_URL
 } from "../../utils/Constants";
+import ROUTES from "../../utils/routes";
 
+const Guests = lazy(() => import("../guests"));
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
@@ -111,6 +113,24 @@ const CLIENT_ROUTES = [
 ];
 
 const SYSTEM_ROUTES = [
+    {
+        path: ROUTES.guests(),
+        sidebar: Sidebar,
+        header: Header,
+        main: Guests,
+        withProps: {},
+        exact: false,
+    },
+
+    {
+        path: SYSTEM_INDEX_URL,
+        exact: true,
+        sidebar: Sidebar,
+        header: Header,
+        main: TabletDashboard,
+        withProps: {}
+    },
+
     {
         path: SYSTEM_INDEX_URL,
         exact: true,
@@ -306,7 +326,9 @@ const Home = ({ match }) => {
                         console.log(data);
                         return (
                             <React.Fragment>
-                                {renderRoutes(routes)}
+                                <Switch>
+                                    {renderRoutes(routes)}
+                                </Switch>
                             </React.Fragment>
                         );
                     }}
@@ -355,7 +377,9 @@ const Home = ({ match }) => {
                                         //Except for JBG Users
                                         return (
                                             <React.Fragment>
-                                                {renderRoutes(routes)}
+                                                <Switch>
+                                                    {renderRoutes(routes)}
+                                                </Switch>
                                             </React.Fragment>
                                         );
                                     } else {

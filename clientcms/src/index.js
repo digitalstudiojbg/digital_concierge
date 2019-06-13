@@ -11,6 +11,9 @@ import { API_URL } from "./utils/Constants";
 // import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DayjsUtils from "@date-io/dayjs";
+import { SnackbarProvider } from "notistack";
 
 const authLink = setContext((_, { headers }) => {
     return {
@@ -71,9 +74,16 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
     <ApolloProvider client={client}>
-        <MuiThemeProvider theme={theme}>
-            <App />
-        </MuiThemeProvider>
+        <SnackbarProvider
+            maxSnack={3}
+            autoHideDuration={3000}
+        >
+            <MuiPickersUtilsProvider utils={DayjsUtils}>
+                <MuiThemeProvider theme={theme}>
+                    <App />
+                </MuiThemeProvider>
+            </MuiPickersUtilsProvider>
+        </SnackbarProvider>
     </ApolloProvider>,
     document.getElementById("root")
 );
