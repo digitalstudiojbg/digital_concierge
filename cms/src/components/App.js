@@ -18,15 +18,10 @@ import {
     SYSTEM_INDEX_URL
 } from "../utils/Constants";
 import "rc-color-picker/assets/index.css";
-import ROUTES from "../../../clientcms/src/utils/routes";
 
 const Home = lazy(() => import("./home/Home"));
 
 const routes = [
-    {
-        path: ROUTES.guests(),
-        component: Home,
-    },
     {
         path: WELCOME_URL,
         component: Home

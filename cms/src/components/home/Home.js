@@ -23,7 +23,6 @@ import {
     SYSTEM_CMS_LIBRARY,
 } from "../../utils/Constants";
 import Library from "./Library";
-import ROUTES from "../../../../clientcms/src/utils/routes";
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
 const TabletLandingPage = lazy(() => import("../tablet/TabletLandingPage"));
 const TabletSetting = lazy(() => import("../tablet/TabletSetting"));
@@ -63,13 +62,6 @@ const routes = [
     {
         path: WELCOME_URL,
         exact: true,
-        header: Header,
-        main: Welcome,
-        withProps: {}
-    },
-    {
-        path: ROUTES.guests(),
-        exact: false,
         header: Header,
         main: Welcome,
         withProps: {}
