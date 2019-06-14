@@ -210,8 +210,8 @@ class ImageUploaderWithMediaLibrary extends React.Component {
             ? this.imageNameWithRef()
             : this.imageNameWithoutRef();
 
-        console.log("Image URL ", toShow);
-        console.log("Image name ", imageName);
+        // console.log("Image URL ", toShow);
+        // console.log("Image name ", imageName);
         return (
             <React.Fragment>
                 <ContainerDiv>

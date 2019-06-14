@@ -54,7 +54,7 @@ const TabLayout = props => {
         }
     };
 
-    console.log("Tab layout props ", props);
+    // console.log("Tab layout props ", props);
     const { otherProps, formikProps } = props;
     const { templates = [], layoutFamilies = [] } = otherProps || {};
     const { errors = {}, values = {} } = formikProps || {};

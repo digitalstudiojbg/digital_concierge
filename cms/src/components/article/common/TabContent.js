@@ -78,7 +78,9 @@ class TabContent extends React.Component {
                             flexBasis: "45%",
                             width: "70%",
                             height: "100%",
-                            marginBottom: 30
+                            paddingBottom: 30,
+                            display: "flex",
+                            flexDirection: "column"
                         }}
                     >
                         <SectionTitleDiv>Introduction Text</SectionTitleDiv>
@@ -95,7 +97,9 @@ class TabContent extends React.Component {
                             flexBasis: "45%",
                             width: "70%",
                             height: "100%",
-                            marginBottom: 30
+                            paddingBottom: 30,
+                            display: "flex",
+                            flexDirection: "column"
                         }}
                     >
                         <SectionTitleDiv>Article Text</SectionTitleDiv>
