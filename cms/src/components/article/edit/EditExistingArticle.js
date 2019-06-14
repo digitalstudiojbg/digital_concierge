@@ -50,6 +50,7 @@ const EditExistingArticle = ({ match }) => {
             component: TabContent
         }
     ];
+    let formRef = null;
 
     return (
         <div style={{ flex: 1, height: "100%" }}>
@@ -177,6 +178,9 @@ const EditExistingArticle = ({ match }) => {
                                                                 console.log(
                                                                     formikBag
                                                                 );
+                                                                console.log(
+                                                                    formRef
+                                                                );
 
                                                                 const {
                                                                     setSubmitting
@@ -280,6 +284,13 @@ const EditExistingArticle = ({ match }) => {
                                                                     setSubmitting(
                                                                         false
                                                                     );
+                                                                    if (
+                                                                        formRef
+                                                                            .state
+                                                                            .exit
+                                                                    ) {
+                                                                        formRef.exitAction();
+                                                                    }
                                                                 });
                                                             };
 
@@ -449,6 +460,9 @@ const EditExistingArticle = ({ match }) => {
                                                                                             }}
                                                                                             validationSchema={
                                                                                                 editArticleSchema
+                                                                                            }
+                                                                                            onRef={ref =>
+                                                                                                (formRef = ref)
                                                                                             }
                                                                                         />
                                                                                     );

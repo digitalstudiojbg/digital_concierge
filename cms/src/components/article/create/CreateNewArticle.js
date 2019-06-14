@@ -3,7 +3,8 @@ import TabbedPageSingleForm from "../../../utils/TabbedPageSingleForm";
 import {
     WELCOME_URL,
     renderTabletMockUp,
-    GUIDE_MAIN_URL
+    GUIDE_MAIN_URL,
+    ARTICLE_MAIN_URL
 } from "../../../utils/Constants";
 import { Redirect } from "react-router-dom";
 import { Query, Mutation } from "react-apollo";
@@ -49,6 +50,7 @@ const CreateNewArticle = ({ match }) => {
             component: TabContent
         }
     ];
+    let formRef = null;
 
     return (
         <div style={{ flex: 1, height: "100%" }}>
@@ -133,6 +135,7 @@ const CreateNewArticle = ({ match }) => {
                                                 ) => {
                                                     console.log(values);
                                                     console.log(formikBag);
+                                                    console.log(formRef);
 
                                                     const {
                                                         setSubmitting
@@ -226,8 +229,31 @@ const CreateNewArticle = ({ match }) => {
                                                                 ...toSubmit
                                                             }
                                                         }
-                                                    }).then(() => {
+                                                    }).then(result => {
+                                                        const { data } =
+                                                            result || {};
+                                                        const {
+                                                            createArticle
+                                                        } = data || {};
+                                                        const {
+                                                            id: article_id
+                                                        } = createArticle || {};
                                                         setSubmitting(false);
+                                                        if (
+                                                            formRef.state.exit
+                                                        ) {
+                                                            formRef.exitAction();
+                                                        } else {
+                                                            formRef.props.history.push(
+                                                                ARTICLE_MAIN_URL.replace(
+                                                                    ":article_id",
+                                                                    article_id
+                                                                ).replace(
+                                                                    ":pub_id",
+                                                                    pub_id
+                                                                )
+                                                            );
+                                                        }
                                                     });
                                                 };
 
@@ -363,6 +389,9 @@ const CreateNewArticle = ({ match }) => {
                                                                                 }}
                                                                                 validationSchema={
                                                                                     createArticleSchema
+                                                                                }
+                                                                                onRef={ref =>
+                                                                                    (formRef = ref)
                                                                                 }
                                                                             />
                                                                         );

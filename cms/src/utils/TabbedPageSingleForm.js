@@ -72,7 +72,14 @@ TabContainer.propTypes = {
 class TabbedPageSingleForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { tab: 0 };
+        this.state = { tab: 0, exit: false };
+    }
+
+    componentDidMount() {
+        this.props.onRef && this.props.onRef(this);
+    }
+    componentWillUnmount() {
+        this.props.onRef && this.props.onRef(undefined);
     }
 
     handleChange = (_event, tab) => {
@@ -86,9 +93,9 @@ class TabbedPageSingleForm extends React.Component {
 
     submitExitAction = () => {
         const { submitForm, errors } = this.props.formikProps;
-        isEmpty(errors) &&
-            Boolean(submitForm) &&
-            submitForm().then(() => this.exitAction());
+        this.setState({ exit: true }, () => {
+            isEmpty(errors) && Boolean(submitForm) && submitForm();
+        });
     };
 
     submitCancelAction = () => {
@@ -244,7 +251,8 @@ TabbedPageSingleForm.propTypes = {
     tooltipFontSize: PropTypes.string,
     tooltipText: PropTypes.string,
     otherProps: PropTypes.object,
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onRef: PropTypes.func.isRequired
 };
 
 const TabbedPageSingleFormComponent = withRouter(
