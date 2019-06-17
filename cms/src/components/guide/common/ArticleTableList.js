@@ -259,7 +259,8 @@ class ArticleTableList extends React.Component {
                                     >
                                         <VisibilityOff />
                                     </IconButton>
-                                )
+                                ),
+                            disableClick: true
                         },
                         {
                             title: "ORDER",
@@ -289,7 +290,8 @@ class ArticleTableList extends React.Component {
                                         {order}
                                     </div>
                                 </div>
-                            )
+                            ),
+                            disableClick: true
                         },
                         { title: "ARTICLE TITLE", field: "article_name" },
                         { title: "TEMPLATE", field: "template_name" },
@@ -320,7 +322,8 @@ class ArticleTableList extends React.Component {
                                 >
                                     <MoreHoriz />
                                 </IconButton>
-                            )
+                            ),
+                            disableClick: true
                         }
                     ]}
                     options={{
