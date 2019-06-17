@@ -102,7 +102,7 @@ class App extends Component {
 
     render() {
         return (
-            <Query query={CLIENT_JBG}>
+            <Query query={CLIENT_JBG} fetchPolicy="network-only">
                 {({ loading, error, data }) => {
                     if (loading) return <Loading />;
                     if (
