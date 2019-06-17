@@ -20,10 +20,14 @@ import {
     ADVERTISER_MAIN_URL,
     ADVERTISER_CREATE_NEW_URL,
     ARTICLE_CREATE_NEW_URL,
-    ARTICLE_MAIN_URL
+    ARTICLE_MAIN_URL,
+    CLIENT_CMS_URL
 } from "../utils/Constants";
+import { Query } from "react-apollo";
 import "rc-color-picker/assets/index.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { CLIENT_JBG } from "../data/query";
+import { isEmpty } from "lodash";
 
 const Home = lazy(() => import("./home/Home"));
 
@@ -98,56 +102,74 @@ class App extends Component {
 
     render() {
         return (
-            <Router ref={router => (this.router = router)} basename={"cms"}>
-                <div
-                    style={{
-                        backgroundColor: "#F4F4F4",
-                        paddingBottom: "130px"
-                    }}
-                >
-                    <section>
-                        <div>
-                            <Route
-                                exact
-                                path="/"
-                                render={() => (
-                                    <React.Fragment>
-                                        {isLoggedIn() ? (
-                                            <Redirect
-                                                to={`${WELCOME_URL}/dashboard`}
-                                            />
-                                        ) : (
-                                            <Login
-                                                onLogin={this.handleLogin.bind(
-                                                    this
-                                                )}
-                                            />
-                                        )}
-                                    </React.Fragment>
-                                )}
-                            />
-                            <Route
-                                path={LOGIN_URL}
-                                render={() => (
-                                    <Login
-                                        onLogin={this.handleLogin.bind(this)}
-                                    />
-                                )}
-                            />
+            <Query query={CLIENT_JBG}>
+                {({ loading, error, data }) => {
+                    if (loading) return <Loading />;
+                    if (
+                        !isEmpty(error) ||
+                        isEmpty(data) ||
+                        isEmpty(data.clientJBG)
+                    )
+                        return window.location.replace(CLIENT_CMS_URL);
+                    return (
+                        <Router
+                            ref={router => (this.router = router)}
+                            basename={"cms"}
+                        >
+                            <div
+                                style={{
+                                    backgroundColor: "#F4F4F4",
+                                    paddingBottom: "130px"
+                                }}
+                            >
+                                <section>
+                                    <div>
+                                        <Route
+                                            exact
+                                            path="/"
+                                            render={() => (
+                                                <React.Fragment>
+                                                    {isLoggedIn() ? (
+                                                        <Redirect
+                                                            to={`${WELCOME_URL}/dashboard`}
+                                                        />
+                                                    ) : (
+                                                        <Login
+                                                            onLogin={this.handleLogin.bind(
+                                                                this
+                                                            )}
+                                                        />
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                        />
+                                        <Route
+                                            path={LOGIN_URL}
+                                            render={() => (
+                                                <Login
+                                                    onLogin={this.handleLogin.bind(
+                                                        this
+                                                    )}
+                                                />
+                                            )}
+                                        />
 
-                            <Suspense fallback={<Loading />}>
-                                {routes.map((route, index) => (
-                                    <PrivateRoute
-                                        key={index}
-                                        path={route.path}
-                                        component={route.component}
-                                    />
-                                ))}
-                            </Suspense>
-                        </div>
-                    </section>
-                </div>
-            </Router>
+                                        <Suspense fallback={<Loading />}>
+                                            {routes.map((route, index) => (
+                                                <PrivateRoute
+                                                    key={index}
+                                                    path={route.path}
+                                                    component={route.component}
+                                                />
+                                            ))}
+                                        </Suspense>
+                                    </div>
+                                </section>
+                            </div>
+                        </Router>
+                    );
+                }}
+            </Query>
         );
     }
 }
