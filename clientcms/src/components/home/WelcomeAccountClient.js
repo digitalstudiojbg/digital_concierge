@@ -334,19 +334,44 @@ const requiredErrorMessage = "Required.";
 
 const validationSchema = countries =>
     Yup.object().shape({
-        name: Yup.string().required(requiredErrorMessage),
-        full_company_name: Yup.string().required(requiredErrorMessage),
+        name: Yup.string()
+            .required(requiredErrorMessage)
+            .min(3)
+            .matches(
+                /^[A-Z\s]+$/,
+                "Needs to be uppercase and just alphabet are allowed"
+            ),
+
+        full_company_name: Yup.string()
+            .required(requiredErrorMessage)
+            .min(3)
+            .matches(
+                /^[A-Z\s]+$/,
+                "Needs to be uppercase and just alphabet are allowed"
+            ),
+
         nature_of_business: Yup.string().required(requiredErrorMessage),
-        phone: Yup.string().required(requiredErrorMessage),
+        phone: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(
+                // used link https://www.sitepoint.com/community/t/phone-number-regular-expression-validation/2204 as reference
+                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                "Phone number is not valid"
+            )
+            .max(20)
+            .min(4),
+
         email: Yup.string()
             .email("Wrong email format")
             .required(requiredErrorMessage),
         venue_address: Yup.string().required(requiredErrorMessage),
         postal_address: Yup.string().required(requiredErrorMessage),
         venue_city: Yup.string().required(requiredErrorMessage),
-        venue_zip_code: Yup.string().required(requiredErrorMessage),
+        // venue_zip_code: Yup.string().required(requiredErrorMessage),
+        venue_zip_code: Yup.string().notRequired(),
         postal_city: Yup.string().required(requiredErrorMessage),
-        postal_zip_code: Yup.string().required(requiredErrorMessage),
+        // postal_zip_code: Yup.string().required(requiredErrorMessage),
+        postal_zip_code: Yup.string().notRequired(),
         venue_country_id: Yup.string().required(requiredErrorMessage),
         venue_state_id: Yup.string()
             .validState(Yup.ref("venue_country_id"), "Invalid State", countries)
@@ -361,14 +386,28 @@ const validationSchema = countries =>
             .required(requiredErrorMessage),
 
         //Key user validation
-        user_name: Yup.string().required(requiredErrorMessage),
+        user_name: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(/^[A-Za-z\s]+$/, "Just alphabet are allowed"),
         position: Yup.string().required(requiredErrorMessage),
         user_email: Yup.string()
             .email("Wrong email format")
             .required(requiredErrorMessage),
-        first_phone_number: Yup.string().required(requiredErrorMessage),
-        second_phone_number: Yup.string(),
-        password: Yup.string(),
+        first_phone_number: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(
+                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                "Phone number is not valid"
+            ),
+        second_phone_number: Yup.string()
+            .notRequired()
+            .matches(
+                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                "Phone number is not valid"
+            ),
+        password: Yup.string()
+            .required(requiredErrorMessage)
+            .min(4),
         confirm_password: Yup.string().equalTo(
             Yup.ref("password"),
             "Passwords must match"
