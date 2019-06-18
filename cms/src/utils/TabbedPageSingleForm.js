@@ -8,7 +8,10 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText
+    DialogContentText,
+    Grid,
+    Menu,
+    MenuItem
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { ContainerDiv } from "./Constants";
@@ -16,6 +19,7 @@ import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import InfoIcon from "@material-ui/icons/Info";
+import ExpandIcon from "@material-ui/icons/ExpandMore";
 import { isEmpty } from "lodash";
 import { Formik, Form } from "formik";
 import DialogTitleHelper from "./DialogTitleHelper";
@@ -45,32 +49,32 @@ const TabContainer = props => {
 };
 
 const styles = () => ({
-    buttonSaveExit: {
-        width: 160,
+    buttonSave: {
+        width: 200,
+        position: "absolute",
+        top: 140,
+        right: 20,
+        backgroundColor: "#2699FB",
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif",
+        paddingRight: 5
+    },
+    rightIcon: {
+        color: "white"
+    },
+    rightGrid: {
+        borderLeft: "1px solid rgb(31,126,218)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    buttonCancel: {
+        width: 200,
         position: "absolute",
         top: 100,
         right: 20,
-        backgroundColor: "rgb(33,143,250)",
+        backgroundColor: "#595959",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonSaveKeep: {
-        width: 160,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
-        color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonCancel: {
-        position: "absolute",
-        top: 140,
-        right: 190,
-        backgroundColor: "white",
-        color: "rgb(33,143,250)",
-        border: "2px solid rgb(33,143,250)",
-        fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif"
     }
 });
@@ -84,10 +88,17 @@ TabContainer.propTypes = {
 class TabbedPageSingleForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { tab: 0, openDialog: false };
+        this.state = { tab: 0, openDialog: false, anchorEl: null };
         this.closeDialog = this.closeDialog.bind(this);
         this.cancelAction = this.cancelAction.bind(this);
+        this.openSaveMenu = this.openSaveMenu.bind(this);
+        this.closeSaveMenu = this.closeSaveMenu.bind(this);
+        this.submitAction = this.submitAction.bind(this);
+        this.submitExitAction = this.submitExitAction.bind(this);
     }
+
+    openSaveMenu = event => this.setState({ anchorEl: event.currentTarget });
+    closeSaveMenu = () => this.setState({ anchorEl: null });
 
     handleChange = (_event, tab) => {
         this.setState({ tab });
@@ -95,14 +106,18 @@ class TabbedPageSingleForm extends React.Component {
 
     submitAction = () => {
         const { submitForm, errors } = this.props.formikProps;
-        isEmpty(errors) && Boolean(submitForm) && submitForm();
+        this.setState({ anchorEl: null }, () => {
+            isEmpty(errors) && Boolean(submitForm) && submitForm();
+        });
     };
 
     submitExitAction = () => {
         const { setToExitAfterSubmission, formikProps } = this.props;
         const { submitForm, errors } = formikProps;
-        setToExitAfterSubmission(() => {
-            isEmpty(errors) && Boolean(submitForm) && submitForm();
+        this.setState({ anchorEl: null }, () => {
+            setToExitAfterSubmission(() => {
+                isEmpty(errors) && Boolean(submitForm) && submitForm();
+            });
         });
     };
 
@@ -138,7 +153,7 @@ class TabbedPageSingleForm extends React.Component {
             formikProps
         } = this.props;
         const { isSubmitting } = formikProps;
-        const { tab, openDialog } = this.state;
+        const { tab, openDialog, anchorEl } = this.state;
         const CurrentComponent = tabs[tab].component;
         const shouldRenderButtons = tabs[tab].withButtons;
         const shouldRenderCancelButton = tabs[tab].withCancel;
@@ -205,22 +220,6 @@ class TabbedPageSingleForm extends React.Component {
                     </Paper>
                     {shouldRenderButtons && (
                         <React.Fragment>
-                            <Button
-                                variant="outlined"
-                                className={classes.buttonSaveExit}
-                                onClick={this.submitExitAction}
-                                disabled={isSubmitting}
-                            >
-                                SAVE & EXIT
-                            </Button>
-                            <Button
-                                variant="outlined"
-                                className={classes.buttonSaveKeep}
-                                onClick={this.submitAction}
-                                disabled={isSubmitting}
-                            >
-                                SAVE & KEEP EDITING
-                            </Button>
                             {shouldRenderCancelButton && (
                                 <Button
                                     variant="outlined"
@@ -231,6 +230,33 @@ class TabbedPageSingleForm extends React.Component {
                                     CANCEL
                                 </Button>
                             )}
+                            <Button
+                                variant="outlined"
+                                className={classes.buttonSave}
+                                onClick={this.openSaveMenu}
+                                disabled={isSubmitting}
+                            >
+                                <Grid container direction="row">
+                                    <Grid
+                                        item
+                                        xs={10}
+                                        justify="center"
+                                        alignItems="center"
+                                    >
+                                        SAVE
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        xs={2}
+                                        className={classes.rightGrid}
+                                        justify="center"
+                                    >
+                                        <ExpandIcon
+                                            className={classes.rightIcon}
+                                        />
+                                    </Grid>
+                                </Grid>
+                            </Button>
                         </React.Fragment>
                     )}
                     <ContainerDivTab>
@@ -275,6 +301,28 @@ class TabbedPageSingleForm extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                <Menu
+                    id="save-popup"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.closeSaveMenu}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left"
+                    }}
+                >
+                    <MenuItem onClick={this.submitExitAction}>
+                        SAVE & EXIT
+                    </MenuItem>
+                    <MenuItem onClick={this.submitAction}>
+                        SAVE & KEEP EDITING
+                    </MenuItem>
+                </Menu>
             </React.Fragment>
         );
     }
