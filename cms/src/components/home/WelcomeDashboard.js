@@ -89,7 +89,7 @@ const AMOUNT_IN_LIST = 3;
 export const WelcomeDashboard = ({ classes }) => (
     <Query query={getAllClients}>
         {({ loading, error, data: { clients } }) => {
-            console.log(clients);
+            // console.log(clients);
             if (loading) return <Loading loadingData />;
             if (error) return `Error! ${error.message}`;
             return (
@@ -105,7 +105,7 @@ export const WelcomeDashboard = ({ classes }) => (
                             Array.isArray(guides) && !isEmpty(guides)
                                 ? randomiseItems(guides)
                                 : [];
-                        console.log(randomisedGuides);
+                        // console.log(randomisedGuides);
                         return (
                             <ContainerDiv>
                                 <EntryContainerDiv>
