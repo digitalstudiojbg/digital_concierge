@@ -14,7 +14,7 @@ import {
     MenuItem
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { ContainerDiv } from "./Constants";
+import { ContainerDiv, SlideUpTransition } from "./Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -23,7 +23,6 @@ import ExpandIcon from "@material-ui/icons/ExpandMore";
 import { isEmpty } from "lodash";
 import { Formik, Form } from "formik";
 import DialogTitleHelper from "./DialogTitleHelper";
-import { SlideUpTransition } from "./Constants";
 
 const ContainerDivTab = styled.div`
     width: 100%;
