@@ -63,7 +63,7 @@ const TextEditorField = ({
                     }
                 }}
             />
-            {Boolean(error) && String.isString(error) && error.length > 0 && (
+            {Boolean(error) && error.length > 0 && (
                 <div style={{ color: "red" }}>{error}</div>
             )}
         </div>
