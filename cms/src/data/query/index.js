@@ -27,7 +27,8 @@ import {
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
     getJustBrilliantGuideIdFromAdvertiser,
-    getJustBrilliantGuideLayoutFamilyDefaults
+    getJustBrilliantGuideLayoutFamilyDefaults,
+    getJustBrilliantGuideListDashboard
 } from "./justBrilliantGuide";
 import {
     getJbgLayoutFamilyList,
@@ -84,5 +85,6 @@ export {
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
     getJustBrilliantGuideLayoutFamilyDefaults,
-    CLIENT_JBG
+    CLIENT_JBG,
+    getJustBrilliantGuideListDashboard
 };
