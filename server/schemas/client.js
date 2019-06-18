@@ -5,6 +5,7 @@ export default gql`
         client(id: ID!): Client
         clients: [Client]
         clientByUser: Client
+        clientJBG: Client
     }
 
     extend type Mutation {

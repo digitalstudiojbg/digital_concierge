@@ -32,6 +32,10 @@ export const getJbgLayoutFamilyDetailedList = gql`
                     name
                     path
                 }
+                jbg_templates {
+                    id
+                    name
+                }
             }
         }
     }

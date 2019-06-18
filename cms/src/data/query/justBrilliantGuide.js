@@ -1,5 +1,17 @@
 import gql from "graphql-tag";
-import { justBrilliantGuideDetailFragment } from "../fragment";
+import {
+    justBrilliantGuideDetailFragment,
+    justBrilliantGuideListFragment
+} from "../fragment";
+
+export const getJustBrilliantGuideListDashboard = gql`
+    query getJustBrilliantGuideList {
+        justBrilliantGuides {
+            ...justBrilliantGuideList
+        }
+    }
+    ${justBrilliantGuideListFragment}
+`;
 
 export const getJustBrilliantGuideList = gql`
     query getJustBrilliantGuideList {

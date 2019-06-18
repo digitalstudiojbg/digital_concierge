@@ -1,6 +1,22 @@
 import db from "../models";
 import { UserInputError } from "apollo-server-express";
-import { handleUpdateActionActivityLog } from "../utils/constant";
+import {
+    handleUpdateActionActivityLog,
+    processUploadMedia,
+    handleCreateActionActivityLog
+} from "../utils/constant";
+
+const processArticleImage = async (uploadFile, mediumId, clientId) => {
+    let image = null;
+    //Check if image update
+    if (uploadFile) {
+        image = await processUploadMedia(uploadFile, clientId, "image");
+    } else if (mediumId) {
+        //If Image was changed from media library
+        image = await db.media.findByPk(mediumId);
+    }
+    return image;
+};
 
 export default {
     Query: {
@@ -69,7 +85,7 @@ export default {
 
             if (articles.length !== by) {
                 throw new UserInputError(
-                    `Error! Cannot move article up by ${by} because there is not enough elements!`
+                    `Error! Cannot move article ID ${id} up by ${by} because there is not enough elements!`
                 );
             }
 
@@ -146,7 +162,7 @@ export default {
 
             if (articles.length !== by) {
                 throw new UserInputError(
-                    `Error! Cannot move article down by ${by} because there is not enough elements!`
+                    `Error! Cannot move article ID ${id} down by ${by} because there is not enough elements!`
                 );
             }
 
@@ -190,6 +206,151 @@ export default {
                     );
                 }
             }
+
+            return await db.article.findByPk(id);
+        },
+        createArticle: async (
+            _root,
+            {
+                input: {
+                    name,
+                    description,
+                    introductionText,
+                    justBrilliantGuideId,
+                    header_image_upload,
+                    headerMediumId,
+                    feature_image_upload,
+                    featureMediumId,
+                    jbgTemplateId,
+                    jbgLayoutId,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const headerImage = await processArticleImage(
+                header_image_upload,
+                headerMediumId,
+                clientId
+            );
+            const featureImage = await processArticleImage(
+                feature_image_upload,
+                featureMediumId,
+                clientId
+            );
+
+            //Find the biggest order article
+            const biggestOrderArticle = await db.article.findOne({
+                where: { justBrilliantGuideId },
+                order: [["order", "DESC"]]
+            });
+
+            if (!biggestOrderArticle) {
+                throw new UserInputError(`Cannot find biggest order article.`);
+            }
+
+            const tempArticle = {
+                name,
+                ...(Boolean(description) && { description }),
+                ...(Boolean(introductionText) && { introductionText }),
+                justBrilliantGuideId,
+                jbgTemplateId,
+                jbgLayoutId,
+                ...(Boolean(headerImage) &&
+                    Boolean(headerImage.id) && {
+                        headerMediumId: headerImage.id
+                    }),
+                ...(Boolean(featureImage) &&
+                    Boolean(featureImage.id) && {
+                        featureMediumId: featureImage.id
+                    }),
+                order: biggestOrderArticle.order + 1
+            };
+
+            let created_article = db.article.build({ ...tempArticle });
+            try {
+                await created_article.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Create Article ${name} failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleCreateActionActivityLog(
+                created_article,
+                tempArticle,
+                user,
+                clientIp
+            );
+
+            return created_article;
+        },
+        editArticle: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    description,
+                    introductionText,
+                    header_image_upload,
+                    headerMediumId,
+                    feature_image_upload,
+                    featureMediumId,
+                    jbgTemplateId,
+                    jbgLayoutId,
+                    clientId
+                }
+            },
+            { user, clientIp }
+        ) => {
+            const article = await db.article.findByPk(id);
+            if (!article) {
+                throw new UserInputError(
+                    `Error! Article ID ${id} does not exist`
+                );
+            }
+
+            const headerImage = await processArticleImage(
+                header_image_upload,
+                headerMediumId,
+                clientId
+            );
+            const featureImage = await processArticleImage(
+                feature_image_upload,
+                featureMediumId,
+                clientId
+            );
+
+            const tempArticle = {
+                name,
+                ...(Boolean(description) && { description }),
+                ...(Boolean(introductionText) && { introductionText }),
+                jbgTemplateId,
+                jbgLayoutId,
+                ...(Boolean(headerImage) &&
+                    Boolean(headerImage.id) && {
+                        headerMediumId: headerImage.id
+                    }),
+                ...(Boolean(featureImage) &&
+                    Boolean(featureImage.id) && {
+                        featureMediumId: featureImage.id
+                    })
+            };
+
+            try {
+                await db.article.update({ ...tempArticle }, { where: { id } });
+            } catch (error) {
+                throw new UserInputError(
+                    `Update Article ID: ${id} with Article name: ${name} failed.\nError Message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            handleUpdateActionActivityLog(article, tempArticle, user, clientIp);
 
             return await db.article.findByPk(id);
         }

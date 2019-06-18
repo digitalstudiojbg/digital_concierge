@@ -111,6 +111,22 @@ class Welcome extends Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        const { match } = this.props;
+        const { match: prevMatch } = prevProps;
+        if (
+            prevMatch &&
+            prevMatch.params &&
+            prevMatch.params.which &&
+            match &&
+            match.params &&
+            match.params.which &&
+            prevMatch.params.which !== match.params.which
+        ) {
+            this.setState({ selected: match.params.which });
+        }
+    }
+
     clickSidebarButton(selected) {
         this.setState({ selected }, () => {
             this.props.history.push(WELCOME_URL + "/" + selected);

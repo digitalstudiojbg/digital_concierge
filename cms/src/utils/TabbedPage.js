@@ -1,13 +1,28 @@
 import React from "react";
-import { Tabs, Tab, Paper, Button, Tooltip } from "@material-ui/core";
+import {
+    Tabs,
+    Tab,
+    Paper,
+    Button,
+    Tooltip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    Grid,
+    Menu,
+    MenuItem
+} from "@material-ui/core";
+import DialogTitleHelper from "./DialogTitleHelper";
 import PropTypes from "prop-types";
-import { ContainerDiv } from "./Constants";
+import { ContainerDiv, SlideUpTransition } from "./Constants";
 import { withStyles } from "@material-ui/core/styles";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { withApollo, compose, graphql } from "react-apollo";
 import { getTabbedPageComplete } from "../data/query";
 import InfoIcon from "@material-ui/icons/Info";
+import ExpandIcon from "@material-ui/icons/ExpandMore";
 import { isEmpty } from "lodash";
 
 const ContainerDivTab = styled.div`
@@ -34,32 +49,32 @@ const TabContainer = props => {
 };
 
 const styles = () => ({
-    buttonSaveExit: {
-        width: 160,
+    buttonSave: {
+        width: 200,
+        position: "absolute",
+        top: 140,
+        right: 20,
+        backgroundColor: "#2699FB",
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif",
+        paddingRight: 5
+    },
+    rightIcon: {
+        color: "white"
+    },
+    rightGrid: {
+        borderLeft: "1px solid rgb(31,126,218)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    buttonCancel: {
+        width: 200,
         position: "absolute",
         top: 100,
         right: 20,
-        backgroundColor: "rgb(33,143,250)",
+        backgroundColor: "#595959",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonSaveKeep: {
-        width: 160,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "rgb(33,143,250)",
-        color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
-    },
-    buttonCancel: {
-        position: "absolute",
-        top: 140,
-        right: 190,
-        backgroundColor: "white",
-        color: "rgb(33,143,250)",
-        border: "2px solid rgb(33,143,250)",
-        fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif"
     }
 });
@@ -76,9 +91,19 @@ class TabbedPage extends React.Component {
         super(props);
         const { tabs } = props;
         this.childComponentsRefs = tabs.map(() => React.createRef());
-        this.state = { tab: 0, exit: false };
+        this.state = { tab: 0, exit: false, openDialog: false, anchorEl: null };
         this.setIsComplete = this.setIsComplete.bind(this);
+        this.openDialog = this.openDialog.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.openSaveMenu = this.openSaveMenu.bind(this);
+        this.closeSaveMenu = this.closeSaveMenu.bind(this);
     }
+
+    openDialog = () => this.setState({ openDialog: true });
+    closeDialog = () => this.setState({ openDialog: false });
+    openSaveMenu = event => this.setState({ anchorEl: event.currentTarget });
+    closeSaveMenu = () => this.setState({ anchorEl: null });
 
     handleChange = (_event, tab) => {
         // console.log(this.childComponentsRefs);
@@ -88,16 +113,32 @@ class TabbedPage extends React.Component {
     submitAction = () => {
         const { tab } = this.state;
         // console.log(this.childComponentsRefs[tab]);
-        this.childComponentsRefs[tab] &&
-            this.childComponentsRefs[tab].submitForm();
+        this.setState({ anchorEl: null }, () => {
+            this.childComponentsRefs[tab] &&
+                this.childComponentsRefs[tab].submitForm();
+        });
     };
 
     submitExitAction = () => {
         const { tab } = this.state;
-        this.setState({ exit: true }, () => {
+        this.setState({ exit: true, anchorEl: null }, () => {
             this.childComponentsRefs[tab] &&
                 this.childComponentsRefs[tab].submitForm();
         });
+    };
+
+    handleCancel = () => {
+        const { tab } = this.state;
+        console.log(this.childComponentsRefs[tab]);
+        if (
+            !isEmpty(this.childComponentsRefs[tab]) &&
+            !isEmpty(this.childComponentsRefs[tab].state) &&
+            !isEmpty(this.childComponentsRefs[tab].state.touched)
+        ) {
+            this.setState({ openDialog: true });
+        } else {
+            this.submitCancelAction();
+        }
     };
 
     submitCancelAction = () => {
@@ -164,110 +205,191 @@ class TabbedPage extends React.Component {
             tooltipFontSize,
             otherProps
         } = this.props;
-        const { tab } = this.state;
+        const { tab, openDialog, anchorEl } = this.state;
         const CurrentComponent = tabs[tab].component;
         const shouldRenderButtons = tabs[tab].withButtons;
         const shouldRenderCancelButton = tabs[tab].withCancel;
-
+        const isSubmitting =
+            !isEmpty(this.childComponentsRefs[tab]) &&
+            !isEmpty(this.childComponentsRefs[tab].state) &&
+            this.childComponentsRefs[tab].state.isSubmitting;
         return (
-            <div
-                style={{
-                    width: "100%",
-                    backgroundColor: lightGreyHeader
-                }}
-            >
+            <React.Fragment>
                 <div
                     style={{
-                        height: 60,
-                        fontSize: "2em",
-                        fontWeight: 700,
-                        paddingTop: 20,
-                        paddingBottom: 20,
-                        display: "flex"
+                        width: "100%",
+                        backgroundColor: lightGreyHeader
                     }}
                 >
-                    {title}
-                    {Boolean(tooltipText) && (
-                        <div style={{ paddingLeft: 10 }}>
-                            <StyledTooltip
-                                // classes={{ tooltip: classes.tooltip }}
-                                title={tooltipText}
-                                placement="bottom"
-                                fontSize={tooltipFontSize}
-                            >
-                                <InfoIcon
-                                    style={{ color: tooltipColor }}
-                                    fontSize="small"
-                                />
-                            </StyledTooltip>
-                        </div>
-                    )}
-                </div>
-                <Paper
-                    square
-                    style={{
-                        backgroundColor: lightGreyHeader,
-                        boxShadow: "none",
-                        borderBottom: "2px solid rgb(217,217,217)"
-                    }}
-                >
-                    <Tabs
-                        value={tab}
-                        TabIndicatorProps={{
-                            style: {
-                                backgroundColor: "rgb(57,154,249)"
-                            }
+                    <div
+                        style={{
+                            height: 60,
+                            fontSize: "2em",
+                            fontWeight: 700,
+                            paddingTop: 20,
+                            paddingBottom: 20,
+                            display: "flex"
                         }}
-                        onChange={this.handleChange}
                     >
-                        {tabs.map(({ name }, index) => (
-                            <Tab label={name} key={`TAB-${title}-${index}`} />
-                        ))}
-                    </Tabs>
-                </Paper>
-                {shouldRenderButtons && (
-                    <React.Fragment>
-                        <Button
-                            variant="outlined"
-                            className={classes.buttonSaveExit}
-                            onClick={this.submitExitAction}
+                        {title}
+                        {Boolean(tooltipText) && (
+                            <div style={{ paddingLeft: 10 }}>
+                                <StyledTooltip
+                                    // classes={{ tooltip: classes.tooltip }}
+                                    title={tooltipText}
+                                    placement="bottom"
+                                    fontSize={tooltipFontSize}
+                                >
+                                    <InfoIcon
+                                        style={{ color: tooltipColor }}
+                                        fontSize="small"
+                                    />
+                                </StyledTooltip>
+                            </div>
+                        )}
+                    </div>
+                    <Paper
+                        square
+                        style={{
+                            backgroundColor: lightGreyHeader,
+                            boxShadow: "none",
+                            borderBottom: "2px solid rgb(217,217,217)"
+                        }}
+                    >
+                        <Tabs
+                            value={tab}
+                            TabIndicatorProps={{
+                                style: {
+                                    backgroundColor: "rgb(57,154,249)"
+                                }
+                            }}
+                            onChange={this.handleChange}
                         >
-                            SAVE & EXIT
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            className={classes.buttonSaveKeep}
-                            onClick={this.submitAction}
-                        >
-                            SAVE & KEEP EDITING
-                        </Button>
-                        {shouldRenderCancelButton && (
+                            {tabs.map(({ name }, index) => (
+                                <Tab
+                                    label={name}
+                                    key={`TAB-${title}-${index}`}
+                                />
+                            ))}
+                        </Tabs>
+                    </Paper>
+                    {shouldRenderButtons && (
+                        <React.Fragment>
+                            {shouldRenderCancelButton && (
+                                <Button
+                                    variant="outlined"
+                                    className={classes.buttonCancel}
+                                    onClick={this.handleCancel}
+                                    disabled={isSubmitting}
+                                >
+                                    CANCEL
+                                </Button>
+                            )}
                             <Button
                                 variant="outlined"
-                                className={classes.buttonCancel}
-                                onClick={this.submitCancelAction}
+                                className={classes.buttonSave}
+                                onClick={this.openSaveMenu}
+                                disabled={isSubmitting}
                             >
-                                CANCEL
+                                <Grid container direction="row">
+                                    <Grid
+                                        item
+                                        xs={10}
+                                        justify="center"
+                                        alignItems="center"
+                                    >
+                                        SAVE
+                                    </Grid>
+                                    <Grid
+                                        item
+                                        xs={2}
+                                        className={classes.rightGrid}
+                                        justify="center"
+                                    >
+                                        <ExpandIcon
+                                            className={classes.rightIcon}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Button>
-                        )}
-                    </React.Fragment>
-                )}
-                <ContainerDivTab>
-                    <TabContainer>
-                        {Array.isArray(this.childComponentsRefs) &&
-                            this.childComponentsRefs.length > 0 && (
-                                <CurrentComponent
-                                    data={data}
-                                    onRef={ref =>
-                                        (this.childComponentsRefs[tab] = ref)
-                                    } //This props is to be linked to the Formik ref prop
-                                    setIsComplete={this.setIsComplete} //This prop is to tell that the form has finished submission
-                                    {...!isEmpty(otherProps) && { otherProps }}
-                                />
-                            )}
-                    </TabContainer>
-                </ContainerDivTab>
-            </div>
+                        </React.Fragment>
+                    )}
+                    <ContainerDivTab>
+                        <TabContainer>
+                            {Array.isArray(this.childComponentsRefs) &&
+                                this.childComponentsRefs.length > 0 && (
+                                    <CurrentComponent
+                                        data={data}
+                                        onRef={ref =>
+                                            (this.childComponentsRefs[
+                                                tab
+                                            ] = ref)
+                                        } //This props is to be linked to the Formik ref prop
+                                        setIsComplete={this.setIsComplete} //This prop is to tell that the form has finished submission
+                                        {...!isEmpty(otherProps) && {
+                                            otherProps
+                                        }}
+                                    />
+                                )}
+                        </TabContainer>
+                    </ContainerDivTab>
+                </div>
+                <Dialog
+                    open={openDialog}
+                    TransitionComponent={SlideUpTransition}
+                    keepMounted
+                    onClose={this.closeDialog}
+                >
+                    <DialogTitleHelper onClose={this.closeDialog}>
+                        CONFIRM PAGE NAVIGATION
+                    </DialogTitleHelper>
+                    <DialogContent>
+                        <DialogContentText component="div">
+                            <div
+                                style={{
+                                    paddingTop: 10
+                                }}
+                            >
+                                ARE YOU SURE YOU WANT TO LEAVE THIS PAGE?
+                            </div>
+                            <div>YOU HAVE UNSAVED CHANGES.</div>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            color="primary"
+                            onClick={this.submitCancelAction}
+                        >
+                            LEAVE
+                        </Button>
+                        <Button color="primary" onClick={this.closeDialog}>
+                            STAY
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Menu
+                    id="save-popup"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.closeSaveMenu}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left"
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left"
+                    }}
+                >
+                    <MenuItem onClick={this.submitExitAction}>
+                        SAVE & EXIT
+                    </MenuItem>
+                    <MenuItem onClick={this.submitAction}>
+                        SAVE & KEEP EDITING
+                    </MenuItem>
+                </Menu>
+            </React.Fragment>
         );
     }
 }

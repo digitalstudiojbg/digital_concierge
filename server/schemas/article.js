@@ -39,11 +39,12 @@ export default gql`
         introductionText: String
         justBrilliantGuideId: ID!
         header_image_upload: Upload
-        headerMediumId: ID!
+        headerMediumId: ID
         feature_image_upload: Upload
-        featureMediumId: ID!
+        featureMediumId: ID
         jbgTemplateId: ID!
         jbgLayoutId: ID!
+        clientId: ID!
     }
 
     input UpdateArticleInput {
@@ -51,12 +52,12 @@ export default gql`
         name: String!
         description: String
         introductionText: String
-        justBrilliantGuideId: ID!
         header_image_upload: Upload
-        headerMediumId: ID!
+        headerMediumId: ID
         feature_image_upload: Upload
-        featureMediumId: ID!
+        featureMediumId: ID
         jbgTemplateId: ID!
         jbgLayoutId: ID!
+        clientId: ID!
     }
 `;

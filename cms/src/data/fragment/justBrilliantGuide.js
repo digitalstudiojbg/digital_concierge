@@ -53,3 +53,16 @@ export const justBrilliantGuideDetailFragment = gql`
         }
     }
 `;
+
+export const justBrilliantGuideListFragment = gql`
+    fragment justBrilliantGuideList on JustBrilliantGuide {
+        id
+        name
+        media {
+            id
+            name
+            path
+            type
+        }
+    }
+`;

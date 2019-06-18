@@ -1,5 +1,8 @@
 import { directoryListFragment } from "./directoryList";
-import { justBrilliantGuideDetailFragment } from "./justBrilliantGuide";
+import {
+    justBrilliantGuideDetailFragment,
+    justBrilliantGuideListFragment
+} from "./justBrilliantGuide";
 import { advertiserListFragment, advertiserDetailFragment } from "./advertiser";
 import { contactDetailFragment } from "./contact";
 import { paymentDetailFragment } from "./payment";
@@ -15,5 +18,6 @@ export {
     paymentDetailFragment,
     mediaDetailFragment,
     articleListFragment,
-    articleDetailFragment
+    articleDetailFragment,
+    justBrilliantGuideListFragment
 };

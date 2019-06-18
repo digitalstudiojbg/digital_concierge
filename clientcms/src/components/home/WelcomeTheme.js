@@ -110,6 +110,16 @@ export const WelcomeTheme = ({ data: { id }, classes, history }) => {
             }) => {
                 if (loadingSystems) return <Loading loadingData />;
                 if (errorSystems) return `Error! ${errorSystems.message}`;
+                if (
+                    !Array.isArray(systemsOriginal) ||
+                    systemsOriginal.length === 0
+                ) {
+                    return (
+                        <React.Fragment>
+                            There is no systems for client ID {id}
+                        </React.Fragment>
+                    );
+                }
 
                 //Modify system data
                 const systems = systemsOriginal.map(({ id, name, theme }) => ({

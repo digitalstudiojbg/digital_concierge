@@ -3,16 +3,14 @@ import { withRouter } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+// import DeleteIcon from "@material-ui/icons/Delete";
+import DirEntryIcon from "@material-ui/icons/DescriptionOutlined";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ExpandIcon from "@material-ui/icons/ChevronRight";
 import CompressIcon from "@material-ui/icons/ExpandMore";
 import CheckIcon from "@material-ui/icons/Check";
 import CloseIcon from "@material-ui/icons/Close";
-import DirListIcon from "@material-ui/icons/List";
-import DirEntryIcon from "@material-ui/icons/Description";
-import EditIcon from "@material-ui/icons/Edit";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import styled from "styled-components";
 import Table from "@material-ui/core/Table";
@@ -66,10 +64,16 @@ const styles = () => ({
         marginRight: 15,
         "&:hover": { backgroundColor: "#EBEBEB" }
     },
-
     expansionButton: {
         color: "rgb(38,153,251)",
         //  background: "rgb(38,153,251)",
+        padding: 0,
+        margin: 0,
+        width: 24,
+        height: 24
+    },
+    dirIconStyle: {
+        color: "#595959",
         padding: 0,
         margin: 0,
         width: 24,
@@ -152,7 +156,7 @@ const styles = () => ({
 
 //A few constants settings
 const paddingSize = 30;
-//const approximateButtonSize = 24;
+const approximateButtonSize = 29;
 // const approximateIconSize = 15;
 const TreeEntry = styled.div`
     padding-left: ${props => props.paddingSize}px;
@@ -883,6 +887,9 @@ class TreeView extends React.PureComponent {
     renderDirectory(directory, index) {
         const { depth } = directory;
         const calculatedPaddingSize = depth * paddingSize;
+        const calculatedPaddingSizeNoButton =
+            calculatedPaddingSize + approximateButtonSize;
+        console.log("Calculated padding size ", calculatedPaddingSizeNoButton);
         const {
             child_directory_lists_key,
             directory_entries_key,
@@ -897,12 +904,17 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                             {this.renderExpandOrCompressIcon(directory.id)}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
                                 {/* <DirListIcon className={classes.dirIconStyle} /> */}
+                                <div style={{ marginRight: 5 }}>
+                                    {this.renderExpandOrCompressIcon(
+                                        directory.id
+                                    )}
+                                </div>
                                 <span>{directory.name}</span>
                             </TreeEntry>
                         </TableCell>
@@ -960,12 +972,17 @@ class TreeView extends React.PureComponent {
                 /*Rendering the row*/
                 <React.Fragment key={`${directory.id}-${index}`}>
                     <TableRow className={classes.tableEntryRow}>
-                        <TableCell padding="checkbox">
+                        {/* <TableCell padding="checkbox">
                             {this.renderExpandOrCompressIcon(directory.id)}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className={classes.tableEntryTitleCol}>
                             <TreeEntry paddingSize={calculatedPaddingSize}>
                                 {/* <DirListIcon className={classes.dirIconStyle} /> */}
+                                <div style={{ marginRight: 5 }}>
+                                    {this.renderExpandOrCompressIcon(
+                                        directory.id
+                                    )}
+                                </div>
                                 <span
                                     onClick={this.navigateToEditPage.bind(
                                         this,
@@ -1058,9 +1075,15 @@ class TreeView extends React.PureComponent {
                     key={`${directory.id}-${index}`}
                     className={classes.tableEntryRow}
                 >
-                    <TableCell padding="checkbox" />
+                    {/* <TableCell padding="checkbox" /> */}
                     <TableCell className={classes.tableEntryTitleCol}>
-                        <TreeEntry paddingSize={calculatedPaddingSize}>
+                        <TreeEntry
+                            paddingSize={
+                                directory.is_dir_list
+                                    ? calculatedPaddingSizeNoButton
+                                    : calculatedPaddingSize
+                            }
+                        >
                             <div
                                 style={{
                                     marginLeft: 0, //directory.is_dir_list ? 0 : 15,
@@ -1080,6 +1103,13 @@ class TreeView extends React.PureComponent {
                                        // className={classes.dirIconStyle}
                                     />
                                 )} */}
+                                {!directory.is_dir_list && (
+                                    <div style={{ marginRight: 5 }}>
+                                        <DirEntryIcon
+                                            className={classes.dirIconStyle}
+                                        />
+                                    </div>
+                                )}
                                 <span
                                     onClick={this.navigateToEditPage.bind(
                                         this,
@@ -1200,7 +1230,7 @@ class TreeView extends React.PureComponent {
                 <Table>
                     <TableHead className={classes.tableHeaderRow}>
                         <TableRow>
-                            <TableCell padding="checkbox" />
+                            {/* <TableCell padding="checkbox" /> */}
                             <TableCell className={classes.headerTitleCol}>
                                 TITLE
                             </TableCell>

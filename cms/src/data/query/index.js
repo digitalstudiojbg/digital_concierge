@@ -5,7 +5,8 @@ import {
     getClientFromUser,
     getAllClients,
     getClientImageById,
-    getNewCreatedClientId
+    getNewCreatedClientId,
+    CLIENT_JBG
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
 import {
@@ -26,7 +27,8 @@ import {
     getJustBrilliantGuideList,
     getJustBrilliantGuideDetail,
     getJustBrilliantGuideIdFromAdvertiser,
-    getJustBrilliantGuideLayoutFamilyDefaults
+    getJustBrilliantGuideLayoutFamilyDefaults,
+    getJustBrilliantGuideListDashboard
 } from "./justBrilliantGuide";
 import {
     getJbgLayoutFamilyList,
@@ -82,5 +84,7 @@ export {
     getArticleListFromPublication,
     getJbgLayoutFamilyDetailedList,
     getJbgTemplateList,
-    getJustBrilliantGuideLayoutFamilyDefaults
+    getJustBrilliantGuideLayoutFamilyDefaults,
+    CLIENT_JBG,
+    getJustBrilliantGuideListDashboard
 };

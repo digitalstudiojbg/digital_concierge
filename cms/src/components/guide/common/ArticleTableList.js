@@ -12,7 +12,9 @@ import {
     PrintOutlined,
     DeleteOutlined,
     Visibility,
-    VisibilityOff
+    VisibilityOff,
+    KeyboardArrowUp,
+    KeyboardArrowDown
 } from "@material-ui/icons";
 import { withRouter } from "react-router-dom";
 import {
@@ -58,6 +60,13 @@ const styles = () => ({
         borderRadius: 5,
         backgroundColor: "white",
         border: "1px solid rgba(112, 112, 112, 1)"
+    },
+    arrowButton: {
+        color: "rgb(38,153,251)",
+        padding: 0,
+        margin: 0,
+        width: 24,
+        height: 24
     }
 });
 
@@ -66,6 +75,9 @@ class ArticleTableList extends React.Component {
         super(props);
         this.handleOpenMenu = this.handleOpenMenu.bind(this);
         this.handleCloseMenu = this.handleCloseMenu.bind(this);
+        this.navigateToCreateNewArticlePage = this.navigateToCreateNewArticlePage.bind(
+            this
+        );
     }
     state = {
         anchorEl: null
@@ -127,6 +139,17 @@ class ArticleTableList extends React.Component {
         const { history, pub_id } = this.props;
         Boolean(history) &&
             history.push(ARTICLE_CREATE_NEW_URL.replace(":pub_id", pub_id));
+    };
+
+    handleClickRow = (_event, { id: article_id }) => {
+        const { history, pub_id } = this.props;
+        Boolean(history) &&
+            history.push(
+                ARTICLE_MAIN_URL.replace(":article_id", article_id).replace(
+                    ":pub_id",
+                    pub_id
+                )
+            );
     };
 
     render() {
@@ -208,10 +231,18 @@ class ArticleTableList extends React.Component {
             Boolean(currentSelectedArticle) &&
             data[data.length - 1].id === currentSelectedArticle.id;
 
+        const handleMoveUpClickArrow = id => () =>
+            id !== data[0].id && moveUpByOne({ variables: { id } });
+
+        const handleMoveDownClickArrow = id => () =>
+            data[data.length - 1].id !== id &&
+            moveDownByOne({ variables: { id } });
+
         return (
             <ContainerDiv>
                 <MaterialTable
                     data={this.modifyArticleList()}
+                    onRowClick={this.handleClickRow}
                     columns={[
                         {
                             title: "VISIBLE",
@@ -228,9 +259,40 @@ class ArticleTableList extends React.Component {
                                     >
                                         <VisibilityOff />
                                     </IconButton>
-                                )
+                                ),
+                            disableClick: true
                         },
-                        { title: "ORDER", field: "order" },
+                        {
+                            title: "ORDER",
+                            field: "order",
+                            render: ({ id, order }) => (
+                                <div style={{ width: "100%", display: "flex" }}>
+                                    <div style={{ width: "10%" }}>
+                                        <KeyboardArrowUp
+                                            className={classes.arrowButton}
+                                            onClick={handleMoveUpClickArrow(id)}
+                                        />
+                                        <KeyboardArrowDown
+                                            className={classes.arrowButton}
+                                            onClick={handleMoveDownClickArrow(
+                                                id
+                                            )}
+                                        />
+                                    </div>
+                                    <div
+                                        style={{
+                                            width: "90%",
+                                            display: "flex",
+                                            paddingLeft: 20,
+                                            alignItems: "center"
+                                        }}
+                                    >
+                                        {order}
+                                    </div>
+                                </div>
+                            ),
+                            disableClick: true
+                        },
                         { title: "ARTICLE TITLE", field: "article_name" },
                         { title: "TEMPLATE", field: "template_name" },
                         { title: "LAYOUT FAMILY", field: "layout_family_name" },
@@ -260,7 +322,8 @@ class ArticleTableList extends React.Component {
                                 >
                                     <MoreHoriz />
                                 </IconButton>
-                            )
+                            ),
+                            disableClick: true
                         }
                     ]}
                     options={{

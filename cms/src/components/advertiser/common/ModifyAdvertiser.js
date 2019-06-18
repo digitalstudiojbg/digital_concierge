@@ -1,7 +1,13 @@
 import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { Button, Stepper, Step, StepLabel } from "@material-ui/core";
+import {
+    Button,
+    Stepper,
+    Step,
+    StepLabel,
+    StepButton
+} from "@material-ui/core";
 import { isEmpty } from "lodash";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -88,6 +94,10 @@ const ModifyAdvertiser = props => {
         }
     };
 
+    const handleStep = step => () => {
+        setActiveStep(step);
+    };
+
     const closeModal = () => setShowModal(false);
 
     const SelectedComponent = array_components[activeStep].component;
@@ -100,7 +110,7 @@ const ModifyAdvertiser = props => {
                             Just Brilliant Guides
                         </div>
                         <div style={{ fontSize: "1.5em", paddingTop: 10 }}>
-                            {has_data
+                            {has_data && !goToNext
                                 ? "Edit Advertiser"
                                 : "Add new Advertiser"}
                         </div>
@@ -121,13 +131,27 @@ const ModifyAdvertiser = props => {
                         </Button>
                     </HeaderButtonDiv>
                 </HeaderContainerDiv>
-                <Stepper activeStep={activeStep} alternativeLabel>
+                <Stepper
+                    activeStep={activeStep}
+                    alternativeLabel
+                    nonLinear={has_data && !goToNext}
+                >
                     {array_components.map(({ title }, index) => {
                         const props = {};
                         const labelProps = {};
                         return (
                             <Step key={`${index} -${title}`} {...props}>
-                                <StepLabel {...labelProps}>{title}</StepLabel>
+                                {has_data && !goToNext ? (
+                                    <StepButton onClick={handleStep(index)}>
+                                        <StepLabel {...labelProps}>
+                                            {title}
+                                        </StepLabel>
+                                    </StepButton>
+                                ) : (
+                                    <StepLabel {...labelProps}>
+                                        {title}
+                                    </StepLabel>
+                                )}
                             </Step>
                         );
                     })}
