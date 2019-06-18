@@ -29,7 +29,7 @@ const styles = () => ({
 
 export const WizardInitialPage = ({ next, history, classes }) => {
     const cancelCreate = () => {
-        history.push(WELCOME_URL);
+        history.push(WELCOME_URL + "/dashboard");
     };
     return (
         <ContainerDiv style={{ display: "inline-block", height: "100vh" }}>

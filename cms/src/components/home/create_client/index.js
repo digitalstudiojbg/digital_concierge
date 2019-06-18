@@ -149,7 +149,7 @@ class CreateClient extends Component {
         Boolean(cancelClient) && Boolean(new_create_client_id)
             ? cancelClient({ variables: { id: new_create_client_id } }).then(
                   () => {
-                      history.push(WELCOME_URL);
+                      history.push(WELCOME_URL + "/dashboard");
                   }
               )
             : history.push(WELCOME_URL);
