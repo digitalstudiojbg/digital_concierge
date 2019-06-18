@@ -7,6 +7,7 @@ export const CancelButtonContainerDiv = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    padding: 4% 8%;
 `;
 
 export const ContentContainerDiv = styled.div`
@@ -134,6 +135,14 @@ export const FiledContainer = styled.div`
     //  padding-bottom: 20px;
 `;
 
+export const ContinueButtonContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-right: 4%;
+`;
+
 export const ContinueButton = styled.button`
     type: submit;
     width: 15%;
@@ -143,6 +152,7 @@ export const ContinueButton = styled.button`
     color: white;
     background: #2699fb;
     border: 20px solid #313131;
+    border-radius: 5px;
 `;
 
 //----page3----

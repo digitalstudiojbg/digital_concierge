@@ -24,6 +24,14 @@ const styles = () => ({
         margin: "0 10%",
         width: "80%"
         // &:active{ backgroundColor: "red" }
+    },
+    topButtons: {
+        width: "150px",
+        color: "white",
+        backgroundColor: "#595959",
+
+        borderRadius: "5px",
+        boxShadow: "2px 2px 3px #888888"
     }
 });
 
@@ -34,7 +42,11 @@ export const WizardInitialPage = ({ next, history, classes }) => {
     return (
         <ContainerDiv style={{ display: "inline-block", height: "100vh" }}>
             <CancelButtonContainerDiv>
-                <Button variant="outlined" onClick={cancelCreate}>
+                <Button
+                    variant="outlined"
+                    onClick={cancelCreate}
+                    className={classes.topButtons}
+                >
                     CANCEL
                 </Button>
             </CancelButtonContainerDiv>

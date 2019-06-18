@@ -184,7 +184,7 @@ export const LayoutContainerDiv = styled.div`
 `;
 
 export const LayoutEntryContainerDiv = styled.div`
-    height: 160px;
+    height: 140px;
     margin-bottom: 10px;
     display: flex;
     flex: left;
@@ -207,7 +207,7 @@ export const LayoutEntryPreviewDiv = styled.div`
 
 export const LayoutEntryPreviewImage = styled.img`
     // width: 30%;
-    height: 140px;
+    height: 130px;
     margin: 1%;
     flex: left;
     border: 1px solid #9d9d9d;

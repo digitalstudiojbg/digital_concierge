@@ -50,7 +50,7 @@ const styles = theme => ({
         width: 200
     },
     myInput: {
-        padding: "15px",
+        padding: "12px 10px",
         backgroundColor: "white"
     }
 });
@@ -109,7 +109,7 @@ const renderAgreementFiled = contractsFromState => {
                             }}
                             inputProps={{
                                 style: {
-                                    padding: "15px 10px",
+                                    padding: "12px 10px",
                                     backgroundColor: "white"
                                 }
                             }}
@@ -140,7 +140,7 @@ const renderLicenseField = license => {
                     fullWidth={true}
                     inputProps={{
                         style: {
-                            padding: "15px 10px",
+                            padding: "12px 10px",
                             backgroundColor: "white"
                         }
                     }}
@@ -160,7 +160,7 @@ const renderLicenseField = license => {
                     fullWidth={true}
                     inputProps={{
                         style: {
-                            padding: "15px 10px",
+                            padding: "12px 10px",
                             backgroundColor: "white"
                         }
                     }}
@@ -188,7 +188,7 @@ const renderLicenseField = license => {
                         fullWidth={true}
                         inputProps={{
                             style: {
-                                padding: "15px 10px",
+                                padding: "12px 10px",
                                 backgroundColor: "white"
                             }
                         }}
@@ -219,7 +219,7 @@ const renderLicenseField = license => {
                         fullWidth={true}
                         inputProps={{
                             style: {
-                                padding: "15px 10px",
+                                padding: "12px 10px",
                                 backgroundColor: "white"
                             }
                         }}
@@ -300,7 +300,7 @@ const WelcomeAccountPaymentAgreement = props => {
                                 fullWidth={true}
                                 inputProps={{
                                     style: {
-                                        padding: "15px 10px",
+                                        padding: "12px 10px",
                                         backgroundColor: "white"
                                     }
                                 }}

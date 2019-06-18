@@ -42,16 +42,21 @@ export default countries =>
         name: Yup.string().required(requiredErrorMessage),
         full_company_name: Yup.string().required(requiredErrorMessage),
         nature_of_business: Yup.string().required(requiredErrorMessage),
-        phone: Yup.string().required(requiredErrorMessage),
+        phone: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
+                "Phone number is not valid"
+            ),
         email: Yup.string()
             .email("Incorrect email format")
             .required(requiredErrorMessage),
         venue_address: Yup.string().required(requiredErrorMessage),
         postal_address: Yup.string().required(requiredErrorMessage),
         venue_city: Yup.string().required(requiredErrorMessage),
-        venue_zip_code: Yup.string().required(requiredErrorMessage),
+        venue_zip_code: Yup.string().notRequired(),
         postal_city: Yup.string().required(requiredErrorMessage),
-        postal_zip_code: Yup.string().required(requiredErrorMessage),
+        postal_zip_code: Yup.string().notRequired(),
         country_id: Yup.string().required(requiredErrorMessage),
         postal_country_id: Yup.string().required(requiredErrorMessage),
         venueStateId: Yup.string()
@@ -71,11 +76,21 @@ export default countries =>
         contact_email: Yup.string()
             .email()
             .required(requiredErrorMessage),
-        contact_first_phone_number: Yup.string().required(requiredErrorMessage),
-        contact_second_phone_number: Yup.string().required(
-            requiredErrorMessage
-        ),
-        password: Yup.string().required(requiredErrorMessage),
+        contact_first_phone_number: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
+                "Phone number is not valid"
+            ),
+        contact_second_phone_number: Yup.string()
+            .required(requiredErrorMessage)
+            .matches(
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
+                "Phone number is not valid"
+            ),
+        password: Yup.string()
+            .required(requiredErrorMessage)
+            .min(4),
         confirm_password: Yup.string()
             .equalTo(Yup.ref("password"), "Passwords must match")
             .required(requiredErrorMessage)

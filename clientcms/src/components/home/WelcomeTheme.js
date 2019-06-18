@@ -69,13 +69,13 @@ const styles = theme => ({
         backgroundColor: "white",
         marginTop: "22px",
         width: "100%",
-        padding: "10%"
+        padding: "7%"
     },
 
     myInput: {
-        padding: "15px 10px",
+        padding: "12px 10px",
         backgroundColor: "white",
-        border: "1px solid #9D9D9D",
+        border: "1px solid #F4F4F4",
         borderRadius: "5px"
     },
     activeIcon: {
@@ -583,7 +583,7 @@ const WelcomeThemeSettings = ({
                             style={{ display: "flex", padding: "24px" }}
                         >
                             <LayoutContainerDiv style={{ width: "50%" }}>
-                                <SectionHeader style={{ margin: "2% 0 4%" }}>
+                                <SectionHeader style={{ margin: "20px 0" }}>
                                     BRAND ASSETS
                                 </SectionHeader>
                                 <EntryThemeContainerDiv
@@ -592,7 +592,7 @@ const WelcomeThemeSettings = ({
                                     <SubSectionDiv
                                         style={{
                                             display: "flex",
-                                            width: "30%",
+                                            width: "40%",
                                             margin: 0
                                         }}
                                     >
@@ -693,7 +693,7 @@ const WelcomeThemeSettings = ({
                                         marginTop: "30px"
                                     }}
                                 >
-                                    <EntryThemeDiv style={{ width: "30%" }}>
+                                    <EntryThemeDiv style={{ width: "40%" }}>
                                         <FieldLabel> HEADER FONT</FieldLabel>
                                         <Dropdown
                                             id="headerDropdown"
@@ -706,7 +706,7 @@ const WelcomeThemeSettings = ({
                                             // error={currentAttributeError === "headerFont"}
                                         />
                                     </EntryThemeDiv>
-                                    <EntryThemeDiv style={{ width: "30%" }}>
+                                    <EntryThemeDiv style={{ width: "40%" }}>
                                         <FieldLabel> SUBHEADER FONT</FieldLabel>
                                         <Dropdown
                                             placeholder="Subheader Font"
@@ -725,7 +725,7 @@ const WelcomeThemeSettings = ({
                                         marginBottom: "30px"
                                     }}
                                 >
-                                    <EntryThemeDiv style={{ width: "30%" }}>
+                                    <EntryThemeDiv style={{ width: "40%" }}>
                                         <FieldLabel> BODY COPY FONT</FieldLabel>
                                         <Dropdown
                                             placeholder="Body Copy Font"
@@ -737,7 +737,7 @@ const WelcomeThemeSettings = ({
                                             // error={currentAttributeError === "bodyFont"}
                                         />
                                     </EntryThemeDiv>
-                                    <EntryThemeDiv style={{ width: "30%" }}>
+                                    <EntryThemeDiv style={{ width: "40%" }}>
                                         <FieldLabel>
                                             CAPTION COPY FONT
                                         </FieldLabel>
@@ -803,7 +803,10 @@ const WelcomeThemeSettings = ({
                             </LayoutContainerDiv>
                             <LayoutContainerDiv style={{ width: "40%" }}>
                                 <SectionHeader
-                                    style={{ width: "100%", margin: "2% 0 4%" }}
+                                    style={{
+                                        width: "100%",
+                                        margin: "20px 0"
+                                    }}
                                 >
                                     DEFAULT LAYOUT
                                 </SectionHeader>

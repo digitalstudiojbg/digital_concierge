@@ -32,7 +32,8 @@ import {
     FieldLabel,
     SubFieldContainerDiv,
     SectionHeader,
-    ContinueButton
+    ContinueButton,
+    ContinueButtonContainer
 } from "./CreateClientStyleSet";
 
 //Bug in rendering material ui select label once value is selected
@@ -89,7 +90,7 @@ const renderSelectField = (
             component={Select}
             disabled={items.length < 1}
             input={<OutlinedInput />}
-            style={{ height: 38, backgroundColor: "white" }}
+            style={{ height: 43, backgroundColor: "white" }}
         >
             <MenuItem value="null" disabled>
                 {label}
@@ -117,7 +118,7 @@ const styles = theme => ({
         width: "100%"
     },
     myInput: {
-        padding: "10px",
+        padding: "12px 10px",
         backgroundColor: "white"
     }
 });
@@ -536,15 +537,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                 padding: "0px"
                                             }}
                                         >
-                                            <div
-                                                style={{
-                                                    // flex: 1,
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    justifyContent: "flex-end",
-                                                    alignItems: "flex-end"
-                                                }}
-                                            >
+                                            <ContinueButtonContainer>
                                                 <ContinueButton
                                                     variant="contained"
                                                     color="primary"
@@ -560,7 +553,7 @@ class WizardCreateClientPageOne extends React.Component {
                                                 >
                                                     Confirm & Continue
                                                 </ContinueButton>
-                                            </div>
+                                            </ContinueButtonContainer>
                                         </SectionDiv>
                                     </Form>
                                 );

@@ -227,7 +227,7 @@ const styles = () => ({
         marginBottom: 20
     },
     myInput: {
-        padding: "15px 10px",
+        padding: "12px 10px",
         backgroundColor: "white"
     }
 });
@@ -265,7 +265,7 @@ const renderSelectField = (nameValue, label, optionList) => {
             </FieldLabel>
             <Field
                 style={{
-                    height: 48,
+                    height: 43,
                     backgroundColor: "white"
                 }}
                 name={nameValue}
@@ -336,30 +336,26 @@ const validationSchema = countries =>
     Yup.object().shape({
         name: Yup.string()
             .required(requiredErrorMessage)
-            .min(3)
+            .min(2)
             .matches(
-                /^[A-Z\s]+$/,
-                "Needs to be uppercase and just alphabet are allowed"
+                /^[A-Za-z\s]+$/
+                //  "Needs to be uppercase and just alphabet are allowed"
             ),
 
         full_company_name: Yup.string()
             .required(requiredErrorMessage)
-            .min(3)
-            .matches(
-                /^[A-Z\s]+$/,
-                "Needs to be uppercase and just alphabet are allowed"
-            ),
+            .min(2),
 
         nature_of_business: Yup.string().required(requiredErrorMessage),
         phone: Yup.string()
             .required(requiredErrorMessage)
             .matches(
-                // used link https://www.sitepoint.com/community/t/phone-number-regular-expression-validation/2204 as reference
-                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                // /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
             )
             .max(20)
-            .min(4),
+            .min(5),
 
         email: Yup.string()
             .email("Wrong email format")
@@ -396,15 +392,19 @@ const validationSchema = countries =>
         first_phone_number: Yup.string()
             .required(requiredErrorMessage)
             .matches(
-                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
-            ),
+            )
+            .max(20)
+            .min(5),
         second_phone_number: Yup.string()
             .notRequired()
             .matches(
-                /^((\+?\+[1-9]{1,9}[ \\-]*)|(\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
-            ),
+            )
+            .max(20)
+            .min(5),
         password: Yup.string()
             .required(requiredErrorMessage)
             .min(4),

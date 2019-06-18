@@ -70,17 +70,17 @@ const ContainerDiv = styled.div`
     z-index: 1;
 `;
 
-const WelcomeDiv = styled.div`
-    width: 350px;
-    /* margin-left: 1.5vw; */
-    background-color: rgb(191, 191, 191);
-    height: 100%;
+const WelcomeDiv = styled.h2`
+    // width: 350px;
+    // background-color: rgb(191, 191, 191);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5em;
-    font-weight: 700;
-    color: black;
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+    padding-left: 100px;
 `;
 
 const WelcomeUserDetailContainerDiv = styled.div`
@@ -172,26 +172,29 @@ class Header extends Component {
                             </React.Fragment>
                         )} */}
                         {match.url === CREATE_NEW_CLIENT && (
-                            <div
+                            <h2
                                 style={{
-                                    height: "100%",
+                                    // height: "100%",
                                     display: "flex",
+                                    margin: 0,
                                     alignItems: "center",
-                                    paddingLeft: 30,
+                                    paddingLeft: 20,
                                     color: "rgb(52, 255, 163)",
-                                    fontSize: "3em",
-                                    fontWeight: 700
+                                    fontSize: "42px",
+                                    fontWeight: "bold"
                                 }}
                             >
                                 PORTAL
-                            </div>
+                            </h2>
                         )}
                     </div>
                     <div
                         style={{
                             width: "40%",
                             display: "flex",
-                            justifyContent: "flex-end"
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                            marginRight: "20px"
                         }}
                     >
                         <HomeIcon className={classes.iconMargin} />

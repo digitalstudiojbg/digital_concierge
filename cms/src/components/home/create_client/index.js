@@ -19,9 +19,11 @@ const NewClientSetupTitleContainer = styled.div`
     display: flex;
 `;
 
-const NewClientSetupTitle = styled.p`
-    font-size: 2.5em;
+const NewClientSetupTitle = styled.h4`
     padding-top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: Source Sans Pro;
 `;
 
 const CancelButtonContainer = styled.div`
@@ -46,7 +48,7 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit
     },
-    unCopletedIcon: {
+    unCompletedIcon: {
         color: "white",
         border: "2px solid #DDDDDD",
         borderRadius: "50%",
@@ -68,6 +70,14 @@ const styles = theme => ({
         // alternativeLabel: {
         //     color: "#2699FB !important"
         // }
+    },
+    topButtons: {
+        width: "80px",
+        color: "white",
+        backgroundColor: "#595959",
+        marginLeft: "10px",
+        borderRadius: "5px",
+        boxShadow: "2px 2px 3px #888888"
     }
 });
 
@@ -118,12 +128,19 @@ class CreateClient extends Component {
             activeStep: Math.min(activeStep + 1, array_components.length - 1)
         });
     };
+    handleBack = () => {
+        const { activeStep } = this.state;
+
+        this.setState({
+            activeStep: activeStep - 1
+        });
+    };
 
     // handlePrev = () => {
     //     const { activeStep } = this.state;
 
     //     this.setState({
-    //         activeStep: Math.max(activeStep - 1, 0)
+    //         activeStep: Math.max(activeStep - 1, array_components.length + 1)
     //     });
     // };
 
@@ -166,17 +183,27 @@ class CreateClient extends Component {
         return (
             <div className={classes.root}>
                 {activeStep > -1 && (
-                    <div style={{ width: "100%", height: 250 }}>
+                    <div
+                        style={{ width: "100%", height: 250, padding: "2% 4%" }}
+                    >
                         <NewClientSetupTitleContainer>
-                            <NewClientSetupTitle style={{ fontSize: "30px" }}>
-                                NEW CLIENT SETUP
+                            <NewClientSetupTitle>
+                                New Client Setup
                             </NewClientSetupTitle>
                             <CancelButtonContainer>
                                 <Button
+                                    className={classes.topButtons}
                                     variant="outlined"
                                     onClick={this.handleCancel}
                                 >
                                     CANCEL
+                                </Button>
+                                <Button
+                                    className={classes.topButtons}
+                                    variant="outlined"
+                                    onClick={this.handleBack}
+                                >
+                                    BACK
                                 </Button>
                             </CancelButtonContainer>
                         </NewClientSetupTitleContainer>
@@ -200,7 +227,7 @@ class CreateClient extends Component {
                                                 StepIconProps={{
                                                     classes: {
                                                         root:
-                                                            classes.unCopletedIcon,
+                                                            classes.unCompletedIcon,
                                                         completed:
                                                             classes.completedIcon,
                                                         active:
@@ -216,11 +243,11 @@ class CreateClient extends Component {
                         </Stepper>
                     </div>
                 )}
-                {/* <div style={{ flex: 1, height: "100%" }}> */}
+
                 <Suspense>
                     <SelectedComponent next={this.handleNext} />
                 </Suspense>
-                {/* </div> */}
+
                 {/* <div>
                     <div>
                         <Suspense>

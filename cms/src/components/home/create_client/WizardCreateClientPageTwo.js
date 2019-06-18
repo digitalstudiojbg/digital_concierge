@@ -42,7 +42,7 @@ import {
 
 const styles = theme => ({
     myInput: {
-        padding: "10px",
+        padding: "12px 10px",
         backgroundColor: "white"
     }
 });
@@ -143,7 +143,7 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
                 fullWidth={true}
                 input={
                     <OutlinedInput
-                        style={{ height: 38, backgroundColor: "white" }}
+                        style={{ height: 43, backgroundColor: "white" }}
                     />
                 }
             >

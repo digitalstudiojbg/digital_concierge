@@ -70,7 +70,7 @@ const styles = theme => ({
         fontSize: "10px"
     },
     myInput: {
-        padding: "10px",
+        padding: "12px 10px",
         background: "white"
     }
 });
@@ -806,7 +806,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                         </InputLabel> */}
                                                                             <Select
                                                                                 style={{
-                                                                                    height: 38,
+                                                                                    height: 43,
                                                                                     backgroundColor:
                                                                                         "white"
                                                                                 }}
