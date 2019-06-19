@@ -245,7 +245,7 @@ export default {
 
             //Logging and deleting contacts
             for await (const deleteContactId of delete_contacts) {
-                const contact = db.contact.findByPk(deleteContactId);
+                const contact = await db.contact.findByPk(deleteContactId);
                 if (!contact) {
                     throw new UserInputError(
                         `Unable to find Contact ID ${deleteContactId}`

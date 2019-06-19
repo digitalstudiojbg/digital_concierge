@@ -20,7 +20,11 @@ const processArticleImage = async (uploadFile, mediumId, clientId) => {
 
 export default {
     Query: {
-        article: async (_root, { id }) => await db.article.findByPk(id),
+        article: async (_root, { id }) => {
+            const article = await db.article.findByPk(id);
+            // console.log(Object.keys(article.__proto__));
+            return article;
+        },
         articles: async (_root, _input, { user }) => await db.article.findAll(),
         articlesByPublication: async (_root, { id }) =>
             await db.article.findAll({
