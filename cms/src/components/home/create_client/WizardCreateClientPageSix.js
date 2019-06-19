@@ -9,7 +9,11 @@ import { withRouter } from "react-router-dom";
 import { WELCOME_URL } from "../../../utils/Constants";
 //import { ContinueButton } from "./CreateClientStyleSet";
 
-import { SectionDiv, ContinueButton } from "./CreateClientStyleSet";
+import {
+    SectionDiv,
+    ContinueButton,
+    ContinueButtonContainer
+} from "./CreateClientStyleSet";
 
 class WizardCreateClientPageSix extends React.Component {
     navigateToDashboard = () => {
@@ -53,14 +57,14 @@ class WizardCreateClientPageSix extends React.Component {
                         padding: "0px"
                     }}
                 >
-                    <div
-                        style={{
-                            // flex: 1,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flex-end",
-                            alignItems: "flex-end"
-                        }}
+                    <ContinueButtonContainer
+                    // style={{
+                    //     // flex: 1,
+                    //     display: "flex",
+                    //     flexDirection: "column",
+                    //     justifyContent: "flex-end",
+                    //     alignItems: "flex-end"
+                    // }}
                     >
                         <ContinueButton
                             variant="contained"
@@ -69,7 +73,7 @@ class WizardCreateClientPageSix extends React.Component {
                         >
                             CONFIRM & COMPLETE SETUP
                         </ContinueButton>
-                    </div>
+                    </ContinueButtonContainer>
                 </SectionDiv>
                 <div style={{ clear: "both" }} />
             </div>

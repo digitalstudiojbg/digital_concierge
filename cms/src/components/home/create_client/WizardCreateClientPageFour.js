@@ -45,7 +45,8 @@ import {
     FieldLabel,
     ContinueButton,
     SectionDiv,
-    NormalButton
+    NormalButton,
+    ContinueButtonContainer
 } from "./CreateClientStyleSet";
 
 const styles = theme => ({
@@ -124,7 +125,8 @@ class WizardCreateClientPageFour extends React.Component {
                 style={{
                     width: "20%",
                     //  marginright:"10%",
-                    padding: "20px 20px 20px 0"
+                    padding: "1% 1% 1% 0",
+                    marginLeft: "4%"
                 }}
             >
                 <SectionHeader>Add System</SectionHeader>
@@ -242,9 +244,9 @@ class WizardCreateClientPageFour extends React.Component {
             <div
                 style={{
                     width: "37%",
-                    padding: "20px 40px",
+                    padding: "1% 4%",
                     borderLeft: "1px solid #DDDDDD",
-                    marginLeft: "4%;"
+                    marginRight: "4%"
                 }}
             >
                 <SectionHeader>All Client System</SectionHeader>
@@ -311,15 +313,15 @@ class WizardCreateClientPageFour extends React.Component {
                         padding: "0px"
                     }}
                 >
-                    <div
-                        style={{
-                            // flex: 1,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flex-end",
-                            alignItems: "flex-end"
-                            //   margin: "6% 3% 0 0"
-                        }}
+                    <ContinueButtonContainer
+                    // style={{
+                    //     // flex: 1,
+                    //     display: "flex",
+                    //     flexDirection: "column",
+                    //     justifyContent: "flex-end",
+                    //     alignItems: "flex-end"
+                    //     //   margin: "6% 3% 0 0"
+                    // }}
                     >
                         <ContinueButton
                             variant="contained"
@@ -331,7 +333,7 @@ class WizardCreateClientPageFour extends React.Component {
                         >
                             CONFIRM & CONTINUE
                         </ContinueButton>
-                    </div>
+                    </ContinueButtonContainer>
                 </SectionDiv>
             </div>
         );
@@ -363,9 +365,9 @@ class WizardCreateClientPageFour extends React.Component {
             <div
                 style={{
                     width: "30%",
-                    padding: "10px 10px 20px 10px",
+                    padding: 0,
                     marginRight: "2%",
-                    marginLeft: "8%",
+                    // marginLeft: "8%",
                     marginTop: "4%"
                 }}
             >
@@ -485,7 +487,7 @@ class WizardCreateClientPageFour extends React.Component {
                                             // paddingTop:"2%",
 
                                             marginBottom: "5%",
-                                            marginRight: "5%",
+                                            marginRight: "4%",
                                             backgroundColor: "#F7F7F7"
                                         }}
                                     >

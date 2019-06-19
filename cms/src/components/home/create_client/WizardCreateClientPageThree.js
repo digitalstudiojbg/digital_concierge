@@ -13,7 +13,7 @@ import {
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 //import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-
+//import CopyOutlinedIcon from "@material-ui/icons/CopyOutlined";
 import {
     CREATE_DEPARTMENT,
     CREATE_ROLE,
@@ -62,7 +62,8 @@ import {
     SubSection,
     FieldLabel,
     NormalButton,
-    ContinueButton
+    ContinueButton,
+    ContinueButtonContainer
 } from "./CreateClientStyleSet";
 
 const styles = theme => ({
@@ -521,7 +522,8 @@ class WizardCreateClientPageThree extends React.Component {
                                 style={{
                                     borderRight: "1px solid #9D9D9D",
                                     //  borderRadius: "5px",
-                                    paddingRight: "0"
+                                    padding: "10px 0px",
+                                    marginLeft: "4%"
                                 }}
                             >
                                 <label
@@ -948,7 +950,7 @@ class WizardCreateClientPageThree extends React.Component {
 
                                                                     <div
                                                                         style={{
-                                                                            paddingTop: 10,
+                                                                            paddingTop: 20,
                                                                             display:
                                                                                 "flex",
                                                                             justifyContent:
@@ -1296,7 +1298,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                     />
                                                 )}
                                             <SubSection
-                                                style={{ height: "60vh" }}
+                                            //   style={{ height: "60vh" }}
                                             >
                                                 <Table
                                                     style={{
@@ -1498,19 +1500,11 @@ class WizardCreateClientPageThree extends React.Component {
                                                     width: "100%",
                                                     height: "100px",
                                                     border: "0px",
-                                                    padding: "0px"
+                                                    padding: "0px",
+                                                    marginLeft: "4%"
                                                 }}
                                             >
-                                                <div
-                                                    style={{
-                                                        // flex: 1,
-                                                        display: "flex",
-                                                        flexDirection: "column",
-                                                        justifyContent:
-                                                            "flex-end",
-                                                        alignItems: "flex-end"
-                                                    }}
-                                                >
+                                                <ContinueButtonContainer>
                                                     <ContinueButton
                                                         variant="contained"
                                                         color="primary"
@@ -1521,7 +1515,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                     >
                                                         CONFIRM & CONTINUE
                                                     </ContinueButton>
-                                                </div>
+                                                </ContinueButtonContainer>
                                             </SectionDiv>
                                         </SectionDivContainer>
                                     );

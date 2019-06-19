@@ -96,6 +96,8 @@ class MediaLibrary extends React.Component {
             <div>
                 <div
                     style={{
+                        width: "92%",
+                        margin: "0 4%",
                         display: "flex",
                         justifyContent: "flex-end",
                         paddingBottom: "1%"
@@ -357,7 +359,7 @@ class MediaLibrary extends React.Component {
                         }
 
                         return (
-                            <div>
+                            <div style={{ width: "92%", margin: "0 4%" }}>
                                 <div
                                     style={{
                                         display: "flex",

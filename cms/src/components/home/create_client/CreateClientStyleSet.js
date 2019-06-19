@@ -158,7 +158,7 @@ export const ContinueButton = styled.button`
 //----page3----
 
 export const SectionDivContainer = styled.div`
-    width: 50%;
+    width: 46%;
     height: 100%;
     padding: 10px;
 `;
@@ -273,10 +273,11 @@ export const EachClientSystemContainerDeviceTypeText = styled.p`
 //---page5- SetupClientThemeAndlayout.js
 
 export const ThemeContainerDiv = styled.div`
-    width: 60%;
+    width: 51%;
     height: 100%;
     padding-bottom: 20px;
     border-right: 1px solid #dddddd;
+    margin-left: 4%;
 `;
 
 export const EntryThemeContainerDiv = styled.div`
@@ -299,36 +300,49 @@ export const EntryThemeDiv = styled.div`
 `;
 
 export const LayoutContainerDiv = styled.div`
-    width: 40%;
+    width: 41%;
     height: 100%;
-    padding-left: 5%;
+    padding-left: 2%;
+    margin-right: 4%;
 `;
 
 export const LayoutEntryContainerDiv = styled.div`
     width: 100%;
-    margin-bottom: 10%;
+    margin-bottom: 1%;
+    height: 120px;
+    display: flex;
 `;
 
 export const LayoutEntryDropdownDiv = styled.div`
-    width: 60%;
-    height: 120px;
+    width: 45%;
+    height: 100%;
     float: left;
-    margin-bottom: 1%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    // margin-bottom: 1%;
 `;
 
 export const LayoutEntryPreviewDiv = styled.div`
-    align-items: center;
-    border: 1px solid #dddddd;
-    padding: 5px;
-    width: 30%;
     height: 100px;
-    float: right;
-    margin-top: 20px;
+    padding-top: 2%;
+    // align-items: center;
+    // border: 1px solid #dddddd;
+    // padding: 5px;
+    // width: 30%;
+
+    // float: right;
+    // margin-top: 20px;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`
-    width: 90%;
-    margin: 5%;
+    // width: 90%;
+    // margin: 5%;
+    height: 110px;
+    margin: 1%;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+    padding: 10px;
 `;
 
 export const ColourEntryContainerDiv = styled.div`
