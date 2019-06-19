@@ -136,6 +136,13 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         history.push(GUIDE_MAIN_URL.replace(":pub_id", id));
     };
 
+    const handleClickEditMenu = () => {
+        setAnchorEl(null);
+        Boolean(anchorEl) &&
+            Boolean(anchorEl.id) &&
+            history.push(GUIDE_MAIN_URL.replace(":pub_id", anchorEl.id));
+    };
+
     const handleCloseMenu = () => setAnchorEl(null);
 
     const renderPublicationList = () => {
@@ -192,7 +199,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                         horizontal: "center"
                     }}
                 >
-                    <MenuItem>EDIT</MenuItem>
+                    <MenuItem onClick={handleClickEditMenu}>EDIT</MenuItem>
                     <MenuItem>DUPLICATE</MenuItem>
                 </Menu>
             </PublicationListContainerDiv>
