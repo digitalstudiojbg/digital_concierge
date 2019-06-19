@@ -4,8 +4,7 @@ import {
     checkUserJBG,
     processUploadMedia,
     handleCreateActionActivityLog,
-    handleUpdateActionActivityLog,
-    asyncForEach
+    handleUpdateActionActivityLog
 } from "../utils/constant";
 import { UserInputError } from "apollo-server-express";
 
@@ -416,41 +415,32 @@ export default {
                     );
                 }
                 let duplicateAdvertisingIds = [];
-                await asyncForEach(
-                    originalAdvertisings,
-                    async originalAdvertising => {
-                        const { id: advertisingId } = originalAdvertising;
-                        const duplicateAdvertisingId =
-                            originalAdvertisingIdToDuplicateId[advertisingId];
-                        const duplicateAdvertising = Boolean(
-                            duplicateAdvertisingId
-                        )
-                            ? await db.advertising.findByPk(
-                                  duplicateAdvertisingId
-                              )
-                            : null;
-                        if (!duplicateAdvertising) {
-                            throw new UserInputError(
-                                `Unable to find advertising duplicate Id of ${duplicateArticleId} (original ID: ${advertisingId}): `,
-                                error
-                            );
-                        }
-                        try {
-                            await duplicateArticle.addAdvertising(
-                                duplicateAdvertising
-                            );
-                        } catch (error) {
-                            throw new UserInputError(
-                                `Unable to link advertising duplicate Id of ${duplicateAdvertisingId} to article duplicate ID ${duplicateArticleId}: `,
-                                error
-                            );
-                        }
-                        duplicateAdvertisingIds = [
-                            ...duplicateAdvertisingIds,
-                            duplicateAdvertisingId
-                        ];
+                for await (const originalAdvertising of originalAdvertisings) {
+                    const { id: advertisingId } = originalAdvertising;
+                    const duplicateAdvertisingId =
+                        originalAdvertisingIdToDuplicateId[advertisingId];
+                    const duplicateAdvertising = Boolean(duplicateAdvertisingId)
+                        ? await db.advertising.findByPk(duplicateAdvertisingId)
+                        : null;
+                    if (!duplicateAdvertising) {
+                        throw new UserInputError(
+                            `Unable to find advertising duplicate Id of ${duplicateArticleId} (original ID: ${advertisingId}): `,
+                            error
+                        );
                     }
-                );
+                    try {
+                        await duplicateArticle.addAdvertising(
+                            duplicateAdvertising
+                        );
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Unable to link advertising duplicate Id of ${duplicateAdvertisingId} to article duplicate ID ${duplicateArticleId}: `,
+                            error
+                        );
+                    }
+                    duplicateAdvertisingIds.push(duplicateAdvertisingId);
+                }
+
                 handleUpdateActionActivityLog(
                     duplicateArticle,
                     { duplicateAdvertisingIds },
@@ -477,7 +467,7 @@ export default {
                         error
                     );
                 }
-                await asyncForEach(originalPayments, async originalPayment => {
+                for await (const originalPayment of originalPayments) {
                     const { id: paymentId, ...temp } = originalPayment;
                     const tempPayment = Object.assign(temp, {
                         advertisingId: duplicateAdvertisingId
@@ -499,7 +489,7 @@ export default {
                         user,
                         clientIp
                     );
-                });
+                }
             }
 
             return duplicateArticle;
