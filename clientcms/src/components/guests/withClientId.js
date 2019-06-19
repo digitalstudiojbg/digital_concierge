@@ -1,13 +1,26 @@
 import React from 'react';
 import Query from "react-apollo/Query";
-import { getCurrentUserQuery } from "../../data/query";
+import { withRouter } from "react-router-dom";
+import { getSystemDetail } from "../../data/query";
 
-const withClientId = (Component) => React.memo((props) => (
-    <Query query={getCurrentUserQuery}>
-        {({ data: { getCurrentUser: data } }) => (
-            <Component {...props} clientId={data.client && Number(data.client.id)} />
-        )}
-    </Query>
-));
+const withClientId = Component => withRouter(
+    React.memo((props) => {
+        const { system_id } = props.match.params;
+
+        return (
+            <Query
+                query={getSystemDetail}
+                variables={{ id: system_id }}
+            >
+                {({ data: { system: data } }) => (
+                    <Component
+                        {...props}
+                        clientId={data && data.client && Number(data.client.id)}
+                    />
+                )}
+            </Query>
+        )
+    })
+);
 
 export default withClientId;
