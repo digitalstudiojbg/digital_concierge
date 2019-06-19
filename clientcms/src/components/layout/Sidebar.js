@@ -23,7 +23,8 @@ import {
     SYSTEM_CMS_REPORTS,
     SYSTEM_CMS_STAFF,
     SYSTEM_MODIFY_DIRECTORY_LIST_URL,
-    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL
+    SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
+    SYSTEM_CMS_CONTENT_INDEX
 } from "../../utils/Constants";
 import { withRouter } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
@@ -102,6 +103,7 @@ const SIDEBAR_ITEMS = [
     },
     {
         name: "expandContent",
+        url: SYSTEM_CMS_CONTENT_INDEX,
         displayName: "Content",
         icon: List,
         icon2: [ExpandMore, ExpandLess],
@@ -291,6 +293,10 @@ class Sidebar extends Component {
                     urlPath = SYSTEM_MODIFY_HOME_URL;
                     expandContent = true;
                     break;
+                case SYSTEM_CMS_CONTENT_INDEX.replace(":system_id", system_id):
+                    urlPath = SYSTEM_CMS_CONTENT_INDEX;
+                    expandContent = true;
+                    break;
                 default:
                     urlPath = SYSTEM_CMS_INDEX_URL;
             }
@@ -431,7 +437,8 @@ class Sidebar extends Component {
                                         icon: EntryIcon,
                                         icon2: expandCompressIcons,
                                         paddingLeft,
-                                        expandItems = []
+                                        expandItems = [],
+                                        url = ""
                                     } = items;
 
                                     const ExpandIcon =
@@ -482,13 +489,24 @@ class Sidebar extends Component {
                                                                     "expand"
                                                                 )
                                                             ) {
-                                                                //Do not navigate if expand
+                                                                //Do not navigate if expand and do not have url attribute
                                                                 this.setState({
                                                                     [name]: !this
                                                                         .state[
                                                                         name
                                                                     ]
                                                                 });
+                                                                if (
+                                                                    Boolean(url)
+                                                                ) {
+                                                                    //Navigate if there is url attribute for expand entry
+                                                                    this.props.history.push(
+                                                                        url.replace(
+                                                                            ":system_id",
+                                                                            system.id
+                                                                        )
+                                                                    );
+                                                                }
                                                                 this.handleOnClick();
                                                             } else {
                                                                 this.setState({
@@ -512,7 +530,13 @@ class Sidebar extends Component {
                                                         selectedItem={
                                                             selectedItem
                                                         }
-                                                        expectedItem={name}
+                                                        expectedItem={
+                                                            name.includes(
+                                                                "expand"
+                                                            ) && Boolean(url)
+                                                                ? url
+                                                                : name
+                                                        }
                                                         paddingLeft={
                                                             paddingLeft
                                                         }
