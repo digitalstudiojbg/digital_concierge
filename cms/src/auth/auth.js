@@ -1,3 +1,5 @@
+import { CLIENT_CMS_URL } from "../utils/Constants";
+
 // import { API_URL } from "../utils/Constants";
 
 const accessTokenKey = "accessToken";
@@ -23,12 +25,16 @@ export async function login(email, password, rememberMe = false) {
     );
     if (response.ok) {
         const { token, clientName } = await response.json();
+        console.log(clientName);
         //PORTAL CMS can only be logged in by JBG STAFF MEMBERS ONLY!
         if (clientName.toUpperCase() === "JOHN BATMAN GROUP") {
             localStorage.setItem(accessTokenKey, token);
             rememberMe && localStorage.setItem(emailUsername, email);
             return response.ok;
+        } else {
+            window.location.replace(CLIENT_CMS_URL);
         }
+    } else {
         return false;
     }
 }

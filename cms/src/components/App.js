@@ -110,7 +110,10 @@ class App extends Component {
                         isEmpty(data) ||
                         isEmpty(data.clientJBG)
                     )
-                        return window.location.replace(CLIENT_CMS_URL);
+                        if (this.state.loggedIn) {
+                            //Only Redirect if logged in and user's client is not jbg
+                            return window.location.replace(CLIENT_CMS_URL);
+                        }
                     return (
                         <Router
                             ref={router => (this.router = router)}
