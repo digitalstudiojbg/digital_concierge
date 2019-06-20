@@ -3,11 +3,12 @@ import TabbedPage from "../../../utils/TabbedPage";
 import PublicationList from "./PublicationList";
 import MainAdvertiserList from "./MainAdvertiserList";
 
-const JustBrilliantGuideMain = ({ data }) => {
+const JustBrilliantGuideMain = ({ data, otherProps }) => {
     return (
         <TabbedPage
             title="Just Brilliant Guides"
             data={data}
+            otherProps={otherProps}
             tabs={[
                 {
                     name: "Publications",
