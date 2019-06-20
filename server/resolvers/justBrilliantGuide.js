@@ -258,9 +258,36 @@ export default {
                     error
                 );
             }
+
+            //Duplicating Guide Media file(s)
+            const originalMedia = await db.media.findAll({
+                include: [
+                    {
+                        model: db.just_brilliant_guide,
+                        where: { id }
+                    }
+                ]
+            });
+            let mediaIds = [];
+            if (Array.isArray(originalMedia) && originalMedia.length > 0) {
+                for await (const media of originalMedia) {
+                    try {
+                        await duplicateGuide.addMedia(media);
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Unable to link publication duplicate Id of ${
+                                duplicateGuide.id
+                            } to media ID ${media.id}: `,
+                            error
+                        );
+                    }
+                    mediaIds.push(media.id);
+                }
+            }
+
             handleCreateActionActivityLog(
                 duplicateGuide,
-                { ...tempGuide },
+                { ...tempGuide, media: [...mediaIds] },
                 user,
                 clientIp
             );
