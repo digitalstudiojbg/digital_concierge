@@ -271,7 +271,6 @@ export default {
                     error
                 );
             }
-            console.log("Finish duplicating guide");
 
             //Duplicating advertisers
             let originalAdvertiserIdToDuplicateId = {};
@@ -316,7 +315,6 @@ export default {
                     );
                 }
             }
-            console.log("Finish duplicating advertisers");
 
             //Duplicating articles
             let originalArticleIdToDuplicateId = {};
@@ -359,7 +357,6 @@ export default {
                     );
                 }
             }
-            console.log("Finish duplicating articles");
 
             //Duplicating advertisings
             let originalAdvertisingIdToDuplicateId = {};
@@ -402,14 +399,6 @@ export default {
                                 originalAdvertisingIdToDuplicateId,
                                 { [originalId]: duplicateAdvertising.id }
                             );
-                            console.log(
-                                "Duplicating advertsing ",
-                                duplicateAdvertising
-                            );
-                            console.log(
-                                "Duplicate ID ",
-                                duplicateAdvertising.id
-                            );
                         } catch (error) {
                             throw new UserInputError(
                                 `Unable to duplicate Advertising ${originalId}: `,
@@ -426,8 +415,6 @@ export default {
                     }
                 }
             }
-            console.log("Finish duplicating advertisings");
-            console.log("dictionary ", originalAdvertisingIdToDuplicateId);
 
             if (
                 Array.isArray(originalArticles) &&
@@ -496,7 +483,6 @@ export default {
                     );
                 }
             }
-            console.log("Finish duplicating pivot advertising and article");
 
             //Duplicating payments
             if (originalAdvertisingIdList.length > 0) {
@@ -545,7 +531,6 @@ export default {
                     }
                 }
             }
-            console.log("Finish duplicating payments");
 
             return duplicateGuide;
         }
