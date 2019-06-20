@@ -70,17 +70,17 @@ const ContainerDiv = styled.div`
     z-index: 1;
 `;
 
-const WelcomeDiv = styled.h2`
+const WelcomeDiv = styled.div`
     // width: 350px;
     // background-color: rgb(191, 191, 191);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 42px;
-    font-weight: bold;
+    font-size: 2em;
+    font-weight: 700;
     color: white;
     margin: 0;
-    padding-left: 100px;
+    padding-left: 50px;
 `;
 
 const WelcomeUserDetailContainerDiv = styled.div`
@@ -128,7 +128,7 @@ class Header extends Component {
 
         return (
             <ContainerDiv>
-                {match.url === URL_WELCOME ||
+                {/* {match.url === URL_WELCOME ||
                 match.url === CREATE_NEW_CLIENT ? (
                     <WelcomeDiv>PLATYPUS</WelcomeDiv>
                 ) : (
@@ -152,7 +152,8 @@ class Header extends Component {
                             </Link>
                         )}
                     </div>
-                )}
+                )} */}
+                <WelcomeDiv>PLATYPUS</WelcomeDiv>
                 <div
                     style={{
                         flex: 1,
@@ -160,7 +161,7 @@ class Header extends Component {
                         justifyContent: "flex-end"
                     }}
                 >
-                    <div style={{ width: "60%" }}>
+                    <div style={{ width: "60%", display: "flex" }}>
                         {/* {match.url !== URL_WELCOME && (
                             <React.Fragment>
                                 <div>{name.toUpperCase()}</div>
@@ -171,22 +172,21 @@ class Header extends Component {
                                 </div>
                             </React.Fragment>
                         )} */}
-                        {match.url === CREATE_NEW_CLIENT && (
-                            <h2
-                                style={{
-                                    // height: "100%",
-                                    display: "flex",
-                                    margin: 0,
-                                    alignItems: "center",
-                                    paddingLeft: 20,
-                                    color: "rgb(52, 255, 163)",
-                                    fontSize: "42px",
-                                    fontWeight: "bold"
-                                }}
-                            >
-                                PORTAL
-                            </h2>
-                        )}
+
+                        <div
+                            style={{
+                                // height: "100%",
+                                display: "flex",
+                                margin: 0,
+                                alignItems: "center",
+                                paddingLeft: 10,
+                                color: "rgb(52, 255, 163)",
+                                fontSize: "2em",
+                                fontWeight: "700"
+                            }}
+                        >
+                            PORTAL
+                        </div>
                     </div>
                     <div
                         style={{

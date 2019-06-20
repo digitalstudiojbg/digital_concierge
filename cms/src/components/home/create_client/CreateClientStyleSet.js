@@ -9,7 +9,21 @@ export const CancelButtonContainerDiv = styled.div`
     align-items: center;
     padding: 4% 8%;
 `;
+export const TopButtonsContainer = styled.div`
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+`;
+export const MainSectionContainer = styled.div`
+    width: 100%;
+    height: 100%;
 
+    padding: 3%;
+`;
+
+export const SubSectionTop = styled.div`
+    display: flex;
+`;
 export const ContentContainerDiv = styled.div`
     width: 100%;
     height: 70%;
@@ -17,6 +31,10 @@ export const ContentContainerDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+export const PageHeader = styled.h2`
+    fontsize: 30px;
+    padding-bottom: 2%;
 `;
 
 export const TitleDiv = styled.div`
@@ -76,9 +94,11 @@ export const FieldDiv = styled.div`
     width: 100%;
     padding: 0px;
 `;
-export const FieldLabel = styled.label`
+export const FieldLabel = styled.div`
     font-size: 10px;
+    margin-bottom: 2px;
     color: #5c5c5c;
+    text-transform: uppercase;
 `;
 
 export const SubFieldContainerDiv = styled.div`
