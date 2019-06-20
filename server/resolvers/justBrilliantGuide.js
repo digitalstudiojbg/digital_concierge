@@ -271,6 +271,7 @@ export default {
                     error
                 );
             }
+            console.log("Finish duplicating guide");
 
             //Duplicating advertisers
             let originalAdvertiserIdToDuplicateId = {};
@@ -279,37 +280,43 @@ export default {
                 where: { justBrilliantGuideId: id },
                 raw: true
             });
-            for await (const originalAdvertiser of originalAdvertisers) {
-                const { id: originalId, ...temp } = originalAdvertiser;
-                const tempAdvertiser = Object.assign(temp, {
-                    justBrilliantGuideId: duplicateGuide.id
-                });
-                let duplicateAdvertiser = db.advertiser.build({
-                    ...tempAdvertiser
-                });
-                try {
-                    await duplicateAdvertiser.save();
-                    originalAdvertiserIdToDuplicateId = Object.assign(
-                        originalAdvertiserIdToDuplicateId,
-                        { [originalId]: duplicateAdvertiser.id }
-                    );
-                    // duplicateAdvertiserIdToOriginalId = Object.assign(
-                    //     duplicateAdvertiserIdToOriginalId,
-                    //     { [duplicateAdvertiser.id]: originalId }
-                    // );
-                } catch (error) {
-                    throw new UserInputError(
-                        `Unable to duplicate Advertiser ${originalId}: `,
-                        error
+            if (
+                Array.isArray(originalAdvertisers) &&
+                originalAdvertisers.length > 0
+            ) {
+                for await (const originalAdvertiser of originalAdvertisers) {
+                    const { id: originalId, ...temp } = originalAdvertiser;
+                    const tempAdvertiser = Object.assign(temp, {
+                        justBrilliantGuideId: duplicateGuide.id
+                    });
+                    let duplicateAdvertiser = db.advertiser.build({
+                        ...tempAdvertiser
+                    });
+                    try {
+                        await duplicateAdvertiser.save();
+                        originalAdvertiserIdToDuplicateId = Object.assign(
+                            originalAdvertiserIdToDuplicateId,
+                            { [originalId]: duplicateAdvertiser.id }
+                        );
+                        // duplicateAdvertiserIdToOriginalId = Object.assign(
+                        //     duplicateAdvertiserIdToOriginalId,
+                        //     { [duplicateAdvertiser.id]: originalId }
+                        // );
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Unable to duplicate Advertiser ${originalId}: `,
+                            error
+                        );
+                    }
+                    handleCreateActionActivityLog(
+                        duplicateAdvertiser,
+                        { ...tempAdvertiser },
+                        user,
+                        clientIp
                     );
                 }
-                handleCreateActionActivityLog(
-                    duplicateAdvertiser,
-                    { ...tempAdvertiser },
-                    user,
-                    clientIp
-                );
             }
+            console.log("Finish duplicating advertisers");
 
             //Duplicating articles
             let originalArticleIdToDuplicateId = {};
@@ -318,105 +325,186 @@ export default {
                 where: { justBrilliantGuideId: id },
                 raw: true
             });
-            for await (const originalArticle of originalArticles) {
-                const { id: originalId, ...temp } = originalArticle;
-                const tempArticle = Object.assign(temp, {
-                    justBrilliantGuideId: duplicateGuide.id
-                });
-                let duplicateArticle = db.article.build({ ...tempArticle });
-                try {
-                    await duplicateArticle.save();
-                    originalArticleIdToDuplicateId = Object.assign(
-                        originalArticleIdToDuplicateId,
-                        { [originalId]: duplicateArticle.id }
-                    );
-                    // duplicateArticleIdToOriginalId = Object.assign(
-                    //     duplicateArticleIdToOriginalId,
-                    //     { [duplicateArticle.id]: originalId }
-                    // );
-                } catch (error) {
-                    throw new UserInputError(
-                        `Unable to duplicate Article ${originalId}: `,
-                        error
+            if (
+                Array.isArray(originalArticles) &&
+                originalArticles.length > 0
+            ) {
+                for await (const originalArticle of originalArticles) {
+                    const { id: originalId, ...temp } = originalArticle;
+                    const tempArticle = Object.assign(temp, {
+                        justBrilliantGuideId: duplicateGuide.id
+                    });
+                    let duplicateArticle = db.article.build({ ...tempArticle });
+                    try {
+                        await duplicateArticle.save();
+                        originalArticleIdToDuplicateId = Object.assign(
+                            originalArticleIdToDuplicateId,
+                            { [originalId]: duplicateArticle.id }
+                        );
+                        // duplicateArticleIdToOriginalId = Object.assign(
+                        //     duplicateArticleIdToOriginalId,
+                        //     { [duplicateArticle.id]: originalId }
+                        // );
+                    } catch (error) {
+                        throw new UserInputError(
+                            `Unable to duplicate Article ${originalId}: `,
+                            error
+                        );
+                    }
+                    handleCreateActionActivityLog(
+                        duplicateArticle,
+                        { ...tempArticle },
+                        user,
+                        clientIp
                     );
                 }
-                handleCreateActionActivityLog(
-                    duplicateArticle,
-                    { ...tempArticle },
-                    user,
-                    clientIp
-                );
             }
+            console.log("Finish duplicating articles");
 
             //Duplicating advertisings
             let originalAdvertisingIdToDuplicateId = {};
+            let originalAdvertisingIdList = [];
             for await (const originalAdvertiser of originalAdvertisers) {
                 const { id: advertiserId } = originalAdvertiser;
-                const originalAdvertisings = db.advertising.findAll({
+                const originalAdvertisings = await db.advertising.findAll({
                     where: { advertiserId },
                     raw: true
                 });
-                for await (const originalAdvertising of originalAdvertisings) {
-                    const { id: originalId, ...temp } = originalAdvertising;
-                    const duplicateAdvertiserId =
-                        originalAdvertiserIdToDuplicateId[advertiserId];
-                    const duplicateAdvertiser = Boolean(duplicateAdvertiserId)
-                        ? await db.advertiser.findByPk(duplicateAdvertiserId)
-                        : null;
-                    if (!duplicateAdvertiser) {
-                        throw new UserInputError(
-                            `Unable to find advertiser duplicate Id of ${duplicateAdvertiserId} (original ID: ${advertiserId}): `,
-                            error
-                        );
-                    }
-                    const tempAdvertising = Object.assign(temp, {
-                        advertiserId: duplicateAdvertiserId
-                    });
-                    let duplicateAdvertising = db.advertising.build({
-                        ...tempAdvertising
-                    });
-                    try {
-                        await duplicateAdvertising.save();
-                        originalAdvertisingIdToDuplicateId = Object.assign(
-                            originalAdvertisingIdToDuplicateId,
-                            { [originalId]: duplicateAdvertising.id }
-                        );
-                    } catch (error) {
-                        throw new UserInputError(
-                            `Unable to duplicate Advertising ${originalId}: `,
-                            error
+
+                const duplicateAdvertiserId =
+                    originalAdvertiserIdToDuplicateId[advertiserId];
+                const duplicateAdvertiser = Boolean(duplicateAdvertiserId)
+                    ? await db.advertiser.findByPk(duplicateAdvertiserId)
+                    : null;
+                if (!duplicateAdvertiser) {
+                    throw new UserInputError(
+                        `Unable to find advertiser duplicate Id of ${duplicateAdvertiserId} (original ID: ${advertiserId}): `,
+                        error
+                    );
+                }
+
+                if (
+                    Array.isArray(originalAdvertisings) &&
+                    originalAdvertisings.length > 0
+                ) {
+                    for await (const originalAdvertising of originalAdvertisings) {
+                        const { id: originalId, ...temp } = originalAdvertising;
+
+                        const tempAdvertising = Object.assign(temp, {
+                            advertiserId: duplicateAdvertiserId
+                        });
+                        let duplicateAdvertising = db.advertising.build({
+                            ...tempAdvertising
+                        });
+                        try {
+                            await duplicateAdvertising.save();
+                            originalAdvertisingIdToDuplicateId = Object.assign(
+                                originalAdvertisingIdToDuplicateId,
+                                { [originalId]: duplicateAdvertising.id }
+                            );
+                            console.log(
+                                "Duplicating advertsing ",
+                                duplicateAdvertising
+                            );
+                            console.log(
+                                "Duplicate ID ",
+                                duplicateAdvertising.id
+                            );
+                        } catch (error) {
+                            throw new UserInputError(
+                                `Unable to duplicate Advertising ${originalId}: `,
+                                error
+                            );
+                        }
+                        originalAdvertisingIdList.push(originalId);
+                        handleCreateActionActivityLog(
+                            duplicateAdvertising,
+                            { ...tempAdvertising },
+                            user,
+                            clientIp
                         );
                     }
                 }
             }
+            console.log("Finish duplicating advertisings");
+            console.log("dictionary ", originalAdvertisingIdToDuplicateId);
 
-            //Set duplicate advertising to duplicate article pivot table
-            for await (const originalArticle of originalArticles) {
-                const { id: articleId } = originalArticle;
-                const originalAdvertisings = await db.advertising.findAll({
-                    include: [
-                        {
-                            model: db.article,
-                            where: { id: articleId }
+            if (
+                Array.isArray(originalArticles) &&
+                originalArticles.length > 0
+            ) {
+                //Set duplicate advertising to duplicate article pivot table
+                for await (const originalArticle of originalArticles) {
+                    const { id: articleId } = originalArticle;
+                    const originalAdvertisings = await db.advertising.findAll({
+                        include: [
+                            {
+                                model: db.article,
+                                where: { id: articleId }
+                            }
+                        ],
+                        raw: true
+                    });
+                    const duplicateArticleId =
+                        originalArticleIdToDuplicateId[articleId];
+                    const duplicateArticle = Boolean(duplicateArticleId)
+                        ? await db.article.findByPk(duplicateArticleId)
+                        : null;
+
+                    if (!duplicateArticle) {
+                        throw new UserInputError(
+                            `Unable to find article duplicate Id of ${duplicateArticleId} (original ID: ${articleId}): `,
+                            error
+                        );
+                    }
+                    let duplicateAdvertisingIds = [];
+                    for await (const originalAdvertising of originalAdvertisings) {
+                        const { id: advertisingId } = originalAdvertising;
+                        const duplicateAdvertisingId =
+                            originalAdvertisingIdToDuplicateId[advertisingId];
+                        const duplicateAdvertising = Boolean(
+                            duplicateAdvertisingId
+                        )
+                            ? await db.advertising.findByPk(
+                                  duplicateAdvertisingId
+                              )
+                            : null;
+                        if (!duplicateAdvertising) {
+                            throw new UserInputError(
+                                `Unable to find advertising duplicate Id of ${duplicateArticleId} (original ID: ${advertisingId}): `,
+                                error
+                            );
                         }
-                    ],
-                    raw: true
-                });
-                const duplicateArticleId =
-                    originalArticleIdToDuplicateId[articleId];
-                const duplicateArticle = Boolean(duplicateArticleId)
-                    ? await db.article.findByPk(duplicateArticleId)
-                    : null;
+                        try {
+                            await duplicateArticle.addAdvertising(
+                                duplicateAdvertising
+                            );
+                        } catch (error) {
+                            throw new UserInputError(
+                                `Unable to link advertising duplicate Id of ${duplicateAdvertisingId} to article duplicate ID ${duplicateArticleId}: `,
+                                error
+                            );
+                        }
+                        duplicateAdvertisingIds.push(duplicateAdvertisingId);
+                    }
 
-                if (!duplicateArticle) {
-                    throw new UserInputError(
-                        `Unable to find article duplicate Id of ${duplicateArticleId} (original ID: ${articleId}): `,
-                        error
+                    handleUpdateActionActivityLog(
+                        duplicateArticle,
+                        { duplicateAdvertisingIds },
+                        user,
+                        clientIp
                     );
                 }
-                let duplicateAdvertisingIds = [];
-                for await (const originalAdvertising of originalAdvertisings) {
-                    const { id: advertisingId } = originalAdvertising;
+            }
+            console.log("Finish duplicating pivot advertising and article");
+
+            //Duplicating payments
+            if (originalAdvertisingIdList.length > 0) {
+                for await (const advertisingId of originalAdvertisingIdList) {
+                    const originalPayments = await db.payment.findAll({
+                        where: { advertisingId },
+                        raw: true
+                    });
                     const duplicateAdvertisingId =
                         originalAdvertisingIdToDuplicateId[advertisingId];
                     const duplicateAdvertising = Boolean(duplicateAdvertisingId)
@@ -424,75 +512,42 @@ export default {
                         : null;
                     if (!duplicateAdvertising) {
                         throw new UserInputError(
-                            `Unable to find advertising duplicate Id of ${duplicateArticleId} (original ID: ${advertisingId}): `,
-                            error
+                            `Unable to find advertising duplicate Id of ${duplicateAdvertisingId} (original ID: ${advertisingId})`
                         );
                     }
-                    try {
-                        await duplicateArticle.addAdvertising(
-                            duplicateAdvertising
-                        );
-                    } catch (error) {
-                        throw new UserInputError(
-                            `Unable to link advertising duplicate Id of ${duplicateAdvertisingId} to article duplicate ID ${duplicateArticleId}: `,
-                            error
-                        );
+                    if (
+                        Array.isArray(originalPayments) &&
+                        originalPayments.length > 0
+                    ) {
+                        for await (const originalPayment of originalPayments) {
+                            const { id: paymentId, ...temp } = originalPayment;
+                            const tempPayment = Object.assign(temp, {
+                                advertisingId: duplicateAdvertisingId
+                            });
+                            let duplicatePayment = db.payment.build({
+                                ...tempPayment
+                            });
+                            try {
+                                await duplicatePayment.save();
+                            } catch (error) {
+                                throw new UserInputError(
+                                    `Unable to duplicate Payment ${paymentId}: `,
+                                    error
+                                );
+                            }
+                            handleCreateActionActivityLog(
+                                duplicatePayment,
+                                { ...tempPayment },
+                                user,
+                                clientIp
+                            );
+                        }
                     }
-                    duplicateAdvertisingIds.push(duplicateAdvertisingId);
-                }
-
-                handleUpdateActionActivityLog(
-                    duplicateArticle,
-                    { duplicateAdvertisingIds },
-                    user,
-                    clientIp
-                );
-            }
-
-            //Duplicating payments
-            for await (const originalAdvertising of originalAdvertisings) {
-                const { id: advertisingId } = originalAdvertising;
-                const originalPayments = db.payment.findAll({
-                    where: { advertisingId },
-                    raw: true
-                });
-                const duplicateAdvertisingId =
-                    originalAdvertisingIdToDuplicateId[advertisingId];
-                const duplicateAdvertising = Boolean(duplicateAdvertisingId)
-                    ? await db.advertising.findByPk(duplicateAdvertisingId)
-                    : null;
-                if (!duplicateAdvertising) {
-                    throw new UserInputError(
-                        `Unable to find advertising duplicate Id of ${duplicateArticleId} (original ID: ${advertisingId}): `,
-                        error
-                    );
-                }
-                for await (const originalPayment of originalPayments) {
-                    const { id: paymentId, ...temp } = originalPayment;
-                    const tempPayment = Object.assign(temp, {
-                        advertisingId: duplicateAdvertisingId
-                    });
-                    let duplicatePayment = db.payment.build({
-                        ...tempPayment
-                    });
-                    try {
-                        await duplicatePayment.save();
-                    } catch (error) {
-                        throw new UserInputError(
-                            `Unable to duplicate Payment ${paymentId}: `,
-                            error
-                        );
-                    }
-                    handleCreateActionActivityLog(
-                        duplicatePayment,
-                        { ...tempPayment },
-                        user,
-                        clientIp
-                    );
                 }
             }
+            console.log("Finish duplicating payments");
 
-            return duplicateArticle;
+            return duplicateGuide;
         }
     },
     JustBrilliantGuide: {
