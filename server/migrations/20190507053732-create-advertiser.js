@@ -37,11 +37,7 @@ module.exports = {
                 }
             },
             zip_code: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
+                type: Sequelize.STRING
             },
             postal_address: {
                 type: Sequelize.STRING,
@@ -58,11 +54,7 @@ module.exports = {
                 }
             },
             postal_zip_code: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
+                type: Sequelize.STRING
             },
             phone: {
                 type: Sequelize.STRING,

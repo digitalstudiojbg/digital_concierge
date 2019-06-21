@@ -54,13 +54,13 @@ const FieldContainerDiv = styled.div`
 const AGREEMENT_FIELDS = [
     {
         name: "agreement_number",
-        label: "Agreement Number",
+        label: "Contract Number",
         required: true,
         type: "text"
     },
     {
         name: "agreement_date",
-        label: "Agreement Date",
+        label: "Contract Date",
         required: true,
         type: "date",
         disablePast: false,
@@ -530,7 +530,7 @@ const StepContract = ({
                                 paddingLeft="20px"
                                 flexDirection="column"
                             >
-                                <SectionTitleDiv>Agreement</SectionTitleDiv>
+                                <SectionTitleDiv>Contract</SectionTitleDiv>
                                 {AGREEMENT_FIELDS.map(
                                     (item, agreementIndex) => (
                                         <FieldContainerDiv
