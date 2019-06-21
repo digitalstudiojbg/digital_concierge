@@ -578,6 +578,24 @@ module.exports = {
                     clientId: 2,
                     key: "cms_assets/Directory List Page-40.jpg",
                     size: Math.random() * 50000
+                },
+                {
+                    name: "minimalist.jpg",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_users/minimalist.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/minimalist.jpg",
+                    size: Math.random() * 50000
+                },
+                {
+                    name: "tropical.jpg",
+                    path:
+                        "https://digitalconcierge.s3-ap-southeast-2.amazonaws.com/cms_users/tropical.jpg",
+                    type: "image",
+                    clientId: 2,
+                    key: "cms_users/tropical.jpg",
+                    size: Math.random() * 50000
                 }
             ],
             {}
