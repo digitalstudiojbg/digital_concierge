@@ -10,7 +10,7 @@ export const CancelButtonContainerDiv = styled.div`
     padding: 4% 8%;
 `;
 export const TopButtonsContainer = styled.div`
-    width: 15%;
+    width: 12%;
     display: flex;
     flex-direction: column;
 `;
@@ -21,6 +21,11 @@ export const MainSectionContainer = styled.div`
     padding: 3%;
 `;
 
+export const ContainerDivTab = styled.div`
+    width: 100%;
+    overflow-y: auto;
+    height: 80vh;
+`;
 export const SubSectionTop = styled.div`
     display: flex;
 `;

@@ -166,7 +166,6 @@ const ContainerDiv = styled.div`
 
 const FirstSectionContainerDiv = styled.div`
     flex: 1;
-    width: 70%;
     padding-right: 20px;
 `;
 

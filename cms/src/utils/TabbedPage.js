@@ -29,14 +29,9 @@ import {
     SubSectionTop,
     PageHeader,
     MainSectionContainer,
-    TopButtonsContainer
+    TopButtonsContainer,
+    ContainerDivTab
 } from "../components/home/create_client/CreateClientStyleSet";
-
-const ContainerDivTab = styled.div`
-    width: 100%;
-    overflow-y: auto;
-    height: 77vh;
-`;
 
 const StyledTooltip = styled(props => (
     <Tooltip
@@ -57,14 +52,19 @@ const TabContainer = props => {
 
 const styles = () => ({
     buttonSave: {
-        width: 200,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "#2699FB",
+        // width: 200,
+        // position: "absolute",
+        // top: 140,
+        // right: 20,
+        // backgroundColor: "#2699FB",
+        // color: "white",
+        // fontFamily: "Source Sans Pro, sans-serif",
+        // paddingRight: 5
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif",
-        paddingRight: 5
+        margin: "2%",
+        padding: "3% 0"
     },
     rightIcon: {
         color: "white"
@@ -76,13 +76,15 @@ const styles = () => ({
         alignItems: "center"
     },
     buttonCancel: {
-        width: 200,
-        position: "absolute",
-        top: 100,
-        right: 20,
+        // width: 200,
+        // position: "absolute",
+        // top: 100,
+        // right: 20,
         backgroundColor: "#595959",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
+        fontFamily: "Source Sans Pro, sans-serif",
+        margin: "2%",
+        padding: "3% 0"
     }
 });
 
@@ -223,13 +225,16 @@ class TabbedPage extends React.Component {
         return (
             <React.Fragment>
                 <MainSectionContainer
-                    style={{
-                        padding: "0"
-                    }}
+                    style={
+                        {
+                            // padding: "0"
+                        }
+                    }
                 >
-                    <SubSectionTop style={{ padding: "3% 3% 0 3%" }}>
+                    <SubSectionTop>
+                        {/* style={{ padding: "3% 3% 0 3%" }} */}
                         <PageHeader
-                            style={{ width: "75%", display: "flex" }}
+                            style={{ width: "80%", display: "flex" }}
                             // style={{
                             //     height: 60,
                             //     fontSize: "2em",
@@ -303,13 +308,14 @@ class TabbedPage extends React.Component {
                             )}
                         </TopButtonsContainer>
                     </SubSectionTop>
-                    <ContainerDivTab>
+                    <ContainerDivTab style={{ height: "100%" }}>
                         <Paper
                             square
                             style={{
-                                backgroundColor: lightGreyHeader,
+                                backgroundColor: "#F4F4F4",
                                 boxShadow: "none",
-                                borderBottom: "2px solid rgb(217,217,217)"
+                                borderBottom: "2px solid rgb(217,217,217)",
+                                marginBottom: "20px"
                             }}
                         >
                             <Tabs
@@ -396,7 +402,10 @@ class TabbedPage extends React.Component {
                         horizontal: "left"
                     }}
                 >
-                    <MenuItem onClick={this.submitExitAction}>
+                    <MenuItem
+                        style={{ padding: "" }}
+                        onClick={this.submitExitAction}
+                    >
                         SAVE & EXIT
                     </MenuItem>
                     <MenuItem onClick={this.submitAction}>
