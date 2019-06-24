@@ -169,7 +169,7 @@ class CreateClient extends Component {
                       history.push(WELCOME_URL + "/dashboard");
                   }
               )
-            : history.push(WELCOME_URL);
+            : history.push(WELCOME_URL + "/dashboard");
     };
 
     render() {
