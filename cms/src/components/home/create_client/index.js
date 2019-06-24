@@ -128,19 +128,12 @@ class CreateClient extends Component {
             activeStep: Math.min(activeStep + 1, array_components.length - 1)
         });
     };
-    handleBack = () => {
-        const { activeStep } = this.state;
-
-        this.setState({
-            activeStep: activeStep - 1
-        });
-    };
 
     // handlePrev = () => {
     //     const { activeStep } = this.state;
 
     //     this.setState({
-    //         activeStep: Math.max(activeStep - 1, array_components.length + 1)
+    //         activeStep: Math.max(activeStep - 1, -1)
     //     });
     // };
 
@@ -201,7 +194,7 @@ class CreateClient extends Component {
                                 <Button
                                     className={classes.topButtons}
                                     variant="outlined"
-                                    onClick={this.handleBack}
+                                    // onClick={this.handlePrev}
                                 >
                                     BACK
                                 </Button>
