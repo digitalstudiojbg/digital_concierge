@@ -13,68 +13,16 @@ import dayJs from "dayjs";
 import { withRouter } from "react-router-dom";
 import { GUIDE_MAIN_URL, GUIDE_CREATE_NEW_URL } from "../../../utils/Constants";
 
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    padding-left: 20px;
-`;
-
-const HeaderDiv = styled.div`
-    width: 100%;
-    height: 10%;
-    display: flex;
-`;
-
-const PublicationListContainerDiv = styled.div`
-    width: 100%;
-    height: 80%;
-    overflow-x: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    display: flex;
-`;
-
-const PublicationEntryContainerDiv = styled.div`
-    width: 20%;
-    height: 100%;
-    background-color: white;
-    border: 1px solid rgb(220, 220, 220);
-    box-shadow: 0px 1px 3px #000000;
-    margin-right: 20px;
-`;
-
-const PublicationMoreIconContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-`;
-
-const PublicationImageContainerDiv = styled.div`
-    width: 100%;
-    height: 70%;
-    display: flex;
-    justify-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
-`;
-
-const PublicationNameContainerDiv = styled.div`
-    margin-top: -20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    font-size: 1.5em;
-    font-weight: 700;
-    border-bottom: 2px solid black;
-    color: black;
-`;
-
-const PublicationUpdatedContainerDiv = styled.div`
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    color: rgb(157, 157, 157);
-`;
+import {
+    ContainerDiv,
+    HeaderDiv,
+    PublicationListContainerDiv,
+    PublicationEntryContainerDiv,
+    PublicationMoreIconContainerDiv,
+    PublicationImageContainerDiv,
+    PublicationNameContainerDiv,
+    PublicationUpdatedContainerDiv
+} from "../GuideStyleSet";
 
 const styles = theme => ({
     root: {
@@ -99,9 +47,11 @@ const styles = theme => ({
     addButton: {
         margin: theme.spacing.unit,
         color: "#2699FB",
-        border: "1px solid #2699FB",
+        border: "3px solid #2699FB",
         width: "100%",
-        backgroundColor: "white"
+        backgroundColor: "white",
+        borderRadius: "5px",
+        padding: "8px 0"
     }
 });
 
@@ -154,7 +104,11 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                             key={`PUB-${index}-${id}`}
                         >
                             <PublicationMoreIconContainerDiv>
-                                <IconButton id={id} onClick={handleClickMore}>
+                                <IconButton
+                                    id={id}
+                                    onClick={handleClickMore}
+                                    style={{ padding: "5px" }}
+                                >
                                     <MoreIcon />
                                 </IconButton>
                             </PublicationMoreIconContainerDiv>
@@ -203,7 +157,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         history.push(GUIDE_CREATE_NEW_URL);
 
     return (
-        <ContainerDiv>
+        <ContainerDiv style={{ flexDirection: "column" }}>
             <HeaderDiv>
                 <div style={{ width: "80%" }}>{renderSearchField()}</div>
                 <div style={{ width: "10%" }}>

@@ -28,15 +28,23 @@ const styles = theme => ({
         display: "none"
     },
     uploadButton: {
-        margin: theme.spacing.unit,
-        color: "rgb(38, 153, 251)",
-        border: "1px solid rgb(38, 153, 251)",
-        width: "100%"
+        border: "3px solid #2699FB",
+        backgroundColor: "white",
+
+        padding: "8px 25px",
+        fontSize: "14px",
+        color: "#2699FB",
+        borderRadius: "5px"
+        // &:hover {
+        //    backgroundColor: "#EBEBF2"
+        // }
     },
     viewButton: {
-        backgroundColor: "rgb(245,244,245)",
+        // backgroundColor: "rgb(245,244,245)",
         border: "1px solid rgb(182,181,182)",
-        borderRadius: 5
+        borderRadius: 5,
+        backgroundColor: "white",
+        padding: "9px"
     }
 });
 
@@ -102,12 +110,18 @@ class SimpleImageUploader extends React.Component {
                     FILE NAME
                 </FormLabelDiv>
                 <div style={{ width: "100%", display: "flex" }}>
-                    <div style={{ width: "90%", paddingRight: 10 }}>
+                    <div style={{ width: "85%", paddingRight: 12 }}>
                         <TextField
                             value={filename}
                             disabled={true}
                             fullWidth={true}
                             variant="outlined"
+                            inputProps={{
+                                style: {
+                                    padding: "12px 10px",
+                                    backgroundColor: "white"
+                                }
+                            }}
                         />
                     </div>
                     <div style={{ width: "10%" }}>
@@ -131,13 +145,20 @@ class SimpleImageUploader extends React.Component {
                     />
                     <div
                         style={{
-                            width: "90%",
-                            display: "flex",
-                            paddingRight: 20,
-                            flexDirection: "row-reverse"
+                            width: "100%",
+                            display: "flex"
+                            //  paddingRight: 20,
+                            //flexDirection: "row-reverse"
                         }}
                     >
-                        <label htmlFor="upload-image">
+                        <label
+                            htmlFor="upload-image"
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                marginTop: "15px"
+                            }}
+                        >
                             <Button
                                 variant="outlined"
                                 component="span"

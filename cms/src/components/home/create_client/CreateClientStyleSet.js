@@ -26,6 +26,11 @@ export const ContainerDivTab = styled.div`
     overflow-y: auto;
     height: 80vh;
 `;
+
+export const MainTabsContainer = styled.div`
+    width: 100%;
+    overflow-y: auto;
+`;
 export const SubSectionTop = styled.div`
     display: flex;
 `;
@@ -351,13 +356,6 @@ export const LayoutEntryDropdownDiv = styled.div`
 export const LayoutEntryPreviewDiv = styled.div`
     height: 100px;
     padding-top: 2%;
-    // align-items: center;
-    // border: 1px solid #dddddd;
-    // padding: 5px;
-    // width: 30%;
-
-    // float: right;
-    // margin-top: 20px;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`

@@ -30,7 +30,7 @@ import {
     PageHeader,
     MainSectionContainer,
     TopButtonsContainer,
-    ContainerDivTab
+    MainTabsContainer
 } from "../components/home/create_client/CreateClientStyleSet";
 
 const StyledTooltip = styled(props => (
@@ -232,18 +232,7 @@ class TabbedPage extends React.Component {
                     }
                 >
                     <SubSectionTop>
-                        {/* style={{ padding: "3% 3% 0 3%" }} */}
-                        <PageHeader
-                            style={{ width: "80%", display: "flex" }}
-                            // style={{
-                            //     height: 60,
-                            //     fontSize: "2em",
-                            //     fontWeight: 700,
-                            //     paddingTop: 20,
-                            //     paddingBottom: 20,
-                            //     display: "flex"
-                            // }}
-                        >
+                        <PageHeader style={{ width: "80%", display: "flex" }}>
                             {title}
                             {Boolean(tooltipText) && (
                                 <div style={{ paddingLeft: 10 }}>
@@ -308,14 +297,15 @@ class TabbedPage extends React.Component {
                             )}
                         </TopButtonsContainer>
                     </SubSectionTop>
-                    <ContainerDivTab style={{ height: "100%" }}>
+                    <MainTabsContainer style={{ height: "100%" }}>
                         <Paper
                             square
                             style={{
                                 backgroundColor: "#F4F4F4",
                                 boxShadow: "none",
                                 borderBottom: "2px solid rgb(217,217,217)",
-                                marginBottom: "20px"
+                                marginBottom: "20px",
+                                width: "92%"
                             }}
                         >
                             <Tabs
@@ -352,7 +342,7 @@ class TabbedPage extends React.Component {
                                     />
                                 )}
                         </TabContainer>
-                    </ContainerDivTab>
+                    </MainTabsContainer>
                 </MainSectionContainer>
                 <Dialog
                     open={openDialog}

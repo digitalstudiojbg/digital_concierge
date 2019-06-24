@@ -66,7 +66,28 @@ export const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    // height: 60vh;
+`;
+export const SubContainerDiv = styled.div`
+    padding: 20px;
+`;
+
+export const MainSections = styled.div`
+    display: flex;
+    height: 100%;
+    width: 100%;
+`;
+
+export const SubSectionDiv = styled.div`
+    margin: 5px 0;
+    width: 45%;
+`;
+
+export const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 0px;
+    width: 100%;
 `;
 
 export const FirstSectionContainerDiv = styled.div`
@@ -101,11 +122,15 @@ export const SectionTitleDiv = styled.div`
     font-weight: 600;
     padding-bottom: 20px;
 `;
-
+export const FieldDiv = styled.div`
+    width: 100%;
+    padding: 0px;
+`;
 export const FieldLabel = styled.div`
     font-size: 10px;
     margin-bottom: 2px;
     color: #5c5c5c;
+
     text-transform: uppercase;
 `;
 
@@ -114,4 +139,93 @@ export const FormHelperError = styled.p`
     font-size: 0.75rem;
     line-height: 1em;
     color: #f44336;
+`;
+
+export const LayoutEntryContainerDiv = styled.div`
+    width: 100%;
+    margin-bottom: 1%;
+    height: 120px;
+    display: flex;
+`;
+
+export const LayoutEntryDropdownDiv = styled.div`
+    width: 55%;
+    height: 100%;
+    float: left;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    // margin-bottom: 1%;
+`;
+export const LayoutEntryPreviewDiv = styled.div`
+    height: 100px;
+    padding-top: 8px;
+`;
+
+export const LayoutEntryPreviewImage = styled.img`
+    height: 110px;
+    margin: 1%;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+    padding: 10px;
+`;
+
+//----Publication List
+
+export const HeaderDiv = styled.div`
+    width: 100%;
+    height: 10%;
+    display: flex;
+`;
+
+export const PublicationListContainerDiv = styled.div`
+    width: 100%;
+    height: 80%;
+    overflow-x: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+`;
+
+export const PublicationEntryContainerDiv = styled.div`
+    width: 17%;
+    height: 100%;
+    background-color: white;
+    border: 1px solid #dddddd;
+    box-shadow: 0px 1px 3px #000000;
+    margin-right: 20px;
+`;
+
+export const PublicationMoreIconContainerDiv = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+`;
+
+export const PublicationImageContainerDiv = styled.div`
+    width: 100%;
+    height: 70%;
+    display: flex;
+    justify-content: center;
+    padding-left: 5px;
+    padding-right: 5px;
+`;
+
+export const PublicationNameContainerDiv = styled.div`
+    margin-top: -20px;
+    margin-left: 10%;
+    // padding-right: 10px;
+    padding-bottom: 10px;
+    font-size: 1.5em;
+    font-weight: 700;
+    border-bottom: 1px solid black;
+    color: black;
+    width: 80%;
+`;
+
+export const PublicationUpdatedContainerDiv = styled.div`
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    color: rgb(157, 157, 157);
 `;
