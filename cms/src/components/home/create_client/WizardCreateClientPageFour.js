@@ -47,8 +47,9 @@ import {
     SectionDiv,
     NormalButton
 } from "./CreateClientStyleSet";
+import { isEmpty } from "lodash";
 
-const styles = theme => ({
+const styles = () => ({
     mylabel: {
         fontSize: "10px",
         color: "#5C5C5C"
@@ -94,7 +95,8 @@ class WizardCreateClientPageFour extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected_checkboxes: Set()
+            selected_checkboxes: Set(),
+            selected_system: null
         };
     }
 
@@ -114,11 +116,22 @@ class WizardCreateClientPageFour extends React.Component {
         }
     }
 
+    setSelectedSystem = selected_system => _event =>
+        this.setState({
+            selected_system,
+            ...(!isEmpty(selected_system.features) && {
+                selected_checkboxes: Set(
+                    selected_system.features.map(({ id }) => id)
+                )
+            })
+        });
+
     renderAddSystemSection() {
         const {
             getSystemTypes: { systemTypes = {} } = {},
             getDeviceTypes: { deviceTypes = {} } = {}
         } = this.props;
+        const { selected_system } = this.state;
         return (
             <div
                 style={{
@@ -127,7 +140,9 @@ class WizardCreateClientPageFour extends React.Component {
                     padding: "20px 20px 20px 0"
                 }}
             >
-                <SectionHeader>Add System</SectionHeader>
+                <SectionHeader>
+                    {isEmpty(selected_system) ? "ADD SYSTEM" : "EDIT SYSTEM"}
+                </SectionHeader>
                 <FiledContainer>
                     <SubFieldContainerDiv>
                         <FieldLabel>SYSTEM NAME</FieldLabel>
@@ -247,7 +262,11 @@ class WizardCreateClientPageFour extends React.Component {
                     marginLeft: "4%;"
                 }}
             >
-                <SectionHeader>All Client System</SectionHeader>
+                <SectionHeader>
+                    {isEmpty(systemsByClient)
+                        ? "ALL CLIENT SYSTEM"
+                        : "ALL CLIENT SYSTEMS"}
+                </SectionHeader>
                 <FiledContainer>
                     <FieldLabel>SYSTEM CREATED</FieldLabel>
                     <FiledContainer
@@ -268,38 +287,45 @@ class WizardCreateClientPageFour extends React.Component {
                         }}
                     >
                         {systemsByClient.length > 0 &&
-                            systemsByClient.map(
-                                ({ name, system_type, device_type }) => {
-                                    return (
-                                        <EachClientSystemContainer>
-                                            <img
-                                                style={{
-                                                    display: "block",
-                                                    margin: "auto"
-                                                }}
-                                                src={
-                                                    system_type.name.includes(
-                                                        "TABLET"
-                                                    )
-                                                        ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
-                                                        : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
-                                                }
-                                                height=" 80"
-                                            />
-                                            <EachClientSystemContainerSystemText>
-                                                {system_type.name}
-                                            </EachClientSystemContainerSystemText>
-                                            <hr />
-                                            <EachClientSystemContainerSystemText>
-                                                {name}
-                                            </EachClientSystemContainerSystemText>
-                                            <EachClientSystemContainerDeviceTypeText>
-                                                {device_type.name}
-                                            </EachClientSystemContainerDeviceTypeText>
-                                        </EachClientSystemContainer>
-                                    );
-                                }
-                            )}
+                            systemsByClient.map((system, index) => {
+                                const {
+                                    id,
+                                    name,
+                                    system_type,
+                                    device_type
+                                } = system;
+                                return (
+                                    <EachClientSystemContainer
+                                        key={`${id}-${index}`}
+                                        onClick={this.setSelectedSystem(system)}
+                                    >
+                                        <img
+                                            style={{
+                                                display: "block",
+                                                margin: "auto"
+                                            }}
+                                            src={
+                                                system_type.name.includes(
+                                                    "TABLET"
+                                                )
+                                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                                            }
+                                            height=" 80"
+                                        />
+                                        <EachClientSystemContainerSystemText>
+                                            {system_type.name}
+                                        </EachClientSystemContainerSystemText>
+                                        <hr />
+                                        <EachClientSystemContainerSystemText>
+                                            {name}
+                                        </EachClientSystemContainerSystemText>
+                                        <EachClientSystemContainerDeviceTypeText>
+                                            {device_type.name}
+                                        </EachClientSystemContainerDeviceTypeText>
+                                    </EachClientSystemContainer>
+                                );
+                            })}
                     </FiledContainer>
                 </FiledContainer>
 
@@ -357,7 +383,7 @@ class WizardCreateClientPageFour extends React.Component {
         const {
             getFeaturesByCategories: { featureCategories = {} } = {}
         } = this.props;
-        const { selected_checkboxes } = this.state;
+        const { selected_checkboxes, selected_system } = this.state;
         const { classes } = this.props;
         return (
             <div
@@ -587,7 +613,9 @@ class WizardCreateClientPageFour extends React.Component {
                             this.state.selected_checkboxes.toJS().length === 0
                         }
                     >
-                        ADD SYSTEM
+                        {isEmpty(selected_system)
+                            ? "ADD SYSTEM"
+                            : "EDIT SYSTEM"}
                     </Button>
                 </div>
             </div>
@@ -604,8 +632,9 @@ class WizardCreateClientPageFour extends React.Component {
             client
         } = this.props;
         const { getCurrentUser: user } = client.readQuery({ query });
+        const { selected_system } = this.state;
 
-        //let new_create_client_id = 1;
+        // let new_create_client_id = 1;
         let new_create_client_id;
 
         try {
@@ -620,6 +649,25 @@ class WizardCreateClientPageFour extends React.Component {
                 </React.Fragment>
             );
         }
+
+        const initialValues = isEmpty(selected_system)
+            ? { aif_boolean: "yes" }
+            : {
+                  id: selected_system.id,
+                  name: selected_system.name,
+                  aif_boolean: selected_system.aif ? "yes" : "no",
+                  device_type:
+                      isEmpty(selected_system.device_type) &&
+                      !Boolean(selected_system.device_type.id)
+                          ? null
+                          : selected_system.device_type.id,
+                  numberOfDevices: selected_system.numberOfDevices,
+                  system_type:
+                      isEmpty(selected_system.system_type) &&
+                      !Boolean(selected_system.system_type.id)
+                          ? null
+                          : selected_system.system_type.id
+              };
 
         if (
             systemTypes.length < 0 &&
@@ -642,8 +690,9 @@ class WizardCreateClientPageFour extends React.Component {
                 {(createSystem, { loading, error }) => {
                     return (
                         <Formik
+                            enableReinitialize={true}
                             validationSchema={validationSchema}
-                            initialValues={{ aif_boolean: "yes" }}
+                            initialValues={initialValues}
                             onSubmit={async (
                                 {
                                     name,
@@ -680,6 +729,10 @@ class WizardCreateClientPageFour extends React.Component {
                                     console.log("CREATE SYSTEM SUCCEED");
                                     resetForm({});
                                     setSubmitting(false);
+                                    this.setState({
+                                        selected_system: null,
+                                        selected_checkboxes: Set()
+                                    });
                                 });
                             }}
                             render={({ errors, values, isSubmitting }) => {
@@ -761,6 +814,7 @@ export default compose(
                 id: ownProps.client.readQuery({
                     query: getNewCreatedClientId
                 }).new_create_client_id
+                // id: 1
             }
         }),
         name: "systemsByClient"
