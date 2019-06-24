@@ -1,9 +1,18 @@
 import db from "../models";
-import { UserInputError } from "apollo-server-express";
+import { UserInputError, ApolloError } from "apollo-server-express";
+import {
+    handleCreateActionActivityLog,
+    handleDeleteActionActivityLog,
+    handleUpdateActionActivityLog
+} from "../utils/constant";
 
 export default {
     Query: {
-        system: async (_root, { id }) => await db.system.findByPk(id),
+        system: async (_root, { id }) => {
+            const system = await db.system.findByPk(id);
+            console.log(Object.keys(system.__proto__));
+            return system;
+        },
         systems: async (_root, _input, { user }) => await db.system.findAll(),
         systemsByClient: async (_root, { id }) =>
             await db.system.findAll({ where: { clientId: id } }),
@@ -26,17 +35,26 @@ export default {
             },
             { user, clientIp }
         ) => {
+            const tempSystem = {
+                name,
+                aif,
+                numberOfDevices,
+                deviceTypeId,
+                systemTypeId,
+                clientId
+            };
             try {
                 let created_system = db.system.build({
-                    name,
-                    aif,
-                    numberOfDevices,
-                    deviceTypeId,
-                    systemTypeId,
-                    clientId
+                    ...tempSystem
                 });
                 await created_system.save();
                 await created_system.addFeatures(featureIds);
+                handleCreateActionActivityLog(
+                    created_system,
+                    { ...tempSystem, features: [...featureIds] },
+                    user,
+                    clientIp
+                );
                 return created_system;
             } catch (error) {
                 throw new UserInputError(
@@ -44,6 +62,107 @@ export default {
                         error.message
                     }`
                 );
+            }
+        },
+        editSystem: async (
+            _root,
+            {
+                input: {
+                    id,
+                    name,
+                    aif,
+                    numberOfDevices,
+                    deviceTypeId,
+                    featureIds,
+                    systemTypeId
+                }
+            },
+            user,
+            clientIp
+        ) => {
+            let system = await db.system.findByPk(id);
+            if (!system) {
+                throw new UserInputError(`Unable to find system ID ${id}.`);
+            } else {
+                const tempSystem = {
+                    name,
+                    aif,
+                    numberOfDevices,
+                    deviceTypeId,
+                    systemTypeId
+                };
+                try {
+                    await system.update({ ...tempSystem });
+                    await system.setFeatures(featureIds);
+                    handleUpdateActionActivityLog(
+                        system,
+                        { ...tempSystem, features: [...featureIds] },
+                        user,
+                        clientIp
+                    );
+                    return system;
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to update system ID ${id} with ${name}.\nError Message: ${
+                            error.message
+                        }`,
+                        500
+                    );
+                }
+            }
+        },
+        deleteSystem: async (_root, { id }, user, clientIp) => {
+            const systemRaw = await db.system.findOne({
+                where: { id },
+                raw: true
+            });
+            const system = await db.system.findByPk(id);
+            if (!system) {
+                throw new UserInputError(`Unable to find system ID ${id}.`);
+            } else {
+                const featureIds = await db.feature
+                    .findAll({
+                        include: [
+                            {
+                                model: db.system,
+                                where: { id: system.id }
+                            }
+                        ]
+                    })
+                    .map(({ id }) => id);
+                try {
+                    //Remove feature and system pivot entries
+                    await system.removeFeatures(featureIds);
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to remove all feature ids of system ID ${id}.\nError Message: ${
+                            error.message
+                        }`,
+                        500
+                    );
+                }
+                const tempSystem = {
+                    ...systemRaw,
+                    features: featureIds.slice()
+                };
+                try {
+                    //Remove actual system from database;
+                    await db.system.destroy({ where: { id } });
+                } catch (error) {
+                    throw new UserInputError(
+                        `Unable to destroy system ID ${id}.\nError Message: ${
+                            error.message
+                        }`,
+                        500
+                    );
+                }
+                handleDeleteActionActivityLog(
+                    system,
+                    tempSystem,
+                    user,
+                    clientIp
+                );
+                return system;
             }
         }
     },
