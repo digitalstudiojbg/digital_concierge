@@ -201,12 +201,14 @@ export const PublicationMoreIconContainerDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 15px;
 `;
 
 export const PublicationImageContainerDiv = styled.div`
     width: 100%;
     height: 75%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     padding: 0 8px;
 `;
@@ -214,7 +216,7 @@ export const PublicationImageContainerDiv = styled.div`
 export const PublicationName = styled.div`
     width: 84%;
     margin-left: 8%;
-    margin-top: -15px;
+    margin-top: 5px;
     padding-bottom: 10px;
     font-size: 17px;
     font-weight: bold;

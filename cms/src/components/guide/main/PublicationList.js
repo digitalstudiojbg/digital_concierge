@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
@@ -155,31 +155,18 @@ const PublicationList = ({
                         <PublicationImageContainerDiv
                             onClick={handleClickPublication(id)}
                         >
-                            <PublicationMoreIconContainerDiv>
-                                <IconButton
-                                    id={id}
-                                    onClick={handleClickMore}
-                                    style={{ padding: "5px" }}
-                                >
-                                    <MoreIcon />
-                                </IconButton>
-                            </PublicationMoreIconContainerDiv>
-                            <PublicationImageContainerDiv
-                                onClick={handleClickPublication(id)}
-                            >
-                                {Array.isArray(media) &&
-                                    !isEmpty(media) &&
-                                    !isEmpty(media[0]) &&
-                                    Boolean(media[0].path) && (
-                                        <img
-                                            src={path}
-                                            alt={name}
-                                            style={{
-                                                height: "90%"
-                                            }}
-                                        />
-                                    )}
-                            </PublicationImageContainerDiv>
+                            {Array.isArray(media) &&
+                                !isEmpty(media) &&
+                                !isEmpty(media[0]) &&
+                                Boolean(media[0].path) && (
+                                    <img
+                                        src={media[0].path}
+                                        alt={name}
+                                        style={{
+                                            height: "90%"
+                                        }}
+                                    />
+                                )}
                             <PublicationName>{name}</PublicationName>
                             <PublicationUpdated>
                                 Last updated: {formatDate(updatedAt)}
