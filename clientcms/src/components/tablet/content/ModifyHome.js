@@ -321,26 +321,30 @@ const ModifyHome = props => {
                                             >
                                                 System Content: Home
                                             </PageHeader>
-                                            <TopButtonsContainer>
-                                                <Button
-                                                    type="submit"
-                                                    variant="outlined"
-                                                    className={
-                                                        classes.blueButtons
-                                                    }
-                                                >
-                                                    SAVE & EXIT
-                                                </Button>
-                                                <Button
-                                                    variant="outlined"
-                                                    onClick={saveAndKeepEditing}
-                                                    className={
-                                                        classes.blueButtons
-                                                    }
-                                                >
-                                                    SAVE & KEEP EDITING
-                                                </Button>
-                                            </TopButtonsContainer>
+                                            {tab > 0 && (
+                                                <TopButtonsContainer>
+                                                    <Button
+                                                        type="submit"
+                                                        variant="outlined"
+                                                        className={
+                                                            classes.blueButtons
+                                                        }
+                                                    >
+                                                        SAVE & EXIT
+                                                    </Button>
+                                                    <Button
+                                                        variant="outlined"
+                                                        onClick={
+                                                            saveAndKeepEditing
+                                                        }
+                                                        className={
+                                                            classes.blueButtons
+                                                        }
+                                                    >
+                                                        SAVE & KEEP EDITING
+                                                    </Button>
+                                                </TopButtonsContainer>
+                                            )}
                                         </SubSectionTop>
                                         <Paper
                                             square

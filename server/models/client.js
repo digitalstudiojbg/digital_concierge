@@ -32,13 +32,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            venue_zip_code: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
+            venue_zip_code: DataTypes.STRING,
             postal_address: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -53,13 +47,7 @@ module.exports = (sequelize, DataTypes) => {
                     notEmpty: true
                 }
             },
-            postal_zip_code: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    notEmpty: true
-                }
-            },
+            postal_zip_code: DataTypes.STRING,
             phone: {
                 type: DataTypes.STRING,
                 allowNull: false,

@@ -24,6 +24,7 @@ export const SYSTEM_CMS_INDEX_URL = SYSTEM_INDEX_URL + "/cms";
 export const SYSTEM_CMS_HOME_URL = SYSTEM_INDEX_URL + "/home";
 export const SYSTEM_CMS_LANDINGPAGE_URL = SYSTEM_INDEX_URL + "/landingpage";
 export const SYSTEM_CMS_CONTENT_URL = SYSTEM_INDEX_URL + "/content";
+export const SYSTEM_CMS_CONTENT_INDEX = SYSTEM_INDEX_URL + "/content_index";
 export const SYSTEM_CMS_SETTINGS_URL = SYSTEM_INDEX_URL + "/settings";
 export const SYSTEM_CMS_CREATE_CONTENT_INDEX_URL =
     SYSTEM_INDEX_URL + "/content/create";

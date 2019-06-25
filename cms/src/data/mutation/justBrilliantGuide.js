@@ -15,3 +15,11 @@ export const EDIT_GUIDE = gql`
         }
     }
 `;
+
+export const DUPLICATE_GUIDE = gql`
+    mutation duplicateJustBrilliantGuide($id: ID!) {
+        duplicateJustBrilliantGuide(id: $id) {
+            id
+        }
+    }
+`;

@@ -7,11 +7,11 @@ module.exports = {
             [
                 {
                     name: "TROPICAL",
-                    mediumId: 1
+                    mediumId: 65
                 },
                 {
                     name: "MINIMALIST",
-                    mediumId: 1
+                    mediumId: 64
                 }
             ],
             {}

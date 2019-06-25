@@ -495,42 +495,50 @@ const ModifyDirectoryEntry = props => {
                                                     />
                                                 </Tooltip>
                                             </div>
-                                            <TopButtonsContainer
-                                                style={{
-                                                    width: "10%",
-                                                    margin: "0 1% 0 2%"
-                                                }}
-                                            >
-                                                <Button
-                                                    variant="outlined"
-                                                    className={
-                                                        classes.buttonCancel
-                                                    }
-                                                    onClick={handleCancelButton}
-                                                >
-                                                    CANCEL
-                                                </Button>
-                                            </TopButtonsContainer>
-                                            <TopButtonsContainer>
-                                                <Button
-                                                    type="submit"
-                                                    variant="outlined"
-                                                    className={
-                                                        classes.blueButtons
-                                                    }
-                                                >
-                                                    SAVE & EXIT
-                                                </Button>
-                                                <Button
-                                                    variant="outlined"
-                                                    onClick={saveAndKeepEditing}
-                                                    className={
-                                                        classes.blueButtons
-                                                    }
-                                                >
-                                                    SAVE & KEEP EDITING
-                                                </Button>
-                                            </TopButtonsContainer>
+                                            {tab > 0 && (
+                                                <React.Fragment>
+                                                    <TopButtonsContainer
+                                                        style={{
+                                                            width: "10%",
+                                                            margin: "0 1% 0 2%"
+                                                        }}
+                                                    >
+                                                        <Button
+                                                            variant="outlined"
+                                                            className={
+                                                                classes.buttonCancel
+                                                            }
+                                                            onClick={
+                                                                handleCancelButton
+                                                            }
+                                                        >
+                                                            CANCEL
+                                                        </Button>
+                                                    </TopButtonsContainer>
+                                                    <TopButtonsContainer>
+                                                        <Button
+                                                            type="submit"
+                                                            variant="outlined"
+                                                            className={
+                                                                classes.blueButtons
+                                                            }
+                                                        >
+                                                            SAVE & EXIT
+                                                        </Button>
+                                                        <Button
+                                                            variant="outlined"
+                                                            onClick={
+                                                                saveAndKeepEditing
+                                                            }
+                                                            className={
+                                                                classes.blueButtons
+                                                            }
+                                                        >
+                                                            SAVE & KEEP EDITING
+                                                        </Button>
+                                                    </TopButtonsContainer>
+                                                </React.Fragment>
+                                            )}
                                         </SubSectionTop>
                                         <Paper
                                             square

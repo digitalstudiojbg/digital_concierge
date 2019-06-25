@@ -23,8 +23,12 @@ import {
     DELETE_ROLES,
     DUPLICATE_ROLES
 } from "./role";
-import { CREATE_SYSTEM } from "./system";
-import { CREATE_GUIDE, EDIT_GUIDE } from "./justBrilliantGuide";
+import { CREATE_SYSTEM, EDIT_SYSTEM, DELETE_SYSTEM } from "./system";
+import {
+    CREATE_GUIDE,
+    EDIT_GUIDE,
+    DUPLICATE_GUIDE
+} from "./justBrilliantGuide";
 import { CREATE_ADVERTISER, EDIT_ADVERTISER } from "./advertiser";
 import {
     CREATE_ADVERTISING,
@@ -71,5 +75,8 @@ export {
     MOVE_ARTICLE_UP_BY_ONE,
     MOVE_ARTICLE_DOWN_BY_ONE,
     CREATE_ARTICLE,
-    EDIT_ARTICLE
+    EDIT_ARTICLE,
+    DUPLICATE_GUIDE,
+    EDIT_SYSTEM,
+    DELETE_SYSTEM
 };

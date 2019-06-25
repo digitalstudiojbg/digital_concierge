@@ -14,6 +14,7 @@ export default gql`
         editJustBrilliantGuide(
             input: UpdateJustBrilliantGuideInput
         ): JustBrilliantGuide
+        duplicateJustBrilliantGuide(id: ID!): JustBrilliantGuide
     }
 
     type JustBrilliantGuide {

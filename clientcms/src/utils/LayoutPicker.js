@@ -15,6 +15,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import { Field } from "formik";
 import { withStyles } from "@material-ui/core/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import { isEmpty } from "lodash";
 
 const ContainerDiv = styled.div`
     width: 100%;
@@ -246,7 +247,9 @@ const LayoutPicker = ({
         layoutFamilies,
         templates
     ) => {
-        const layoutFamilyId = values[layoutFamilyFieldName];
+        const layoutFamilyId = !isEmpty(values)
+            ? values[layoutFamilyFieldName]
+            : null;
 
         const familyData = Boolean(layoutFamilyId)
             ? layoutFamilies.find(({ id }) => id === layoutFamilyId)
@@ -254,7 +257,7 @@ const LayoutPicker = ({
 
         const { layoutsByType = [] } = familyData || {};
 
-        const templateId = values[templateFieldName];
+        const templateId = !isEmpty(values) ? values[templateFieldName] : null;
 
         const templateData = Boolean(templateId)
             ? templates.find(({ id }) => id === templateId)
@@ -270,7 +273,7 @@ const LayoutPicker = ({
                       layoutIdsInTemplate.includes(id)
                   )
                 : [];
-        const { classes } = this.props;
+
         return (
             <InnerContainerDiv>
                 <div style={{ width: "100%", display: "flex" }}>

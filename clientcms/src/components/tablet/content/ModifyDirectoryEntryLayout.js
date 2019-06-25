@@ -9,19 +9,10 @@ import { getDirectoryListBySystem } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import { modifyDirectoryListData } from "../../../utils/Constants";
 import TreeviewSelector from "../../../utils/TreeviewSelector";
-import {
-    SectionHeader,
-    SubSectionHeader,
-    SubSectionTop,
-    MainSubSections,
-    SubSectionDiv,
-    ContainerDiv
-} from "../../home/WelcomeStyleSet";
+import { SectionHeader, ContainerDiv } from "../../home/WelcomeStyleSet";
 
-const SubtitleDiv = styled.div`
-    font-size: 1.5em;
-    font-weight: 700;
-    padding-bottom: 20px;
+const ContainerDivModified = styled(ContainerDiv)`
+    flex-direction: column;
 `;
 
 const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
@@ -38,15 +29,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
     };
 
     return (
-        <ContainerDiv
-            style={
-                {
-                    // width: "100%",
-                    // height: "100%",
-                    // paddingTop: 20
-                }
-            }
-        >
+        <ContainerDivModified>
             <SectionHeader>DETAILS</SectionHeader>
             <div
                 style={{
@@ -132,7 +115,7 @@ const ModifyDirectoryEntryLayout = ({ values, match, setFieldValue }) => {
                     layoutListDirection="horizontal"
                 />
             </div>
-        </ContainerDiv>
+        </ContainerDivModified>
     );
 };
 

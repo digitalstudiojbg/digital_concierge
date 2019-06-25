@@ -31,11 +31,11 @@ export default gql`
         nature_of_business: String!
         venue_address: String!
         venue_city: String!
-        venue_zip_code: String!
+        venue_zip_code: String
         venue_state_id: Int!
         postal_address: String!
         postal_city: String!
-        postal_zip_code: String!
+        postal_zip_code: String
         postal_state_id: Int!
         phone: String!
         email: EmailAddress!
@@ -50,10 +50,10 @@ export default gql`
         nature_of_business: String!
         venue_address: String!
         venue_city: String!
-        venue_zip_code: String!
+        venue_zip_code: String
         postal_address: String!
         postal_city: String!
-        postal_zip_code: String!
+        postal_zip_code: String
         phone: String!
         email: EmailAddress!
         active: Boolean!
@@ -88,11 +88,11 @@ export default gql`
         nature_of_business: String!
         venue_address: String!
         venue_city: String!
-        venue_zip_code: String!
+        venue_zip_code: String
         venue_state_id: Int!
         postal_address: String!
         postal_city: String!
-        postal_zip_code: String!
+        postal_zip_code: String
         postal_state_id: Int!
         phone: String!
         email: EmailAddress!

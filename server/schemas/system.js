@@ -33,7 +33,9 @@ export default gql`
     }
 
     extend type Mutation {
-        createSystem(input: CreateSystemInput): System
+        createSystem(input: CreateSystemInput!): System
+        editSystem(input: UpdateSystemInput!): System
+        deleteSystem(id: ID!): System
     }
 
     input CreateSystemInput {
@@ -44,5 +46,15 @@ export default gql`
         systemTypeId: ID!
         featureIds: [ID!]
         clientId: ID!
+    }
+
+    input UpdateSystemInput {
+        id: ID!
+        name: String!
+        aif: Boolean!
+        numberOfDevices: Int!
+        deviceTypeId: ID!
+        systemTypeId: ID!
+        featureIds: [ID!]
     }
 `;

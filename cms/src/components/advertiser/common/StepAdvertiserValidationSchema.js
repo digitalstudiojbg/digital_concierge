@@ -33,9 +33,9 @@ export default countries => {
         address: Yup.string().required(requiredErrorMessage),
         postal_address: Yup.string().required(requiredErrorMessage),
         city: Yup.string().required(requiredErrorMessage),
-        zip_code: Yup.string().required(requiredErrorMessage),
+        zip_code: Yup.string(),
         postal_city: Yup.string().required(requiredErrorMessage),
-        postal_zip_code: Yup.string().required(requiredErrorMessage),
+        postal_zip_code: Yup.string(),
         countryId: Yup.string().required(requiredErrorMessage),
         postalCountryId: Yup.string().required(requiredErrorMessage),
         stateId: Yup.string()

@@ -16,10 +16,18 @@ export const systemsByClientQuery = gql`
         systemsByClient(id: $id) {
             id
             name
+            aif
+            numberOfDevices
             device_type {
+                id
                 name
             }
             system_type {
+                id
+                name
+            }
+            features {
+                id
                 name
             }
         }

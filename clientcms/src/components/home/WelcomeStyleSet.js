@@ -23,7 +23,7 @@ export const SubSectionDiv = styled.div`
     margin: 5px 0;
 `;
 export const PageHeader = styled.h2`
-    fontsize: 30px;
+    font-size: 30px;
     padding-bottom: 2%;
 `;
 

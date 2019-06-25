@@ -18,12 +18,24 @@ module.exports = {
                     currencyId: 1
                 },
                 {
+                    countryId: 2,
+                    currencyId: 2
+                },
+                {
                     countryId: 3,
                     currencyId: 6
                 },
                 {
                     countryId: 3,
                     currencyId: 3
+                },
+                {
+                    countryId: 3,
+                    currencyId: 1
+                },
+                {
+                    countryId: 3,
+                    currencyId: 2
                 }
             ],
             {}
