@@ -23,6 +23,7 @@ const ContainerDiv = styled.div`
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
+    //background-color: #f4f4f4;
 `;
 
 const HeaderDiv = styled.div`
@@ -50,10 +51,13 @@ const styles = () => ({
     },
     iconButton: {
         marginRight: 10,
-        borderRadius: 5,
+        //  height: "50%",
+        padding: "8px",
+
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)",
-        height: "50%"
+        border: "1px solid grey",
+        borderRadius: "5px",
+        height: "fit-content"
     },
     iconButtonEnd: {
         marginRight: 10,
@@ -138,10 +142,34 @@ class AdvertiserTableList extends React.Component {
 
     render() {
         const { classes } = this.props;
+
         return (
             <ContainerDiv>
+                <HeaderDiv>
+                    <div style={{ height: "50%" }}>
+                        <Button
+                            className={classes.buttonNewAdvertisement}
+                            onClick={this.navigateToCreateNewAdvertiserPage}
+                        >
+                            NEW ADVERTISEMENT
+                        </Button>
+                    </div>
+
+                    {this.headerButtons.map(
+                        ({ icon: ButtonIcon, action }, index) => (
+                            <IconButton
+                                key={`HEADER-BUTTON-${index}`}
+                                className={classes.iconButton}
+                                onClick={action}
+                            >
+                                <ButtonIcon />
+                            </IconButton>
+                        )
+                    )}
+                </HeaderDiv>
                 <TableDiv>
                     <MaterialTable
+                        //headerStyle={{ border: "1px solid grey" }}
                         data={this.modifyAdvertiserList()}
                         onRowClick={this.handleClickRow}
                         columns={[
@@ -171,7 +199,8 @@ class AdvertiserTableList extends React.Component {
                         options={{
                             selection: true,
                             searchFieldAlignment: "left",
-                            showTitle: false
+                            showTitle: false,
+                            headerStyle: { borderBottom: "1px solid grey" }
                         }}
                         components={{
                             Toolbar: props => {
@@ -193,7 +222,7 @@ class AdvertiserTableList extends React.Component {
                                                 height: "100%"
                                             }}
                                         >
-                                            <HeaderDiv>
+                                            {/* <HeaderDiv>
                                                 <div style={{ height: "50%" }}>
                                                     <Button
                                                         className={
@@ -227,7 +256,7 @@ class AdvertiserTableList extends React.Component {
                                                         </IconButton>
                                                     )
                                                 )}
-                                            </HeaderDiv>
+                                            </HeaderDiv> */}
                                         </div>
                                     </div>
                                 );

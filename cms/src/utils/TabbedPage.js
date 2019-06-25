@@ -297,7 +297,7 @@ class TabbedPage extends React.Component {
                             )}
                         </TopButtonsContainer>
                     </SubSectionTop>
-                    <MainTabsContainer style={{ height: "100%" }}>
+                    <MainTabsContainer>
                         <Paper
                             square
                             style={{

@@ -20,8 +20,8 @@ import {
     PublicationEntryContainerDiv,
     PublicationMoreIconContainerDiv,
     PublicationImageContainerDiv,
-    PublicationNameContainerDiv,
-    PublicationUpdatedContainerDiv
+    PublicationName,
+    PublicationUpdated
 } from "../GuideStyleSet";
 
 const styles = theme => ({
@@ -123,12 +123,10 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
                                     }}
                                 />
                             </PublicationImageContainerDiv>
-                            <PublicationNameContainerDiv>
-                                {name}
-                            </PublicationNameContainerDiv>
-                            <PublicationUpdatedContainerDiv>
+                            <PublicationName>{name}</PublicationName>
+                            <PublicationUpdated>
                                 Last updated: {formatDate(updatedAt)}
-                            </PublicationUpdatedContainerDiv>
+                            </PublicationUpdated>
                         </PublicationEntryContainerDiv>
                     )
                 )}
@@ -160,7 +158,7 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         <ContainerDiv style={{ flexDirection: "column" }}>
             <HeaderDiv>
                 <div style={{ width: "80%" }}>{renderSearchField()}</div>
-                <div style={{ width: "10%" }}>
+                <div style={{ width: "150px" }}>
                     <Button
                         variant="outlined"
                         component="span"

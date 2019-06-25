@@ -152,14 +152,14 @@ export const LayoutEntryDropdownDiv = styled.div`
     width: 55%;
     height: 100%;
     float: left;
-    margin-right: 5%;
+    margin-right: 2%;
     display: flex;
     flex-direction: column;
     // margin-bottom: 1%;
 `;
 export const LayoutEntryPreviewDiv = styled.div`
     height: 100px;
-    padding-top: 8px;
+    padding-top: 19px;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`
@@ -180,20 +180,21 @@ export const HeaderDiv = styled.div`
 
 export const PublicationListContainerDiv = styled.div`
     width: 100%;
-    height: 80%;
+    height: 450px;
     overflow-x: auto;
-    padding-top: 20px;
+    padding-top: 3%;
     padding-bottom: 20px;
     display: flex;
 `;
 
 export const PublicationEntryContainerDiv = styled.div`
-    width: 17%;
+    // width: 18%;
+    width: 260px;
     height: 100%;
     background-color: white;
     border: 1px solid #dddddd;
     box-shadow: 0px 1px 3px #000000;
-    margin-right: 20px;
+    margin-right: 25px;
 `;
 
 export const PublicationMoreIconContainerDiv = styled.div`
@@ -204,28 +205,25 @@ export const PublicationMoreIconContainerDiv = styled.div`
 
 export const PublicationImageContainerDiv = styled.div`
     width: 100%;
-    height: 70%;
+    height: 75%;
     display: flex;
     justify-content: center;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 0 8px;
 `;
 
-export const PublicationNameContainerDiv = styled.div`
-    margin-top: -20px;
-    margin-left: 10%;
-    // padding-right: 10px;
+export const PublicationName = styled.div`
+    width: 84%;
+    margin-left: 8%;
+    margin-top: -15px;
     padding-bottom: 10px;
-    font-size: 1.5em;
-    font-weight: 700;
+    font-size: 17px;
+    font-weight: bold;
     border-bottom: 1px solid black;
     color: black;
-    width: 80%;
 `;
 
-export const PublicationUpdatedContainerDiv = styled.div`
-    padding-left: 10px;
-    padding-right: 10px;
+export const PublicationUpdated = styled.div`
+    padding-left: 10%;
     padding-top: 10px;
     color: rgb(157, 157, 157);
 `;
