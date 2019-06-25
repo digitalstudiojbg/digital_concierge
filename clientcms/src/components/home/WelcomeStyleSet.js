@@ -142,7 +142,8 @@ export const ContactEntryHeaderTitleDiv = styled.div`
 export const FieldLabel = styled.div`
     color: #5c5c5c;
     font-size: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
+    text-transform: uppercase;
 `;
 
 //---WelcomeTheme

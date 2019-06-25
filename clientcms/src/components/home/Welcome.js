@@ -256,17 +256,26 @@ const renderWelcomeComponent = (
         <React.Fragment>
             <SidebarContainer>
                 <SidebarDiv>
-                    {client && client.avatar && (
-                        <img
-                            src={client.avatar}
-                            style={{
-                                marginTop: "10%",
-                                width: "60%",
-                                marginBottom: "10%"
-                            }}
-                            alt={`${client.name} avatar`}
-                        />
-                    )}
+                    <div
+                        style={{
+                            height: "160px",
+                            textAlign: "center",
+                            display: "flex",
+                            alignItems: "center"
+                        }}
+                    >
+                        {client && client.avatar && (
+                            <img
+                                src={client.avatar}
+                                style={{
+                                    width: "60%",
+
+                                    margin: "0 auto"
+                                }}
+                                alt={`${client.name} avatar`}
+                            />
+                        )}
+                    </div>
                     {/* <p
                     style={{
                         fontSize: "18px",

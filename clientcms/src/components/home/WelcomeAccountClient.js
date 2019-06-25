@@ -337,10 +337,7 @@ const validationSchema = countries =>
         name: Yup.string()
             .required(requiredErrorMessage)
             .min(2)
-            .matches(
-                /^[A-Za-z\s]+$/
-                //  "Needs to be uppercase and just alphabet are allowed"
-            ),
+            .matches(/^[A-Za-z\s]+$/, "Just alphabet are allowed"),
 
         full_company_name: Yup.string()
             .required(requiredErrorMessage)
@@ -354,7 +351,7 @@ const validationSchema = countries =>
                 /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
             )
-            .max(20)
+            .max(25)
             .min(5),
 
         email: Yup.string()
@@ -395,7 +392,7 @@ const validationSchema = countries =>
                 /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
             )
-            .max(20)
+            .max(25)
             .min(5),
         second_phone_number: Yup.string()
             .notRequired()
@@ -403,7 +400,7 @@ const validationSchema = countries =>
                 /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
                 "Phone number is not valid"
             )
-            .max(20)
+            .max(25)
             .min(5),
         password: Yup.string()
             .required(requiredErrorMessage)
@@ -417,8 +414,17 @@ const validationSchema = countries =>
                 email: Yup.string()
                     .email("Wrong email format")
                     .required(requiredErrorMessage),
-                phone: Yup.string().required(requiredErrorMessage),
-                name: Yup.string().required(requiredErrorMessage),
+                phone: Yup.string()
+                    .required(requiredErrorMessage)
+                    .matches(
+                        /^(?:(?:\(?(?:00|\+)([1-4]\d\d|[1-9]\d?)\)?)?[\-\.\ \\\/]?)?((?:\(?\d{1,}\)?[\-\.\ \\\/]?){0,})(?:[\-\.\ \\\/]?(?:#|ext\.?|extension|x)[\-\.\ \\\/]?(\d+))?$/i,
+                        "Phone number is not valid"
+                    )
+                    .max(25)
+                    .min(5),
+                name: Yup.string()
+                    .required(requiredErrorMessage)
+                    .matches(/^[A-Za-z\s]+$/, "Just alphabet are allowed"),
                 title: Yup.string().required(requiredErrorMessage)
             })
         )

@@ -9,7 +9,31 @@ export const CancelButtonContainerDiv = styled.div`
     align-items: center;
     padding: 4% 8%;
 `;
+export const TopButtonsContainer = styled.div`
+    width: 12%;
+    display: flex;
+    flex-direction: column;
+`;
+export const MainSectionContainer = styled.div`
+    width: 100%;
+    height: 100%;
 
+    padding: 3%;
+`;
+
+export const ContainerDivTab = styled.div`
+    width: 100%;
+    overflow-y: auto;
+    height: 80vh;
+`;
+
+export const MainTabsContainer = styled.div`
+    width: 100%;
+    overflow-y: auto;
+`;
+export const SubSectionTop = styled.div`
+    display: flex;
+`;
 export const ContentContainerDiv = styled.div`
     width: 100%;
     height: 70%;
@@ -17,6 +41,10 @@ export const ContentContainerDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+export const PageHeader = styled.h2`
+    fontsize: 30px;
+    padding-bottom: 2%;
 `;
 
 export const TitleDiv = styled.div`
@@ -76,9 +104,11 @@ export const FieldDiv = styled.div`
     width: 100%;
     padding: 0px;
 `;
-export const FieldLabel = styled.label`
+export const FieldLabel = styled.div`
     font-size: 10px;
+    margin-bottom: 2px;
     color: #5c5c5c;
+    text-transform: uppercase;
 `;
 
 export const SubFieldContainerDiv = styled.div`
@@ -158,7 +188,7 @@ export const ContinueButton = styled.button`
 //----page3----
 
 export const SectionDivContainer = styled.div`
-    width: 50%;
+    width: 46%;
     height: 100%;
     padding: 10px;
 `;
@@ -273,10 +303,11 @@ export const EachClientSystemContainerDeviceTypeText = styled.p`
 //---page5- SetupClientThemeAndlayout.js
 
 export const ThemeContainerDiv = styled.div`
-    width: 60%;
+    width: 51%;
     height: 100%;
     padding-bottom: 20px;
     border-right: 1px solid #dddddd;
+    margin-left: 4%;
 `;
 
 export const EntryThemeContainerDiv = styled.div`
@@ -299,36 +330,42 @@ export const EntryThemeDiv = styled.div`
 `;
 
 export const LayoutContainerDiv = styled.div`
-    width: 40%;
+    width: 41%;
     height: 100%;
-    padding-left: 5%;
+    padding-left: 2%;
+    margin-right: 4%;
 `;
 
 export const LayoutEntryContainerDiv = styled.div`
     width: 100%;
-    margin-bottom: 10%;
+    margin-bottom: 1%;
+    height: 120px;
+    display: flex;
 `;
 
 export const LayoutEntryDropdownDiv = styled.div`
-    width: 60%;
-    height: 120px;
+    width: 45%;
+    height: 100%;
     float: left;
-    margin-bottom: 1%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+    // margin-bottom: 1%;
 `;
 
 export const LayoutEntryPreviewDiv = styled.div`
-    align-items: center;
-    border: 1px solid #dddddd;
-    padding: 5px;
-    width: 30%;
     height: 100px;
-    float: right;
-    margin-top: 20px;
+    padding-top: 2%;
 `;
 
 export const LayoutEntryPreviewImage = styled.img`
-    width: 90%;
-    margin: 5%;
+    // width: 90%;
+    // margin: 5%;
+    height: 110px;
+    margin: 1%;
+    border: 1px solid #9d9d9d;
+    border-radius: 5px;
+    padding: 10px;
 `;
 
 export const ColourEntryContainerDiv = styled.div`

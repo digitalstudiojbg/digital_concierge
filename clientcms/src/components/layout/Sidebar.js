@@ -325,7 +325,7 @@ class Sidebar extends Component {
                         <MainSidebarContainer
                             style={{
                                 position: "relative",
-                                width: "260px"
+                                width: "305px"
                             }}
                         >
                             <SidebarContainerDiv className={classes.SidebarDiv}>
@@ -334,14 +334,20 @@ class Sidebar extends Component {
                                     Boolean(system.client.avatar) && (
                                         <div
                                             style={{
-                                                width: "100%",
-                                                height: "160px",
                                                 backgroundColor: "white",
-                                                paddingTop: "10%",
-                                                direction: "ltr"
+                                                // direction: "ltr",
+                                                height: "160px",
+                                                textAlign: "center",
+                                                display: "flex",
+                                                alignItems: "center"
                                             }}
                                         >
                                             <ClientAvatarDiv
+                                                style={{
+                                                    width: "60%",
+
+                                                    margin: "0 auto"
+                                                }}
                                                 imageUrl={system.client.avatar}
                                             />
                                         </div>

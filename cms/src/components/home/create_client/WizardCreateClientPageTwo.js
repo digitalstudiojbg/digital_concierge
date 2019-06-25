@@ -37,7 +37,8 @@ import {
     FieldLabel,
     SubFieldContainerDiv,
     ContinueButton,
-    SubSection
+    SubSection,
+    ContinueButtonContainer
 } from "./CreateClientStyleSet";
 
 const styles = theme => ({
@@ -361,7 +362,7 @@ class WizardCreateClientPageTwo extends React.Component {
 
         return (
             <SectionDiv style={{ width: "33%", borderRight: "0" }}>
-                <SubSection style={{ height: "50vh" }}>
+                <SubSection>
                     <SectionHeader>Payment</SectionHeader>
                     {PAYMENT_TEXT_FIELD.map(
                         ({ name, label, required, type }) => (
@@ -413,24 +414,16 @@ class WizardCreateClientPageTwo extends React.Component {
                         width: "100%",
                         height: "100px",
                         border: "0px",
-                        padding: "0px"
+                        padding: "0px",
+                        marginLeft: "4%"
                     }}
                 >
-                    <div
-                        style={{
-                            // flex: 1,
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flex-end",
-                            alignItems: "flex-end"
-                            //   margin: "10% 6% 0 0"
-                        }}
-                    >
+                    <ContinueButtonContainer>
                         <ContinueButton
                             //style={{ bottom: 0 }}
                             //  type="submit"
                             variant="contained"
-                            color="primary"
+                            // color="primary"
                             disabled={
                                 isSubmitting ||
                                 Object.keys(errors).length > 0 ||
@@ -440,7 +433,7 @@ class WizardCreateClientPageTwo extends React.Component {
                         >
                             CONFIRM & CONTINUE
                         </ContinueButton>
-                    </div>
+                    </ContinueButtonContainer>
                 </SectionDiv>
             </SectionDiv>
         );

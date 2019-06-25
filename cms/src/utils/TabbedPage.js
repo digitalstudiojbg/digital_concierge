@@ -25,11 +25,13 @@ import InfoIcon from "@material-ui/icons/Info";
 import ExpandIcon from "@material-ui/icons/ExpandMore";
 import { isEmpty } from "lodash";
 
-const ContainerDivTab = styled.div`
-    width: 100%;
-    overflow-y: auto;
-    height: 77vh;
-`;
+import {
+    SubSectionTop,
+    PageHeader,
+    MainSectionContainer,
+    TopButtonsContainer,
+    MainTabsContainer
+} from "../components/home/create_client/CreateClientStyleSet";
 
 const StyledTooltip = styled(props => (
     <Tooltip
@@ -50,14 +52,19 @@ const TabContainer = props => {
 
 const styles = () => ({
     buttonSave: {
-        width: 200,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "#2699FB",
+        // width: 200,
+        // position: "absolute",
+        // top: 140,
+        // right: 20,
+        // backgroundColor: "#2699FB",
+        // color: "white",
+        // fontFamily: "Source Sans Pro, sans-serif",
+        // paddingRight: 5
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif",
-        paddingRight: 5
+        margin: "2%",
+        padding: "3% 0"
     },
     rightIcon: {
         color: "white"
@@ -69,13 +76,15 @@ const styles = () => ({
         alignItems: "center"
     },
     buttonCancel: {
-        width: 200,
-        position: "absolute",
-        top: 100,
-        right: 20,
+        // width: 200,
+        // position: "absolute",
+        // top: 100,
+        // right: 20,
         backgroundColor: "#595959",
         color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
+        fontFamily: "Source Sans Pro, sans-serif",
+        margin: "2%",
+        padding: "3% 0"
     }
 });
 
@@ -215,106 +224,107 @@ class TabbedPage extends React.Component {
             this.childComponentsRefs[tab].state.isSubmitting;
         return (
             <React.Fragment>
-                <div
-                    style={{
-                        width: "100%",
-                        backgroundColor: lightGreyHeader
-                    }}
+                <MainSectionContainer
+                    style={
+                        {
+                            // padding: "0"
+                        }
+                    }
                 >
-                    <div
-                        style={{
-                            height: 60,
-                            fontSize: "2em",
-                            fontWeight: 700,
-                            paddingTop: 20,
-                            paddingBottom: 20,
-                            display: "flex"
-                        }}
-                    >
-                        {title}
-                        {Boolean(tooltipText) && (
-                            <div style={{ paddingLeft: 10 }}>
-                                <StyledTooltip
-                                    // classes={{ tooltip: classes.tooltip }}
-                                    title={tooltipText}
-                                    placement="bottom"
-                                    fontSize={tooltipFontSize}
-                                >
-                                    <InfoIcon
-                                        style={{ color: tooltipColor }}
-                                        fontSize="small"
-                                    />
-                                </StyledTooltip>
-                            </div>
-                        )}
-                    </div>
-                    <Paper
-                        square
-                        style={{
-                            backgroundColor: lightGreyHeader,
-                            boxShadow: "none",
-                            borderBottom: "2px solid rgb(217,217,217)"
-                        }}
-                    >
-                        <Tabs
-                            value={tab}
-                            TabIndicatorProps={{
-                                style: {
-                                    backgroundColor: "rgb(57,154,249)"
-                                }
-                            }}
-                            onChange={this.handleChange}
-                        >
-                            {tabs.map(({ name }, index) => (
-                                <Tab
-                                    label={name}
-                                    key={`TAB-${title}-${index}`}
-                                />
-                            ))}
-                        </Tabs>
-                    </Paper>
-                    {shouldRenderButtons && (
-                        <React.Fragment>
-                            {shouldRenderCancelButton && (
-                                <Button
-                                    variant="outlined"
-                                    className={classes.buttonCancel}
-                                    onClick={this.handleCancel}
-                                    disabled={isSubmitting}
-                                >
-                                    CANCEL
-                                </Button>
-                            )}
-                            <Button
-                                variant="outlined"
-                                className={classes.buttonSave}
-                                onClick={this.openSaveMenu}
-                                disabled={isSubmitting}
-                            >
-                                <Grid container direction="row">
-                                    <Grid
-                                        item
-                                        xs={10}
-                                        justify="center"
-                                        alignItems="center"
+                    <SubSectionTop>
+                        <PageHeader style={{ width: "80%", display: "flex" }}>
+                            {title}
+                            {Boolean(tooltipText) && (
+                                <div style={{ paddingLeft: 10 }}>
+                                    <StyledTooltip
+                                        // classes={{ tooltip: classes.tooltip }}
+                                        title={tooltipText}
+                                        placement="bottom"
+                                        fontSize={tooltipFontSize}
                                     >
-                                        SAVE
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        xs={2}
-                                        className={classes.rightGrid}
-                                        justify="center"
-                                    >
-                                        <ExpandIcon
-                                            className={classes.rightIcon}
+                                        <InfoIcon
+                                            style={{ color: tooltipColor }}
+                                            fontSize="small"
                                         />
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                        </React.Fragment>
-                    )}
-                    <ContainerDivTab>
+                                    </StyledTooltip>
+                                </div>
+                            )}
+                        </PageHeader>
+
+                        <TopButtonsContainer>
+                            {shouldRenderButtons && (
+                                <React.Fragment>
+                                    {shouldRenderCancelButton && (
+                                        <Button
+                                            variant="outlined"
+                                            className={classes.buttonCancel}
+                                            onClick={this.handleCancel}
+                                            disabled={isSubmitting}
+                                        >
+                                            CANCEL
+                                        </Button>
+                                    )}
+                                    <Button
+                                        variant="outlined"
+                                        className={classes.buttonSave}
+                                        onClick={this.openSaveMenu}
+                                        disabled={isSubmitting}
+                                    >
+                                        <Grid container direction="row">
+                                            <Grid
+                                                item
+                                                xs={10}
+                                                justify="center"
+                                                alignItems="center"
+                                            >
+                                                SAVE
+                                            </Grid>
+                                            <Grid
+                                                item
+                                                xs={2}
+                                                className={classes.rightGrid}
+                                                justify="center"
+                                            >
+                                                <ExpandIcon
+                                                    className={
+                                                        classes.rightIcon
+                                                    }
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Button>
+                                </React.Fragment>
+                            )}
+                        </TopButtonsContainer>
+                    </SubSectionTop>
+                    <MainTabsContainer>
+                        <Paper
+                            square
+                            style={{
+                                backgroundColor: "#F4F4F4",
+                                boxShadow: "none",
+                                borderBottom: "2px solid rgb(217,217,217)",
+                                marginBottom: "20px",
+                                width: "92%"
+                            }}
+                        >
+                            <Tabs
+                                value={tab}
+                                TabIndicatorProps={{
+                                    style: {
+                                        backgroundColor: "rgb(57,154,249)"
+                                    }
+                                }}
+                                onChange={this.handleChange}
+                            >
+                                {tabs.map(({ name }, index) => (
+                                    <Tab
+                                        label={name}
+                                        key={`TAB-${title}-${index}`}
+                                    />
+                                ))}
+                            </Tabs>
+                        </Paper>
                         <TabContainer>
                             {Array.isArray(this.childComponentsRefs) &&
                                 this.childComponentsRefs.length > 0 && (
@@ -332,8 +342,8 @@ class TabbedPage extends React.Component {
                                     />
                                 )}
                         </TabContainer>
-                    </ContainerDivTab>
-                </div>
+                    </MainTabsContainer>
+                </MainSectionContainer>
                 <Dialog
                     open={openDialog}
                     TransitionComponent={SlideUpTransition}
@@ -382,7 +392,10 @@ class TabbedPage extends React.Component {
                         horizontal: "left"
                     }}
                 >
-                    <MenuItem onClick={this.submitExitAction}>
+                    <MenuItem
+                        style={{ padding: "" }}
+                        onClick={this.submitExitAction}
+                    >
                         SAVE & EXIT
                     </MenuItem>
                     <MenuItem onClick={this.submitAction}>

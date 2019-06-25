@@ -39,7 +39,8 @@ import {
     FieldLabel,
     ContinueButton,
     SubSection,
-    SectionDiv
+    SectionDiv,
+    ContinueButtonContainer
 } from "../CreateClientStyleSet";
 
 const NUMBER_OF_COLOURS_PER_SYSTEM = 5;
@@ -445,8 +446,8 @@ class SetupClientThemeAndLayout extends React.Component {
                                                                     style={{
                                                                         fontSize:
                                                                             "15px",
-                                                                        paddingRight:
-                                                                            "40px"
+                                                                        padding:
+                                                                            "0px 20px"
                                                                     }}
                                                                     StepIconProps={{
                                                                         classes: {
@@ -756,7 +757,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                             <LayoutEntryContainerDiv>
                                                 <LayoutEntryDropdownDiv>
                                                     <FieldLabel>
-                                                        DEFAULT HOME LAYOUT{" "}
+                                                        DEFAULT HOME LAYOUT
                                                     </FieldLabel>
                                                     <Dropdown
                                                         //  placeholder="Default Home Layout"
@@ -863,7 +864,6 @@ class SetupClientThemeAndLayout extends React.Component {
                                             <LayoutEntryContainerDiv>
                                                 <LayoutEntryDropdownDiv>
                                                     <FieldLabel>
-                                                        {" "}
                                                         DEFAULT DIRECTORY ENTRY
                                                         LAYOUT
                                                     </FieldLabel>
@@ -923,18 +923,11 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 width: "100%",
                                                 height: "100px",
                                                 border: "0px",
-                                                padding: "0px"
+                                                padding: "0px",
+                                                marginLeft: "4%"
                                             }}
                                         >
-                                            <div
-                                                style={{
-                                                    // flex: 1,
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    justifyContent: "flex-end",
-                                                    alignItems: "flex-end"
-                                                }}
-                                            >
+                                            <ContinueButtonContainer>
                                                 <ContinueButton
                                                     variant="outlined"
                                                     component="span"
@@ -946,7 +939,7 @@ class SetupClientThemeAndLayout extends React.Component {
                                                 >
                                                     CONFIRM & CONTINUE
                                                 </ContinueButton>
-                                            </div>
+                                            </ContinueButtonContainer>
                                         </SectionDiv>
                                     </LayoutContainerDiv>
                                 </React.Fragment>

@@ -45,7 +45,7 @@ export const ModifyStartLayout = ({ values, setFieldValue }) => {
                 </MainSubSections>
                 <MainSubSections
                     style={{
-                        width: "25%",
+                        width: "30%",
                         display: "flex",
                         height: "700px",
                         padding: "1%",

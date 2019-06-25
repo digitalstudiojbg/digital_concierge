@@ -26,9 +26,18 @@ import StepContractValidationSchema from "./StepAdvertiserValidationSchema";
 import {
     ContainerDiv,
     SectionDiv,
-    SectionTitleDiv,
+    SectionHeader,
     FormLabelDiv,
-    ContinueButton
+    ContinueButton,
+    FieldLabel,
+    FieldContainerDiv,
+    SubSectionDiv,
+    SectionContactTitleDiv,
+    FieldDivEqual,
+    FieldDiv,
+    ContactEntryContainerDiv,
+    AddressContainerDiv,
+    AddressSectionTitleDiv
 } from "./commonStyle";
 
 const StepAdvertiserHOC = ({
@@ -152,8 +161,8 @@ const StepAdvertiserHOC = ({
 );
 
 const renderTextField = (name, label, required) => (
-    <div style={{ width: "100%" }}>
-        <FormLabelDiv>{label}</FormLabelDiv>
+    <FieldContainerDiv style={{ width: "100%" }}>
+        <FieldLabel>{label}</FieldLabel>
         <Field
             name={name}
             required={required}
@@ -161,13 +170,19 @@ const renderTextField = (name, label, required) => (
             component={TextField}
             variant="outlined"
             fullWidth={true}
+            inputProps={{
+                style: {
+                    padding: "12px 10px",
+                    backgroundColor: "white"
+                }
+            }}
         />
-    </div>
+    </FieldContainerDiv>
 );
 
 const renderSelectField = (name, label, optionValues, errors) => (
-    <div style={{ width: "100%" }}>
-        <FormLabelDiv>{label}</FormLabelDiv>
+    <FieldContainerDiv style={{}}>
+        <FieldLabel>{label}</FieldLabel>
         <Field
             name={name}
             component={Select}
@@ -178,6 +193,7 @@ const renderSelectField = (name, label, optionValues, errors) => (
                     labelWidth={0}
                     name={name}
                     error={!isEmpty(errors) && errors[name]}
+                    style={{ height: "43px", backgroundColor: "white" }}
                 />
             }
         >
@@ -187,7 +203,7 @@ const renderSelectField = (name, label, optionValues, errors) => (
                 </MenuItem>
             ))}
         </Field>
-    </div>
+    </FieldContainerDiv>
 );
 
 const CLIENT_FIELDS = [
@@ -301,57 +317,6 @@ const CONTACT_PHONE_FIELDS = [
         required: false
     }
 ];
-
-const SectionContactTitleDiv = styled(SectionTitleDiv)`
-    width: 100%;
-    display: flex;
-    align-items: center;
-`;
-
-const FieldContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 20px;
-`;
-
-const FieldDivEqual = styled.div`
-    flex: 1;
-    padding-right: ${props => props.paddingRight};
-`;
-
-const FieldDiv = styled.div`
-    flex-basis: ${props => props.flexBasis};
-    margin-right: ${props => props.marginRight};
-`;
-
-const ContactEntryContainerDiv = styled.div`
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
-`;
-
-const AddressContainerDiv = styled.div`
-    flex-basis: 48%;
-    margin-right: ${props => props.marginRight};
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: 1px solid #707070;
-`;
-
-const AddressSectionTitleDiv = styled.div`
-    color: #2699fb;
-    font-size: 1.4em;
-    font-weight: 600;
-    padding-bottom: 10px;
-`;
 
 const EMPTY_CONTACT = {
     id: null,
@@ -567,15 +532,19 @@ const StepAdvertiser = ({
 
                 return (
                     <Form>
-                        <ContainerDiv>
+                        <ContainerDiv style={{ padding: "4%" }}>
                             <SectionDiv
-                                flexBasis="40%"
+                                flexBasis="44%"
                                 flexDirection="column"
                                 paddingRight="10px"
+                                style={{
+                                    padding: "0 3%",
+                                    borderRight: "1px solid grey"
+                                }}
                             >
-                                <SectionTitleDiv>
+                                <SectionHeader>
                                     Advertiser Information
-                                </SectionTitleDiv>
+                                </SectionHeader>
                                 {CLIENT_FIELDS.map((row_fields, index) => (
                                     <FieldContainerDiv
                                         key={`FIELDS-ROW-${index}`}
@@ -604,7 +573,7 @@ const StepAdvertiser = ({
                                         )}
                                     </FieldContainerDiv>
                                 ))}
-                                <FieldContainerDiv>
+                                <SubSectionDiv>
                                     <AddressContainerDiv marginRight="10px">
                                         <AddressSectionTitleDiv>
                                             Business Address
@@ -668,6 +637,9 @@ const StepAdvertiser = ({
                                             </FieldDiv>
                                         </FieldContainerDiv>
                                     </AddressContainerDiv>
+                                </SubSectionDiv>
+
+                                <SubSectionDiv>
                                     <AddressContainerDiv>
                                         <AddressSectionTitleDiv>
                                             Postal Address
@@ -744,12 +716,12 @@ const StepAdvertiser = ({
                                             </FieldDiv>
                                         </FieldContainerDiv>
                                     </AddressContainerDiv>
-                                </FieldContainerDiv>
+                                </SubSectionDiv>
                             </SectionDiv>
                             <SectionDiv
-                                flexBasis="60%"
+                                flexBasis="44%"
                                 flexDirection="column"
-                                paddingRight="0px"
+                                padding="0 3%"
                             >
                                 <FieldArray name="contacts">
                                     {({ push, remove }) => {
@@ -800,6 +772,7 @@ const StepAdvertiser = ({
 
                                                             return (
                                                                 <ContactEntryContainerDiv
+                                                                    style={{}}
                                                                     key={`CONTACT-ENTRY-${contactIndex}`}
                                                                 >
                                                                     <SectionContactTitleDiv>
@@ -919,7 +892,7 @@ const StepAdvertiser = ({
                                                 {values.contacts.length < 2 && (
                                                     <div
                                                         style={{
-                                                            width: "40%",
+                                                            width: "90%",
                                                             display: "flex",
                                                             flexDirection:
                                                                 "row-reverse",

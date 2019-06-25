@@ -50,7 +50,8 @@ const styles = () => ({
     },
     cancelButton: {
         marginLeft: 30,
-        color: "#A2A2A2"
+        color: "#A2A2A2",
+        padding: "12px 10px"
     },
     descriptionTextField: {
         margin: 0
@@ -68,7 +69,8 @@ const styles = () => ({
     expansionButton: {
         color: "#F0F2F8",
         background: "#DDDFE7",
-        borderRadius: 25
+        borderRadius: "5px",
+        padding: "12px 10px"
     },
     icon: {
         fontSize: "large"
@@ -82,7 +84,7 @@ const styles = () => ({
     Button: {
         backgroundColor: "white",
         marginBottom: 10,
-        padding: "5px 10px"
+        padding: "12px 10px"
     }
 });
 
@@ -387,7 +389,10 @@ class ModifyStartContent extends React.PureComponent {
                         <BrowserMedia
                             variant="outlined"
                             color="default"
-                            buttonStyle={{ backgroundColor: "white" }}
+                            buttonStyle={{
+                                padding: "12px 10px",
+                                backgroundColor: "white"
+                            }}
                             fullWidth={true}
                             multipleSelect={false}
                             updateImageSelection={
@@ -521,7 +526,10 @@ class ModifyStartContent extends React.PureComponent {
                         <BrowserMedia
                             variant="outlined"
                             color="default"
-                            buttonStyle={{ backgroundColor: "white" }}
+                            buttonStyle={{
+                                backgroundColor: "white",
+                                padding: "12px 10px"
+                            }}
                             fullWidth={true}
                             multipleSelect={false}
                             updateImageSelection={this.mediaSelectImageForLogo}

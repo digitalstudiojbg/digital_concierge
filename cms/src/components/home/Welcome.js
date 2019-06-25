@@ -14,24 +14,32 @@ import { WELCOME_URL } from "../../utils/Constants";
 //     }
 // `;
 
+const SidebarContainer = styled.div`
+    width: 260px;
+    height: 100vh;
+`;
+
 const ContainerDiv = styled.div`
     width: 100vw;
-    height: calc(100vh - 80px);
+    height: 100vh;
     position: relative;
     display: flex;
+    background-color: #f4f4f4;
 `;
 
 const SidebarDiv = styled.div`
     width: 260px;
-    background-color: rgb(252, 252, 252);
+    background-color: white;
+    position: fixed;
     color: black;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     align-items: center;
 `;
 
 const ContentDiv = styled.div`
-    width: calc(100vw - 350px);
+    width: calc(100vw - 260px);
 `;
 
 const SidebarHeaderTitle = styled.div`
@@ -51,9 +59,7 @@ const SidebarSelected = styled.div`
     background: rgb(113, 113, 113);
     color: white;
     font-weight: 700;
-    padding: 20px 20px 20px 50px;
-    text-align: left;
-    font-size: 16px;
+    padding: 5% 0 5% 15%;
 `;
 
 const SidebarNormal = styled.div`
@@ -61,9 +67,8 @@ const SidebarNormal = styled.div`
     background: white;
     color: black;
     font-weight: 700;
-    padding: 20px 20px 20px 40px;
+    padding: 5% 0 5% 15%;
     text-align: left;
-    font-size: 16px;
 `;
 
 // const styles = () => ({
@@ -182,30 +187,41 @@ class Welcome extends Component {
 
         return (
             <ContainerDiv>
-                <SidebarDiv>
-                    <div style={{ height: "150px" }}>
-                        {user.client && user.client.avatar && (
-                            <img
-                                src={user.client.avatar}
-                                style={{
-                                    margin: "15%",
-                                    width: "70%"
-                                }}
-                                alt={`${user.client.name} avatar`}
-                            />
-                        )}
-                    </div>
-                    {/* <SidebarHeaderTitle>
-                        <span style={{ fontSize: "4em", paddingRight: 5 }}>
-                            PORTAL
-                        </span>
-                        <span style={{ fontSize: "1.5em" }}>
-                            <div>ADMIN</div>
-                            <div>CONSOLE</div>
-                        </span>
-                    </SidebarHeaderTitle> */}
-                    {this.renderSidebarButtons()}
-                </SidebarDiv>
+                <SidebarContainer>
+                    <SidebarDiv>
+                        <div
+                            style={{
+                                height: "160px",
+                                textAlign: "center",
+                                display: "flex",
+                                alignItems: "center"
+                            }}
+                        >
+                            {user.client && user.client.avatar && (
+                                <img
+                                    src={user.client.avatar}
+                                    style={{
+                                        width: "60%",
+
+                                        margin: "0 auto"
+                                    }}
+                                    alt={`${user.client.name} avatar`}
+                                />
+                            )}
+                        </div>
+                        {/* <SidebarHeaderTitle>
+                            <span style={{ fontSize: "4em", paddingRight: 5 }}>
+                                PORTAL
+                            </span>
+                            <span style={{ fontSize: "1.5em" }}>
+                                <div>ADMIN</div>
+                                <div>CONSOLE</div>
+                            </span>
+                        </SidebarHeaderTitle> */}
+                        {this.renderSidebarButtons()}
+                    </SidebarDiv>
+                </SidebarContainer>
+
                 <ContentDiv>
                     <Suspense>
                         <SelectedComponent />

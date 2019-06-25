@@ -28,7 +28,10 @@ const Transition = props => {
 
 const styles = theme => ({
     buttonPaddingBottom: {
-        marginBottom: "10px"
+        margin: "5px 0",
+        border: "0px",
+        color: "black",
+        "&:hover": { border: "0px", backgroundColor: "#EBEBEB" }
     },
     button: {
         marginLeft: theme.spacing.unit,
@@ -92,8 +95,9 @@ const injectThProps = (state, rowInfo, column) => {
         return {
             style: {
                 border: "0",
-                padding: "5px 0"
-                //   borderBottom: "2px solid black"
+                padding: "5px 0",
+                boxShadow: "0px"
+                //  borderBottom: "2px solid black"
             } // override style for 'myHeaderTitle'.
         };
     }
@@ -368,8 +372,10 @@ class WelcomeUser extends Component {
                                                                             "absolute",
                                                                         backgroundColor:
                                                                             "white",
-                                                                        padding:
-                                                                            "15px",
+                                                                        marginLeft:
+                                                                            "50px",
+                                                                        // padding:
+                                                                        //     "15px",
                                                                         borderRadius:
                                                                             "5px"
                                                                     }}
@@ -409,6 +415,12 @@ class WelcomeUser extends Component {
                                                                                 DETAIL
                                                                             </Button>
                                                                             <Button
+                                                                                className={
+                                                                                    this
+                                                                                        .props
+                                                                                        .classes
+                                                                                        .buttonPaddingBottom
+                                                                                }
                                                                                 variant="outlined"
                                                                                 color="secondary"
                                                                                 onClick={() => {

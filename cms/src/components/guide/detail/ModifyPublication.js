@@ -17,6 +17,29 @@ import * as Yup from "yup";
 import { mapValues, isEmpty } from "lodash";
 import { DECIMAL_RADIX, GUIDE_MAIN_URL } from "../../../utils/Constants";
 import { withRouter } from "react-router-dom";
+import {
+    ContainerDiv,
+    SubContainerDiv,
+    // SecondSectionContainerDiv,
+    MainSections,
+    SubSectionDiv,
+    SectionHeader,
+    FieldLabel,
+    FormHelperError,
+    FieldDiv,
+    LayoutEntryContainerDiv,
+    LayoutEntryPreviewDiv,
+    LayoutEntryPreviewImage,
+    LayoutEntryDropdownDiv,
+    Dropdown
+} from "../GuideStyleSet";
+
+const styles = theme => ({
+    myInput: {
+        padding: "12px 10px",
+        backgroundColor: "white"
+    }
+});
 
 class ModifyPublicationHOC extends React.Component {
     render() {
@@ -157,58 +180,6 @@ class ModifyPublicationHOC extends React.Component {
         );
     }
 }
-
-const ContainerDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
-
-const FirstSectionContainerDiv = styled.div`
-    flex: 1;
-    width: 70%;
-    padding-right: 20px;
-`;
-
-const SecondSectionContainerDiv = styled.div`
-    flex: 2;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-`;
-
-const SecondSectionInnerContainer = styled.div`
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    display: flex;
-`;
-
-const SecondSectionInnerInnerContainer = styled.div`
-    flex: 1;
-    width: 100%;
-    height: 100%;
-`;
-
-const SectionTitleDiv = styled.div`
-    color: rgb(38, 153, 251);
-    font-size: 1.4em;
-    font-weight: 600;
-    padding-bottom: 20px;
-`;
-
-const FormLabelDiv = styled.div`
-    color: rgb(92, 92, 92);
-    font-size: 0.8em;
-`;
-
-const FormHelperError = styled.p`
-    margin-top: 8px;
-    font-size: 0.75rem;
-    line-height: 1em;
-    color: #f44336;
-`;
 
 //Yup validation schema
 const requiredErrorMessage = "Required";
@@ -360,20 +331,15 @@ class ModifyPublication extends React.Component {
 
         return (
             <React.Fragment>
-                <FormLabelDiv>{label}</FormLabelDiv>
-                <div
-                    style={{
-                        width: "100%",
-                        paddingBottom: 10,
-                        display: "flex"
-                    }}
-                >
-                    <div
-                        style={{
-                            width: Boolean(imageUrl) ? "60%" : "100%",
-                            marginRight: 20
-                        }}
+                <LayoutEntryContainerDiv>
+                    <LayoutEntryDropdownDiv
+                    //     style={{
+                    //         width: Boolean(imageUrl) ? "60%" : "100%",
+                    //         marginRight: 20
+                    //
+                    //     }}
                     >
+                        <FieldLabel>{label}</FieldLabel>
                         <Field
                             name={name}
                             component={Select}
@@ -384,6 +350,10 @@ class ModifyPublication extends React.Component {
                                     labelWidth={0}
                                     name={name}
                                     error={!isEmpty(errors) && errors[name]}
+                                    style={{
+                                        height: 43,
+                                        backgroundColor: "white"
+                                    }}
                                 />
                             }
                         >
@@ -399,22 +369,22 @@ class ModifyPublication extends React.Component {
                         {!isEmpty(errors) && errors[name] && (
                             <FormHelperError>{errors[name]}</FormHelperError>
                         )}
-                    </div>
+                    </LayoutEntryDropdownDiv>
                     {Boolean(imageUrl) && (
-                        <div
-                            style={{
-                                width: "30%",
-                                border: "1px solid rgba(112, 112, 112, 1)"
-                            }}
+                        <LayoutEntryPreviewDiv
+                        // style={{
+                        //     width: "30%",
+                        //     border: "1px solid rgba(112, 112, 112, 1)"
+                        // }}
                         >
-                            <img
-                                style={{ width: "100%" }}
+                            <LayoutEntryPreviewImage
+                                //  style={{ width: "100%" }}
                                 src={imageUrl}
                                 alt={label}
                             />
-                        </div>
+                        </LayoutEntryPreviewDiv>
                     )}
-                </div>
+                </LayoutEntryContainerDiv>
             </React.Fragment>
         );
     };
@@ -466,6 +436,8 @@ class ModifyPublication extends React.Component {
     render() {
         const { onRef, layoutFamilies } = this.props;
         const { imageError } = this.state;
+        const { classes } = this.props;
+
         return (
             <Formik
                 onSubmit={this.handleSubmit}
@@ -479,51 +451,67 @@ class ModifyPublication extends React.Component {
                 {({ values, errors }) => (
                     <Form>
                         <ContainerDiv>
-                            <FirstSectionContainerDiv>
-                                <SectionTitleDiv>
+                            <SubContainerDiv
+                                style={{ width: "25%", marginRight: "10%" }}
+                            >
+                                <SectionHeader>
                                     Publication Details
-                                </SectionTitleDiv>
-                                <FormLabelDiv>PUBLICATION NAME</FormLabelDiv>
-                                <Field
-                                    name="name"
-                                    required={true}
-                                    type="text"
-                                    component={TextField}
-                                    variant="outlined"
-                                    fullWidth={true}
-                                />
-                                <div
-                                    style={{
-                                        marginTop: 20,
-                                        border: imageError
-                                            ? "1px solid #f44336"
-                                            : "none"
-                                    }}
-                                >
-                                    <SimpleImageUploader
-                                        onRef={ref =>
-                                            (this.imageUploaderRef = ref)
-                                        }
-                                        previewUrl={values.image_preview}
-                                        previewName={values.image_name}
+                                </SectionHeader>
+                                <FieldDiv>
+                                    <FieldLabel>PUBLICATION NAME</FieldLabel>
+                                    <Field
+                                        name="name"
+                                        required={true}
+                                        type="text"
+                                        component={TextField}
+                                        variant="outlined"
+                                        fullWidth={true}
+                                        // ClassName={classes.myInput}
+                                        // inputProps={{
+                                        //     className: this.props.classes
+                                        //         .myInput
+                                        // }}
+
+                                        inputProps={{
+                                            style: {
+                                                padding: "12px 10px",
+                                                backgroundColor: "white"
+                                            }
+                                        }}
                                     />
-                                    {imageError && (
-                                        <p
-                                            style={{
-                                                color: "#f44336"
-                                            }}
-                                        >
-                                            Required.
-                                        </p>
-                                    )}
-                                </div>
-                            </FirstSectionContainerDiv>
-                            <SecondSectionContainerDiv>
-                                <SectionTitleDiv>
+                                    <div
+                                        style={{
+                                            marginTop: 20,
+                                            border: imageError
+                                                ? "1px solid #f44336"
+                                                : "none"
+                                        }}
+                                    >
+                                        <SimpleImageUploader
+                                            onRef={ref =>
+                                                (this.imageUploaderRef = ref)
+                                            }
+                                            previewUrl={values.image_preview}
+                                            previewName={values.image_name}
+                                        />
+                                        {imageError && (
+                                            <p
+                                                style={{
+                                                    color: "#f44336"
+                                                }}
+                                            >
+                                                Required.
+                                            </p>
+                                        )}
+                                    </div>
+                                </FieldDiv>
+                            </SubContainerDiv>
+                            <SubContainerDiv style={{ width: "75%" }}>
+                                <SectionHeader>
                                     Default Layout Family
-                                </SectionTitleDiv>
-                                <SecondSectionInnerContainer>
-                                    <SecondSectionInnerInnerContainer>
+                                </SectionHeader>
+                                <MainSections>
+                                    <SubSectionDiv>
                                         {this.firstColumnDropdownList.map(
                                             (item, index) => (
                                                 <React.Fragment
@@ -539,8 +527,8 @@ class ModifyPublication extends React.Component {
                                                 </React.Fragment>
                                             )
                                         )}
-                                    </SecondSectionInnerInnerContainer>
-                                    <SecondSectionInnerInnerContainer>
+                                    </SubSectionDiv>
+                                    <SubSectionDiv>
                                         {this.secondColumnDropdownList.map(
                                             (item, index) => (
                                                 <React.Fragment
@@ -556,9 +544,9 @@ class ModifyPublication extends React.Component {
                                                 </React.Fragment>
                                             )
                                         )}
-                                    </SecondSectionInnerInnerContainer>
-                                </SecondSectionInnerContainer>
-                            </SecondSectionContainerDiv>
+                                    </SubSectionDiv>
+                                </MainSections>
+                            </SubContainerDiv>
                         </ContainerDiv>
                     </Form>
                 )}

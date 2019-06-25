@@ -29,6 +29,7 @@ const InnerContainerDiv = styled.div`
 const LayoutOptionsDivHorizontal = styled.div`
     width: 100%;
     height: 70%;
+
     border: 2px solid rgb(196, 196, 196);
     margin-top: 20px;
     display: flex;
@@ -38,6 +39,7 @@ const LayoutOptionsDivHorizontal = styled.div`
 const LayoutOptionsDivVertical = styled.div`
     width: 100%;
     height: 70%;
+    padding: 5%;
     border: 2px solid rgb(196, 196, 196);
     margin-top: 20px;
     display: flex;
@@ -71,6 +73,8 @@ const LayoutLabelDivHorizontal = styled.div`
 const LayoutLabelDivVertical = styled.div`
     width: 30%;
     display: flex;
+    font-size: 12px;
+    font-weight: bold;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -83,7 +87,7 @@ const LayoutImageDiv = styled.div`
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    background-color: white;
+    //  background-color: white;
 `;
 
 const LayoutImageDivVertical = styled(LayoutImageDiv)`
@@ -200,6 +204,11 @@ const LayoutPicker = ({
                 <div style={{ width: `${dropDownWidth}%` }}>
                     <InputLabel>FAMILY</InputLabel>
                     <Field
+                        input={
+                            <OutlinedInput
+                                style={{ backgroundColor: "white" }}
+                            />
+                        }
                         name={layoutFamilyFieldName}
                         component={Select}
                         disabled={layoutFamilies.length < 1}

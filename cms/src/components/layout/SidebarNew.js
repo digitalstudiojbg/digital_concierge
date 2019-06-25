@@ -18,12 +18,24 @@ const sidebarButtons = [
 ];
 
 const SidebarDiv = styled.div`
-    width: 350px;
-    background-color: rgb(252, 252, 252);
+    // width: 260px;
+    // background-color: rgb(252, 252, 252);
+    // color: black;
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    width: 260px;
+    background-color: white;
+    position: fixed;
     color: black;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     align-items: center;
+`;
+const SidebarContainer = styled.div`
+    width: 260px;
+    height: 100vh;
 `;
 
 const SidebarHeaderTitle = styled.div`
@@ -43,9 +55,8 @@ const SidebarSelected = styled.div`
     background: rgb(113, 113, 113);
     color: white;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.5em;
+    padding: 5% 0 5% 15%;
+    //  text-align: center;
 `;
 
 const SidebarNormal = styled.div`
@@ -53,9 +64,8 @@ const SidebarNormal = styled.div`
     background: white;
     color: black;
     font-weight: 700;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.5em;
+    padding: 5% 0 5% 15%;
+    text-align: left;
 `;
 
 const SidebarNew = ({ client, history, selected }) => {
@@ -82,27 +92,40 @@ const SidebarNew = ({ client, history, selected }) => {
     );
 
     return (
-        <SidebarDiv>
-            {user.client && user.client.avatar && (
-                <img
-                    src={user.client.avatar}
+        <SidebarContainer>
+            <SidebarDiv>
+                <div
                     style={{
-                        marginTop: "5vh",
-                        width: "50%",
-                        marginBottom: "5vh"
+                        height: "160px",
+                        textAlign: "center",
+                        display: "flex",
+                        alignItems: "center"
                     }}
-                    alt={`${user.client.name} avatar`}
-                />
-            )}
-            <SidebarHeaderTitle>
-                <span style={{ fontSize: "4em", paddingRight: 5 }}>PORTAL</span>
-                <span style={{ fontSize: "1.5em" }}>
-                    <div>ADMIN</div>
-                    <div>CONSOLE</div>
-                </span>
-            </SidebarHeaderTitle>
-            {renderSidebarButtons()}
-        </SidebarDiv>
+                >
+                    {user.client && user.client.avatar && (
+                        <img
+                            src={user.client.avatar}
+                            style={{
+                                width: "60%",
+
+                                margin: "0 auto"
+                            }}
+                            alt={`${user.client.name} avatar`}
+                        />
+                    )}
+                </div>
+                {/* <SidebarHeaderTitle>
+                    <span style={{ fontSize: "4em", paddingRight: 5 }}>
+                        PORTAL
+                    </span>
+                    <span style={{ fontSize: "1.5em" }}>
+                        <div>ADMIN</div>
+                        <div>CONSOLE</div>
+                    </span>
+                </SidebarHeaderTitle> */}
+                {renderSidebarButtons()}
+            </SidebarDiv>
+        </SidebarContainer>
     );
 };
 
