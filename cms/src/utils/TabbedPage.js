@@ -76,10 +76,6 @@ const styles = () => ({
         alignItems: "center"
     },
     buttonCancel: {
-        // width: 200,
-        // position: "absolute",
-        // top: 100,
-        // right: 20,
         backgroundColor: "#595959",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif",

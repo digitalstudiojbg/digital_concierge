@@ -12,6 +12,13 @@ export const SectionDiv = styled.div`
     padding-right: ${props => props.paddingRight};
 `;
 
+export const PageHeader = styled.h2`
+    fontsize: 30px;
+    padding-bottom: 2%;
+`;
+export const SubSectionTop = styled.div`
+    display: flex;
+`;
 export const SectionTitleDiv = styled.div`
     color: rgb(38, 153, 251);
     font-size: 1.7em;
@@ -80,20 +87,23 @@ export const FieldDiv = styled.div`
 `;
 
 export const ContactEntryContainerDiv = styled.div`
-    width: 50%;
+    // width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 10px;
-    padding-right: 10px;
-    padding-left: 10px;
+    // padding-right: 10px;
+    // padding-left: 10px;
 `;
 
 export const AddressContainerDiv = styled.div`
-    flex-basis: 100%;
-    margin-right: ${props => props.marginRight};
-    padding: 2%;
-    // border: 1px solid #707070;
+    // margin-right: ${props => props.marginRight};
+    // padding: 2%;
+`;
+export const ContactFirstRow = styled.div`
+   // padding-right: ${props => props.paddingRight};
+    flex-basis: 49%;
+    padding-right:2%;
 `;
 
 export const AddressSectionTitleDiv = styled.div`
@@ -101,4 +111,30 @@ export const AddressSectionTitleDiv = styled.div`
     font-size: 1.4em;
     font-weight: 600;
     padding-bottom: 10px;
+`;
+
+export const HeaderContainerDiv = styled.div`
+    width: 100%;
+    height: 70px;
+    display: flex;
+`;
+
+export const HeaderTitleDiv = styled.div`
+    width: 90%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+`;
+
+export const HeaderButtonDiv = styled.div`
+    width: 10%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+`;
+
+export const ContentContainer = styled.div`
+    flex: 1;
+    width: 100%;
+    height: 100%;
 `;
