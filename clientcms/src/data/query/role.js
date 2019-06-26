@@ -9,6 +9,10 @@ export const getRoleList = gql`
                 id
                 name
             }
+            permissions {
+                id
+                name
+            }
         }
     }
 `;

@@ -19,6 +19,7 @@
         "html-to-draftjs": "^1.4.0",
         "immutable": "^4.0.0-rc.12",
         "lodash": "^4.17.11",
+        "material-table": "^1.40.0",
         "rc-color-picker": "^1.2.6",
         "react": "^16.8.4",
         "react-apollo": "^2.5.2",

@@ -19,7 +19,10 @@ import {
     getUsersByClient
 } from "./client";
 import { getCountryList, getSelectedCountry } from "./country";
-import { getDepartmentListByUser } from "./department";
+import {
+    getDepartmentListByUser,
+    getDepartmentListByClient
+} from "./department";
 import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
