@@ -165,7 +165,8 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                         <Query
                                                             query={getRoleList}
                                                             variables={{
-                                                                id: data.id
+                                                                clientId:
+                                                                    data.id
                                                             }}
                                                         >
                                                             {({
@@ -212,7 +213,9 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                                                         "75%"
                                                                                 }}
                                                                             >
-                                                                                Account
+                                                                                Users
+                                                                                &
+                                                                                Structure
                                                                             </PageHeader>
                                                                         </SubSectionTop>
                                                                         <MainSubSections
