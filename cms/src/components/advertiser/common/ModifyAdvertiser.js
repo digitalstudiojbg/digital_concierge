@@ -1,5 +1,7 @@
 import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import { Query, withApollo, Mutation, gql } from "react-apollo";
 import PropTypes from "prop-types";
 import {
     Button,
@@ -29,10 +31,12 @@ const styles = theme => ({
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif",
         margin: "2%",
-        padding: "3% 0"
+        padding: "3% 0",
+        width: "150px",
+        boxShadow: "2px 2px 3px #888888"
     },
     unCompletedIcon: {
-        color: "red",
+        color: "#DDDDDD",
         border: "2px solid #DDDDDD",
         borderRadius: "50%",
         fontColor: "black"
@@ -144,10 +148,10 @@ const ModifyAdvertiser = props => {
     // const { classes } = this.props;
 
     const SelectedComponent = array_components[activeStep].component;
+    //  const className = "";
     return (
         <React.Fragment>
-            <MainSectionContainer>
-                {/* className={this.props.classes.root} */}
+            <MainSectionContainer className={classes.root}>
                 <SubSectionTop>
                     <HeaderTitleDiv>
                         <h2
@@ -173,19 +177,9 @@ const ModifyAdvertiser = props => {
                     </HeaderTitleDiv>
                     <HeaderButtonDiv>
                         <Button
-                            // className={classes.buttonCancel}
+                            className={classes.buttonCancel}
                             variant="outlined"
                             onClick={handleCancel}
-                            style={{
-                                backgroundColor: "#595959",
-                                color: "white",
-                                fontFamily: "Source Sans Pro, sans-serif",
-                                margin: "2%",
-                                padding: "3% 0",
-                                width: "150px",
-                                boxShadow: "2px 2px 3px #888888",
-                                alignItem: "center"
-                            }}
                             disabled={
                                 Boolean(currentComponentFormikRef) &&
                                 Boolean(currentComponentFormikRef.state) &&
@@ -210,6 +204,7 @@ const ModifyAdvertiser = props => {
                     {array_components.map(({ title }, index) => {
                         const props = {};
                         const labelProps = {};
+
                         return (
                             <Step key={`${index} -${title}`} {...props}>
                                 {has_data && !goToNext ? (
@@ -289,4 +284,4 @@ ModifyAdvertiser.propTypes = {
     exitUrl: PropTypes.string
 };
 
-export default ModifyAdvertiser;
+export default withApollo(withStyles(styles)(ModifyAdvertiser));

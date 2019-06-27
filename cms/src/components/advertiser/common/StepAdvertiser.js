@@ -23,6 +23,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
 import StepContractValidationSchema from "./StepAdvertiserValidationSchema";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+
 import {
     ContainerDiv,
     SectionDiv,
@@ -32,12 +34,12 @@ import {
     FieldLabel,
     FieldContainerDiv,
     SubSectionDiv,
-    SectionContactTitleDiv,
+    AddressSectionTitleDiv,
     FieldDivEqual,
     FieldDiv,
     ContactEntryContainerDiv,
     AddressContainerDiv,
-    AddressSectionTitleDiv,
+    SectionContactTitleDiv,
     ContactFirstRow
 } from "./commonStyle";
 
@@ -244,22 +246,22 @@ const CLIENT_ADDRESS_FIELDS = [
             name: "address",
             label: "Address",
             required: true,
-            paddingRight: "10px",
-            flexBasis: "45%"
+            paddingRight: "2%",
+            flexBasis: "50%"
         },
         {
             name: "city",
             label: "City",
             required: true,
-            paddingRight: "5px",
-            flexBasis: "25%"
+            paddingRight: "1%",
+            flexBasis: "24%"
         },
         {
             name: "zip_code",
             label: "Zip Code",
             required: true,
-            paddingRight: "0px",
-            flexBasis: "25%"
+            paddingRight: "1%",
+            flexBasis: "24%"
         }
     ]
 ];
@@ -270,22 +272,22 @@ const CLIENT_POSTAL_FIELDS = [
             name: "postal_address",
             label: "Postal Address",
             required: false,
-            paddingRight: "0px",
+            paddingRight: "2%",
             flexBasis: "50%"
         },
         {
             name: "postal_city",
             label: "City",
             required: true,
-            paddingRight: "10px",
-            flexBasis: "25%"
+            paddingRight: "1%",
+            flexBasis: "24%"
         },
         {
             name: "postal_zip_code",
             label: "Zip Code",
             required: true,
             paddingRight: "0px",
-            flexBasis: "25%"
+            flexBasis: "24%"
         }
     ]
 ];
@@ -295,13 +297,15 @@ const CONTACT_FIELDS = [
         name: "name",
         label: "Contact Name",
         required: true,
-        paddingRight: "0%"
+        paddingRight: "2%",
+        flexBasis: "50%"
     },
     {
         name: "title",
         label: "Position",
         required: true,
-        paddingRight: "0"
+        paddingRight: "0%",
+        flexBasis: "50%"
     }
 ];
 
@@ -310,19 +314,22 @@ const CONTACT_PHONE_FIELDS = [
         name: "email",
         label: "Contact Email",
         required: true,
+        paddingRight: "2%",
         flexBasis: "50%"
     },
     {
         name: "phone",
         label: "Contact Phone Number 1",
         required: true,
-        flexBasis: "25%"
+        paddingRight: "1%",
+        flexBasis: "24%"
     },
     {
         name: "mobile",
         label: "Contact Phone Number 2",
         required: false,
-        flexBasis: "25%"
+        paddingRight: "0%",
+        flexBasis: "24%"
     }
 ];
 
@@ -338,16 +345,18 @@ const EMPTY_CONTACT = {
 const styles = () => ({
     addContactButton: {
         color: "#2699FB",
-        border: "1px solid #2699FB",
-        width: "90%",
-        marginBottom: 20
+        border: "2px solid #2699FB",
+        width: "100%",
+        backgroundColor: "white",
+        width: "75%"
     },
     deleteIconButton: {
-        fontSize: "1.7em",
+        padding: "0px",
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)",
-        borderRadius: 5,
-        padding: 2
+        border: "1px solid grey",
+        borderRadius: "5px",
+
+        height: "fit-content"
     }
 });
 
@@ -611,9 +620,9 @@ const StepAdvertiser = ({
                                                             paddingRight={
                                                                 paddingRight
                                                             }
-                                                            flexBasis={
-                                                                flexBasis
-                                                            }
+                                                            style={{
+                                                                flex: flexBasis
+                                                            }}
                                                         >
                                                             {renderTextField(
                                                                 name,
@@ -669,6 +678,15 @@ const StepAdvertiser = ({
                                                     disabled={businessAddressDetailsNotCompleted()}
                                                 />
                                             }
+                                            // label={
+                                            //     <Typography
+                                            //         style={{
+                                            //             fontFamily: "Arial"
+                                            //         }}
+                                            //     >
+                                            //         Same as Business Address
+                                            //     </Typography>
+                                            // }
                                             label="Same as Business Address"
                                         />
                                         {CLIENT_POSTAL_FIELDS.map(
@@ -692,9 +710,9 @@ const StepAdvertiser = ({
                                                                 paddingRight={
                                                                     paddingRight
                                                                 }
-                                                                flexBasis={
-                                                                    flexBasis
-                                                                }
+                                                                style={{
+                                                                    flex: flexBasis
+                                                                }}
                                                             >
                                                                 {renderTextField(
                                                                     name,
@@ -748,19 +766,8 @@ const StepAdvertiser = ({
                                             const addContact = () =>
                                                 push({ ...EMPTY_CONTACT });
                                             return (
-                                                <div
-                                                    style={{
-                                                        width: "100%",
-                                                        display: "flex",
-                                                        flexDirection: "column"
-                                                    }}
-                                                >
-                                                    <div
-                                                        style={{
-                                                            // width: "80%",
-                                                            display: "flex"
-                                                        }}
-                                                    >
+                                                <div>
+                                                    <div>
                                                         {values.contacts.map(
                                                             (
                                                                 contact,
@@ -798,6 +805,16 @@ const StepAdvertiser = ({
                                                                         key={`CONTACT-ENTRY-${contactIndex}`}
                                                                     >
                                                                         <SectionContactTitleDiv>
+                                                                            Contact
+                                                                        </SectionContactTitleDiv>
+                                                                        <AddressSectionTitleDiv
+                                                                            style={{
+                                                                                display:
+                                                                                    "flex",
+                                                                                width:
+                                                                                    "100%"
+                                                                            }}
+                                                                        >
                                                                             <div
                                                                                 style={{
                                                                                     flexBasis:
@@ -816,13 +833,12 @@ const StepAdvertiser = ({
                                                                                 2 && (
                                                                                 <div
                                                                                     style={{
-                                                                                        width:
-                                                                                            "50%",
                                                                                         display:
                                                                                             "flex",
-                                                                                        flexDirection:
-                                                                                            "row-reverse",
-                                                                                        paddingRight: 10
+                                                                                        justifyContent:
+                                                                                            "flex-end",
+                                                                                        flexBasis:
+                                                                                            "50%"
                                                                                     }}
                                                                                 >
                                                                                     <Button
@@ -854,10 +870,9 @@ const StepAdvertiser = ({
                                                                                             "10%",
                                                                                         display:
                                                                                             "flex",
-                                                                                        flexDirection:
-                                                                                            "row-reverse",
-                                                                                        marginBottom:
-                                                                                            "-11px"
+
+                                                                                        marginLeft:
+                                                                                            "25%"
                                                                                     }}
                                                                                 >
                                                                                     <IconButton
@@ -869,11 +884,11 @@ const StepAdvertiser = ({
                                                                                             classes.deleteIconButton
                                                                                         }
                                                                                     >
-                                                                                        <DeleteIcon />
+                                                                                        <DeleteOutlinedIcon fontSize="large" />
                                                                                     </IconButton>
                                                                                 </div>
                                                                             )}
-                                                                        </SectionContactTitleDiv>
+                                                                        </AddressSectionTitleDiv>
                                                                         <FieldContainerDiv
                                                                             style={{
                                                                                 width:
@@ -886,7 +901,8 @@ const StepAdvertiser = ({
                                                                                         name,
                                                                                         label,
                                                                                         required,
-                                                                                        paddingRight
+                                                                                        paddingRight,
+                                                                                        flexBasis
                                                                                     },
                                                                                     contactFieldIndex
                                                                                 ) => (
@@ -895,6 +911,10 @@ const StepAdvertiser = ({
                                                                                         // flexBasis={
                                                                                         //     flexBasis
                                                                                         // }
+                                                                                        style={{
+                                                                                            flex: flexBasis,
+                                                                                            paddingRight: paddingRight
+                                                                                        }}
                                                                                     >
                                                                                         {renderTextField(
                                                                                             `contacts[${contactIndex}].${name}`,
@@ -905,38 +925,30 @@ const StepAdvertiser = ({
                                                                                 )
                                                                             )}
                                                                         </FieldContainerDiv>
-                                                                        <FieldContainerDiv
-                                                                            style={{
-                                                                                width:
-                                                                                    "100%",
-                                                                                display:
-                                                                                    "flex"
-                                                                            }}
-                                                                        >
+                                                                        <FieldContainerDiv>
                                                                             {CONTACT_PHONE_FIELDS.map(
                                                                                 (
                                                                                     {
                                                                                         name,
                                                                                         label,
                                                                                         required,
-                                                                                        flexBasis
+                                                                                        flexBasis,
+                                                                                        paddingRight
                                                                                     },
                                                                                     contactPhoneFieldIndex
                                                                                 ) => (
                                                                                     <div
                                                                                         style={{
-                                                                                            flex: 1,
-                                                                                            paddingRight:
-                                                                                                contactPhoneFieldIndex ===
-                                                                                                CONTACT_PHONE_FIELDS.length -
-                                                                                                    1
-                                                                                                    ? 0
-                                                                                                    : 10
+                                                                                            flex: flexBasis,
+                                                                                            paddingRight: paddingRight
+                                                                                            // paddingRight:
+                                                                                            //     contactPhoneFieldIndex ===
+                                                                                            //     CONTACT_PHONE_FIELDS.length -
+                                                                                            //         1
+                                                                                            //         ? 0
+                                                                                            //         : 10
                                                                                         }}
                                                                                         key={`CONTACT-FIELD-PHONE-${contactIndex}-${name}-${contactPhoneFieldIndex}`}
-                                                                                        flexBasis={
-                                                                                            flexBasis
-                                                                                        }
                                                                                     >
                                                                                         {renderTextField(
                                                                                             `contacts[${contactIndex}].${name}`,

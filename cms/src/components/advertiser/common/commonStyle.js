@@ -32,11 +32,17 @@ export const FormLabelDiv = styled.div`
 `;
 
 export const ContinueButton = styled.button`
-    width: ${props => (props.width ? props.width : "25%")};
+    // width: ${props => (props.width ? props.width : "25%")};
+   
+    type: submit;
+    width: 15%;
+    position: fixed;
+    bottom: 0;
     padding: 20px 5px;
     color: white;
     background: #2699fb;
     border: 20px solid #313131;
+    border-radius: 5px;
 `;
 export const SectionHeader = styled.h4`
     text-align: left;
@@ -66,8 +72,6 @@ export const MainSections = styled.div`
 
 export const SubSectionDiv = styled.div`
     margin: 5px 0;
-
-    // display: flex;
 `;
 
 export const SectionContactTitleDiv = styled(SectionHeader)`
@@ -87,13 +91,10 @@ export const FieldDiv = styled.div`
 `;
 
 export const ContactEntryContainerDiv = styled.div`
-    // width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 10px;
-    // padding-right: 10px;
-    // padding-left: 10px;
 `;
 
 export const AddressContainerDiv = styled.div`
@@ -107,9 +108,8 @@ export const ContactFirstRow = styled.div`
 `;
 
 export const AddressSectionTitleDiv = styled.div`
-    color: #2699fb;
-    font-size: 1.4em;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
     padding-bottom: 10px;
 `;
 
