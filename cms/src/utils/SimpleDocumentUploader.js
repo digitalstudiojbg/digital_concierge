@@ -25,18 +25,21 @@ const styles = theme => ({
         display: "none"
     },
     uploadButton: {
-        margin: theme.spacing.unit,
-        color: "rgb(38, 153, 251)",
-        border: "2px solid rgb(38, 153, 251)",
-        width: "100%",
-        backgroundColor: "white"
+        //  margin: theme.spacing.unit,
+        border: "3px solid #2699FB",
+        backgroundColor: "white",
+
+        padding: "8px 25px",
+        fontSize: "14px",
+        color: "#2699FB",
+        borderRadius: "5px"
     },
     viewButton: {
         //  backgroundColor: "rgb(245,244,245)",
         backgroundColor: "white",
         border: "1px solid rgb(182,181,182)",
         borderRadius: 5,
-        height: 43,
+        height: 41,
         display: "flex",
         alignItem: "center"
     }
@@ -132,11 +135,7 @@ class SimpleFileUploader extends React.Component {
                                 alignItem: "center"
                             }}
                         >
-                            <ViewIcon
-                                style={{
-                                    backgroundColor: "white"
-                                }}
-                            />
+                            <ViewIcon style={{ marginTop: "-10%" }} />
                         </IconButton>
                     </div>
                 </div>
@@ -151,13 +150,19 @@ class SimpleFileUploader extends React.Component {
                     />
                     <div
                         style={{
-                            width: "90%",
-                            display: "flex",
-                            paddingRight: 20,
-                            flexDirection: "row-reverse"
+                            width: "100%",
+                            display: "flex"
                         }}
                     >
-                        <label htmlFor="upload-image">
+                        <label
+                            htmlFor="upload-image"
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                marginTop: "15px",
+                                justifyContent: "flex-end"
+                            }}
+                        >
                             <Button
                                 variant="outlined"
                                 component="span"

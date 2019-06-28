@@ -151,8 +151,3 @@ export const SectionDivModified = styled(SectionDiv)`
         props.withBorderRight ? "1px solid #DDDDDD" : "none"};
     padding-left: ${props => props.paddingLeft};
 `;
-
-// export const FieldContainerDiv = styled.div`
-//     width: 100%;
-//     margin-bottom: 20px;
-// `;

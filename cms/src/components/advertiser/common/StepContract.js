@@ -34,10 +34,9 @@ import {
     FormLabelDiv,
     ContinueButton,
     FieldLabel,
-    FieldContainerDiv,
     SubSectionDiv,
-    SectionDivModified,
-    SectionTitleDiv
+    SectionTitleDiv,
+    FieldContainerDiv
 } from "./commonStyle";
 
 const styles = () => ({
@@ -303,7 +302,7 @@ const StepContract = ({
 
         if (type === "text" || type === "number") {
             return (
-                <div style={{ width: "100%" }}>
+                <FieldContainerDiv>
                     <FieldLabel>{label}</FieldLabel>
 
                     <Field
@@ -336,11 +335,11 @@ const StepContract = ({
                             })
                         }}
                     />
-                </div>
+                </FieldContainerDiv>
             );
         } else if (type === "select") {
             return (
-                <div style={{ width: "100%" }}>
+                <FieldContainerDiv>
                     <FieldLabel>{label}</FieldLabel>
                     <Select
                         style={{
@@ -370,11 +369,11 @@ const StepContract = ({
                             </MenuItem>
                         ))}
                     </Select>
-                </div>
+                </FieldContainerDiv>
             );
         } else if (type === "date") {
             return (
-                <div style={{ width: "100%" }}>
+                <FieldContainerDiv>
                     <FieldLabel>{label}</FieldLabel>
                     <DatePicker
                         inputProps={{
@@ -397,7 +396,7 @@ const StepContract = ({
                         inputVariant="outlined"
                         fullWidth
                     />
-                </div>
+                </FieldContainerDiv>
             );
         } else {
             return <React.Fragment />;
@@ -535,7 +534,9 @@ const StepContract = ({
                 const currencyCode = Boolean(currency) ? currency.code : null;
                 return (
                     <Form>
-                        <ContainerDiv style={{ paddingTop: "30px" }}>
+                        <ContainerDiv
+                            style={{ paddingTop: "30px", marginLeft: "-6%" }}
+                        >
                             <SectionDiv
                                 flexBasis="33%"
                                 flexDirection="column"
@@ -547,7 +548,7 @@ const StepContract = ({
                                 <SectionTitleDiv>Agreement</SectionTitleDiv>
                                 {AGREEMENT_FIELDS.map(
                                     (item, agreementIndex) => (
-                                        <FieldContainerDiv
+                                        <SubSectionDiv
                                             key={`AGREEMENT-FIELD-${agreementIndex}`}
                                         >
                                             {renderField(
@@ -556,10 +557,10 @@ const StepContract = ({
                                                 errors,
                                                 setFieldValue
                                             )}
-                                        </FieldContainerDiv>
+                                        </SubSectionDiv>
                                     )
                                 )}
-                                <FieldContainerDiv>
+                                <SubSectionDiv>
                                     <SimpleDocumentUploader
                                         onRef={ref => (documentRef = ref)}
                                         {...Boolean(values.agreement_file) && {
@@ -573,7 +574,7 @@ const StepContract = ({
                                         }}
                                         label="UPLOAD AGREEMENT"
                                     />
-                                </FieldContainerDiv>
+                                </SubSectionDiv>
                             </SectionDiv>
                             <SectionDiv
                                 flexBasis="33%"
@@ -585,7 +586,7 @@ const StepContract = ({
                             >
                                 <SectionTitleDiv>Payment</SectionTitleDiv>
                                 {PAYMENT_FIELDS.map((item, paymentIndex) => (
-                                    <FieldContainerDiv
+                                    <SubSectionDiv
                                         key={`PAYMENT-FIELD-${paymentIndex}`}
                                     >
                                         {renderField(
@@ -600,7 +601,7 @@ const StepContract = ({
                                                 ? currencyCode
                                                 : null
                                         )}
-                                    </FieldContainerDiv>
+                                    </SubSectionDiv>
                                 ))}
                             </SectionDiv>
                             <SectionDiv
@@ -614,7 +615,7 @@ const StepContract = ({
                                     Display Period
                                 </SectionTitleDiv>
                                 {DISPLAY_FIELDS.map((item, displayIndex) => (
-                                    <FieldContainerDiv
+                                    <SubSectionDiv
                                         key={`DISPLAY-FIELD-${displayIndex}`}
                                     >
                                         {renderField(
@@ -626,7 +627,7 @@ const StepContract = ({
                                                 ? generatePeriodMonthList(24)
                                                 : []
                                         )}
-                                    </FieldContainerDiv>
+                                    </SubSectionDiv>
                                 ))}
                                 <div
                                     style={{
