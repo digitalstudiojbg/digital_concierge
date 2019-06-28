@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    ContainerDiv,
-    SectionDiv,
-    SectionTitleDiv,
-    FormLabelDiv,
-    ContinueButton
-} from "./commonStyle";
+
 import styled from "styled-components";
 import { Formik, Form, Field } from "formik";
 import { TextField } from "formik-material-ui";
@@ -33,24 +27,25 @@ import {
     editContractSchema
 } from "./StepContractValidationSchema";
 
-const ContainerDivModified = styled(ContainerDiv)`
-    padding-left: 20px;
-    padding-right: 20px;
-`;
+import {
+    ContainerDiv,
+    SectionDiv,
+    SectionHeader,
+    FormLabelDiv,
+    ContinueButton,
+    FieldLabel,
+    FieldContainerDiv,
+    SubSectionDiv,
+    SectionDivModified,
+    SectionTitleDiv
+} from "./commonStyle";
 
-const SectionDivModified = styled(SectionDiv)`
-    border-left: ${props =>
-        props.withBorderLeft ? "1px solid #DDDDDD" : "none"};
-    border-right: ${props =>
-        props.withBorderRight ? "1px solid #DDDDDD" : "none"};
-    padding-left: ${props => props.paddingLeft};
-`;
-
-const FieldContainerDiv = styled.div`
-    width: 100%;
-    margin-bottom: 20px;
-`;
-
+const styles = () => ({
+    myInput: {
+        padding: "12px 10px",
+        backgroundColor: "white"
+    }
+});
 const AGREEMENT_FIELDS = [
     {
         name: "agreement_number",
@@ -309,7 +304,8 @@ const StepContract = ({
         if (type === "text" || type === "number") {
             return (
                 <div style={{ width: "100%" }}>
-                    <FormLabelDiv>{label}</FormLabelDiv>
+                    <FieldLabel>{label}</FieldLabel>
+
                     <Field
                         name={name}
                         required={required}
@@ -317,6 +313,12 @@ const StepContract = ({
                         component={TextField}
                         variant="outlined"
                         fullWidth={true}
+                        inputProps={{
+                            style: {
+                                padding: "12px 10px",
+                                backgroundColor: "white"
+                            }
+                        }}
                         InputProps={{
                             ...(adornmentPosition === "end" && {
                                 endAdornment: Boolean(inputAdornmentText) ? (
@@ -339,8 +341,12 @@ const StepContract = ({
         } else if (type === "select") {
             return (
                 <div style={{ width: "100%" }}>
-                    <FormLabelDiv>{label}</FormLabelDiv>
+                    <FieldLabel>{label}</FieldLabel>
                     <Select
+                        style={{
+                            height: 43,
+                            backgroundColor: "white"
+                        }}
                         name={name}
                         component={Select}
                         disabled={optionValues.length < 1}
@@ -369,8 +375,14 @@ const StepContract = ({
         } else if (type === "date") {
             return (
                 <div style={{ width: "100%" }}>
-                    <FormLabelDiv>{label}</FormLabelDiv>
+                    <FieldLabel>{label}</FieldLabel>
                     <DatePicker
+                        inputProps={{
+                            style: {
+                                padding: "12px 10px",
+                                backgroundColor: "white"
+                            }
+                        }}
                         name={name}
                         disableFuture={disableFuture}
                         disablePast={disablePast}
@@ -523,12 +535,14 @@ const StepContract = ({
                 const currencyCode = Boolean(currency) ? currency.code : null;
                 return (
                     <Form>
-                        <ContainerDivModified>
-                            <SectionDivModified
+                        <ContainerDiv style={{ paddingTop: "30px" }}>
+                            <SectionDiv
                                 flexBasis="33%"
-                                paddingRight="20px"
-                                paddingLeft="20px"
                                 flexDirection="column"
+                                style={{
+                                    padding: "0 6%",
+                                    borderRight: "1px solid #DDDDDD"
+                                }}
                             >
                                 <SectionTitleDiv>Agreement</SectionTitleDiv>
                                 {AGREEMENT_FIELDS.map(
@@ -557,17 +571,17 @@ const StepContract = ({
                                             previewName:
                                                 values.agreement_filename
                                         }}
-                                        label="Upload Agreement"
+                                        label="UPLOAD AGREEMENT"
                                     />
                                 </FieldContainerDiv>
-                            </SectionDivModified>
-                            <SectionDivModified
+                            </SectionDiv>
+                            <SectionDiv
                                 flexBasis="33%"
-                                withBorderLeft={true}
-                                withBorderRight={true}
-                                paddingRight="20px"
-                                paddingLeft="20px"
                                 flexDirection="column"
+                                style={{
+                                    padding: "0 6%",
+                                    borderRight: "1px solid #DDDDDD"
+                                }}
                             >
                                 <SectionTitleDiv>Payment</SectionTitleDiv>
                                 {PAYMENT_FIELDS.map((item, paymentIndex) => (
@@ -588,12 +602,13 @@ const StepContract = ({
                                         )}
                                     </FieldContainerDiv>
                                 ))}
-                            </SectionDivModified>
-                            <SectionDivModified
+                            </SectionDiv>
+                            <SectionDiv
                                 flexBasis="33%"
-                                paddingRight="20px"
-                                paddingLeft="20px"
                                 flexDirection="column"
+                                style={{
+                                    padding: "0 6%"
+                                }}
                             >
                                 <SectionTitleDiv>
                                     Display Period
@@ -630,8 +645,8 @@ const StepContract = ({
                                         Confirm & Continue
                                     </ContinueButton>
                                 </div>
-                            </SectionDivModified>
-                        </ContainerDivModified>
+                            </SectionDiv>
+                        </ContainerDiv>
                     </Form>
                 );
             }}

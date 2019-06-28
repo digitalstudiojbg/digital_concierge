@@ -18,12 +18,12 @@ import {
     FormControlLabel,
     Checkbox
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { withStyles } from "@material-ui/core/styles";
 import { isEmpty } from "lodash";
 import { ADVERTISER_MAIN_URL } from "../../../utils/Constants";
 import StepContractValidationSchema from "./StepAdvertiserValidationSchema";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import Typography from "@material-ui/core/Typography";
 
 import {
     ContainerDiv,
@@ -357,6 +357,16 @@ const styles = () => ({
         borderRadius: "5px",
 
         height: "fit-content"
+    },
+    formLabel: {
+        color: "#5C5C5C",
+        fontSize: "10px",
+        fontFamily: "Arial, Helvetica, sans-serif",
+        marginLeft: "0",
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        alignItems: "center",
+        display: "flex"
     }
 });
 
@@ -549,14 +559,14 @@ const StepAdvertiser = ({
 
                 return (
                     <Form>
-                        <ContainerDiv style={{ padding: "4%" }}>
+                        <ContainerDiv style={{ paddingTop: "30px" }}>
                             <SectionDiv
                                 flexBasis="44%"
                                 flexDirection="column"
                                 paddingRight="10px"
                                 style={{
                                     padding: "0 3%",
-                                    borderRight: "1px solid grey"
+                                    borderRight: "1px solid #DDDDDD"
                                 }}
                             >
                                 <SubSectionDiv>
@@ -668,26 +678,29 @@ const StepAdvertiser = ({
                                             Postal Address
                                         </AddressSectionTitleDiv>
                                         <FormControlLabel
+                                            style={{ alignItems: "center" }}
                                             control={
                                                 <Checkbox
                                                     style={{
-                                                        color: "#2699FB"
+                                                        color: "#2699FB",
+                                                        paddingRight: 2
                                                     }}
                                                     checked={businessAndPostalAddressAreTheSame()}
                                                     onChange={handleCheck}
                                                     disabled={businessAddressDetailsNotCompleted()}
                                                 />
                                             }
-                                            // label={
-                                            //     <Typography
-                                            //         style={{
-                                            //             fontFamily: "Arial"
-                                            //         }}
-                                            //     >
-                                            //         Same as Business Address
-                                            //     </Typography>
-                                            // }
-                                            label="Same as Business Address"
+                                            label={
+                                                <Typography
+                                                    className={
+                                                        classes.formLabel
+                                                    }
+                                                    variant="p"
+                                                >
+                                                    Same as Business Address
+                                                </Typography>
+                                            }
+                                            //    label="Same as Business Address"
                                         />
                                         {CLIENT_POSTAL_FIELDS.map(
                                             (row_fields, index) => (
@@ -818,7 +831,11 @@ const StepAdvertiser = ({
                                                                             <div
                                                                                 style={{
                                                                                     flexBasis:
-                                                                                        "50%"
+                                                                                        "50%",
+                                                                                    display:
+                                                                                        "flex",
+                                                                                    alignItems:
+                                                                                        "center"
                                                                                 }}
                                                                             >
                                                                                 Contact
@@ -866,13 +883,13 @@ const StepAdvertiser = ({
                                                                                 1 && (
                                                                                 <div
                                                                                     style={{
-                                                                                        flexBasis:
-                                                                                            "10%",
                                                                                         display:
                                                                                             "flex",
 
-                                                                                        marginLeft:
-                                                                                            "25%"
+                                                                                        justifyContent:
+                                                                                            "flex-end",
+                                                                                        flexBasis:
+                                                                                            "50%"
                                                                                     }}
                                                                                 >
                                                                                     <IconButton
@@ -973,7 +990,8 @@ const StepAdvertiser = ({
                                             flex: 1,
                                             display: "flex",
                                             flexDirection: "row-reverse",
-                                            alignItems: "flex-end"
+                                            alignItems: "flex-end",
+                                            marginBottom: "-50px"
                                         }}
                                     >
                                         <ContinueButton type="submit">

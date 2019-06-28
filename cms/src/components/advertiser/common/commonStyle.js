@@ -138,3 +138,21 @@ export const ContentContainer = styled.div`
     width: 100%;
     height: 100%;
 `;
+
+export const ContainerDivModified = styled(ContainerDiv)`
+    padding-left: 20px;
+    padding-right: 20px;
+`;
+
+export const SectionDivModified = styled(SectionDiv)`
+    border-left: ${props =>
+        props.withBorderLeft ? "1px solid #DDDDDD" : "none"};
+    border-right: ${props =>
+        props.withBorderRight ? "1px solid #DDDDDD" : "none"};
+    padding-left: ${props => props.paddingLeft};
+`;
+
+// export const FieldContainerDiv = styled.div`
+//     width: 100%;
+//     margin-bottom: 20px;
+// `;
