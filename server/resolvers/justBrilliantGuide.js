@@ -249,16 +249,16 @@ export default {
             //Set name to have copy
             const regex = /\s*copy/gim;
             const clearedName = name.replace(regex, "");
-            console.log("Cleared Name ", clearedName);
+            // console.log("Cleared Name ", clearedName);
 
             const otherGuides = await db.just_brilliant_guide.findAll({
                 where: { name: { [db.op.startsWith]: clearedName } }
             });
 
-            console.log("Other guides length ", otherGuides.length);
+            // console.log("Other guides length ", otherGuides.length);
 
             const finalName = `${clearedName} COPY ${otherGuides.length + 1}`;
-            console.log("FINAL NAME ", finalName);
+            // console.log("FINAL NAME ", finalName);
 
             //Duplicating guide
             let duplicateGuide = db.just_brilliant_guide.build({
