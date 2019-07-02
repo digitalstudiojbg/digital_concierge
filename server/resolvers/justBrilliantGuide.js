@@ -244,10 +244,25 @@ export default {
                     `Just Brilliant Guide ID ${id} does not exist`
                 );
             }
-            const { id: _id, ...tempGuide } = originalGuide;
+            const { id: _id, name, ...tempGuide } = originalGuide;
+
+            //Set name to have copy
+            const regex = /\s*copy/gim;
+            const clearedName = name.replace(regex, "");
+            console.log("Cleared Name ", clearedName);
+
+            const otherGuides = await db.just_brilliant_guide.findAll({
+                where: { name: { [db.op.startsWith]: clearedName } }
+            });
+
+            console.log("Other guides length ", otherGuides.length);
+
+            const finalName = `${clearedName} COPY ${otherGuides.length + 1}`;
+            console.log("FINAL NAME ", finalName);
 
             //Duplicating guide
             let duplicateGuide = db.just_brilliant_guide.build({
+                name: finalName,
                 ...tempGuide
             });
             try {
@@ -287,7 +302,7 @@ export default {
 
             handleCreateActionActivityLog(
                 duplicateGuide,
-                { ...tempGuide, media: [...mediaIds] },
+                { name: finalName, ...tempGuide, media: [...mediaIds] },
                 user,
                 clientIp
             );
