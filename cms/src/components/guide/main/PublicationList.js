@@ -155,10 +155,10 @@ const PublicationList = ({ data: { publications }, classes, history }) => {
         history.push(GUIDE_CREATE_NEW_URL);
 
     return (
-        <ContainerDiv style={{ flexDirection: "column" }}>
+        <ContainerDiv style={{ flexDirection: "column", width: "92%" }}>
             <HeaderDiv>
-                <div style={{ width: "80%" }}>{renderSearchField()}</div>
-                <div style={{ width: "150px" }}>
+                <div style={{ width: "87%" }}>{renderSearchField()}</div>
+                <div style={{ width: "12%" }}>
                     <Button
                         variant="outlined"
                         component="span"

@@ -47,7 +47,8 @@ const styles = () => ({
         border: "2px solid rgb(33,143,250)",
         fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif",
-        marginRight: 10
+        marginRight: 10,
+        width: "150px"
     },
     iconButton: {
         marginRight: 10,
@@ -145,30 +146,13 @@ class AdvertiserTableList extends React.Component {
 
         return (
             <ContainerDiv>
-                <HeaderDiv>
-                    <div style={{ height: "50%" }}>
-                        <Button
-                            className={classes.buttonNewAdvertisement}
-                            onClick={this.navigateToCreateNewAdvertiserPage}
-                        >
-                            NEW ADVERTISEMENT
-                        </Button>
-                    </div>
-
-                    {this.headerButtons.map(
-                        ({ icon: ButtonIcon, action }, index) => (
-                            <IconButton
-                                key={`HEADER-BUTTON-${index}`}
-                                className={classes.iconButton}
-                                onClick={action}
-                            >
-                                <ButtonIcon />
-                            </IconButton>
-                        )
-                    )}
-                </HeaderDiv>
                 <TableDiv>
                     <MaterialTable
+                        style={{
+                            // backgroundColor: "#F4F4F4",
+                            boxShadow: "none",
+                            width: "93%"
+                        }}
                         //headerStyle={{ border: "1px solid grey" }}
                         data={this.modifyAdvertiserList()}
                         onRowClick={this.handleClickRow}
@@ -199,8 +183,11 @@ class AdvertiserTableList extends React.Component {
                         options={{
                             selection: true,
                             searchFieldAlignment: "left",
+
                             showTitle: false,
-                            headerStyle: { borderBottom: "1px solid grey" }
+                            headerStyle: {
+                                borderBottom: "2px solid grey"
+                            }
                         }}
                         components={{
                             Toolbar: props => {
@@ -210,7 +197,8 @@ class AdvertiserTableList extends React.Component {
                                         style={{
                                             display: "flex",
                                             width: "100%",
-                                            height: "100%"
+                                            height: "100%",
+                                            backgroundColor: "#F4F4F4"
                                         }}
                                     >
                                         <div style={{ width: "50%" }}>
@@ -222,7 +210,11 @@ class AdvertiserTableList extends React.Component {
                                                 height: "100%"
                                             }}
                                         >
-                                            {/* <HeaderDiv>
+                                            <HeaderDiv
+                                                style={{
+                                                    backgroundColor: "#F4F4F4"
+                                                }}
+                                            >
                                                 <div style={{ height: "50%" }}>
                                                     <Button
                                                         className={
@@ -256,7 +248,7 @@ class AdvertiserTableList extends React.Component {
                                                         </IconButton>
                                                     )
                                                 )}
-                                            </HeaderDiv> */}
+                                            </HeaderDiv>
                                         </div>
                                     </div>
                                 );

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import MaterialTable, { MTableToolbar } from "material-table";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import { isEmpty } from "lodash";
 import dayJs from "dayjs";
 import { IconButton, Button, Menu, MenuItem } from "@material-ui/core";
@@ -46,14 +47,16 @@ const styles = () => ({
         border: "2px solid rgb(33,143,250)",
         fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif",
-        marginRight: 10
+        marginRight: 10,
+        width: "150PX"
     },
     iconButton: {
-        marginRight: 10,
-        borderRadius: 5,
+        padding: "6px",
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)",
-        height: "50%"
+        border: "1px solid grey",
+        borderRadius: "5px",
+        height: "fit-content",
+        marginLeft: "5px"
     },
     iconButtonEnd: {
         marginRight: 10,
@@ -241,6 +244,11 @@ class ArticleTableList extends React.Component {
         return (
             <ContainerDiv>
                 <MaterialTable
+                    style={{
+                        // backgroundColor: "#F4F4F4",
+                        boxShadow: "none",
+                        width: "93%"
+                    }}
                     data={this.modifyArticleList()}
                     onRowClick={this.handleClickRow}
                     columns={[
@@ -266,7 +274,12 @@ class ArticleTableList extends React.Component {
                             title: "ORDER",
                             field: "order",
                             render: ({ id, order }) => (
-                                <div style={{ width: "100%", display: "flex" }}>
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        display: "flex"
+                                    }}
+                                >
                                     <div style={{ width: "10%" }}>
                                         <KeyboardArrowUp
                                             className={classes.arrowButton}
@@ -329,7 +342,9 @@ class ArticleTableList extends React.Component {
                     options={{
                         selection: true,
                         searchFieldAlignment: "left",
-                        showTitle: false
+                        showTitle: false,
+                        headerStyle: { borderBottom: "2px solid grey" },
+                        SearchStyle: { color: "red" }
                     }}
                     components={{
                         Toolbar: props => {
@@ -338,11 +353,15 @@ class ArticleTableList extends React.Component {
                                     style={{
                                         display: "flex",
                                         width: "100%",
-                                        height: "100%"
+                                        height: "100%",
+                                        backgroundColor: "#F4F4F4"
                                     }}
                                 >
                                     <div style={{ width: "50%" }}>
-                                        <MTableToolbar {...props} />
+                                        <MTableToolbar
+                                            // input={<OutlinedInput />}
+                                            {...props}
+                                        />
                                     </div>
                                     <div
                                         style={{
@@ -351,7 +370,11 @@ class ArticleTableList extends React.Component {
                                         }}
                                     >
                                         <HeaderDiv>
-                                            <div style={{ height: "50%" }}>
+                                            <div
+                                                style={{
+                                                    height: "50%"
+                                                }}
+                                            >
                                                 <Button
                                                     className={
                                                         classes.buttonNewAdvertisement
