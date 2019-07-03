@@ -104,7 +104,6 @@ const renderSelectField = ({ name: nameValue, label, optionList }) => {
 const DeleteButtonContainer = styled.div`
     display: flex;
     flex-direction: row-reverse;
-    align-items: center;
 `;
 
 class WizardCreateClientPageFour extends React.Component {
@@ -142,10 +141,16 @@ class WizardCreateClientPageFour extends React.Component {
             })
         });
 
+    cancelSelectedSystem = () =>
+        this.setState({
+            selected_system: null,
+            selected_checkboxes: Set()
+        });
+
     deleteSystem = (action, id) => _event => {
-        action({ variables: { id } }).then(() =>
-            console.log("Delete system " + id + " successfully done!")
-        );
+        action({ variables: { id } }).then(() => {
+            console.log("Delete system " + id + " successfully done!");
+        });
     };
 
     renderAddSystemSection() {
@@ -277,7 +282,7 @@ class WizardCreateClientPageFour extends React.Component {
             classes
         } = this.props;
 
-        // let new_create_client_id = 1;
+        // let new_create_client_id = 4;
         let new_create_client_id;
         try {
             new_create_client_id = client.readQuery({
@@ -347,9 +352,6 @@ class WizardCreateClientPageFour extends React.Component {
                                             return (
                                                 <EachClientSystemContainer
                                                     key={`${id}-${index}`}
-                                                    onClick={this.setSelectedSystem(
-                                                        system
-                                                    )}
                                                 >
                                                     <DeleteButtonContainer>
                                                         <IconButton
@@ -364,28 +366,50 @@ class WizardCreateClientPageFour extends React.Component {
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </DeleteButtonContainer>
-                                                    <img
+                                                    <div
                                                         style={{
-                                                            display: "block",
-                                                            margin: "auto"
+                                                            width: "100%",
+                                                            display: "flex",
+                                                            justifyContent:
+                                                                "center"
                                                         }}
-                                                        src={
-                                                            system_type.name.includes(
-                                                                "TABLET"
-                                                            )
-                                                                ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
-                                                                : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
-                                                        }
-                                                        height=" 80"
-                                                    />
-                                                    <EachClientSystemContainerSystemText>
+                                                        onClick={this.setSelectedSystem(
+                                                            system
+                                                        )}
+                                                    >
+                                                        <img
+                                                            style={{
+                                                                height: 80
+                                                            }}
+                                                            src={
+                                                                system_type.name.includes(
+                                                                    "TABLET"
+                                                                )
+                                                                    ? "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/tabletIcon.png"
+                                                                    : "https://s3-ap-southeast-2.amazonaws.com/digitalconcierge/cms_assets/touchscreenIcon.png"
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <EachClientSystemContainerSystemText
+                                                        onClick={this.setSelectedSystem(
+                                                            system
+                                                        )}
+                                                    >
                                                         {system_type.name}
                                                     </EachClientSystemContainerSystemText>
                                                     <hr />
-                                                    <EachClientSystemContainerSystemText>
+                                                    <EachClientSystemContainerSystemText
+                                                        onClick={this.setSelectedSystem(
+                                                            system
+                                                        )}
+                                                    >
                                                         {name}
                                                     </EachClientSystemContainerSystemText>
-                                                    <EachClientSystemContainerDeviceTypeText>
+                                                    <EachClientSystemContainerDeviceTypeText
+                                                        onClick={this.setSelectedSystem(
+                                                            system
+                                                        )}
+                                                    >
                                                         {device_type.name}
                                                     </EachClientSystemContainerDeviceTypeText>
                                                 </EachClientSystemContainer>
@@ -658,7 +682,8 @@ class WizardCreateClientPageFour extends React.Component {
                         width: "100%",
                         paddingTop: "20px",
                         display: "flex",
-                        justifyContent: "flex-end"
+                        flexDirection: "column",
+                        alignItems: "flex-end"
                     }}
                 >
                     <Button
@@ -685,6 +710,32 @@ class WizardCreateClientPageFour extends React.Component {
                             ? "ADD SYSTEM"
                             : "EDIT SYSTEM"}
                     </Button>
+                    {!isEmpty(selected_system) && (
+                        <Button
+                            style={{
+                                marginTop: 10,
+                                border: "3px solid #2699FB",
+                                width: "40%",
+                                fontSize: "14px",
+                                color: "#2699FB",
+                                backgroundColor: "white",
+                                hover: {
+                                    backgroundColor: "#EBEBF2"
+                                }
+                            }}
+                            onClick={this.cancelSelectedSystem}
+                            variant="contained"
+                            color="primary"
+                            disabled={
+                                isSubmitting ||
+                                Object.keys(errors).length > 0 ||
+                                this.state.selected_checkboxes.toJS().length ===
+                                    0
+                            }
+                        >
+                            CLEAR SYSTEM SELECTION
+                        </Button>
+                    )}
                 </div>
             </div>
         );
@@ -702,7 +753,7 @@ class WizardCreateClientPageFour extends React.Component {
         // const { getCurrentUser: user } = client.readQuery({ query });
         const { selected_system } = this.state;
         const has_data = !isEmpty(selected_system);
-        // let new_create_client_id = 1;
+        // let new_create_client_id = 4;
         let new_create_client_id;
 
         try {
@@ -900,7 +951,7 @@ export default compose(
                 id: ownProps.client.readQuery({
                     query: getNewCreatedClientId
                 }).new_create_client_id
-                // id: 1
+                // id: 4
             }
         }),
         name: "systemsByClient"
