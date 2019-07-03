@@ -30,6 +30,7 @@ const routes = [
     // },
     {
         path: WELCOME_URL + "/:client_id",
+        exact: true,
         component: props => {
             // const clientId = getClientIdLocalStorage();
             // console.log("PROPS IS: ", props);
@@ -139,6 +140,7 @@ class App extends Component {
                                     <PrivateRoute
                                         key={index}
                                         path={route.path}
+                                        exact={Boolean(route.exact)}
                                         component={route.component}
                                     />
                                 ))}

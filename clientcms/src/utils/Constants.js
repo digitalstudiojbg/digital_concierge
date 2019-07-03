@@ -51,6 +51,10 @@ export const SYSTEM_CMS_STAFF = SYSTEM_INDEX_URL + "/staff";
 
 export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 
+//USER URL Constants
+export const USER_EDIT_URL = "/user/:user_id";
+export const USER_CREATE_URL = "/user/new";
+
 export const MAX_FILE_SIZE = 104857600; //100MB in bytes
 
 export const SORT_BY_ORDER_BY_OPTIONS = [

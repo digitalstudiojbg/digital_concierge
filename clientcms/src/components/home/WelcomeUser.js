@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Query, Mutation } from "react-apollo";
 import { getUsersByClient, getRoleList } from "../../data/query";
 import Loading from "../loading/Loading";
-import { DELETE_USER, UPDATE_USER } from "../../data/mutation";
+import { DELETE_USER } from "../../data/mutation";
 import {
     MainSectionContainer,
     PageHeader,
@@ -107,203 +107,159 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                     </React.Fragment>
                                 );
                             return (
-                                <Mutation
-                                    mutation={UPDATE_USER}
-                                    refetchQueries={[
-                                        {
-                                            query: getUsersByClient,
-                                            variables: { id: data.id }
-                                        }
-                                    ]}
+                                <Query
+                                    query={getDepartmentListByClient}
+                                    variables={{ id: data.id }}
                                 >
-                                    {(
-                                        updateUser,
-                                        {
-                                            loading: loadingUpdateUser,
-                                            error: errorUpdateUser
+                                    {({
+                                        loading: loadingDepartmentList,
+                                        error: errorDepartmentList,
+                                        data: {
+                                            departmentsByClient: departments
                                         }
-                                    ) => {
-                                        if (loadingUpdateUser)
+                                    }) => {
+                                        if (loadingDepartmentList)
                                             return <Loading loadingData />;
-                                        if (errorUpdateUser)
+                                        if (errorDepartmentList)
                                             return (
                                                 <React.Fragment>
                                                     Error!{" "}
-                                                    {errorUpdateUser.message}
+                                                    {
+                                                        errorDepartmentList.message
+                                                    }
                                                 </React.Fragment>
                                             );
                                         return (
                                             <Query
-                                                query={
-                                                    getDepartmentListByClient
-                                                }
-                                                variables={{ id: data.id }}
+                                                query={getRoleList}
+                                                variables={{
+                                                    clientId: data.id
+                                                }}
                                             >
                                                 {({
-                                                    loading: loadingDepartmentList,
-                                                    error: errorDepartmentList,
+                                                    loading: loadingRoleList,
+                                                    error: errorRoleList,
                                                     data: {
-                                                        departmentsByClient: departments
+                                                        rolesByClientId: roles
                                                     }
                                                 }) => {
-                                                    if (loadingDepartmentList)
+                                                    if (loadingRoleList)
                                                         return (
                                                             <Loading
                                                                 loadingData
                                                             />
                                                         );
-                                                    if (errorDepartmentList)
+                                                    if (errorRoleList)
                                                         return (
                                                             <React.Fragment>
                                                                 Error!{" "}
                                                                 {
-                                                                    errorDepartmentList.message
+                                                                    errorRoleList.message
                                                                 }
                                                             </React.Fragment>
                                                         );
                                                     return (
-                                                        <Query
-                                                            query={getRoleList}
-                                                            variables={{
-                                                                clientId:
-                                                                    data.id
+                                                        <MainSectionContainer
+                                                            style={{
+                                                                padding: 0
                                                             }}
                                                         >
-                                                            {({
-                                                                loading: loadingRoleList,
-                                                                error: errorRoleList,
-                                                                data: {
-                                                                    rolesByClientId: roles
-                                                                }
-                                                            }) => {
-                                                                if (
-                                                                    loadingRoleList
-                                                                )
-                                                                    return (
-                                                                        <Loading
-                                                                            loadingData
-                                                                        />
-                                                                    );
-                                                                if (
-                                                                    errorRoleList
-                                                                )
-                                                                    return (
-                                                                        <React.Fragment>
-                                                                            Error!{" "}
-                                                                            {
-                                                                                errorRoleList.message
-                                                                            }
-                                                                        </React.Fragment>
-                                                                    );
-                                                                return (
-                                                                    <MainSectionContainer
-                                                                        style={{
-                                                                            padding: 0
+                                                            <SubSectionTop
+                                                                style={{
+                                                                    padding:
+                                                                        "3% 3% 0 3%"
+                                                                }}
+                                                            >
+                                                                <PageHeader
+                                                                    style={{
+                                                                        width:
+                                                                            "75%"
+                                                                    }}
+                                                                >
+                                                                    Users &
+                                                                    Structure
+                                                                </PageHeader>
+                                                            </SubSectionTop>
+                                                            <MainSubSections
+                                                                style={{
+                                                                    width:
+                                                                        "100%",
+                                                                    padding:
+                                                                        "0 3% 3% 3%",
+                                                                    backgroundColor:
+                                                                        "#F4F4F4"
+                                                                }}
+                                                            >
+                                                                <div
+                                                                    className={
+                                                                        classes.root
+                                                                    }
+                                                                >
+                                                                    <Tabs
+                                                                        classes={{
+                                                                            root:
+                                                                                classes.tabsRoot,
+                                                                            indicator:
+                                                                                classes.tabsIndicator
                                                                         }}
+                                                                        value={
+                                                                            tab
+                                                                        }
+                                                                        onChange={
+                                                                            handleChange
+                                                                        }
                                                                     >
-                                                                        <SubSectionTop
-                                                                            style={{
-                                                                                padding:
-                                                                                    "3% 3% 0 3%"
+                                                                        <Tab
+                                                                            disableRipple
+                                                                            classes={{
+                                                                                root:
+                                                                                    classes.tabRoot,
+                                                                                selected:
+                                                                                    classes.tabSelected
                                                                             }}
-                                                                        >
-                                                                            <PageHeader
-                                                                                style={{
-                                                                                    width:
-                                                                                        "75%"
-                                                                                }}
-                                                                            >
-                                                                                Users
-                                                                                &
-                                                                                Structure
-                                                                            </PageHeader>
-                                                                        </SubSectionTop>
-                                                                        <MainSubSections
-                                                                            style={{
-                                                                                width:
-                                                                                    "100%",
-                                                                                padding:
-                                                                                    "0 3% 3% 3%",
-                                                                                backgroundColor:
-                                                                                    "#F4F4F4"
+                                                                            label="Users"
+                                                                        />
+                                                                        <Tab
+                                                                            disableRipple
+                                                                            classes={{
+                                                                                root:
+                                                                                    classes.tabRoot,
+                                                                                selected:
+                                                                                    classes.tabSelected
                                                                             }}
-                                                                        >
-                                                                            <div
-                                                                                className={
-                                                                                    classes.root
-                                                                                }
-                                                                            >
-                                                                                <Tabs
-                                                                                    classes={{
-                                                                                        root:
-                                                                                            classes.tabsRoot,
-                                                                                        indicator:
-                                                                                            classes.tabsIndicator
-                                                                                    }}
-                                                                                    value={
-                                                                                        tab
-                                                                                    }
-                                                                                    onChange={
-                                                                                        handleChange
-                                                                                    }
-                                                                                >
-                                                                                    <Tab
-                                                                                        disableRipple
-                                                                                        classes={{
-                                                                                            root:
-                                                                                                classes.tabRoot,
-                                                                                            selected:
-                                                                                                classes.tabSelected
-                                                                                        }}
-                                                                                        label="Users"
-                                                                                    />
-                                                                                    <Tab
-                                                                                        disableRipple
-                                                                                        classes={{
-                                                                                            root:
-                                                                                                classes.tabRoot,
-                                                                                            selected:
-                                                                                                classes.tabSelected
-                                                                                        }}
-                                                                                        label="Structure"
-                                                                                    />
-                                                                                </Tabs>
-                                                                                {tab ===
-                                                                                0 ? (
-                                                                                    <UserTableList
-                                                                                        data={
-                                                                                            users
-                                                                                        }
-                                                                                        updateUser={
-                                                                                            updateUser
-                                                                                        }
-                                                                                        deleteUser={
-                                                                                            deleteUser
-                                                                                        }
-                                                                                    />
-                                                                                ) : tab ===
-                                                                                  1 ? (
-                                                                                    <StructureTableList
-                                                                                        data={{
-                                                                                            departments,
-                                                                                            roles
-                                                                                        }}
-                                                                                    />
-                                                                                ) : (
-                                                                                    <React.Fragment />
-                                                                                )}
-                                                                            </div>
-                                                                        </MainSubSections>
-                                                                    </MainSectionContainer>
-                                                                );
-                                                            }}
-                                                        </Query>
+                                                                            label="Structure"
+                                                                        />
+                                                                    </Tabs>
+                                                                    {tab ===
+                                                                    0 ? (
+                                                                        <UserTableList
+                                                                            data={
+                                                                                users
+                                                                            }
+                                                                            deleteUser={
+                                                                                deleteUser
+                                                                            }
+                                                                        />
+                                                                    ) : tab ===
+                                                                      1 ? (
+                                                                        <StructureTableList
+                                                                            data={{
+                                                                                departments,
+                                                                                roles
+                                                                            }}
+                                                                        />
+                                                                    ) : (
+                                                                        <React.Fragment />
+                                                                    )}
+                                                                </div>
+                                                            </MainSubSections>
+                                                        </MainSectionContainer>
                                                     );
                                                 }}
                                             </Query>
                                         );
                                     }}
-                                </Mutation>
+                                </Query>
                             );
                         }}
                     </Mutation>

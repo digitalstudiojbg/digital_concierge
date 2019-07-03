@@ -3,8 +3,9 @@ import MaterialTable, { MTableToolbar } from "material-table";
 import { IconButton, Button } from "@material-ui/core";
 import { MoreHoriz, DeleteOutlined as DeleteIcon } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
-import { isEmpty } from "lodash";
+import { USER_CREATE_URL, USER_EDIT_URL } from "../../../utils/Constants";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 const HeaderDiv = styled.div`
     width: 100%;
@@ -40,6 +41,8 @@ class UserTableList extends React.Component {
         super(props);
         this.state = { selectedUsers: [] };
         this.usersTableRef = React.createRef();
+        this.handleClickNewButton = this.handleClickNewButton.bind(this);
+        this.handleClickEditUser = this.handleClickEditUser.bind(this);
     }
 
     modifyUserData() {
@@ -60,6 +63,16 @@ class UserTableList extends React.Component {
         });
     }
 
+    handleClickNewButton = () => {
+        const { history } = this.props;
+        Boolean(history) && history.push(USER_CREATE_URL);
+    };
+    handleClickEditUser = (_event, { id: user_id }) => {
+        const { history } = this.props;
+        Boolean(history) &&
+            history.push(USER_EDIT_URL.replace(":user_id", user_id));
+    };
+
     render() {
         const { classes } = this.props;
         return (
@@ -67,6 +80,7 @@ class UserTableList extends React.Component {
                 <MaterialTable
                     tableRef={this.usersTableRef}
                     data={this.modifyUserData()}
+                    onRowClick={this.handleClickEditUser}
                     columns={[
                         { title: "USER", field: "name" },
                         { title: "USERNAME", field: "email" },
@@ -110,6 +124,10 @@ class UserTableList extends React.Component {
                                                     className={
                                                         classes.buttonNewUser
                                                     }
+                                                    onClick={
+                                                        this
+                                                            .handleClickNewButton
+                                                    }
                                                 >
                                                     CREATE USER
                                                 </Button>
@@ -134,4 +152,4 @@ class UserTableList extends React.Component {
     }
 }
 
-export default withStyles(styles)(UserTableList);
+export default withRouter(withStyles(styles)(UserTableList));
