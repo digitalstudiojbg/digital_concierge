@@ -28,7 +28,7 @@ const SidebarDiv = styled.div`
     align-items: center;
 `;
 const SidebarContainer = styled.div`
-    width: 305px;
+    width: 260px;
     height: 100vh;
 `;
 

@@ -29,6 +29,15 @@ const ContainerDivTab = styled.div`
     overflow-y: auto;
     height: 77vh;
 `;
+const PageHeader = styled.h2`
+    fontsize: 30px;
+    padding-bottom: 2%;
+`;
+const TopButtonsContainer = styled.div`
+    width: 12%;
+    display: flex;
+    flex-direction: column;
+`;
 
 const StyledTooltip = styled(props => (
     <Tooltip
@@ -49,14 +58,18 @@ const TabContainer = props => {
 
 const styles = () => ({
     buttonSave: {
-        width: 200,
-        position: "absolute",
-        top: 140,
-        right: 20,
-        backgroundColor: "#2699FB",
+        backgroundColor: "rgb(33, 143, 250)",
+        borderRadius: "5px",
+        color: "white",
+        margin: "2%",
+        padding: "3% 0"
+    },
+    buttonCancel: {
+        backgroundColor: "#595959",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif",
-        paddingRight: 5
+        margin: "2%",
+        padding: "3% 0"
     },
     rightIcon: {
         color: "white"
@@ -67,14 +80,10 @@ const styles = () => ({
         justifyContent: "center",
         alignItems: "center"
     },
-    buttonCancel: {
-        width: 200,
-        position: "absolute",
-        top: 100,
-        right: 20,
-        backgroundColor: "#595959",
-        color: "white",
-        fontFamily: "Source Sans Pro, sans-serif"
+
+    myInput: {
+        padding: "12px 10px",
+        backgroundColor: "white"
     }
 });
 
@@ -159,38 +168,85 @@ class TabbedPageSingleForm extends React.Component {
 
         return (
             <React.Fragment>
-                <div
+                <ContainerDiv
                     style={{
-                        width: "100%",
-                        backgroundColor: lightGreyHeader
+                        padding: "3%"
                     }}
                 >
                     <div
                         style={{
-                            height: 60,
-                            fontSize: "2em",
-                            fontWeight: 700,
-                            paddingTop: 20,
-                            paddingBottom: 20,
                             display: "flex"
                         }}
                     >
-                        {title}
-                        {Boolean(tooltipText) && (
-                            <div style={{ paddingLeft: 10 }}>
-                                <StyledTooltip
-                                    // classes={{ tooltip: classes.tooltip }}
-                                    title={tooltipText}
-                                    placement="bottom"
-                                    fontSize={tooltipFontSize}
-                                >
-                                    <InfoIcon
-                                        style={{ color: tooltipColor }}
-                                        fontSize="small"
-                                    />
-                                </StyledTooltip>
-                            </div>
-                        )}
+                        <PageHeader
+                            style={{
+                                flexBasis: "80%",
+                                display: "flex",
+                                color: "black"
+                            }}
+                        >
+                            {title}
+                            {Boolean(tooltipText) && (
+                                <div style={{ paddingLeft: 10 }}>
+                                    <StyledTooltip
+                                        // classes={{ tooltip: classes.tooltip }}
+                                        title={tooltipText}
+                                        placement="bottom"
+                                        fontSize={tooltipFontSize}
+                                    >
+                                        <InfoIcon
+                                            style={{ color: tooltipColor }}
+                                            fontSize="small"
+                                        />
+                                    </StyledTooltip>
+                                </div>
+                            )}
+                        </PageHeader>
+                        <TopButtonsContainer>
+                            {shouldRenderButtons && (
+                                <React.Fragment>
+                                    {shouldRenderCancelButton && (
+                                        <Button
+                                            variant="outlined"
+                                            className={classes.buttonCancel}
+                                            onClick={this.submitCancelAction}
+                                            disabled={isSubmitting}
+                                        >
+                                            CANCEL
+                                        </Button>
+                                    )}
+                                    <Button
+                                        variant="outlined"
+                                        className={classes.buttonSave}
+                                        onClick={this.openSaveMenu}
+                                        disabled={isSubmitting}
+                                    >
+                                        <Grid container direction="row">
+                                            <Grid
+                                                item
+                                                xs={10}
+                                                justify="center"
+                                                alignItems="center"
+                                            >
+                                                SAVE
+                                            </Grid>
+                                            <Grid
+                                                item
+                                                xs={2}
+                                                className={classes.rightGrid}
+                                                justify="center"
+                                            >
+                                                <ExpandIcon
+                                                    className={
+                                                        classes.rightIcon
+                                                    }
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                    </Button>
+                                </React.Fragment>
+                            )}
+                        </TopButtonsContainer>
                     </div>
                     <Paper
                         square
@@ -217,47 +273,7 @@ class TabbedPageSingleForm extends React.Component {
                             ))}
                         </Tabs>
                     </Paper>
-                    {shouldRenderButtons && (
-                        <React.Fragment>
-                            {shouldRenderCancelButton && (
-                                <Button
-                                    variant="outlined"
-                                    className={classes.buttonCancel}
-                                    onClick={this.submitCancelAction}
-                                    disabled={isSubmitting}
-                                >
-                                    CANCEL
-                                </Button>
-                            )}
-                            <Button
-                                variant="outlined"
-                                className={classes.buttonSave}
-                                onClick={this.openSaveMenu}
-                                disabled={isSubmitting}
-                            >
-                                <Grid container direction="row">
-                                    <Grid
-                                        item
-                                        xs={10}
-                                        justify="center"
-                                        alignItems="center"
-                                    >
-                                        SAVE
-                                    </Grid>
-                                    <Grid
-                                        item
-                                        xs={2}
-                                        className={classes.rightGrid}
-                                        justify="center"
-                                    >
-                                        <ExpandIcon
-                                            className={classes.rightIcon}
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Button>
-                        </React.Fragment>
-                    )}
+
                     <ContainerDivTab>
                         <TabContainer>
                             <CurrentComponent
@@ -269,7 +285,7 @@ class TabbedPageSingleForm extends React.Component {
                             />
                         </TabContainer>
                     </ContainerDivTab>
-                </div>
+                </ContainerDiv>
                 <Dialog
                     open={openDialog}
                     TransitionComponent={SlideUpTransition}
@@ -315,10 +331,16 @@ class TabbedPageSingleForm extends React.Component {
                         horizontal: "left"
                     }}
                 >
-                    <MenuItem onClick={this.submitExitAction}>
+                    <MenuItem
+                        style={{ padding: "0 8px" }}
+                        onClick={this.submitExitAction}
+                    >
                         SAVE & EXIT
                     </MenuItem>
-                    <MenuItem onClick={this.submitAction}>
+                    <MenuItem
+                        style={{ padding: "0 8px" }}
+                        onClick={this.submitAction}
+                    >
                         SAVE & KEEP EDITING
                     </MenuItem>
                 </Menu>
