@@ -12,8 +12,8 @@ const HeaderDiv = styled.div`
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
-    justify-content: flex-end;
     align-items: center;
+    padding-left: 10px;
 `;
 
 const styles = () => ({
@@ -86,7 +86,7 @@ class UserTableList extends React.Component {
                     options={{
                         selection: true,
                         showTitle: false,
-                        searchFieldAlignment: "left"
+                        searchFieldAlignment: "right"
                     }}
                     components={{
                         Toolbar: props => {
@@ -98,9 +98,6 @@ class UserTableList extends React.Component {
                                         height: "100%"
                                     }}
                                 >
-                                    <div style={{ width: "50%" }}>
-                                        <MTableToolbar {...props} />
-                                    </div>
                                     <div
                                         style={{
                                             width: "80%",
@@ -123,6 +120,9 @@ class UserTableList extends React.Component {
                                                 <DeleteIcon />
                                             </IconButton>
                                         </HeaderDiv>
+                                    </div>
+                                    <div style={{ width: "50%" }}>
+                                        <MTableToolbar {...props} />
                                     </div>
                                 </div>
                             );
