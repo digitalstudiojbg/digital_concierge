@@ -78,6 +78,13 @@ export const renderTextField = (name, label, required) => (
             component={TextField}
             variant="outlined"
             fullWidth={true}
+            inputProps={{
+                style: {
+                    padding: "12px 10px",
+                    backgroundColor: "white"
+                }
+            }}
+            //input={<OutlinedInput style={{ backgroundColor: "white" }} />}
         />
     </div>
 );
@@ -95,5 +102,11 @@ export const renderEditorField = (
         withPlaintext={withPlaintext}
         setFieldValue={setFieldValue}
         error={error}
+        inputProps={{
+            style: {
+                padding: "12px 10px",
+                backgroundColor: "red"
+            }
+        }}
     />
 );

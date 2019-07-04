@@ -4,9 +4,7 @@ export const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 3%;
 `;
 
 export const SectionDiv = styled.div`
@@ -38,7 +36,9 @@ export const ContinueButton = styled.button`
 
 export const FieldContainerDiv = styled.div`
     width: 100%;
+
     display: flex;
+    flex-direction: column;
     justify-content: ${props =>
         Boolean(props.justifyContent) ? props.justifyContent : "flex-start"};
     margin-bottom: 20px;
@@ -47,4 +47,10 @@ export const FieldContainerDiv = styled.div`
 export const FieldDiv = styled.div`
     flex-basis: ${props => props.flexBasis};
     margin-right: ${props => props.marginRight};
+`;
+export const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 0px;
 `;

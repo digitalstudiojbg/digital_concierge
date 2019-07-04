@@ -27,7 +27,7 @@ import DialogTitleHelper from "./DialogTitleHelper";
 const ContainerDivTab = styled.div`
     width: 100%;
     overflow-y: auto;
-    height: 77vh;
+    height: 80vh;
 `;
 const PageHeader = styled.h2`
     fontsize: 30px;

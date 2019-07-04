@@ -38,13 +38,14 @@ const ContainerDiv = styled.div`
 
 const styles = () => ({
     imageNameTextField: {
-        paddingBottom: 20,
-        width: "60%"
+        paddingBottom: 20
+        //   width: "45%"
     },
     dialogTitle: {
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        padding: "25px 0 0 25px"
     },
     removeImageButton: {
         backgroundColor: "white",
@@ -56,7 +57,8 @@ const styles = () => ({
         backgroundColor: "white",
         color: "#313131",
         marginBottom: 10,
-        fontSize: "10px"
+        fontSize: "10px",
+        width: "160px"
     }
 });
 
@@ -214,7 +216,7 @@ class ImageUploaderWithMediaLibrary extends React.Component {
         // console.log("Image name ", imageName);
         return (
             <React.Fragment>
-                <ContainerDiv>
+                <ContainerDiv style={{ height: "auto" }}>
                     <div
                         style={{
                             width: "100%",
@@ -224,7 +226,7 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                     >
                         <div
                             style={{
-                                width: "100%",
+                                width: "55%",
                                 display: "flex",
                                 flexDirection: "column",
                                 padding: "0"
@@ -237,18 +239,17 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                                 className={classes.imageNameTextField}
                                 fullWidth={true}
                                 variant="outlined"
-                                input={
-                                    <OutlinedInput
-                                        style={{
-                                            height: 38
-                                        }}
-                                    />
-                                }
+                                inputProps={{
+                                    style: {
+                                        padding: "12px 10px",
+                                        backgroundColor: "white"
+                                    }
+                                }}
                             />
                         </div>
                         <div
                             style={{
-                                width: "60%",
+                                width: "45%",
                                 //   height: "80%",
                                 display: "flex",
                                 paddingLeft: 10,
@@ -269,15 +270,16 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                             </Button>
                         </div>
                     </div>
+
                     <div
                         style={{
-                            flex: 1,
                             width: "100%",
                             display: "flex",
-                            height: "100%"
+                            height: "200px"
+                            //  marginBottom: "20px"
                         }}
                     >
-                        <div style={{ width: "60%", height: "100%" }}>
+                        <div style={{ width: "55%", height: "100%" }}>
                             <Dropzone
                                 accept="image/*"
                                 ref={this.dropZoneRef}
@@ -287,8 +289,9 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                                     fontSize: "0.8em",
                                     position: "relative",
                                     width: "100%",
+
                                     backgroundColor: "rgb(221, 221, 221)",
-                                    height: "90%",
+                                    height: "100%",
                                     display: "flex",
                                     flexDirection: "column",
                                     justifyContent: "center",
@@ -307,8 +310,8 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                         </div>
                         <div
                             style={{
-                                width: "38%",
-                                height: "90%",
+                                width: "45%",
+                                height: "100%",
                                 paddingLeft: 10,
                                 display: "flex",
                                 flexDirection: "column",
@@ -328,7 +331,8 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                                 color="default"
                                 buttonStyle={{
                                     backgroundColor: "white",
-                                    fontSize: "10px"
+                                    fontSize: "10px",
+                                    width: "160px"
                                 }}
                                 fullWidth={true}
                                 multipleSelect={false}
@@ -349,7 +353,9 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                         disableTypography
                         className={classes.dialogTitle}
                     >
-                        <h2>CONFIRM IMAGE DELETION</h2>
+                        <h3 style={{ color: "#2699FB" }}>
+                            CONFIRM IMAGE DELETION
+                        </h3>
                         <IconButton onClick={this.closeDialogImage}>
                             <CloseIcon />
                         </IconButton>
@@ -360,11 +366,23 @@ class ImageUploaderWithMediaLibrary extends React.Component {
                             {imageName}
                         </DialogContentText>
                     </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.removeImage} color="primary">
+                    <DialogActions style={{ padding: "0 25px 25px 0" }}>
+                        <Button
+                            style={{
+                                color: "#2699FB",
+                                border: "2px solid #2699FB"
+                            }}
+                            onClick={this.removeImage}
+                        >
                             YES
                         </Button>
-                        <Button onClick={this.closeDialog} color="primary">
+                        <Button
+                            style={{
+                                color: "#2699FB",
+                                border: "2px solid #2699FB"
+                            }}
+                            onClick={this.closeDialog}
+                        >
                             NO
                         </Button>
                     </DialogActions>
