@@ -52,14 +52,6 @@ const TabContainer = props => {
 
 const styles = () => ({
     buttonSave: {
-        // width: 200,
-        // position: "absolute",
-        // top: 140,
-        // right: 20,
-        // backgroundColor: "#2699FB",
-        // color: "white",
-        // fontFamily: "Source Sans Pro, sans-serif",
-        // paddingRight: 5
         backgroundColor: "rgb(33, 143, 250)",
         borderRadius: "5px",
         color: "white",

@@ -208,7 +208,7 @@ export const PublicationImageContainerDiv = styled.div`
     height: 75%;
     display: flex;
     justify-content: center;
-    padding: 0 8px;
+    padding: 0 14px;
 `;
 
 export const PublicationName = styled.div`

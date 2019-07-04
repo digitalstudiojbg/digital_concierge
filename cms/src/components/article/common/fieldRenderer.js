@@ -1,20 +1,22 @@
 import React from "react";
-import { FormLabelDiv } from "./commonStyle";
+
 import { Field } from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { OutlinedInput, MenuItem } from "@material-ui/core";
 import SelectOriginal from "@material-ui/core/Select";
 import { isEmpty } from "lodash";
 import EditorField from "../../../utils/TextEditorField";
+import { FieldLabel } from "../../advertiser/common/commonStyle";
 
 export const renderSelectField = (name, label, optionValues, errors) => (
     <div style={{ width: "100%" }}>
-        <FormLabelDiv>{label}</FormLabelDiv>
+        <FieldLabel>{label}</FieldLabel>
         <Field
             name={name}
             component={Select}
             disabled={optionValues.length < 1}
             fullWidth={true}
+            style={{ height: 43, backgroundColor: "white" }}
             input={
                 <OutlinedInput
                     labelWidth={0}
@@ -41,11 +43,12 @@ export const renderSelectFieldCustom = (
     onChange
 ) => (
     <div style={{ width: "100%" }}>
-        {label.length > 0 && <FormLabelDiv>{label}</FormLabelDiv>}
+        {label.length > 0 && <FieldLabel>{label}</FieldLabel>}
         <SelectOriginal
             name={name}
             disabled={optionValues.length < 1}
             fullWidth={true}
+            style={{ height: 43, backgroundColor: "white" }}
             input={
                 <OutlinedInput
                     labelWidth={0}
@@ -67,7 +70,7 @@ export const renderSelectFieldCustom = (
 
 export const renderTextField = (name, label, required) => (
     <div style={{ width: "100%" }}>
-        <FormLabelDiv>{label}</FormLabelDiv>
+        <FieldLabel>{label}</FieldLabel>
         <Field
             name={name}
             required={required}

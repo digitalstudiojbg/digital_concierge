@@ -229,13 +229,12 @@ export const WelcomeDashboard = ({ classes }) => (
                                             to={WELCOME_URL + "/clients"}
                                             style={{
                                                 textDecoration: "none",
-                                                width: "98%",
+                                                width: "100%",
                                                 display: "flex",
-                                                // flexDirection: "row-reverse",
-                                                //paddingRight: 5,
                                                 color: "black",
                                                 justifyContent: "flex-end",
-                                                fontWeight: "bold"
+                                                fontWeight: "bold",
+                                                paddingRight: "4%"
                                             }}
                                         >
                                             VIEW ALL >
@@ -354,7 +353,7 @@ export const WelcomeDashboard = ({ classes }) => (
                                                 width: "100%",
                                                 display: "flex",
                                                 flexDirection: "row-reverse",
-                                                paddingRight: 5,
+                                                paddingRight: "4%",
                                                 color: "black",
                                                 fontWeight: 600
                                             }}
