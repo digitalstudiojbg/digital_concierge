@@ -5,12 +5,9 @@ import {
     Grid,
     Button,
     ButtonGroup,
-    Grow,
-    Paper,
-    Popper,
     MenuItem,
-    MenuList,
-    ClickAwayListener
+    Menu,
+    MenuList
 } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
@@ -97,54 +94,37 @@ class CustomSaveButton extends React.Component {
                             <ArrowDropDownIcon />
                         </Button>
                     </ButtonGroup>
-                    <Popper
-                        open={open}
+                    <Menu
                         anchorEl={this.anchorRef.current}
-                        transition
-                        disablePortal
+                        open={open}
+                        onClose={this.handleClose}
+                        getContentAnchorEl={null}
+                        anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center"
+                        }}
+                        transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center"
+                        }}
                     >
-                        {({ TransitionProps, placement }) => (
-                            <Grow
-                                {...TransitionProps}
-                                style={{
-                                    transformOrigin:
-                                        placement === "bottom"
-                                            ? "center top"
-                                            : "center bottom"
-                                }}
-                            >
-                                <Paper id="menu-list-grow">
-                                    <ClickAwayListener
-                                        onClickAway={this.handleClose}
-                                    >
-                                        <MenuList>
-                                            {options.map(
-                                                (option, optionIndex) => (
-                                                    <MenuItem
-                                                        key={`${optionIndex}-${
-                                                            option.label
-                                                        }`}
-                                                        selected={
-                                                            optionIndex ===
-                                                            index
-                                                        }
-                                                        onClick={event =>
-                                                            this.handleMenuItemClick(
-                                                                event,
-                                                                optionIndex
-                                                            )
-                                                        }
-                                                    >
-                                                        {option.label}
-                                                    </MenuItem>
-                                                )
-                                            )}
-                                        </MenuList>
-                                    </ClickAwayListener>
-                                </Paper>
-                            </Grow>
-                        )}
-                    </Popper>
+                        <MenuList>
+                            {options.map((option, optionIndex) => (
+                                <MenuItem
+                                    key={`${optionIndex}-${option.label}`}
+                                    selected={optionIndex === index}
+                                    onClick={event =>
+                                        this.handleMenuItemClick(
+                                            event,
+                                            optionIndex
+                                        )
+                                    }
+                                >
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </MenuList>
+                    </Menu>
                 </Grid>
             </Grid>
         );

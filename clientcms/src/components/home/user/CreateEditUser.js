@@ -2,6 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import CustomSaveButton from "../../../utils/CustomSaveButton";
 import { ContainerDiv } from "../../../utils/Constants";
+import styled from "styled-components";
+
+const ContainerDivModified = styled(ContainerDiv)`
+    padding-left: 50px;
+    display: flex;
+    flex-direction: column;
+`;
+
+const FormContainerDiv = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+`;
 
 class CreateEditUser extends React.Component {
     renderHeaderSection() {
@@ -21,18 +34,30 @@ class CreateEditUser extends React.Component {
                 >
                     <CustomSaveButton
                         options={[
-                            { label: "test1", action: () => alert("test1") },
-                            { label: "test2", action: () => alert("test2") }
-                            // { label: "test3", action: () => alert("test3") },
-                            // { label: "test4", action: () => alert("test4") }
+                            {
+                                label: "SAVE & EXIT",
+                                action: () => alert("SAVE & EXIT")
+                            },
+                            {
+                                label: "SAVE & KEEP EDITING",
+                                action: () => alert("SAVE & KEEP EDITING")
+                            }
                         ]}
                     />
                 </div>
             </div>
         );
     }
+    renderFormSection() {
+        return <FormContainerDiv>TEST</FormContainerDiv>;
+    }
     render() {
-        return <ContainerDiv>{this.renderHeaderSection()}</ContainerDiv>;
+        return (
+            <ContainerDivModified>
+                {this.renderHeaderSection()}
+                {this.renderFormSection()}
+            </ContainerDivModified>
+        );
     }
 }
 
