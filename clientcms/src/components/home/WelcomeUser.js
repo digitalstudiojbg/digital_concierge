@@ -239,6 +239,9 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                                             deleteUser={
                                                                                 deleteUser
                                                                             }
+                                                                            clientId={
+                                                                                data.id
+                                                                            }
                                                                         />
                                                                     ) : tab ===
                                                                       1 ? (
@@ -247,6 +250,9 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                                                 departments,
                                                                                 roles
                                                                             }}
+                                                                            clientId={
+                                                                                data.id
+                                                                            }
                                                                         />
                                                                     ) : (
                                                                         <React.Fragment />

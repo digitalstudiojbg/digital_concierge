@@ -13,7 +13,8 @@ import {
     TOUCHSCREEN_CMS_INDEX_URL,
     LOGIN_URL,
     API_URL,
-    SYSTEM_INDEX_URL
+    SYSTEM_INDEX_URL,
+    USER_EDIT_URL
 } from "../utils/Constants";
 import "react-table/react-table.css";
 
@@ -69,6 +70,10 @@ const routes = [
     // },
     {
         path: TOUCHSCREEN_CMS_INDEX_URL,
+        component: Home
+    },
+    {
+        path: USER_EDIT_URL,
         component: Home
     }
 ];

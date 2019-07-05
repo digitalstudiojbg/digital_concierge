@@ -4,6 +4,7 @@ import { getCurrentUserQuery, getSystemDetail } from "../../data/query";
 import Loading from "../loading/Loading";
 import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
+import SidebarClientNew from "../layout/SidebarClientNew";
 import PrivateRoute from "../auth/PrivateRoute";
 import { Redirect } from "react-router-dom";
 import {
@@ -23,7 +24,9 @@ import {
     SYSTEM_MODIFY_DIRECTORY_ENTRY_URL,
     SYSTEM_CMS_LIBRARY,
     SYSTEM_MODIFY_START_URL,
-    SYSTEM_MODIFY_HOME_URL
+    SYSTEM_MODIFY_HOME_URL,
+    USER_EDIT_URL,
+    USER_CREATE_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -43,6 +46,7 @@ const TabletCreateDirectory = lazy(() =>
 const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
 const Welcome = lazy(() => import("./Welcome.js"));
+const CreateEditUser = lazy(() => import("./user/CreateEditUser"));
 
 const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
@@ -71,6 +75,14 @@ const CLIENT_ROUTES = [
         exact: true,
         header: Header,
         main: Welcome,
+        withProps: {}
+    },
+    {
+        path: USER_EDIT_URL,
+        exact: true,
+        header: Header,
+        main: CreateEditUser,
+        sidebar: props => <SidebarClientNew {...props} selected="users" />,
         withProps: {}
     }
     // {

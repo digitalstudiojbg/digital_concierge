@@ -64,13 +64,19 @@ class UserTableList extends React.Component {
     }
 
     handleClickNewButton = () => {
-        const { history } = this.props;
-        Boolean(history) && history.push(USER_CREATE_URL);
+        const { history, clientId } = this.props;
+        Boolean(history) &&
+            history.push(USER_CREATE_URL.replace(":client_id", clientId));
     };
     handleClickEditUser = (_event, { id: user_id }) => {
-        const { history } = this.props;
+        const { history, clientId } = this.props;
         Boolean(history) &&
-            history.push(USER_EDIT_URL.replace(":user_id", user_id));
+            history.push(
+                USER_EDIT_URL.replace(":client_id", clientId).replace(
+                    ":user_id",
+                    user_id
+                )
+            );
     };
 
     render() {

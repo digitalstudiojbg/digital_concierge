@@ -80,6 +80,7 @@ export const clientDetailFragment = gql`
         media {
             id
             name
+            path
         }
         systems {
             id
