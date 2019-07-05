@@ -57,6 +57,8 @@ const SubSectionDiv = styled.div`
     margin: 5px 0;
     display: flex;
     flex-wrap: wrap;
+    height: 500px;
+    overflow: hidden;
 `;
 
 const SectionHeader = styled.h4`
@@ -79,7 +81,10 @@ const styles = () => ({
         padding: "4%",
         width: 230,
         height: 230,
-        marginBottom: 30,
+        marginBottom: 20,
+        // width: "95%",
+        // height: "95%",
+        // marginBottom: "5%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

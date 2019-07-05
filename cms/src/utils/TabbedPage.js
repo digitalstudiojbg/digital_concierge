@@ -55,8 +55,9 @@ const styles = () => ({
         backgroundColor: "rgb(33, 143, 250)",
         borderRadius: "5px",
         color: "white",
-        margin: "2%",
-        padding: "3% 0"
+        marginTop: "4%",
+        padding: "3% 0",
+        boxShadow: "2px 2px 3px #888888"
     },
     rightIcon: {
         color: "white"
@@ -71,8 +72,9 @@ const styles = () => ({
         backgroundColor: "#595959",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif",
-        margin: "2%",
-        padding: "3% 0"
+        // margin: "2%",
+        padding: "3% 0",
+        boxShadow: "2px 2px 3px #888888"
     }
 });
 

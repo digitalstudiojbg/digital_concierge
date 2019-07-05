@@ -61,14 +61,14 @@ const styles = () => ({
         backgroundColor: "rgb(33, 143, 250)",
         borderRadius: "5px",
         color: "white",
-        margin: "2%",
+        marginTop: "2%",
         padding: "3% 0"
     },
     buttonCancel: {
         backgroundColor: "#595959",
         color: "white",
         fontFamily: "Source Sans Pro, sans-serif",
-        margin: "2%",
+        // margin: "2%",
         padding: "3% 0"
     },
     rightIcon: {

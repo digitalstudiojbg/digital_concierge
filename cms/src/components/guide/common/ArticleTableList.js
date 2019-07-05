@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import MaterialTable, { MTableToolbar } from "material-table";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
 import { isEmpty } from "lodash";
 import dayJs from "dayjs";
 import { IconButton, Button, Menu, MenuItem } from "@material-ui/core";
@@ -51,12 +50,12 @@ const styles = () => ({
         width: "150PX"
     },
     iconButton: {
-        padding: "6px",
+        marginLeft: 8,
+        padding: "7px",
         backgroundColor: "white",
         border: "1px solid grey",
         borderRadius: "5px",
-        height: "fit-content",
-        marginLeft: "5px"
+        height: "fit-content"
     },
     iconButtonEnd: {
         marginRight: 10,
@@ -357,7 +356,12 @@ class ArticleTableList extends React.Component {
                                         backgroundColor: "#F4F4F4"
                                     }}
                                 >
-                                    <div style={{ width: "50%" }}>
+                                    <div
+                                        style={{
+                                            width: "50%",
+                                            marginLeft: "-2%"
+                                        }}
+                                    >
                                         <MTableToolbar
                                             // input={<OutlinedInput />}
                                             {...props}
@@ -411,6 +415,26 @@ class ArticleTableList extends React.Component {
                                     </div>
                                 </div>
                             );
+                        }
+                    }}
+                    options={{
+                        selection: true,
+                        searchFieldAlignment: "left",
+                        showTitle: false,
+                        searchFieldStyle: {
+                            border: "1px solid lightGrey",
+                            backgroundColor: "white",
+                            borderRadius: "5px",
+                            padding: "5px",
+                            marginLeft: "0"
+                        },
+
+                        headerStyle: {
+                            borderBottom: "2px solid grey",
+                            fontWeight: "bold",
+                            textTransform: "uppercase",
+                            color: "black",
+                            textAlign: "left"
                         }
                     }}
                 />

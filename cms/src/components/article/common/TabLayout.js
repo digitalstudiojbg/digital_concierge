@@ -88,12 +88,12 @@ const TabLayout = props => {
                 {renderTabletMockUp()}
             </SectionDiv>
             <SectionDiv
-                flexBasis="35%"
+                flexBasis="20%"
                 flexDirection="column"
                 paddingRight="0px"
             >
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldDiv marginRight="0px">
                         {renderSelectFieldCustom(
                             "jbgTemplateId",
                             "Template",
@@ -105,7 +105,7 @@ const TabLayout = props => {
                     </FieldDiv>
                 </FieldContainerDiv>
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldDiv marginRight="0px">
                         {renderSelectField(
                             "jbgFamilyLayoutId",
                             "Family Layout",
@@ -115,7 +115,7 @@ const TabLayout = props => {
                     </FieldDiv>
                 </FieldContainerDiv>
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldDiv marginRight="0px">
                         <FieldLabel>Layout Option</FieldLabel>
 
                         {Boolean(imageUrl) && (

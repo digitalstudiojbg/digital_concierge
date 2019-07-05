@@ -3,14 +3,18 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, IconButton } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
+
 import {
     MoreHoriz,
     SaveAlt,
     MailOutline,
     PrintOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    arrowDropDown,
+    arrowDropUp
 } from "@material-ui/icons";
 import MaterialTable, { MTableToolbar } from "material-table";
+
 import dayJs from "dayjs";
 import {
     ADVERTISER_CREATE_NEW_URL,
@@ -23,7 +27,6 @@ const ContainerDiv = styled.div`
     width: 100%;
     padding-left: 20px;
     padding-right: 20px;
-    //background-color: #f4f4f4;
 `;
 
 const HeaderDiv = styled.div`
@@ -47,14 +50,13 @@ const styles = () => ({
         border: "2px solid rgb(33,143,250)",
         fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif",
-        marginRight: 10,
+        //   marginLeft: 10,
         width: "150px"
     },
     iconButton: {
-        marginRight: 10,
+        marginLeft: 8,
         //  height: "50%",
-        padding: "8px",
-
+        padding: "7px",
         backgroundColor: "white",
         border: "1px solid grey",
         borderRadius: "5px",
@@ -65,6 +67,10 @@ const styles = () => ({
         borderRadius: 5,
         backgroundColor: "white",
         border: "1px solid rgba(112, 112, 112, 1)"
+    },
+    notchedOutline: {
+        border: "1px solid black",
+        backgroundColor: "white"
     }
 });
 
@@ -149,11 +155,9 @@ class AdvertiserTableList extends React.Component {
                 <TableDiv>
                     <MaterialTable
                         style={{
-                            // backgroundColor: "#F4F4F4",
                             boxShadow: "none",
                             width: "93%"
                         }}
-                        //headerStyle={{ border: "1px solid grey" }}
                         data={this.modifyAdvertiserList()}
                         onRowClick={this.handleClickRow}
                         columns={[
@@ -201,7 +205,12 @@ class AdvertiserTableList extends React.Component {
                                             backgroundColor: "#F4F4F4"
                                         }}
                                     >
-                                        <div style={{ width: "50%" }}>
+                                        <div
+                                            style={{
+                                                width: "50%",
+                                                marginLeft: "-2%"
+                                            }}
+                                        >
                                             <MTableToolbar {...props} />
                                         </div>
                                         <div
@@ -253,6 +262,36 @@ class AdvertiserTableList extends React.Component {
                                     </div>
                                 );
                             }
+                        }}
+                        options={{
+                            selection: true,
+
+                            searchFieldAlignment: "left",
+                            showTitle: false,
+                            searchFieldStyle: {
+                                border: "1px solid lightGrey",
+                                backgroundColor: "white",
+                                borderRadius: "5px",
+                                padding: "5px",
+                                marginLeft: "0"
+                            },
+                            headerStyle: {
+                                borderBottom: "2px solid grey",
+                                fontWeight: "bold",
+                                textTransform: "uppercase",
+                                color: "black",
+                                textAlign: "left"
+                            },
+                            footStyle: {
+                                color: "black",
+                                textAlign: "left"
+                            }
+
+                            // sortLabelStyle: {
+                            //     color: "red"
+                            //     content: "▼"
+                            //     IconComponent: { arrowDropDown }
+                            // }
                         }}
                     />
                 </TableDiv>

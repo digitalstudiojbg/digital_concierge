@@ -36,13 +36,13 @@ const styles = theme => ({
         boxShadow: "2px 2px 3px #888888"
     },
     unCompletedIcon: {
-        color: "#DDDDDD",
+        color: "white",
         border: "2px solid #DDDDDD",
         borderRadius: "50%",
         fontColor: "black"
     },
     completedIcon: {
-        color: "#2699FB",
+        color: "#2699FB !important",
         border: "2px solid #2699FB"
     },
     activeIcon: {
@@ -94,7 +94,8 @@ const SubSectionTop = styled.div`
 `;
 
 const HeaderTitleDiv = styled.div`
-    width: 80%;
+    width: 77%;
+    padding-left: 3%;
 `;
 
 const HeaderButtonDiv = styled.div`
@@ -197,7 +198,10 @@ const ModifyAdvertiser = props => {
                     alternativeLabel
                     nonLinear={has_data && !goToNext}
                     style={{
-                        //  marginLeft: "50px",
+                        float: "left",
+                        width: "50%",
+                        marginLeft: "-3%",
+                        marginTop: "3%",
                         backgroundColor: "#F4F4F4"
                     }}
                 >
@@ -207,30 +211,49 @@ const ModifyAdvertiser = props => {
 
                         return (
                             <Step key={`${index} -${title}`} {...props}>
-                                {has_data && !goToNext ? (
-                                    <StepButton onClick={handleStep(index)}>
-                                        <StepLabel
-                                            {...labelProps}
-                                            StepIconProps={{
-                                                classes: {
-                                                    root:
-                                                        classes.unCompletedIcon,
+                                <StepButton onClick={handleStep(index)}>
+                                    <StepLabel
+                                        {...labelProps}
+                                        StepIconProps={{
+                                            classes: {
+                                                root: classes.unCompletedIcon,
 
-                                                    completed:
-                                                        classes.completedIcon,
-                                                    active: classes.activeIcon
-                                                }
-                                            }}
-                                        >
-                                            {title}
-                                        </StepLabel>
-                                    </StepButton>
-                                ) : (
-                                    <StepLabel {...labelProps}>
+                                                completed:
+                                                    classes.completedIcon,
+                                                active: classes.activeIcon
+                                            }
+                                        }}
+                                    >
                                         {title}
                                     </StepLabel>
-                                )}
+                                </StepButton>
                             </Step>
+
+                            // <Step key={`${index} -${title}`} {...props}>
+                            //     {has_data && !goToNext ? (
+                            //         <StepButton onClick={handleStep(index)}>
+                            //             <StepLabel
+                            //                 {...labelProps}
+                            //                 StepIconProps={{
+                            //                     classes: {
+                            //                         root:
+                            //                             classes.unCompletedIcon,
+
+                            //                         completed:
+                            //                             classes.completedIcon,
+                            //                         active: classes.activeIcon
+                            //                     }
+                            //                 }}
+                            //             >
+                            //                 {title}
+                            //             </StepLabel>
+                            //         </StepButton>
+                            //     ) : (
+                            //         <StepLabel {...labelProps}>
+                            //             {title}
+                            //         </StepLabel>
+                            //     )}
+                            // </Step>
                         );
                     })}
                 </Stepper>

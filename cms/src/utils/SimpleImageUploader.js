@@ -28,6 +28,12 @@ const FieldLabel = styled.div`
     color: #5c5c5c;
     text-transform: uppercase;
 `;
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 3%;
+`;
 
 const styles = theme => ({
     hideFileInput: {
@@ -188,20 +194,24 @@ class SimpleImageUploader extends React.Component {
                     onClose={this.closeDialog}
                     maxWidth="lg"
                 >
-                    <DialogTitleHelper onClose={this.closeDialog}>
+                    <SectionHeader onClose={this.closeDialog}>
                         IMAGE PREVIEW
-                    </DialogTitleHelper>
+                    </SectionHeader>
                     <DialogContent>
                         <div
                             style={{
                                 width: "100%",
                                 display: "flex",
-                                justifyContent: "center",
-                                paddingTop: 17
+                                justifyContent: "center"
+                                //paddingTop: 17
                             }}
                         >
                             <img
-                                style={{ width: "50%", height: "50%" }}
+                                style={{
+                                    width: "40%",
+                                    height: "auto",
+                                    marginBottom: "5%"
+                                }}
                                 src={toShow}
                                 alt="preview"
                             />

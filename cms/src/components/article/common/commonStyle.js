@@ -36,7 +36,6 @@ export const ContinueButton = styled.button`
 
 export const FieldContainerDiv = styled.div`
     width: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: ${props =>

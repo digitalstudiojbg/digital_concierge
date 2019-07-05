@@ -112,10 +112,14 @@ const styles = theme => ({
         display: "none"
     },
     uploadButton: {
-        margin: theme.spacing.unit,
-        color: "blue",
-        border: "1px solid blue",
-        width: "100%"
+        // margin: theme.spacing.unit,
+        margin: "10px 0",
+        color: "#2699fb",
+        border: "2px solid #2699fb",
+        width: "150px",
+        backgroundColor: "white",
+        padding: "7%",
+        borderRadius: "5px"
     },
     myInput: {
         padding: "12px 10px",
@@ -501,18 +505,6 @@ class WizardCreateClientPageOne extends React.Component {
                                                             >
                                                                 <label htmlFor="upload-client-image">
                                                                     <Button
-                                                                        style={{
-                                                                            color:
-                                                                                "#2699FB",
-                                                                            width:
-                                                                                "150px",
-                                                                            border:
-                                                                                "2px solid #2699FB",
-                                                                            padding:
-                                                                                "7%",
-                                                                            margin:
-                                                                                "10px 0"
-                                                                        }}
                                                                         variant="outlined"
                                                                         component="span"
                                                                         className={
