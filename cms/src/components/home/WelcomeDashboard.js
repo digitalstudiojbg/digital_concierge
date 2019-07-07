@@ -26,32 +26,47 @@ import { isEmpty } from "lodash";
 const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
-    background-color: rgb(244, 244, 244);
-    padding-left: 50px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-`;
-
-const EntryContainerDiv = styled.div`
-    width: 35%;
-    height: 70%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    overflow-y: auto;
 `;
 
-const EntryTitleDiv = styled.div`
-    font-size: 1.5em;
-    padding-bottom: 30px;
+export const PageHeader = styled.h2`
+    font-size: 30px;
+    padding-top: 3%;
+    padding-left: 3%;
+    font-weight: bold;
+    margin-right: -5%;
 `;
-
-const EntryEntryContainerDiv = styled.div`
+export const MainSection = styled.div`
     width: 100%;
-    height: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+`;
+
+export const SectionDiv = styled.div`
+    width: 40%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 4%;
+    justify-content: center;
+`;
+
+const SubSectionDiv = styled.div`
+    margin: 5px 0;
     display: flex;
     flex-wrap: wrap;
+    height: 500px;
+    overflow: hidden;
+`;
+
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 0px;
+    margin-bottom: 40px;
 `;
 
 const EntryCardDiv = styled.div`
@@ -63,18 +78,31 @@ const EntryCardDiv = styled.div`
 
 const styles = () => ({
     card: {
-        padding: 20,
-        width: 200,
-        height: 200,
-        marginBottom: 30,
+        padding: "4%",
+        width: 230,
+        height: 230,
+        marginBottom: 20,
+        // width: "95%",
+        // height: "95%",
+        // marginBottom: "5%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        "@media screen and (max-width: 1700px)": {
+            width: 170,
+            height: 170
+        }
     },
     card_media: {
         // ⚠️ object-fit is not supported by IE 11.
-        objectFit: "fill"
+        // objectFit: "fill",
+        // objectFit: "contain",
+        // height: 200,
+        // width: "auto"
+        height: "100%",
+        width: "100%",
+        objectFit: "contain"
     },
     addIcon: {
         fontSize: "large",
@@ -108,207 +136,237 @@ export const WelcomeDashboard = ({ classes }) => (
                         // console.log(randomisedGuides);
                         return (
                             <ContainerDiv>
-                                <EntryContainerDiv>
-                                    <EntryTitleDiv>CLIENTS</EntryTitleDiv>
-                                    <EntryEntryContainerDiv>
-                                        <EntryCardDiv>
-                                            <Link
-                                                to={CREATE_NEW_CLIENT}
-                                                style={{
-                                                    textDecoration: "none"
-                                                }}
-                                            >
-                                                <Card className={classes.card}>
-                                                    <div
-                                                        style={{
-                                                            width: "100%",
-                                                            height: "100%",
-                                                            padding: 5,
-                                                            border:
-                                                                "2px solid rgb(238,238,238)",
-                                                            display: "flex",
-                                                            flexDirection:
-                                                                "column",
-                                                            justifyContent:
-                                                                "center",
-                                                            alignItems: "center"
-                                                        }}
+                                <PageHeader>Dashboard</PageHeader>
+                                <br />
+                                <MainSection>
+                                    <SectionDiv>
+                                        <SectionHeader>CLIENTS</SectionHeader>
+                                        <SubSectionDiv>
+                                            <EntryCardDiv>
+                                                <Link
+                                                    to={CREATE_NEW_CLIENT}
+                                                    style={{
+                                                        textDecoration: "none"
+                                                    }}
+                                                >
+                                                    <Card
+                                                        className={classes.card}
                                                     >
-                                                        <AddIcon
-                                                            className={
-                                                                classes.addIcon
-                                                            }
-                                                        />
-                                                        <span
+                                                        <div
                                                             style={{
-                                                                color: "gray",
-                                                                fontSize:
-                                                                    "1.3em"
+                                                                width: "100%",
+                                                                height: "100%",
+                                                                padding: 5,
+                                                                border:
+                                                                    "2px solid rgb(238,238,238)",
+                                                                display: "flex",
+                                                                flexDirection:
+                                                                    "column",
+                                                                justifyContent:
+                                                                    "center",
+                                                                alignItems:
+                                                                    "center"
                                                             }}
                                                         >
-                                                            Add client
-                                                        </span>
-                                                    </div>
-                                                </Card>
-                                            </Link>
-                                        </EntryCardDiv>
-                                        {clients.map((client, index) => (
-                                            <EntryCardDiv
-                                                key={`client-${
-                                                    client.id
-                                                }-${index}`}
-                                            >
-                                                <Card className={classes.card}>
-                                                    <a
-                                                        href={
-                                                            CLIENT_CMS_URL +
-                                                            WELCOME_URL_CLIENT +
-                                                            "/" +
-                                                            client.id
-                                                        }
-                                                        // target="_blank"
-                                                        // rel="noopener noreferrer"
-                                                    >
-                                                        <CardMedia
-                                                            component="img"
-                                                            alt={`${
-                                                                client.name
-                                                            } alt avatar`}
-                                                            className={
-                                                                classes.card_media
-                                                            }
-                                                            image={
-                                                                client.avatar
-                                                            }
-                                                        />
-                                                    </a>
-                                                </Card>
-                                            </EntryCardDiv>
-                                        ))}
-                                    </EntryEntryContainerDiv>
-                                    <Link
-                                        to={WELCOME_URL + "/clients"}
-                                        style={{
-                                            textDecoration: "none",
-                                            width: "100%",
-                                            display: "flex",
-                                            flexDirection: "row-reverse",
-                                            paddingRight: 5,
-                                            color: "black",
-                                            fontWeight: 600
-                                        }}
-                                    >
-                                        VIEW ALL >
-                                    </Link>
-                                </EntryContainerDiv>
-                                <EntryContainerDiv>
-                                    <EntryTitleDiv>
-                                        JUST BRILLIANT GUIDES
-                                    </EntryTitleDiv>
-                                    <EntryEntryContainerDiv>
-                                        <EntryCardDiv>
-                                            <Link
-                                                to={GUIDE_CREATE_NEW_URL}
-                                                style={{
-                                                    textDecoration: "none"
-                                                }}
-                                            >
-                                                <Card className={classes.card}>
-                                                    <div
-                                                        style={{
-                                                            width: "100%",
-                                                            height: "100%",
-                                                            padding: 5,
-                                                            border:
-                                                                "2px solid rgb(238,238,238)",
-                                                            display: "flex",
-                                                            flexDirection:
-                                                                "column",
-                                                            justifyContent:
-                                                                "center",
-                                                            alignItems: "center"
-                                                        }}
-                                                    >
-                                                        <AddIcon
-                                                            className={
-                                                                classes.addIcon
-                                                            }
-                                                        />
-                                                        <span
-                                                            style={{
-                                                                color: "gray",
-                                                                fontSize:
-                                                                    "1.3em"
-                                                            }}
-                                                        >
-                                                            Add guide
-                                                        </span>
-                                                    </div>
-                                                </Card>
-                                            </Link>
-                                        </EntryCardDiv>
-                                        {randomisedGuides.length > 0 &&
-                                            randomisedGuides
-                                                .slice(0, AMOUNT_IN_LIST)
-                                                .map(
-                                                    (
-                                                        {
-                                                            id,
-                                                            name,
-                                                            media: [media]
-                                                        },
-                                                        index
-                                                    ) => (
-                                                        <EntryCardDiv
-                                                            key={`guide-${id}-${index}`}
-                                                        >
-                                                            <Card
+                                                            <AddIcon
                                                                 className={
-                                                                    classes.card
+                                                                    classes.addIcon
                                                                 }
+                                                            />
+                                                            <span
+                                                                style={{
+                                                                    color:
+                                                                        "gray",
+                                                                    fontSize:
+                                                                        "1.3em"
+                                                                }}
                                                             >
-                                                                <a
-                                                                    href={
-                                                                        PORTAL_URL +
-                                                                        GUIDE_MAIN_URL.replace(
-                                                                            ":pub_id",
-                                                                            id
-                                                                        )
+                                                                Add client
+                                                            </span>
+                                                        </div>
+                                                    </Card>
+                                                </Link>
+                                            </EntryCardDiv>
+                                            {clients.map((client, index) => (
+                                                <EntryCardDiv
+                                                    key={`client-${
+                                                        client.id
+                                                    }-${index}`}
+                                                >
+                                                    <Card
+                                                        className={classes.card}
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                height: "100%",
+                                                                width: "100%"
+                                                            }}
+                                                        >
+                                                            <a
+                                                                href={
+                                                                    CLIENT_CMS_URL +
+                                                                    WELCOME_URL_CLIENT +
+                                                                    "/" +
+                                                                    client.id
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <CardMedia
+                                                                    component="img"
+                                                                    alt={`${
+                                                                        client.name
+                                                                    } alt avatar`}
+                                                                    className={
+                                                                        classes.card_media
                                                                     }
-                                                                    // target="_blank"
-                                                                    // rel="noopener noreferrer"
+                                                                    image={
+                                                                        client.avatar
+                                                                    }
+                                                                />
+                                                            </a>
+                                                        </div>
+                                                    </Card>
+                                                </EntryCardDiv>
+                                            ))}
+                                        </SubSectionDiv>
+                                        <Link
+                                            to={WELCOME_URL + "/clients"}
+                                            style={{
+                                                textDecoration: "none",
+                                                width: "100%",
+                                                display: "flex",
+                                                color: "black",
+                                                justifyContent: "flex-end",
+                                                fontWeight: "bold",
+                                                paddingRight: "4%"
+                                            }}
+                                        >
+                                            VIEW ALL >
+                                        </Link>
+                                    </SectionDiv>
+                                    <SectionDiv>
+                                        <SectionHeader>
+                                            JUST BRILLIANT GUIDES
+                                        </SectionHeader>
+                                        <SubSectionDiv>
+                                            <EntryCardDiv>
+                                                <Link
+                                                    to={GUIDE_CREATE_NEW_URL}
+                                                    style={{
+                                                        textDecoration: "none"
+                                                    }}
+                                                >
+                                                    <Card
+                                                        className={classes.card}
+                                                    >
+                                                        <div
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "100%",
+                                                                padding: 5,
+                                                                border:
+                                                                    "2px solid rgb(238,238,238)",
+                                                                display: "flex",
+                                                                flexDirection:
+                                                                    "column",
+                                                                justifyContent:
+                                                                    "center",
+                                                                alignItems:
+                                                                    "center"
+                                                            }}
+                                                        >
+                                                            <AddIcon
+                                                                className={
+                                                                    classes.addIcon
+                                                                }
+                                                            />
+                                                            <span
+                                                                style={{
+                                                                    color:
+                                                                        "gray",
+                                                                    fontSize:
+                                                                        "1.3em"
+                                                                }}
+                                                            >
+                                                                Add guide
+                                                            </span>
+                                                        </div>
+                                                    </Card>
+                                                </Link>
+                                            </EntryCardDiv>
+                                            {randomisedGuides.length > 0 &&
+                                                randomisedGuides
+                                                    .slice(0, AMOUNT_IN_LIST)
+                                                    .map(
+                                                        (
+                                                            {
+                                                                id,
+                                                                name,
+                                                                media: [media]
+                                                            },
+                                                            index
+                                                        ) => (
+                                                            <EntryCardDiv
+                                                                key={`guide-${id}-${index}`}
+                                                            >
+                                                                <Card
+                                                                    className={
+                                                                        classes.card
+                                                                    }
                                                                 >
-                                                                    <CardMedia
-                                                                        component="img"
-                                                                        alt={`${name} alt avatar`}
-                                                                        className={
-                                                                            classes.card_media
-                                                                        }
-                                                                        image={
-                                                                            media.path
-                                                                        }
-                                                                    />
-                                                                </a>
-                                                            </Card>
-                                                        </EntryCardDiv>
-                                                    )
-                                                )}
-                                    </EntryEntryContainerDiv>
-                                    <Link
-                                        to={WELCOME_URL + "/guide"}
-                                        style={{
-                                            textDecoration: "none",
-                                            width: "100%",
-                                            display: "flex",
-                                            flexDirection: "row-reverse",
-                                            paddingRight: 5,
-                                            color: "black",
-                                            fontWeight: 600
-                                        }}
-                                    >
-                                        VIEW ALL >
-                                    </Link>
-                                </EntryContainerDiv>
+                                                                    <div
+                                                                        style={{
+                                                                            height:
+                                                                                "100%",
+                                                                            width:
+                                                                                "100%"
+                                                                        }}
+                                                                    >
+                                                                        <a
+                                                                            href={
+                                                                                PORTAL_URL +
+                                                                                GUIDE_MAIN_URL.replace(
+                                                                                    ":pub_id",
+                                                                                    id
+                                                                                )
+                                                                            }
+                                                                            target="_blank"
+                                                                            rel="noopener noreferrer"
+                                                                        >
+                                                                            <CardMedia
+                                                                                component="img"
+                                                                                alt={`${name} alt avatar`}
+                                                                                className={
+                                                                                    classes.card_media
+                                                                                }
+                                                                                image={
+                                                                                    media.path
+                                                                                }
+                                                                            />
+                                                                        </a>
+                                                                    </div>
+                                                                </Card>
+                                                            </EntryCardDiv>
+                                                        )
+                                                    )}
+                                        </SubSectionDiv>
+                                        <Link
+                                            to={WELCOME_URL + "/guide"}
+                                            style={{
+                                                textDecoration: "none",
+                                                width: "100%",
+                                                display: "flex",
+                                                flexDirection: "row-reverse",
+                                                paddingRight: "4%",
+                                                color: "black",
+                                                fontWeight: 600
+                                            }}
+                                        >
+                                            VIEW ALL >
+                                        </Link>
+                                    </SectionDiv>
+                                </MainSection>
                             </ContainerDiv>
                         );
                     }}

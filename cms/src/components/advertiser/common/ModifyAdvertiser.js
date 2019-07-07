@@ -1,5 +1,7 @@
 import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import { Query, withApollo, Mutation, gql } from "react-apollo";
 import PropTypes from "prop-types";
 import {
     Button,
@@ -16,6 +18,41 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitleHelper from "../../../utils/DialogTitleHelper";
 import { SlideUpTransition } from "../../../utils/Constants";
 
+const styles = theme => ({
+    root: {
+        width: "90%",
+        marginLeft: "auto",
+        marginRight: "auto",
+        backgroundColor: "#F4F4F4",
+        height: "100%"
+    },
+    buttonCancel: {
+        backgroundColor: "#595959",
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif",
+        margin: "2%",
+        padding: "3% 0",
+        width: "150px",
+        boxShadow: "2px 2px 3px #888888"
+    },
+    unCompletedIcon: {
+        color: "white",
+        border: "2px solid #DDDDDD",
+        borderRadius: "50%",
+        fontColor: "black"
+    },
+    completedIcon: {
+        color: "#2699FB !important",
+        border: "2px solid #2699FB"
+    },
+    activeIcon: {
+        color: "white !important",
+        border: "2px solid #2699FB",
+        borderRadius: "50%",
+        StepConnector: "blue"
+    }
+});
+
 const array_components = [
     {
         component: lazy(() => import("./StepAdvertiser")),
@@ -31,6 +68,12 @@ const array_components = [
     }
 ];
 
+const MainSectionContainer = styled.div`
+    width: 100%;
+    height: 100%;
+
+    padding: 3%;
+`;
 const ContainerDiv = styled.div`
     width: 100%;
     height: 100%;
@@ -40,21 +83,25 @@ const ContainerDiv = styled.div`
     padding-right: 20px;
 `;
 
-const HeaderContainerDiv = styled.div`
-    width: 100%;
+const HeaderContainerDiv = styled.h2`
+    width: 80%;
     height: 70px;
+    display: flex;
+    padding: 3%;
+`;
+const SubSectionTop = styled.div`
     display: flex;
 `;
 
 const HeaderTitleDiv = styled.div`
-    width: 90%;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    width: 77%;
+    padding-left: 3%;
 `;
 
 const HeaderButtonDiv = styled.div`
-    width: 10%;
-    height: 70px;
+    // width: 10%;
+    display: flex;
+    //  height: 70px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -67,7 +114,7 @@ const ContentContainer = styled.div`
 `;
 
 const ModifyAdvertiser = props => {
-    const { goToNext, push, exitUrl, has_data } = props;
+    const { goToNext, push, exitUrl, has_data, classes } = props;
 
     const [activeStep, setActiveStep] = useState(goToNext ? 1 : 0);
     const [showModal, setShowModal] = useState(false);
@@ -99,24 +146,39 @@ const ModifyAdvertiser = props => {
     };
 
     const closeModal = () => setShowModal(false);
+    // const { classes } = this.props;
 
     const SelectedComponent = array_components[activeStep].component;
+    //  const className = "";
     return (
         <React.Fragment>
-            <ContainerDiv>
-                <HeaderContainerDiv>
+            <MainSectionContainer className={classes.root}>
+                <SubSectionTop>
                     <HeaderTitleDiv>
-                        <div style={{ fontSize: "2em", fontWeight: 700 }}>
+                        <h2
+                            style={{
+                                fontSize: "30px",
+                                paddingBottom: "2%",
+                                display: "inline-Block"
+                            }}
+                        >
                             Just Brilliant Guides
-                        </div>
-                        <div style={{ fontSize: "1.5em", paddingTop: 10 }}>
+                        </h2>
+                        <h2
+                            style={{
+                                fontSize: "30px",
+                                paddingBottom: "2%",
+                                display: "inline-Block"
+                            }}
+                        >
                             {has_data && !goToNext
-                                ? "Edit Advertiser"
-                                : "Add new Advertiser"}
-                        </div>
+                                ? ": Edit Advertiser"
+                                : ": Add  Advertiser"}
+                        </h2>
                     </HeaderTitleDiv>
                     <HeaderButtonDiv>
                         <Button
+                            className={classes.buttonCancel}
                             variant="outlined"
                             onClick={handleCancel}
                             disabled={
@@ -127,32 +189,71 @@ const ModifyAdvertiser = props => {
                                 )
                             }
                         >
-                            Cancel
+                            CANCEL
                         </Button>
                     </HeaderButtonDiv>
-                </HeaderContainerDiv>
+                </SubSectionTop>
                 <Stepper
                     activeStep={activeStep}
                     alternativeLabel
                     nonLinear={has_data && !goToNext}
+                    style={{
+                        float: "left",
+                        width: "50%",
+                        marginLeft: "-3%",
+                        marginTop: "3%",
+                        backgroundColor: "#F4F4F4"
+                    }}
                 >
                     {array_components.map(({ title }, index) => {
                         const props = {};
                         const labelProps = {};
+
                         return (
                             <Step key={`${index} -${title}`} {...props}>
-                                {has_data && !goToNext ? (
-                                    <StepButton onClick={handleStep(index)}>
-                                        <StepLabel {...labelProps}>
-                                            {title}
-                                        </StepLabel>
-                                    </StepButton>
-                                ) : (
-                                    <StepLabel {...labelProps}>
+                                <StepButton onClick={handleStep(index)}>
+                                    <StepLabel
+                                        {...labelProps}
+                                        StepIconProps={{
+                                            classes: {
+                                                root: classes.unCompletedIcon,
+
+                                                completed:
+                                                    classes.completedIcon,
+                                                active: classes.activeIcon
+                                            }
+                                        }}
+                                    >
                                         {title}
                                     </StepLabel>
-                                )}
+                                </StepButton>
                             </Step>
+
+                            // <Step key={`${index} -${title}`} {...props}>
+                            //     {has_data && !goToNext ? (
+                            //         <StepButton onClick={handleStep(index)}>
+                            //             <StepLabel
+                            //                 {...labelProps}
+                            //                 StepIconProps={{
+                            //                     classes: {
+                            //                         root:
+                            //                             classes.unCompletedIcon,
+
+                            //                         completed:
+                            //                             classes.completedIcon,
+                            //                         active: classes.activeIcon
+                            //                     }
+                            //                 }}
+                            //             >
+                            //                 {title}
+                            //             </StepLabel>
+                            //         </StepButton>
+                            //     ) : (
+                            //         <StepLabel {...labelProps}>
+                            //             {title}
+                            //         </StepLabel>
+                            //     )}
+                            // </Step>
                         );
                     })}
                 </Stepper>
@@ -165,7 +266,7 @@ const ModifyAdvertiser = props => {
                         />
                     </Suspense>
                 </ContentContainer>
-            </ContainerDiv>
+            </MainSectionContainer>
             <Dialog
                 open={showModal}
                 TransitionComponent={SlideUpTransition}
@@ -206,4 +307,4 @@ ModifyAdvertiser.propTypes = {
     exitUrl: PropTypes.string
 };
 
-export default ModifyAdvertiser;
+export default withApollo(withStyles(styles)(ModifyAdvertiser));

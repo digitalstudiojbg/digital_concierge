@@ -160,7 +160,15 @@ export const NormalButton = styled.button`
        background-color: #EBEBF2;
     }
 `;
-
+export const WhiteBlueButton = styled.button`
+    color: #2699fb;
+    width: 150px;
+    border: 2px solid #2699fb;
+    padding: 7%;
+    margin: 10px 0;
+    background-color: white;
+    border-radius: 5px;
+`;
 export const FiledContainer = styled.div`
     //  padding-bottom: 20px;
 `;
