@@ -94,8 +94,66 @@ const CreateRoleDialog = ({
         }
     };
 
-    const renderPermissions = permissionCategories => (
+    const renderPermissions = (permissionCategories, allPermissionsLength) => (
         <div style={{ width: "100%", marginTop: 10 }}>
+            <EachRolePermissionContainerDiv>
+                <EachRoleContainerDiv />
+                <div
+                    style={{
+                        width: "60%",
+                        paddingLeft: 13,
+                        paddingTop: "2%"
+                    }}
+                >
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                style={{
+                                    color: "#2699FB",
+                                    padding: "0"
+                                }}
+                                checked={
+                                    selected_permissions.size ===
+                                    allPermissionsLength
+                                }
+                                onChange={() => {
+                                    //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
+                                    if (
+                                        selected_permissions.size ===
+                                        allPermissionsLength
+                                    ) {
+                                        setSelectedPermissions(Set());
+                                    } else {
+                                        const permissions = [].concat.apply(
+                                            [],
+                                            permissionCategories.map(
+                                                ({ permissions }) => {
+                                                    let output = [];
+                                                    permissions.forEach(
+                                                        ({ id }) => {
+                                                            output = [
+                                                                ...output,
+                                                                id
+                                                            ];
+                                                        }
+                                                    );
+                                                    return output;
+                                                }
+                                            )
+                                        );
+                                        setSelectedPermissions(
+                                            selected_permissions.union(
+                                                permissions
+                                            )
+                                        );
+                                    }
+                                }}
+                            />
+                        }
+                        label="All Permissions"
+                    />
+                </div>
+            </EachRolePermissionContainerDiv>
             {permissionCategories.map(
                 (
                     { id: categoryId, name: categoryName, permissions },
@@ -198,6 +256,11 @@ const CreateRoleDialog = ({
         <Query query={getPermissionCategoryList}>
             {({ loading, error, data: { permissionCategories } }) => {
                 if (loading) return <Loading loadingData />;
+                let allPermissionsLength = 0;
+                permissionCategories.forEach(category => {
+                    allPermissionsLength += category.permissions.length;
+                });
+
                 return (
                     <Dialog
                         open={open}
@@ -234,7 +297,10 @@ const CreateRoleDialog = ({
                                         }}
                                         onChange={handleChange}
                                     />
-                                    {renderPermissions(permissionCategories)}
+                                    {renderPermissions(
+                                        permissionCategories,
+                                        allPermissionsLength
+                                    )}
                                 </DialogContent>
                                 <DialogActions>
                                     <Button
