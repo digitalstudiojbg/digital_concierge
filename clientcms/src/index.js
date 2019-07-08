@@ -11,6 +11,7 @@ import { API_URL } from "./utils/Constants";
 // import { withClientState } from "apollo-link-state";
 import { ApolloLink } from "apollo-link";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { SnackbarProvider } from "notistack";
 
 const authLink = setContext((_, { headers }) => {
     return {
@@ -72,7 +73,9 @@ const theme = createMuiTheme({
 ReactDOM.render(
     <ApolloProvider client={client}>
         <MuiThemeProvider theme={theme}>
-            <App />
+            <SnackbarProvider>
+                <App />
+            </SnackbarProvider>
         </MuiThemeProvider>
     </ApolloProvider>,
     document.getElementById("root")

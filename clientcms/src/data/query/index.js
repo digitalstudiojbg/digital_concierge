@@ -1,4 +1,4 @@
-import { getCurrentUserQuery } from "./user";
+import { getCurrentUserQuery, getUserDetail } from "./user";
 import { getDirectoryListBySystem } from "./directoryList";
 import {
     getSystemsFromUser,
@@ -64,5 +64,6 @@ export {
     getTemplateListFromType,
     getLayoutListFromType,
     getSystemStart,
-    getSystemHome
+    getSystemHome,
+    getUserDetail
 };

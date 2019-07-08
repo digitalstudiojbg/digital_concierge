@@ -29,9 +29,9 @@ export default gql`
     input CreateRoleInput {
         name: String!
         isStandardRole: Boolean!
-        departmentId: Int!
-        permissionIds: [Int]!
-        clientId: Int
+        departmentId: ID!
+        permissionIds: [ID]
+        clientId: ID!
     }
 
     input UpdateRoleInput {

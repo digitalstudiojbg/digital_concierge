@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import FileSaver from "file-saver";
+import React from "react";
+import { Slide } from "@material-ui/core";
 
 export const COLOR_JBG_PURPLE = "#272b67";
 export const API_URL =
@@ -331,4 +333,8 @@ export const hexToRgb = hex => {
               b: parseInt(result[3], 16)
           }
         : null;
+};
+
+export const SlideUpTransition = props => {
+    return <Slide direction="up" {...props} />;
 };

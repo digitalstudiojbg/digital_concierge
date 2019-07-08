@@ -89,3 +89,27 @@ export const getCurrentUserQuery = gql`
         }
     }
 `;
+
+export const getUserDetail = gql`
+    query getUser($id: ID!) {
+        user(id: $id) {
+            id
+            name
+            email
+            active
+            roles {
+                id
+                name
+                is_standard_role
+                permissions {
+                    id
+                    name
+                }
+                department {
+                    id
+                    name
+                }
+            }
+        }
+    }
+`;

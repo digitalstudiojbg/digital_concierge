@@ -535,7 +535,7 @@ class WizardCreateClientPageThree extends React.Component {
                                     Department
                                 </label>
                                 <Mutation
-                                    mutation={CREATE_DEPARTMENT()}
+                                    mutation={CREATE_DEPARTMENT}
                                     refetchQueries={[
                                         {
                                             query: getDepartmentListByClient,

@@ -570,5 +570,5 @@ export default compose(
     withApollo,
     withStyles(styles),
     graphql(CREATE_CLIENT(), { name: "createClient" }),
-    graphql(CREATE_USER(), { name: "createUser" })
+    graphql(CREATE_USER, { name: "createUser" })
 )(WizardCreateClientPageOne);

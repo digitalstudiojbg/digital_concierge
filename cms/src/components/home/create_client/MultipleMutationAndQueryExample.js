@@ -147,7 +147,7 @@ export default compose(
         }),
         name: "getSelectedCountry"
     }),
-    graphql(CREATE_USER(), { name: "createUser" }),
+    graphql(CREATE_USER, { name: "createUser" }),
     graphql(CREATE_CONTACT(), { name: "createContact" }),
     graphql(CREATE_CLIENT(), { name: "createClient" }),
     graphql(getLayoutList)

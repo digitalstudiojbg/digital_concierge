@@ -200,7 +200,7 @@ const WelcomeUserCreate = props => {
                 </DialogTitle>
                 <DialogContent>
                     <Mutation
-                        mutation={CREATE_DEPARTMENT()}
+                        mutation={CREATE_DEPARTMENT}
                         refetchQueries={[
                             {
                                 query: getDepartmentListByUser
@@ -348,7 +348,7 @@ const WelcomeUserCreate = props => {
 
                             return (
                                 <Mutation
-                                    mutation={CREATE_ROLE()}
+                                    mutation={CREATE_ROLE}
                                     refetchQueries={[
                                         {
                                             query: getDepartmentListByUser
@@ -1029,5 +1029,5 @@ export default compose(
     graphql(getDepartmentListByUser, {
         name: "getDepartmentListByUser"
     }),
-    graphql(CREATE_USER(), { name: "createUser" })
+    graphql(CREATE_USER, { name: "createUser" })
 )(WelcomeUserCreate);
