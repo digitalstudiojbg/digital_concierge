@@ -171,6 +171,7 @@ const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 `;
 
 const FormContainerDiv = styled.div`
@@ -337,7 +338,7 @@ class CreateEditUser extends React.Component {
                       Boolean(data.roles[0].id)
                           ? data.roles[0].id
                           : null,
-                  active: data.active ? "ACTIVE" : "INACTIVE",
+                  active: data.active ? 1 : 0,
                   password: "",
                   confirm_password: ""
               }
@@ -347,7 +348,7 @@ class CreateEditUser extends React.Component {
                   email: "",
                   departmentId: null,
                   roleId: null,
-                  active: "ACTIVE",
+                  active: 1,
                   password: "",
                   confirm_password: ""
               };
@@ -361,7 +362,7 @@ class CreateEditUser extends React.Component {
                 <Loading loadingData />
             );
         } else {
-            if (errorMessage.length > 0) {
+            if (withButton && errorMessage.length > 0) {
                 const { enqueueSnackbar } = this.props;
                 enqueueSnackbar(errorMessage, { 
                     variant: 'error',
@@ -530,6 +531,7 @@ class CreateEditUser extends React.Component {
                     {this.renderField(fieldData)}
                 </React.Fragment>
             ))}
+            {this.renderSelectField("active", "STATUS", [{id: 1, name: "ACTIVE"}, { id: 0, name: "INACTIVE" }], false)}
         </React.Fragment>
     );
     render() {
