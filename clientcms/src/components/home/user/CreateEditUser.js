@@ -6,7 +6,8 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { OutlinedInput, MenuItem } from "@material-ui/core";
+import { OutlinedInput, MenuItem, InputAdornment, IconButton } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { FieldContainerDiv, FieldLabel, NormalButton } from "./commonStyle";
 import { Query, Mutation } from "react-apollo";
 import { getDepartmentListByClient } from "../../../data/query/department";
@@ -229,12 +230,6 @@ const SECTION_THREE_FIELDS = [
         label: "CONFIRM PASSWORD",
         required: false,
         type: "password"
-    },
-    {
-        name: "active",
-        label: "STATUS",
-        type: "select",
-        required: true
     }
 ];
 
@@ -251,7 +246,9 @@ class CreateEditUser extends React.Component {
         this.state = {
             openDialog: false,
             which: "",
-            otherSubmitData: null
+            otherSubmitData: null,
+            password: false,
+            confirm_password: false
         }
         this.openDepartmentDialog = this.openDepartmentDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
@@ -282,14 +279,16 @@ class CreateEditUser extends React.Component {
     }
 
     closeDialog = () => this.setState({ openDialog: false, which: "", otherSubmitData: null });
+    changeVisibility = name => _event => this.setState({ [name]: !this.state[name] });
 
+    //https://stackoverflow.com/a/41031849
     renderTextField = (name, label, required, type) => (
         <FieldContainerDiv style={{ width: "100%" }}>
             <FieldLabel>{label}</FieldLabel>
             <Field
                 name={name}
                 required={required}
-                type={type}
+                type={type === "password" && this.state[name] ? "text" : type === "password" ? "password" : "text"}
                 component={TextField}
                 variant="outlined"
                 fullWidth={true}
@@ -299,6 +298,19 @@ class CreateEditUser extends React.Component {
                         backgroundColor: "white"
                     }
                 }}
+                    { ...( type === "password" && { 
+                        InputProps: {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="Toggle password visibility"
+                                        onClick={this.changeVisibility(name)}
+                                    >   {this.state[name] ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        } 
+                    } ) }
             />
         </FieldContainerDiv>
     );
@@ -378,9 +390,9 @@ class CreateEditUser extends React.Component {
                         fullWidth={true}
                         input={<OutlinedInput />}
                     >
-                        <MenuItem value="null" disabled>
+                        {/* <MenuItem value="null" disabled>
                             {label}
-                        </MenuItem>
+                        </MenuItem> */}
                         {optionList.map(({ id, name }, index) => (
                             <MenuItem
                                 key={`ITEM-${name}-${id}-${index}`}
@@ -449,7 +461,7 @@ class CreateEditUser extends React.Component {
                     {/* SECTION TWO */}
                     {this.renderSectionTwo(values)}
                 </SectionDiv>
-                <SectionDiv width="33%">SECTION THREE</SectionDiv>
+                <SectionDiv width="33%">{this.renderSectionThree()}</SectionDiv>
             </FormContainerDiv>
         );
     }
@@ -511,6 +523,15 @@ class CreateEditUser extends React.Component {
             </React.Fragment>
         );
     }
+    renderSectionThree = () => (
+        <React.Fragment>
+            {SECTION_THREE_FIELDS.map((fieldData, index) => (
+                <React.Fragment key={`SECTION-THREE-${index}`}>
+                    {this.renderField(fieldData)}
+                </React.Fragment>
+            ))}
+        </React.Fragment>
+    );
     render() {
         const { openDialog, which, otherSubmitData } = this.state;
         const initialValues = this.generateInitialValues();
