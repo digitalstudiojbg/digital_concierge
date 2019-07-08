@@ -312,14 +312,16 @@ const CreateRoleDialog = ({
                                     </DialogContent>
                                     <DialogActions>
                                         <Button
+                                            variant="outlined"
                                             onClick={onClickSubmitAction}
                                             color="primary"
                                         >
                                             CREATE
                                         </Button>
                                         <Button
+                                            variant="outlined"
                                             onClick={cancelAction}
-                                            color="primary"
+                                            color="secondary"
                                         >
                                             CANCEL
                                         </Button>

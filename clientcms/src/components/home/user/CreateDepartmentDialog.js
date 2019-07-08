@@ -63,10 +63,18 @@ const CreateDepartmentDialog = ({
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={onClickSubmitAction} color="primary">
+                <Button
+                    onClick={onClickSubmitAction}
+                    variant="outlined"
+                    color="primary"
+                >
                     CREATE
                 </Button>
-                <Button onClick={cancelAction} color="primary">
+                <Button
+                    onClick={cancelAction}
+                    variant="outlined"
+                    color="secondary"
+                >
                     CANCEL
                 </Button>
             </DialogActions>
