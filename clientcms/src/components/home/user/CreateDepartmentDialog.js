@@ -21,14 +21,16 @@ const CreateDepartmentDialog = ({
 
     const handleChange = event => setName(event.target.value);
     const onClickSubmitAction = () => {
-        submitAction({
-            variables: {
-                input: {
-                    name,
-                    ...otherSubmitData
+        if (name.length > 0) {
+            submitAction({
+                variables: {
+                    input: {
+                        name,
+                        ...otherSubmitData
+                    }
                 }
-            }
-        }).then(() => cancelAction());
+            }).then(() => cancelAction());
+        }
     };
 
     return (
