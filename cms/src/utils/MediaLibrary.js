@@ -629,7 +629,7 @@ class MediaLibrary extends React.Component {
                                 <div
                                     style={{
                                         display: "flex",
-                                        flexDirection: "row",
+                                        flexDirection: "row-reverse",
                                         justifyContent: "space-between",
                                         height: "5vh",
                                         alignItems: "center"

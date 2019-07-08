@@ -335,7 +335,9 @@ class WizardCreateClientPageTwo extends React.Component {
                     </SubFieldContainerDiv>
                 </FiledContainer>
                 <FiledContainer>
-                    <BrowseButton style={{ marginTop: "10px" }}>
+                    <BrowseButton
+                        style={{ marginTop: "10px", backgroundColor: "white" }}
+                    >
                         <input
                             accept="image/*, application/pdf"
                             style={{ display: "none" }}

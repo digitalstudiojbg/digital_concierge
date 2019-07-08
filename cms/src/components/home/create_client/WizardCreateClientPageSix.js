@@ -52,7 +52,7 @@ class WizardCreateClientPageSix extends React.Component {
                 <SectionDiv
                     style={{
                         width: "100%",
-                        height: "100px",
+                        // height: "100px",
                         border: "0px",
                         padding: "0px"
                     }}

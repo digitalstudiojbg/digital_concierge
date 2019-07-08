@@ -69,7 +69,8 @@ const styles = () => ({
         backgroundColor: "white",
         border: "1px solid rgba(112, 112, 112, 1)",
         height: "50%",
-        padding: 5
+        padding: 5,
+        margin: "2% 2% 0 0"
     }
 });
 //inputProps={{ className: this.props.classes.myInput }}
@@ -327,7 +328,7 @@ class WizardCreateClientPageFour extends React.Component {
                                         flex: "1",
                                         justifyContent: "left",
                                         height: "430px",
-                                        width: "97%",
+                                        width: "100%",
                                         margin: "1% 0",
                                         overflow: "auto",
                                         padding: "1%",

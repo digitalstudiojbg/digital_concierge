@@ -126,15 +126,16 @@ export const SectionHeader = styled.h4`
 `;
 
 export const BrowseButton = styled.label`
-    border: 3px solid #2699FB;
+    border: 3px solid #2699fb;
     display: inline-block;
     width: 40%;
-    margin-left:60%;
+    margin-left: 60%;
     text-align: center;
     cursor: pointer;
     padding: 10px 5px;
-    font-size: 14px
-    color: #2699FB;
+    font-size: 14px;
+    background-color: white;
+    color: #2699fb;
     border-radius: 5px;
     variant: outlined;
     component: span;
@@ -267,9 +268,6 @@ export const FeatureContainer = styled.div`
     align-items: center;
     border-radius: 5px;
     width: 100%;
-    // &:hover {
-    //     background-color: lightgrey;
-    // }
 `;
 
 export const SelectUnselectButton = styled.p`
@@ -285,10 +283,10 @@ export const SelectUnselectButton = styled.p`
 `;
 
 export const EachClientSystemContainer = styled.div`
-    width: 45%;
-    height: 45%;
+    width: 46%;
+    height: 46%;
     margin: 2%;
-    padding: 5px;
+    padding-left: 2%;
     border: 1px solid #dddddd;
     position: relative;
     // &:hover {
@@ -462,7 +460,7 @@ export const UploadDeleteButton = styled.label`
     font-size: 14px;
     color: #2699fb;
     border-radius: 5px;
-    margin: 10px;
+    margin: 0 0 10px 15px;
     &:hover {
         font-weight: bold;
     }

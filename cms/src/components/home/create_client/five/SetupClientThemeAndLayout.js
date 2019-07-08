@@ -69,13 +69,15 @@ const styles = theme => ({
         display: "none"
     },
     uploadButton: {
-        margin: theme.spacing.unit,
+        // margin: theme.spacing.unit,
         width: "55%",
-        marginTop: "4%",
         border: "3px solid #2699FB",
+        backgroundColor: "white",
         padding: "5px 5px",
         fontSize: "14px",
-        color: "#2699FB"
+        color: "#2699FB",
+        bottom: "0",
+        marginTop: "6%"
     },
 
     icon: {

@@ -12,8 +12,8 @@ import {
 } from "../../../data/query";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-//import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-//import CopyOutlinedIcon from "@material-ui/icons/CopyOutlined";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import FileCopyOutlinedIcon from "@material-ui/icons/FileCopyOutlined";
 import {
     CREATE_DEPARTMENT,
     CREATE_ROLE,
@@ -41,7 +41,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import MoreHorizontalIcon from "@material-ui/icons/MoreHoriz";
 import LaunchIcon from "@material-ui/icons/Launch";
-import DeleteIcon from "@material-ui/icons/Delete";
+
 import CopyIcon from "@material-ui/icons/FileCopy";
 import PageThreeRoleModal from "./three/PageThreeRoleModal";
 import PageThreeDeleteModal from "./three/PageThreeDeleteModal";
@@ -1043,6 +1043,18 @@ class WizardCreateClientPageThree extends React.Component {
                                                     }}
                                                 >
                                                     <IconButton
+                                                        style={{
+                                                            padding: "7px",
+                                                            backgroundColor:
+                                                                "white",
+                                                            border:
+                                                                "1px solid grey",
+                                                            borderRadius: "5px",
+                                                            height:
+                                                                "fit-content",
+                                                            marginLeft: "8px",
+                                                            color: "grey"
+                                                        }}
                                                         aria-label="Copy"
                                                         disabled={
                                                             this.state
@@ -1054,12 +1066,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 .handleOpenMultipleDuplicateModal
                                                         }
                                                     >
-                                                        <CopyIcon
-                                                            style={{
-                                                                padding: 0
-                                                            }}
-                                                            fontSize="large"
-                                                        />
+                                                        <FileCopyOutlinedIcon />
                                                     </IconButton>
                                                 </div>
                                                 <div
@@ -1071,6 +1078,18 @@ class WizardCreateClientPageThree extends React.Component {
                                                     }}
                                                 >
                                                     <IconButton
+                                                        style={{
+                                                            padding: "7px",
+                                                            color: "grey",
+                                                            backgroundColor:
+                                                                "white",
+                                                            border:
+                                                                "1px solid grey",
+                                                            borderRadius: "5px",
+                                                            height:
+                                                                "fit-content",
+                                                            marginLeft: "8px"
+                                                        }}
                                                         aria-label="Delete"
                                                         disabled={
                                                             this.state
@@ -1082,12 +1101,7 @@ class WizardCreateClientPageThree extends React.Component {
                                                                 .handleOpenMultipleDeleteModal
                                                         }
                                                     >
-                                                        <DeleteIcon
-                                                            style={{
-                                                                padding: 0
-                                                            }}
-                                                            fontSize="large"
-                                                        />
+                                                        <DeleteOutlinedIcon />
                                                     </IconButton>
                                                 </div>
                                             </SubSection>
