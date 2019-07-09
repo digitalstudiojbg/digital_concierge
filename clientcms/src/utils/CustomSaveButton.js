@@ -66,7 +66,7 @@ class CustomSaveButton extends React.Component {
 
     render() {
         const { index, open } = this.state;
-        const { options, classes } = this.props;
+        const { options, classes, disabled } = this.props;
         return (
             <Grid container>
                 <Grid item xs={12} align="center">
@@ -75,6 +75,7 @@ class CustomSaveButton extends React.Component {
                         color="primary"
                         ref={this.anchorRef}
                         aria-label="Split button"
+                        disabled={disabled}
                     >
                         <Button
                             onClick={this.handleClick}

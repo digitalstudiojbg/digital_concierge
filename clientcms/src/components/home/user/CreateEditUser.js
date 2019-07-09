@@ -288,9 +288,12 @@ class CreateEditUser extends React.Component {
             openDialog: false,
             password: false,
             confirm_password: false,
-            roleData: null
+            roleData: null,
+            exit: true
         };
         this.closeDialog = this.closeDialog.bind(this);
+        this.handleSubmitExit = this.handleSubmitExit.bind(this);
+        this.handleSubmitStay = this.handleSubmitStay.bind(this);
     }
 
     openDialog = roleData => _event => {
@@ -437,7 +440,19 @@ class CreateEditUser extends React.Component {
             return <React.Fragment />;
         }
     }
-    renderHeaderSection() {
+
+    handleSubmitExit = submitForm => submitForm();
+    handleSubmitStay = submitForm =>
+        this.setState({ exit: false }, () => submitForm());
+    handleSubmit = (values, { setSubmitting }) => {
+        setSubmitting(true);
+        console.log("Values ", values);
+        console.log("this.state.exit ", this.state.exit);
+        alert(`SHOULD EXIT: ${this.state.exit ? "TRUE" : "FALSE"}`);
+        setSubmitting(false);
+    };
+
+    renderHeaderSection(isSubmitting, submitForm) {
         const { hasData } = this.props;
         const headerText = hasData ? "MODIFY USER" : "CREATE USER";
         return (
@@ -451,14 +466,15 @@ class CreateEditUser extends React.Component {
                     }}
                 >
                     <CustomSaveButton
+                        disabled={isSubmitting}
                         options={[
                             {
                                 label: "SAVE & EXIT",
-                                action: () => alert("SAVE & EXIT")
+                                action: () => this.handleSubmitExit(submitForm)
                             },
                             {
                                 label: "SAVE & KEEP EDITING",
-                                action: () => alert("SAVE & KEEP EDITING")
+                                action: () => this.handleSubmitStay(submitForm)
                             }
                         ]}
                     />
@@ -698,10 +714,13 @@ class CreateEditUser extends React.Component {
         const initialValues = this.generateInitialValues();
         return (
             <ContainerDivModified>
-                <Formik initialValues={initialValues}>
-                    {({ values }) => (
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={this.handleSubmit}
+                >
+                    {({ values, isSubmitting, submitForm }) => (
                         <Form>
-                            {this.renderHeaderSection()}
+                            {this.renderHeaderSection(isSubmitting, submitForm)}
                             {this.renderFormSection(values)}
                         </Form>
                     )}
