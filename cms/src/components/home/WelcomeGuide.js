@@ -1,6 +1,6 @@
 import React from "react";
 import { Query, Mutation } from "react-apollo";
-import { getJustBrilliantGuideList } from "../../data/query";
+import { getJustBrilliantGuideList, getAdvertiserList } from "../../data/query";
 import Loading from "../loading/Loading";
 import Guide from "../guide/main/JustBrilliantGuideMain";
 import { DUPLICATE_GUIDE } from "../../data/mutation/justBrilliantGuide";
@@ -27,18 +27,36 @@ export const WelcomeGuide = () => (
                     ) => {
                         if (loadingMutation) return <Loading loadingData />;
                         return (
-                            <Guide
-                                data={{
-                                    publications: guidesList,
-                                    businesses: []
+                            <Query query={getAdvertiserList}>
+                                {({
+                                    loading: loadingAdvertiser,
+                                    error: errorAdvertiser,
+                                    data: { advertisers }
+                                }) => {
+                                    if (loadingAdvertiser)
+                                        return <Loading loadingData />;
+                                    if (errorAdvertiser)
+                                        return (
+                                            <React.Fragment>
+                                                Error! {errorAdvertiser.message}
+                                            </React.Fragment>
+                                        );
+                                    return (
+                                        <Guide
+                                            data={{
+                                                publications: guidesList,
+                                                advertisers
+                                            }}
+                                            otherProps={{
+                                                error: isEmpty(errorMutation)
+                                                    ? null
+                                                    : errorMutation,
+                                                duplicateAction
+                                            }}
+                                        />
+                                    );
                                 }}
-                                otherProps={{
-                                    error: isEmpty(errorMutation)
-                                        ? null
-                                        : errorMutation,
-                                    duplicateAction
-                                }}
-                            />
+                            </Query>
                         );
                     }}
                 </Mutation>

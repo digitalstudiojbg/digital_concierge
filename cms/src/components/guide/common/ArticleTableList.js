@@ -342,8 +342,8 @@ class ArticleTableList extends React.Component {
                         selection: true,
                         searchFieldAlignment: "left",
                         showTitle: false,
-                        headerStyle: { borderBottom: "2px solid grey" },
-                        SearchStyle: { color: "red" }
+                        headerStyle: { borderBottom: "2px solid grey" }
+                        //SearchStyle: { color: "red" }
                     }}
                     components={{
                         Toolbar: props => {
