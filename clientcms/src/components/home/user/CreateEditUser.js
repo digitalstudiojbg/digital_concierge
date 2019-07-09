@@ -6,18 +6,38 @@ import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
 import { TextField, Select } from "formik-material-ui";
-import { OutlinedInput, MenuItem, InputAdornment, IconButton } from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { FieldContainerDiv, FieldLabel, NormalButton } from "./commonStyle";
+import {
+    OutlinedInput,
+    MenuItem,
+    InputAdornment,
+    IconButton,
+    FormControlLabel,
+    Checkbox
+} from "@material-ui/core";
+import {
+    Visibility,
+    VisibilityOff,
+    Launch as LaunchIcon
+} from "@material-ui/icons";
+import {
+    FieldContainerDiv,
+    FieldLabel,
+    RolePermissionContainerDiv,
+    EachRolePermissionContainerDiv,
+    EachRoleContainerDiv,
+    AllPermissionContainerDiv
+} from "./commonStyle";
 import { Query, Mutation } from "react-apollo";
 import { getDepartmentListByClient } from "../../../data/query/department";
 import Loading from "../../loading/Loading";
 import { getUserDetail } from "../../../data/query/user";
-import { UPDATE_USER, CREATE_USER, CREATE_DEPARTMENT, CREATE_ROLE } from "../../../data/mutation";
-import { getUsersByClient } from "../../../data/query";
-import { withSnackbar } from 'notistack';
-import CreateDepartmentDialog from "./CreateDepartmentDialog";
-import CreateRoleDialog from "./CreateRoleDialog";
+import { UPDATE_USER, CREATE_USER } from "../../../data/mutation";
+import {
+    getUsersByClient,
+    getPermissionCategoryList
+} from "../../../data/query";
+import { withSnackbar } from "notistack";
+import RolePermissionsDialog from "./RolePermissionsDialog";
 
 const CreateEditUserHOC = props => {
     const { match } = props;
@@ -38,129 +58,143 @@ const CreateEditUserHOC = props => {
                         </React.Fragment>
                     );
                 return (
-                    <Mutation mutation={CREATE_DEPARTMENT} refetchQueries={[ { query: getDepartmentListByClient, variables: { id: client_id } } ]}>
-                        {(createDepartment, { loading: loadingCreateDepartment, error: errorCreateDepartment }) => (
-                            <Mutation mutation={CREATE_ROLE} refetchQueries={[ { query: getDepartmentListByClient, variables: { id: client_id } } ]}>
-                                {(createRole, { loading: loadingCreateRole, error: errorCreateRole }) => {
-                                    // console.log("USER ID is ", user_id);
-                                    if (user_id === "new") {
-                                        //Create a new user
-                                        return (
-                                            <Mutation
-                                                mutation={CREATE_USER}
-                                                refetchQueries={[
-                                                    {
-                                                        query: getUsersByClient,
-                                                        variables: { id: client_id }
+                    <Query query={getPermissionCategoryList}>
+                        {({
+                            loading: loadingPermissionList,
+                            error: errorPermissionList,
+                            data: { permissionCategories }
+                        }) => {
+                            if (loadingPermissionList)
+                                return <Loading loadingData />;
+                            if (errorPermissionList)
+                                return (
+                                    <React.Fragment>
+                                        Error! {errorPermissionList.message}
+                                    </React.Fragment>
+                                );
+                            if (user_id === "new") {
+                                //Create a new user
+                                return (
+                                    <Mutation
+                                        mutation={CREATE_USER}
+                                        refetchQueries={[
+                                            {
+                                                query: getUsersByClient,
+                                                variables: { id: client_id }
+                                            }
+                                        ]}
+                                    >
+                                        {(
+                                            action,
+                                            {
+                                                loading: loadingMutation,
+                                                error: errorMutation
+                                            }
+                                        ) => {
+                                            if (loadingMutation)
+                                                return <Loading loadingData />;
+                                            if (errorMutation)
+                                                return (
+                                                    <React.Fragment>
+                                                        Error!{" "}
+                                                        {errorMutation.message}
+                                                    </React.Fragment>
+                                                );
+                                            return (
+                                                <CreateEditUser
+                                                    {...props}
+                                                    action={action}
+                                                    data={null}
+                                                    hasData={false}
+                                                    departmentList={
+                                                        departmentsByClient
                                                     }
-                                                ]}
-                                            >
-                                                {(
-                                                    action,
-                                                    {
-                                                        loading: loadingMutation,
-                                                        error: errorMutation
+                                                    permissionCategoryList={
+                                                        permissionCategories
                                                     }
-                                                ) => {
-                                                    if (loadingMutation)
-                                                        return <Loading loadingData />;
-                                                    if (errorMutation)
+                                                />
+                                            );
+                                        }}
+                                    </Mutation>
+                                );
+                            } else {
+                                //Modify existing user
+                                return (
+                                    <Query
+                                        query={getUserDetail}
+                                        variables={{ id: user_id }}
+                                    >
+                                        {({
+                                            loading: loadingUser,
+                                            error: errorUser,
+                                            data: { user }
+                                        }) => {
+                                            if (loadingUser)
+                                                return <Loading loadingData />;
+                                            if (errorUser)
+                                                return (
+                                                    <React.Fragment>
+                                                        Error!{" "}
+                                                        {errorUser.message}
+                                                    </React.Fragment>
+                                                );
+                                            return (
+                                                <Mutation
+                                                    mutation={UPDATE_USER}
+                                                    refetchQueries={[
+                                                        {
+                                                            query: getUsersByClient,
+                                                            variables: {
+                                                                id: client_id
+                                                            }
+                                                        }
+                                                    ]}
+                                                >
+                                                    {(
+                                                        action,
+                                                        {
+                                                            loading: loadingMutation,
+                                                            error: errorMutation
+                                                        }
+                                                    ) => {
+                                                        if (loadingMutation)
+                                                            return (
+                                                                <Loading
+                                                                    loadingData
+                                                                />
+                                                            );
+                                                        if (errorMutation)
+                                                            return (
+                                                                <React.Fragment>
+                                                                    Error!{" "}
+                                                                    {
+                                                                        errorMutation.message
+                                                                    }
+                                                                </React.Fragment>
+                                                            );
                                                         return (
-                                                            <React.Fragment>
-                                                                Error! {errorMutation.message}
-                                                            </React.Fragment>
-                                                        );
-                                                    return (
-                                                        <CreateEditUser
-                                                            {...props}
-                                                            action={action}
-                                                            data={null}
-                                                            hasData={false}
-                                                            departmentList={departmentsByClient}
-                                                            createDepartment={createDepartment}
-                                                            loadingCreateDepartment={loadingCreateDepartment}
-                                                            errorCreateDepartment={errorCreateDepartment}
-                                                            createRole={createRole}
-                                                            loadingCreateRole={loadingCreateRole}
-                                                            errorCreateRole={errorCreateRole}
-                                                        />
-                                                    );
-                                                }}
-                                            </Mutation>
-                                        );
-                                    } else {
-                                        //Modify existing user
-                                        return (
-                                            <Query
-                                                query={getUserDetail}
-                                                variables={{ id: user_id }}
-                                            >
-                                                {({
-                                                    loading: loadingUser,
-                                                    error: errorUser,
-                                                    data: { user }
-                                                }) => {
-                                                    if (loadingUser) return <Loading loadingData />;
-                                                    if (errorUser)
-                                                        return (
-                                                            <React.Fragment>
-                                                                Error! {errorUser.message}
-                                                            </React.Fragment>
-                                                        );
-                                                    return (
-                                                        <Mutation
-                                                            mutation={UPDATE_USER}
-                                                            refetchQueries={[
-                                                                {
-                                                                    query: getUsersByClient,
-                                                                    variables: { id: client_id }
+                                                            <CreateEditUser
+                                                                {...props}
+                                                                action={action}
+                                                                data={user}
+                                                                hasData={true}
+                                                                departmentList={
+                                                                    departmentsByClient
                                                                 }
-                                                            ]}
-                                                        >
-                                                            {(
-                                                                action,
-                                                                {
-                                                                    loading: loadingMutation,
-                                                                    error: errorMutation
+                                                                permissionCategoryList={
+                                                                    permissionCategories
                                                                 }
-                                                            ) => {
-                                                                if (loadingMutation)
-                                                                    return <Loading loadingData />;
-                                                                if (errorMutation)
-                                                                    return (
-                                                                        <React.Fragment>
-                                                                            Error!{" "}
-                                                                            {errorMutation.message}
-                                                                        </React.Fragment>
-                                                                    );
-                                                                return (
-                                                                    <CreateEditUser
-                                                                        {...props}
-                                                                        action={action}
-                                                                        data={user}
-                                                                        hasData={true}
-                                                                        departmentList={
-                                                                            departmentsByClient
-                                                                        }
-                                                                        createDepartment={createDepartment}
-                                                                        loadingCreateDepartment={loadingCreateDepartment}
-                                                                        errorCreateDepartment={errorCreateDepartment}
-                                                                        createRole={createRole}
-                                                                        loadingCreateRole={loadingCreateRole}
-                                                                        errorCreateRole={errorCreateRole}
-                                                                    />
-                                                                );
-                                                            }}
-                                                        </Mutation>
-                                                    );
-                                                }}
-                                            </Query>
-                                        );
-                                    }                  
-                                }}
-                            </Mutation>
-                        )}
-                    </Mutation>
+                                                            />
+                                                        );
+                                                    }}
+                                                </Mutation>
+                                            );
+                                        }}
+                                    </Query>
+                                );
+                            }
+                        }}
+                    </Query>
                 );
             }}
         </Query>
@@ -186,7 +220,10 @@ const SectionDiv = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0 4%;
-    border-right: ${props => (props.withBorder ? "1px solid #DDDDDD" : "none")};
+    border-left: ${props =>
+        props.withBorderLeft ? "1px solid #DDDDDD" : "none"};
+    border-right: ${props =>
+        props.withBorderRight ? "1px solid #DDDDDD" : "none"};
 `;
 
 const SECTION_ONE_FIELDS = [
@@ -238,6 +275,9 @@ const styles = () => ({
     textInput: {
         padding: "12px 10px",
         backgroundColor: "white"
+    },
+    checkboxLabel: {
+        fontSize: "10px"
     }
 });
 
@@ -246,41 +286,20 @@ class CreateEditUser extends React.Component {
         super(props);
         this.state = {
             openDialog: false,
-            which: "",
-            otherSubmitData: null,
             password: false,
-            confirm_password: false
-        }
-        this.openDepartmentDialog = this.openDepartmentDialog.bind(this);
+            confirm_password: false,
+            roleData: null
+        };
         this.closeDialog = this.closeDialog.bind(this);
     }
 
-    openDepartmentDialog = () => {
-        const { match } = this.props;
-        const { params } = match || {};
-        const { client_id } = params || {};
-        this.setState({
-            openDialog: true,
-            which: "DEPARTMENT",
-            otherSubmitData: { clientId: client_id }
-        });
-    }
+    openDialog = roleData => _event => {
+        this.setState({ openDialog: true, roleData });
+    };
 
-    openRoleDialog = values => _event => {
-        const { match } = this.props;
-        const { params } = match || {};
-        const { client_id } = params || {};
-        if (Boolean(values) && Boolean(values.departmentId)) {
-            this.setState({
-                openDialog: true,
-                which: "ROLE",
-                otherSubmitData: { clientId: client_id, departmentId: values.departmentId, isStandardRole: false }
-            });
-        }
-    }
-
-    closeDialog = () => this.setState({ openDialog: false, which: "", otherSubmitData: null });
-    changeVisibility = name => _event => this.setState({ [name]: !this.state[name] });
+    closeDialog = () => this.setState({ openDialog: false });
+    changeVisibility = name => _event =>
+        this.setState({ [name]: !this.state[name] });
 
     //https://stackoverflow.com/a/41031849
     renderTextField = (name, label, required, type) => (
@@ -289,7 +308,13 @@ class CreateEditUser extends React.Component {
             <Field
                 name={name}
                 required={required}
-                type={type === "password" && this.state[name] ? "text" : type === "password" ? "password" : "text"}
+                type={
+                    type === "password" && this.state[name]
+                        ? "text"
+                        : type === "password"
+                        ? "password"
+                        : "text"
+                }
                 component={TextField}
                 variant="outlined"
                 fullWidth={true}
@@ -299,19 +324,25 @@ class CreateEditUser extends React.Component {
                         backgroundColor: "white"
                     }
                 }}
-                    { ...( type === "password" && { 
-                        InputProps: {
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="Toggle password visibility"
-                                        onClick={this.changeVisibility(name)}
-                                    >   {this.state[name] ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        } 
-                    } ) }
+                {...type === "password" && {
+                    InputProps: {
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="Toggle password visibility"
+                                    onClick={this.changeVisibility(name)}
+                                >
+                                    {" "}
+                                    {this.state[name] ? (
+                                        <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }
+                }}
             />
         </FieldContainerDiv>
     );
@@ -354,63 +385,46 @@ class CreateEditUser extends React.Component {
               };
     };
 
-    renderSelectField = (nameValue, label, optionList, withButton, buttonLabel, onButtonClick, loading, errorMessage) => {
+    renderSelectField = (nameValue, label, optionList) => {
         // console.log(optionList);
 
-        if (loading) {
-            return (
-                <Loading loadingData />
-            );
-        } else {
-            if (withButton && errorMessage.length > 0) {
-                const { enqueueSnackbar } = this.props;
-                enqueueSnackbar(errorMessage, { 
-                    variant: 'error',
-                });
-            }
-            return (
-                <React.Fragment>
-                    <FieldLabel
-                        style={{
-                            color: "#5c5c5c",
-                            fontsize: "10px",
-                            marginBottom: "5px"
-                        }}
-                    >
+        return (
+            <React.Fragment>
+                <FieldLabel
+                    style={{
+                        color: "#5c5c5c",
+                        fontsize: "10px",
+                        marginBottom: "5px"
+                    }}
+                >
+                    {label}
+                </FieldLabel>
+                <Field
+                    style={{
+                        height: 43,
+                        backgroundColor: "white",
+                        marginBottom: 10
+                    }}
+                    name={nameValue}
+                    component={Select}
+                    disabled={optionList.length < 1}
+                    fullWidth={true}
+                    input={<OutlinedInput />}
+                >
+                    {/* <MenuItem value="null" disabled>
                         {label}
-                    </FieldLabel>
-                    <Field
-                        style={{
-                            height: 43,
-                            backgroundColor: "white",
-                            marginBottom: 10,
-                        }}
-                        name={nameValue}
-                        component={Select}
-                        disabled={optionList.length < 1}
-                        fullWidth={true}
-                        input={<OutlinedInput />}
-                    >
-                        {/* <MenuItem value="null" disabled>
-                            {label}
-                        </MenuItem> */}
-                        {optionList.map(({ id, name }, index) => (
-                            <MenuItem
-                                key={`ITEM-${name}-${id}-${index}`}
-                                value={id}
-                            >
-                                {name}
-                            </MenuItem>
-                        ))}
-                    </Field>
-                    {withButton && (
-                        <NormalButton onClick={onButtonClick} type="button">
-                            {buttonLabel}
-                        </NormalButton>
-                    )}
-                </React.Fragment>
-            );
-        }
+                    </MenuItem> */}
+                    {optionList.map(({ id, name }, index) => (
+                        <MenuItem
+                            key={`ITEM-${name}-${id}-${index}`}
+                            value={id}
+                        >
+                            {name}
+                        </MenuItem>
+                    ))}
+                </Field>
+            </React.Fragment>
+        );
     };
 
     renderField(fieldData) {
@@ -455,10 +469,8 @@ class CreateEditUser extends React.Component {
     renderFormSection(values) {
         return (
             <FormContainerDiv>
-                <SectionDiv width="33%" withBorder>
-                    {this.renderSectionOne()}
-                </SectionDiv>
-                <SectionDiv width="33%" withBorder>
+                <SectionDiv width="33%">{this.renderSectionOne()}</SectionDiv>
+                <SectionDiv width="33%" withBorderLeft withBorderRight>
                     {/* SECTION TWO */}
                     {this.renderSectionTwo(values)}
                 </SectionDiv>
@@ -478,7 +490,7 @@ class CreateEditUser extends React.Component {
         );
     }
     renderSectionTwo(values) {
-        const { departmentList, loadingCreateDepartment, loadingCreateRole, errorCreateDepartment, errorCreateRole } = this.props;
+        const { departmentList } = this.props;
         // console.log("Department list ", departmentList);
         const departmentData = Boolean(values.departmentId)
             ? departmentList.find(({ id }) => id === values.departmentId)
@@ -505,25 +517,166 @@ class CreateEditUser extends React.Component {
                 {this.renderSelectField(
                     "departmentId",
                     "DEPARTMENT",
-                    departmentList,
-                    true,
-                    "CREATE DEPARTMENT",
-                    this.openDepartmentDialog,
-                    loadingCreateDepartment,
-                    Boolean(errorCreateDepartment) && Boolean(errorCreateDepartment.message) ? errorCreateDepartment.message : ""
+                    departmentList
                 )}
-                {this.renderSelectField(
-                    "roleId",
-                    "ROLE",
-                    roleList,
-                    true,
-                    "CREATE ROLE",
-                    this.openRoleDialog(values),
-                    loadingCreateRole,
-                    Boolean(errorCreateRole) && Boolean(errorCreateRole.message) ? errorCreateRole.message : "")}
+                {this.renderSelectField("roleId", "ROLE", roleList)}
+                {this.renderRolePermissionsSection(values)}
             </React.Fragment>
         );
     }
+
+    renderRolePermissionsSection(values) {
+        const {
+            permissionCategoryList: permissionCategories,
+            departmentList,
+            classes
+        } = this.props;
+
+        let allPermissionsLength = 0;
+        permissionCategories.forEach(category => {
+            allPermissionsLength += category.permissions.length;
+        });
+
+        const departmentData =
+            Boolean(values) && Boolean(values.departmentId)
+                ? departmentList.find(({ id }) => id === values.departmentId)
+                : { roles: [] };
+
+        const roleList =
+            Boolean(departmentData) && Array.isArray(departmentData.roles)
+                ? departmentData.roles
+                : [];
+
+        const roleData =
+            Boolean(values) &&
+            Boolean(values.roleId) &&
+            Array.isArray(roleList) &&
+            roleList.length > 0
+                ? roleList.find(({ id }) => id === values.roleId)
+                : { permissions: [] };
+
+        const permissionIds =
+            Boolean(roleData) && Array.isArray(roleData.permissions)
+                ? roleData.permissions.map(({ id }) => id)
+                : [];
+
+        return (
+            <React.Fragment>
+                <FieldLabel>DEFAULT ROLE PERMISSIONS</FieldLabel>
+                <RolePermissionContainerDiv>
+                    <div
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            //   paddingTop:"0",
+                            padding: 10
+                        }}
+                    >
+                        <div
+                            style={{
+                                width: "40%",
+                                height: "100%"
+                            }}
+                        >
+                            <IconButton
+                                style={{
+                                    margin: "0px",
+                                    padding: "0px"
+                                }}
+                                aria-label="Expand"
+                                onClick={this.openDialog(roleData)}
+                                disabled={permissionIds.length === 0}
+                            >
+                                <LaunchIcon fontSize="large" />
+                            </IconButton>
+                        </div>
+                        <div
+                            style={{
+                                width: "60%",
+                                height: "100%",
+                                paddingLeft: "5%",
+                                paddingTop: "2%"
+                                // padding: 5
+                            }}
+                        >
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        style={{
+                                            color: "#2699FB",
+                                            padding: "0"
+                                        }}
+                                        checked={
+                                            permissionIds.length ===
+                                            allPermissionsLength
+                                        }
+                                    />
+                                }
+                                label="All Permissions"
+                            />
+                        </div>
+                    </div>
+
+                    {permissionCategories.map(
+                        (
+                            { id: categoryId, name: categoryName, permissions },
+                            categoryIndex
+                        ) => (
+                            <EachRolePermissionContainerDiv
+                                key={`CATEGORY-${categoryId}-${categoryIndex}`}
+                            >
+                                <EachRoleContainerDiv
+                                    style={{ fontSize: "10px" }}
+                                >
+                                    {categoryName}
+                                </EachRoleContainerDiv>
+                                <AllPermissionContainerDiv>
+                                    {permissions.map(
+                                        (
+                                            {
+                                                id: permissionId,
+                                                name: permissionName
+                                            },
+                                            permissionIndex
+                                        ) => (
+                                            <FormControlLabel
+                                                style={{
+                                                    padding: "0",
+                                                    margin: "0",
+                                                    fontSize: "5px"
+                                                }}
+                                                classes={{
+                                                    label: classes.checkboxLabel
+                                                }}
+                                                key={`PERMISSION-${permissionId}-${permissionIndex}`}
+                                                control={
+                                                    <Checkbox
+                                                        style={{
+                                                            padding: "3px 0",
+                                                            color: "#2699FB",
+                                                            Label: {
+                                                                fontSize: "10px"
+                                                            }
+                                                        }}
+                                                        id={permissionId}
+                                                        checked={permissionIds.includes(
+                                                            permissionId
+                                                        )}
+                                                    />
+                                                }
+                                                label={permissionName}
+                                            />
+                                        )
+                                    )}
+                                </AllPermissionContainerDiv>
+                            </EachRolePermissionContainerDiv>
+                        )
+                    )}
+                </RolePermissionContainerDiv>
+            </React.Fragment>
+        );
+    }
+
     renderSectionThree = () => (
         <React.Fragment>
             {SECTION_THREE_FIELDS.map((fieldData, index) => (
@@ -531,16 +684,18 @@ class CreateEditUser extends React.Component {
                     {this.renderField(fieldData)}
                 </React.Fragment>
             ))}
-            {this.renderSelectField("active", "STATUS", [{id: 1, name: "ACTIVE"}, { id: 0, name: "INACTIVE" }], false)}
+            {this.renderSelectField(
+                "active",
+                "STATUS",
+                [{ id: 1, name: "ACTIVE" }, { id: 0, name: "INACTIVE" }],
+                false
+            )}
         </React.Fragment>
     );
+
     render() {
-        const { openDialog, which, otherSubmitData } = this.state;
+        const { openDialog, roleData } = this.state;
         const initialValues = this.generateInitialValues();
-        // console.log("Initial values ", initialValues);
-        const { createDepartment, createRole } = this.props;
-        const submitAction = which === "DEPARTMENT" ? createDepartment : which === "ROLE" ? createRole : () => {};
-        const SelectedDialog = which === "ROLE" ? CreateRoleDialog : CreateDepartmentDialog;
         return (
             <ContainerDivModified>
                 <Formik initialValues={initialValues}>
@@ -551,12 +706,10 @@ class CreateEditUser extends React.Component {
                         </Form>
                     )}
                 </Formik>
-                <SelectedDialog
+                <RolePermissionsDialog
                     open={openDialog}
-                    submitAction={submitAction}
                     cancelAction={this.closeDialog}
-                    which={which}
-                    otherSubmitData={otherSubmitData}
+                    roleData={roleData}
                 />
             </ContainerDivModified>
         );

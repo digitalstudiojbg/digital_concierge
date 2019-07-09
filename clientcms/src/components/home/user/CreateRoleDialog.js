@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import {
     Dialog,
     DialogContent,
@@ -11,46 +10,19 @@ import {
 } from "@material-ui/core";
 import { SlideUpTransition } from "../../../utils/Constants";
 import DialogTitleHelper from "../../../utils/DialogTitleHelper";
-import { FieldLabel } from "./commonStyle";
+import {
+    FieldLabel,
+    EachRolePermissionContainerDiv,
+    EachRoleContainerDiv,
+    AllPermissionContainerDiv,
+    AllPermissionFooterContainerDiv,
+    PermissionFooterEntryDiv
+} from "./commonStyle";
 import { Query } from "react-apollo";
 import { getPermissionCategoryList } from "../../../data/query";
 import Loading from "../../loading/Loading";
 import { Set } from "immutable";
 import { withStyles } from "@material-ui/core/styles";
-
-const EachRolePermissionContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    padding: 10px;
-`;
-const EachRoleContainerDiv = styled.div`
-    width: 40%;
-    display: flex;
-    justify-content: left;
-    margin-left: 0px;
-    padding: 0px;
-`;
-const AllPermissionContainerDiv = styled.div`
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #9d9d9d;
-    padding: 3px;
-    background-color: #f7f7f7;
-`;
-const AllPermissionFooterContainerDiv = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    color: #2699fb;
-`;
-const PermissionFooterEntryDiv = styled.span`
-    width: 45%;
-    display: flex;
-    margin-right: 5px;
-    justify-content: center;
-    border: 1px solid #2699fb;
-`;
 
 const styles = () => ({
     checkboxLabel: {
