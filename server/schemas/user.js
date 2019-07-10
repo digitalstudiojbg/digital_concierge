@@ -37,19 +37,21 @@ export default gql`
         second_phone_number: String
         position: String
         # mediumId: Int
-        clientId: Int
-        roleId: Int
+        clientId: ID!
+        roleId: ID
+        active: Boolean
     }
 
     input UpdateUserInput {
-        id: Int!
+        id: ID!
         name: String!
-        position: String!
+        position: String
         email: EmailAddress!
         first_phone_number: String
         second_phone_number: String
         password: String
-        role_id: Int
+        role_id: ID
+        active: Boolean
     }
 
     input DeleteUserInput {

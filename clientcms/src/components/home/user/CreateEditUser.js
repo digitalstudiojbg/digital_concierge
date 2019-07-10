@@ -1,7 +1,11 @@
 import React from "react";
 // import PropTypes from "prop-types";
 import CustomSaveButton from "../../../utils/CustomSaveButton";
-import { ContainerDiv } from "../../../utils/Constants";
+import {
+    ContainerDiv,
+    USER_EDIT_URL,
+    WELCOME_URL
+} from "../../../utils/Constants";
 import styled from "styled-components";
 import { withStyles } from "@material-ui/core/styles";
 import { Formik, Form, Field } from "formik";
@@ -444,10 +448,72 @@ class CreateEditUser extends React.Component {
     handleSubmitExit = submitForm => submitForm();
     handleSubmitStay = submitForm =>
         this.setState({ exit: false }, () => submitForm());
+
     handleSubmit = (values, { setSubmitting }) => {
         setSubmitting(true);
         console.log("Values ", values);
         console.log("this.state.exit ", this.state.exit);
+
+        const { hasData, action, history, match, enqueueSnackbar } = this.props;
+        const { params } = match || {};
+        const { client_id: clientId } = params || {};
+
+        const { exit } = this.state;
+        const { id, name, email, roleId, active, password } = values;
+
+        const toSubmit = {
+            ...(hasData && { id }),
+            name,
+            email,
+            roleId,
+            active: Boolean(active),
+            ...(!hasData
+                ? { password }
+                : hasData && Boolean(password)
+                ? { password }
+                : {}),
+            ...(!hasData && { clientId })
+        };
+
+        action({
+            variables: {
+                input: {
+                    ...toSubmit
+                }
+            }
+        }).then(({ data }) => {
+            if (!hasData && !exit) {
+                //Created a new user, but still want to edit, navigate to edit page
+                const { createUser } = data || {};
+                const { id: user_id } = createUser;
+                if (Boolean(user_id)) {
+                    return history.push(
+                        USER_EDIT_URL.replace(":client_id", clientId).replace(
+                            ":user_id",
+                            user_id
+                        )
+                    );
+                } else {
+                    return enqueueSnackbar(
+                        "UNABLE TO GET USER ID FROM CREATE USER",
+                        {
+                            variant: "error"
+                        }
+                    );
+                }
+            } else if (exit) {
+                history.push(`${WELCOME_URL}/${clientId}/users`);
+            }
+        }).catch((error) => {
+            return enqueueSnackbar(
+                error.message,
+                {
+                    variant: "error"
+                }
+            );
+        });
+          
+
         alert(`SHOULD EXIT: ${this.state.exit ? "TRUE" : "FALSE"}`);
         setSubmitting(false);
     };
@@ -717,6 +783,7 @@ class CreateEditUser extends React.Component {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={this.handleSubmit}
+                    enableReinitialize
                 >
                     {({ values, isSubmitting, submitForm }) => (
                         <Form>

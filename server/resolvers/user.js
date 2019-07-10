@@ -44,7 +44,8 @@ export default {
                     second_phone_number,
                     position,
                     clientId,
-                    roleId
+                    roleId,
+                    active = true
                 }
             },
             { user, clientIp }
@@ -59,7 +60,7 @@ export default {
                 second_phone_number,
                 position,
                 clientId,
-                active: true,
+                active,
                 mediumId: 1
             });
 
@@ -109,7 +110,8 @@ export default {
                     first_phone_number,
                     second_phone_number,
                     position,
-                    role_id = null
+                    role_id = null,
+                    active = true
                 }
             },
             { user, clientIp }
@@ -127,7 +129,8 @@ export default {
                 }),
                 ...(Boolean(second_phone_number) && {
                     second_phone_number
-                })
+                }),
+                active
             };
 
             const userToUpdate = await db.user.findByPk(id);
