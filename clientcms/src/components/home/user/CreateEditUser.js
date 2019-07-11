@@ -16,7 +16,8 @@ import {
     InputAdornment,
     IconButton,
     FormControlLabel,
-    Checkbox
+    Checkbox,
+    Button
 } from "@material-ui/core";
 import {
     Visibility,
@@ -282,6 +283,12 @@ const styles = () => ({
     },
     checkboxLabel: {
         fontSize: "10px"
+    },
+    buttonCancel: {
+        backgroundColor: "#595959",
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif",
+        marginBottom: "2%"
     }
 });
 
@@ -445,6 +452,15 @@ class CreateEditUser extends React.Component {
         }
     }
 
+    handleCancel = dirty => _event => {
+        const { history, match } = this.props;
+        const { params } = match || {};
+        const { client_id: clientId } = params || {};
+        if (dirty) {
+        } else {
+            history.push(`${WELCOME_URL}/${clientId}/users`);
+        }
+    };
     handleSubmitExit = submitForm => submitForm();
     handleSubmitStay = submitForm =>
         this.setState({ exit: false }, () => submitForm());
@@ -481,56 +497,74 @@ class CreateEditUser extends React.Component {
                     ...toSubmit
                 }
             }
-        }).then(({ data }) => {
-            if (!hasData && !exit) {
-                //Created a new user, but still want to edit, navigate to edit page
-                const { createUser } = data || {};
-                const { id: user_id } = createUser;
-                if (Boolean(user_id)) {
-                    return history.push(
-                        USER_EDIT_URL.replace(":client_id", clientId).replace(
-                            ":user_id",
-                            user_id
-                        )
-                    );
-                } else {
-                    return enqueueSnackbar(
-                        "UNABLE TO GET USER ID FROM CREATE USER",
-                        {
-                            variant: "error"
-                        }
-                    );
+        })
+            .then(({ data }) => {
+                setSubmitting(false);
+                if (!hasData && !exit) {
+                    //Created a new user, but still want to edit, navigate to edit page
+                    const { createUser } = data || {};
+                    const { id: user_id } = createUser;
+                    if (Boolean(user_id)) {
+                        return history.push(
+                            USER_EDIT_URL.replace(
+                                ":client_id",
+                                clientId
+                            ).replace(":user_id", user_id)
+                        );
+                    } else {
+                        return enqueueSnackbar(
+                            "UNABLE TO GET USER ID FROM CREATE USER",
+                            {
+                                variant: "error"
+                            }
+                        );
+                    }
+                } else if (exit) {
+                    history.push(`${WELCOME_URL}/${clientId}/users`);
                 }
-            } else if (exit) {
-                history.push(`${WELCOME_URL}/${clientId}/users`);
-            }
-        }).catch((error) => {
-            return enqueueSnackbar(
-                error.message,
-                {
+            })
+            .catch(error => {
+                setSubmitting(false);
+                return enqueueSnackbar(error.message, {
                     variant: "error"
-                }
-            );
-        });
-          
+                });
+            });
 
-        alert(`SHOULD EXIT: ${this.state.exit ? "TRUE" : "FALSE"}`);
-        setSubmitting(false);
+        // alert(`SHOULD EXIT: ${this.state.exit ? "TRUE" : "FALSE"}`);
     };
 
-    renderHeaderSection(isSubmitting, submitForm) {
-        const { hasData } = this.props;
+    renderHeaderSection(isSubmitting, submitForm, dirty) {
+        const { hasData, classes } = this.props;
         const headerText = hasData ? "MODIFY USER" : "CREATE USER";
         return (
             <div style={{ width: "100%", height: 100, display: "flex" }}>
-                <div style={{ width: "90%" }}>{headerText}</div>
+                <div
+                    style={{
+                        width: "90%",
+                        fontSize: "2.3em",
+                        fontWeight: 600,
+                        color: "black"
+                    }}
+                >
+                    {headerText}
+                </div>
                 <div
                     style={{
                         width: "10%",
                         display: "flex",
-                        flexDirection: "column"
+                        flexDirection: "column",
+                        paddingRight: 10
                     }}
                 >
+                    <Button
+                        variant="outlined"
+                        className={classes.buttonCancel}
+                        onClick={this.handleCancel(dirty)}
+                        disabled={isSubmitting}
+                    >
+                        CANCEL
+                    </Button>
+
                     <CustomSaveButton
                         disabled={isSubmitting}
                         options={[
@@ -785,9 +819,13 @@ class CreateEditUser extends React.Component {
                     onSubmit={this.handleSubmit}
                     enableReinitialize
                 >
-                    {({ values, isSubmitting, submitForm }) => (
+                    {({ values, isSubmitting, submitForm, dirty }) => (
                         <Form>
-                            {this.renderHeaderSection(isSubmitting, submitForm)}
+                            {this.renderHeaderSection(
+                                isSubmitting,
+                                submitForm,
+                                dirty
+                            )}
                             {this.renderFormSection(values)}
                         </Form>
                     )}

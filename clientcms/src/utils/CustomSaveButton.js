@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import {
     Grid,
     Button,
+    IconButton,
     ButtonGroup,
     MenuItem,
     Menu,
@@ -14,10 +15,17 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 const styles = () => ({
     saveButton: {
         backgroundColor: "#2699FB",
-        borderRight: "1px solid rgb(0,117,179)"
+        borderRight: "1px solid rgb(0,117,179)",
+        color: "white"
     },
     saveIconButton: {
-        backgroundColor: "#2699FB"
+        backgroundColor: "#2699FB",
+        borderRadius: 0,
+        margin: 0,
+        padding: 0,
+        height: "100%",
+        width: "100%",
+        color: "white"
     }
 });
 
@@ -76,24 +84,35 @@ class CustomSaveButton extends React.Component {
                         ref={this.anchorRef}
                         aria-label="Split button"
                         disabled={disabled}
+                        fullWidth
                     >
-                        <Button
-                            onClick={this.handleClick}
-                            className={classes.saveButton}
-                        >
-                            {options[index].label}
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            size="small"
-                            aria-owns={open ? "menu-list-grow" : undefined}
-                            aria-haspopup="true"
-                            onClick={this.handleToggle}
-                            className={classes.saveIconButton}
-                        >
-                            <ArrowDropDownIcon />
-                        </Button>
+                        <Grid container spacing={0}>
+                            <Grid item xs={10}>
+                                <Button
+                                    onClick={this.handleClick}
+                                    className={classes.saveButton}
+                                    fullWidth
+                                >
+                                    {options[index].label}
+                                </Button>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <IconButton
+                                    color="primary"
+                                    variant="contained"
+                                    size="small"
+                                    aria-owns={
+                                        open ? "menu-list-grow" : undefined
+                                    }
+                                    aria-haspopup="true"
+                                    onClick={this.handleToggle}
+                                    className={classes.saveIconButton}
+                                    fullWidth
+                                >
+                                    <ArrowDropDownIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </ButtonGroup>
                     <Menu
                         anchorEl={this.anchorRef.current}
