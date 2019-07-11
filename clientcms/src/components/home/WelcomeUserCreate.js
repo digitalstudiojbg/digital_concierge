@@ -820,7 +820,7 @@ const WelcomeUserCreate = props => {
                                     ...(Boolean(password) && {
                                         password
                                     }),
-                                    role_id: parseInt(roleId)
+                                    roleId: parseInt(roleId)
                                 }
                             }
                         }).then(() => {
