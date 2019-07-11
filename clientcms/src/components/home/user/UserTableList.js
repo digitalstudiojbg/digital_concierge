@@ -6,6 +6,8 @@ import { withStyles } from "@material-ui/core/styles";
 import { USER_CREATE_URL, USER_EDIT_URL } from "../../../utils/Constants";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import { withSnackbar } from "notistack";
+import ConfirmDeleteDialog from "./ConfirmDeleteDialog";
 
 const HeaderDiv = styled.div`
     width: 100%;
@@ -39,10 +41,13 @@ class UserTableList extends React.Component {
     usersTableRef = null;
     constructor(props) {
         super(props);
-        this.state = { selectedUsers: [] };
+        this.state = { openDialog: false, selected_users: [] };
         this.usersTableRef = React.createRef();
         this.handleClickNewButton = this.handleClickNewButton.bind(this);
         this.handleClickEditUser = this.handleClickEditUser.bind(this);
+        this.handleClickDeleteUser = this.handleClickDeleteUser.bind(this);
+        this.cancelDeleteUser = this.cancelDeleteUser.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
     }
 
     modifyUserData() {
@@ -78,9 +83,62 @@ class UserTableList extends React.Component {
                 )
             );
     };
+    handleClickDeleteUser = () => {
+        if (Boolean(this.usersTableRef && this.usersTableRef.current)) {
+            const { data: users = [] } = this.usersTableRef.current.state;
+            const selected_users = users.filter(
+                ({ tableData: { checked } }) => checked
+            );
+            if (selected_users.length > 0) {
+                this.setState({ openDialog: true, selected_users });
+            }
+        }
+    };
+
+    deleteUser = () => {
+        const { selected_users } = this.state;
+        const { deleteUser, enqueueSnackbar } = this.props;
+        if (Array.isArray(selected_users) && selected_users.length > 0) {
+            deleteUser({
+                variables: {
+                    input: { id: selected_users.map(({ id }) => id) }
+                }
+            })
+                .then(() => {
+                    const message =
+                        selected_users.length > 1
+                            ? `SUCCESSFULLY DELETED USER: ${
+                                  selected_users[0].name
+                              }`
+                            : "SUCCESSFULLY DELETED USERS";
+                    this.setState(
+                        { openDialog: false, selected_users: [] },
+                        () => {
+                            enqueueSnackbar(message, {
+                                variant: "success"
+                            });
+                        }
+                    );
+                })
+                .catch(error => {
+                    this.setState(
+                        { openDialog: false, selected_users: [] },
+                        () => {
+                            enqueueSnackbar(error.message, {
+                                variant: "error"
+                            });
+                        }
+                    );
+                });
+        }
+    };
+
+    cancelDeleteUser = () =>
+        this.setState({ openDialog: false, selected_users: [] });
 
     render() {
         const { classes } = this.props;
+        const { openDialog, selected_users } = this.state;
         return (
             <div style={{ width: "100%", height: "100%", padding: "3%" }}>
                 <MaterialTable
@@ -140,6 +198,9 @@ class UserTableList extends React.Component {
                                             </div>
                                             <IconButton
                                                 className={classes.iconButton}
+                                                onClick={
+                                                    this.handleClickDeleteUser
+                                                }
                                             >
                                                 <DeleteIcon />
                                             </IconButton>
@@ -153,9 +214,15 @@ class UserTableList extends React.Component {
                         }
                     }}
                 />
+                <ConfirmDeleteDialog
+                    open={openDialog}
+                    users={selected_users}
+                    acceptAction={this.deleteUser}
+                    cancelAction={this.cancelDeleteUser}
+                />
             </div>
         );
     }
 }
 
-export default withRouter(withStyles(styles)(UserTableList));
+export default withSnackbar(withRouter(withStyles(styles)(UserTableList)));
