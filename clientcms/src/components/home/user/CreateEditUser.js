@@ -44,6 +44,8 @@ import {
 import { withSnackbar } from "notistack";
 import RolePermissionsDialog from "./RolePermissionsDialog";
 import ConfirmExitDialog from "./ConfirmExitDialog";
+import { createUserSchema, modifyUserSchema } from "./validationSchema";
+import { isEmpty } from "lodash";
 
 const CreateEditUserHOC = props => {
     const { match } = props;
@@ -401,7 +403,7 @@ class CreateEditUser extends React.Component {
               };
     };
 
-    renderSelectField = (nameValue, label, optionList) => {
+    renderSelectField = (nameValue, label, optionList, errors) => {
         // console.log(optionList);
 
         return (
@@ -416,16 +418,16 @@ class CreateEditUser extends React.Component {
                     {label}
                 </FieldLabel>
                 <Field
-                    style={{
-                        height: 43,
-                        backgroundColor: "white",
-                        marginBottom: 10
-                    }}
+                    style={{}}
                     name={nameValue}
                     component={Select}
                     disabled={optionList.length < 1}
                     fullWidth={true}
-                    input={<OutlinedInput />}
+                    input={
+                        <OutlinedInput
+                            error={!isEmpty(errors) && errors[nameValue]}
+                        />
+                    }
                 >
                     {/* <MenuItem value="null" disabled>
                         {label}
@@ -593,15 +595,17 @@ class CreateEditUser extends React.Component {
             </div>
         );
     }
-    renderFormSection(values) {
+    renderFormSection(values, errors) {
         return (
             <FormContainerDiv>
                 <SectionDiv width="33%">{this.renderSectionOne()}</SectionDiv>
                 <SectionDiv width="33%" withBorderLeft withBorderRight>
                     {/* SECTION TWO */}
-                    {this.renderSectionTwo(values)}
+                    {this.renderSectionTwo(values, errors)}
                 </SectionDiv>
-                <SectionDiv width="33%">{this.renderSectionThree()}</SectionDiv>
+                <SectionDiv width="33%">
+                    {this.renderSectionThree(errors)}
+                </SectionDiv>
             </FormContainerDiv>
         );
     }
@@ -616,7 +620,7 @@ class CreateEditUser extends React.Component {
             </React.Fragment>
         );
     }
-    renderSectionTwo(values) {
+    renderSectionTwo(values, errors) {
         const { departmentList } = this.props;
         // console.log("Department list ", departmentList);
         const departmentData = Boolean(values.departmentId)
@@ -644,9 +648,10 @@ class CreateEditUser extends React.Component {
                 {this.renderSelectField(
                     "departmentId",
                     "DEPARTMENT",
-                    departmentList
+                    departmentList,
+                    errors
                 )}
-                {this.renderSelectField("roleId", "ROLE", roleList)}
+                {this.renderSelectField("roleId", "ROLE", roleList, errors)}
                 {this.renderRolePermissionsSection(values)}
             </React.Fragment>
         );
@@ -804,7 +809,7 @@ class CreateEditUser extends React.Component {
         );
     }
 
-    renderSectionThree = () => (
+    renderSectionThree = errors => (
         <React.Fragment>
             {SECTION_THREE_FIELDS.map((fieldData, index) => (
                 <React.Fragment key={`SECTION-THREE-${index}`}>
@@ -815,29 +820,33 @@ class CreateEditUser extends React.Component {
                 "active",
                 "STATUS",
                 [{ id: 1, name: "ACTIVE" }, { id: 0, name: "INACTIVE" }],
-                false
+                errors
             )}
         </React.Fragment>
     );
 
     render() {
         const { openDialog, roleData } = this.state;
+        const { hasData } = this.props;
         const initialValues = this.generateInitialValues();
         return (
             <ContainerDivModified>
                 <Formik
+                    validationSchema={
+                        hasData ? modifyUserSchema : createUserSchema
+                    }
                     initialValues={initialValues}
                     onSubmit={this.handleSubmit}
                     enableReinitialize
                 >
-                    {({ values, isSubmitting, submitForm, dirty }) => (
+                    {({ values, isSubmitting, submitForm, dirty, errors }) => (
                         <Form>
                             {this.renderHeaderSection(
                                 isSubmitting,
                                 submitForm,
                                 dirty
                             )}
-                            {this.renderFormSection(values)}
+                            {this.renderFormSection(values, errors)}
                         </Form>
                     )}
                 </Formik>
