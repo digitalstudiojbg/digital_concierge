@@ -45,7 +45,6 @@ import { withSnackbar } from "notistack";
 import RolePermissionsDialog from "./RolePermissionsDialog";
 import ConfirmExitDialog from "./ConfirmExitDialog";
 import { createUserSchema, modifyUserSchema } from "./validationSchema";
-import { isEmpty } from "lodash";
 
 const CreateEditUserHOC = props => {
     const { match } = props;
@@ -418,14 +417,22 @@ class CreateEditUser extends React.Component {
                     {label}
                 </FieldLabel>
                 <Field
-                    style={{}}
+                    style={{
+                        height: 43,
+                        backgroundColor: "white",
+                        marginBottom: 10
+                    }}
                     name={nameValue}
                     component={Select}
                     disabled={optionList.length < 1}
                     fullWidth={true}
                     input={
                         <OutlinedInput
-                            error={!isEmpty(errors) && errors[nameValue]}
+                            error={
+                                Boolean(errors) &&
+                                Object.keys(errors).length > 0 &&
+                                errors[nameValue]
+                            }
                         />
                     }
                 >
