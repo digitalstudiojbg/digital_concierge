@@ -43,6 +43,7 @@ import {
 } from "../../../data/query";
 import { withSnackbar } from "notistack";
 import RolePermissionsDialog from "./RolePermissionsDialog";
+import ConfirmExitDialog from "./ConfirmExitDialog";
 
 const CreateEditUserHOC = props => {
     const { match } = props;
@@ -305,6 +306,7 @@ class CreateEditUser extends React.Component {
         this.closeDialog = this.closeDialog.bind(this);
         this.handleSubmitExit = this.handleSubmitExit.bind(this);
         this.handleSubmitStay = this.handleSubmitStay.bind(this);
+        this.navigateAway = this.navigateAway.bind(this);
     }
 
     openDialog = roleData => _event => {
@@ -452,11 +454,20 @@ class CreateEditUser extends React.Component {
         }
     }
 
+    navigateAway = () => {
+        const { history, match } = this.props;
+        const { params } = match || {};
+        const { client_id: clientId } = params || {};
+        this.setState({ exit: true, roleData: null }, () => {
+            history.push(`${WELCOME_URL}/${clientId}/users`);
+        });
+    };
     handleCancel = dirty => _event => {
         const { history, match } = this.props;
         const { params } = match || {};
         const { client_id: clientId } = params || {};
         if (dirty) {
+            this.setState({ openDialog: true, roleData: null });
         } else {
             history.push(`${WELCOME_URL}/${clientId}/users`);
         }
@@ -830,11 +841,19 @@ class CreateEditUser extends React.Component {
                         </Form>
                     )}
                 </Formik>
-                <RolePermissionsDialog
-                    open={openDialog}
-                    cancelAction={this.closeDialog}
-                    roleData={roleData}
-                />
+                {Boolean(roleData) ? (
+                    <RolePermissionsDialog
+                        open={openDialog}
+                        cancelAction={this.closeDialog}
+                        roleData={roleData}
+                    />
+                ) : (
+                    <ConfirmExitDialog
+                        open={openDialog}
+                        cancelAction={this.closeDialog}
+                        acceptAction={this.navigateAway}
+                    />
+                )}
             </ContainerDivModified>
         );
     }
