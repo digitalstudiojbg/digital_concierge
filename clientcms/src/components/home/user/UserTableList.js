@@ -175,7 +175,8 @@ class UserTableList extends React.Component {
                     options={{
                         selection: true,
                         showTitle: false,
-                        searchFieldAlignment: "right"
+                        searchFieldAlignment: "right",
+                        pageSizeOptions: [5, 10]
                     }}
                     components={{
                         Toolbar: props => {
