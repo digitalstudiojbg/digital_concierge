@@ -100,12 +100,6 @@ const WelcomeUserHOC = ({ data, classes }) => {
                         ) => {
                             if (loadingDeleteUser)
                                 return <Loading loadingData />;
-                            if (errorDeleteUser)
-                                return (
-                                    <React.Fragment>
-                                        Error! {errorDeleteUser.message}
-                                    </React.Fragment>
-                                );
                             return (
                                 <Query
                                     query={getDepartmentListByClient}
@@ -241,6 +235,9 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                                             }
                                                                             clientId={
                                                                                 data.id
+                                                                            }
+                                                                            errorDelete={
+                                                                                errorDeleteUser
                                                                             }
                                                                         />
                                                                     ) : tab ===

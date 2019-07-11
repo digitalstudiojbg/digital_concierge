@@ -136,6 +136,17 @@ class UserTableList extends React.Component {
     cancelDeleteUser = () =>
         this.setState({ openDialog: false, selected_users: [] });
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.errorDelete !== this.props.errorDelete) {
+            const { enqueueSnackbar } = this.props;
+            this.props.errorDelete &&
+                this.props.errorDelete.message &&
+                enqueueSnackbar(this.props.errorDelete.message, {
+                    variant: "error"
+                });
+        }
+    }
+
     render() {
         const { classes } = this.props;
         const { openDialog, selected_users } = this.state;
