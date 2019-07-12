@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Query, Mutation } from "react-apollo";
-import { getUsersByClient, getRoleList } from "../../data/query";
+import { getUsersByClient } from "../../data/query";
 import Loading from "../loading/Loading";
 import { DELETE_USER } from "../../data/mutation";
 import {
@@ -12,7 +12,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { Tabs, Tab } from "@material-ui/core";
 import UserTableList from "./user/UserTableList";
-import StructureTableList from "./user/StructureTableList";
+import StructureTableList from "./structure/StructureTableList";
 import { getDepartmentListByClient } from "../../data/query/department";
 
 const styles = theme => ({
@@ -124,142 +124,96 @@ const WelcomeUserHOC = ({ data, classes }) => {
                                                 </React.Fragment>
                                             );
                                         return (
-                                            <Query
-                                                query={getRoleList}
-                                                variables={{
-                                                    clientId: data.id
+                                            <MainSectionContainer
+                                                style={{
+                                                    padding: 0
                                                 }}
                                             >
-                                                {({
-                                                    loading: loadingRoleList,
-                                                    error: errorRoleList,
-                                                    data: {
-                                                        rolesByClientId: roles
-                                                    }
-                                                }) => {
-                                                    if (loadingRoleList)
-                                                        return (
-                                                            <Loading
-                                                                loadingData
-                                                            />
-                                                        );
-                                                    if (errorRoleList)
-                                                        return (
-                                                            <React.Fragment>
-                                                                Error!{" "}
-                                                                {
-                                                                    errorRoleList.message
-                                                                }
-                                                            </React.Fragment>
-                                                        );
-                                                    return (
-                                                        <MainSectionContainer
-                                                            style={{
-                                                                padding: 0
+                                                <SubSectionTop
+                                                    style={{
+                                                        padding: "3% 3% 0 3%"
+                                                    }}
+                                                >
+                                                    <PageHeader
+                                                        style={{
+                                                            width: "75%"
+                                                        }}
+                                                    >
+                                                        Users & Structure
+                                                    </PageHeader>
+                                                </SubSectionTop>
+                                                <MainSubSections
+                                                    style={{
+                                                        width: "100%",
+                                                        padding: "0 3% 3% 3%",
+                                                        backgroundColor:
+                                                            "#F4F4F4"
+                                                    }}
+                                                >
+                                                    <div
+                                                        className={classes.root}
+                                                    >
+                                                        <Tabs
+                                                            classes={{
+                                                                root:
+                                                                    classes.tabsRoot,
+                                                                indicator:
+                                                                    classes.tabsIndicator
                                                             }}
+                                                            value={tab}
+                                                            onChange={
+                                                                handleChange
+                                                            }
                                                         >
-                                                            <SubSectionTop
-                                                                style={{
-                                                                    padding:
-                                                                        "3% 3% 0 3%"
+                                                            <Tab
+                                                                disableRipple
+                                                                classes={{
+                                                                    root:
+                                                                        classes.tabRoot,
+                                                                    selected:
+                                                                        classes.tabSelected
                                                                 }}
-                                                            >
-                                                                <PageHeader
-                                                                    style={{
-                                                                        width:
-                                                                            "75%"
-                                                                    }}
-                                                                >
-                                                                    Users &
-                                                                    Structure
-                                                                </PageHeader>
-                                                            </SubSectionTop>
-                                                            <MainSubSections
-                                                                style={{
-                                                                    width:
-                                                                        "100%",
-                                                                    padding:
-                                                                        "0 3% 3% 3%",
-                                                                    backgroundColor:
-                                                                        "#F4F4F4"
+                                                                label="Users"
+                                                            />
+                                                            <Tab
+                                                                disableRipple
+                                                                classes={{
+                                                                    root:
+                                                                        classes.tabRoot,
+                                                                    selected:
+                                                                        classes.tabSelected
                                                                 }}
-                                                            >
-                                                                <div
-                                                                    className={
-                                                                        classes.root
-                                                                    }
-                                                                >
-                                                                    <Tabs
-                                                                        classes={{
-                                                                            root:
-                                                                                classes.tabsRoot,
-                                                                            indicator:
-                                                                                classes.tabsIndicator
-                                                                        }}
-                                                                        value={
-                                                                            tab
-                                                                        }
-                                                                        onChange={
-                                                                            handleChange
-                                                                        }
-                                                                    >
-                                                                        <Tab
-                                                                            disableRipple
-                                                                            classes={{
-                                                                                root:
-                                                                                    classes.tabRoot,
-                                                                                selected:
-                                                                                    classes.tabSelected
-                                                                            }}
-                                                                            label="Users"
-                                                                        />
-                                                                        <Tab
-                                                                            disableRipple
-                                                                            classes={{
-                                                                                root:
-                                                                                    classes.tabRoot,
-                                                                                selected:
-                                                                                    classes.tabSelected
-                                                                            }}
-                                                                            label="Structure"
-                                                                        />
-                                                                    </Tabs>
-                                                                    {tab ===
-                                                                    0 ? (
-                                                                        <UserTableList
-                                                                            data={
-                                                                                users
-                                                                            }
-                                                                            deleteUser={
-                                                                                deleteUser
-                                                                            }
-                                                                            clientId={
-                                                                                data.id
-                                                                            }
-                                                                            errorDelete={
-                                                                                errorDeleteUser
-                                                                            }
-                                                                        />
-                                                                    ) : tab ===
-                                                                      1 ? (
-                                                                        <StructureTableList
-                                                                            data={{
-                                                                                departments,
-                                                                                roles
-                                                                            }}
-                                                                            clientId={
-                                                                                data.id
-                                                                            }
-                                                                        />
-                                                                    ) : (
-                                                                        <React.Fragment />
-                                                                    )}
-                                                                </div>
-                                                            </MainSubSections>
-                                                        </MainSectionContainer>
-                                                    );
-                                                }}
-                                            </Query>
+                                                                label="Structure"
+                                                            />
+                                                        </Tabs>
+                                                        {tab === 0 ? (
+                                                            <UserTableList
+                                                                data={users}
+                                                                deleteUser={
+                                                                    deleteUser
+                                                                }
+                                                                clientId={
+                                                                    data.id
+                                                                }
+                                                                errorDelete={
+                                                                    errorDeleteUser
+                                                                }
+                                                            />
+                                                        ) : tab === 1 ? (
+                                                            <StructureTableList
+                                                                data={
+                                                                    departments
+                                                                }
+                                                                clientId={
+                                                                    data.id
+                                                                }
+                                                            />
+                                                        ) : (
+                                                            <React.Fragment />
+                                                        )}
+                                                    </div>
+                                                </MainSubSections>
+                                            </MainSectionContainer>
                                         );
                                     }}
                                 </Query>
