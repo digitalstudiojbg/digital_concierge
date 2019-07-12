@@ -3,6 +3,7 @@ import {
     handleCreateActionActivityLog,
     handleUpdateActionActivityLog
 } from "../utils/constant";
+import { UserInputError } from "apollo-server-express";
 
 export default {
     Query: {
@@ -77,6 +78,29 @@ export default {
             );
 
             return department;
+        },
+        updateDepartment: async (
+            _root,
+            { input: { id, name } },
+            { user, clientIp }
+        ) => {
+            const department = await db.department.findByPk(id);
+            if (!department) {
+                throw new UserInputError(`Invalid Department ID`);
+            }
+            try {
+                const update_department = await db.department.findByPk(id);
+                await update_department.update({ name }, { fields: ["name"] });
+                handleUpdateActionActivityLog(
+                    department,
+                    { name },
+                    user,
+                    clientIp
+                );
+                return update_department;
+            } catch (error) {
+                throw new UserInputError(error.message);
+            }
         }
     },
     Department: {

@@ -10,6 +10,7 @@ export default gql`
 
     extend type Mutation {
         createDepartment(input: CreateDepartmentInput): Department
+        updateDepartment(input: UpdateDepartmentInput): Department
     }
 
     type Department {
@@ -24,5 +25,10 @@ export default gql`
     input CreateDepartmentInput {
         name: String!
         clientId: ID!
+    }
+
+    input UpdateDepartmentInput {
+        id: ID!
+        name: String!
     }
 `;
