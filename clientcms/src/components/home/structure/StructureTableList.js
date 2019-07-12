@@ -2,9 +2,10 @@ import React from "react";
 import MaterialTable from "material-table";
 import { ContainerDiv as ContainerDivOriginal } from "../../../utils/Constants";
 import { MoreHoriz } from "@material-ui/icons";
-import { IconButton } from "@material-ui/core";
+import { IconButton, Menu, MenuList, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { NormalButton } from "../user/commonStyle";
+import CreateEditDepartmentDialog from "./DepartmentDialog";
 
 const ContainerDiv = styled(ContainerDivOriginal)`
     padding-left: 50px;
@@ -22,13 +23,22 @@ class StructureTableList extends React.Component {
         super(props);
         this.state = {
             selected_department: null,
-            open_dialog: false,
-            which: "",
-            dialog_data: null
+            open_dialog_department: false,
+            open_dialog_role: false,
+            dialog_data: null,
+            anchorEl: null,
+            anchorElId: null
         };
         this.handleDepartmentRowClick = this.handleDepartmentRowClick.bind(
             this
         );
+        this.openCreateDepartmentDialog = this.openCreateDepartmentDialog.bind(
+            this
+        );
+        this.closeDepartmentDialog = this.closeDepartmentDialog.bind(this);
+        this.handleOpenOptions = this.handleOpenOptions.bind(this);
+        this.handleCloseOptions = this.handleCloseOptions.bind(this);
+        this.handleClickEdit = this.handleClickEdit.bind(this);
     }
 
     modifyDepartmentTableData() {
@@ -63,7 +73,9 @@ class StructureTableList extends React.Component {
                     STRUCTURE TABLE
                 </div>
                 <div style={{ width: "30%", display: "flex" }}>
-                    <CreateDepartmentButton>
+                    <CreateDepartmentButton
+                        onClick={this.openCreateDepartmentDialog}
+                    >
                         CREATE DEPARTMENT
                     </CreateDepartmentButton>
                     <NormalButton>CREATE ROLE</NormalButton>
@@ -74,6 +86,41 @@ class StructureTableList extends React.Component {
 
     handleDepartmentRowClick(_event, selected_department) {
         this.setState({ selected_department });
+    }
+
+    openCreateDepartmentDialog() {
+        const { clientId } = this.props;
+        this.setState({
+            open_dialog_department: true,
+            dialog_data: {
+                id: "",
+                name: "",
+                clientId,
+                duplicate: false,
+                delete: false
+            }
+        });
+    }
+
+    openEditDepartmentDialog = rowData => {
+        const { clientId } = this.props;
+        const { id = "", name = "" } = rowData || {};
+        this.setState({
+            open_dialog_department: true,
+            dialog_data: {
+                id,
+                name,
+                clientId,
+                duplicate: false,
+                delete: false
+            },
+            anchorEl: null,
+            anchorElId: null
+        });
+    };
+
+    closeDepartmentDialog() {
+        this.setState({ open_dialog_department: false, dialog_data: null });
     }
 
     renderTableSection() {
@@ -104,7 +151,10 @@ class StructureTableList extends React.Component {
                             {
                                 title: "ACTIONS",
                                 render: ({ id }) => (
-                                    <IconButton id={id}>
+                                    <IconButton
+                                        id={`department-${id}`}
+                                        onClick={this.handleOpenOptions}
+                                    >
                                         <MoreHoriz />
                                     </IconButton>
                                 ),
@@ -139,7 +189,10 @@ class StructureTableList extends React.Component {
                             {
                                 title: "ACTIONS",
                                 render: ({ id }) => (
-                                    <IconButton id={"role-" + id}>
+                                    <IconButton
+                                        id={`${selected_department.id}-${id}`}
+                                        onClick={this.handleOpenOptions}
+                                    >
                                         <MoreHoriz />
                                     </IconButton>
                                 ),
@@ -168,11 +221,71 @@ class StructureTableList extends React.Component {
         );
     }
 
+    handleOpenOptions(event) {
+        // console.log("ID is ", event.currentTarget.id);
+        this.setState({
+            anchorEl: event.currentTarget,
+            anchorElId: event.currentTarget.id
+        });
+    }
+    handleCloseOptions() {
+        this.setState({ anchorEl: null, anchorElId: null });
+    }
+
+    handleClickEdit() {
+        const { anchorElId } = this.state;
+        const id_array = anchorElId.split("-");
+        if (id_array.includes("department")) {
+            //Department Dialog stuffs
+            const [_, departmentId] = id_array;
+            const { data } = this.props;
+            const departmentData =
+                data.find(({ id }) => id === departmentId) || {};
+            this.openEditDepartmentDialog(departmentData);
+        } else {
+            //Role Dialog / Page stuffs
+            const [departmentId, roleId] = id_array;
+        }
+    }
+
+    renderMenuSection() {
+        const { anchorEl } = this.state;
+        return (
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={this.handleCloseOptions}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                    vertical: "center",
+                    horizontal: "right"
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left"
+                }}
+            >
+                <MenuList>
+                    <MenuItem onClick={this.handleClickEdit}>EDIT</MenuItem>
+                    <MenuItem>DELETE</MenuItem>
+                    <MenuItem>DUPLICATE</MenuItem>
+                </MenuList>
+            </Menu>
+        );
+    }
+
     render() {
+        const { open_dialog_department, dialog_data } = this.state;
         return (
             <ContainerDiv>
                 {this.renderHeaderSection()}
                 {this.renderTableSection()}
+                {this.renderMenuSection()}
+                <CreateEditDepartmentDialog
+                    open={open_dialog_department}
+                    data={dialog_data}
+                    closeAction={this.closeDepartmentDialog}
+                />
             </ContainerDiv>
         );
     }
