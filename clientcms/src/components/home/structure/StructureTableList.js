@@ -212,7 +212,7 @@ class StructureTableList extends React.Component {
                                         ? `NO ROLES FOR DEPARTMENT ${
                                               selected_department.name
                                           }`
-                                        : "PLEASE SELECT A DEPARTMENT TO VIEW THE ROLE LIST"
+                                        : "PLEASE SELECT A DEPARTMENT TO VIEW THE LIST OF ROLES"
                             }
                         }}
                     />
