@@ -18,8 +18,22 @@ import {
     DUPLICATE_DEPARTMENT
 } from "../../../data/mutation";
 import { getDepartmentListByClient } from "../../../data/query/department";
+import { withStyles } from "@material-ui/core/styles";
 
-const CreateDepartmentDialog = ({ open, data, closeAction }) => {
+const styles = () => ({
+    titleStyle: {
+        color: "#2699FB"
+    },
+    buttonStyle: {
+        backgroundColor: "#2699FB",
+        color: "white",
+        width: "100%",
+        height: 40,
+        fontSize: "1.2em"
+    }
+});
+
+const CreateDepartmentDialog = ({ open, data, closeAction, classes }) => {
     const {
         id = "",
         name: originalName = "",
@@ -27,12 +41,19 @@ const CreateDepartmentDialog = ({ open, data, closeAction }) => {
         delete: isDelete,
         duplicate: isDuplicate
     } = data || {};
+
+    //Set name state via hooks
     const [name, setName] = useState(originalName);
+
+    //Component Did Update for data
     useEffect(() => {
         const { name: changeName } = data || {};
         setName(changeName);
     }, [data]);
+
+    //Handle change for Text Field
     const handleChange = event => setName(event.target.value);
+
     let mutation = null;
     let headerText = "";
     if (Boolean(id) && isDelete) {
@@ -48,10 +69,12 @@ const CreateDepartmentDialog = ({ open, data, closeAction }) => {
         mutation = EDIT_DEPARTMENT;
         headerText = "EDIT DEPARTMENT";
     } else {
+        //Create mutation here
         mutation = CREATE_DEPARTMENT;
         headerText = "CREATE DEPARTMENT";
     }
 
+    //Logic handler to determine what data is submitted
     const handleSubmitData = () => {
         if (Boolean(id) && isDelete) {
             //Delete action
@@ -96,62 +119,95 @@ const CreateDepartmentDialog = ({ open, data, closeAction }) => {
                         TransitionComponent={SlideUpTransition}
                         keepMounted
                         onClose={closeAction}
-                        maxWidth="md"
+                        maxWidth="sm"
                         fullWidth
                         disableBackdropClick
                         disableEscapeKeyDown
                     >
                         {loading ? (
-                            <DialogTitle>{headerText}</DialogTitle>
+                            <DialogTitle classes={{ root: classes.titleStyle }}>
+                                {headerText}
+                            </DialogTitle>
                         ) : (
-                            <DialogTitleHelper onClose={closeAction}>
+                            <DialogTitleHelper
+                                onClose={closeAction}
+                                className={classes.titleStyle}
+                            >
                                 {headerText}
                             </DialogTitleHelper>
                         )}
 
                         <DialogContent>
-                            {isDuplicate && (
-                                <React.Fragment>
-                                    PLEASE RENAME DEPARTMENT TO UNIQUE NAME
-                                </React.Fragment>
-                            )}
-                            {!isDelete ? (
-                                /*IF NOT DELETE, RENDER TEXT FIELD*/
-                                <React.Fragment>
-                                    <FieldLabel>DEPARTMENT NAME</FieldLabel>
-                                    <TextField
-                                        value={name}
-                                        required={true}
-                                        type="text"
-                                        variant="outlined"
-                                        fullWidth={true}
-                                        inputProps={{
-                                            style: {
-                                                padding: "12px 10px",
-                                                backgroundColor: "white"
-                                            }
+                            <div style={{ marginTop: 20 }}>
+                                {isDuplicate && (
+                                    <div
+                                        style={{
+                                            textAlign: "center",
+                                            fontWeight: 600
                                         }}
-                                        onChange={handleChange}
-                                    />
-                                </React.Fragment>
-                            ) : (
-                                <React.Fragment>
-                                    ARE YOU SURE YOU WANT TO DELETE THIS
-                                    DEPARTMENT? <br />
-                                    PLEASE REMOVE ASSOCIATED USERS AND ROLES
-                                    BEFORE DELETING.
-                                </React.Fragment>
-                            )}
+                                    >
+                                        PLEASE RENAME DEPARTMENT TO UNIQUE NAME
+                                    </div>
+                                )}
+                                {!isDelete ? (
+                                    /*IF NOT DELETE, RENDER TEXT FIELD*/
+                                    <React.Fragment>
+                                        <FieldLabel>DEPARTMENT NAME</FieldLabel>
+                                        <TextField
+                                            value={name}
+                                            required={true}
+                                            type="text"
+                                            variant="outlined"
+                                            fullWidth={true}
+                                            inputProps={{
+                                                style: {
+                                                    padding: "12px 10px",
+                                                    backgroundColor: "white"
+                                                }
+                                            }}
+                                            onChange={handleChange}
+                                        />
+                                    </React.Fragment>
+                                ) : (
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems: "center"
+                                        }}
+                                    >
+                                        <div
+                                            style={{
+                                                fontWeight: 600,
+                                                marginBottom: 10
+                                            }}
+                                        >
+                                            ARE YOU SURE YOU WANT TO DELETE THIS
+                                            DEPARTMENT?
+                                        </div>
+                                        <div style={{ color: "#9D9D9D" }}>
+                                            PLEASE REMOVE ASSOCIATED USERS AND
+                                            ROLES BEFORE DELETING.
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                onClick={onClickSubmitAction}
-                                variant="outlined"
-                                color="primary"
-                                disabled={loading}
-                            >
-                                {isDelete || isDuplicate ? "CONFIRM" : "SAVE"}
-                            </Button>
+                            <div style={{ width: "30%" }}>
+                                <Button
+                                    onClick={onClickSubmitAction}
+                                    variant="outlined"
+                                    color="primary"
+                                    disabled={loading}
+                                    className={classes.buttonStyle}
+                                >
+                                    {isDelete || isDuplicate
+                                        ? "CONFIRM"
+                                        : "SAVE"}
+                                </Button>
+                            </div>
                         </DialogActions>
                     </Dialog>
                 );
@@ -160,4 +216,4 @@ const CreateDepartmentDialog = ({ open, data, closeAction }) => {
     );
 };
 
-export default CreateDepartmentDialog;
+export default withStyles(styles)(CreateDepartmentDialog);

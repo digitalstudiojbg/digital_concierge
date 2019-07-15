@@ -20,7 +20,14 @@ const styles = theme => ({
 });
 
 function DialogTitleHelper(props) {
-    const { children, classes, onClose, TypographyProps, variant } = props;
+    const {
+        children,
+        classes,
+        onClose,
+        TypographyProps,
+        variant,
+        className
+    } = props;
 
     return (
         <div className={classes.root}>
@@ -28,6 +35,7 @@ function DialogTitleHelper(props) {
                 align="center"
                 variant={Boolean(variant) ? variant : "h4"}
                 {...TypographyProps}
+                {...Boolean(className) && { classes: { root: className } }}
             >
                 {children}
             </Typography>
