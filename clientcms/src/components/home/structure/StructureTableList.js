@@ -5,7 +5,7 @@ import { MoreHoriz } from "@material-ui/icons";
 import { IconButton, Menu, MenuList, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { NormalButton } from "../user/commonStyle";
-import CreateEditDepartmentDialog from "./DepartmentDialog";
+import DepartmentDialog from "./DepartmentDialog";
 
 const ContainerDiv = styled(ContainerDivOriginal)`
     padding-left: 50px;
@@ -351,7 +351,7 @@ class StructureTableList extends React.Component {
                 {this.renderHeaderSection()}
                 {this.renderTableSection()}
                 {this.renderMenuSection()}
-                <CreateEditDepartmentDialog
+                <DepartmentDialog
                     open={open_dialog_department}
                     data={dialog_data}
                     closeAction={this.closeDepartmentDialog}
