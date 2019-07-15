@@ -25,3 +25,21 @@ export const EDIT_DEPARTMENT = gql`
         }
     }
 `;
+
+export const DELETE_DEPARTMENT = gql`
+    mutation deleteDepartment($id: ID!, $clientId: ID!) {
+        deleteDepartment(id: $id, clientId: $clientId) {
+            id
+            name
+        }
+    }
+`;
+
+export const DUPLICATE_DEPARTMENT = gql`
+    mutation duplicateDepartment($input: DuplicateDepartmentInput) {
+        duplicateDepartment(input: $input) {
+            id
+            name
+        }
+    }
+`;

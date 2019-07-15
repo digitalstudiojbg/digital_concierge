@@ -11,6 +11,8 @@ export default gql`
     extend type Mutation {
         createDepartment(input: CreateDepartmentInput): Department
         updateDepartment(input: UpdateDepartmentInput): Department
+        deleteDepartment(id: ID!, clientId: ID!): Department
+        duplicateDepartment(input: DuplicateDepartmentInput): Department
     }
 
     type Department {
@@ -19,7 +21,8 @@ export default gql`
         createdAt: DateTime
         updatedAt: DateTime
         clients: [Client]
-        roles: [Role]
+        roles(clientId: ID!): [Role]
+        rolesAll: [Role]
     }
 
     input CreateDepartmentInput {
@@ -30,5 +33,11 @@ export default gql`
     input UpdateDepartmentInput {
         id: ID!
         name: String!
+    }
+
+    input DuplicateDepartmentInput {
+        id: ID!
+        name: String!
+        clientId: ID!
     }
 `;

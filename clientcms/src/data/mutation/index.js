@@ -12,7 +12,12 @@ import {
 } from "./client";
 import { CREATE_CONTACT, CREATE_UPDATE_DELETE_CONTACTS } from "./contact";
 import { CREATE_USER, UPDATE_USER, DELETE_USER } from "./user";
-import { CREATE_DEPARTMENT, EDIT_DEPARTMENT } from "./department";
+import {
+    CREATE_DEPARTMENT,
+    EDIT_DEPARTMENT,
+    DELETE_DEPARTMENT,
+    DUPLICATE_DEPARTMENT
+} from "./department";
 import { CREATE_THEMES } from "./theme";
 import { CREATE_LICENSE } from "./license";
 import { CREATE_CONTRACT } from "./contract";
@@ -50,5 +55,7 @@ export {
     EDIT_START,
     CREATE_HOME,
     EDIT_HOME,
-    EDIT_DEPARTMENT
+    EDIT_DEPARTMENT,
+    DELETE_DEPARTMENT,
+    DUPLICATE_DEPARTMENT
 };

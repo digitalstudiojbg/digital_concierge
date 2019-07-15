@@ -39,6 +39,8 @@ class StructureTableList extends React.Component {
         this.handleOpenOptions = this.handleOpenOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
+        this.handleClickDelete = this.handleClickDelete.bind(this);
+        this.handleClickDuplicate = this.handleClickDuplicate.bind(this);
     }
 
     modifyDepartmentTableData() {
@@ -112,6 +114,40 @@ class StructureTableList extends React.Component {
                 name,
                 clientId,
                 duplicate: false,
+                delete: false
+            },
+            anchorEl: null,
+            anchorElId: null
+        });
+    };
+
+    openDeleteDepartmentDialog = rowData => {
+        const { clientId } = this.props;
+        const { id = "", name = "" } = rowData || {};
+        this.setState({
+            open_dialog_department: true,
+            dialog_data: {
+                id,
+                name,
+                clientId,
+                duplicate: false,
+                delete: true
+            },
+            anchorEl: null,
+            anchorElId: null
+        });
+    };
+
+    openDuplicateDepartmentDialog = rowData => {
+        const { clientId } = this.props;
+        const { id = "", name = "" } = rowData || {};
+        this.setState({
+            open_dialog_department: true,
+            dialog_data: {
+                id,
+                name: name + " COPY", //ADD COPY TO NAME TO DIFFERENTIATE DUPLICATE NAME
+                clientId,
+                duplicate: true,
                 delete: false
             },
             anchorEl: null,
@@ -248,6 +284,38 @@ class StructureTableList extends React.Component {
         }
     }
 
+    handleClickDelete() {
+        const { anchorElId } = this.state;
+        const id_array = anchorElId.split("-");
+        if (id_array.includes("department")) {
+            //Department Dialog stuffs
+            const [_, departmentId] = id_array;
+            const { data } = this.props;
+            const departmentData =
+                data.find(({ id }) => id === departmentId) || {};
+            this.openDeleteDepartmentDialog(departmentData);
+        } else {
+            //Role Dialog / Page stuffs
+            const [departmentId, roleId] = id_array;
+        }
+    }
+
+    handleClickDuplicate() {
+        const { anchorElId } = this.state;
+        const id_array = anchorElId.split("-");
+        if (id_array.includes("department")) {
+            //Department Dialog stuffs
+            const [_, departmentId] = id_array;
+            const { data } = this.props;
+            const departmentData =
+                data.find(({ id }) => id === departmentId) || {};
+            this.openDuplicateDepartmentDialog(departmentData);
+        } else {
+            //Role Dialog / Page stuffs
+            const [departmentId, roleId] = id_array;
+        }
+    }
+
     renderMenuSection() {
         const { anchorEl } = this.state;
         return (
@@ -267,8 +335,10 @@ class StructureTableList extends React.Component {
             >
                 <MenuList>
                     <MenuItem onClick={this.handleClickEdit}>EDIT</MenuItem>
-                    <MenuItem>DELETE</MenuItem>
-                    <MenuItem>DUPLICATE</MenuItem>
+                    <MenuItem onClick={this.handleClickDelete}>DELETE</MenuItem>
+                    <MenuItem onClick={this.handleClickDuplicate}>
+                        DUPLICATE
+                    </MenuItem>
                 </MenuList>
             </Menu>
         );

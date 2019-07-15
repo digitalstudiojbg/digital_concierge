@@ -22,7 +22,7 @@ export const getDepartmentListByClient = gql`
         departmentsByClient(id: $id) {
             id
             name
-            roles {
+            roles(clientId: $id) {
                 id
                 name
                 permissions {
