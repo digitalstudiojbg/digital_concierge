@@ -203,7 +203,15 @@ class StructureTableList extends React.Component {
                         ]}
                         options={{
                             showTitle: false,
-                            pageSizeOptions: [5, 10]
+                            pageSizeOptions: [5, 10],
+                            rowStyle: rowData => ({
+                                backgroundColor:
+                                    this.state.selected_department &&
+                                    this.state.selected_department.id ===
+                                        rowData.id
+                                        ? "#BCE0FD"
+                                        : "white"
+                            })
                         }}
                         onRowClick={this.handleDepartmentRowClick}
                     />
