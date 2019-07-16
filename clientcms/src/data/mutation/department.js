@@ -5,10 +5,6 @@ export const CREATE_DEPARTMENT = gql`
         createDepartment(input: $input) {
             id
             name
-            roles {
-                id
-                name
-            }
         }
     }
 `;
@@ -18,10 +14,6 @@ export const EDIT_DEPARTMENT = gql`
         updateDepartment(input: $input) {
             id
             name
-            roles {
-                id
-                name
-            }
         }
     }
 `;

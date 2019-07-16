@@ -41,6 +41,8 @@ export default {
             { input: { name, clientId } },
             { user, clientIp }
         ) => {
+            // console.log("Name is ", name);
+            // console.log("Client ID is ", clientId);
             const department = db.department.build({ name });
 
             try {
@@ -270,6 +272,7 @@ export default {
                     );
                 }
             }
+            return duplicate_department;
         }
     },
     Department: {

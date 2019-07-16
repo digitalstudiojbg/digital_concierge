@@ -14,7 +14,9 @@ import { UserInputError, AuthenticationError } from "apollo-server-express";
 export default {
     Query: {
         client: async (_root, { id }) => {
-            return await db.client.findByPk(id);
+            const client = await db.client.findByPk(id);
+            // console.log(Object.keys(client.__proto__));
+            return client;
         },
         clients: async (_root, _input, { user }) => {
             return await db.client.findAll({
