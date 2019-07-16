@@ -209,8 +209,8 @@ export const WelcomeDashboard = ({ classes }) => (
                                                                     "/" +
                                                                     client.id
                                                                 }
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
+                                                                // target="_blank"
+                                                                // rel="noopener noreferrer"
                                                             >
                                                                 <CardMedia
                                                                     component="img"
@@ -331,8 +331,8 @@ export const WelcomeDashboard = ({ classes }) => (
                                                                                     id
                                                                                 )
                                                                             }
-                                                                            target="_blank"
-                                                                            rel="noopener noreferrer"
+                                                                            // target="_blank"
+                                                                            // rel="noopener noreferrer"
                                                                         >
                                                                             <CardMedia
                                                                                 component="img"
