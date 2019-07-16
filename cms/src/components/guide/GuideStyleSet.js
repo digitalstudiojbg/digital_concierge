@@ -194,7 +194,7 @@ export const PublicationEntryContainerDiv = styled.div`
     background-color: white;
     border: 1px solid #dddddd;
     box-shadow: 0px 1px 3px #000000;
-    margin-right: 25px;
+    margin-right: 30px;
 `;
 
 export const PublicationMoreIconContainerDiv = styled.div`
@@ -210,7 +210,7 @@ export const PublicationImageContainerDiv = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 8px;
+    padding: 0 14px;
 `;
 
 export const PublicationName = styled.div`

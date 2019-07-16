@@ -46,14 +46,16 @@ const styles = () => ({
         border: "2px solid rgb(33,143,250)",
         fontWeight: 600,
         fontFamily: "Source Sans Pro, sans-serif",
-        marginRight: 10
+        marginRight: 10,
+        width: "150PX"
     },
     iconButton: {
-        marginRight: 10,
-        borderRadius: 5,
+        marginLeft: 8,
+        padding: "7px",
         backgroundColor: "white",
-        border: "1px solid rgba(112, 112, 112, 1)",
-        height: "50%"
+        border: "1px solid grey",
+        borderRadius: "5px",
+        height: "fit-content"
     },
     iconButtonEnd: {
         marginRight: 10,
@@ -241,6 +243,11 @@ class ArticleTableList extends React.Component {
         return (
             <ContainerDiv>
                 <MaterialTable
+                    style={{
+                        // backgroundColor: "#F4F4F4",
+                        boxShadow: "none",
+                        width: "93%"
+                    }}
                     data={this.modifyArticleList()}
                     onRowClick={this.handleClickRow}
                     columns={[
@@ -266,7 +273,12 @@ class ArticleTableList extends React.Component {
                             title: "ORDER",
                             field: "order",
                             render: ({ id, order }) => (
-                                <div style={{ width: "100%", display: "flex" }}>
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        display: "flex"
+                                    }}
+                                >
                                     <div style={{ width: "10%" }}>
                                         <KeyboardArrowUp
                                             className={classes.arrowButton}
@@ -329,7 +341,9 @@ class ArticleTableList extends React.Component {
                     options={{
                         selection: true,
                         searchFieldAlignment: "left",
-                        showTitle: false
+                        showTitle: false,
+                        headerStyle: { borderBottom: "2px solid grey" },
+                        SearchStyle: { color: "red" }
                     }}
                     components={{
                         Toolbar: props => {
@@ -338,11 +352,20 @@ class ArticleTableList extends React.Component {
                                     style={{
                                         display: "flex",
                                         width: "100%",
-                                        height: "100%"
+                                        height: "100%",
+                                        backgroundColor: "#F4F4F4"
                                     }}
                                 >
-                                    <div style={{ width: "50%" }}>
-                                        <MTableToolbar {...props} />
+                                    <div
+                                        style={{
+                                            width: "50%",
+                                            marginLeft: "-2%"
+                                        }}
+                                    >
+                                        <MTableToolbar
+                                            // input={<OutlinedInput />}
+                                            {...props}
+                                        />
                                     </div>
                                     <div
                                         style={{
@@ -351,7 +374,11 @@ class ArticleTableList extends React.Component {
                                         }}
                                     >
                                         <HeaderDiv>
-                                            <div style={{ height: "50%" }}>
+                                            <div
+                                                style={{
+                                                    height: "50%"
+                                                }}
+                                            >
                                                 <Button
                                                     className={
                                                         classes.buttonNewAdvertisement
@@ -388,6 +415,26 @@ class ArticleTableList extends React.Component {
                                     </div>
                                 </div>
                             );
+                        }
+                    }}
+                    options={{
+                        selection: true,
+                        searchFieldAlignment: "left",
+                        showTitle: false,
+                        searchFieldStyle: {
+                            border: "1px solid lightGrey",
+                            backgroundColor: "white",
+                            borderRadius: "5px",
+                            padding: "5px",
+                            marginLeft: "0"
+                        },
+
+                        headerStyle: {
+                            borderBottom: "2px solid grey",
+                            fontWeight: "bold",
+                            textTransform: "uppercase",
+                            color: "black",
+                            textAlign: "left"
                         }
                     }}
                 />

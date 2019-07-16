@@ -7,6 +7,11 @@ import { Editor } from "react-draft-wysiwyg";
 import PropTypes from "prop-types";
 import { isString } from "lodash";
 
+const styles = theme => ({
+    demoEditor: {
+        border: "1px solid lightGrey"
+    }
+});
 const TextEditorField = ({
     name,
     initialValue,
@@ -47,6 +52,9 @@ const TextEditorField = ({
                 onEditorStateChange={handleEditorChange}
                 editorClassName="demo-editor"
                 wrapperClassName="demo-wrapper"
+                style={{
+                    border: "1px solid red"
+                }}
                 toolbar={{
                     options: [
                         "inline",

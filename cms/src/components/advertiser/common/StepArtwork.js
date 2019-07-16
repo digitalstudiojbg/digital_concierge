@@ -12,7 +12,8 @@ import {
     FormLabelDiv,
     SectionDiv,
     SectionTitleDiv,
-    ContinueButton
+    ContinueButton,
+    FieldLabel
 } from "./commonStyle";
 import { Formik, Form, Field } from "formik";
 import { Select } from "formik-material-ui";
@@ -127,7 +128,7 @@ const StepArtworkHOC = ({ advertiserId, exitUrl, onRef, pubId, push }) => (
 const renderSelectField = (label, name, optionValues, errors) => {
     return (
         <div style={{ width: "100%" }}>
-            <FormLabelDiv>{label}</FormLabelDiv>
+            <FieldLabel>{label}</FieldLabel>
             <Field
                 name={name}
                 component={Select}
@@ -138,6 +139,10 @@ const renderSelectField = (label, name, optionValues, errors) => {
                         labelWidth={0}
                         name={name}
                         error={!isEmpty(errors) && errors[name]}
+                        style={{
+                            height: 43,
+                            backgroundColor: "white"
+                        }}
                     />
                 }
             >
@@ -253,12 +258,14 @@ const StepArtwork = ({
                 };
                 return (
                     <Form>
-                        <ContainerDiv>
-                            <SectionDivModified
+                        <ContainerDiv style={{ marginLeft: "-6%" }}>
+                            <SectionDiv
                                 flexBasis="30%"
                                 flexDirection="column"
-                                borderRight="1px solid #DDDDDD"
-                                marginRight="70px"
+                                style={{
+                                    padding: "0 6%",
+                                    borderRight: "1px solid #DDDDDD"
+                                }}
                             >
                                 <SectionTitleDiv>Details</SectionTitleDiv>
                                 <FieldContainerDiv>
@@ -270,9 +277,7 @@ const StepArtwork = ({
                                     )}
                                 </FieldContainerDiv>
                                 <FieldContainerDiv>
-                                    <FormLabelDiv>
-                                        Artwork Supplied By
-                                    </FormLabelDiv>
+                                    <FieldLabel>Artwork Supplied By</FieldLabel>
                                     <DatePicker
                                         name="artwork_supply_date"
                                         disableFuture={false}
@@ -289,6 +294,12 @@ const StepArtwork = ({
                                         fullWidth
                                         minDate={commence_date}
                                         maxDate={expire_date}
+                                        inputProps={{
+                                            style: {
+                                                padding: "12px 10px",
+                                                backgroundColor: "white"
+                                            }
+                                        }}
                                     />
                                 </FieldContainerDiv>
                                 <FieldContainerDiv>
@@ -317,11 +328,13 @@ const StepArtwork = ({
                                         errors
                                     )}
                                 </FieldContainerDiv>
-                            </SectionDivModified>
+                            </SectionDiv>
                             <SectionDiv
-                                flexBasis="50%"
+                                flexBasis="70%"
                                 flexDirection="column"
-                                paddingRight="0px"
+                                style={{
+                                    padding: "0 6%"
+                                }}
                             >
                                 <SectionTitleDiv>
                                     Artwork Preview

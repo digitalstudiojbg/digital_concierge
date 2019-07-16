@@ -3,8 +3,9 @@ import ImageUploaderWithMediaLibrary from "../../../utils/ImageUploaderWithMedia
 import {
     ContainerDiv,
     SectionDiv,
-    SectionTitleDiv,
-    FieldDiv
+    FieldDiv,
+    SectionHeader,
+    FieldContainerDiv
 } from "./commonStyle";
 import { renderTextField, renderEditorField } from "./fieldRenderer";
 
@@ -16,49 +17,32 @@ class TabContent extends React.Component {
             values || {};
         const { clientId } = otherProps;
         return (
-            <ContainerDiv>
+            <ContainerDiv style={{ height: "auto" }}>
                 <SectionDiv
                     flexBasis="50%"
                     flexDirection="column"
                     paddingRight="30px"
                 >
-                    <div
-                        style={{
-                            width: "70%",
-                            marginBottom: 20,
-                            flexBasis: "10%"
-                        }}
-                    >
-                        <SectionTitleDiv>Article Name</SectionTitleDiv>
-                        <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldContainerDiv style={{ marginBottom: "30px" }}>
+                        <SectionHeader>Article Name</SectionHeader>
+                        <FieldDiv style={{ width: "55%" }}>
                             {renderTextField("name", "", true)}
                         </FieldDiv>
-                    </div>
-                    <div
-                        style={{
-                            flexBasis: "40%",
-                            width: "70%",
-                            height: "100%",
-                            marginBottom: 30
-                        }}
-                    >
-                        <SectionTitleDiv>Title Header</SectionTitleDiv>
+                    </FieldContainerDiv>
+                    <FieldContainerDiv style={{ marginBottom: "30px" }}>
+                        <SectionHeader>Title Header</SectionHeader>
                         <ImageUploaderWithMediaLibrary
+                            style={{ width: "45%" }}
                             clientId={clientId}
                             usingRef={false}
                             fieldName="headerImage"
                             setFieldValue={setFieldValue}
                             value={headerImage}
                         />
-                    </div>
-                    <div
-                        style={{
-                            flexBasis: "40%",
-                            width: "70%",
-                            height: "100%"
-                        }}
-                    >
-                        <SectionTitleDiv>Feature Image</SectionTitleDiv>
+                    </FieldContainerDiv>
+                    {/* <br style={{ clear: "both" , }} /> */}
+                    <FieldContainerDiv>
+                        <SectionHeader>Feature Image</SectionHeader>
                         <ImageUploaderWithMediaLibrary
                             clientId={clientId}
                             usingRef={false}
@@ -66,7 +50,7 @@ class TabContent extends React.Component {
                             setFieldValue={setFieldValue}
                             value={featureImage}
                         />
-                    </div>
+                    </FieldContainerDiv>
                 </SectionDiv>
                 <SectionDiv
                     flexBasis="50%"
@@ -75,15 +59,14 @@ class TabContent extends React.Component {
                 >
                     <div
                         style={{
-                            flexBasis: "45%",
-                            width: "70%",
+                            width: "92%",
                             height: "100%",
                             paddingBottom: 30,
                             display: "flex",
                             flexDirection: "column"
                         }}
                     >
-                        <SectionTitleDiv>Introduction Text</SectionTitleDiv>
+                        <SectionHeader>Introduction Text</SectionHeader>
                         {renderEditorField(
                             "introductionText",
                             false,
@@ -94,15 +77,15 @@ class TabContent extends React.Component {
                     </div>
                     <div
                         style={{
-                            flexBasis: "45%",
-                            width: "70%",
+                            width: "92%",
                             height: "100%",
                             paddingBottom: 30,
                             display: "flex",
-                            flexDirection: "column"
+                            flexDirection: "column",
+                            marginTop: "20px"
                         }}
                     >
-                        <SectionTitleDiv>Article Text</SectionTitleDiv>
+                        <SectionHeader>Article Text</SectionHeader>
                         {renderEditorField(
                             "description",
                             false,

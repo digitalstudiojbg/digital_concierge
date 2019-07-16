@@ -22,15 +22,27 @@ const FieldContainerDiv = styled.div`
 const FieldDiv = styled.div`
     width: 100%;
 `;
+const FieldLabel = styled.div`
+    font-size: 10px;
+    margin-bottom: 2px;
+    color: #5c5c5c;
+    text-transform: uppercase;
+`;
+const SectionHeader = styled.h4`
+    text-align: left;
+    color: #2699fb;
+    font-size: 20px;
+    padding: 3%;
+`;
 
 const styles = theme => ({
     hideFileInput: {
         display: "none"
     },
     uploadButton: {
+        // margin: theme.spacing.unit,
         border: "3px solid #2699FB",
         backgroundColor: "white",
-
         padding: "8px 25px",
         fontSize: "14px",
         color: "#2699FB",
@@ -40,11 +52,13 @@ const styles = theme => ({
         // }
     },
     viewButton: {
-        // backgroundColor: "rgb(245,244,245)",
+        //  backgroundColor: "rgb(245,244,245)",
+        backgroundColor: "white",
         border: "1px solid rgb(182,181,182)",
         borderRadius: 5,
-        backgroundColor: "white",
-        padding: "9px"
+        height: 41,
+        display: "flex",
+        alignItem: "center"
     }
 });
 
@@ -106,10 +120,8 @@ class SimpleImageUploader extends React.Component {
 
         return (
             <FieldContainerDiv>
-                <FormLabelDiv labelFontSize={labelFontSize}>
-                    FILE NAME
-                </FormLabelDiv>
-                <div style={{ width: "100%", display: "flex" }}>
+                <FieldLabel>Upload artwork</FieldLabel>
+                <div style={{ width: "122%", display: "flex" }}>
                     <div style={{ width: "85%", paddingRight: 12 }}>
                         <TextField
                             value={filename}
@@ -129,8 +141,13 @@ class SimpleImageUploader extends React.Component {
                             className={classes.viewButton}
                             onClick={this.openDialog}
                             disabled={!Boolean(toShow)}
+                            style={{
+                                backgroundColor: "white",
+                                display: "flex",
+                                alignItem: "center"
+                            }}
                         >
-                            <ViewIcon />
+                            <ViewIcon style={{ marginTop: "-10%" }} />
                         </IconButton>
                     </div>
                 </div>
@@ -156,7 +173,8 @@ class SimpleImageUploader extends React.Component {
                             style={{
                                 width: "100%",
                                 display: "flex",
-                                marginTop: "15px"
+                                marginTop: "15px",
+                                justifyContent: "flex-end"
                             }}
                         >
                             <Button
@@ -176,20 +194,24 @@ class SimpleImageUploader extends React.Component {
                     onClose={this.closeDialog}
                     maxWidth="lg"
                 >
-                    <DialogTitleHelper onClose={this.closeDialog}>
+                    <SectionHeader onClose={this.closeDialog}>
                         IMAGE PREVIEW
-                    </DialogTitleHelper>
+                    </SectionHeader>
                     <DialogContent>
                         <div
                             style={{
                                 width: "100%",
                                 display: "flex",
-                                justifyContent: "center",
-                                paddingTop: 17
+                                justifyContent: "center"
+                                //paddingTop: 17
                             }}
                         >
                             <img
-                                style={{ width: "50%", height: "50%" }}
+                                style={{
+                                    width: "40%",
+                                    height: "auto",
+                                    marginBottom: "5%"
+                                }}
                                 src={toShow}
                                 alt="preview"
                             />

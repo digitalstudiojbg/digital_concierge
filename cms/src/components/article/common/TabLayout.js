@@ -11,19 +11,16 @@ import {
     defaultFamilyKeyNameFromTemplateName
 } from "../../../utils/Constants";
 import { isEmpty } from "lodash";
-import { FormLabelDiv } from "../../advertiser/common/commonStyle";
+import { FieldLabel } from "../../advertiser/common/commonStyle";
 import styled from "styled-components";
 
 const LayoutPreviewDiv = styled.div`
-    margin-top: 10px;
-    margin-bottom: 10px;
     background-image: url(${props => props.imageUrl});
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
-    background-color: white;
-    flex-basis: 100%;
-    height: 600px;
+    width: 100%;
+    height: 100%;
 `;
 
 const TabLayout = props => {
@@ -91,12 +88,12 @@ const TabLayout = props => {
                 {renderTabletMockUp()}
             </SectionDiv>
             <SectionDiv
-                flexBasis="35%"
+                flexBasis="20%"
                 flexDirection="column"
                 paddingRight="0px"
             >
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldDiv marginRight="0px">
                         {renderSelectFieldCustom(
                             "jbgTemplateId",
                             "Template",
@@ -108,7 +105,7 @@ const TabLayout = props => {
                     </FieldDiv>
                 </FieldContainerDiv>
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
+                    <FieldDiv marginRight="0px">
                         {renderSelectField(
                             "jbgFamilyLayoutId",
                             "Family Layout",
@@ -118,11 +115,25 @@ const TabLayout = props => {
                     </FieldDiv>
                 </FieldContainerDiv>
                 <FieldContainerDiv>
-                    <FieldDiv flexBasis="70%" marginRight="0px">
-                        <FormLabelDiv>Layout Option</FormLabelDiv>
+                    <FieldDiv marginRight="0px">
+                        <FieldLabel>Layout Option</FieldLabel>
+
                         {Boolean(imageUrl) && (
-                            <LayoutPreviewDiv imageUrl={imageUrl} />
+                            <div
+                                style={{
+                                    height: "250px",
+                                    width: "100%",
+                                    backgroundColor: "white",
+                                    border: "1px solid grey",
+                                    borderRadius: "5px",
+                                    marginBottom: "10px",
+                                    padding: "5%"
+                                }}
+                            >
+                                <LayoutPreviewDiv imageUrl={imageUrl} />
+                            </div>
                         )}
+
                         <FieldDiv flexBasis="100%" marginRight="0px">
                             {renderSelectField(
                                 "jbgLayoutId",

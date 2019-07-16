@@ -18,12 +18,6 @@ const sidebarButtons = [
 ];
 
 const SidebarDiv = styled.div`
-    // width: 260px;
-    // background-color: rgb(252, 252, 252);
-    // color: black;
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
     width: 260px;
     background-color: white;
     position: fixed;
