@@ -1,11 +1,16 @@
 import React from "react";
 import MaterialTable from "material-table";
-import { ContainerDiv as ContainerDivOriginal } from "../../../utils/Constants";
+import {
+    ContainerDiv as ContainerDivOriginal,
+    ROLE_EDIT_URL
+} from "../../../utils/Constants";
 import { MoreHoriz } from "@material-ui/icons";
 import { IconButton, Menu, MenuList, MenuItem } from "@material-ui/core";
 import styled from "styled-components";
 import { NormalButton } from "../user/commonStyle";
 import DepartmentDialog from "./DepartmentDialog";
+import RoleDialog from "./RoleDialog";
+import { withRouter } from "react-router-dom";
 
 const ContainerDiv = styled(ContainerDivOriginal)`
     padding-left: 50px;
@@ -35,12 +40,29 @@ class StructureTableList extends React.Component {
         this.openCreateDepartmentDialog = this.openCreateDepartmentDialog.bind(
             this
         );
-        this.closeDepartmentDialog = this.closeDepartmentDialog.bind(this);
+        this.handleCreateRoleClick = this.handleCreateRoleClick.bind(this);
+        this.handleEditRoleClick = this.handleEditRoleClick.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
         this.handleOpenOptions = this.handleOpenOptions.bind(this);
         this.handleCloseOptions = this.handleCloseOptions.bind(this);
         this.handleClickEdit = this.handleClickEdit.bind(this);
         this.handleClickDelete = this.handleClickDelete.bind(this);
         this.handleClickDuplicate = this.handleClickDuplicate.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        const { data } = this.props;
+        const {
+            selected_department: selected_department_original
+        } = this.state;
+        if (prevProps.data !== data && Boolean(selected_department_original)) {
+            const { id: selectedId } = selected_department_original;
+            const updatedDepartment = data.find(({ id }) => id === selectedId);
+            if (updatedDepartment && updatedDepartment.id) {
+                const { id, name, roles } = updatedDepartment;
+                this.setState({ selected_department: { id, name, roles } });
+            }
+        }
     }
 
     modifyDepartmentTableData() {
@@ -80,7 +102,9 @@ class StructureTableList extends React.Component {
                     >
                         CREATE DEPARTMENT
                     </CreateDepartmentButton>
-                    <NormalButton>CREATE ROLE</NormalButton>
+                    <NormalButton onClick={this.handleCreateRoleClick}>
+                        CREATE ROLE
+                    </NormalButton>
                 </div>
             </div>
         );
@@ -88,6 +112,28 @@ class StructureTableList extends React.Component {
 
     handleDepartmentRowClick(_event, selected_department) {
         this.setState({ selected_department });
+    }
+
+    handleCreateRoleClick() {
+        const { history, clientId } = this.props;
+        Boolean(history) &&
+            history.push(
+                ROLE_EDIT_URL.replace(":client_id", clientId).replace(
+                    ":role_id",
+                    "new"
+                )
+            );
+    }
+
+    handleEditRoleClick(_event, { id: role_id }) {
+        const { history, clientId } = this.props;
+        Boolean(history) &&
+            history.push(
+                ROLE_EDIT_URL.replace(":client_id", clientId).replace(
+                    ":role_id",
+                    role_id
+                )
+            );
     }
 
     openCreateDepartmentDialog() {
@@ -155,8 +201,46 @@ class StructureTableList extends React.Component {
         });
     };
 
-    closeDepartmentDialog() {
-        this.setState({ open_dialog_department: false, dialog_data: null });
+    openDeleteRoleDialog = rowData => {
+        const { clientId } = this.props;
+        const { id = "", name = "" } = rowData || {};
+        this.setState({
+            open_dialog_role: true,
+            dialog_data: {
+                id,
+                name,
+                clientId,
+                duplicate: false,
+                delete: true
+            },
+            anchorEl: null,
+            anchorElId: null
+        });
+    };
+
+    openDuplicateRoleDialog = rowData => {
+        const { clientId } = this.props;
+        const { id = "", name = "" } = rowData || {};
+        this.setState({
+            open_dialog_role: true,
+            dialog_data: {
+                id,
+                name: name + " COPY", //ADD COPY TO NAME TO DIFFERENTIATE DUPLICATE NAME
+                clientId,
+                duplicate: true,
+                delete: false
+            },
+            anchorEl: null,
+            anchorElId: null
+        });
+    };
+
+    closeDialog() {
+        this.setState({
+            open_dialog_department: false,
+            open_dialog_role: false,
+            dialog_data: null
+        });
     }
 
     renderTableSection() {
@@ -234,7 +318,7 @@ class StructureTableList extends React.Component {
                                 title: "ACTIONS",
                                 render: ({ id }) => (
                                     <IconButton
-                                        id={`${selected_department.id}-${id}`}
+                                        id={`role-${id}`}
                                         onClick={this.handleOpenOptions}
                                     >
                                         <MoreHoriz />
@@ -286,14 +370,22 @@ class StructureTableList extends React.Component {
             const departmentData =
                 data.find(({ id }) => id === departmentId) || {};
             this.openEditDepartmentDialog(departmentData);
-        } else {
+        } else if (id_array.includes("role")) {
             //Role Dialog / Page stuffs
-            const [departmentId, roleId] = id_array;
+            const [_, roleId] = id_array;
+            const { history, clientId } = this.props;
+            Boolean(history) &&
+                history.push(
+                    ROLE_EDIT_URL.replace(":client_id", clientId).replace(
+                        ":role_id",
+                        roleId
+                    )
+                );
         }
     }
 
     handleClickDelete() {
-        const { anchorElId } = this.state;
+        const { anchorElId, selected_department } = this.state;
         const id_array = anchorElId.split("-");
         if (id_array.includes("department")) {
             //Department Dialog stuffs
@@ -302,14 +394,17 @@ class StructureTableList extends React.Component {
             const departmentData =
                 data.find(({ id }) => id === departmentId) || {};
             this.openDeleteDepartmentDialog(departmentData);
-        } else {
+        } else if (id_array.includes("role")) {
             //Role Dialog / Page stuffs
-            const [departmentId, roleId] = id_array;
+            const [_, roleId] = id_array;
+            const { roles = [] } = selected_department || {};
+            const roleData = roles.find(({ id }) => id === roleId);
+            this.openDeleteRoleDialog(roleData);
         }
     }
 
     handleClickDuplicate() {
-        const { anchorElId } = this.state;
+        const { anchorElId, selected_department } = this.state;
         const id_array = anchorElId.split("-");
         if (id_array.includes("department")) {
             //Department Dialog stuffs
@@ -318,9 +413,12 @@ class StructureTableList extends React.Component {
             const departmentData =
                 data.find(({ id }) => id === departmentId) || {};
             this.openDuplicateDepartmentDialog(departmentData);
-        } else {
+        } else if (id_array.includes("role")) {
             //Role Dialog / Page stuffs
-            const [departmentId, roleId] = id_array;
+            const [_, roleId] = id_array;
+            const { roles = [] } = selected_department || {};
+            const roleData = roles.find(({ id }) => id === roleId);
+            this.openDuplicateRoleDialog(roleData);
         }
     }
 
@@ -353,7 +451,11 @@ class StructureTableList extends React.Component {
     }
 
     render() {
-        const { open_dialog_department, dialog_data } = this.state;
+        const {
+            open_dialog_department,
+            open_dialog_role,
+            dialog_data
+        } = this.state;
         return (
             <ContainerDiv>
                 {this.renderHeaderSection()}
@@ -362,11 +464,16 @@ class StructureTableList extends React.Component {
                 <DepartmentDialog
                     open={open_dialog_department}
                     data={dialog_data}
-                    closeAction={this.closeDepartmentDialog}
+                    closeAction={this.closeDialog}
+                />
+                <RoleDialog
+                    open={open_dialog_role}
+                    data={dialog_data}
+                    closeAction={this.closeDialog}
                 />
             </ContainerDiv>
         );
     }
 }
 
-export default StructureTableList;
+export default withRouter(StructureTableList);

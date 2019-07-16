@@ -8,3 +8,15 @@ export const CREATE_ROLE = gql`
         }
     }
 `;
+
+export const DUPLICATE_ROLE = gql`
+    mutation duplicateRole($id: ID!, $name: String!) {
+        duplicateRole(id: $id, name: $name)
+    }
+`;
+
+export const DELETE_ROLES = gql`
+    mutation deleteRoles($input: DeleteRoleInput!) {
+        deleteRoles(input: $input)
+    }
+`;

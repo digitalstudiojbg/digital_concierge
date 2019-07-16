@@ -57,6 +57,9 @@ export const TOUCHSCREEN_CMS_INDEX_URL = "/touchscreen_cms";
 export const USER_EDIT_URL = "/:client_id/user/:user_id";
 export const USER_CREATE_URL = "/:client_id/user/new";
 
+//ROLE URL Constants
+export const ROLE_EDIT_URL = "/:client_id/role/:role_id";
+
 export const MAX_FILE_SIZE = 104857600; //100MB in bytes
 
 export const SORT_BY_ORDER_BY_OPTIONS = [

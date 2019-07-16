@@ -14,7 +14,8 @@ import {
     LOGIN_URL,
     API_URL,
     SYSTEM_INDEX_URL,
-    USER_EDIT_URL
+    USER_EDIT_URL,
+    ROLE_EDIT_URL
 } from "../utils/Constants";
 import "react-table/react-table.css";
 
@@ -74,6 +75,10 @@ const routes = [
     },
     {
         path: USER_EDIT_URL,
+        component: Home
+    },
+    {
+        path: ROLE_EDIT_URL,
         component: Home
     }
 ];

@@ -26,7 +26,7 @@ import {
     SYSTEM_MODIFY_START_URL,
     SYSTEM_MODIFY_HOME_URL,
     USER_EDIT_URL,
-    USER_CREATE_URL
+    ROLE_EDIT_URL
 } from "../../utils/Constants";
 
 const TabletDashboard = lazy(() => import("../tablet/TabletDashboard"));
@@ -47,6 +47,7 @@ const Touchscreen = lazy(() => import("../touchscreen/Touchscreen"));
 
 const Welcome = lazy(() => import("./Welcome.js"));
 const CreateEditUser = lazy(() => import("./user/CreateEditUser"));
+const CreateEditRole = lazy(() => import("./structure/CreateEditRole"));
 
 const ModifyDirectoryList = lazy(() =>
     import("../tablet/content/ModifyDirectoryList")
@@ -82,6 +83,14 @@ const CLIENT_ROUTES = [
         exact: true,
         header: Header,
         main: CreateEditUser,
+        sidebar: props => <SidebarClientNew {...props} selected="users" />,
+        withProps: {}
+    },
+    {
+        path: ROLE_EDIT_URL,
+        exact: true,
+        header: Header,
+        main: CreateEditRole,
         sidebar: props => <SidebarClientNew {...props} selected="users" />,
         withProps: {}
     }

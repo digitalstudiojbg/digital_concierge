@@ -22,7 +22,7 @@ import { CREATE_THEMES } from "./theme";
 import { CREATE_LICENSE } from "./license";
 import { CREATE_CONTRACT } from "./contract";
 import { CREATE_PAYMENT } from "./payment";
-import { CREATE_ROLE } from "./role";
+import { CREATE_ROLE, DUPLICATE_ROLE, DELETE_ROLES } from "./role";
 import { CREATE_PALETTE } from "./palette";
 import { CREATE_DIRECTORY_ENTRY, EDIT_DIRECTORY_ENTRY } from "./directoryEntry";
 import { CREATE_START, EDIT_START } from "./start";
@@ -57,5 +57,7 @@ export {
     EDIT_HOME,
     EDIT_DEPARTMENT,
     DELETE_DEPARTMENT,
-    DUPLICATE_DEPARTMENT
+    DUPLICATE_DEPARTMENT,
+    DUPLICATE_ROLE,
+    DELETE_ROLES
 };

@@ -240,9 +240,12 @@ export default {
             { input: { roleIds, clientId } },
             { user, clientIp }
         ) => {
-            console.log("Role IDs is ", roleIds);
-            console.log("Client ID is ", clientId);
+            // console.log("Role IDs is ", roleIds);
+            // console.log("Client ID is ", clientId);
             const client = await db.client.findByPk(clientId);
+            if (!client) {
+                throw new UserInputError(`Invalid Client ID: ${clientId}`);
+            }
             // console.log(Object.keys(client.__proto__));
 
             // const roles = await client.getRoles();
@@ -257,6 +260,9 @@ export default {
 
             await asyncForEach(roleIds, async roleId => {
                 const role = await db.role.findByPk(roleId);
+                if (!role) {
+                    throw new UserInputError(`Invalid Role ID: ${roleId}`);
+                }
 
                 //For logging purposes
                 const roleLog = {
@@ -345,7 +351,9 @@ export default {
         ) => {
             await asyncForEach(roleIds, async roleId => {
                 const role = await db.role.findByPk(roleId);
-
+                if (!role) {
+                    throw new UserInputError(`Invalid Role ID: ${roleId}`);
+                }
                 const duplicateRole = db.role.build({
                     name: role.name + " (DUPLICATE)",
                     departmentId: role.departmentId,
@@ -399,6 +407,70 @@ export default {
                     clientIp
                 );
             });
+
+            return true;
+        },
+        duplicateRole: async (
+            _root,
+            { id: roleId, name },
+            { user, clientIp }
+        ) => {
+            const role = await db.role.findByPk(roleId);
+            if (!role) {
+                throw new UserInputError(`Invalid Role ID: ${roleId}`);
+            }
+            const duplicateRole = db.role.build({
+                name,
+                departmentId: role.departmentId,
+                clientId: role.clientId
+            });
+
+            //Try duplicating the array
+            try {
+                await duplicateRole.save();
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to duplicate role Id ${roleId}.\nError message: ${
+                        error.message
+                    }`
+                );
+            }
+
+            //Get all permissions
+            const permissions = await role.getPermissions();
+
+            //For logging purposes
+            const originalRolePermissions = permissions.map(permission => ({
+                id: permission.id,
+                name: permission.name
+            }));
+
+            //Try to assign same permissions to the duplicated permissions
+            try {
+                await duplicateRole.setPermissions(permissions);
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to duplicate permissions for role ID ${
+                        duplicateRole.id
+                    }.\nError message: ${error.message}`
+                );
+            }
+
+            //Activity logging
+            handleCreateActionActivityLog(
+                duplicateRole,
+                {
+                    role: {
+                        name: duplicateRole.name,
+                        is_standard_role: duplicateRole.is_standard_role,
+                        departmentId: duplicateRole.departmentId,
+                        clientId: duplicateRole.clientId
+                    },
+                    permissions: [...originalRolePermissions]
+                },
+                user,
+                clientIp
+            );
 
             return true;
         }
