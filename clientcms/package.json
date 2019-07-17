@@ -34,6 +34,7 @@
         "react-table": "^6.9.2",
         "semantic-ui-react": "^0.85.0",
         "styled-components": "^4.1.1",
+        "voca": "^1.4.0",
         "yup": "^0.26.10"
     },
     "scripts": {

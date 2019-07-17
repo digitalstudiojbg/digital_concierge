@@ -64,7 +64,9 @@ export default {
 
             //Assign client and department relationship
             const client = await db.client.findByPk(clientId);
-
+            if (!client) {
+                throw new UserInputError(`Invalid Client ID: ${clientId}`);
+            }
             try {
                 await client.addDepartment(department);
             } catch (error) {
@@ -131,7 +133,7 @@ export default {
                 //If Department is reused across different clients, cannot actually delete department, just remove entry in clients_department table (pivot)
                 const client = await db.client.findByPk(clientId);
                 if (!client) {
-                    throw new UserInputError(`Invalid Client ID`);
+                    throw new UserInputError(`Invalid Client ID: ${clientId}`);
                 }
                 await department.removeClient(client);
                 if (!department.is_standard_department) {
@@ -163,11 +165,11 @@ export default {
         ) => {
             const client = await db.client.findByPk(clientId);
             if (!client) {
-                throw new UserInputError(`Invalid Client ID`);
+                throw new UserInputError(`Invalid Client ID: ${clientId}`);
             }
             const department = await db.department.findByPk(id);
             if (!department) {
-                throw new UserInputError(`Invalid Department ID`);
+                throw new UserInputError(`Invalid Department ID: ${id}`);
             }
 
             //Try creating a new duplicate department
@@ -191,10 +193,10 @@ export default {
 
             //Assign client and department relationship
             try {
-                await client.addDepartment(department);
+                await client.addDepartment(duplicate_department);
             } catch (error) {
                 throw new UserInputError(
-                    `Assign Department ${name} to Client ${name} status failed.\nError Message: ${
+                    `Assign Department ${name} to Client ID ${clientId} status failed.\nError Message: ${
                         error.message
                     }`
                 );

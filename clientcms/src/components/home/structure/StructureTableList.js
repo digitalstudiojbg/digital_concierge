@@ -11,6 +11,7 @@ import { NormalButton } from "../user/commonStyle";
 import DepartmentDialog from "./DepartmentDialog";
 import RoleDialog from "./RoleDialog";
 import { withRouter } from "react-router-dom";
+import { countSubstrings, isUpperCase, isLowerCase } from "voca";
 
 const ContainerDiv = styled(ContainerDivOriginal)`
     padding-left: 50px;
@@ -64,6 +65,53 @@ class StructureTableList extends React.Component {
             }
         }
     }
+
+    generateDuplicateDepartmentName = name => {
+        const { data } = this.props;
+        const filtered = data.filter(({ name: departmentNameOriginal }) => {
+            const deptName = departmentNameOriginal.toLowerCase();
+            return (
+                deptName.includes(name.toLowerCase()) &&
+                countSubstrings(deptName, "copy") - 1 ===
+                    countSubstrings(name.toLowerCase(), "copy")
+            );
+        });
+        const copyChar = isUpperCase(name)
+            ? "COPY"
+            : isLowerCase(name)
+            ? "copy"
+            : "Copy";
+        const renderNumber = filtered.length === 0 ? "" : filtered.length;
+        return Boolean(renderNumber)
+            ? `${name} ${copyChar} ${renderNumber}`
+            : `${name} ${copyChar}`;
+    };
+
+    generateDuplicateRoleName = name => {
+        const { selected_department } = this.state;
+        if (Boolean(selected_department)) {
+            const { roles } = selected_department;
+            const filtered = roles.filter(({ name: roleNameOriginal }) => {
+                const roleName = roleNameOriginal.toLowerCase();
+                return (
+                    roleName.includes(name.toLowerCase()) &&
+                    countSubstrings(roleName, "copy") - 1 ===
+                        countSubstrings(name.toLowerCase(), "copy")
+                );
+            });
+            const copyChar = isUpperCase(name)
+                ? "COPY"
+                : isLowerCase(name)
+                ? "copy"
+                : "Copy";
+            const renderNumber = filtered.length === 0 ? "" : filtered.length;
+            return Boolean(renderNumber)
+                ? `${name} ${copyChar} ${renderNumber}`
+                : `${name} ${copyChar}`;
+        } else {
+            return "";
+        }
+    };
 
     modifyDepartmentTableData() {
         const { data } = this.props;
@@ -186,12 +234,14 @@ class StructureTableList extends React.Component {
 
     openDuplicateDepartmentDialog = rowData => {
         const { clientId } = this.props;
-        const { id = "", name = "" } = rowData || {};
+        const { id = "", name: originalName = "" } = rowData || {};
+        //DIFFERENTIATE DUPLICATE NAME
+        const name = this.generateDuplicateDepartmentName(originalName);
         this.setState({
             open_dialog_department: true,
             dialog_data: {
                 id,
-                name: name + " COPY", //ADD COPY TO NAME TO DIFFERENTIATE DUPLICATE NAME
+                name,
                 clientId,
                 duplicate: true,
                 delete: false
@@ -220,12 +270,14 @@ class StructureTableList extends React.Component {
 
     openDuplicateRoleDialog = rowData => {
         const { clientId } = this.props;
-        const { id = "", name = "" } = rowData || {};
+        const { id = "", name : originalName = "" } = rowData || {};
+        //DIFFERENTIATE DUPLICATE NAME
+        const name = this.generateDuplicateRoleName(originalName);
         this.setState({
             open_dialog_role: true,
             dialog_data: {
                 id,
-                name: name + " COPY", //ADD COPY TO NAME TO DIFFERENTIATE DUPLICATE NAME
+                name,
                 clientId,
                 duplicate: true,
                 delete: false
