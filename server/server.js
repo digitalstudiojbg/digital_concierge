@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import AWS from "aws-sdk";
 const geoip = require("geoip-lite");
+const publicIp = require("public-ip");
 
 const port = 3000;
 const jwtSecret = Buffer.from(process.env.JWT_SECRET, "base64");
@@ -28,6 +29,7 @@ const graphqlServer = new ApolloServer({
     typeDefs: schemas,
     resolvers,
     context: async ({ req }) => {
+        /*
         //Adapted from https://github.com/CITGuru/express-ip/blob/master/index.js
         const xForwardedFor = (req.headers["x-forwarded-for"] || "").replace(
             /:\d+$/,
@@ -36,7 +38,8 @@ const graphqlServer = new ApolloServer({
         let ip = xForwardedFor || req.connection.remoteAddress;
         if (ip.includes("::ffff:")) {
             ip = ip.split(":").reverse()[0];
-        }
+        }*/
+        const ip = await publicIp.v4();
         // console.log("ip_address ", ip);
         const {
             country = "undefined",
