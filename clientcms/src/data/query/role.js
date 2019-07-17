@@ -16,3 +16,20 @@ export const getRoleList = gql`
         }
     }
 `;
+
+export const getRoleDetail = gql`
+    query roleDetail($id: ID!) {
+        role(id: $id) {
+            id
+            name
+            department {
+                id
+                name
+            }
+            permissions {
+                id
+                name
+            }
+        }
+    }
+`;

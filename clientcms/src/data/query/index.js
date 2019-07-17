@@ -27,7 +27,7 @@ import { getLayoutList, getLayoutListFromType } from "./layout";
 import { getLicenseTypes } from "./licenseType";
 import { getCurrencyList } from "./currency";
 import { getPermissionCategoryList } from "./permissionCategory";
-import { getRoleList } from "./role";
+import { getRoleList, getRoleDetail } from "./role";
 import { getContractByClientId } from "./contract";
 import {
     getLayoutFamilyList,
@@ -65,5 +65,6 @@ export {
     getLayoutListFromType,
     getSystemStart,
     getSystemHome,
-    getUserDetail
+    getUserDetail,
+    getRoleDetail
 };
