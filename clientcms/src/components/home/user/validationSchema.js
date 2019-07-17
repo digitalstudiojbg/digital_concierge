@@ -30,7 +30,6 @@ export const createUserSchema = Yup.object().shape({
     confirm_password: Yup.string()
         .equalTo(Yup.ref("password"), "Passwords must match")
         .required(requiredErrorMessage),
-    department: Yup.string().required(requiredErrorMessage),
     active: Yup.number()
         .oneOf([0, 1])
         .required(requiredErrorMessage)
