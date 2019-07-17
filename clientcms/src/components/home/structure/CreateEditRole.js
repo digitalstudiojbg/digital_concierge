@@ -7,7 +7,8 @@ import { withSnackbar } from "notistack";
 import { Formik, Form, Field } from "formik";
 import { ContainerDiv } from "../../../utils/Constants";
 import { FieldContainerDiv, FieldLabel } from "../user/commonStyle";
-import { TextField } from "formik-material-ui";
+import { TextField, Select } from "formik-material-ui";
+import { OutlinedInput, MenuItem } from "@material-ui/core";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -225,7 +226,48 @@ class CreateEditRole extends React.Component {
     closeDeptListError = () => this.setState({ openErrorDeptList: false });
     closeRoleListError = () => this.setState({ openErrorRoleList: false });
     closeRoleDataError = () => this.setState({ openErrorData: false });
+    renderSelectField = (nameValue, label, optionList) => (
+        <React.Fragment>
+            <FieldLabel
+                style={{
+                    color: "#5c5c5c",
+                    fontsize: "10px",
+                    marginBottom: "5px"
+                }}
+            >
+                {label}
+            </FieldLabel>
+            <Field
+                style={{
+                    height: 43,
+                    backgroundColor: "white",
+                    marginBottom: 10
+                }}
+                name={nameValue}
+                component={Select}
+                disabled={optionList.length < 1}
+                fullWidth={true}
+                input={
+                    <OutlinedInput
+                        error={
+                            Boolean(this.props.formikProps.errors) &&
+                            Object.keys(this.props.formikProps.errors).length >
+                                0 &&
+                            this.props.formikProps.errors[nameValue]
+                        }
+                    />
+                }
+            >
+                {optionList.map(({ id, name }, index) => (
+                    <MenuItem key={`ITEM-${name}-${id}-${index}`} value={id}>
+                        {name}
+                    </MenuItem>
+                ))}
+            </Field>
+        </React.Fragment>
+    );
     render() {
+        const { departmentList = [] } = this.props;
         return (
             <React.Fragment>
                 <div style={{ width: "100%", height: 50, display: "flex" }}>
@@ -249,6 +291,13 @@ class CreateEditRole extends React.Component {
                                     }
                                 }}
                             />
+                        </FieldContainerDiv>
+                        <FieldContainerDiv>
+                            {this.renderSelectField(
+                                "departmentId",
+                                "LINKED TO DEPARTMENT",
+                                departmentList
+                            )}
                         </FieldContainerDiv>
                     </SectionDiv>
                     <SectionDiv width="33%" withBorderLeft withBorderRight>
