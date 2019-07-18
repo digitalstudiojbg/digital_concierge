@@ -270,7 +270,7 @@ class StructureTableList extends React.Component {
 
     openDuplicateRoleDialog = rowData => {
         const { clientId } = this.props;
-        const { id = "", name : originalName = "" } = rowData || {};
+        const { id = "", name: originalName = "" } = rowData || {};
         //DIFFERENTIATE DUPLICATE NAME
         const name = this.generateDuplicateRoleName(originalName);
         this.setState({
@@ -395,6 +395,7 @@ class StructureTableList extends React.Component {
                                         : "PLEASE SELECT A DEPARTMENT TO VIEW THE LIST OF ROLES"
                             }
                         }}
+                        onRowClick={this.handleEditRoleClick}
                     />
                 </div>
             </div>
