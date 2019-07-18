@@ -23,12 +23,14 @@ import {
     MenuItem,
     FormControlLabel,
     Checkbox,
-    IconButton
+    IconButton,
+    TextField as MuiTextField
 } from "@material-ui/core";
 import { Launch as LaunchIcon } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { Set } from "immutable";
 import Loading from "../../loading/Loading";
+import RolePermissionsDialog from "./RolePermissionsDialog";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -264,7 +266,12 @@ class CreateEditRole extends React.Component {
             openRolePermissions: false,
             openRoleWarning: false
         };
-        this.setPermissionIds = this.setPermissionIds.bind(this);
+        this.openRolePermissionsDialog = this.openRolePermissionsDialog.bind(
+            this
+        );
+        this.closeRolePermissionsDialog = this.closeRolePermissionsDialog.bind(
+            this
+        );
     }
     componentDidUpdate(prevProps) {
         const {
@@ -273,14 +280,22 @@ class CreateEditRole extends React.Component {
             errorRoleDetail,
             errorPermission,
             enqueueSnackbar,
-            formikProps: { isSubmitting }
+            formikProps: {
+                isSubmitting,
+                setFieldValue,
+                values: { copyRoleId }
+            },
+            roleList
         } = this.props;
         const {
             errorDepartment: prevErrorDepartment,
             errorRoleList: prevErrorRoleList,
             errorRoleDetail: prevErrorRoleDetail,
             errorPermission: prevErrorPermission,
-            formikProps: { isSubmitting: prevIsSubmitting }
+            formikProps: {
+                isSubmitting: prevIsSubmitting,
+                values: { copyRoleId: prevCopyRoleId }
+            }
         } = prevProps;
         if (!Boolean(prevErrorDepartment) && Boolean(errorDepartment)) {
             Boolean(errorDepartment.message) &&
@@ -306,12 +321,28 @@ class CreateEditRole extends React.Component {
                     variant: "error"
                 });
         }
+        if (prevCopyRoleId !== copyRoleId) {
+            const roleData = roleList.find(({ id }) => id === copyRoleId);
+            if (
+                Boolean(roleData) &&
+                Array.isArray(roleData.permissions) &&
+                roleData.permissions.length > 0
+            ) {
+                //Change permissions based on copy from existing role
+                setFieldValue(
+                    "permissionIds",
+                    Set(roleData.permissions.map(({ id }) => id))
+                );
+            }
+        }
         if (prevIsSubmitting && !isSubmitting) {
             //Submission process completed
         }
     }
-    setPermissionIds = permissionIds =>
-        this.props.formikProps.setFieldValue("permissionIds", permissionIds);
+    openRolePermissionsDialog = () =>
+        this.setState({ openRolePermissions: true });
+    closeRolePermissionsDialog = () =>
+        this.setState({ openRolePermissions: false });
     renderSelectField = (nameValue, label, optionList) => (
         <React.Fragment>
             <FieldLabel>{label}</FieldLabel>
@@ -378,6 +409,7 @@ class CreateEditRole extends React.Component {
                     return output;
                 })
             );
+            // console.log("Selected all: ", permission)
 
             return (
                 <RolePermissionContainerDiv>
@@ -401,7 +433,7 @@ class CreateEditRole extends React.Component {
                                     padding: "0px"
                                 }}
                                 aria-label="Expand"
-                                // onClick={this.handleOpenRoleModal}
+                                onClick={this.openRolePermissionsDialog}
                             >
                                 <LaunchIcon fontSize="large" />
                             </IconButton>
@@ -429,7 +461,7 @@ class CreateEditRole extends React.Component {
                                         onChange={() => {
                                             //https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays-in-javascript
                                             if (
-                                                permissionIds.length ===
+                                                permissionIds.size ===
                                                 permissionsList.length
                                             ) {
                                                 setFieldValue(
@@ -545,8 +577,11 @@ class CreateEditRole extends React.Component {
             departmentList = [],
             roleList = [],
             loadingDepartment,
-            loadingRoleList
+            loadingRoleList,
+            permissionList,
+            formikProps: { setFieldValue, values, errors }
         } = this.props;
+        const { openRolePermissions } = this.state;
         return (
             <React.Fragment>
                 <div style={{ width: "100%", height: 50, display: "flex" }}>
@@ -598,6 +633,16 @@ class CreateEditRole extends React.Component {
                         {this.renderPermissionsSection()}
                     </SectionDiv>
                 </FormContainerDiv>
+                {openRolePermissions && (
+                    <RolePermissionsDialog
+                        handleClose={this.closeRolePermissionsDialog}
+                        setFieldValue={setFieldValue}
+                        permissionsCategories={permissionList}
+                        roleName={values.name}
+                        permissionIds={values.permissionIds}
+                        errors={errors}
+                    />
+                )}
             </React.Fragment>
         );
     }
