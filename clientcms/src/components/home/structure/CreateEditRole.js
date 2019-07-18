@@ -24,13 +24,14 @@ import {
     FormControlLabel,
     Checkbox,
     IconButton,
-    TextField as MuiTextField
+    Button
 } from "@material-ui/core";
 import { Launch as LaunchIcon } from "@material-ui/icons";
 import { withStyles } from "@material-ui/core/styles";
 import { Set } from "immutable";
 import Loading from "../../loading/Loading";
 import RolePermissionsDialog from "./RolePermissionsDialog";
+import CustomSaveButton from "../../../utils/CustomSaveButton";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -68,6 +69,12 @@ export const RolePermissionContainerDiv = styled.div`
 const styles = () => ({
     checkboxLabel: {
         fontSize: "10px"
+    },
+    buttonCancel: {
+        backgroundColor: "#595959",
+        color: "white",
+        fontFamily: "Source Sans Pro, sans-serif",
+        marginBottom: "2%"
     }
 });
 
@@ -574,18 +581,57 @@ class CreateEditRole extends React.Component {
     };
     render() {
         const {
+            classes,
             departmentList = [],
             roleList = [],
             loadingDepartment,
             loadingRoleList,
             permissionList,
-            formikProps: { setFieldValue, values, errors }
+            formikProps: { setFieldValue, values, errors, isSubmitting }
         } = this.props;
         const { openRolePermissions } = this.state;
         return (
             <React.Fragment>
-                <div style={{ width: "100%", height: 50, display: "flex" }}>
-                    CREATE / EDIT ROLE
+                <div style={{ width: "100%", height: 100, display: "flex" }}>
+                    <div
+                        style={{
+                            width: "85%",
+                            fontSize: "2.3em",
+                            fontWeight: 600,
+                            color: "black"
+                        }}
+                    >
+                        CREATE / EDIT ROLE
+                    </div>
+                    <div
+                        style={{
+                            width: "15%",
+                            display: "flex",
+                            flexDirection: "column",
+                            paddingRight: 10
+                        }}
+                    >
+                        <Button
+                            variant="outlined"
+                            className={classes.buttonCancel}
+                            disabled={isSubmitting}
+                        >
+                            CANCEL
+                        </Button>
+                        <CustomSaveButton
+                            disabled={isSubmitting}
+                            options={[
+                                {
+                                    label: "SAVE & EXIT",
+                                    action: () => alert("SAVE AND EXIT")
+                                },
+                                {
+                                    label: "SAVE & KEEP EDITING",
+                                    action: () => alert("SAVE AND KEEP EDITING")
+                                }
+                            ]}
+                        />
+                    </div>
                 </div>
                 <FormContainerDiv>
                     <SectionDiv width="33%">
