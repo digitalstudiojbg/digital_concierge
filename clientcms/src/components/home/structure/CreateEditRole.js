@@ -9,7 +9,7 @@ import {
 } from "../../../data/query";
 import { withSnackbar } from "notistack";
 import { Formik, Form, Field } from "formik";
-import { ContainerDiv } from "../../../utils/Constants";
+import { ContainerDiv, WELCOME_URL } from "../../../utils/Constants";
 import {
     FieldContainerDiv,
     FieldLabel,
@@ -32,6 +32,7 @@ import { Set } from "immutable";
 import Loading from "../../loading/Loading";
 import RolePermissionsDialog from "./RolePermissionsDialog";
 import CustomSaveButton from "../../../utils/CustomSaveButton";
+import ConfirmExitDialog from "../user/ConfirmExitDialog";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -271,7 +272,8 @@ class CreateEditRole extends React.Component {
         super(props);
         this.state = {
             openRolePermissions: false,
-            openRoleWarning: false
+            openRoleWarning: false,
+            openRoleConfirmExit: false
         };
         this.openRolePermissionsDialog = this.openRolePermissionsDialog.bind(
             this
@@ -279,6 +281,9 @@ class CreateEditRole extends React.Component {
         this.closeRolePermissionsDialog = this.closeRolePermissionsDialog.bind(
             this
         );
+        this.handleClickCancel = this.handleClickCancel.bind(this);
+        this.navigateAway = this.navigateAway.bind(this);
+        this.cancelNavigate = this.cancelNavigate.bind(this);
     }
     componentDidUpdate(prevProps) {
         const {
@@ -346,6 +351,27 @@ class CreateEditRole extends React.Component {
             //Submission process completed
         }
     }
+    handleClickCancel = () => {
+        const {
+            formikProps: { dirty }
+        } = this.props;
+        if (dirty) {
+            this.setState({ openRoleConfirmExit: true });
+        } else {
+            this.navigateAway();
+        }
+    };
+    navigateAway = () => {
+        const { history, match } = this.props || {};
+        const { params } = match || {};
+        const { client_id = null } = params || {};
+        if (client_id) {
+            history.push(`${WELCOME_URL}/${client_id}/users`);
+        }
+    };
+    cancelNavigate = () => {
+        this.setState({ openRoleConfirmExit: false });
+    };
     openRolePermissionsDialog = () =>
         this.setState({ openRolePermissions: true });
     closeRolePermissionsDialog = () =>
@@ -589,7 +615,7 @@ class CreateEditRole extends React.Component {
             permissionList,
             formikProps: { setFieldValue, values, errors, isSubmitting }
         } = this.props;
-        const { openRolePermissions } = this.state;
+        const { openRolePermissions, openRoleConfirmExit } = this.state;
         return (
             <React.Fragment>
                 <div style={{ width: "100%", height: 100, display: "flex" }}>
@@ -615,6 +641,7 @@ class CreateEditRole extends React.Component {
                             variant="outlined"
                             className={classes.buttonCancel}
                             disabled={isSubmitting}
+                            onClick={this.handleClickCancel}
                         >
                             CANCEL
                         </Button>
@@ -687,6 +714,13 @@ class CreateEditRole extends React.Component {
                         roleName={values.name}
                         permissionIds={values.permissionIds}
                         errors={errors}
+                    />
+                )}
+                {openRoleConfirmExit && (
+                    <ConfirmExitDialog
+                        open={openRoleConfirmExit}
+                        cancelAction={this.cancelNavigate}
+                        acceptAction={this.navigateAway}
                     />
                 )}
             </React.Fragment>
