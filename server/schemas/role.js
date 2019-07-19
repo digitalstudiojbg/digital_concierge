@@ -36,10 +36,10 @@ export default gql`
     }
 
     input UpdateRoleInput {
-        id: Int!
+        id: ID!
         name: String!
-        departmentId: Int!
-        permissionIds: [Int]!
+        departmentId: ID!
+        permissionIds: [ID]!
     }
 
     input DeleteRoleInput {

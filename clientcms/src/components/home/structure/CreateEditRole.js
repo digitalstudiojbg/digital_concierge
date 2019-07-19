@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import { getDepartmentListByClient } from "../../../data/query/department";
 import {
     getRoleList,
@@ -9,7 +9,11 @@ import {
 } from "../../../data/query";
 import { withSnackbar } from "notistack";
 import { Formik, Form, Field } from "formik";
-import { ContainerDiv, WELCOME_URL } from "../../../utils/Constants";
+import {
+    ContainerDiv,
+    WELCOME_URL,
+    ROLE_EDIT_URL
+} from "../../../utils/Constants";
 import {
     FieldContainerDiv,
     FieldLabel,
@@ -33,6 +37,7 @@ import Loading from "../../loading/Loading";
 import RolePermissionsDialog from "./RolePermissionsDialog";
 import CustomSaveButton from "../../../utils/CustomSaveButton";
 import ConfirmExitDialog from "../user/ConfirmExitDialog";
+import { CREATE_ROLE, EDIT_ROLE } from "../../../data/mutation";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -79,193 +84,412 @@ const styles = () => ({
     }
 });
 
-const CreateEditRoleHOC = props => (
-    <Query query={getPermissionCategoryList}>
-        {({
-            loading: loadingPermission,
-            error: errorPermission,
-            data: { permissionCategories }
-        }) => (
-            <Query
-                query={getDepartmentListByClient}
-                variables={{ id: props.match.params.client_id }}
-            >
-                {({
-                    loading: loadingDepartment,
-                    error: errorDepartment,
-                    data: { departmentsByClient: departmentList }
-                }) => {
-                    return (
-                        <Query
-                            query={getRoleList}
-                            variables={{
-                                clientId: props.match.params.client_id
-                            }}
-                        >
-                            {({
-                                loading: loadingRoleList,
-                                error: errorRoleList,
-                                data: { rolesByClientId: roleList }
-                            }) => {
-                                if (props.match.params.role_id === "new") {
-                                    const initialValues = {
-                                        id: null,
-                                        name: "",
-                                        departmentId: null,
-                                        copyRoleId: null,
-                                        permissionIds: Set()
-                                    };
-                                    return (
-                                        <Formik initialValues={initialValues}>
-                                            {formikProps => (
-                                                <ContainerDivModified>
-                                                    <Form>
-                                                        <CreateEditRole
-                                                            {...props}
-                                                            hasData={false}
-                                                            loadingDepartment={
-                                                                loadingDepartment
-                                                            }
-                                                            errorDepartment={
-                                                                errorDepartment
-                                                            }
-                                                            departmentList={
-                                                                departmentList
-                                                            }
-                                                            loadingRole={
-                                                                loadingRoleList
-                                                            }
-                                                            errorRoleList={
-                                                                errorRoleList
-                                                            }
-                                                            roleList={roleList}
-                                                            loadingPermission={
-                                                                loadingPermission
-                                                            }
-                                                            errorPermission={
-                                                                errorPermission
-                                                            }
-                                                            permissionList={
-                                                                permissionCategories
-                                                            }
-                                                            formikProps={
-                                                                formikProps
-                                                            }
-                                                        />
-                                                    </Form>
-                                                </ContainerDivModified>
-                                            )}
-                                        </Formik>
-                                    );
-                                } else {
-                                    return (
-                                        <Query
-                                            query={getRoleDetail}
-                                            variables={{
-                                                id: props.match.params.role_id
-                                            }}
-                                        >
-                                            {({
-                                                loading: loadingRoleDetail,
-                                                error: errorRoleDetail,
-                                                data
-                                            }) => {
-                                                if (loadingRoleDetail) {
-                                                    return (
-                                                        <Loading loadingData />
-                                                    );
-                                                }
-                                                const { role } = data || {};
-                                                const {
-                                                    id = null,
-                                                    name = "",
-                                                    department = {},
-                                                    permissions = []
-                                                } = role || {};
-                                                const initialValues = {
-                                                    id,
-                                                    name,
-                                                    departmentId: Boolean(
-                                                        department.id
-                                                    )
-                                                        ? department.id
-                                                        : null,
-                                                    copyRoleId: null,
-                                                    permissionIds: Set(
-                                                        permissions.map(
-                                                            ({ id }) => id
-                                                        )
-                                                    )
-                                                };
-                                                return (
-                                                    <Formik
-                                                        enableReinitialize
-                                                        initialValues={
-                                                            initialValues
+const CreateEditRoleHOC = props => {
+    const [createdRoleId, setCreatedRoleId] = useState(null);
+    return (
+        <Query query={getPermissionCategoryList}>
+            {({
+                loading: loadingPermission,
+                error: errorPermission,
+                data: { permissionCategories }
+            }) => (
+                <Query
+                    query={getDepartmentListByClient}
+                    variables={{ id: props.match.params.client_id }}
+                >
+                    {({
+                        loading: loadingDepartment,
+                        error: errorDepartment,
+                        data: { departmentsByClient: departmentList }
+                    }) => {
+                        return (
+                            <Query
+                                query={getRoleList}
+                                variables={{
+                                    clientId: props.match.params.client_id
+                                }}
+                            >
+                                {({
+                                    loading: loadingRoleList,
+                                    error: errorRoleList,
+                                    data: { rolesByClientId: roleList }
+                                }) => {
+                                    if (props.match.params.role_id === "new") {
+                                        const initialValues = {
+                                            id: null,
+                                            name: "",
+                                            departmentId: null,
+                                            copyRoleId: null,
+                                            permissionIds: Set()
+                                        };
+                                        return (
+                                            <Mutation
+                                                mutation={CREATE_ROLE}
+                                                refetchQueries={[
+                                                    {
+                                                        query: getRoleList,
+                                                        variables: {
+                                                            clientId:
+                                                                props.match
+                                                                    .params
+                                                                    .client_id
                                                         }
-                                                    >
-                                                        {formikProps => (
-                                                            <ContainerDivModified>
-                                                                <Form>
-                                                                    <CreateEditRole
-                                                                        {...props}
-                                                                        hasData={
-                                                                            true
+                                                    },
+                                                    {
+                                                        query: getDepartmentListByClient,
+                                                        variables: {
+                                                            id:
+                                                                props.match
+                                                                    .params
+                                                                    .client_id
+                                                        }
+                                                    }
+                                                ]}
+                                            >
+                                                {(
+                                                    createRoleAction,
+                                                    {
+                                                        loading: loadingMutation,
+                                                        error: errorMutation
+                                                    }
+                                                ) => {
+                                                    const handleSubmit = (
+                                                        values,
+                                                        { setSubmitting }
+                                                    ) => {
+                                                        setSubmitting(true);
+                                                        const {
+                                                            name,
+                                                            departmentId,
+                                                            permissionIds: permissionsImmutable
+                                                        } = values;
+                                                        const permissionIds = permissionsImmutable.toJS();
+                                                        const toSubmit = {
+                                                            name,
+                                                            isStandardRole: false,
+                                                            departmentId,
+                                                            permissionIds,
+                                                            clientId:
+                                                                props.match
+                                                                    .params
+                                                                    .client_id
+                                                        };
+                                                        console.log(
+                                                            "To submit ",
+                                                            toSubmit
+                                                        );
+                                                        createRoleAction({
+                                                            variables: {
+                                                                input: {
+                                                                    ...toSubmit
+                                                                }
+                                                            }
+                                                        }).then(({ data }) => {
+                                                            console.log(
+                                                                "Created role data ",
+                                                                data
+                                                            );
+                                                            const {
+                                                                createRole
+                                                            } = data || {};
+                                                            const {
+                                                                id: createdRoleId = null
+                                                            } =
+                                                                createRole ||
+                                                                {};
+                                                            setCreatedRoleId(
+                                                                createdRoleId
+                                                            );
+                                                            setSubmitting(
+                                                                false
+                                                            );
+                                                        });
+                                                    };
+                                                    return (
+                                                        <Formik
+                                                            initialValues={
+                                                                initialValues
+                                                            }
+                                                            onSubmit={
+                                                                handleSubmit
+                                                            }
+                                                        >
+                                                            {formikProps => (
+                                                                <ContainerDivModified>
+                                                                    <Form>
+                                                                        <CreateEditRole
+                                                                            {...props}
+                                                                            hasData={
+                                                                                false
+                                                                            }
+                                                                            loadingDepartment={
+                                                                                loadingDepartment
+                                                                            }
+                                                                            errorDepartment={
+                                                                                errorDepartment
+                                                                            }
+                                                                            departmentList={
+                                                                                departmentList
+                                                                            }
+                                                                            loadingRole={
+                                                                                loadingRoleList
+                                                                            }
+                                                                            errorRoleList={
+                                                                                errorRoleList
+                                                                            }
+                                                                            roleList={
+                                                                                roleList
+                                                                            }
+                                                                            loadingPermission={
+                                                                                loadingPermission
+                                                                            }
+                                                                            errorPermission={
+                                                                                errorPermission
+                                                                            }
+                                                                            permissionList={
+                                                                                permissionCategories
+                                                                            }
+                                                                            formikProps={
+                                                                                formikProps
+                                                                            }
+                                                                            createdRoleId={
+                                                                                createdRoleId
+                                                                            }
+                                                                            loadingMutation={
+                                                                                loadingMutation
+                                                                            }
+                                                                            errorMutation={
+                                                                                errorMutation
+                                                                            }
+                                                                        />
+                                                                    </Form>
+                                                                </ContainerDivModified>
+                                                            )}
+                                                        </Formik>
+                                                    );
+                                                }}
+                                            </Mutation>
+                                        );
+                                    } else {
+                                        return (
+                                            <Query
+                                                query={getRoleDetail}
+                                                variables={{
+                                                    id:
+                                                        props.match.params
+                                                            .role_id
+                                                }}
+                                            >
+                                                {({
+                                                    loading: loadingRoleDetail,
+                                                    error: errorRoleDetail,
+                                                    data
+                                                }) => {
+                                                    if (loadingRoleDetail) {
+                                                        return (
+                                                            <Loading
+                                                                loadingData
+                                                            />
+                                                        );
+                                                    }
+                                                    const { role } = data || {};
+                                                    const {
+                                                        id = null,
+                                                        name = "",
+                                                        department = {},
+                                                        permissions = []
+                                                    } = role || {};
+                                                    const initialValues = {
+                                                        id,
+                                                        name,
+                                                        departmentId: Boolean(
+                                                            department.id
+                                                        )
+                                                            ? department.id
+                                                            : null,
+                                                        copyRoleId: null,
+                                                        permissionIds: Set(
+                                                            permissions.map(
+                                                                ({ id }) => id
+                                                            )
+                                                        )
+                                                    };
+                                                    return (
+                                                        <Mutation
+                                                            mutation={EDIT_ROLE}
+                                                            refetchQueries={[
+                                                                {
+                                                                    query: getRoleList,
+                                                                    variables: {
+                                                                        clientId:
+                                                                            props
+                                                                                .match
+                                                                                .params
+                                                                                .client_id
+                                                                    }
+                                                                },
+                                                                {
+                                                                    query: getRoleDetail,
+                                                                    variables: {
+                                                                        id:
+                                                                            props
+                                                                                .match
+                                                                                .params
+                                                                                .role_id
+                                                                    }
+                                                                },
+                                                                {
+                                                                    query: getDepartmentListByClient,
+                                                                    variables: {
+                                                                        id:
+                                                                            props
+                                                                                .match
+                                                                                .params
+                                                                                .client_id
+                                                                    }
+                                                                }
+                                                            ]}
+                                                        >
+                                                            {(
+                                                                editRoleAction,
+                                                                {
+                                                                    loading: loadingMutation,
+                                                                    error: errorMutation
+                                                                }
+                                                            ) => {
+                                                                const handleSubmit = (
+                                                                    values,
+                                                                    {
+                                                                        setSubmitting
+                                                                    }
+                                                                ) => {
+                                                                    setSubmitting(
+                                                                        true
+                                                                    );
+                                                                    const {
+                                                                        id,
+                                                                        name,
+                                                                        departmentId,
+                                                                        permissionIds: permissionsImmutable
+                                                                    } = values;
+                                                                    const permissionIds = permissionsImmutable.toJS();
+                                                                    const toSubmit = {
+                                                                        id,
+                                                                        name,
+                                                                        departmentId,
+                                                                        permissionIds
+                                                                    };
+                                                                    console.log(
+                                                                        "To submit ",
+                                                                        toSubmit
+                                                                    );
+                                                                    editRoleAction(
+                                                                        {
+                                                                            variables: {
+                                                                                input: {
+                                                                                    ...toSubmit
+                                                                                }
+                                                                            }
                                                                         }
-                                                                        data={
-                                                                            role
+                                                                    ).then(
+                                                                        ({
+                                                                            data
+                                                                        }) => {
+                                                                            console.log(
+                                                                                "Updated role data ",
+                                                                                data
+                                                                            );
+                                                                            setSubmitting(
+                                                                                false
+                                                                            );
                                                                         }
-                                                                        loadingDepartment={
-                                                                            loadingDepartment
+                                                                    );
+                                                                };
+                                                                return (
+                                                                    <Formik
+                                                                        enableReinitialize
+                                                                        initialValues={
+                                                                            initialValues
                                                                         }
-                                                                        errorDepartment={
-                                                                            errorDepartment
+                                                                        onSubmit={
+                                                                            handleSubmit
                                                                         }
-                                                                        departmentList={
-                                                                            departmentList
-                                                                        }
-                                                                        loadingRole={
-                                                                            loadingRoleList
-                                                                        }
-                                                                        errorRoleList={
-                                                                            errorRoleList
-                                                                        }
-                                                                        roleList={
-                                                                            roleList
-                                                                        }
-                                                                        errorRoleDetail={
-                                                                            errorRoleDetail
-                                                                        }
-                                                                        loadingPermission={
-                                                                            loadingPermission
-                                                                        }
-                                                                        errorPermission={
-                                                                            errorPermission
-                                                                        }
-                                                                        permissionList={
-                                                                            permissionCategories
-                                                                        }
-                                                                        formikProps={
-                                                                            formikProps
-                                                                        }
-                                                                    />
-                                                                </Form>
-                                                            </ContainerDivModified>
-                                                        )}
-                                                    </Formik>
-                                                );
-                                            }}
-                                        </Query>
-                                    );
-                                }
-                            }}
-                        </Query>
-                    );
-                }}
-            </Query>
-        )}
-    </Query>
-);
+                                                                    >
+                                                                        {formikProps => (
+                                                                            <ContainerDivModified>
+                                                                                <Form>
+                                                                                    <CreateEditRole
+                                                                                        {...props}
+                                                                                        hasData={
+                                                                                            true
+                                                                                        }
+                                                                                        data={
+                                                                                            role
+                                                                                        }
+                                                                                        loadingDepartment={
+                                                                                            loadingDepartment
+                                                                                        }
+                                                                                        errorDepartment={
+                                                                                            errorDepartment
+                                                                                        }
+                                                                                        departmentList={
+                                                                                            departmentList
+                                                                                        }
+                                                                                        loadingRole={
+                                                                                            loadingRoleList
+                                                                                        }
+                                                                                        errorRoleList={
+                                                                                            errorRoleList
+                                                                                        }
+                                                                                        roleList={
+                                                                                            roleList
+                                                                                        }
+                                                                                        errorRoleDetail={
+                                                                                            errorRoleDetail
+                                                                                        }
+                                                                                        loadingPermission={
+                                                                                            loadingPermission
+                                                                                        }
+                                                                                        errorPermission={
+                                                                                            errorPermission
+                                                                                        }
+                                                                                        permissionList={
+                                                                                            permissionCategories
+                                                                                        }
+                                                                                        formikProps={
+                                                                                            formikProps
+                                                                                        }
+                                                                                        createdRoleId={
+                                                                                            createdRoleId
+                                                                                        }
+                                                                                        loadingMutation={
+                                                                                            loadingMutation
+                                                                                        }
+                                                                                        errorMutation={
+                                                                                            errorMutation
+                                                                                        }
+                                                                                    />
+                                                                                </Form>
+                                                                            </ContainerDivModified>
+                                                                        )}
+                                                                    </Formik>
+                                                                );
+                                                            }}
+                                                        </Mutation>
+                                                    );
+                                                }}
+                                            </Query>
+                                        );
+                                    }
+                                }}
+                            </Query>
+                        );
+                    }}
+                </Query>
+            )}
+        </Query>
+    );
+};
 
 class CreateEditRole extends React.Component {
     constructor(props) {
@@ -273,7 +497,8 @@ class CreateEditRole extends React.Component {
         this.state = {
             openRolePermissions: false,
             openRoleWarning: false,
-            openRoleConfirmExit: false
+            openRoleConfirmExit: false,
+            exit: true
         };
         this.openRolePermissionsDialog = this.openRolePermissionsDialog.bind(
             this
@@ -297,8 +522,13 @@ class CreateEditRole extends React.Component {
                 setFieldValue,
                 values: { copyRoleId }
             },
-            roleList
+            roleList,
+            hasData,
+            createdRoleId,
+            history,
+            match
         } = this.props;
+        const { exit } = this.state;
         const {
             errorDepartment: prevErrorDepartment,
             errorRoleList: prevErrorRoleList,
@@ -307,7 +537,8 @@ class CreateEditRole extends React.Component {
             formikProps: {
                 isSubmitting: prevIsSubmitting,
                 values: { copyRoleId: prevCopyRoleId }
-            }
+            },
+            createdRoleId: prevCreatedRoleId
         } = prevProps;
         if (!Boolean(prevErrorDepartment) && Boolean(errorDepartment)) {
             Boolean(errorDepartment.message) &&
@@ -349,6 +580,34 @@ class CreateEditRole extends React.Component {
         }
         if (prevIsSubmitting && !isSubmitting) {
             //Submission process completed
+            if (!exit && !hasData) {
+                //Successfully created a new role, but want to still keep on editing, hence we have to navigate to the edit page of the new role
+                const { params } = match || {};
+                const { client_id = null } = params || {};
+                if (client_id && createdRoleId) {
+                    history.push(
+                        ROLE_EDIT_URL.replace(":client_id", client_id).replace(
+                            ":role_id",
+                            createdRoleId
+                        )
+                    );
+                }
+            } else if (exit) {
+                this.navigateAway();
+            }
+        }
+        if (!prevCreatedRoleId && createdRoleId) {
+            //Successfully created a new role, but want to still keep on editing, hence we have to navigate to the edit page of the new role
+            const { params } = match || {};
+            const { client_id = null } = params || {};
+            if (client_id && createdRoleId) {
+                history.push(
+                    ROLE_EDIT_URL.replace(":client_id", client_id).replace(
+                        ":role_id",
+                        createdRoleId
+                    )
+                );
+            }
         }
     }
     handleClickCancel = () => {
@@ -607,15 +866,23 @@ class CreateEditRole extends React.Component {
     };
     render() {
         const {
+            hasData,
             classes,
             departmentList = [],
             roleList = [],
             loadingDepartment,
             loadingRoleList,
             permissionList,
-            formikProps: { setFieldValue, values, errors, isSubmitting }
+            formikProps: {
+                setFieldValue,
+                values,
+                errors,
+                isSubmitting,
+                submitForm
+            }
         } = this.props;
         const { openRolePermissions, openRoleConfirmExit } = this.state;
+        const headerText = hasData ? "MODIFY ROLE" : "CREATE ROLE";
         return (
             <React.Fragment>
                 <div style={{ width: "100%", height: 100, display: "flex" }}>
@@ -627,7 +894,7 @@ class CreateEditRole extends React.Component {
                             color: "black"
                         }}
                     >
-                        CREATE / EDIT ROLE
+                        {headerText}
                     </div>
                     <div
                         style={{
@@ -650,11 +917,14 @@ class CreateEditRole extends React.Component {
                             options={[
                                 {
                                     label: "SAVE & EXIT",
-                                    action: () => alert("SAVE AND EXIT")
+                                    action: () => submitForm()
                                 },
                                 {
                                     label: "SAVE & KEEP EDITING",
-                                    action: () => alert("SAVE AND KEEP EDITING")
+                                    action: () =>
+                                        this.setState({ exit: false }, () =>
+                                            submitForm()
+                                        )
                                 }
                             ]}
                         />

@@ -9,6 +9,15 @@ export const CREATE_ROLE = gql`
     }
 `;
 
+export const EDIT_ROLE = gql`
+    mutation updateRole($input: UpdateRoleInput) {
+        updateRole(input: $input) {
+            id
+            name
+        }
+    }
+`;
+
 export const DUPLICATE_ROLE = gql`
     mutation duplicateRole($id: ID!, $name: String!) {
         duplicateRole(id: $id, name: $name)
