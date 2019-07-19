@@ -38,6 +38,7 @@ import RolePermissionsDialog from "./RolePermissionsDialog";
 import CustomSaveButton from "../../../utils/CustomSaveButton";
 import ConfirmExitDialog from "../user/ConfirmExitDialog";
 import { CREATE_ROLE, EDIT_ROLE } from "../../../data/mutation";
+import { createRoleSchema, modifyRoleSchema } from "./validationSchema";
 
 const ContainerDivModified = styled(ContainerDiv)`
     padding-left: 50px;
@@ -64,11 +65,11 @@ const SectionDiv = styled.div`
         props.withBorderRight ? "1px solid #DDDDDD" : "none"};
 `;
 
-export const RolePermissionContainerDiv = styled.div`
+const RolePermissionContainerDiv = styled.div`
     width: 100%;
     height: 500px;
     overflow-y: scroll;
-    border: 1px solid #9d9d9d;
+    border: ${props => (props.error ? "1px solid red" : "1px solid #9d9d9d")};
     background-color: white;
 `;
 
@@ -212,6 +213,9 @@ const CreateEditRoleHOC = props => {
                                                             }
                                                             onSubmit={
                                                                 handleSubmit
+                                                            }
+                                                            validationSchema={
+                                                                createRoleSchema
                                                             }
                                                         >
                                                             {formikProps => (
@@ -413,6 +417,9 @@ const CreateEditRoleHOC = props => {
                                                                         }
                                                                         onSubmit={
                                                                             handleSubmit
+                                                                        }
+                                                                        validationSchema={
+                                                                            modifyRoleSchema
                                                                         }
                                                                     >
                                                                         {formikProps => (
@@ -677,7 +684,7 @@ class CreateEditRole extends React.Component {
     );
     renderPermissionsSection = () => {
         const {
-            formikProps: { values, setFieldValue },
+            formikProps: { values, setFieldValue, errors },
             loadingPermission,
             permissionList: permissionCategories,
             classes
@@ -712,7 +719,9 @@ class CreateEditRole extends React.Component {
             // console.log("Selected all: ", permission)
 
             return (
-                <RolePermissionContainerDiv>
+                <RolePermissionContainerDiv
+                    error={Boolean(errors) && Boolean(errors.permissionIds)}
+                >
                     <div
                         style={{
                             width: "100%",
@@ -925,14 +934,27 @@ class CreateEditRole extends React.Component {
                             options={[
                                 {
                                     label: "SAVE & EXIT",
-                                    action: () => submitForm()
+                                    action: () => {
+                                        if (
+                                            Boolean(errors) &&
+                                            Object.keys(errors).length === 0
+                                        ) {
+                                            submitForm();
+                                        }
+                                    }
                                 },
                                 {
                                     label: "SAVE & KEEP EDITING",
-                                    action: () =>
-                                        this.setState({ exit: false }, () =>
-                                            submitForm()
-                                        )
+                                    action: () => {
+                                        if (
+                                            Boolean(errors) &&
+                                            Object.keys(errors).length === 0
+                                        ) {
+                                            this.setState({ exit: false }, () =>
+                                                submitForm()
+                                            );
+                                        }
+                                    }
                                 }
                             ]}
                         />
