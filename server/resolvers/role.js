@@ -212,7 +212,7 @@ export default {
                 }
             }
 
-            //Remove old permissions
+            //Remove old permissions before assigning new permissions to the role
             try {
                 await role.removePermissions(await role.getPermissions());
             } catch (error) {
@@ -223,7 +223,7 @@ export default {
                 );
             }
 
-            // //Attempt to assign permissions to the role
+            //Attempt to assign permissions to the role
             try {
                 await role.setPermissions(permissionIds);
             } catch (error) {
