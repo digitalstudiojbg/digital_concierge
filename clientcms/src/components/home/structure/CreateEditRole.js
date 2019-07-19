@@ -516,6 +516,7 @@ class CreateEditRole extends React.Component {
             errorRoleList,
             errorRoleDetail,
             errorPermission,
+            errorMutation,
             enqueueSnackbar,
             formikProps: {
                 isSubmitting,
@@ -534,6 +535,7 @@ class CreateEditRole extends React.Component {
             errorRoleList: prevErrorRoleList,
             errorRoleDetail: prevErrorRoleDetail,
             errorPermission: prevErrorPermission,
+            errorMutation: prevErrorMutation,
             formikProps: {
                 isSubmitting: prevIsSubmitting,
                 values: { copyRoleId: prevCopyRoleId }
@@ -561,6 +563,12 @@ class CreateEditRole extends React.Component {
         if (!Boolean(prevErrorPermission) && Boolean(errorPermission)) {
             Boolean(errorPermission.message) &&
                 enqueueSnackbar(errorPermission.message, {
+                    variant: "error"
+                });
+        }
+        if (!Boolean(prevErrorMutation) && Boolean(errorMutation)) {
+            Boolean(errorMutation.message) &&
+                enqueueSnackbar(errorMutation.message, {
                     variant: "error"
                 });
         }
