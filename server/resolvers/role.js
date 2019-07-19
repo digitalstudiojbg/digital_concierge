@@ -15,7 +15,9 @@ export default {
             if (!user) {
                 throw new AuthenticationError("Unauthorized");
             }
-            return await db.role.findByPk(id);
+            const role = await db.role.findByPk(id);
+            // console.log(Object.keys(role.__proto__));
+            return role;
         },
 
         roles: async (root, input, { user }) => {
@@ -208,6 +210,17 @@ export default {
                         }`
                     );
                 }
+            }
+
+            //Remove old permissions
+            try {
+                await role.removePermissions(await role.getPermissions());
+            } catch (error) {
+                throw new UserInputError(
+                    `Unable to delete all permissions to role.\nError Message: ${
+                        error.message
+                    }`
+                );
             }
 
             // //Attempt to assign permissions to the role
