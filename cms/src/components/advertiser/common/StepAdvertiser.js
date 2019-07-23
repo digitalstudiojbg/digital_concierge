@@ -511,22 +511,47 @@ const StepAdvertiser = ({
                         ? selectedPostalCountry.states
                         : [];
 
-                const businessAndPostalAddressAreTheSame = () =>
-                    Boolean(values.address) &&
-                    Boolean(values.postal_address) &&
-                    values.address === values.postal_address &&
-                    Boolean(values.city) &&
-                    Boolean(values.postal_city) &&
-                    values.city === values.postal_city &&
-                    Boolean(values.zip_code) &&
-                    Boolean(values.postal_zip_code) &&
-                    values.zip_code === values.postal_zip_code &&
-                    Boolean(values.stateId) &&
-                    Boolean(values.postalStateId) &&
-                    values.stateId === values.postalStateId &&
-                    Boolean(values.countryId) &&
-                    Boolean(values.postalCountryId) &&
-                    values.countryId === values.postalCountryId;
+                const businessAndPostalAddressAreTheSame = () => {
+                    const sameAddress =
+                        Boolean(values.address) &&
+                        Boolean(values.postal_address) &&
+                        values.address === values.postal_address;
+                    // console.log("Same address ", sameAddress);
+
+                    const sameCity =
+                        Boolean(values.city) &&
+                        Boolean(values.postal_city) &&
+                        values.city === values.postal_city;
+                    // console.log("City is ", values.city);
+                    // console.log("Postal city is ", values.postal_city);
+                    // console.log("Same city ", sameCity);
+
+                    const sameZip =
+                        Boolean(values.zip_code) &&
+                        Boolean(values.postal_zip_code) &&
+                        values.zip_code === values.postal_zip_code;
+                    // console.log("Same Zip ", sameZip);
+
+                    const sameState =
+                        Boolean(values.stateId) &&
+                        Boolean(values.postalStateId) &&
+                        values.stateId === values.postalStateId;
+                    // console.log("Same State ", sameState);
+
+                    const sameCountry =
+                        Boolean(values.countryId) &&
+                        Boolean(values.postalCountryId) &&
+                        values.countryId === values.postalCountryId;
+                    // console.log("Same Country ", sameCountry);
+
+                    return (
+                        sameAddress &&
+                        sameCity &&
+                        sameZip &&
+                        sameState &&
+                        sameCountry
+                    );
+                };
 
                 const businessAddressDetailsNotCompleted = () =>
                     !(
