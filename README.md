@@ -52,7 +52,7 @@ Digital Concierge Project
 -   \$ node_modules/.bin/sequelize migration:generate --name add-associations
 -   \$ node_modules/.bin/sequelize seed:generate --name user
 -   \$ node_modules/.bin/sequelize model:generate --name company --attributes name:string,description:text
--   \$ `console.log(Object.keys(select_directory.__proto__));)` //List of sequelize instance magic commands
+-   \$ `console.log(Object.keys(select_directory.__proto__));` //List of sequelize instance magic commands
 -   \$ node_modules/.bin/sequelize db:seed --seed [seed file name]
 
 ## Useful docker commands
@@ -63,7 +63,7 @@ Digital Concierge Project
 -   \$ docker exec -it [CONTAINER_ID] sh
 -   \$ docker system prune
 -   Docker Error: no space left on device --> See (https://stackoverflow.com/a/37287054)
--   \$ docker volume rm \$(docker volume ls -qf dangling=true)
+-   \$ docker volume rm $(docker volume ls -qf dangling=true)
 
 ## CMS Test Admin Account
 
