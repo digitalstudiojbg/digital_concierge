@@ -18,7 +18,7 @@
         "graphql": "^14.1.1",
         "html-to-draftjs": "^1.4.0",
         "immutable": "^4.0.0-rc.12",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.21",
         "material-table": "^1.40.0",
         "notistack": "^0.8.8",
         "rc-color-picker": "^1.2.6",
